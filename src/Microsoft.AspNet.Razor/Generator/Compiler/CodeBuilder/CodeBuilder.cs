@@ -1,18 +1,20 @@
 ﻿
 namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
-    public class CodeBuilder
+    public abstract class CodeBuilder
     {
-        protected CodeTree Tree;
+        private readonly CodeGeneratorContext _codeGeneratorContext;
 
-        public CodeBuilder(CodeTree codeTree)
+        public CodeBuilder(CodeGeneratorContext codeGeneratorContext)
         {
-            Tree = codeTree;
+            _codeGeneratorContext = codeGeneratorContext;
         }
 
-        public virtual CodeBuilderResult Build()
+        protected CodeGeneratorContext Context
         {
-            return null;
+            get { return _codeGeneratorContext; }
         }
+
+        public abstract CodeBuilderResult Build();
     }
 }
