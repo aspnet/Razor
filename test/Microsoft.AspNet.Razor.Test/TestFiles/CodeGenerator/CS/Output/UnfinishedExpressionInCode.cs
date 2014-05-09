@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
 namespace TestOutput
 {
     using System;
@@ -27,7 +24,7 @@ namespace TestOutput
 #line default
 #line hidden
 
-#line 1 "------------------------------------------"
+#line 2 "UnfinishedExpressionInCode.cshtml"
 __o = DateTime.;
 
 #line default

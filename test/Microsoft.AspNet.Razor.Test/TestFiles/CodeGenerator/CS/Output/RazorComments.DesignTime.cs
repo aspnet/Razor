@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
 namespace TestOutput
 {
     using System;
@@ -50,12 +47,12 @@ namespace TestOutput
 #line default
 #line hidden
 
-#line 1 "------------------------------------------"
+#line 13 "RazorComments.cshtml"
                                        __o = bar;
 
 #line default
 #line hidden
-#line 1 "------------------------------------------"
+#line 15 "RazorComments.cshtml"
 __o = a
 #line 15 "RazorComments.cshtml"
        b

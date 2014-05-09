@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
-
 namespace TestOutput
 {
 #line 1 "Imports.cshtml"
@@ -38,12 +35,12 @@ using System
 
         public override async Task ExecuteAsync()
         {
-#line 1 "------------------------------------------"
+#line 5 "Imports.cshtml"
                        __o = typeof(Path).FullName;
 
 #line default
 #line hidden
-#line 1 "------------------------------------------"
+#line 6 "Imports.cshtml"
                              __o = typeof(Foo).FullName;
 
 #line default
