@@ -1,19 +1,29 @@
-namespace TestOutput
+namespace TestNamespace
 {
-    using System;
+#line 1 ""
+using FakeNamespace1
+
+#line default
+#line hidden
+    ;
+#line 1 ""
+using FakeNamespace2.SubNamespace
+
+#line default
+#line hidden
+    ;
     using System.Threading.Tasks;
 
-    public class LayoutDirective
+    public class TestClass
     {
         #line hidden
-        public LayoutDirective()
+        public TestClass()
         {
         }
 
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            Layout = "~/Foo/Bar/Baz";
         }
         #pragma warning restore 1998
     }
