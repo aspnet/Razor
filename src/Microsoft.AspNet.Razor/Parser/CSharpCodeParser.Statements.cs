@@ -442,7 +442,7 @@ namespace Microsoft.AspNet.Razor.Parser
             }
             else
             {
-                // What kind of statement is this?
+                // Statement block, determine type
                 HandleStatement(block, type);
             }
         }
