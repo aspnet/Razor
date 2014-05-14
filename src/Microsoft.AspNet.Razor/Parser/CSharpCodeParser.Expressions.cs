@@ -9,7 +9,7 @@ namespace Microsoft.AspNet.Razor.Parser
     {
         private void SetUpExpressions()
         {
-            MapKeywords(AwaitExpression, CSharpKeyword.Await);
+            MapExpressionKeyword(AwaitExpression, CSharpKeyword.Await);
         }
 
         private void AwaitExpression(bool topLevel)
