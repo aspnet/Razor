@@ -17,6 +17,10 @@
     </DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.Razor, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\src\Microsoft.AspNet.Razor\bin\net45\Microsoft.AspNet.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -38,10 +42,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Microsoft.AspNet.Razor\Microsoft.AspNet.Razor.net45.csproj">
-      <Project>{8b129ff9-0b8f-4e0c-8dfc-0137d8550fb7}</Project>
-      <Name>Microsoft.AspNet.Razor.net45</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Microsoft.TestCommon\Microsoft.TestCommon.csproj">
       <Project>{FCCC4CB7-BAF7-4A57-9F89-E5766FE536C0}</Project>
       <Name>Microsoft.TestCommon</Name>
