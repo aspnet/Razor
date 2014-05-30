@@ -3,8 +3,7 @@
 
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Parser;
-using Microsoft.CSharp;
-using Microsoft.TestCommon;
+using Xunit;
 
 namespace Microsoft.AspNet.Razor.Test
 {
