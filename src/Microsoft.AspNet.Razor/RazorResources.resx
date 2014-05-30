@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActiveParser_Must_Be_Code_Or_Markup_Parser" xml:space="preserve">
-    <value>The active parser must the same as either the markup or code parser.</value>
+    <value>The active parser must be the same as either the markup or code parser.</value>
   </data>
   <data name="BlockName_Code" xml:space="preserve">
     <value>code</value>
@@ -136,7 +136,6 @@
   </data>
   <data name="ParseError_AtInCode_Must_Be_Followed_By_Colon_Paren_Or_Identifier_Start" xml:space="preserve">
     <value>The "@" character must be followed by a ":", "(", or a C# identifier.  If you intended to switch to markup, use an HTML start tag, for example:
-
 @if(isLoggedIn) {
     &lt;p&gt;Hello, @user!&lt;/p&gt;
 }</value>
@@ -171,7 +170,7 @@
   </data>
   <data name="ParseError_NamespaceImportAndTypeAlias_Cannot_Exist_Within_CodeBlock" xml:space="preserve">
     <value>Namespace imports and type aliases cannot be placed within code blocks.  They must immediately follow an "@" character in markup.  It is recommended that you put them at the top of the page, as in the following example:
-
+	
 @using System.Drawing;
 @{
     // OK here to use types from System.Drawing in the page.
@@ -179,10 +178,9 @@
   </data>
   <data name="ParseError_SingleLine_ControlFlowStatements_Not_Allowed" xml:space="preserve">
     <value>Expected a "{0}" but found a "{1}".  Block statements must be enclosed in "{{" and "}}".  You cannot use single-statement control-flow statements in CSHTML pages. For example, the following is not allowed:
-
+	
 @if(isLoggedIn)
     &lt;p&gt;Hello, @user&lt;/p&gt;
-
 Instead, wrap the contents of the block in "{{}}":
 
 @if(isLoggedIn) {{
