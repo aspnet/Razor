@@ -14,6 +14,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         private string _cache = string.Empty;
         private bool _dirty = false;
 
+        private int _absoluteIndex;
+        private int _currentLineIndex;
+        private int _currentLineCharacterIndex;
+
         public string LastWrite { get; private set; }
         public int CurrentIndent { get; private set; }
 
@@ -49,6 +53,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             {
                 _writer.Write(new string(' ', size));
                 Flush();
+
+                _currentLineCharacterIndex += size;
+                _absoluteIndex += size;
+
                 _dirty = true;
                 _newLine = false;
             }
@@ -61,12 +69,63 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             Indent(CurrentIndent);
 
             _writer.Write(data);
-
             Flush();
 
             LastWrite = data;
             _dirty = true;
             _newLine = false;
+
+            if (data == null || data.Length == 0)
+            {
+                return this;
+            }
+
+            _absoluteIndex += data.Length;
+
+            // The data string might contain a partial newline where the the previously
+            // written string has part of the data.
+            var i = 0;
+            int? lastNewLine = null;
+            var builder = _writer.GetStringBuilder();
+
+            if (Environment.NewLine.Length == 2 &&
+
+                // check the last character of the previous write operation
+                builder.Length - data.Length - 1 >= 0 &&
+                builder[builder.Length - data.Length - 1] == Environment.NewLine[0] &&
+
+                // check the first character of the current write operation
+                builder[builder.Length - data.Length] == Environment.NewLine[1])
+            {
+                // This is newline that's spread across two writes. Skip the first character of the 
+                // current write operation.
+                i += 1;
+                _currentLineIndex++;
+                _currentLineCharacterIndex = 0;
+                lastNewLine = -1;
+            }
+
+            // Iterate the string, stopping at each occurrence of Environment.NewLine.
+            while ((i = data.IndexOf(Environment.NewLine, i)) >= 0)
+            {
+                // Newline found.
+                _currentLineIndex++;
+                _currentLineCharacterIndex = 0;
+                lastNewLine = i;
+
+                i += Environment.NewLine.Length;
+            }
+
+            if (lastNewLine == null)
+            {
+                // No newlines, just add the length of the data buffer
+                _currentLineCharacterIndex += data.Length;
+            }
+            else
+            {
+                // Newlines found, add the trailing part of 'data'
+                _currentLineCharacterIndex += (data.Length - lastNewLine.Value - Environment.NewLine.Length);
+            }
 
             return this;
         }
@@ -76,8 +135,11 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             LastWrite = Environment.NewLine;
 
             _writer.WriteLine();
-
             Flush();
+
+            _currentLineIndex++;
+            _currentLineCharacterIndex = 0;
+            _absoluteIndex += Environment.NewLine.Length;
 
             _dirty = true;
             _newLine = true;
@@ -110,18 +172,12 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 
         public SourceLocation GetCurrentSourceLocation()
         {
-            string output = GenerateCode();
-            string unescapedOutput = output.Replace("\\r", String.Empty).Replace("\\n", String.Empty);
-
-            return new SourceLocation(
-                absoluteIndex: output.Length,
-                lineIndex: (unescapedOutput.Length - unescapedOutput.Replace(Environment.NewLine, String.Empty).Length) / Environment.NewLine.Length,
-                characterIndex: unescapedOutput.Length - (unescapedOutput.LastIndexOf(Environment.NewLine) + Environment.NewLine.Length));
+            return new SourceLocation(_absoluteIndex, _currentLineIndex, _currentLineCharacterIndex);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if(disposing)
+            if (disposing)
             {
                 _writer.Dispose();
             }
