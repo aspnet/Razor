@@ -82,19 +82,19 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 
             _absoluteIndex += data.Length;
 
-            // The data string might contain a partial newline where the the previously
-            // written string has part of the data.
+            // The data string might contain a partial newline where the previously
+            // written string has part of the newline.
             var i = 0;
             int? lastNewLine = null;
             var builder = _writer.GetStringBuilder();
 
             if (Environment.NewLine.Length == 2 &&
 
-                // check the last character of the previous write operation
+                // Check the last character of the previous write operation.
                 builder.Length - data.Length - 1 >= 0 &&
                 builder[builder.Length - data.Length - 1] == Environment.NewLine[0] &&
 
-                // check the first character of the current write operation
+                // Check the first character of the current write operation.
                 builder[builder.Length - data.Length] == Environment.NewLine[1])
             {
                 // This is newline that's spread across two writes. Skip the first character of the 
@@ -105,8 +105,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
                 lastNewLine = -1;
             }
 
-            // Iterate the string, stopping at each occurrence of Environment.NewLine.
-            while ((i = data.IndexOf(Environment.NewLine, i)) >= 0)
+            // Iterate the string, stopping at each occurrence of Environment.NewLine. This lets us count the 
+            // newline occurrences and keep the index of the last one.
+            while ((i = data.IndexOf(Environment.NewLine, i, StringComparison.Ordinal)) >= 0)
             {
                 // Newline found.
                 _currentLineIndex++;

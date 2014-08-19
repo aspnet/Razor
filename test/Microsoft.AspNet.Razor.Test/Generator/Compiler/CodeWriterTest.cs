@@ -62,6 +62,26 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         }
 
         [Fact]
+        public void CodeWriter_TracksPosition_WithWriteLine_WithNewLineInContent()
+        {
+            // Arrange
+            var writer = new CodeWriter();
+
+            // Act
+            writer.WriteLine("1234" + Environment.NewLine + "12");
+
+            // Assert
+            var location = writer.GetCurrentSourceLocation();
+
+            var expected = new SourceLocation(
+                absoluteIndex: 6 + NewLineLength + NewLineLength, 
+                lineIndex: 2, 
+                characterIndex: 0);
+
+            Assert.Equal(expected, location);
+        }
+
+        [Fact]
         public void CodeWriter_TracksPosition_WithWrite_WithNewlineInDataString()
         {
             // Arrange
@@ -73,7 +93,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             // Assert
             var location = writer.GetCurrentSourceLocation();
 
-            var expected = new SourceLocation(absoluteIndex: 9 + NewLineLength + NewLineLength, lineIndex: 2, characterIndex: 2);
+            var expected = new SourceLocation(
+                absoluteIndex: 9 + NewLineLength + NewLineLength, 
+                lineIndex: 2, 
+                characterIndex: 2);
 
             Assert.Equal(expected, location);
         }
