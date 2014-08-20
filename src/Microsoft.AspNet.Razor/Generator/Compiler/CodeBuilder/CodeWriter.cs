@@ -120,6 +120,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
                 // We might have stopped at a \r, so check if it's followed by \n and then advance the index to
                 // start the next search after it.
                 if (data.Length > i &&
+                    data[i - 1] == '\r' &&
                     data[i] == '\n')
                 {
                     i++;

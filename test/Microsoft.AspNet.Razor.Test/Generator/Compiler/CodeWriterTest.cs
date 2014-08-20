@@ -119,6 +119,26 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         }
 
         [Fact]
+        public void CodeWriter_TracksPosition_WithWrite_WithNewlineInContent_RepeatedN()
+        {
+            // Arrange
+            var writer = new CodeWriter();
+
+            // Act
+            writer.Write("1234\n\n123");
+
+            // Assert
+            var location = writer.GetCurrentSourceLocation();
+
+            var expected = new SourceLocation(
+                absoluteIndex: 9,
+                lineIndex: 2,
+                characterIndex: 3);
+
+            Assert.Equal(expected, location);
+        }
+
+        [Fact]
         public void CodeWriter_TracksPosition_WithWrite_WithMixedNewlineInContent()
         {
             // Arrange
@@ -160,7 +180,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         }
 
         [Fact]
-        public void CodeWriter_TracksPosition_WithTwoNewline_SplitAcrossWrites()
+        public void CodeWriter_TracksPosition_WithTwoNewline_SplitAcrossWrites_R()
         {
             // Arrange
             var writer = new CodeWriter();
@@ -170,6 +190,27 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             var location1 = writer.GetCurrentSourceLocation();
 
             writer.Write("\r");
+            var location2 = writer.GetCurrentSourceLocation();
+
+            // Assert
+            var expected1 = new SourceLocation(absoluteIndex: 5, lineIndex: 1, characterIndex: 0);
+            Assert.Equal(expected1, location1);
+
+            var expected2 = new SourceLocation(absoluteIndex: 6, lineIndex: 2, characterIndex: 0);
+            Assert.Equal(expected2, location2);
+        }
+
+        [Fact]
+        public void CodeWriter_TracksPosition_WithTwoNewline_SplitAcrossWrites_N()
+        {
+            // Arrange
+            var writer = new CodeWriter();
+
+            // Act
+            writer.Write("1234\n");
+            var location1 = writer.GetCurrentSourceLocation();
+
+            writer.Write("\n");
             var location2 = writer.GetCurrentSourceLocation();
 
             // Assert
