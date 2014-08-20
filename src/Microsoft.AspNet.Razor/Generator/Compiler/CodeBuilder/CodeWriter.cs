@@ -9,6 +9,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
     public class CodeWriter : IDisposable
     {
+        private static readonly char[] NewLineCharacters = new char[] { '\r', '\n' };
+
         private StringWriter _writer = new StringWriter();
         private bool _newLine;
         private string _cache = string.Empty;
@@ -85,39 +87,49 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             // The data string might contain a partial newline where the previously
             // written string has part of the newline.
             var i = 0;
-            int? lastNewLine = null;
+            int? trailingPartStart = null;
             var builder = _writer.GetStringBuilder();
 
-            if (Environment.NewLine.Length == 2 &&
-
+            if (
                 // Check the last character of the previous write operation.
                 builder.Length - data.Length - 1 >= 0 &&
-                builder[builder.Length - data.Length - 1] == Environment.NewLine[0] &&
+                builder[builder.Length - data.Length - 1] == '\r' &&
 
                 // Check the first character of the current write operation.
-                builder[builder.Length - data.Length] == Environment.NewLine[1])
+                builder[builder.Length - data.Length] == '\n')
             {
                 // This is newline that's spread across two writes. Skip the first character of the 
                 // current write operation.
+                //
+                // We don't need to increment our newline counter because we already did that when we
+                // saw the \r.
                 i += 1;
-                _currentLineIndex++;
-                _currentLineCharacterIndex = 0;
-                lastNewLine = -1;
+                trailingPartStart = 1;
             }
 
-            // Iterate the string, stopping at each occurrence of Environment.NewLine. This lets us count the 
+            // Iterate the string, stopping at each occurrence of a newline character. This lets us count the 
             // newline occurrences and keep the index of the last one.
-            while ((i = data.IndexOf(Environment.NewLine, i, StringComparison.Ordinal)) >= 0)
+            while ((i = data.IndexOfAny(NewLineCharacters, i)) >= 0)
             {
                 // Newline found.
                 _currentLineIndex++;
                 _currentLineCharacterIndex = 0;
-                lastNewLine = i;
 
-                i += Environment.NewLine.Length;
+                i++;
+
+                // We might have stopped at a \r, so check if it's followed by \n and then advance the index to
+                // start the next search after it.
+                if (data.Length > i &&
+                    data[i] == '\n')
+                {
+                    i++;
+                }
+
+                // The 'suffix' of the current line starts after this newline token.
+                trailingPartStart = i;
             }
 
-            if (lastNewLine == null)
+            if (trailingPartStart == null)
             {
                 // No newlines, just add the length of the data buffer
                 _currentLineCharacterIndex += data.Length;
@@ -125,7 +137,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             else
             {
                 // Newlines found, add the trailing part of 'data'
-                _currentLineCharacterIndex += (data.Length - lastNewLine.Value - Environment.NewLine.Length);
+                _currentLineCharacterIndex += (data.Length - trailingPartStart.Value);
             }
 
             return this;

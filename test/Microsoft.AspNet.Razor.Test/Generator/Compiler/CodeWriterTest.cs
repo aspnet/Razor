@@ -4,12 +4,27 @@
 using System;
 using Microsoft.AspNet.Razor.Text;
 using Xunit;
+using System.Collections.Generic;
 
 namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
     public class CodeWriterTest
     {
-        private static readonly int NewLineLength = Environment.NewLine.Length;
+        // The length of the newline string written by writer.WriteLine.
+        private static readonly int WriterNewLineLength = Environment.NewLine.Length;
+
+        public static IEnumerable<object[]> NewLines
+        {
+            get
+            {
+                return new object[][]
+                {
+                    new object[] { "\r" },
+                    new object[] { "\n" },
+                    new object[] { "\r\n" },
+                };
+            }
+        }
 
         [Fact]
         public void CodeWriter_TracksPosition_WithWrite()
@@ -39,7 +54,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 
             // Assert
             var location = writer.GetCurrentSourceLocation();
-            var expected = new SourceLocation(absoluteIndex: 3 + NewLineLength, lineIndex: 1, characterIndex: 3);
+            var expected = new SourceLocation(absoluteIndex: 3 + WriterNewLineLength, lineIndex: 1, characterIndex: 3);
 
             Assert.Equal(expected, location);
         }
@@ -56,45 +71,47 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             // Assert
             var location = writer.GetCurrentSourceLocation();
 
-            var expected = new SourceLocation(absoluteIndex: 4 + NewLineLength, lineIndex: 1, characterIndex: 0);
+            var expected = new SourceLocation(absoluteIndex: 4 + WriterNewLineLength, lineIndex: 1, characterIndex: 0);
 
             Assert.Equal(expected, location);
         }
 
-        [Fact]
-        public void CodeWriter_TracksPosition_WithWriteLine_WithNewLineInContent()
+        [Theory]
+        [MemberData("NewLines")]
+        public void CodeWriter_TracksPosition_WithWriteLine_WithNewLineInContent(string newLine)
         {
             // Arrange
             var writer = new CodeWriter();
 
             // Act
-            writer.WriteLine("1234" + Environment.NewLine + "12");
+            writer.WriteLine("1234" + newLine + "12");
 
             // Assert
             var location = writer.GetCurrentSourceLocation();
 
             var expected = new SourceLocation(
-                absoluteIndex: 6 + NewLineLength + NewLineLength, 
+                absoluteIndex: 6 + newLine.Length + WriterNewLineLength,
                 lineIndex: 2, 
                 characterIndex: 0);
 
             Assert.Equal(expected, location);
         }
 
-        [Fact]
-        public void CodeWriter_TracksPosition_WithWrite_WithNewlineInDataString()
+        [Theory]
+        [MemberData("NewLines")]
+        public void CodeWriter_TracksPosition_WithWrite_WithNewlineInContent(string newLine)
         {
             // Arrange
             var writer = new CodeWriter();
 
             // Act
-            writer.Write("1234" + Environment.NewLine + "123" + Environment.NewLine + "12");
+            writer.Write("1234" + newLine + "123" + newLine + "12");
 
             // Assert
             var location = writer.GetCurrentSourceLocation();
 
             var expected = new SourceLocation(
-                absoluteIndex: 9 + NewLineLength + NewLineLength, 
+                absoluteIndex: 9 + newLine.Length + newLine.Length, 
                 lineIndex: 2, 
                 characterIndex: 2);
 
@@ -102,28 +119,40 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         }
 
         [Fact]
-        public void CodeWriter_TracksPosition_WithNewline_SplitAcrossWrites()
+        public void CodeWriter_TracksPosition_WithWrite_WithMixedNewlineInContent()
         {
-            // This test is only relevant when the 'Environment.NewLine' value is multiple characters
-            if (NewLineLength < 1)
-            {
-                return;
-            }
-
-            Assert.Equal(2, NewLineLength);
-
             // Arrange
             var writer = new CodeWriter();
 
             // Act
-            writer.Write("1234" + Environment.NewLine[0]);
+            writer.Write("1234\r123\r\n12\n1");
+
+            // Assert
+            var location = writer.GetCurrentSourceLocation();
+
+            var expected = new SourceLocation(
+                absoluteIndex: 14,
+                lineIndex: 3,
+                characterIndex: 1);
+
+            Assert.Equal(expected, location);
+        }
+
+        [Fact]
+        public void CodeWriter_TracksPosition_WithNewline_SplitAcrossWrites()
+        {
+            // Arrange
+            var writer = new CodeWriter();
+
+            // Act
+            writer.Write("1234\r");
             var location1 = writer.GetCurrentSourceLocation();
 
-            writer.Write(Environment.NewLine[1].ToString());
+            writer.Write("\n");
             var location2 = writer.GetCurrentSourceLocation();
 
             // Assert
-            var expected1 = new SourceLocation(absoluteIndex: 5, lineIndex: 0, characterIndex: 5);
+            var expected1 = new SourceLocation(absoluteIndex: 5, lineIndex: 1, characterIndex: 0);
             Assert.Equal(expected1, location1);
 
             var expected2 = new SourceLocation(absoluteIndex: 6, lineIndex: 1, characterIndex: 0);
@@ -131,28 +160,62 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         }
 
         [Fact]
-        public void CodeWriter_TracksPosition_WithNewline_SplitAcrossWrites_AtBeginning()
+        public void CodeWriter_TracksPosition_WithTwoNewline_SplitAcrossWrites()
         {
-            // This test is only relevant when the 'Environment.NewLine' value is multiple characters
-            if (NewLineLength < 1)
-            {
-                return;
-            }
-
-            Assert.Equal(2, NewLineLength);
-
             // Arrange
             var writer = new CodeWriter();
 
             // Act
-            writer.Write(Environment.NewLine[0].ToString());
+            writer.Write("1234\r");
             var location1 = writer.GetCurrentSourceLocation();
 
-            writer.Write(Environment.NewLine[1].ToString());
+            writer.Write("\r");
             var location2 = writer.GetCurrentSourceLocation();
 
             // Assert
-            var expected1 = new SourceLocation(absoluteIndex: 1, lineIndex: 0, characterIndex: 1);
+            var expected1 = new SourceLocation(absoluteIndex: 5, lineIndex: 1, characterIndex: 0);
+            Assert.Equal(expected1, location1);
+
+            var expected2 = new SourceLocation(absoluteIndex: 6, lineIndex: 2, characterIndex: 0);
+            Assert.Equal(expected2, location2);
+        }
+
+        [Fact]
+        public void CodeWriter_TracksPosition_WithTwoNewline_SplitAcrossWrites_Reversed()
+        {
+            // Arrange
+            var writer = new CodeWriter();
+
+            // Act
+            writer.Write("1234\n");
+            var location1 = writer.GetCurrentSourceLocation();
+
+            writer.Write("\r");
+            var location2 = writer.GetCurrentSourceLocation();
+
+            // Assert
+            var expected1 = new SourceLocation(absoluteIndex: 5, lineIndex: 1, characterIndex: 0);
+            Assert.Equal(expected1, location1);
+
+            var expected2 = new SourceLocation(absoluteIndex: 6, lineIndex: 2, characterIndex: 0);
+            Assert.Equal(expected2, location2);
+        }
+
+        [Fact]
+        public void CodeWriter_TracksPosition_WithNewline_SplitAcrossWrites_AtBeginning()
+        {
+            // Arrange
+            var writer = new CodeWriter();
+
+            // Act
+            writer.Write("\r");
+            var location1 = writer.GetCurrentSourceLocation();
+
+            writer.Write("\n");
+            var location2 = writer.GetCurrentSourceLocation();
+
+            // Assert
+            var expected1 = new SourceLocation(absoluteIndex: 1, lineIndex: 1, characterIndex: 0);
             Assert.Equal(expected1, location1);
 
             var expected2 = new SourceLocation(absoluteIndex: 2, lineIndex: 1, characterIndex: 0);
