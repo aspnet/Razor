@@ -39,6 +39,7 @@ namespace Microsoft.AspNet.Razor
         protected RazorEngineHost()
         {
             GeneratedClassContext = GeneratedClassContext.Default;
+            TagHelperProviderContext = Razor.TagHelperProviderContext.Default;
             NamespaceImports = new HashSet<string>();
             DesignTimeMode = false;
             DefaultNamespace = InternalDefaultNamespace;
@@ -77,6 +78,10 @@ namespace Microsoft.AspNet.Razor
         /// </summary>
         public virtual GeneratedClassContext GeneratedClassContext { get; set; }
 
+        /// <summary>
+        /// A tag helper provider context that is used to manager tag helpers found in the system.
+        /// </summary>
+        public virtual ITagHelperProviderContext TagHelperProviderContext { get; set; }
         /// <summary>
         /// A list of namespaces to import in the generated file
         /// </summary>
