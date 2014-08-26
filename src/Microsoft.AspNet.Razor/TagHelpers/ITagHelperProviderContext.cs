@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microsoft.AspNet.Razor
+namespace Microsoft.AspNet.Razor.TagHelpers
 {
     /// <summary>
     /// A tag helper provider context that is used to manager tag helpers found in the system.
@@ -10,7 +10,7 @@ namespace Microsoft.AspNet.Razor
         /// <summary>
         /// Gets all tag helpers that match the provided <paramref name="tagName"/>.
         /// </summary>
-        /// <param name="tagName">The name of the html tag to retrieve tags for.</param>
+        /// <param name="tagName">The name of the HTML tag to retrieve tags for.</param>
         /// <returns>Tag helpers that apply to the given <paramref name="tagName"/>.</returns>
         IEnumerable<TagHelperDescriptor> GetTagHelpers(string tagName);
         /// <summary>

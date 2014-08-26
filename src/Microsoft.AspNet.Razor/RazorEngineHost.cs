@@ -8,6 +8,7 @@ using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler;
 using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 using Microsoft.AspNet.Razor.Parser;
+using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Microsoft.AspNet.Razor
 {
@@ -39,7 +40,7 @@ namespace Microsoft.AspNet.Razor
         protected RazorEngineHost()
         {
             GeneratedClassContext = GeneratedClassContext.Default;
-            TagHelperProviderContext = Razor.TagHelperProviderContext.Default;
+            TagHelperProviderContext = TagHelpers.TagHelperProviderContext.Default;
             NamespaceImports = new HashSet<string>();
             DesignTimeMode = false;
             DefaultNamespace = InternalDefaultNamespace;
@@ -79,7 +80,7 @@ namespace Microsoft.AspNet.Razor
         public virtual GeneratedClassContext GeneratedClassContext { get; set; }
 
         /// <summary>
-        /// A tag helper provider context that is used to manager tag helpers found in the system.
+        /// A tag helper provider context that is used to manage tag helpers found in the system.
         /// </summary>
         public virtual ITagHelperProviderContext TagHelperProviderContext { get; set; }
         /// <summary>

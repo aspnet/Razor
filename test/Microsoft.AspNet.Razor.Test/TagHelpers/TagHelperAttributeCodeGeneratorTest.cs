@@ -4,9 +4,10 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
+using Microsoft.AspNet.Razor.TagHelpers;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test
+namespace Microsoft.AspNet.Razor.Test.TagHelpers
 {
     public class TagHelperAttributeCodeGeneratorTest
     {
@@ -23,6 +24,36 @@ namespace Microsoft.AspNet.Razor.Test
             }
         }
 
+        public static IEnumerable<object[]> ComplexTypeNames
+        {
+            get
+            {
+                yield return new object[] { typeof(byte).GetTypeInfo(), "System.Byte" };
+                yield return new object[] { typeof(int[]).GetTypeInfo(), "System.Int32[]" };
+                yield return new object[] { typeof(long[][]).GetTypeInfo(), "System.Int64[][]" };
+                yield return new object[] { typeof(short[,]).GetTypeInfo(), "System.Int16[,]" };
+                yield return new object[] { typeof(double[,,,][,][]).GetTypeInfo(), "System.Double[,,,][,][]" };
+                yield return new object[] { typeof(IEnumerable<string>[]).GetTypeInfo(),
+                    "System.Collections.Generic.IEnumerable<System.String>[]" };
+                yield return new object[] { typeof(IEnumerable<string>[]).GetTypeInfo(),
+                    "System.Collections.Generic.IEnumerable<System.String>[]" };
+                yield return new object[] { typeof(IEnumerable<string[]>).GetTypeInfo(),
+                    "System.Collections.Generic.IEnumerable<System.String[]>" };
+                yield return new object[] { typeof(KeyValuePair<string, IEnumerable<int>>).GetTypeInfo(),
+                    "System.Collections.Generic.KeyValuePair<System.String,System.Collections.Generic.IEnumerable<System.Int32>>" };
+                yield return new object[] { typeof(IDictionary<string, IEnumerable<KeyValuePair<char, byte>>>).GetTypeInfo(),
+                    "System.Collections.Generic.IDictionary<System.String,System.Collections.Generic.IEnumerable<"+
+                    "System.Collections.Generic.KeyValuePair<System.Char,System.Byte>>>" };
+                yield return new object[] { typeof(IDictionary<string[], IEnumerable<KeyValuePair<char[], byte>>>).GetTypeInfo(),
+                    "System.Collections.Generic.IDictionary<System.String[],System.Collections.Generic.IEnumerable<"+
+                    "System.Collections.Generic.KeyValuePair<System.Char[],System.Byte>>>" };
+                yield return new object[] { typeof(IDictionary<string[], IEnumerable<KeyValuePair<char[], byte[,,][][,,,]>>[]>[][]).GetTypeInfo(),
+                    "System.Collections.Generic.IDictionary<System.String[],System.Collections.Generic.IEnumerable<"+
+                    "System.Collections.Generic.KeyValuePair<System.Char[],System.Byte[,,][][,,,]>>[]>[][]" };
+
+            }
+        }
+
         private CodeGeneratorContext EmptyContext
         {
             get
@@ -34,6 +65,19 @@ namespace Microsoft.AspNet.Razor.Test
                     sourceFile: null,
                     shouldGenerateLinePragmas: true);
             }
+        }
+
+        [Theory]
+        [MemberData("ComplexTypeNames")]
+        public void TagHelperAttributeCodeGenerator_GetNameReturnsCorrectTypeNames(
+            TypeInfo type,
+            string expectedTypeName)
+        {
+            // Act
+            var typeName = TagHelperAttributeCodeGenerator.GetName(type);
+
+            // Assert
+            Assert.Equal(expectedTypeName, typeName);
         }
 
         [Theory]

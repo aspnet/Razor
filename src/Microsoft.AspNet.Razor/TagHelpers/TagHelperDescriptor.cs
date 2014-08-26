@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Internal.Web.Utils;
 
-namespace Microsoft.AspNet.Razor
+namespace Microsoft.AspNet.Razor.TagHelpers
 {
     /// <summary>
     /// A tag helper descriptor represents how a tag helper should be used.

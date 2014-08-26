@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AspNet.Razor
+﻿namespace Microsoft.AspNet.Razor.TagHelpers
 {
     /// <summary>
     /// A metadata class used to communicate the functionality of tag helper attributes.
@@ -8,8 +8,8 @@
         /// <summary>
         /// Instantiates a new tag helper attribute info class.
         /// </summary>
-        /// <param name="attributeName">The html attribute name mapping.</param>
-        /// <param name="attributePropertyName">The property name that corresponds to the html 
+        /// <param name="attributeName">The HTML attribute name mapping.</param>
+        /// <param name="attributePropertyName">The property name that corresponds to the HTML 
         /// attribute name.</param>
         /// <param name="acceptRazorCode">Whether or not the attribute accepts raw Razor code.</param>
         /// <param name="codeGenerator">The <see cref="TagHelperAttributeCodeGenerator"/> that is used to
@@ -27,11 +27,11 @@
         }
 
         /// <summary>
-        /// The html attribute name mapping.
+        /// The HTML attribute name mapping.
         /// </summary>
         public string AttributeName { get; private set; }
         /// <summary>
-        /// The property name that corresponds to the html attribute name.
+        /// The property name that corresponds to the HTML attribute name.
         /// </summary>
         public string AttributePropertyName { get; private set; }
         /// <summary>

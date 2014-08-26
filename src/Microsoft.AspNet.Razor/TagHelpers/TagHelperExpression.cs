@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AspNet.Razor
+﻿namespace Microsoft.AspNet.Razor.TagHelpers
 {
     /// <summary>
     /// An expression is used as a property on a tag helper to determine whether the attribute
@@ -14,11 +14,10 @@
         /// </summary>
         public TagHelperExpression()
         {
-            IsSet = false;
         }
 
         /// <summary>
-        /// Indicates whether or not the tag helper expression was set in the html.
+        /// Indicates whether or not the tag helper expression was set in the HTML.
         /// </summary>
         public virtual bool IsSet { get; set; }
     }

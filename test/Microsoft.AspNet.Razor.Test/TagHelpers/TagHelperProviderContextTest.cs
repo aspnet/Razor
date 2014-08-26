@@ -1,7 +1,8 @@
 ﻿using System.Linq;
+using Microsoft.AspNet.Razor.TagHelpers;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test
+namespace Microsoft.AspNet.Razor.Test.TagHelpers
 {
     public class TagHelperProviderContextTest
     {

@@ -1,4 +1,4 @@
-﻿namespace Microsoft.AspNet.Razor
+﻿namespace Microsoft.AspNet.Razor.TagHelpers
 {
     /// <summary>
     /// A generic tag helper expression that is used to generate propertly typed values.

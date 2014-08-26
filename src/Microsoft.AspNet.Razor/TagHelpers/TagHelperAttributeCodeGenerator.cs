@@ -4,7 +4,7 @@ using System.Reflection;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 
-namespace Microsoft.AspNet.Razor
+namespace Microsoft.AspNet.Razor.TagHelpers
 {
     /// <summary>
     /// Provides a way of indicating how to generate code for a tag helper attribute's creation.
@@ -15,14 +15,14 @@ namespace Microsoft.AspNet.Razor
         /// Instantiates an instance of the <see cref="TagHelperAttributeCodeGenerator"/> class.
         /// </summary>
         /// <param name="propertyInfo">The <see cref="System.Reflection.PropertyInfo"/> for the tag helper property
-        /// (html attribute) to generate code for.</param>
+        /// (HTML attribute) to generate code for.</param>
         public TagHelperAttributeCodeGenerator(PropertyInfo propertyInfo)
         {
             PropertyInfo = propertyInfo;
         }
 
         /// <summary>
-        /// The <see cref="System.Reflection.PropertyInfo"/> for the tag helper property (html attribute) to generate
+        /// The <see cref="System.Reflection.PropertyInfo"/> for the tag helper property (HTML attribute) to generate
         /// code for.
         /// </summary>
         protected PropertyInfo PropertyInfo { get; private set; }
@@ -46,8 +46,7 @@ namespace Microsoft.AspNet.Razor
             var propertyType = PropertyInfo.PropertyType.GetTypeInfo();
 
             writer.Write("new ")
-                  .Write(GetNonGenericName(propertyType))
-                  .Write(GetGenericParameterString(propertyType))
+                  .Write(GetName(propertyType))
                   .Write("(");
 
             // Verify that there is an attribute value
@@ -83,7 +82,7 @@ namespace Microsoft.AspNet.Razor
             Action renderAttributeValue,
             Type attributeValueType)
         {
-            string surrounding = string.Empty;
+            var surrounding = string.Empty;
 
             if (attributeValueType == typeof(string))
             {
@@ -108,17 +107,13 @@ namespace Microsoft.AspNet.Razor
         /// <summary>
         /// A helper method to write the "setting" of the <see cref="TagHelperExpression.IsSet"/> property.
         /// </summary>
-        /// Writes:
-        /// {
-        ///     IsSet = true
-        /// }
         /// <param name="writer">The code writer that writes directly to the generated Razor class.</param>
         /// <param name="isSet">Whether the <see cref="TagHelperExpression.IsSet"/> is set or not.</param>
         protected virtual void GenerateIsSetProperty(CSharpCodeWriter writer, bool isSet)
         {
             writer.Write(" { ")
                   .WriteStartAssignment(TagHelperExpression.IsSetPropertyName)
-                  .Write(isSet.ToString().ToLower())
+                  .Write(isSet.ToString().ToLowerInvariant())
                   .Write(" }");
         }
 
@@ -138,16 +133,59 @@ namespace Microsoft.AspNet.Razor
             return buildType;
         }
 
+        internal static string GetName(TypeInfo type)
+        {
+            var suffix = string.Empty;
+
+            // If we're an array we need to build out a valid array suffix
+            if (type.IsArray)
+            {
+                do
+                {
+                    var arrayRank = type.GetArrayRank();
+                    if (arrayRank == 1)
+                    {
+                        suffix += "[]";
+                    }
+                    else
+                    {
+                        suffix += "[";
+                        suffix += new string(',', arrayRank - 1);
+                        suffix += "]";
+                    }
+
+                    // Iterate down through the array's types
+                    type = type.GetElementType().GetTypeInfo();
+                }
+                while (type.IsArray);
+            }
+
+            string name = null;
+            var genericArguments = string.Empty;
+
+            if (!type.IsGenericType)
+            {
+                name = type.FullName;
+            }
+            else
+            {
+                name = GetNonGenericName(type);
+                genericArguments = GetGenericParameterString(type);
+            }
+
+            return string.Format("{0}{1}{2}", name, genericArguments, suffix);
+        }
+
         internal static string GetNonGenericName(TypeInfo type)
         {
             var name = type.FullName;
-            int index = name.IndexOf('`');
+            var index = name.IndexOf('`');
             return index == -1 ? name : name.Substring(0, index);
         }
 
         private static string GetGenericParameterString(TypeInfo type)
         {
-            var values = string.Join(",", type.GenericTypeArguments.Select(arg => arg.FullName));
+            var values = string.Join(",", type.GenericTypeArguments.Select(arg => GetName(arg.GetTypeInfo())));
 
             if (!string.IsNullOrEmpty(values))
             {
