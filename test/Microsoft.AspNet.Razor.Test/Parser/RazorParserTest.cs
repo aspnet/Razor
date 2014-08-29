@@ -2,9 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
+using Microsoft.AspNet.Razor.TagHelpers;
 using Microsoft.AspNet.Razor.Test.Framework;
 using Xunit;
 
@@ -12,16 +14,18 @@ namespace Microsoft.AspNet.Razor.Test.Parser
 {
     public class RazorParserTest
     {
+        private static readonly IList<ISyntaxTreeRewriter> EmptyOptimizers = new List<ISyntaxTreeRewriter>();
+
         [Fact]
         public void ConstructorRequiresNonNullCodeParser()
         {
-            Assert.Throws<ArgumentNullException>("codeParser", () => new RazorParser(null, new HtmlMarkupParser()));
+            Assert.Throws<ArgumentNullException>("codeParser", () => new RazorParser(null, new HtmlMarkupParser(), null));
         }
 
         [Fact]
         public void ConstructorRequiresNonNullMarkupParser()
         {
-            Assert.Throws<ArgumentNullException>("markupParser", () => new RazorParser(new CSharpCodeParser(), null));
+            Assert.Throws<ArgumentNullException>("markupParser", () => new RazorParser(new CSharpCodeParser(), null, null));
         }
 
         [Fact]
@@ -30,7 +34,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            RazorParser parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
+            RazorParser parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser(), EmptyOptimizers);
 
             // Act/Assert
             ParserTestBase.EvaluateResults(parser.Parse(new StringReader("foo @bar baz")),
@@ -50,7 +54,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            RazorParser parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
+            RazorParser parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser(), EmptyOptimizers);
 
             // Act
             ParserResults results = parser.Parse(new StringReader("foo @bar baz"));
@@ -78,7 +82,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             // Arrange
             ParserBase markupParser = new MockMarkupParser();
             ParserBase codeParser = new CSharpCodeParser();
-            RazorParser parser = new RazorParser(codeParser, markupParser);
+            RazorParser parser = new RazorParser(codeParser, markupParser, EmptyOptimizers);
             TextReader expectedReader = new StringReader("foo");
 
             // Act

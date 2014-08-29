@@ -221,7 +221,9 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         {
             Assert.True(spanIndex > 0);
 
-            var parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
+            var parser = new RazorParser(new CSharpCodeParser(), 
+                                         new HtmlMarkupParser(), 
+                                         new List<ISyntaxTreeRewriter>());
 
             Span[] spans;
 
