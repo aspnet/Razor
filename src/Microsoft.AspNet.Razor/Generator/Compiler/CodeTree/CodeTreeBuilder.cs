@@ -132,18 +132,13 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 
         public T StartChunkBlock<T>(SyntaxTreeNode association, bool topLevel) where T : ChunkBlock
         {
-            T chunkBlock = (T)Activator.CreateInstance(typeof(T));
+            T chunk = (T)Activator.CreateInstance(typeof(T));
 
-            return StartChunkBlock<T>(chunkBlock, association, topLevel);
-        }
+            AddChunk(chunk, association, topLevel);
 
-        public T StartChunkBlock<T>(T chunkBlock, SyntaxTreeNode association, bool topLevel) where T : ChunkBlock
-        {
-            AddChunk(chunkBlock, association, topLevel);
+            _blockChain.Push(chunk);
 
-            _blockChain.Push(chunkBlock);
-
-            return chunkBlock;
+            return chunk;
         }
 
         public void EndChunkBlock()
