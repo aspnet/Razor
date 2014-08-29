@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNet.Razor.Generator;
@@ -7,7 +11,7 @@ using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 namespace Microsoft.AspNet.Razor.TagHelpers
 {
     /// <summary>
-    /// Provides a way of indicating how to generate code for a tag helper attribute's creation.
+    /// Generates code for a tag helper property initialization.
     /// </summary>
     public class TagHelperAttributeCodeGenerator
     {
@@ -28,20 +32,24 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         protected PropertyInfo PropertyInfo { get; private set; }
 
         /// <summary>
-        /// Called during Razor's code generation process to generate code that instantiates the value of the tag helpers
-        /// property. Values that are written should not end the line.
+        /// Called during Razor's code generation process to generate code that instantiates the value of the tag helper's
+        /// property. Last value that is written should not be or end in a semicolon.
         /// </summary>
-        /// <example>
+        /// <remarks>
         /// Writes the string: "new MyPropertyType(...)" to the output where the "..." is rendered by calling the
         /// <paramref name="renderAttributeValue"/> <see cref="Action"/>.
-        /// </example>
-        /// <param name="writer">The code writer that writes directly to the generated Razor class.</param>
-        /// <param name="context">An informational object that contains information about the current code generation
-        /// process.</param>
-        /// <param name="renderAttributeValue">Renders the raw value of the attribute. Will be null if there is no attribute 
-        /// value. Example: If the attribute value is '3' and we want to new up an object that takes the attribute value we'd 
-        /// write "new MyObjectType(" then call into <paramref name="renderAttributeValue"/> and finally write the ending ")".</param>
-        public virtual void GenerateCode(CSharpCodeWriter writer, CodeGeneratorContext context, Action renderAttributeValue)
+        /// </remarks>
+        /// <param name="writer">The <see cref="CSharpCodeWriter"/> that writes directly to the generated Razor 
+        /// class.</param>
+        /// <param name="context">An <see cref="CodeGeneratorContext"/> instance that contains information about 
+        /// the current code generation process.</param>
+        /// <param name="renderAttributeValue"><see cref="Action"/> that renders the raw value of the HTML attribute. Will be null 
+        /// if there is no attribute value. Example: If the HTML attribute value is '3' and we want to new up an object that takes 
+        /// the attribute value we'd write "new MyObjectType(" then call into <paramref name="renderAttributeValue"/> and finally 
+        /// write the ending ")".</param>
+        public virtual void GenerateCode(CSharpCodeWriter writer, 
+                                         CodeGeneratorContext context, 
+                                         Action<CSharpCodeWriter> renderAttributeValue)
         {
             var propertyType = PropertyInfo.PropertyType.GetTypeInfo();
 
@@ -54,11 +62,11 @@ namespace Microsoft.AspNet.Razor.TagHelpers
             {
                 // If the build type is null that means that the type is not a generic expression, therefore just use what was given to us.
                 var attributeValueType = GetBuildType(propertyType) ?? propertyType.DeclaringType;
-                GenerateValue(writer, renderAttributeValue, attributeValueType);
+                RenderValue(writer, renderAttributeValue, attributeValueType);
 
                 writer.WriteEndMethodInvocation(endLine: false);
 
-                // Since there's an attribute value set the IsSet property, AKA: { IsSet = true }
+                // Since there's an attribute value, add { IsSet = true }
                 GenerateIsSetProperty(writer, isSet: true);
             }
             else
@@ -69,17 +77,18 @@ namespace Microsoft.AspNet.Razor.TagHelpers
 
         /// <summary>
         /// A helper method to call into <paramref name="renderAttributeValue"/> and surrounds it with the appropriate
-        /// prefix/suffix. For example, if the attribute value is a <see cref="string"/> we want to make sure we surround it with quotes;
-        /// if it's something like an <see cref="int"/> we don't want to surround it with anything.
-        /// </summary>
-        /// <param name="writer">The code writer that writes directly to the generated Razor class.</param>
-        /// <param name="renderAttributeValue">Renders the raw value of the attribute. Example: If the attribute value is '3'
-        /// and we want to new up an object that takes the attribute value we'd write "new MyObjectType(" then call into 
-        /// <paramref name="renderAttributeValue"/> and finally write the ending ")".</param>
-        /// <param name="attributeValueType">The <see cref="Type"/> of the output that will be rendered by <paramref name="renderAttributeValue"/>.</param>
-        protected virtual void GenerateValue(
+        /// prefix/suffix. For example, if the attribute value is a <see cref="string"/> we want to make sure 
+        /// we surround it with quotes; if it's something like an <see cref="int"/> we don't want to surround 
+        /// it with anything.
+        /// </summary>S
+        /// <param name="writer">The code writer that's used to render the value.</param>
+        /// <param name="renderAttributeValue">Used to render the raw attribute value. Depending on the 
+        /// <see cref="PropertyInfo"/> the attribute value may be surrounded by single or double quotes.</param>
+        /// <param name="attributeValueType">The <see cref="Type"/> of the output that will be rendered by 
+        /// <paramref name="renderAttributeValue"/>.</param>
+        protected void RenderValue(
             CSharpCodeWriter writer,
-            Action renderAttributeValue,
+            Action<CSharpCodeWriter> renderAttributeValue,
             Type attributeValueType)
         {
             var surrounding = string.Empty;
@@ -95,21 +104,21 @@ namespace Microsoft.AspNet.Razor.TagHelpers
             else
             {
                 // Short circuit, the surrounding is empty, no need to continue
-                renderAttributeValue();
+                renderAttributeValue(writer);
                 return;
             }
 
             writer.Write(surrounding);
-            renderAttributeValue();
+            renderAttributeValue(writer);
             writer.Write(surrounding);
         }
 
         /// <summary>
         /// A helper method to write the "setting" of the <see cref="TagHelperExpression.IsSet"/> property.
         /// </summary>
-        /// <param name="writer">The code writer that writes directly to the generated Razor class.</param>
+        /// <param name="writer">The code writer that's used to render the value.</param>
         /// <param name="isSet">Whether the <see cref="TagHelperExpression.IsSet"/> is set or not.</param>
-        protected virtual void GenerateIsSetProperty(CSharpCodeWriter writer, bool isSet)
+        protected void GenerateIsSetProperty(CSharpCodeWriter writer, bool isSet)
         {
             writer.Write(" { ")
                   .WriteStartAssignment(TagHelperExpression.IsSetPropertyName)
@@ -117,6 +126,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                   .Write(" }");
         }
 
+        // Internal for testing purposes
         internal static Type GetBuildType(TypeInfo type)
         {
             // Iterate through the base types and find the generic tag helper expression.
@@ -127,7 +137,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
             }
 
             var genericArguments = type.GenericTypeArguments;
-            // The first argument is the build type.
+            // The first argument refers to the attribute type.
             var buildType = genericArguments.FirstOrDefault();
 
             return buildType;
@@ -138,29 +148,25 @@ namespace Microsoft.AspNet.Razor.TagHelpers
             var suffix = string.Empty;
 
             // If we're an array we need to build out a valid array suffix
-            if (type.IsArray)
+            while (type.IsArray)
             {
-                do
+                var arrayRank = type.GetArrayRank();
+                if (arrayRank == 1)
                 {
-                    var arrayRank = type.GetArrayRank();
-                    if (arrayRank == 1)
-                    {
-                        suffix += "[]";
-                    }
-                    else
-                    {
-                        suffix += "[";
-                        suffix += new string(',', arrayRank - 1);
-                        suffix += "]";
-                    }
-
-                    // Iterate down through the array's types
-                    type = type.GetElementType().GetTypeInfo();
+                    suffix += "[]";
                 }
-                while (type.IsArray);
+                else
+                {
+                    suffix += "[";
+                    suffix += new string(',', arrayRank - 1);
+                    suffix += "]";
+                }
+
+                // Iterate down through the array's types
+                type = type.GetElementType().GetTypeInfo();
             }
 
-            string name = null;
+            string name;
             var genericArguments = string.Empty;
 
             if (!type.IsGenericType)
@@ -178,6 +184,8 @@ namespace Microsoft.AspNet.Razor.TagHelpers
 
         internal static string GetNonGenericName(TypeInfo type)
         {
+            Debug.Assert(type.IsGenericType);
+
             var name = type.FullName;
             var index = name.IndexOf('`');
             return index == -1 ? name : name.Substring(0, index);

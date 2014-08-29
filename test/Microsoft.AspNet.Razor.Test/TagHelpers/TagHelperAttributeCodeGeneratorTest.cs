@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,7 +18,7 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
         {
             get
             {
-                return typeof(CustomTagHelper).GetProperties()
+                return typeof(TagHelperWithDefaultValueTagHelperExpressionProperties).GetProperties()
                                               .Select(propertyInfo =>
                                                     new object[] {
                                                         propertyInfo,
@@ -28,26 +31,26 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
         {
             get
             {
-                yield return new object[] { typeof(byte).GetTypeInfo(), "System.Byte" };
-                yield return new object[] { typeof(int[]).GetTypeInfo(), "System.Int32[]" };
-                yield return new object[] { typeof(long[][]).GetTypeInfo(), "System.Int64[][]" };
-                yield return new object[] { typeof(short[,]).GetTypeInfo(), "System.Int16[,]" };
-                yield return new object[] { typeof(double[,,,][,][]).GetTypeInfo(), "System.Double[,,,][,][]" };
-                yield return new object[] { typeof(IEnumerable<string>[]).GetTypeInfo(),
+                yield return new object[] { typeof(byte), "System.Byte" };
+                yield return new object[] { typeof(int[]), "System.Int32[]" };
+                yield return new object[] { typeof(long[][]), "System.Int64[][]" };
+                yield return new object[] { typeof(short[,]), "System.Int16[,]" };
+                yield return new object[] { typeof(double[,,,][,][]), "System.Double[,,,][,][]" };
+                yield return new object[] { typeof(IEnumerable<string>[]),
                     "System.Collections.Generic.IEnumerable<System.String>[]" };
-                yield return new object[] { typeof(IEnumerable<string>[]).GetTypeInfo(),
+                yield return new object[] { typeof(IEnumerable<string>[]),
                     "System.Collections.Generic.IEnumerable<System.String>[]" };
-                yield return new object[] { typeof(IEnumerable<string[]>).GetTypeInfo(),
+                yield return new object[] { typeof(IEnumerable<string[]>),
                     "System.Collections.Generic.IEnumerable<System.String[]>" };
-                yield return new object[] { typeof(KeyValuePair<string, IEnumerable<int>>).GetTypeInfo(),
+                yield return new object[] { typeof(KeyValuePair<string, IEnumerable<int>>),
                     "System.Collections.Generic.KeyValuePair<System.String,System.Collections.Generic.IEnumerable<System.Int32>>" };
-                yield return new object[] { typeof(IDictionary<string, IEnumerable<KeyValuePair<char, byte>>>).GetTypeInfo(),
+                yield return new object[] { typeof(IDictionary<string, IEnumerable<KeyValuePair<char, byte>>>),
                     "System.Collections.Generic.IDictionary<System.String,System.Collections.Generic.IEnumerable<"+
                     "System.Collections.Generic.KeyValuePair<System.Char,System.Byte>>>" };
-                yield return new object[] { typeof(IDictionary<string[], IEnumerable<KeyValuePair<char[], byte>>>).GetTypeInfo(),
+                yield return new object[] { typeof(IDictionary<string[], IEnumerable<KeyValuePair<char[], byte>>>),
                     "System.Collections.Generic.IDictionary<System.String[],System.Collections.Generic.IEnumerable<"+
                     "System.Collections.Generic.KeyValuePair<System.Char[],System.Byte>>>" };
-                yield return new object[] { typeof(IDictionary<string[], IEnumerable<KeyValuePair<char[], byte[,,][][,,,]>>[]>[][]).GetTypeInfo(),
+                yield return new object[] { typeof(IDictionary<string[], IEnumerable<KeyValuePair<char[], byte[,,][][,,,]>>[]>[][]),
                     "System.Collections.Generic.IDictionary<System.String[],System.Collections.Generic.IEnumerable<"+
                     "System.Collections.Generic.KeyValuePair<System.Char[],System.Byte[,,][][,,,]>>[]>[][]" };
 
@@ -74,7 +77,7 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
             string expectedTypeName)
         {
             // Act
-            var typeName = TagHelperAttributeCodeGenerator.GetName(type);
+            var typeName = TagHelperAttributeCodeGenerator.GetName(type.GetTypeInfo());
 
             // Assert
             Assert.Equal(expectedTypeName, typeName);
@@ -91,15 +94,14 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
         {
             // Arrange
             var type = Type.GetType(typeName);
-            var generator = new CustomTagHelperAttributeCodeGenerator();
+            var generator = new NullValueTagHelperAttributeCodeGenerator();
             var writer = new CSharpCodeWriter();
             var attributeValue = "Hello World";
 
             // Act
-            generator.ExposeGenerateValue(writer, renderAttributeValue: () =>
-            {
-                writer.Write(attributeValue);
-            }, attributeValueType: type);
+            generator.ExposeRenderValue(writer, 
+                                        renderAttributeValue: (codeWriter) => codeWriter.Write(attributeValue), 
+                                        attributeValueType: type);
             var code = writer.GenerateCode();
 
             // Assert
@@ -108,14 +110,14 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
 
         [Theory]
         [MemberData("AttributeCodeGeneratorPropertyNames")]
-        public void TagHelperAttributeCodeGenerator_GenerateCodeNewsUpExpressionsCorrectly(
+        public void TagHelperAttributeCodeGenerator_GeneratesExpectedConstructorCall(
             PropertyInfo propertyInfo,
             TagHelperAttributeCodeGenerator attrCodeGenerator)
         {
             // Arrange
             var buildType = TagHelperAttributeCodeGenerator.GetBuildType(propertyInfo.PropertyType.GetTypeInfo());
             var expressionName = TagHelperAttributeCodeGenerator.GetNonGenericName(
-                typeof(CustomTagHelperExpression<>).GetTypeInfo());
+                typeof(DefaultValueTagHelperExpression<>).GetTypeInfo());
             var writer = new CSharpCodeWriter();
 
             // Act
@@ -123,10 +125,11 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
             var code = writer.GenerateCode();
 
             // Assert
-            Assert.True(code.StartsWith(
+            Assert.StartsWith(
                 string.Format("new {0}<{1}>(",
                     expressionName,
-                    buildType.FullName)));
+                    buildType.FullName),
+                code);
         }
 
         [Theory]
@@ -141,15 +144,15 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
             var isNotSetWriter = new CSharpCodeWriter();
 
             // Act
-            attrCodeGenerator.GenerateCode(isSetWriter, EmptyContext, renderAttributeValue: () => { });
+            attrCodeGenerator.GenerateCode(isSetWriter, EmptyContext, renderAttributeValue: (writer) => { });
             var isSetCode = isSetWriter.GenerateCode();
             attrCodeGenerator.GenerateCode(isNotSetWriter, EmptyContext, renderAttributeValue: null);
             var isNotSetCode = isNotSetWriter.GenerateCode();
 
 
             // Assert
-            Assert.True(isSetCode.EndsWith(" { IsSet = true }"));
-            Assert.True(isNotSetCode.EndsWith("()"));
+            Assert.EndsWith(") { IsSet = true }", isSetCode);
+            Assert.EndsWith("()", isNotSetCode);
         }
 
         [Theory]
@@ -173,41 +176,47 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
             var writer = new CSharpCodeWriter();
 
             // Act
-            attrCodeGenerator.GenerateCode(writer, EmptyContext, renderAttributeValue: () =>
-            {
-                writer.Write("Hello World");
-            });
+            attrCodeGenerator.GenerateCode(writer, 
+                                           EmptyContext, 
+                                           renderAttributeValue: (codeWriter) =>
+                                           {
+                                               codeWriter.Write("Hello World");
+                                           });
             var code = writer.GenerateCode();
 
             // Assert
-            Assert.True(code.EndsWith(string.Format("({0}Hello World{0}) {{ IsSet = true }}", surrounding)), code);
+            Assert.EndsWith(
+                string.Format(
+                    "({0}Hello World{0}) {{ IsSet = true }}", 
+                    surrounding),
+                code);
         }
 
-        private class CustomTagHelper
+        private class TagHelperWithDefaultValueTagHelperExpressionProperties
         {
-            public CustomTagHelperExpression<int> IntProp { get; set; }
-            public CustomTagHelperExpression<string> StringProp { get; set; }
-            public CustomTagHelperExpression<object> ObjectProp { get; set; }
-            public CustomTagHelperExpression<char> CharProp { get; set; }
+            public DefaultValueTagHelperExpression<int> IntProp { get; set; }
+            public DefaultValueTagHelperExpression<string> StringProp { get; set; }
+            public DefaultValueTagHelperExpression<object> ObjectProp { get; set; }
+            public DefaultValueTagHelperExpression<char> CharProp { get; set; }
         }
 
-        private class CustomTagHelperAttributeCodeGenerator : TagHelperAttributeCodeGenerator
+        private class NullValueTagHelperAttributeCodeGenerator : TagHelperAttributeCodeGenerator
         {
-            public CustomTagHelperAttributeCodeGenerator()
+            public NullValueTagHelperAttributeCodeGenerator()
                 : base(null)
             {
             }
 
-            public void ExposeGenerateValue(
+            public void ExposeRenderValue(
                 CSharpCodeWriter writer,
-                Action renderAttributeValue,
+                Action<CSharpCodeWriter> renderAttributeValue,
                 Type attributeValueType)
             {
-                GenerateValue(writer, renderAttributeValue, attributeValueType);
+                RenderValue(writer, renderAttributeValue, attributeValueType);
             }
         }
 
-        private class CustomTagHelperExpression<T> : TagHelperExpression<T>
+        private class DefaultValueTagHelperExpression<T> : TagHelperExpression<T>
         {
             public override T Build(TagHelperContext context)
             {
