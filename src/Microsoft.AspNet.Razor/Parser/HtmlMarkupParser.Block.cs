@@ -867,6 +867,12 @@ namespace Microsoft.AspNet.Razor.Parser
                 {
                     AcceptAndMoveNext(); // '<' (not the closing script tags open angle)
                 }
+
+                // If we're at a forward slash we should just accept it to pass by the current "end" tag
+                if (NextIs(HtmlSymbolType.ForwardSlash))
+                {
+                    AcceptAndMoveNext();
+                }
             }
         }
 

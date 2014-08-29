@@ -2,14 +2,16 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler;
-using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 using Microsoft.AspNet.Razor.Parser;
+using Microsoft.AspNet.Razor.Parser.TagHelpers;
+using Microsoft.AspNet.Razor.Parser.TagHelpers.Internal;
 using Microsoft.AspNet.Razor.Text;
 
 namespace Microsoft.AspNet.Razor
@@ -176,20 +178,31 @@ namespace Microsoft.AspNet.Razor
 
         protected internal virtual RazorCodeGenerator CreateCodeGenerator(string className, string rootNamespace, string sourceFileName)
         {
-            return Host.DecorateCodeGenerator(
-                Host.CodeLanguage.CreateCodeGenerator(className, rootNamespace, sourceFileName, Host));
+            return Host.CreateCodeGenerator(className, rootNamespace, sourceFileName);
         }
 
         protected internal virtual RazorParser CreateParser()
         {
-            ParserBase codeParser = Host.CodeLanguage.CreateCodeParser();
-            ParserBase markupParser = Host.CreateMarkupParser();
+            var codeParser = Host.CodeLanguage.CreateCodeParser();
+            var markupParser = Host.CreateMarkupParser();
+            var optimizers = new List<ISyntaxTreeRewriter>()
+            {
+                // Enable tag helpers
+                new TagHelperParseTreeVisitor(Host.TagHelperProvider),
+                // Move whitespace from start of expression block to markup
+                new WhiteSpaceRewriter(markupParser.BuildSpan),
+                // Collapse conditional attributes where the entire value is literal
+                new ConditionalAttributeCollapser(markupParser.BuildSpan),
+            };
 
-            return new RazorParser(Host.DecorateCodeParser(codeParser),
-                                   Host.DecorateMarkupParser(markupParser))
+            var parser = new RazorParser(Host.DecorateCodeParser(codeParser),
+                                         Host.DecorateMarkupParser(markupParser),
+                                         optimizers)
             {
                 DesignTimeMode = Host.DesignTimeMode
             };
+
+            return parser;
         }
 
         protected internal virtual CodeBuilder CreateCodeBuilder(CodeGeneratorContext context)

@@ -14,7 +14,9 @@ namespace Microsoft.AspNet.Razor.Parser
 {
     public class RazorParser
     {
-        public RazorParser(ParserBase codeParser, ParserBase markupParser)
+        public RazorParser(ParserBase codeParser, 
+                           ParserBase markupParser, 
+                           IList<ISyntaxTreeRewriter> optimizers)
         {
             if (codeParser == null)
             {
@@ -24,17 +26,14 @@ namespace Microsoft.AspNet.Razor.Parser
             {
                 throw new ArgumentNullException("markupParser");
             }
+            if (optimizers == null)
+            {
+                throw new ArgumentNullException("optimizers");
+            }
 
             MarkupParser = markupParser;
             CodeParser = codeParser;
-
-            Optimizers = new List<ISyntaxTreeRewriter>()
-            {
-                // Move whitespace from start of expression block to markup
-                new WhiteSpaceRewriter(MarkupParser.BuildSpan),
-                // Collapse conditional attributes where the entire value is literal
-                new ConditionalAttributeCollapser(MarkupParser.BuildSpan),
-            };
+            Optimizers = optimizers;
         }
 
         internal ParserBase CodeParser { get; private set; }

@@ -21,7 +21,6 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
             }
             Type = source.Type.Value;
             Children = source.Children;
-            Name = source.Name;
             CodeGenerator = source.CodeGenerator;
             source.Reset();
 
@@ -39,11 +38,9 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "Type is the most appropriate name for this property and there is little chance of confusion with GetType")]
-        public BlockType Type { get; private set; }
-
-        public IEnumerable<SyntaxTreeNode> Children { get; private set; }
-        public string Name { get; private set; }
-        public IBlockCodeGenerator CodeGenerator { get; private set; }
+        public BlockType Type { get; protected set; }
+        public IEnumerable<SyntaxTreeNode> Children { get; protected set; }
+        public IBlockCodeGenerator CodeGenerator { get; protected set; }
 
         public override bool IsBlock
         {
