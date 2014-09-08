@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 using Microsoft.AspNet.Razor.Text;
 
 namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
@@ -144,7 +145,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         {
             Write(String.Format("using {0}", name));
 
-            if(endLine)
+            if (endLine)
             {
                 WriteLine(";");
             }
@@ -353,35 +354,35 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             {
                 switch (literal[i])
                 {
-                case '\r':
-                    Write("\\r");
-                    break;
-                case '\t':
-                    Write("\\t");
-                    break;
-                case '\"':
-                    Write("\\\"");
-                    break;
-                case '\'':
-                    Write("\\\'");
-                    break;
-                case '\\':
-                    Write("\\\\");
-                    break;
-                case '\0':
-                    Write("\\\0");
-                    break;
-                case '\n':
-                    Write("\\n");
-                    break;
-                case '\u2028':
-                case '\u2029':
-                    Write("\\u");
-                    Write(((int)literal[i]).ToString("X4", CultureInfo.InvariantCulture));
-                    break;
-                default:
-                    Write(literal[i].ToString());
-                    break;
+                    case '\r':
+                        Write("\\r");
+                        break;
+                    case '\t':
+                        Write("\\t");
+                        break;
+                    case '\"':
+                        Write("\\\"");
+                        break;
+                    case '\'':
+                        Write("\\\'");
+                        break;
+                    case '\\':
+                        Write("\\\\");
+                        break;
+                    case '\0':
+                        Write("\\\0");
+                        break;
+                    case '\n':
+                        Write("\\n");
+                        break;
+                    case '\u2028':
+                    case '\u2029':
+                        Write("\\u");
+                        Write(((int)literal[i]).ToString("X4", CultureInfo.InvariantCulture));
+                        break;
+                    default:
+                        Write(literal[i].ToString());
+                        break;
                 }
                 if (i > 0 && i % 80 == 0)
                 {
@@ -402,6 +403,37 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 }
             }
             Write("\"");
+        }
+
+        public void WriteStartInstrumentationContext(CodeGeneratorContext context, SyntaxTreeNode syntaxNode, bool isLiteral)
+        {
+            var methodName = context.Host.GeneratedClassContext.BeginContextMethodName;
+            WriteContextCall(context, syntaxNode, methodName, isLiteral);
+        }
+
+        public void WriteEndInstrumentationContext(CodeGeneratorContext context, SyntaxTreeNode syntaxNode, bool isLiteral)
+        {
+            var methodName = context.Host.GeneratedClassContext.EndContextMethodName;
+            WriteContextCall(context, syntaxNode, methodName, isLiteral);
+        }
+
+        private void WriteContextCall(CodeGeneratorContext context, SyntaxTreeNode syntaxNode, string methodName, bool isLiteral)
+        {
+            WriteStartMethodInvocation(methodName);
+            if (!string.IsNullOrEmpty(context.TargetWriterName))
+            {
+                Write(context.TargetWriterName);
+                WriteParameterSeparator();
+            }
+
+            WriteStringLiteral(context.Host.InstrumentedSourceFilePath);
+            WriteParameterSeparator();
+            Write(syntaxNode.Start.AbsoluteIndex.ToString(CultureInfo.InvariantCulture));
+            WriteParameterSeparator();
+            Write(syntaxNode.Length.ToString(CultureInfo.InvariantCulture));
+            WriteParameterSeparator();
+            Write(isLiteral ? "true" : "false");
+            WriteEndMethodInvocation(endLine: true);
         }
     }
 }

@@ -393,16 +393,15 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             RunTest("Helpers", baselineName: "Helpers.Instance", hostConfig: h => h.StaticHelpers = false);
         }
 
-        // TODO: This should be re-added once instrumentation support has been added
-        //[Fact]
-        //public void CSharpCodeGeneratorCorrectlyInstrumentsRazorCodeWhenInstrumentationRequested()
-        //{
-        //    RunTest("Instrumented", hostConfig: host =>
-        //    {
-        //        host.EnableInstrumentation = true;
-        //        host.InstrumentedSourceFilePath = String.Format("~/{0}.cshtml", host.DefaultClassName);
-        //    });
-        //}
+        [Fact]
+        public void CSharpCodeGeneratorCorrectlyInstrumentsRazorCodeWhenInstrumentationRequested()
+        {
+            RunTest("Instrumented", hostConfig: host =>
+            {
+                host.EnableInstrumentation = true;
+                host.InstrumentedSourceFilePath = string.Format("~/{0}.cshtml", host.DefaultClassName);
+            });
+        }
 
         [Fact]
         public void CSharpCodeGeneratorGeneratesUrlsCorrectlyWithCommentsAndQuotes()
