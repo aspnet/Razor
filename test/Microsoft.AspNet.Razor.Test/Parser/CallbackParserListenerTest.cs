@@ -25,7 +25,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
         {
             // Arrange
             Action<Span> spanCallback = _ => { };
-            CallbackVisitor listener = new CallbackVisitor(spanCallback);
+            var listener = new CallbackVisitor(spanCallback);
 
             // Act/Assert
             listener.VisitStartBlock(new FunctionsBlock());
@@ -111,7 +111,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             // Act/Assert
             RunCallbackTest<T>(default(T), callback =>
             {
-                CallbackVisitor listener = ctor(callback);
+                var listener = ctor(callback);
                 listener.SynchronizationContext = mockContext.Object;
                 return listener;
             }, call, (original, actual) =>
@@ -147,7 +147,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             object actual = null;
             Action<T> callback = t => actual = t;
 
-            CallbackVisitor listener = ctor(callback);
+            var listener = ctor(callback);
 
             // Act
             call(listener, expected);

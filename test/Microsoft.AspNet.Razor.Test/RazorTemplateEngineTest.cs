@@ -26,10 +26,10 @@ namespace Microsoft.AspNet.Razor.Test
         public void ConstructorInitializesHost()
         {
             // Arrange
-            RazorEngineHost host = new RazorEngineHost(new CSharpRazorCodeLanguage());
+            var host = new RazorEngineHost(new CSharpRazorCodeLanguage());
 
             // Act
-            RazorTemplateEngine engine = new RazorTemplateEngine(host);
+            var engine = new RazorTemplateEngine(host);
 
             // Assert
             Assert.Same(host, engine.Host);
@@ -39,11 +39,11 @@ namespace Microsoft.AspNet.Razor.Test
         public void CreateParserMethodIsConstructedFromHost()
         {
             // Arrange
-            RazorEngineHost host = CreateHost();
-            RazorTemplateEngine engine = new RazorTemplateEngine(host);
+            var host = CreateHost();
+            var engine = new RazorTemplateEngine(host);
 
             // Act
-            RazorParser parser = engine.CreateParser();
+            var parser = engine.CreateParser();
 
             // Assert
             Assert.IsType<CSharpCodeParser>(parser.CodeParser);
@@ -54,12 +54,12 @@ namespace Microsoft.AspNet.Razor.Test
         public void CreateParserMethodSetsParserContextToDesignTimeModeIfHostSetToDesignTimeMode()
         {
             // Arrange
-            RazorEngineHost host = CreateHost();
-            RazorTemplateEngine engine = new RazorTemplateEngine(host);
+            var host = CreateHost();
+            var engine = new RazorTemplateEngine(host);
             host.DesignTimeMode = true;
 
             // Act
-            RazorParser parser = engine.CreateParser();
+            var parser = engine.CreateParser();
 
             // Assert
             Assert.True(parser.DesignTimeMode);
@@ -69,18 +69,18 @@ namespace Microsoft.AspNet.Razor.Test
         public void CreateParserMethodPassesParsersThroughDecoratorMethodsOnHost()
         {
             // Arrange
-            ParserBase expectedCode = new Mock<ParserBase>().Object;
-            ParserBase expectedMarkup = new Mock<ParserBase>().Object;
+            var expectedCode = new Mock<ParserBase>().Object;
+            var expectedMarkup = new Mock<ParserBase>().Object;
 
             var mockHost = new Mock<RazorEngineHost>(new CSharpRazorCodeLanguage()) { CallBase = true };
             mockHost.Setup(h => h.DecorateCodeParser(It.IsAny<CSharpCodeParser>()))
                 .Returns(expectedCode);
             mockHost.Setup(h => h.DecorateMarkupParser(It.IsAny<HtmlMarkupParser>()))
                 .Returns(expectedMarkup);
-            RazorTemplateEngine engine = new RazorTemplateEngine(mockHost.Object);
+            var engine = new RazorTemplateEngine(mockHost.Object);
 
             // Act
-            RazorParser actual = engine.CreateParser();
+            var actual = engine.CreateParser();
 
             // Assert
             Assert.Equal(expectedCode, actual.CodeParser);
@@ -93,14 +93,14 @@ namespace Microsoft.AspNet.Razor.Test
             // Arrange
             var mockHost = new Mock<RazorEngineHost>(new CSharpRazorCodeLanguage()) { CallBase = true };
 
-            RazorCodeGenerator expected = new Mock<RazorCodeGenerator>("Foo", "Bar", "Baz", mockHost.Object).Object;
+            var expected = new Mock<RazorCodeGenerator>("Foo", "Bar", "Baz", mockHost.Object).Object;
 
             mockHost.Setup(h => h.DecorateCodeGenerator(It.IsAny<CSharpRazorCodeGenerator>()))
                 .Returns(expected);
-            RazorTemplateEngine engine = new RazorTemplateEngine(mockHost.Object);
+            var engine = new RazorTemplateEngine(mockHost.Object);
 
             // Act
-            RazorCodeGenerator actual = engine.CreateCodeGenerator("Foo", "Bar", "Baz");
+            var actual = engine.CreateCodeGenerator("Foo", "Bar", "Baz");
 
             // Assert
             Assert.Equal(expected, actual);
@@ -134,8 +134,8 @@ namespace Microsoft.AspNet.Razor.Test
         {
             // Arrange
             Mock<RazorTemplateEngine> mockEngine = new Mock<RazorTemplateEngine>(CreateHost());
-            TextReader reader = new StringReader("foo");
-            CancellationTokenSource source = new CancellationTokenSource();
+            var reader = new StringReader("foo");
+            var source = new CancellationTokenSource();
 
             // Act
             mockEngine.Object.ParseTemplate(reader, cancelToken: source.Token);
@@ -150,11 +150,11 @@ namespace Microsoft.AspNet.Razor.Test
         {
             // Arrange
             Mock<RazorTemplateEngine> mockEngine = new Mock<RazorTemplateEngine>(CreateHost());
-            TextReader reader = new StringReader("foo");
-            CancellationTokenSource source = new CancellationTokenSource();
-            string className = "Foo";
-            string ns = "Bar";
-            string src = "Baz";
+            var reader = new StringReader("foo");
+            var source = new CancellationTokenSource();
+            var className = "Foo";
+            var ns = "Bar";
+            var src = "Baz";
 
             // Act
             mockEngine.Object.GenerateCode(reader, className: className, rootNamespace: ns, sourceFileName: src, cancelToken: source.Token);
@@ -168,10 +168,10 @@ namespace Microsoft.AspNet.Razor.Test
         public void ParseTemplateOutputsResultsOfParsingProvidedTemplateSource()
         {
             // Arrange
-            RazorTemplateEngine engine = new RazorTemplateEngine(CreateHost());
+            var engine = new RazorTemplateEngine(CreateHost());
 
             // Act
-            ParserResults results = engine.ParseTemplate(new StringTextBuffer("foo @bar("));
+            var results = engine.ParseTemplate(new StringTextBuffer("foo @bar("));
 
             // Assert
             Assert.False(results.Success);
@@ -183,10 +183,10 @@ namespace Microsoft.AspNet.Razor.Test
         public void GenerateOutputsResultsOfParsingAndGeneration()
         {
             // Arrange
-            RazorTemplateEngine engine = new RazorTemplateEngine(CreateHost());
+            var engine = new RazorTemplateEngine(CreateHost());
 
             // Act
-            GeneratorResults results = engine.GenerateCode(new StringTextBuffer("foo @bar("));
+            var results = engine.GenerateCode(new StringTextBuffer("foo @bar("));
 
             // Assert
             Assert.False(results.Success);
@@ -199,10 +199,10 @@ namespace Microsoft.AspNet.Razor.Test
         public void GenerateOutputsDesignTimeMappingsIfDesignTimeSetOnHost()
         {
             // Arrange
-            RazorTemplateEngine engine = new RazorTemplateEngine(CreateHost(designTime: true));
+            var engine = new RazorTemplateEngine(CreateHost(designTime: true));
 
             // Act
-            GeneratorResults results = engine.GenerateCode(new StringTextBuffer("foo @bar()"), className: null, rootNamespace: null, sourceFileName: "foo.cshtml");
+            var results = engine.GenerateCode(new StringTextBuffer("foo @bar()"), className: null, rootNamespace: null, sourceFileName: "foo.cshtml");
 
             // Assert
             Assert.True(results.Success);

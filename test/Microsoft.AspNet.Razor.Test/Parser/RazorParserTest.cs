@@ -30,7 +30,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            RazorParser parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
+            var parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
 
             // Act/Assert
             ParserTestBase.EvaluateResults(parser.Parse(new StringReader("foo @bar baz")),
@@ -50,10 +50,10 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            RazorParser parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
+            var parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
 
             // Act
-            ParserResults results = parser.Parse(new StringReader("foo @bar baz"));
+            var results = parser.Parse(new StringReader("foo @bar baz"));
 
             // Assert
             ParserTestBase.EvaluateResults(results,
@@ -76,16 +76,16 @@ namespace Microsoft.AspNet.Razor.Test.Parser
         private static void RunParseWithListenerTest(Action<RazorParser, TextReader> parserAction)
         {
             // Arrange
-            ParserBase markupParser = new MockMarkupParser();
-            ParserBase codeParser = new CSharpCodeParser();
-            RazorParser parser = new RazorParser(codeParser, markupParser);
-            TextReader expectedReader = new StringReader("foo");
+            var markupParser = new MockMarkupParser();
+            var codeParser = new CSharpCodeParser();
+            var parser = new RazorParser(codeParser, markupParser);
+            var expectedReader = new StringReader("foo");
 
             // Act
             parserAction(parser, expectedReader);
 
             // Assert
-            ParserContext actualContext = markupParser.Context;
+            var actualContext = markupParser.Context;
             Assert.NotNull(actualContext);
             Assert.Same(markupParser, actualContext.MarkupParser);
             Assert.Same(markupParser, actualContext.ActiveParser);

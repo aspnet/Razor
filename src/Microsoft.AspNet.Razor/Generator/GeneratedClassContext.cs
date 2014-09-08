@@ -139,7 +139,7 @@ namespace Microsoft.AspNet.Razor.Generator
             {
                 return false;
             }
-            GeneratedClassContext other = (GeneratedClassContext)obj;
+            var other = (GeneratedClassContext)obj;
             return String.Equals(DefineSectionMethodName, other.DefineSectionMethodName, StringComparison.Ordinal) &&
                    String.Equals(WriteMethodName, other.WriteMethodName, StringComparison.Ordinal) &&
                    String.Equals(WriteLiteralMethodName, other.WriteLiteralMethodName, StringComparison.Ordinal) &&
