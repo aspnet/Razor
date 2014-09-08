@@ -155,8 +155,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                 }
                 else if (symbol.Type == HtmlSymbolType.Equals)
                 {
-                    // We've found an '=' symbol, this means that the coming symbols will either be a quote
-                    // or will be a value (in the case that the value is unquoted).
+                    // We've found an '=' symbol, this means that the coming symbols will either be whitespace, quote
+                    // or value (in the case that the value is unquoted).
 
                     // TODO: Handle malformed tags, if there's an '=' then there MUST be a value.
                     // https://github.com/aspnet/Razor/issues/104
@@ -200,7 +200,12 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
             }
 
             var childSpan = (Span)block.Children.First();
-            var name = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text)?.Content ?? string.Empty;
+            var name = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text)?.Content;
+
+            if (name == null)
+            {
+                throw new InvalidOperationException(RazorResources.TagHelpers_AttributesMustHaveAName);
+            }
 
             // Remove first child i.e. foo="
             builder.Children.RemoveAt(0);
