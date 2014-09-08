@@ -86,19 +86,19 @@ namespace Microsoft.AspNet.Razor.Editor
             foreach (TextChange change in changes)
             {
                 cancelToken.ThrowIfCancellationRequested();
-                Span changeOwner = leftTree.LocateOwner(change);
+                var changeOwner = leftTree.LocateOwner(change);
 
                 // Apply the change to the tree
                 if (changeOwner == null)
                 {
                     return true;
                 }
-                EditResult result = changeOwner.EditHandler.ApplyChange(changeOwner, change, force: true);
+                var result = changeOwner.EditHandler.ApplyChange(changeOwner, change, force: true);
                 changeOwner.ReplaceWith(result.EditedSpan);
             }
 
             // Now compare the trees
-            bool treesDifferent = !leftTree.EquivalentTo(rightTree);
+            var treesDifferent = !leftTree.EquivalentTo(rightTree);
             return treesDifferent;
         }
 
@@ -299,9 +299,9 @@ namespace Microsoft.AspNet.Razor.Editor
             private void WorkerLoop()
             {
                 long? elapsedMs = null;
-                string fileNameOnly = Path.GetFileName(_fileName);
+                var fileNameOnly = Path.GetFileName(_fileName);
 #if EDITOR_TRACING
-                Stopwatch sw = new Stopwatch();
+                var sw = new Stopwatch();
 #endif
 
                 try
@@ -316,7 +316,7 @@ namespace Microsoft.AspNet.Razor.Editor
                     while (!_shutdownToken.IsCancellationRequested)
                     {
                         // Grab the parcel of work to do
-                        WorkParcel parcel = _main.GetParcel();
+                        var parcel = _main.GetParcel();
                         if (parcel.Changes.Any())
                         {
                             RazorEditorTrace.TraceLine(RazorResources.FormatTrace_ChangesArrived(fileNameOnly, parcel.Changes.Count));
@@ -345,11 +345,11 @@ namespace Microsoft.AspNet.Razor.Editor
                                             allChanges = parcel.Changes.ToList();
                                         }
 
-                                        TextChange finalChange = allChanges.Last();
+                                        var finalChange = allChanges.Last();
 #if EDITOR_TRACING
                                         sw.Start();
 #endif
-                                        GeneratorResults results = ParseChange(finalChange.NewBuffer, linkedCancel.Token);
+                                        var results = ParseChange(finalChange.NewBuffer, linkedCancel.Token);
 #if EDITOR_TRACING
                                         sw.Stop();
                                         elapsedMs = sw.ElapsedMilliseconds;
@@ -369,7 +369,7 @@ namespace Microsoft.AspNet.Razor.Editor
 #if EDITOR_TRACING
                                             sw.Start();
 #endif
-                                            bool treeStructureChanged = _currentParseTree == null || TreesAreDifferent(_currentParseTree, results.Document, allChanges, parcel.CancelToken);
+                                            var treeStructureChanged = _currentParseTree == null || TreesAreDifferent(_currentParseTree, results.Document, allChanges, parcel.CancelToken);
 #if EDITOR_TRACING
                                             sw.Stop();
                                             elapsedMs = sw.ElapsedMilliseconds;
@@ -401,7 +401,7 @@ namespace Microsoft.AspNet.Razor.Editor
                                             {
                                                 // Rewind the buffer and sanity check the line mappings
                                                 finalChange.NewBuffer.Position = 0;
-                                                int lineCount = finalChange.NewBuffer.ReadToEnd().Split(new string[] { Environment.NewLine, "\r", "\n" }, StringSplitOptions.None).Count();
+                                                var lineCount = finalChange.NewBuffer.ReadToEnd().Split(new string[] { Environment.NewLine, "\r", "\n" }, StringSplitOptions.None).Count();
                                                 Debug.Assert(
                                                     !args.GeneratorResults.DesignTimeLineMappings.Any(pair => pair.Value.StartLine > lineCount),
                                                     "Found a design-time line mapping referring to a line outside the source file!");
@@ -456,7 +456,7 @@ namespace Microsoft.AspNet.Razor.Editor
                 EnsureOnThread();
 
                 // Create a template engine
-                RazorTemplateEngine engine = new RazorTemplateEngine(_host);
+                var engine = new RazorTemplateEngine(_host);
 
                 // Seek the buffer to the beginning
                 buffer.Position = 0;

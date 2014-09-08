@@ -59,9 +59,9 @@ namespace Microsoft.AspNet.Razor.Test.Text
         public void ConstructorInitializesProperties()
         {
             // Act
-            ITextBuffer oldBuffer = new Mock<ITextBuffer>().Object;
-            ITextBuffer newBuffer = new Mock<ITextBuffer>().Object;
-            TextChange change = new TextChange(42, 24, oldBuffer, 1337, newBuffer);
+            var oldBuffer = new Mock<ITextBuffer>().Object;
+            var newBuffer = new Mock<ITextBuffer>().Object;
+            var change = new TextChange(42, 24, oldBuffer, 1337, newBuffer);
 
             // Assert
             Assert.Equal(42, change.OldPosition);
@@ -75,9 +75,9 @@ namespace Microsoft.AspNet.Razor.Test.Text
         public void TestIsDelete()
         {
             // Arrange 
-            ITextBuffer oldBuffer = new Mock<ITextBuffer>().Object;
-            ITextBuffer newBuffer = new Mock<ITextBuffer>().Object;
-            TextChange change = new TextChange(0, 1, oldBuffer, 0, newBuffer);
+            var oldBuffer = new Mock<ITextBuffer>().Object;
+            var newBuffer = new Mock<ITextBuffer>().Object;
+            var change = new TextChange(0, 1, oldBuffer, 0, newBuffer);
 
             // Assert
             Assert.True(change.IsDelete);
@@ -87,9 +87,9 @@ namespace Microsoft.AspNet.Razor.Test.Text
         public void TestDeleteCreatesTheRightSizeChange()
         {
             // Arrange 
-            ITextBuffer oldBuffer = new Mock<ITextBuffer>().Object;
-            ITextBuffer newBuffer = new Mock<ITextBuffer>().Object;
-            TextChange change = new TextChange(0, 1, oldBuffer, 0, newBuffer);
+            var oldBuffer = new Mock<ITextBuffer>().Object;
+            var newBuffer = new Mock<ITextBuffer>().Object;
+            var change = new TextChange(0, 1, oldBuffer, 0, newBuffer);
 
             // Assert
             Assert.Equal(0, change.NewText.Length);
@@ -100,9 +100,9 @@ namespace Microsoft.AspNet.Razor.Test.Text
         public void TestIsInsert()
         {
             // Arrange 
-            ITextBuffer oldBuffer = new Mock<ITextBuffer>().Object;
-            ITextBuffer newBuffer = new Mock<ITextBuffer>().Object;
-            TextChange change = new TextChange(0, 0, oldBuffer, 35, newBuffer);
+            var oldBuffer = new Mock<ITextBuffer>().Object;
+            var newBuffer = new Mock<ITextBuffer>().Object;
+            var change = new TextChange(0, 0, oldBuffer, 35, newBuffer);
 
             // Assert
             Assert.True(change.IsInsert);
@@ -112,9 +112,9 @@ namespace Microsoft.AspNet.Razor.Test.Text
         public void TestInsertCreateTheRightSizeChange()
         {
             // Arrange 
-            ITextBuffer oldBuffer = new Mock<ITextBuffer>().Object;
-            ITextBuffer newBuffer = new Mock<ITextBuffer>().Object;
-            TextChange change = new TextChange(0, 0, oldBuffer, 1, newBuffer);
+            var oldBuffer = new Mock<ITextBuffer>().Object;
+            var newBuffer = new Mock<ITextBuffer>().Object;
+            var change = new TextChange(0, 0, oldBuffer, 1, newBuffer);
 
             // Assert
             Assert.Equal(1, change.NewText.Length);
@@ -125,9 +125,9 @@ namespace Microsoft.AspNet.Razor.Test.Text
         public void TestIsReplace()
         {
             // Arrange 
-            ITextBuffer oldBuffer = new Mock<ITextBuffer>().Object;
-            ITextBuffer newBuffer = new Mock<ITextBuffer>().Object;
-            TextChange change = new TextChange(0, 5, oldBuffer, 10, newBuffer);
+            var oldBuffer = new Mock<ITextBuffer>().Object;
+            var newBuffer = new Mock<ITextBuffer>().Object;
+            var change = new TextChange(0, 5, oldBuffer, 10, newBuffer);
 
             // Assert
             Assert.True(change.IsReplace);
@@ -137,9 +137,9 @@ namespace Microsoft.AspNet.Razor.Test.Text
         public void ReplaceCreatesTheRightSizeChange()
         {
             // Arrange 
-            ITextBuffer oldBuffer = new Mock<ITextBuffer>().Object;
-            ITextBuffer newBuffer = new Mock<ITextBuffer>().Object;
-            TextChange change = new TextChange(0, 5, oldBuffer, 10, newBuffer);
+            var oldBuffer = new Mock<ITextBuffer>().Object;
+            var newBuffer = new Mock<ITextBuffer>().Object;
+            var change = new TextChange(0, 5, oldBuffer, 10, newBuffer);
 
             // Assert
             Assert.Equal(10, change.NewText.Length);
@@ -150,9 +150,9 @@ namespace Microsoft.AspNet.Razor.Test.Text
         public void ReplaceCreatesTheRightSizeChange1()
         {
             // Arrange 
-            ITextBuffer oldBuffer = new Mock<ITextBuffer>().Object;
-            ITextBuffer newBuffer = new Mock<ITextBuffer>().Object;
-            TextChange change = new TextChange(0, 5, oldBuffer, 1, newBuffer);
+            var oldBuffer = new Mock<ITextBuffer>().Object;
+            var newBuffer = new Mock<ITextBuffer>().Object;
+            var change = new TextChange(0, 5, oldBuffer, 1, newBuffer);
 
             // Assert
             Assert.Equal(1, change.NewText.Length);
@@ -168,7 +168,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var textChange = new TextChange(2, 1, oldBuffer, 1, newBuffer);
 
             // Act
-            string text = textChange.OldText;
+            var text = textChange.OldText;
 
             // Assert
             Assert.Equal("x", text);
@@ -183,7 +183,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var textChange = new TextChange(2, 2, oldBuffer, 1, newBuffer);
 
             // Act
-            string text = textChange.OldText;
+            var text = textChange.OldText;
 
             // Assert
             Assert.Equal("xt", text);
@@ -198,8 +198,8 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var textChange = new TextChange(0, 0, oldBuffer, 3, newBuffer);
 
             // Act
-            string text = textChange.NewText;
-            string oldText = textChange.OldText;
+            var text = textChange.NewText;
+            var oldText = textChange.OldText;
 
             // Assert
             Assert.Equal("tes", text);
@@ -215,7 +215,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var textChange = new TextChange(1, 1, oldBuffer, 0, newBuffer);
 
             // Act
-            string text = textChange.NewText;
+            var text = textChange.NewText;
 
             // Assert
             Assert.Equal(String.Empty, text);
@@ -230,8 +230,8 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var textChange = new TextChange(2, 2, oldBuffer, 1, newBuffer);
 
             // Act
-            string newText = textChange.NewText;
-            string oldText = textChange.OldText;
+            var newText = textChange.NewText;
+            var oldText = textChange.OldText;
 
             // Assert
             Assert.Equal("s", newText);
@@ -247,7 +247,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var textChange = new TextChange(0, 0, oldBuffer, 3, newBuffer);
 
             // Act
-            string text = textChange.ApplyChange("abcd", 0);
+            var text = textChange.ApplyChange("abcd", 0);
 
             // Assert
             Assert.Equal("tesabcd", text);
@@ -262,7 +262,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var textChange = new TextChange(1, 1, oldBuffer, 0, newBuffer);
 
             // Act
-            string text = textChange.ApplyChange("abcdefg", 1);
+            var text = textChange.ApplyChange("abcdefg", 1);
 
             // Assert
             Assert.Equal("bcdefg", text);
@@ -277,7 +277,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var textChange = new TextChange(1, 1, oldBuffer, 2, newBuffer);
 
             // Act
-            string text = textChange.ApplyChange("abcdefg", 1);
+            var text = textChange.ApplyChange("abcdefg", 1);
 
             // Assert
             Assert.Equal("bcbcdefg", text);
@@ -292,7 +292,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var original = new TextChange(0, 4, oldBuffer, 5, newBuffer);
 
             // Act
-            TextChange normalized = original.Normalize();
+            var normalized = original.Normalize();
 
             // Assert
             Assert.Equal(new TextChange(4, 0, oldBuffer, 1, newBuffer), normalized);
@@ -307,7 +307,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var original = new TextChange(0, 5, oldBuffer, 9, newBuffer);
 
             // Act
-            TextChange normalized = original.Normalize();
+            var normalized = original.Normalize();
 
             // Assert
             Assert.Equal(original, normalized);
@@ -322,7 +322,7 @@ namespace Microsoft.AspNet.Razor.Test.Text
             var original = new TextChange(0, 8, oldBuffer, 1, newBuffer);
 
             // Act
-            TextChange normalized = original.Normalize();
+            var normalized = original.Normalize();
 
             // Assert
             Assert.Equal(original, normalized);
