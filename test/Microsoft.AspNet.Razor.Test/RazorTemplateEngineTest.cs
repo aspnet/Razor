@@ -3,11 +3,13 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Web.WebPages.TestUtils;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 using Microsoft.AspNet.Razor.Parser;
+using Microsoft.AspNet.Razor.TagHelpers;
 using Microsoft.AspNet.Razor.Text;
 using Moq;
 using Xunit;
@@ -111,19 +113,22 @@ namespace Microsoft.AspNet.Razor.Test
         {
             // Arrange
             var mockHost = new Mock<RazorEngineHost>(new CSharpRazorCodeLanguage()) { CallBase = true };
-            var context = CodeGeneratorContext.Create(mockHost.Object,
-                                                      "different-class",
-                                                      "different-ns",
-                                                      string.Empty,
-                                                      shouldGenerateLinePragmas: true);
-            var expected = new CSharpCodeBuilder(context);
+            var codeBuilderContext = new CodeBuilderContext(
+                mockHost.Object,
+                "different-class",
+                "different-ns",
+                string.Empty,
+                shouldGenerateLinePragmas: true,
+                tagHelperProvider: new TagHelperProvider(Enumerable.Empty<TagHelperDescriptor>()));
 
-            mockHost.Setup(h => h.DecorateCodeBuilder(It.IsAny<CSharpCodeBuilder>(), context))
+            var expected = new CSharpCodeBuilder(codeBuilderContext);
+
+            mockHost.Setup(h => h.DecorateCodeBuilder(It.IsAny<CSharpCodeBuilder>(), codeBuilderContext))
                     .Returns(expected);
             var engine = new RazorTemplateEngine(mockHost.Object);
 
             // Act
-            var actual = engine.CreateCodeBuilder(context);
+            var actual = engine.CreateCodeBuilder(codeBuilderContext);
 
             // Assert
             Assert.Equal(expected, actual);

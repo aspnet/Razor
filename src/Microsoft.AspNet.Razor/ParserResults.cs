@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
+using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Microsoft.AspNet.Razor
 {
@@ -11,15 +12,19 @@ namespace Microsoft.AspNet.Razor
     /// </summary>
     public class ParserResults
     {
-        public ParserResults(Block document, IList<RazorError> parserErrors)
-            : this(parserErrors == null || parserErrors.Count == 0, document, parserErrors)
+        public ParserResults(Block document, TagHelperProvider tagHelperProvider, IList<RazorError> parserErrors)
+            : this(parserErrors == null || parserErrors.Count == 0, document, tagHelperProvider, parserErrors)
         {
         }
 
-        protected ParserResults(bool success, Block document, IList<RazorError> errors)
+        protected ParserResults(bool success, 
+                                Block document, 
+                                TagHelperProvider tagHelperProvider, 
+                                IList<RazorError> errors)
         {
             Success = success;
             Document = document;
+            TagHelperProvider = tagHelperProvider;
             ParserErrors = errors ?? new List<RazorError>();
         }
 
@@ -32,6 +37,11 @@ namespace Microsoft.AspNet.Razor
         /// The root node in the document's syntax tree
         /// </summary>
         public Block Document { get; private set; }
+
+        /// <summary>
+        /// The tag helper management object used to maintain found tag helpers during parsing.
+        /// </summary>
+        public TagHelperProvider TagHelperProvider { get; private set; }
 
         /// <summary>
         /// The list of errors which occurred during parsing.

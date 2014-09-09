@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 using Microsoft.AspNet.Razor.Parser;
+using Microsoft.AspNet.Razor.TagHelpers;
 using Xunit;
 
 namespace Microsoft.AspNet.Razor.Test
@@ -48,15 +50,17 @@ namespace Microsoft.AspNet.Razor.Test
         {
             // Arrange
             var language = new CSharpRazorCodeLanguage();
-            var host = new RazorEngineHost(language);
-            var context = CodeGeneratorContext.Create(host,
-                                                      "myclass",
-                                                      "myns",
-                                                      string.Empty,
-                                                      shouldGenerateLinePragmas: false);
+            var host = new RazorEngineHost(language);            
+            var codeBuilderContext = new CodeBuilderContext(
+                host,
+                "myclass",
+                "myns",
+                string.Empty,
+                shouldGenerateLinePragmas: false, 
+                tagHelperProvider:  new TagHelperProvider(Enumerable.Empty<TagHelperDescriptor>()));
 
             // Act
-            var generator = language.CreateCodeBuilder(context);
+            var generator = language.CreateCodeBuilder(codeBuilderContext);
 
             // Assert
             Assert.IsType<CSharpCodeBuilder>(generator);

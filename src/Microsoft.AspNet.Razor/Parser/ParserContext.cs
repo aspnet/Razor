@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
+using Microsoft.AspNet.Razor.TagHelpers;
 using Microsoft.AspNet.Razor.Text;
 using Microsoft.AspNet.Razor.Utils;
 
@@ -218,7 +219,12 @@ namespace Microsoft.AspNet.Razor.Parser
             {
                 throw new InvalidOperationException(RazorResources.ParserContext_CannotCompleteTree_OutstandingBlocks);
             }
-            return new ParserResults(_blockStack.Pop().Build(), Errors);
+
+            // TODO: Part of https://github.com/aspnet/Razor/issues/111 and https://github.com/aspnet/Razor/issues/112
+            // pull the provider from some sort of tag helper locator object.
+            return new ParserResults(_blockStack.Pop().Build(), 
+                                     new TagHelperProvider(Enumerable.Empty<TagHelperDescriptor>()), 
+                                     Errors);
         }
 
         [Conditional("DEBUG")]

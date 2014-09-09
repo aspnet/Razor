@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNet.Razor.Generator;
+﻿using System.Linq;
+using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler;
+using Microsoft.AspNet.Razor.TagHelpers;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -25,13 +27,15 @@ namespace Microsoft.AspNet.Razor
 
         private static Mock<ChunkVisitor<CodeWriter>> CreateVisitor()
         {
-            var context = CodeGeneratorContext.Create(new RazorEngineHost(new CSharpRazorCodeLanguage()),
-                                                      "myclass",
-                                                      "myns",
-                                                      string.Empty,
-                                                      shouldGenerateLinePragmas: false);
+            var codeBuilderContext = new CodeBuilderContext(
+                new RazorEngineHost(new CSharpRazorCodeLanguage()),
+                "myclass",
+                "myns",
+                string.Empty,
+                shouldGenerateLinePragmas: false, 
+                tagHelperProvider: new TagHelperProvider(Enumerable.Empty<TagHelperDescriptor>()));
             var writer = Mock.Of<CodeWriter>();
-            return new Mock<ChunkVisitor<CodeWriter>>(writer, context);
+            return new Mock<ChunkVisitor<CodeWriter>>(writer, codeBuilderContext);
         }
 
         private class MyTestChunk : Chunk
