@@ -12,7 +12,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
     {
         private const int DisableAsyncWarning = 1998;
 
-        public CSharpCodeBuilder(CodeGeneratorContext context)
+        public CSharpCodeBuilder(CodeBuilderContext context)
             : base(context)
         {
         }
