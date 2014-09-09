@@ -167,7 +167,7 @@ namespace Microsoft.AspNet.Razor
             generator.DesignTimeMode = Host.DesignTimeMode;
             generator.Visit(results);
 
-            var codeBuilderContext = new CodeBuilderContext(generator.Context, results.TagHelperProvider);
+            var codeBuilderContext = new CodeBuilderContext(generator.Context, results.TagHelperDescriptorProvider);
             var builder = CreateCodeBuilder(codeBuilderContext);
             var builderResult = builder.Build();
 

@@ -14,13 +14,13 @@ namespace Microsoft.AspNet.Razor.Generator
         /// Instantiates a new instance of the <see cref="CodeBuilderContext"/> object.
         /// </summary>
         /// <param name="generatorContext">A <see cref="CodeGeneratorContext"/> to copy information from.</param>
-        /// <param name="tagHelperProvider">The <see cref="TagHelperProvider"/> that can be queried for
+        /// <param name="tagHelperProvider">The <see cref="TagHelperDescriptorProvider"/> that can be queried for
         /// <see cref="TagHelperDescriptor"/>s.</param>
-        public CodeBuilderContext(CodeGeneratorContext generatorContext, TagHelperProvider tagHelperProvider)
+        public CodeBuilderContext(CodeGeneratorContext generatorContext, TagHelperDescriptorProvider tagHelperProvider)
             : base(generatorContext)
         {
             ExpressionRenderingMode = ExpressionRenderingMode.WriteToOutput;
-            TagHelperProvider = tagHelperProvider;
+            TagHelperDescriptorProvider = tagHelperProvider;
         }
 
         // Internal for testing.
@@ -29,11 +29,11 @@ namespace Microsoft.AspNet.Razor.Generator
                                     string rootNamespace,
                                     string sourceFile,
                                     bool shouldGenerateLinePragmas,
-                                    TagHelperProvider tagHelperProvider)
+                                    TagHelperDescriptorProvider tagHelperProvider)
             : base(host, className, rootNamespace, sourceFile, shouldGenerateLinePragmas)
         {
             ExpressionRenderingMode = ExpressionRenderingMode.WriteToOutput;
-            TagHelperProvider = tagHelperProvider;
+            TagHelperDescriptorProvider = tagHelperProvider;
         }
 
 
@@ -63,6 +63,6 @@ namespace Microsoft.AspNet.Razor.Generator
         /// The <see cref="TagHelperDescriptor"/> registration system used to lookup 
         /// <see cref="TagHelperDescriptor"/>s.
         /// </summary>
-        public TagHelperProvider TagHelperProvider { get; set; }
+        public TagHelperDescriptorProvider TagHelperDescriptorProvider { get; set; }
     }
 }

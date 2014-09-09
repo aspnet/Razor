@@ -13,14 +13,14 @@ namespace Microsoft.AspNet.Razor
         public GeneratorResults(ParserResults parserResults,
                                 CodeBuilderResult codeBuilderResult)
             : this(parserResults.Document, 
-                   parserResults.TagHelperProvider, 
+                   parserResults.TagHelperDescriptorProvider, 
                    parserResults.ParserErrors, 
                    codeBuilderResult)
         {
         }
 
         public GeneratorResults(Block document,
-                                TagHelperProvider tagHelperProvider,
+                                TagHelperDescriptorProvider tagHelperProvider,
                                 IList<RazorError> parserErrors,
                                 CodeBuilderResult codeBuilderResult)
             : this(parserErrors.Count == 0, document, tagHelperProvider, parserErrors, codeBuilderResult)
@@ -29,7 +29,7 @@ namespace Microsoft.AspNet.Razor
 
         protected GeneratorResults(bool success,
                                    Block document,
-                                   TagHelperProvider tagHelperProvider,
+                                   TagHelperDescriptorProvider tagHelperProvider,
                                    IList<RazorError> parserErrors,
                                    CodeBuilderResult codeBuilderResult)
             : base(success, document, tagHelperProvider, parserErrors)

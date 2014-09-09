@@ -119,7 +119,7 @@ namespace Microsoft.AspNet.Razor.Test
                 "different-ns",
                 string.Empty,
                 shouldGenerateLinePragmas: true,
-                tagHelperProvider: new TagHelperProvider(Enumerable.Empty<TagHelperDescriptor>()));
+                tagHelperProvider: new TagHelperDescriptorProvider(Enumerable.Empty<TagHelperDescriptor>()));
 
             var expected = new CSharpCodeBuilder(codeBuilderContext);
 

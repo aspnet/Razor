@@ -25,7 +25,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator.CodeTree
                 "TestNamespace",
                 "Foo.cs",
                 shouldGenerateLinePragmas: false, 
-                tagHelperProvider: new TagHelperProvider(Enumerable.Empty<TagHelperDescriptor>()));
+                tagHelperProvider: new TagHelperDescriptorProvider(Enumerable.Empty<TagHelperDescriptor>()));
             codeBuilderContext.CodeTreeBuilder.AddUsingChunk("FakeNamespace1", syntaxTreeNode.Object);
             codeBuilderContext.CodeTreeBuilder.AddUsingChunk("FakeNamespace2.SubNamespace", syntaxTreeNode.Object);
             var codeBuilder = language.CreateCodeBuilder(codeBuilderContext);
