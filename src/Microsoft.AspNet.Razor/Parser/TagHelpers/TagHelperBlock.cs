@@ -29,11 +29,6 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
 
             source.Reset();
 
-            foreach (SyntaxTreeNode node in Children)
-            {
-                node.Parent = this;
-            }
-
             foreach (var attributeChildren in Attributes.Values)
             {
                 attributeChildren.Parent = this;
@@ -65,7 +60,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         /// </summary>
         /// <param name="other">The <see cref="TagHelperBlock"/> to check equality against.</param>
         /// <returns>
-        /// Whether the current <see cref="TagHelperBlock"/> is equivalent to the given <paramref name="other"/>.
+        /// <c>true</c> if the current <see cref="TagHelperBlock"/> is equivalent to the given 
+        /// <paramref name="other"/>, <c>false</c> otherwise.
         /// </returns>
         public bool Equals(TagHelperBlock other)
         {

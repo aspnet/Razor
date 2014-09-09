@@ -1446,6 +1446,22 @@ namespace Microsoft.AspNet.Razor
             return GetString("TagHelpers_AttributesMustHaveAName");
         }
 
+        /// <summary>
+        /// Tag Helpers cannot have C# in an HTML tag element's attribute declaration area.
+        /// </summary>
+        internal static string TagHelpers_CannotHaveCSharpInTagDeclaration
+        {
+            get { return GetString("TagHelpers_CannotHaveCSharpInTagDeclaration"); }
+        }
+
+        /// <summary>
+        /// Tag Helpers cannot have C# in an HTML tag element's attribute declaration area.
+        /// </summary>
+        internal static string FormatTagHelpers_CannotHaveCSharpInTagDeclaration()
+        {
+            return GetString("TagHelpers_CannotHaveCSharpInTagDeclaration");
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);

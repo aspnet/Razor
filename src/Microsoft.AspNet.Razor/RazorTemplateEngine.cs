@@ -175,7 +175,8 @@ namespace Microsoft.AspNet.Razor
 
         protected internal virtual RazorCodeGenerator CreateCodeGenerator(string className, string rootNamespace, string sourceFileName)
         {
-            return Host.CreateCodeGenerator(className, rootNamespace, sourceFileName);
+            return Host.DecorateCodeGenerator(
+                Host.CodeLanguage.CreateCodeGenerator(className, rootNamespace, sourceFileName, Host));
         }
 
         protected internal virtual RazorParser CreateParser()

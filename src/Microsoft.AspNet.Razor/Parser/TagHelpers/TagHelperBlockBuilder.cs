@@ -17,11 +17,10 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
     public class TagHelperBlockBuilder : BlockBuilder
     {
         /// <summary>
-        /// Copies the given <paramref name="original"/>'s <see cref="TagHelperBlock.TagName"/>,
-        /// <see cref="TagHelperBlock.Attributes"/>, <see cref="Block.Type"/>, <see cref="Block.Children"/>
-        /// and <see cref="Block.CodeGenerator"/> into a new <see cref="TagHelperBlockBuilder"/>.
+        /// Instantiates a new <see cref="TagHelperBlockBuilder"/> instance based on given the 
+        /// <paramref name="original"/>.
         /// </summary>
-        /// <param name="original"></param>
+        /// <param name="original">The original <see cref="TagHelperBlock"/> to copy data from.</param>
         public TagHelperBlockBuilder(TagHelperBlock original)
             : base(original)
         {
@@ -81,10 +80,10 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
             return new TagHelperBlock(this);
         }
 
-        /// <summary>
-        /// Sets the <see cref="TagName"/> to <c>null</c> and clears the <see cref="Attributes"/>.
-        /// </summary>
         /// <inheritdoc />
+        /// <remarks>
+        /// Sets the <see cref="TagName"/> to <c>null</c> and clears the <see cref="Attributes"/>.
+        /// </remarks>
         public override void Reset()
         {
             TagName = null;
@@ -139,7 +138,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                 EditHandler = span.EditHandler,
                 Kind = span.Kind
             };
-            var htmlSymbols = ((IEnumerable<HtmlSymbol>)span.Symbols).ToArray();
+            var htmlSymbols = span.Symbols.OfType<HtmlSymbol>().ToArray();
             var symbolOffset = 1;
             string name = null;
 
@@ -189,17 +188,22 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
             // TODO: Accept more than just spans: https://github.com/aspnet/Razor/issues/96.
             // The first child will only ever NOT be a Span if a user is doing something like:
             // <input type="checkbox" @checked />
-            Debug.Assert(block.Children.First() is Span);
+
+            var childSpan = block.Children.First() as Span;
+
+            if(childSpan == null)
+            {
+                throw new InvalidOperationException(RazorResources.TagHelpers_CannotHaveCSharpInTagDeclaration);
+            }
 
             var builder = new BlockBuilder(block);
 
             // If there's only 1 child it means that it's plain text inside of the attribute.
             if (builder.Children.Count == 1)
             {
-                return ParseSpan((Span)builder.Children[0]);
+                return ParseSpan(childSpan);
             }
 
-            var childSpan = (Span)block.Children.First();
             var name = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text)?.Content;
 
             if (name == null)
@@ -217,7 +221,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                 var endSpan = (Span)endNode;
                 var endSymbol = (HtmlSymbol)endSpan.Symbols.Last();
 
-                // Checking to see if it's not a quoteless attribute, if so we should remove end quote
+                // Checking to see if it's a quoted attribute, if so we should remove end quote
                 if (IsQuote(endSymbol))
                 {
                     builder.Children.RemoveAt(builder.Children.Count - 1);

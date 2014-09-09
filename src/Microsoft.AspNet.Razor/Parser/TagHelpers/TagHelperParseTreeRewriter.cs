@@ -51,8 +51,6 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
 
                     if (childBlock.Type == BlockType.Tag)
                     {
-                        var currentTagHelper = _tagStack.Count > 0 ? _tagStack.Peek() : null;
-
                         // TODO: Fully handle malformed tags: https://github.com/aspnet/Razor/issues/104
 
                         // Get tag name of the current block (doesn't matter if it's an end or start tag)
@@ -72,7 +70,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                                 // Found a new tag helper block
                                 TrackTagHelperBlock(new TagHelperBlockBuilder(tagName, childBlock));
 
-                                // If it's a self closing block then we don't have any children... complete it.
+                                // If it's a self closing block then we don't have to worry about nested children 
+                                // within the tag... complete it.
                                 if (IsSelfClosing(childBlock))
                                 {
                                     BuildCurrentlyTrackedTagHelperBlock();
@@ -83,6 +82,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                         }
                         else
                         {
+                            var currentTagHelper = _tagStack.Count > 0 ? _tagStack.Peek() : null;
+
                             // Check if it's an "end" tag helper that matches our current tag helper
                             if (currentTagHelper != null &&
                                 string.Equals(currentTagHelper.TagName, tagName, StringComparison.OrdinalIgnoreCase))
@@ -105,8 +106,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                     }
                 }
 
-                // Add the child to current block. At this point the child is either a Span or a rewritten
-                // TagHelperBlock.
+                // Add the child to current block. 
+                // At this point the child is a Span (not a tag helper or block).
                 _currentBlock.Children.Add(child);
             }
 
@@ -146,12 +147,20 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
 
         private void BuildCurrentlyTrackedBlock()
         {
+            // Going to remove the current BlockBuilder from the stack because it's complete.
             var currentBlock = _blockStack.Pop();
 
-            if (_blockStack.Any())
+            // If there are block stacks left it means we're not at the root.
+            if (_blockStack.Count > 0)
             {
-                _currentBlock = _blockStack.Peek();
-                _currentBlock.Children.Add(currentBlock.Build());
+                // Grab the next block in line so we can continue managing its children (it's not done).
+                var previousBlock = _blockStack.Peek();
+
+                // We've finished the currentBlock so build it and add it to its parent.
+                previousBlock.Children.Add(currentBlock.Build());
+
+                // Update the _currentBlock to point at the last tracked block because it's not complete.
+                _currentBlock = previousBlock;
             }
             else
             {
