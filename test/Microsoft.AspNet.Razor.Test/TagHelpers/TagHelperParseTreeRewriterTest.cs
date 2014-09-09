@@ -126,7 +126,7 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
             EvaluateData(providerContext, documentContent, expectedOutput);
         }
 
-        private TagHelperProvider BuildProviderContext(params string[] tagNames)
+        private TagHelperDescriptorProvider BuildProviderContext(params string[] tagNames)
         {
             var descriptors = new List<TagHelperDescriptor>();
 
@@ -136,10 +136,10 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                     new TagHelperDescriptor(tagName, tagName + "taghelper", ContentBehavior.None));
             }
 
-            return new TagHelperProvider(descriptors);
+            return new TagHelperDescriptorProvider(descriptors);
         }
 
-        private void EvaluateData(TagHelperProvider provider, string documentContent, MarkupBlock expectedOutput)
+        private void EvaluateData(TagHelperDescriptorProvider provider, string documentContent, MarkupBlock expectedOutput)
         {
             var results = ParseDocument(documentContent);
             var rewritten = new TagHelperParseTreeRewriter(provider).Rewrite(results.Document);
