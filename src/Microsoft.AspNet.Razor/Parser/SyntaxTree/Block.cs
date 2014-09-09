@@ -14,13 +14,12 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
     public class Block : SyntaxTreeNode
     {
         public Block(BlockBuilder source)
-            : this(source.Type, source.Children)
+            : this(source.Type, source.Children, source.CodeGenerator)
         {
-            CodeGenerator = source.CodeGenerator;
             source.Reset();
         }
 
-        protected Block(BlockType? type, IEnumerable<SyntaxTreeNode> contents)
+        protected Block(BlockType? type, IEnumerable<SyntaxTreeNode> contents, IBlockCodeGenerator generator)
         {
             if (type == null)
             {
@@ -29,6 +28,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
 
             Type = type.Value;
             Children = contents;
+            CodeGenerator = generator;
 
             foreach (SyntaxTreeNode node in Children)
             {
@@ -49,7 +49,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
 
         public IEnumerable<SyntaxTreeNode> Children { get; private set; }
 
-        public IBlockCodeGenerator CodeGenerator { get; protected set; }
+        public IBlockCodeGenerator CodeGenerator { get; private set; }
 
         public override bool IsBlock
         {

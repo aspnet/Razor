@@ -13,12 +13,12 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
 {
     public class TagHelperParseTreeRewriter : ISyntaxTreeRewriter
     {
-        private TagHelperProvider _provider;
+        private TagHelperDescriptorProvider _provider;
         private Stack<TagHelperBlockBuilder> _tagStack;
         private Stack<BlockBuilder> _blockStack;
         private BlockBuilder _currentBlock;
 
-        public TagHelperParseTreeRewriter(TagHelperProvider provider)
+        public TagHelperParseTreeRewriter(TagHelperDescriptorProvider provider)
         {
             _provider = provider;
             _tagStack = new Stack<TagHelperBlockBuilder>();

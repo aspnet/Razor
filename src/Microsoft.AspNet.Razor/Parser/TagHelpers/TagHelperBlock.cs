@@ -22,9 +22,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         /// <param name="source">A <see cref="TagHelperBlockBuilder"/> used to construct a valid
         /// <see cref="TagHelperBlock"/>.</param>
         public TagHelperBlock(TagHelperBlockBuilder source)
-            : base(source.Type, source.Children)
+            : base(source.Type, source.Children, source.CodeGenerator)
         {
-            CodeGenerator = source.CodeGenerator;
             TagName = source.TagName;
             Attributes = new Dictionary<string, SyntaxTreeNode>(source.Attributes);
 

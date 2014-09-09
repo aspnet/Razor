@@ -12,7 +12,7 @@ using Microsoft.AspNet.Razor.Tokenizer.Symbols;
 namespace Microsoft.AspNet.Razor.Parser.TagHelpers
 {
     /// <summary>
-    /// A <see cref="TagHelperBlockBuilder"/> used to create <see cref="TagHelperBlock"/>s.
+    /// A <see cref="BlockBuilder"/> used to create <see cref="TagHelperBlock"/>s.
     /// </summary>
     public class TagHelperBlockBuilder : BlockBuilder
     {

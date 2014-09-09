@@ -34,7 +34,7 @@ namespace Microsoft.AspNet.Razor.Parser
             // TODO: As part of https://github.com/aspnet/Razor/issues/111 and 
             // https://github.com/aspnet/Razor/issues/112 pull the provider from some sort of tag helper locator 
             // object.
-            var provider = new TagHelperProvider(Enumerable.Empty<TagHelperDescriptor>());
+            var provider = new TagHelperDescriptorProvider(Enumerable.Empty<TagHelperDescriptor>());
 
             Optimizers = new List<ISyntaxTreeRewriter>()
             {
@@ -45,9 +45,6 @@ namespace Microsoft.AspNet.Razor.Parser
                 new WhiteSpaceRewriter(MarkupParser.BuildSpan),
                 // Collapse conditional attributes where the entire value is literal
                 new ConditionalAttributeCollapser(MarkupParser.BuildSpan),
-                // TODO: As part of https://github.com/aspnet/Razor/issues/111 and 
-                // https://github.com/aspnet/Razor/issues/112 pull the "provider" from some sort of tag helper locator 
-                // object.
                 new TagHelperParseTreeRewriter(provider),
             };
         }
