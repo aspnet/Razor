@@ -59,13 +59,12 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 return;
             }
 
-            var generateInstrumentation = Context.Host.EnableInstrumentation &&
-                                          Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput;
+            var generateInstrumentation = ShouldGenerateInstrumentationForExpressions();
 
             if (generateInstrumentation)
             {
                 // Add a non-literal context call (non-literal because the expanded URL will not match the source
-                // character -by-character)
+                // character-by-character)
                 Writer.WriteStartInstrumentationContext(Context, chunk.Association, isLiteral: false);
             }
 
@@ -97,7 +96,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             if (generateInstrumentation)
             {
-                Writer.WriteEndInstrumentationContext(Context, chunk.Association, isLiteral: false);
+                Writer.WriteEndInstrumentationContext(Context);
             }
         }
 
@@ -132,7 +131,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             if (Context.Host.EnableInstrumentation)
             {
-                Writer.WriteEndInstrumentationContext(Context, chunk.Association, isLiteral: true);
+                Writer.WriteEndInstrumentationContext(Context);
             }
         }
 
@@ -344,8 +343,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         public void RenderRuntimeExpressionBlockChunk(ExpressionBlockChunk chunk)
         {
-            var generateInstrumentation = Context.Host.EnableInstrumentation &&
-                                          Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput;
+            var generateInstrumentation = ShouldGenerateInstrumentationForExpressions();
             Span contentSpan = null;
 
             if (generateInstrumentation)
@@ -384,9 +382,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                       .WriteLine();
             }
 
-            if (generateInstrumentation && contentSpan != null)
+            if (contentSpan != null)
             {
-                Writer.WriteEndInstrumentationContext(Context, contentSpan, isLiteral: false);
+                Writer.WriteEndInstrumentationContext(Context);
             }
         }
 
@@ -419,6 +417,14 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             {
                 Writer.Write(code);
             }
+        }
+
+        private bool ShouldGenerateInstrumentationForExpressions()
+        {
+            // Only generate instrumentation for expression blocks if instrumentation is enabled and we're generating a
+            // "Write(<expression>)" statement.
+            return Context.Host.EnableInstrumentation &&
+                   Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput;
         }
     }
 }

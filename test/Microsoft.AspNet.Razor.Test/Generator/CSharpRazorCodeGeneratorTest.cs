@@ -398,7 +398,6 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         {
             RunTest("Instrumented", hostConfig: host =>
             {
-                host.EnableInstrumentation = true;
                 host.InstrumentedSourceFilePath = string.Format("~/{0}.cshtml", host.DefaultClassName);
             });
         }

@@ -407,33 +407,18 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         public void WriteStartInstrumentationContext(CodeGeneratorContext context, SyntaxTreeNode syntaxNode, bool isLiteral)
         {
-            var methodName = context.Host.GeneratedClassContext.BeginContextMethodName;
-            WriteContextCall(context, syntaxNode, methodName, isLiteral);
-        }
-
-        public void WriteEndInstrumentationContext(CodeGeneratorContext context, SyntaxTreeNode syntaxNode, bool isLiteral)
-        {
-            var methodName = context.Host.GeneratedClassContext.EndContextMethodName;
-            WriteContextCall(context, syntaxNode, methodName, isLiteral);
-        }
-
-        private void WriteContextCall(CodeGeneratorContext context, SyntaxTreeNode syntaxNode, string methodName, bool isLiteral)
-        {
-            WriteStartMethodInvocation(methodName);
-            if (!string.IsNullOrEmpty(context.TargetWriterName))
-            {
-                Write(context.TargetWriterName);
-                WriteParameterSeparator();
-            }
-
-            WriteStringLiteral(context.Host.InstrumentedSourceFilePath);
-            WriteParameterSeparator();
+            WriteStartMethodInvocation(context.Host.GeneratedClassContext.BeginContextMethodName);
             Write(syntaxNode.Start.AbsoluteIndex.ToString(CultureInfo.InvariantCulture));
             WriteParameterSeparator();
             Write(syntaxNode.Length.ToString(CultureInfo.InvariantCulture));
             WriteParameterSeparator();
             Write(isLiteral ? "true" : "false");
-            WriteEndMethodInvocation(endLine: true);
+            WriteEndMethodInvocation();
+        }
+
+        public void WriteEndInstrumentationContext(CodeGeneratorContext context)
+        {
+            WriteMethodInvocation(context.Host.GeneratedClassContext.EndContextMethodName);
         }
     }
 }
