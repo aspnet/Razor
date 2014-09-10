@@ -220,11 +220,7 @@ namespace Microsoft.AspNet.Razor.Parser
                 throw new InvalidOperationException(RazorResources.ParserContext_CannotCompleteTree_OutstandingBlocks);
             }
 
-            // TODO: Part of https://github.com/aspnet/Razor/issues/111 and https://github.com/aspnet/Razor/issues/112
-            // pull the provider from some sort of tag helper locator object.
-            return new ParserResults(_blockStack.Pop().Build(), 
-                                     new TagHelperDescriptorProvider(Enumerable.Empty<TagHelperDescriptor>()), 
-                                     Errors);
+            return new ParserResults(_blockStack.Pop().Build(), Errors);
         }
 
         [Conditional("DEBUG")]

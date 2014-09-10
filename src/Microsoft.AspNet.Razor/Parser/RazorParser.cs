@@ -166,11 +166,7 @@ namespace Microsoft.AspNet.Razor.Parser
             }
 
             // Return the new result
-            // TODO: Part of https://github.com/aspnet/Razor/issues/111 and https://github.com/aspnet/Razor/issues/112
-            // pull the provider from some sort of tag helper locator object.
-            return new ParserResults(current, 
-                                     new TagHelperDescriptorProvider(Enumerable.Empty<TagHelperDescriptor>()), 
-                                     results.ParserErrors);
+            return new ParserResults(current, results.ParserErrors);
         }
     }
 }

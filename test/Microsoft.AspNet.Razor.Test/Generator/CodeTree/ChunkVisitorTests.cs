@@ -32,8 +32,7 @@ namespace Microsoft.AspNet.Razor
                 "myclass",
                 "myns",
                 string.Empty,
-                shouldGenerateLinePragmas: false, 
-                tagHelperProvider: new TagHelperDescriptorProvider(Enumerable.Empty<TagHelperDescriptor>()));
+                shouldGenerateLinePragmas: false);
             var writer = Mock.Of<CodeWriter>();
             return new Mock<ChunkVisitor<CodeWriter>>(writer, codeBuilderContext);
         }

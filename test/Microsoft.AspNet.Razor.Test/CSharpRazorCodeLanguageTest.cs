@@ -56,8 +56,7 @@ namespace Microsoft.AspNet.Razor.Test
                 "myclass",
                 "myns",
                 string.Empty,
-                shouldGenerateLinePragmas: false, 
-                tagHelperProvider:  new TagHelperDescriptorProvider(Enumerable.Empty<TagHelperDescriptor>()));
+                shouldGenerateLinePragmas: false);
 
             // Act
             var generator = language.CreateCodeBuilder(codeBuilderContext);

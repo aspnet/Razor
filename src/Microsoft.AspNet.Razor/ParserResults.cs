@@ -12,19 +12,15 @@ namespace Microsoft.AspNet.Razor
     /// </summary>
     public class ParserResults
     {
-        public ParserResults(Block document, TagHelperDescriptorProvider tagHelperProvider, IList<RazorError> parserErrors)
-            : this(parserErrors == null || parserErrors.Count == 0, document, tagHelperProvider, parserErrors)
+        public ParserResults(Block document, IList<RazorError> parserErrors)
+            : this(parserErrors == null || parserErrors.Count == 0, document, parserErrors)
         {
         }
 
-        protected ParserResults(bool success, 
-                                Block document, 
-                                TagHelperDescriptorProvider tagHelperProvider, 
-                                IList<RazorError> errors)
+        protected ParserResults(bool success, Block document, IList<RazorError> errors)
         {
             Success = success;
             Document = document;
-            TagHelperDescriptorProvider = tagHelperProvider;
             ParserErrors = errors ?? new List<RazorError>();
         }
 
@@ -38,10 +34,6 @@ namespace Microsoft.AspNet.Razor
         /// </summary>
         public Block Document { get; private set; }
 
-        /// <summary>
-        /// The tag helper management object used to maintain found tag helpers during parsing.
-        /// </summary>
-        public TagHelperDescriptorProvider TagHelperDescriptorProvider { get; private set; }
 
         /// <summary>
         /// The list of errors which occurred during parsing.

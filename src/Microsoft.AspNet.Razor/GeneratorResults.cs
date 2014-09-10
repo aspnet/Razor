@@ -13,26 +13,23 @@ namespace Microsoft.AspNet.Razor
         public GeneratorResults(ParserResults parserResults,
                                 CodeBuilderResult codeBuilderResult)
             : this(parserResults.Document, 
-                   parserResults.TagHelperDescriptorProvider, 
                    parserResults.ParserErrors, 
                    codeBuilderResult)
         {
         }
 
         public GeneratorResults(Block document,
-                                TagHelperDescriptorProvider tagHelperProvider,
                                 IList<RazorError> parserErrors,
                                 CodeBuilderResult codeBuilderResult)
-            : this(parserErrors.Count == 0, document, tagHelperProvider, parserErrors, codeBuilderResult)
+            : this(parserErrors.Count == 0, document, parserErrors, codeBuilderResult)
         {
         }
 
         protected GeneratorResults(bool success,
                                    Block document,
-                                   TagHelperDescriptorProvider tagHelperProvider,
                                    IList<RazorError> parserErrors,
                                    CodeBuilderResult codeBuilderResult)
-            : base(success, document, tagHelperProvider, parserErrors)
+            : base(success, document, parserErrors)
         {
             GeneratedCode = codeBuilderResult.Code;
             DesignTimeLineMappings = codeBuilderResult.DesignTimeLineMappings;

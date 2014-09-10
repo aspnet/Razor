@@ -14,15 +14,12 @@ namespace Microsoft.AspNet.Razor.Test.Parser
 {
     public class ParserVisitorExtensionsTest
     {
-        private static readonly TagHelperDescriptorProvider EmptyTagHelperDescriptorProvider = 
-            new TagHelperDescriptorProvider(Enumerable.Empty<TagHelperDescriptor>());
 
         [Fact]
         public void VisitThrowsOnNullVisitor()
         {
             ParserVisitor target = null;
             ParserResults results = new ParserResults(new BlockBuilder() { Type = BlockType.Comment }.Build(),
-                                                      EmptyTagHelperDescriptorProvider,
                                                       new List<RazorError>());
 
             Assert.Throws<ArgumentNullException>("self", () => target.Visit(results));
@@ -41,7 +38,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             // Arrange
             Mock<ParserVisitor> targetMock = new Mock<ParserVisitor>();
             Block root = new BlockBuilder() { Type = BlockType.Comment }.Build();
-            ParserResults results = new ParserResults(root, EmptyTagHelperDescriptorProvider, new List<RazorError>());
+            ParserResults results = new ParserResults(root, new List<RazorError>());
 
             // Act
             targetMock.Object.Visit(results);
@@ -60,7 +57,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
                 new RazorError("Foo", 1, 0, 1),
                 new RazorError("Bar", 2, 0, 2)
             };
-            ParserResults results = new ParserResults(root, EmptyTagHelperDescriptorProvider, errors);
+            ParserResults results = new ParserResults(root, errors);
 
             // Act
             targetMock.Object.Visit(results);
@@ -80,7 +77,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
                 new RazorError("Foo", 1, 0, 1),
                 new RazorError("Bar", 2, 0, 2)
             };
-            ParserResults results = new ParserResults(root, EmptyTagHelperDescriptorProvider, errors);
+            ParserResults results = new ParserResults(root, errors);
 
             // Act
             targetMock.Object.Visit(results);
