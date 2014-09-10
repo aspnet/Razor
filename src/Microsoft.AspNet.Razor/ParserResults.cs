@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Microsoft.AspNet.Razor
 {
@@ -33,7 +32,6 @@ namespace Microsoft.AspNet.Razor
         /// The root node in the document's syntax tree
         /// </summary>
         public Block Document { get; private set; }
-
 
         /// <summary>
         /// The list of errors which occurred during parsing.

@@ -3,13 +3,11 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Web.WebPages.TestUtils;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 using Microsoft.AspNet.Razor.Parser;
-using Microsoft.AspNet.Razor.TagHelpers;
 using Microsoft.AspNet.Razor.Text;
 using Moq;
 using Xunit;

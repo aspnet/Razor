@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.AspNet.Razor.TagHelpers;
-
 namespace Microsoft.AspNet.Razor.Generator
 {
     /// <summary>
@@ -31,7 +29,6 @@ namespace Microsoft.AspNet.Razor.Generator
             ExpressionRenderingMode = ExpressionRenderingMode.WriteToOutput;
         }
 
-
         /// <summary>
         /// The current C# rendering mode.
         /// </summary>
@@ -50,7 +47,7 @@ namespace Microsoft.AspNet.Razor.Generator
         /// If <see cref="TargetWriterName"/> is <c>null</c> values will be written using a default write method
         /// i.e. WriteLiteral("Hello World").
         /// If <see cref="TargetWriterName"/> is not <c>null</c> values will be written to the given 
-        /// <see cref="TargetWriterName"/>, i.e. WriteLiteralTo("Hello World", myWriter).
+        /// <see cref="TargetWriterName"/>, i.e. WriteLiteralTo(myWriter, "Hello World").
         /// </remarks>
         public string TargetWriterName { get; set; }
     }

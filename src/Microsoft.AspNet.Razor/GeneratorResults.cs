@@ -4,14 +4,12 @@
 using System.Collections.Generic;
 using Microsoft.AspNet.Razor.Generator.Compiler;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Microsoft.AspNet.Razor
 {
     public class GeneratorResults : ParserResults
     {
-        public GeneratorResults(ParserResults parserResults,
-                                CodeBuilderResult codeBuilderResult)
+        public GeneratorResults(ParserResults parserResults, CodeBuilderResult codeBuilderResult)
             : this(parserResults.Document, 
                    parserResults.ParserErrors, 
                    codeBuilderResult)
@@ -36,6 +34,7 @@ namespace Microsoft.AspNet.Razor
         }
 
         public string GeneratedCode { get; private set; }
+
         public IList<LineMapping> DesignTimeLineMappings { get; private set; }
     }
 }

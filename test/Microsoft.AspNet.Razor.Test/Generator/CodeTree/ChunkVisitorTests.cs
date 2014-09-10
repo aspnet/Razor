@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using Microsoft.AspNet.Razor.Generator;
+﻿using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler;
-using Microsoft.AspNet.Razor.TagHelpers;
 using Moq;
 using Moq.Protected;
 using Xunit;

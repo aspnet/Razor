@@ -3,10 +3,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.TagHelpers;
 using Moq;
 using Xunit;
 
@@ -14,13 +12,11 @@ namespace Microsoft.AspNet.Razor.Test.Parser
 {
     public class ParserVisitorExtensionsTest
     {
-
         [Fact]
         public void VisitThrowsOnNullVisitor()
         {
             ParserVisitor target = null;
-            ParserResults results = new ParserResults(new BlockBuilder() { Type = BlockType.Comment }.Build(),
-                                                      new List<RazorError>());
+            ParserResults results = new ParserResults(new BlockBuilder() { Type = BlockType.Comment }.Build(), new List<RazorError>());
 
             Assert.Throws<ArgumentNullException>("self", () => target.Visit(results));
         }
