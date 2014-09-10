@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
@@ -62,14 +61,14 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         }
 
         /// <summary>
-        /// The HTML tag name.
-        /// </summary>
-        public string TagName { get; set; }
-
-        /// <summary>
         /// The HTML attributes.
         /// </summary>
         public IDictionary<string, SyntaxTreeNode> Attributes { get; private set; }
+
+        /// <summary>
+        /// The HTML tag name.
+        /// </summary>
+        public string TagName { get; set; }
 
         /// <summary>
         /// Constructs a new <see cref="TagHelperBlock"/>.
@@ -99,13 +98,12 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         private static IDictionary<string, SyntaxTreeNode> GetTagAttributes(Block tagBlock)
         {
             var attributes = new Dictionary<string, SyntaxTreeNode>(StringComparer.OrdinalIgnoreCase);
-            var tagBlockChildCount = tagBlock.Children.Count();
 
             // TODO: Handle malformed tags: https://github.com/aspnet/razor/issues/104
 
             // We skip the first child "<tagname" and take everything up to the "ending" portion of the tag ">" or "/>".
             // The -2 accounts for both the start and end tags.
-            var attributeChildren = tagBlock.Children.Skip(1).Take(tagBlockChildCount - 2);
+            var attributeChildren = tagBlock.Children.Skip(1).Take(tagBlock.Children.Count() - 2);
 
             foreach (var child in attributeChildren)
             {
@@ -126,7 +124,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
             return attributes;
         }
 
-        // This method handles cases when the attribute is a "simple" span attribute such as
+        // This method handles cases when the attribute is a simple span attribute such as
         // class="something moresomething".  This does not handle complex attributes such as
         // class="@myclass". Therefore the span.Content is equivalent to the entire attribute.
         private static KeyValuePair<string, SyntaxTreeNode> ParseSpan(Span span)
@@ -143,7 +141,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
             string name = null;
 
             // Iterate down through the symbols to find the name and the start of the value.
-            // -symbolOffset is so we don't accept an ending quote of a span.
+            // We subtract the symbolOffset so we don't accept an ending quote of a span.
             for (var i = 0; i < htmlSymbols.Length - symbolOffset; i++)
             {
                 var symbol = htmlSymbols[i];
@@ -154,8 +152,10 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                 }
                 else if (symbol.Type == HtmlSymbolType.Equals)
                 {
-                    // We've found an '=' symbol, this means that the coming symbols will either be whitespace, quote
+                    // We've found an '=' symbol, this means that the coming symbols will either be a quote
                     // or value (in the case that the value is unquoted).
+                    // Spaces after/before the equal symbol are not yet supported: 
+                    // https://github.com/aspnet/Razor/issues/123
 
                     // TODO: Handle malformed tags, if there's an '=' then there MUST be a value.
                     // https://github.com/aspnet/Razor/issues/104
@@ -187,11 +187,11 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         {
             // TODO: Accept more than just spans: https://github.com/aspnet/Razor/issues/96.
             // The first child will only ever NOT be a Span if a user is doing something like:
-            // <input type="checkbox" @checked />
+            // <input @checked />
 
             var childSpan = block.Children.First() as Span;
 
-            if(childSpan == null)
+            if (childSpan == null)
             {
                 throw new InvalidOperationException(RazorResources.TagHelpers_CannotHaveCSharpInTagDeclaration);
             }
@@ -199,12 +199,14 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
             var builder = new BlockBuilder(block);
 
             // If there's only 1 child it means that it's plain text inside of the attribute.
+            // i.e. <div class="plain text in attribute">
             if (builder.Children.Count == 1)
             {
                 return ParseSpan(childSpan);
             }
 
-            var name = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text)?.Content;
+            var textSymbol = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text);
+            var name = textSymbol != null ? textSymbol.Content : null;
 
             if (name == null)
             {

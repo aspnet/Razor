@@ -13,12 +13,12 @@ namespace Microsoft.AspNet.Razor.Parser
         /// <summary>
         /// Rewrites the provided <paramref name="input"/> syntax tree.
         /// </summary>
-        /// <remarks>
-        /// If you choose not to modify the syntax tree you can always return <paramref name="input"/>.
-        /// </remarks>
         /// <param name="input">The current syntax tree.</param>
         /// <returns>The <paramref name="input"/> syntax tree or a syntax tree to be used instead of the 
         /// <paramref name="input"/> tree.</returns>
+        /// <remarks>
+        /// If you choose not to modify the syntax tree you can always return <paramref name="input"/>.
+        /// </remarks>
         Block Rewrite(Block input);
     }
 }

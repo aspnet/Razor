@@ -36,7 +36,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
             }
         }
 
-        // A Test ctor
+        // A Test constructor
         internal Block(BlockType type, IEnumerable<SyntaxTreeNode> contents, IBlockCodeGenerator generator)
         {
             Type = type;

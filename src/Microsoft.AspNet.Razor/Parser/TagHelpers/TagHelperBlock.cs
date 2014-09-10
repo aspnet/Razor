@@ -34,16 +34,16 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                 attributeChildren.Parent = this;
             }
         }
+        
+        /// <summary>
+        /// The HTML attributes.
+        /// </summary>
+        public IDictionary<string, SyntaxTreeNode> Attributes { get; private set; }
 
         /// <summary>
         /// The HTML tag name.
         /// </summary>
         public string TagName { get; private set; }
-
-        /// <summary>
-        /// The HTML attributes.
-        /// </summary>
-        public IDictionary<string, SyntaxTreeNode> Attributes { get; private set; }
 
         /// <inheritdoc />
         public override string ToString()

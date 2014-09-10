@@ -38,13 +38,14 @@ namespace Microsoft.AspNet.Razor.Parser
 
             Optimizers = new List<ISyntaxTreeRewriter>()
             {
-                // TODO: Modify the below WhiteSpaceRewriter & ConditionalAttributeCollapser above to handle 
+                // TODO: Modify the below WhiteSpaceRewriter & ConditionalAttributeCollapser to handle 
                 // TagHelperBlock's: https://github.com/aspnet/Razor/issues/117
 
                 // Move whitespace from start of expression block to markup
                 new WhiteSpaceRewriter(MarkupParser.BuildSpan),
                 // Collapse conditional attributes where the entire value is literal
                 new ConditionalAttributeCollapser(MarkupParser.BuildSpan),
+                // Enables tag helpers
                 new TagHelperParseTreeRewriter(provider),
             };
         }

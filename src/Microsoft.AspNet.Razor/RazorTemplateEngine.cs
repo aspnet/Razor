@@ -8,6 +8,7 @@ using System.IO;
 using System.Threading;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler;
+using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Text;
 
@@ -181,15 +182,14 @@ namespace Microsoft.AspNet.Razor
 
         protected internal virtual RazorParser CreateParser()
         {
-            var codeParser = Host.CodeLanguage.CreateCodeParser();
-            var markupParser = Host.CreateMarkupParser();
-            var parser = new RazorParser(Host.DecorateCodeParser(codeParser),
-                                         Host.DecorateMarkupParser(markupParser))
+            ParserBase codeParser = Host.CodeLanguage.CreateCodeParser();
+            ParserBase markupParser = Host.CreateMarkupParser();
+
+            return new RazorParser(Host.DecorateCodeParser(codeParser),
+                                   Host.DecorateMarkupParser(markupParser))
             {
                 DesignTimeMode = Host.DesignTimeMode
             };
-
-            return parser;
         }
 
         protected internal virtual CodeBuilder CreateCodeBuilder(CodeGeneratorContext context)

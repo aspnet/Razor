@@ -65,7 +65,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                         {
                             // We're in a begin tag block
 
-                            if (IsValidTagHelper(tagName, childBlock) && IsRegisteredTagHelper(tagName))
+                            if (IsPotentialTagHelper(tagName, childBlock) && IsRegisteredTagHelper(tagName))
                             {
                                 // Found a new tag helper block
                                 TrackTagHelperBlock(new TagHelperBlockBuilder(tagName, childBlock));
@@ -114,37 +114,6 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             BuildCurrentlyTrackedBlock();
         }
 
-        private bool IsValidTagHelper(string tagName, Block childBlock)
-        {
-            var child = childBlock.Children.FirstOrDefault();
-            Debug.Assert(child != null);
-
-            var childSpan = (Span)child;
-
-            // text tags that are labeled as transitions should be ignored aka they're not tag helpers.
-            return !string.Equals(tagName, SyntaxConstants.TextTagName, StringComparison.OrdinalIgnoreCase) ||
-                   childSpan.Kind != SpanKind.Transition;
-        }
-
-        private bool IsRegisteredTagHelper(string tagName)
-        {
-            return _provider.GetTagHelpers(tagName).Any();
-        }
-
-        private void TrackBlock(BlockBuilder builder)
-        {
-            _currentBlock = builder;
-
-            _blockStack.Push(builder);
-        }
-
-        private void TrackTagHelperBlock(TagHelperBlockBuilder builder)
-        {
-            _tagStack.Push(builder);
-
-            TrackBlock(builder);
-        }
-
         private void BuildCurrentlyTrackedBlock()
         {
             // Going to remove the current BlockBuilder from the stack because it's complete.
@@ -175,6 +144,37 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             BuildCurrentlyTrackedBlock();
         }
 
+        private bool IsPotentialTagHelper(string tagName, Block childBlock)
+        {
+            var child = childBlock.Children.FirstOrDefault();
+            Debug.Assert(child != null);
+
+            var childSpan = (Span)child;
+
+            // text tags that are labeled as transitions should be ignored aka they're not tag helpers.
+            return !string.Equals(tagName, SyntaxConstants.TextTagName, StringComparison.OrdinalIgnoreCase) ||
+                   childSpan.Kind != SpanKind.Transition;
+        }
+
+        private bool IsRegisteredTagHelper(string tagName)
+        {
+            return _provider.GetTagHelpers(tagName).Any();
+        }
+
+        private void TrackBlock(BlockBuilder builder)
+        {
+            _currentBlock = builder;
+
+            _blockStack.Push(builder);
+        }
+
+        private void TrackTagHelperBlock(TagHelperBlockBuilder builder)
+        {
+            _tagStack.Push(builder);
+
+            TrackBlock(builder);
+        }
+
         private static string GetTagName(Block tagBlock)
         {
             var child = tagBlock.Children.First();
@@ -185,8 +185,9 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             }
 
             var childSpan = (Span)child;
+            var textSymbol = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text);
 
-            return childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text)?.Content;
+            return textSymbol != null ? textSymbol.Content : null;
         }
 
         private static bool IsSelfClosing(Block beginTagBlock)

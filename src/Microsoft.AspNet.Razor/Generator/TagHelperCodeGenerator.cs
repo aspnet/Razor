@@ -1,12 +1,7 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Microsoft.AspNet.Razor.Generator.Compiler;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.Parser.TagHelpers;
 
 namespace Microsoft.AspNet.Razor.Generator
 {
@@ -29,7 +24,7 @@ namespace Microsoft.AspNet.Razor.Generator
 
         /// <summary>
         /// Ends the generation of a <see cref="TagHelperChunk"/> capturing all previously visited children
-        /// since <see cref="GenerateStartBlockCode"/> was called.
+        /// since <see cref="GenerateStartBlockCode"/> method was called.
         /// </summary>
         /// <param name="target">
         /// The <see cref="Block"/> responsible for this <see cref="TagHelperCodeGenerator"/>.
