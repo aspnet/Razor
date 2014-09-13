@@ -52,7 +52,8 @@ namespace Microsoft.AspNet.Razor.Parser
 
         internal ParserBase CodeParser { get; private set; }
         internal ParserBase MarkupParser { get; private set; }
-        internal IList<ISyntaxTreeRewriter> Optimizers { get; private set; }
+        // Internal for testing
+        internal IList<ISyntaxTreeRewriter> Optimizers { get; set; }
 
         public bool DesignTimeMode { get; set; }
 
