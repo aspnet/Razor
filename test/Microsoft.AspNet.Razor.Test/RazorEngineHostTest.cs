@@ -119,6 +119,7 @@ namespace Microsoft.AspNet.Razor.Test
         private static void VerifyCommonDefaults(RazorEngineHost host)
         {
             Assert.Equal(GeneratedClassContext.Default, host.GeneratedClassContext);
+            Assert.Equal(GeneratedTagHelperRenderingContext.Default, host.GeneratedClassContext.GeneratedTagHelperRenderingContext);
             Assert.Empty(host.NamespaceImports);
             Assert.False(host.DesignTimeMode);
             Assert.Equal(RazorEngineHost.InternalDefaultClassName, host.DefaultClassName);
