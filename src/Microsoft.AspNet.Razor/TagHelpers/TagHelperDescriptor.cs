@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor.TagHelpers
@@ -23,11 +24,32 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         public TagHelperDescriptor(string tagName,
                                    string tagHelperName,
                                    ContentBehavior contentBehavior)
+            : this(tagName, tagHelperName, contentBehavior, Enumerable.Empty<TagHelperAttributeDescriptor>())
+        {
+        }
+
+        /// <summary>
+        /// Instantiates a new instance of the <see cref="TagHelperDescriptor"/> class with the given 
+        /// <paramref name="attributes"/>.
+        /// </summary>
+        /// <param name="tagName">The tag name that the tag helper targets. '*' indicates a catch-all
+        /// <see cref="TagHelperDescriptor"/> which applies to every HTML tag.</param>
+        /// <param name="tagHelperName">The code class used to render the tag helper. Corresponds to
+        /// the tag helper's <see cref="Type.FullName"/>.</param>
+        /// <param name="contentBehavior">The <see cref="TagHelpers.ContentBehavior"/>
+        /// of the tag helper.</param>
+        /// <param name="attributes">
+        /// The <see cref="TagHelperAttributeDescriptor"/>s to request from the HTML tag.
+        /// </param>
+        public TagHelperDescriptor(string tagName,
+                                   string tagHelperName,
+                                   ContentBehavior contentBehavior,
+                                   IEnumerable<TagHelperAttributeDescriptor> attributes)
         {
             TagName = tagName;
             TagHelperName = tagHelperName;
             ContentBehavior = contentBehavior;
-            Attributes = new List<TagHelperAttributeDescriptor>();
+            Attributes = new List<TagHelperAttributeDescriptor>(attributes);
         }
 
         /// <summary>

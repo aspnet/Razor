@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+
 namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
     public class CodeVisitor<T> : ChunkVisitor<T> where T : CodeWriter
@@ -27,6 +29,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         {
         }
         protected override void Visit(DynamicCodeAttributeChunk chunk)
+        {
+        }
+        protected override void Visit(TagHelperChunk chunk)
         {
         }
         protected override void Visit(LiteralCodeAttributeChunk chunk)

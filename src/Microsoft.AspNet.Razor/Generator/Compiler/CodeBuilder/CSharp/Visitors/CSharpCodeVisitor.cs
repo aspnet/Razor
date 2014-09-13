@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 using Microsoft.AspNet.Razor.Text;
+using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 {
@@ -16,11 +17,23 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private const string TemplateWriterName = "__razor_template_writer";
 
         private CSharpPaddingBuilder _paddingBuilder;
+        private CSharpTagHelperCodeRenderer _tagHelperCodeRenderer;
 
         public CSharpCodeVisitor(CSharpCodeWriter writer, CodeBuilderContext context)
             : base(writer, context)
         {
             _paddingBuilder = new CSharpPaddingBuilder(context.Host);
+            _tagHelperCodeRenderer = new CSharpTagHelperCodeRenderer(this, writer, context);
+        }
+
+        protected override void Visit(TagHelperChunk chunk)
+        {
+            _tagHelperCodeRenderer.RenderTagHelper(chunk);
+        }
+
+        protected override void Visit(ChunkBlock chunk)
+        {
+            Accept(chunk.Children);
         }
 
         protected override void Visit(SetLayoutChunk chunk)
@@ -65,21 +78,12 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             {
                 if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
                 {
-                    if (!String.IsNullOrEmpty(Context.TargetWriterName))
-                    {
-                        Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralToMethodName)
-                               .Write(Context.TargetWriterName)
-                               .WriteParameterSeparator();
-                    }
-                    else
-                    {
-                        Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralMethodName);
-                    }
+                    GeneratePreWriteStart();
                 }
 
                 Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.ResolveUrlMethodName)
-                       .WriteStringLiteral(chunk.Url)
-                       .WriteEndMethodInvocation(endLine: false);
+                      .WriteStringLiteral(chunk.Url)
+                      .WriteEndMethodInvocation(endLine: false);
 
                 if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
                 {
@@ -99,19 +103,17 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             if (!String.IsNullOrEmpty(chunk.Text) && !Context.Host.DesignTimeMode)
             {
-                if (!String.IsNullOrEmpty(Context.TargetWriterName))
+                if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
                 {
-                    Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralToMethodName)
-                           .Write(Context.TargetWriterName)
-                           .WriteParameterSeparator();
-                }
-                else
-                {
-                    Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralMethodName);
+                    GeneratePreWriteStart();
                 }
 
-                Writer.WriteStringLiteral(chunk.Text)
-                       .WriteEndMethodInvocation();
+                Writer.WriteStringLiteral(chunk.Text);
+
+                if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
+                {
+                    Writer.WriteEndMethodInvocation();
+                }
             }
 
             // TODO: Add instrumentation
@@ -171,10 +173,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
                 Writer.WriteParameterSeparator()
                        .Write(chunk.Start.AbsoluteIndex.ToString(CultureInfo.CurrentCulture))
-                       .WriteEndMethodInvocation(false)
+                       .WriteEndMethodInvocation(endLine: false)
                        .WriteParameterSeparator()
-                       .WriteBooleanLiteral(false)
-                       .WriteEndMethodInvocation(false);
+                       .WriteBooleanLiteral(value: false)
+                       .WriteEndMethodInvocation(endLine: false);
             }
             else
             {
@@ -268,7 +270,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             Accept(chunk.Children);
 
-            Writer.WriteEndMethodInvocation();
+            Writer.WriteEndMethodInvocation(endLine: Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput);
         }
 
         protected override void Visit(SectionChunk chunk)
@@ -384,6 +386,27 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             {
                 Writer.Write(code);
             }
+        }
+
+        private CSharpCodeWriter GeneratePreWriteStart()
+        {
+            return GeneratePreWriteStart(Writer, Context);
+        }
+
+        public static CSharpCodeWriter GeneratePreWriteStart(CSharpCodeWriter writer, CodeBuilderContext context)
+        {
+            if (!string.IsNullOrEmpty(context.TargetWriterName))
+            {
+                writer.WriteStartMethodInvocation(context.Host.GeneratedClassContext.WriteLiteralToMethodName)
+                      .Write(context.TargetWriterName)
+                      .WriteParameterSeparator();
+            }
+            else
+            {
+                writer.WriteStartMethodInvocation(context.Host.GeneratedClassContext.WriteLiteralMethodName);
+            }
+
+            return writer;
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 {
     public class CSharpCodeWriter : CodeWriter
     {
+        private const string InstanceMethodFormat = "{0}.{1}";
+
         public CSharpCodeWriter()
         {
             LineMappingManager = new LineMappingManager();
@@ -214,6 +216,32 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             }
 
             return this;
+        }
+
+        public CSharpCodeWriter WriteInstanceMethodInvocation(string instanceName,
+                                                              string methodName,
+                                                              params string[] parameters)
+        {
+            return WriteInstanceMethodInvocation(instanceName, methodName, endLine: true, parameters: parameters);
+        }
+
+        public CSharpCodeWriter WriteInstanceMethodInvocation(string instanceName,
+                                                              string methodName,
+                                                              bool endLine,
+                                                              params string[] parameters)
+        {
+            return WriteMethodInvocation(
+                string.Format(CultureInfo.InvariantCulture, InstanceMethodFormat, instanceName, methodName),
+                endLine,
+                parameters: parameters);
+        }
+
+        public CSharpCodeWriter WriteStartInstanceMethodInvocation(string instanceName,
+                                                                   string methodName,
+                                                                   params string[] parameters)
+        {
+            return WriteStartMethodInvocation(
+                string.Format(CultureInfo.InvariantCulture, InstanceMethodFormat, instanceName, methodName));
         }
 
         public CSharpCodeWriter WriteMethodInvocation(string methodName, params string[] parameters)
