@@ -390,7 +390,14 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         [Fact]
         public void CSharpCodeGeneratorRendersHelpersBlockCorrectlyWhenInstanceHelperRequested()
         {
-            RunTest("Helpers", baselineName: "Helpers.Instance", hostConfig: h => h.StaticHelpers = false);
+            RunTest("Helpers",
+                    baselineName: "Helpers.Instance",
+                    hostConfig: host =>
+                    {
+                        host.StaticHelpers = false;
+
+                        return host;
+                    });
         }
 
         // TODO: This should be re-added once instrumentation support has been added
