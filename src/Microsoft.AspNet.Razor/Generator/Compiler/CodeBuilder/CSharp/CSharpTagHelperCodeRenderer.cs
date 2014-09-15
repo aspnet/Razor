@@ -23,10 +23,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private static readonly TagHelperAttributeDescriptorComparer AttributeDescriptorComparer =
             new TagHelperAttributeDescriptorComparer();
 
-        // TODO: The work to properly implement this will be done in: https://github.com/aspnet/Razor/issues/74
-        private static readonly TagHelperAttributeValueCodeRenderer AttributeValueCodeRenderer =
-            new TagHelperAttributeValueCodeRenderer();
-
+        private readonly TagHelperAttributeValueCodeRenderer _attributeValueCodeRenderer;
         private readonly CSharpCodeWriter _writer;
         private readonly CodeBuilderContext _context;
         private readonly IChunkVisitor _bodyVisitor;
@@ -40,12 +37,14 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         /// <param name="context">A <see cref="CodeGeneratorContext"/> instance that contains information about 
         /// the current code generation process.</param>
         public CSharpTagHelperCodeRenderer([NotNull] IChunkVisitor bodyVisitor,
+                                           [NotNull] TagHelperAttributeValueCodeRenderer attributeValueCodeRenderer,
                                            [NotNull] CSharpCodeWriter writer,
                                            [NotNull] CodeBuilderContext context)
         {
+            _bodyVisitor = bodyVisitor;
+            _attributeValueCodeRenderer = attributeValueCodeRenderer;
             _writer = writer;
             _context = context;
-            _bodyVisitor = bodyVisitor;
             _tagHelperContext = context.Host.GeneratedClassContext.GeneratedTagHelperContext;
         }
 
@@ -349,7 +348,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderBufferedAttributeValue(TagHelperAttributeDescriptor attributeDescriptor)
         {
-            RenderAttribute(
+            RenderAttributeValue(
                 attributeDescriptor,
                 valueRenderer: (writer) =>
                 {
@@ -359,7 +358,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderRawAttributeValue(string value, TagHelperAttributeDescriptor attributeDescriptor)
         {
-            RenderAttribute(
+            RenderAttributeValue(
                 attributeDescriptor,
                 valueRenderer: (writer) =>
                 {
@@ -369,7 +368,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderQuotedAttributeValue(string value, TagHelperAttributeDescriptor attributeDescriptor)
         {
-            RenderAttribute(
+            RenderAttributeValue(
                 attributeDescriptor,
                 valueRenderer: (writer) =>
                 {
@@ -403,10 +402,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             }
         }
 
-        private void RenderAttribute(TagHelperAttributeDescriptor attributeDescriptor,
-                                     Action<CSharpCodeWriter> valueRenderer)
+        private void RenderAttributeValue(TagHelperAttributeDescriptor attributeDescriptor,
+                                          Action<CSharpCodeWriter> valueRenderer)
         {
-            AttributeValueCodeRenderer.RenderAttributeValue(attributeDescriptor, _writer, _context, valueRenderer);
+            _attributeValueCodeRenderer.RenderAttributeValue(attributeDescriptor, _writer, _context, valueRenderer);
         }
 
         private static bool AcceptsRazorCode(TagHelperAttributeDescriptor attributeDescriptor)
