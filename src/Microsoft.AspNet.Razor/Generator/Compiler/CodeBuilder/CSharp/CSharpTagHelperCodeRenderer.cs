@@ -30,9 +30,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private IChunkVisitor _bodyVisitor;
         private GeneratedTagHelperRenderingContext _tagHelperContext;
 
-        public CSharpTagHelperCodeRenderer(IChunkVisitor bodyVisitor,
-                                           CSharpCodeWriter writer,
-                                           CodeBuilderContext context)
+        public CSharpTagHelperCodeRenderer([NotNull] IChunkVisitor bodyVisitor,
+                                           [NotNull] CSharpCodeWriter writer,
+                                           [NotNull] CodeBuilderContext context)
         {
             _writer = writer;
             _context = context;

@@ -12,7 +12,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private HashSet<TagHelperDescriptor> _declaredDescriptors;
         private GeneratedTagHelperRenderingContext _tagHelperContext;
 
-        public CSharpTagHelperDeclarationVisitor(CSharpCodeWriter writer, CodeBuilderContext context)
+        public CSharpTagHelperDeclarationVisitor([NotNull] CSharpCodeWriter writer,
+                                                 [NotNull] CodeBuilderContext context)
             : base(writer, context)
         {
             _declaredDescriptors = new HashSet<TagHelperDescriptor>(TagHelperDescriptorComparer.Default);

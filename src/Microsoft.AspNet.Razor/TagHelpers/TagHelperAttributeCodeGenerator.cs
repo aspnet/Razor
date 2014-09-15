@@ -34,7 +34,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         public void GenerateCode([NotNull] TagHelperAttributeDescriptor attributeInfo,
                                  [NotNull] CSharpCodeWriter writer,
                                  [NotNull] CodeGeneratorContext context,
-                                 Action<CSharpCodeWriter> renderAttributeValue)
+                                 [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
         {
             renderAttributeValue(writer);
         }

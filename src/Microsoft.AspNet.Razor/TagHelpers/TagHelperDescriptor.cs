@@ -44,7 +44,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         public TagHelperDescriptor(string tagName,
                                    string tagHelperName,
                                    ContentBehavior contentBehavior,
-                                   IEnumerable<TagHelperAttributeDescriptor> attributes)
+                                   [NotNull] IEnumerable<TagHelperAttributeDescriptor> attributes)
         {
             TagName = tagName;
             TagHelperName = tagHelperName;
