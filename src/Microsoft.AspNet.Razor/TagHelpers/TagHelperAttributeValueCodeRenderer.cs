@@ -2,9 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 
@@ -31,10 +28,10 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// Writes the string: "new MyPropertyType(...)" to the output where the "..." is rendered by calling the
         /// <paramref name="renderAttributeValue"/> <see cref="Action"/>.
         /// </remarks>
-        public void RenderAttributeValue([NotNull] TagHelperAttributeDescriptor attributeDescriptor,
-                                         [NotNull] CSharpCodeWriter writer,
-                                         [NotNull] CodeBuilderContext context,
-                                         [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
+        public virtual void RenderAttributeValue([NotNull] TagHelperAttributeDescriptor attributeDescriptor,
+                                                 [NotNull] CSharpCodeWriter writer,
+                                                 [NotNull] CodeBuilderContext context,
+                                                 [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
         {
             renderAttributeValue(writer);
         }
