@@ -23,10 +23,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private static readonly TagHelperAttributeDescriptorComparer AttributeDescriptorComparer =
             new TagHelperAttributeDescriptorComparer();
 
-        // TODO: The work to properly implement this will be done in: https://github.com/aspnet/Razor/issues/74
-        private static readonly TagHelperAttributeCodeRenderer AttributeCodeGenerator =
-            new TagHelperAttributeCodeRenderer();
-
+        private readonly TagHelperAttributeCodeRenderer _attributeCodeGenerator;
         private readonly CSharpCodeWriter _writer;
         private readonly CodeBuilderContext _context;
         private readonly IChunkVisitor _bodyVisitor;
@@ -40,12 +37,14 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         /// <param name="context">A <see cref="CodeGeneratorContext"/> instance that contains information about 
         /// the current code generation process.</param>
         public CSharpTagHelperCodeRenderer([NotNull] IChunkVisitor bodyVisitor,
+                                           [NotNull] TagHelperAttributeCodeRenderer attributeCodeGenerator,
                                            [NotNull] CSharpCodeWriter writer,
                                            [NotNull] CodeBuilderContext context)
         {
+            _bodyVisitor = bodyVisitor;
+            _attributeCodeGenerator = attributeCodeGenerator;
             _writer = writer;
             _context = context;
-            _bodyVisitor = bodyVisitor;
             _tagHelperContext = context.Host.GeneratedClassContext.GeneratedTagHelperRenderingContext;
         }
 
@@ -406,7 +405,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private void RenderAttribute(TagHelperAttributeDescriptor attributeDescriptor,
                                      Action<CSharpCodeWriter> valueRenderer)
         {
-            AttributeCodeGenerator.RenderAttribute(attributeDescriptor, _writer, _context, valueRenderer);
+            _attributeCodeGenerator.RenderAttribute(attributeDescriptor, _writer, _context, valueRenderer);
         }
 
         private static bool AcceptsRazorCode(TagHelperAttributeDescriptor attributeDescriptor)

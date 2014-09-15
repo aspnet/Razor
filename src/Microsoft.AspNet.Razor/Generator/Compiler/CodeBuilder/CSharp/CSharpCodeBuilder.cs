@@ -39,8 +39,12 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                         writer.WriteLine("private static object @__o;");
                     }
 
-                    new CSharpHelperVisitor(writer, Context).Accept(Tree.Chunks);
-                    new CSharpTypeMemberVisitor(writer, Context).Accept(Tree.Chunks);
+                    var csharpCodeVisitor = DecorateCSharpCodeVisitor(writer, 
+                                                                      Context, 
+                                                                      new CSharpCodeVisitor(writer, Context));
+
+                    new CSharpHelperVisitor(csharpCodeVisitor, writer, Context).Accept(Tree.Chunks);
+                    new CSharpTypeMemberVisitor(csharpCodeVisitor, writer, Context).Accept(Tree.Chunks);
                     new CSharpDesignTimeHelpersVisitor(writer, Context).AcceptTree(Tree);
                     new CSharpPropertyVisitor(writer, Context).Accept(Tree.Chunks);
 
@@ -55,13 +59,20 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                         {
                             new CSharpTagHelperDeclarationVisitor(writer, Context).Accept(Tree.Chunks);
 
-                            new CSharpCodeVisitor(writer, Context).Accept(Tree.Chunks);
+                            csharpCodeVisitor.Accept(Tree.Chunks);
                         }
                     }
                 }
             }
 
             return new CodeBuilderResult(writer.GenerateCode(), writer.LineMappingManager.Mappings);
+        }
+
+        protected virtual CSharpCodeVisitor DecorateCSharpCodeVisitor([NotNull] CSharpCodeWriter writer,
+                                                                      [NotNull] CodeBuilderContext context,
+                                                                      [NotNull] CSharpCodeVisitor incomingVisitor)
+        {
+            return incomingVisitor;
         }
 
         protected virtual CSharpCodeWritingScope BuildClassDeclaration(CSharpCodeWriter writer)

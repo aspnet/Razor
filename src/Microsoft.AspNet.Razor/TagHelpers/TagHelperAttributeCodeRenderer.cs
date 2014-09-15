@@ -31,10 +31,10 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// Writes the string: "new MyPropertyType(...)" to the output where the "..." is rendered by calling the
         /// <paramref name="renderAttributeValue"/> <see cref="Action"/>.
         /// </remarks>
-        public void RenderAttribute([NotNull] TagHelperAttributeDescriptor attributeDescriptor,
-                                    [NotNull] CSharpCodeWriter writer,
-                                    [NotNull] CodeGeneratorContext context,
-                                    [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
+        public virtual void RenderAttribute([NotNull] TagHelperAttributeDescriptor attributeDescriptor,
+                                            [NotNull] CSharpCodeWriter writer,
+                                            [NotNull] CodeGeneratorContext context,
+                                            [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
         {
             renderAttributeValue(writer);
         }
