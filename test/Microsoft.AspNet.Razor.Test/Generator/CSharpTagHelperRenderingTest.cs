@@ -1,17 +1,14 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Reflection;
-using Microsoft.AspNet.Razor.Parser;
-using Microsoft.AspNet.Razor.Parser.TagHelpers.Internal;
 using Microsoft.AspNet.Razor.TagHelpers;
 using Moq;
 using Xunit;
 
 namespace Microsoft.AspNet.Razor.Test.Generator
 {
-    public class CSharpTagHelperRenderingTest : CSharpRazorCodeGeneratorTest
+    public class CSharpTagHelperRenderingTest : TagHelperTestBase
     {
         [Theory]
         [InlineData("SingleTagHelper")]
@@ -73,39 +70,6 @@ namespace Microsoft.AspNet.Razor.Test.Generator
 
             // Act & Assert
             RunTagHelperTest("ContentBehaviorTagHelpers", tagHelperProvider);
-        }
-
-        private void RunTagHelperTest(string testName, TagHelperDescriptorProvider tagHelperProvider)
-        {
-            RunTest(
-                name: testName,
-                templateEngineConfig: (engine) =>
-                {
-                    return new TagHelperTemplateEngine(engine, tagHelperProvider);
-                });
-        }
-
-        private class TagHelperTemplateEngine : RazorTemplateEngine
-        {
-            private TagHelperDescriptorProvider _tagHelperProvider;
-
-            public TagHelperTemplateEngine(RazorTemplateEngine engine, TagHelperDescriptorProvider tagHelperProvider)
-                : base(engine.Host)
-            {
-                _tagHelperProvider = tagHelperProvider;
-            }
-
-            protected internal override RazorParser CreateParser()
-            {
-                var parser = base.CreateParser();
-                var optimizers = parser.Optimizers.Where(opmzr => !(opmzr is TagHelperParseTreeRewriter));
-
-                parser.Optimizers = optimizers.Concat(new[] {
-                    new TagHelperParseTreeRewriter(_tagHelperProvider)
-                }).ToList();
-
-                return parser;
-            }
         }
     }
 }
