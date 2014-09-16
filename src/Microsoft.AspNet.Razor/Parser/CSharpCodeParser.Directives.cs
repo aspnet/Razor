@@ -19,12 +19,21 @@ namespace Microsoft.AspNet.Razor.Parser
     {
         private void SetupDirectives()
         {
+            MapDirectives(AddTagHelperDirective, SyntaxConstants.CSharp.AddTagHelper);
             MapDirectives(InheritsDirective, SyntaxConstants.CSharp.InheritsKeyword);
             MapDirectives(FunctionsDirective, SyntaxConstants.CSharp.FunctionsKeyword);
             MapDirectives(SectionDirective, SyntaxConstants.CSharp.SectionKeyword);
             MapDirectives(HelperDirective, SyntaxConstants.CSharp.HelperKeyword);
             MapDirectives(LayoutDirective, SyntaxConstants.CSharp.LayoutKeyword);
             MapDirectives(SessionStateDirective, SyntaxConstants.CSharp.SessionStateKeyword);
+        }
+
+        protected virtual void AddTagHelperDirective()
+        {
+            TagHelperDirective(SyntaxConstants.CSharp.AddTagHelper, (lookupText) =>
+            {
+                return new AddTagHelperCodeGenerator(lookupText);
+            });
         }
 
         protected virtual void LayoutDirective()
@@ -493,6 +502,56 @@ namespace Microsoft.AspNet.Razor.Parser
 
             // Set up code generation
             Span.CodeGenerator = createCodeGenerator(baseType.Trim());
+
+            // Output the span and finish the block
+            CompleteBlock();
+            Output(SpanKind.Code);
+        }
+
+        private void TagHelperDirective(string keyword, Func<string, SpanCodeGenerator> codeGeneratorBuilder)
+        {
+            AssertDirective(keyword);
+
+            // Accept the directive name
+            AcceptAndMoveNext();
+
+            // Set the block type
+            Context.CurrentBlock.Type = BlockType.Directive;
+
+            var foundWhitespace = At(CSharpSymbolType.WhiteSpace);
+            AcceptWhile(CSharpSymbolType.WhiteSpace);
+            // If we found whitespace then any content placed within the whitespace MAY cause a destructive change
+            // to the document.  We can't accept it.
+            Output(SpanKind.MetaCode, foundWhitespace ? AcceptedCharacters.None : AcceptedCharacters.Any);
+
+            if (EndOfFile || At(CSharpSymbolType.NewLine))
+            {
+                Context.OnError(CurrentLocation, RazorResources.FormatParseError_DirectiveMustHaveValue(keyword));
+            }
+            else
+            {
+                // Need to grab the current location before we accept until the end of the line.
+                var startLocation = CurrentLocation;
+
+                // Parse to the end of the line
+                AcceptUntil(CSharpSymbolType.NewLine);
+
+                // Pull out the value minus the spaces at the end
+                var rawValue = Span.GetContent().Value.TrimEnd();
+
+                // We expect the directive to be surrounded in quotes.
+                if (!rawValue.StartsWith("\"", StringComparison.OrdinalIgnoreCase) ||
+                    !rawValue.EndsWith("\"", StringComparison.OrdinalIgnoreCase))
+                {
+                    Context.OnError(startLocation, 
+                                    RazorResources.FormatParseError_DirectiveMustBeSurroundedByQuotes(keyword));
+                }
+                else
+                {
+                    // Set up code generation
+                    Span.CodeGenerator = codeGeneratorBuilder(rawValue.Trim('"'));
+                }
+            }
 
             // Output the span and finish the block
             CompleteBlock();
