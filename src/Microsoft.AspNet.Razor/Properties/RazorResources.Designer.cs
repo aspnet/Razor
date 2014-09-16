@@ -1462,6 +1462,38 @@ namespace Microsoft.AspNet.Razor
             return GetString("TagHelpers_CannotHaveCSharpInTagDeclaration");
         }
 
+        /// <summary>
+        /// Directive '{0}' must have a value.
+        /// </summary>
+        internal static string ParseError_DirectiveMustHaveValue
+        {
+            get { return GetString("ParseError_DirectiveMustHaveValue"); }
+        }
+
+        /// <summary>
+        /// Directive '{0}' must have a value.
+        /// </summary>
+        internal static string FormatParseError_DirectiveMustHaveValue(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ParseError_DirectiveMustHaveValue"), p0);
+        }
+
+        /// <summary>
+        /// Directive '{0}'s value must be surrounded in double quotes.
+        /// </summary>
+        internal static string ParseError_DirectiveMustBeSurroundedByQuotes
+        {
+            get { return GetString("ParseError_DirectiveMustBeSurroundedByQuotes"); }
+        }
+
+        /// <summary>
+        /// Directive '{0}'s value must be surrounded in double quotes.
+        /// </summary>
+        internal static string FormatParseError_DirectiveMustBeSurroundedByQuotes(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ParseError_DirectiveMustBeSurroundedByQuotes"), p0);
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);

@@ -38,6 +38,14 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             }
         }
 
+        public void AddAddTagHelperChunk(string lookupText, SyntaxTreeNode association)
+        {
+            AddChunk(new AddTagHelperChunk
+            {
+                LookupText = lookupText
+            }, association);
+        }
+
         public void AddLiteralChunk(string literal, SyntaxTreeNode association)
         {
             if (_lastChunk is LiteralChunk)
