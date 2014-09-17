@@ -24,6 +24,7 @@ namespace TestOutput
             AppendTagHelper __AppendTagHelper;
             PrependTagHelper __PrependTagHelper;
             ReplaceTagHelper __ReplaceTagHelper;
+            WriteLiteral("\r\n");
             __executionContext = __tagHelperScopeManager.Begin("modify");
             __ModifyTagHelper = CreateTagHelper<ModifyTagHelper>();
             __executionContext.Add(__ModifyTagHelper);

@@ -20,6 +20,7 @@ namespace TestOutput
             var __tagHelperBufferedStringValue = string.Empty;
             TagHelperExecutionContext __executionContext = null;
             PTagHelper __PTagHelper;
+            WriteLiteral("\r\n");
             __executionContext = __tagHelperScopeManager.Begin("p");
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __executionContext.Add(__PTagHelper);
