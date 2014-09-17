@@ -19,7 +19,7 @@ namespace TestOutput
             PTagHelper __p_PTagHelper;
             InputTagHelper __input_InputTagHelper;
             InputTagHelper2 __input_InputTagHelper2;
-            WriteLiteral("<div class=\"randomNonTagHelperAttribute\">\r\n    ");
+            WriteLiteral("\r\n<div class=\"randomNonTagHelperAttribute\">\r\n    ");
             __p_PTagHelper = __tagHelperManager.InstantiateTagHelper<PTagHelper>();
             __tagHelperManager.AddHtmlAttribute("class", "Hello World");
             __tagHelperManager.StartTagHelpersScope("p");

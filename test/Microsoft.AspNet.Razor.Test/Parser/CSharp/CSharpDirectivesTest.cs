@@ -13,6 +13,57 @@ namespace Microsoft.AspNet.Razor.Test.Parser.CSharp
     public class CSharpDirectivesTest : CsHtmlCodeParserTestBase
     {
         [Fact]
+        public void AddTagHelperDirective()
+        {
+            ParseBlockTest("@addtaghelper \"Foo\"",
+                new DirectiveBlock(
+                    Factory.CodeTransition(),
+                    Factory.MetaCode(SyntaxConstants.CSharp.AddTagHelper + " ")
+                           .Accepts(AcceptedCharacters.None),
+                    Factory.Code("\"Foo\"").AsAddTagHelper("Foo")));
+        }
+
+        [Fact]
+        public void AddTagHelperDirectiveSupportsSpaces()
+        {
+            ParseBlockTest("@addtaghelper   \"  Foo,   Bar \"   ",
+                new DirectiveBlock(
+                    Factory.CodeTransition(),
+                    Factory.MetaCode(SyntaxConstants.CSharp.AddTagHelper + "   ")
+                           .Accepts(AcceptedCharacters.None),
+                    Factory.Code("\"  Foo,   Bar \"   ").AsAddTagHelper("  Foo,   Bar ")));
+        }
+
+        [Fact]
+        public void AddTagHelperDirectiveRequiresValue()
+        {
+            ParseBlockTest("@addtaghelper ",
+                new DirectiveBlock(
+                    Factory.CodeTransition(),
+                    Factory.MetaCode(SyntaxConstants.CSharp.AddTagHelper + " ")
+                           .Accepts(AcceptedCharacters.None),
+                    Factory.EmptyCSharp().AsAddTagHelper(string.Empty)),
+                 new RazorError(
+                     RazorResources.FormatParseError_DirectiveMustHaveValue(SyntaxConstants.CSharp.AddTagHelper),
+                    14, 0, 14));
+        }
+
+        [Fact]
+        public void AddTagHelperDirectiveRequiresDoubleQuotesAroundValue()
+        {
+            ParseBlockTest("@addtaghelper Foo",
+                new DirectiveBlock(
+                    Factory.CodeTransition(),
+                    Factory.MetaCode(SyntaxConstants.CSharp.AddTagHelper + " ")
+                           .Accepts(AcceptedCharacters.None),
+                    Factory.Code("Foo").AsAddTagHelper("Foo")),
+                 new RazorError(
+                     RazorResources.FormatParseError_DirectiveMustBeSurroundedByQuotes(
+                         SyntaxConstants.CSharp.AddTagHelper),
+                    14, 0, 14));
+        }
+
+        [Fact]
         public void InheritsDirective()
         {
             ParseBlockTest("@inherits System.Web.WebPages.WebPage",

@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
+using Microsoft.AspNet.Razor.TagHelpers;
 using Microsoft.AspNet.Razor.Test.Framework;
 using Xunit;
 
@@ -12,25 +13,38 @@ namespace Microsoft.AspNet.Razor.Test.Parser
 {
     public class RazorParserTest
     {
+        // TODO: Uncomment these tests once NotNull attribute works
+        /*
+        [Fact]
+        public void ConstructorRequiresNonNullTagHelperDescriptorResolver()
+        {
+            Assert.Throws<ArgumentNullException>("tagHelperDescriptorResolver",
+                () => new RazorParser(null, new CSharpCodeParser(), new HtmlMarkupParser()));
+        }
+
         [Fact]
         public void ConstructorRequiresNonNullCodeParser()
         {
-            Assert.Throws<ArgumentNullException>("codeParser", () => new RazorParser(null, new HtmlMarkupParser()));
+            Assert.Throws<ArgumentNullException>("codeParser",
+                () => new RazorParser(new TagHelperDescriptorResolver(), null, new HtmlMarkupParser()));
         }
 
         [Fact]
         public void ConstructorRequiresNonNullMarkupParser()
         {
-            Assert.Throws<ArgumentNullException>("markupParser", () => new RazorParser(new CSharpCodeParser(), null));
+            Assert.Throws<ArgumentNullException>("markupParser",
+                () => new RazorParser(new TagHelperDescriptorResolver(), new CSharpCodeParser(), null));
         }
-
+        */
         [Fact]
         public void ParseMethodCallsParseDocumentOnMarkupParserAndReturnsResults()
         {
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            RazorParser parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
+            RazorParser parser = new RazorParser(new TagHelperDescriptorResolver(), 
+                                                 new CSharpCodeParser(), 
+                                                 new HtmlMarkupParser());
 
             // Act/Assert
             ParserTestBase.EvaluateResults(parser.Parse(new StringReader("foo @bar baz")),
@@ -50,7 +64,9 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            RazorParser parser = new RazorParser(new CSharpCodeParser(), new HtmlMarkupParser());
+            RazorParser parser = new RazorParser(new TagHelperDescriptorResolver(),
+                                                 new CSharpCodeParser(), 
+                                                 new HtmlMarkupParser());
 
             // Act
             ParserResults results = parser.Parse(new StringReader("foo @bar baz"));
@@ -78,7 +94,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             // Arrange
             ParserBase markupParser = new MockMarkupParser();
             ParserBase codeParser = new CSharpCodeParser();
-            RazorParser parser = new RazorParser(codeParser, markupParser);
+            RazorParser parser = new RazorParser(new TagHelperDescriptorResolver(), codeParser, markupParser);
             TextReader expectedReader = new StringReader("foo");
 
             // Act

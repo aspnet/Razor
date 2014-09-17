@@ -19,7 +19,8 @@ namespace TestOutput
             PTagHelper __p_PTagHelper;
             InputTagHelper __input_InputTagHelper;
             InputTagHelper2 __input_InputTagHelper2;
-#line 1 "ComplexTagHelpers.cshtml"
+            WriteLiteral("\r\n");
+#line 3 "ComplexTagHelpers.cshtml"
  if (true)
 {
     var checkbox = "checkbox";
@@ -34,7 +35,7 @@ namespace TestOutput
                 NewWritingScope();
                 WriteLiteral("Current Time: ");
                 Write(
-#line 6 "ComplexTagHelpers.cshtml"
+#line 8 "ComplexTagHelpers.cshtml"
 DateTime.Now
 
 #line default
@@ -50,13 +51,13 @@ DateTime.Now
             await __tagHelperManager.ExecuteTagHelpersAsync();
             WriteLiteral(__tagHelperManager.GenerateTagStart());
             WriteLiteral("\r\n            <h1>Set Time:</h1>\r\n");
-#line 8 "ComplexTagHelpers.cshtml"
+#line 10 "ComplexTagHelpers.cshtml"
             
 
 #line default
 #line hidden
 
-#line 8 "ComplexTagHelpers.cshtml"
+#line 10 "ComplexTagHelpers.cshtml"
              if (false)
             {
 
@@ -84,7 +85,7 @@ DateTime.Now
             WriteLiteral(__tagHelperManager.GenerateTagEnd());
             __tagHelperManager.EndTagHelpersScope();
             WriteLiteral("\r\n");
-#line 11 "ComplexTagHelpers.cshtml"
+#line 13 "ComplexTagHelpers.cshtml"
             }
             else
             {
@@ -102,7 +103,7 @@ DateTime.Now
             try {
                 NewWritingScope();
                 Write(
-#line 14 "ComplexTagHelpers.cshtml"
+#line 16 "ComplexTagHelpers.cshtml"
 checkbox
 
 #line default
@@ -131,7 +132,7 @@ checkbox
             try {
                 NewWritingScope();
                 Write(
-#line 15 "ComplexTagHelpers.cshtml"
+#line 17 "ComplexTagHelpers.cshtml"
 true ? "checkbox" : "anything"
 
 #line default
@@ -155,21 +156,21 @@ true ? "checkbox" : "anything"
             __input_InputTagHelper = __tagHelperManager.InstantiateTagHelper<InputTagHelper>();
             try {
                 NewWritingScope();
-#line 16 "ComplexTagHelpers.cshtml"
+#line 18 "ComplexTagHelpers.cshtml"
 if(true) {
 
 #line default
 #line hidden
 
                 WriteLiteral(" checkbox ");
-#line 16 "ComplexTagHelpers.cshtml"
+#line 18 "ComplexTagHelpers.cshtml"
 } else {
 
 #line default
 #line hidden
 
                 WriteLiteral(" anything ");
-#line 16 "ComplexTagHelpers.cshtml"
+#line 18 "ComplexTagHelpers.cshtml"
 }
 
 #line default
@@ -189,7 +190,7 @@ if(true) {
             WriteLiteral(__tagHelperManager.GenerateTagEnd());
             __tagHelperManager.EndTagHelpersScope();
             WriteLiteral("\r\n");
-#line 17 "ComplexTagHelpers.cshtml"
+#line 19 "ComplexTagHelpers.cshtml"
             }
 
 #line default
@@ -199,7 +200,7 @@ if(true) {
             WriteLiteral(__tagHelperManager.GenerateTagEnd());
             __tagHelperManager.EndTagHelpersScope();
             WriteLiteral("\r\n    </div>\r\n");
-#line 20 "ComplexTagHelpers.cshtml"
+#line 22 "ComplexTagHelpers.cshtml"
 }
 
 #line default

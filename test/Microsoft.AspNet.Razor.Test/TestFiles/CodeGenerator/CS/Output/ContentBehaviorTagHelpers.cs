@@ -21,6 +21,7 @@ namespace TestOutput
             AppendTagHelper __append_AppendTagHelper;
             PrependTagHelper __prepend_PrependTagHelper;
             ReplaceTagHelper __replace_ReplaceTagHelper;
+            WriteLiteral("\r\n");
             __modify_ModifyTagHelper = __tagHelperManager.InstantiateTagHelper<ModifyTagHelper>();
             __tagHelperManager.AddHtmlAttribute("class", "myModifyClass");
             __tagHelperManager.AddHtmlAttribute("style", "color:red;");
