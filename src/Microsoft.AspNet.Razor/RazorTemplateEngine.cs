@@ -185,9 +185,8 @@ namespace Microsoft.AspNet.Razor
         {
             var codeParser = Host.CodeLanguage.CreateCodeParser();
             var markupParser = Host.CreateMarkupParser();
-            var tagHelperDescriptorResolver = Host.CreateTagHelperDescriptorResolver();
 
-            return new RazorParser(tagHelperDescriptorResolver,
+            return new RazorParser(Host.TagHelperDescriptorResolver,
                                    Host.DecorateCodeParser(codeParser),
                                    Host.DecorateMarkupParser(markupParser))
             {
