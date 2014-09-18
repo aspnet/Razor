@@ -19,7 +19,7 @@ namespace Microsoft.AspNet.Razor.Parser
     {
         private ITagHelperDescriptorResolver _tagHelperDescriptorResolver;
 
-        public RazorParser([NotNull] ITagHelperDescriptorResolver tagHelperDescriptorResolver,
+        public RazorParser(ITagHelperDescriptorResolver tagHelperDescriptorResolver,
                            [NotNull] ParserBase codeParser,
                            [NotNull] ParserBase markupParser)
         {
@@ -143,12 +143,15 @@ namespace Microsoft.AspNet.Razor.Parser
                 current = rewriter.Rewrite(current);
             }
 
-            var tagHelperRegistrationVisitor = new TagHelperRegistrationVisitor(_tagHelperDescriptorResolver);
-            var tagHelperProvider = tagHelperRegistrationVisitor.CreateProvider(current);
+            if (_tagHelperDescriptorResolver != null)
+            {
+                var tagHelperRegistrationVisitor = new TagHelperRegistrationVisitor(_tagHelperDescriptorResolver);
+                var tagHelperProvider = tagHelperRegistrationVisitor.CreateProvider(current);
 
-            var tagHelperParseTreeRewriter = new TagHelperParseTreeRewriter(tagHelperProvider);
-            // Rewrite the document to utilize tag helpers
-            current = tagHelperParseTreeRewriter.Rewrite(current);
+                var tagHelperParseTreeRewriter = new TagHelperParseTreeRewriter(tagHelperProvider);
+                // Rewrite the document to utilize tag helpers
+                current = tagHelperParseTreeRewriter.Rewrite(current);
+            }
 
             // Link the leaf nodes into a chain
             Span prev = null;
