@@ -33,19 +33,19 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                 new TagHelperDescriptor[]
                 {
                     new TagHelperDescriptor("p",
-                                            "pTagHelper", 
+                                            "PTagHelper", 
                                             ContentBehavior.None,
                                             new [] {
                                                 new TagHelperAttributeDescriptor("foo", pFooPropertyInfo.Object)
                                             }),
                     new TagHelperDescriptor("input",
-                                            "inputTagHelper",
+                                            "InputTagHelper",
                                             ContentBehavior.None,
                                             new TagHelperAttributeDescriptor[] {
                                                 new TagHelperAttributeDescriptor("type", inputTypePropertyInfo.Object)
                                             }),
                     new TagHelperDescriptor("input",
-                                            "inputTagHelper2",
+                                            "InputTagHelper2",
                                             ContentBehavior.None,
                                             new TagHelperAttributeDescriptor[] {
                                                 new TagHelperAttributeDescriptor("type", inputTypePropertyInfo.Object),
@@ -64,11 +64,11 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             var tagHelperProvider = new TagHelperDescriptorProvider(
                 new TagHelperDescriptor[]
                 {
-                    new TagHelperDescriptor("modify", "modifyTagHelper", ContentBehavior.Modify),
-                    new TagHelperDescriptor("none", "noneTagHelper", ContentBehavior.None),
-                    new TagHelperDescriptor("append", "appendTagHelper", ContentBehavior.Append),
-                    new TagHelperDescriptor("prepend", "prependTagHelper", ContentBehavior.Prepend),
-                    new TagHelperDescriptor("replace", "replaceTagHelper", ContentBehavior.Replace),
+                    new TagHelperDescriptor("modify", "ModifyTagHelper", ContentBehavior.Modify),
+                    new TagHelperDescriptor("none", "NoneTagHelper", ContentBehavior.None),
+                    new TagHelperDescriptor("append", "AppendTagHelper", ContentBehavior.Append),
+                    new TagHelperDescriptor("prepend", "PrependTagHelper", ContentBehavior.Prepend),
+                    new TagHelperDescriptor("replace", "ReplaceTagHelper", ContentBehavior.Replace),
                 });
 
             // Act & Assert
