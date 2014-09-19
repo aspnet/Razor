@@ -124,7 +124,8 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                                                                    "Template",
                                                                    "DefineSection",
                                                                    "BeginContext",
-                                                                   "EndContext")
+                                                                   "EndContext",
+                                                                   "Activate")
                                                                    {
                                                                        LayoutPropertyName = "Layout",
                                                                        ResolveUrlMethodName = "Href"

@@ -14,10 +14,14 @@ namespace Microsoft.AspNet.Razor.Test.Generator
     public class CSharpTagHelperRenderingTest : CSharpRazorCodeGeneratorTest
     {
         [Theory]
+        [InlineData("SingleTagHelper")]
         [InlineData("BasicTagHelpers")]
         [InlineData("ComplexTagHelpers")]
         public void TagHelpers_ChangeGeneratedOutput(string testType)
         {
+            var pFooPropertyInfo = new Mock<PropertyInfo>();
+            pFooPropertyInfo.Setup(ppi => ppi.PropertyType).Returns(typeof(int));
+            pFooPropertyInfo.Setup(ppi => ppi.Name).Returns("Foo");
             var inputTypePropertyInfo = new Mock<PropertyInfo>();
             inputTypePropertyInfo.Setup(ipi => ipi.PropertyType).Returns(typeof(string));
             inputTypePropertyInfo.Setup(ipi => ipi.Name).Returns("Type");
@@ -28,7 +32,12 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             var tagHelperProvider = new TagHelperDescriptorProvider(
                 new TagHelperDescriptor[]
                 {
-                    new TagHelperDescriptor("p", "pTagHelper", ContentBehavior.None),
+                    new TagHelperDescriptor("p",
+                                            "pTagHelper", 
+                                            ContentBehavior.None,
+                                            new [] {
+                                                new TagHelperAttributeDescriptor("foo", pFooPropertyInfo.Object)
+                                            }),
                     new TagHelperDescriptor("input",
                                             "inputTagHelper",
                                             ContentBehavior.None,
