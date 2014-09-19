@@ -27,10 +27,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             {
                 _foundTagHelpers = true;
 
-                Writer.WriteVariableDeclaration(
-                    _tagHelperContext.TagHelperManagerName,
-                    CSharpTagHelperCodeRenderer.ManagerVariableName,
-                    _tagHelperContext.CreateTagHelperMethodName + "()");
                 Writer.WriteVariableDeclaration("var",
                                                 CSharpTagHelperCodeRenderer.BufferedAttributeValueVariableName,
                                                 "string.Empty");
@@ -42,9 +38,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 {
                     _declaredDescriptors.Add(descriptor);
 
-                    Writer.WriteVariableDeclaration(descriptor.TagHelperName,
-                                                    CSharpTagHelperCodeRenderer.GetVariableName(descriptor),
-                                                    value: null);
+                    Writer.Write(descriptor.TagHelperName)
+                          .Write(" ")
+                          .Write(CSharpTagHelperCodeRenderer.GetVariableName(descriptor))
+                          .WriteLine(";");
                 }
             }
 

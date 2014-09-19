@@ -19,7 +19,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// Called during Razor's code generation process to generate code that instantiates the value of the tag 
         /// helper's property. Last value written should not be or end with a semicolon.
         /// </summary>
-        /// <param name="attributeInfo">The <see cref="TagHelperAttributeDescriptor"/> to generate code for.</param>
+        /// <param name="attributeDescriptor">The <see cref="TagHelperAttributeDescriptor"/> to generate code for.</param>
         /// <param name="writer">The <see cref="CSharpCodeWriter"/> that's used to write code.</param>
         /// <param name="context">A <see cref="CodeGeneratorContext"/> instance that contains information about 
         /// the current code generation process.</param>
@@ -31,7 +31,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// Writes the string: "new MyPropertyType(...)" to the output where the "..." is rendered by calling the
         /// <paramref name="renderAttributeValue"/> <see cref="Action"/>.
         /// </remarks>
-        public void GenerateCode([NotNull] TagHelperAttributeDescriptor attributeInfo,
+        public void GenerateCode([NotNull] TagHelperAttributeDescriptor attributeDescriptor,
                                  [NotNull] CSharpCodeWriter writer,
                                  [NotNull] CodeGeneratorContext context,
                                  [NotNull] Action<CSharpCodeWriter> renderAttributeValue)

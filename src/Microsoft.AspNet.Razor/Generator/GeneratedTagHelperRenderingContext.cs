@@ -14,10 +14,9 @@ namespace Microsoft.AspNet.Razor.Generator
 
         public GeneratedTagHelperRenderingContext()
         {
-            CreateTagHelperMethodName = "CreateTagHelper";
+            StartTagHelperMethodName = "StartTagHelper";
             ExecuteTagHelpersMethodName = "ExecuteTagHelpers";
             StartActiveTagHelpersMethodName = "StartActiveTagHelpers";
-            AddActiveTagHelperMethodName = "AddActiveTagHelper";
             EndTagHelpersMethodName = "EndTagHelpers";
             GenerateTagStartMethodName = "GenerateTagStart";
             GenerateTagContentMethodName = "GenerateTagContent";
@@ -28,12 +27,10 @@ namespace Microsoft.AspNet.Razor.Generator
             TagHelperManagerName = "ITagHelperManager";
             NewWritingScopeMethodName = "NewWritingScope";
             EndWritingScopeMethodName = "EndWritingScope";
-            CreateTagHelperRendererMethodName = "CreateTagHelperRenderer";
         }
 
-        public string CreateTagHelperMethodName { get; private set; }
+        public string StartTagHelperMethodName { get; private set; }
         public string ExecuteTagHelpersMethodName { get; private set; }
-        public string AddActiveTagHelperMethodName { get; private set; }
         public string StartActiveTagHelpersMethodName { get; private set; }
         public string EndTagHelpersMethodName { get; private set; }
         public string GenerateTagStartMethodName { get; private set; }
@@ -45,6 +42,5 @@ namespace Microsoft.AspNet.Razor.Generator
         public string TagHelperManagerName { get; private set; }
         public string NewWritingScopeMethodName { get; private set; }
         public string EndWritingScopeMethodName { get; private set; }
-        public string CreateTagHelperRendererMethodName { get; private set; }
     }
 }

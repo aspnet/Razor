@@ -42,6 +42,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                     new CSharpHelperVisitor(writer, Context).Accept(Tree.Chunks);
                     new CSharpTypeMemberVisitor(writer, Context).Accept(Tree.Chunks);
                     new CSharpDesignTimeHelpersVisitor(writer, Context).AcceptTree(Tree);
+                    new CSharpPropertyVisitor(writer, Context).Accept(Tree.Chunks);
 
                     BuildConstructor(writer);
 

@@ -72,7 +72,10 @@ namespace Microsoft.AspNet.Razor.Generator
                                      string writeToMethodName,
                                      string writeLiteralToMethodName,
                                      string templateTypeName)
-            : this(generatedTagHelperRenderingContext, executeMethodName, writeMethodName, writeLiteralMethodName)
+            : this(generatedTagHelperRenderingContext,
+                   executeMethodName, 
+                   writeMethodName, 
+                   writeLiteralMethodName)
         {
             WriteToMethodName = writeToMethodName;
             WriteLiteralToMethodName = writeLiteralToMethodName;
@@ -121,6 +124,31 @@ namespace Microsoft.AspNet.Razor.Generator
             EndContextMethodName = endContextMethodName;
         }
 
+        public GeneratedClassContext(GeneratedTagHelperRenderingContext generatedTagHelperRenderingContext,
+                                     string executeMethodName,
+                                     string writeMethodName,
+                                     string writeLiteralMethodName,
+                                     string writeToMethodName,
+                                     string writeLiteralToMethodName,
+                                     string templateTypeName,
+                                     string defineSectionMethodName,
+                                     string beginContextMethodName,
+                                     string endContextMethodName,
+                                     string activateAttributeName)
+            : this(generatedTagHelperRenderingContext,
+                   executeMethodName,
+                   writeMethodName,
+                   writeLiteralMethodName,
+                   writeToMethodName,
+                   writeLiteralToMethodName,
+                   templateTypeName,
+                   defineSectionMethodName,
+                   beginContextMethodName,
+                   endContextMethodName)
+        {
+            ActivateAttributeName = activateAttributeName;
+        }
+
         // Required Items
         public string WriteMethodName { get; private set; }
         public string WriteLiteralMethodName { get; private set; }
@@ -131,6 +159,7 @@ namespace Microsoft.AspNet.Razor.Generator
 
 
         // Optional Items
+        public string ActivateAttributeName { get; set; }
         public string BeginContextMethodName { get; set; }
         public string EndContextMethodName { get; set; }
         public string LayoutPropertyName { get; set; }

@@ -14,7 +14,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
     public class CSharpTagHelperCodeRenderer
     {
         public static readonly string ManagerVariableName = "__tagHelperManager";
-        public static readonly string BufferedAttributeValueVariableName = "__tagHelperBufferValue";
+        public static readonly string BufferedAttributeValueVariableName = "__tagHelperAttributeValue";
 
         private const ContentBehavior DefaultContentBehavior = default(ContentBehavior);
 
@@ -92,22 +92,18 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
                 // Create the tag helper
                 _writer.WriteStartAssignment(tagHelperVariableName)
-                       .WriteStartMethodInvocation(_tagHelperContext.CreateTagHelperMethodName,
-                                                   genericArguments: new string[] {
-                                                       tagHelperDescriptor.TagHelperName
-                                                   });
-                _writer.WriteEndMethodInvocation();
+                       .Write(ManagerVariableName)
+                       .Write(".")
+                       .Write(_tagHelperContext.StartTagHelperMethodName)
+                       .Write("<")
+                       .Write(tagHelperDescriptor.TagHelperName)
+                       .WriteLine(">();");
 
                 // Render all of the requested attribute values for the tag helper.
                 RenderRequestedHTMLAttributes(chunk.Attributes,
                                               tagHelperVariableName,
                                               tagHelperDescriptor.Attributes,
                                               htmlAttributeValues);
-
-                // Add the tag helper to the manager so it can manage all the active tag helpers.
-                _writer.WriteInstanceMethodInvocation(ManagerVariableName,
-                                                      _tagHelperContext.AddActiveTagHelperMethodName,
-                                                      tagHelperVariableName);
             }
         }
 
