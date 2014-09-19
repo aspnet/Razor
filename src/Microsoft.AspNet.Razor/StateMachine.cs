@@ -22,8 +22,12 @@ namespace Microsoft.AspNet.Razor
                     result = CurrentState();
                     CurrentState = result.Next;
                 }
-                while (!result.HasOutput);
+                while (result != null && !result.HasOutput);
 
+                if (result == null)
+                {
+                    return default(TReturn); // Terminated
+                }
                 return result.Output;
             }
             return default(TReturn);
@@ -34,7 +38,7 @@ namespace Microsoft.AspNet.Razor
         /// </summary>
         protected StateResult Stop()
         {
-            return new StateResult();
+            return null;
         }
 
         /// <summary>
@@ -79,32 +83,24 @@ namespace Microsoft.AspNet.Razor
             return new StateResult(output, CurrentState);
         }
 
-        protected struct StateResult
+        protected class StateResult
         {
-            private readonly bool _hasOutput = true;
-            private readonly TReturn _output;
-            private readonly State _next;
-
             public StateResult(State next)
             {
-                _next = next;
-
-                _hasOutput = false;
-                _output = default(TReturn);
+                HasOutput = false;
+                Next = next;
             }
 
-            // Emit a result with a follow up state
             public StateResult(TReturn output, State next)
-            { 
-                _output = output;
-                _next = next;
-
-                _hasOutput = true;
+            {
+                HasOutput = true;
+                Output = output;
+                Next = next;
             }
 
-            public bool HasOutput { get { return _hasOutput; } }
-            public TReturn Output { get { return _output; } }
-            public State Next { get { return _next; } }
+            public bool HasOutput { get; set; }
+            public TReturn Output { get; set; }
+            public State Next { get; set; }
         }
     }
 }
