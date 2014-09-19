@@ -5,8 +5,8 @@ using System;
 using System.IO;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.TagHelpers;
 using Microsoft.AspNet.Razor.Test.Framework;
+using Microsoft.AspNet.Razor.Test.TagHelpers;
 using Xunit;
 
 namespace Microsoft.AspNet.Razor.Test.Parser
@@ -42,7 +42,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            RazorParser parser = new RazorParser(new TagHelperDescriptorResolver(), 
+            RazorParser parser = new RazorParser(new TestTagHelperDescriptorResolver(), 
                                                  new CSharpCodeParser(), 
                                                  new HtmlMarkupParser());
 
@@ -64,7 +64,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            RazorParser parser = new RazorParser(new TagHelperDescriptorResolver(),
+            RazorParser parser = new RazorParser(new TestTagHelperDescriptorResolver(),
                                                  new CSharpCodeParser(), 
                                                  new HtmlMarkupParser());
 
@@ -94,7 +94,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             // Arrange
             ParserBase markupParser = new MockMarkupParser();
             ParserBase codeParser = new CSharpCodeParser();
-            RazorParser parser = new RazorParser(new TagHelperDescriptorResolver(), codeParser, markupParser);
+            RazorParser parser = new RazorParser(new TestTagHelperDescriptorResolver(), codeParser, markupParser);
             TextReader expectedReader = new StringReader("foo");
 
             // Act
