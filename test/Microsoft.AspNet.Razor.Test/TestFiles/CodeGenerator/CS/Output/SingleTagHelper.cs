@@ -16,10 +16,10 @@ namespace TestOutput
         public override async Task ExecuteAsync()
         {
             var __tagHelperAttributeValue = string.Empty;
-            pTagHelper __p_pTagHelper_None;
-            __p_pTagHelper_None = __tagHelperManager.StartTagHelper<pTagHelper>();
-            __p_pTagHelper_None.Foo = 1337;
-            __tagHelperManager.AddTagHelperAttribute("foo", __p_pTagHelper_None.Foo);
+            PTagHelper __p_PTagHelper_None;
+            __p_PTagHelper_None = __tagHelperManager.StartTagHelper<PTagHelper>();
+            __p_PTagHelper_None.Foo = 1337;
+            __tagHelperManager.AddTagHelperAttribute("foo", __p_PTagHelper_None.Foo);
             __tagHelperManager.AddHTMLAttribute("class", "Hello World");
             __tagHelperManager.StartActiveTagHelpers("p");
             __tagHelperManager.ExecuteTagHelpers();

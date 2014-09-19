@@ -16,31 +16,31 @@ namespace TestOutput
         public override async Task ExecuteAsync()
         {
             var __tagHelperAttributeValue = string.Empty;
-            modifyTagHelper __modify_modifyTagHelper_Modify;
-            noneTagHelper __none_noneTagHelper_None;
-            appendTagHelper __append_appendTagHelper_Append;
-            prependTagHelper __prepend_prependTagHelper_Prepend;
-            replaceTagHelper __replace_replaceTagHelper_Replace;
-            __modify_modifyTagHelper_Modify = __tagHelperManager.StartTagHelper<modifyTagHelper>();
+            ModifyTagHelper __modify_ModifyTagHelper_Modify;
+            NoneTagHelper __none_NoneTagHelper_None;
+            AppendTagHelper __append_AppendTagHelper_Append;
+            PrependTagHelper __prepend_PrependTagHelper_Prepend;
+            ReplaceTagHelper __replace_ReplaceTagHelper_Replace;
+            __modify_ModifyTagHelper_Modify = __tagHelperManager.StartTagHelper<ModifyTagHelper>();
             __tagHelperManager.AddHTMLAttribute("class", "myModifyClass");
             __tagHelperManager.AddHTMLAttribute("style", "color:red;");
             __tagHelperManager.StartActiveTagHelpers("modify");
             try {
                 NewWritingScope(__tagHelperManager.GetTagBodyBuffer());
                 WriteLiteral("\r\n    ");
-                __none_noneTagHelper_None = __tagHelperManager.StartTagHelper<noneTagHelper>();
+                __none_NoneTagHelper_None = __tagHelperManager.StartTagHelper<NoneTagHelper>();
                 __tagHelperManager.AddHTMLAttribute("class", "myNoneClass");
                 __tagHelperManager.StartActiveTagHelpers("none");
                 __tagHelperManager.ExecuteTagHelpers();
                 WriteLiteral(__tagHelperManager.GenerateTagStart());
                 WriteLiteral("\r\n        ");
-                __append_appendTagHelper_Append = __tagHelperManager.StartTagHelper<appendTagHelper>();
+                __append_AppendTagHelper_Append = __tagHelperManager.StartTagHelper<AppendTagHelper>();
                 __tagHelperManager.AddHTMLAttribute("style", "color:red;");
                 __tagHelperManager.StartActiveTagHelpers("append");
                 __tagHelperManager.ExecuteTagHelpers();
                 WriteLiteral(__tagHelperManager.GenerateTagStart());
                 WriteLiteral("\r\n            ");
-                __prepend_prependTagHelper_Prepend = __tagHelperManager.StartTagHelper<prependTagHelper>();
+                __prepend_PrependTagHelper_Prepend = __tagHelperManager.StartTagHelper<PrependTagHelper>();
                 __tagHelperManager.AddHTMLAttribute("class", "myPrependClass");
                 __tagHelperManager.AddHTMLAttribute("customAttribute", "customValue");
                 __tagHelperManager.StartActiveTagHelpers("prepend");
@@ -48,7 +48,7 @@ namespace TestOutput
                 WriteLiteral(__tagHelperManager.GenerateTagStart());
                 WriteLiteral(__tagHelperManager.GenerateTagContent());
                 WriteLiteral("\r\n                ");
-                __replace_replaceTagHelper_Replace = __tagHelperManager.StartTagHelper<replaceTagHelper>();
+                __replace_ReplaceTagHelper_Replace = __tagHelperManager.StartTagHelper<ReplaceTagHelper>();
                 __tagHelperManager.AddHTMLAttribute("for", "hello");
                 __tagHelperManager.AddHTMLAttribute("id", "bar");
                 __tagHelperManager.StartActiveTagHelpers("replace");
