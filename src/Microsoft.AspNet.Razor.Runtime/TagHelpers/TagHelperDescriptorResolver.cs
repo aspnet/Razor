@@ -42,40 +42,47 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             var tagHelperTypes = _tagHelperTypeResolver.Resolve(lookupText);
 
-            var descriptors = tagHelperTypes.Select(GetTagHelperDescriptors);
+            var descriptors = tagHelperTypes.SelectMany(GetTagHelperDescriptors);
 
             // TODO: Validate no conflicting ContentBehaviors after: 
-            // https://github.com/aspnet/Razor/issues/122 and https://github.com/aspnet/Razor/issues/120
+            // https://github.com/aspnet/Razor/issues/122
 
             return descriptors;
         }
 
-        // TODO: Make this method return multiple TagHelperDescriptors based on a TagNameAttribute: 
-        // https://github.com/aspnet/Razor/issues/120
-        private static TagHelperDescriptor GetTagHelperDescriptors(Type type)
+        private static IEnumerable<TagHelperDescriptor> GetTagHelperDescriptors(Type type)
         {
-            var tagName = GetTagNameTarget(type);
+            var tagNames = GetTagNameTargets(type);
             var tagHelperTypeName = type.FullName;
             var attributeDescriptors = GetTagHelperAttributeDescriptors(type);
             var contentBehavior = GetContentBehavior(type);
 
-            return new TagHelperDescriptor(tagName,
-                                           tagHelperTypeName,
-                                           contentBehavior,
-                                           attributeDescriptors);
+            return tagNames.Select(tagName => new TagHelperDescriptor(tagName,
+                                                                      tagHelperTypeName,
+                                                                      contentBehavior,
+                                                                      attributeDescriptors));
         }
 
-        // TODO: Make this method support TagNameAttribute targets: https://github.com/aspnet/Razor/issues/120
-        private static string GetTagNameTarget(Type tagHelperType)
+        private static IEnumerable<string> GetTagNameTargets(Type tagHelperType)
         {
-            var name = tagHelperType.Name;
+            var typeInfo = tagHelperType.GetTypeInfo();
+            var attributes = typeInfo.GetCustomAttributes<TagNameAttribute>(inherit: false);
 
-            if (name.EndsWith(TagHelperNameEnding, StringComparison.OrdinalIgnoreCase))
+            // If there isn't an attribute specifying the targets derive it from the name
+            if (!attributes.Any())
             {
-                name = name.Substring(0, name.Length - TagHelperNameEnding.Length);
+                var name = typeInfo.Name;
+
+                if (name.EndsWith(TagHelperNameEnding, StringComparison.OrdinalIgnoreCase))
+                {
+                    name = name.Substring(0, name.Length - TagHelperNameEnding.Length);
+                }
+
+                return new[] { name };
             }
 
-            return name;
+            // Remove duplicate tag names.
+            return attributes.SelectMany(attribute => attribute.Tags).Distinct();
         }
 
         private static IEnumerable<TagHelperAttributeDescriptor> GetTagHelperAttributeDescriptors(Type type)
