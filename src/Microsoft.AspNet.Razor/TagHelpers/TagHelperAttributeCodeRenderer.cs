@@ -11,9 +11,9 @@ using Microsoft.AspNet.Razor.Generator.Compiler.CSharp;
 namespace Microsoft.AspNet.Razor.TagHelpers
 {
     /// <summary>
-    /// Generates code for a tag helper property initialization.
+    /// Renders code for tag helper property initialization.
     /// </summary>
-    public class TagHelperAttributeCodeGenerator
+    public class TagHelperAttributeCodeRenderer
     {
         /// <summary>
         /// Called during Razor's code generation process to generate code that instantiates the value of the tag 
@@ -31,10 +31,10 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// Writes the string: "new MyPropertyType(...)" to the output where the "..." is rendered by calling the
         /// <paramref name="renderAttributeValue"/> <see cref="Action"/>.
         /// </remarks>
-        public void GenerateCode([NotNull] TagHelperAttributeDescriptor attributeDescriptor,
-                                 [NotNull] CSharpCodeWriter writer,
-                                 [NotNull] CodeGeneratorContext context,
-                                 [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
+        public void RenderAttribute([NotNull] TagHelperAttributeDescriptor attributeDescriptor,
+                                    [NotNull] CSharpCodeWriter writer,
+                                    [NotNull] CodeGeneratorContext context,
+                                    [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
         {
             renderAttributeValue(writer);
         }

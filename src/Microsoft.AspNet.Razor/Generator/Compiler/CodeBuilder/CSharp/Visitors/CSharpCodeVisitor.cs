@@ -78,7 +78,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             {
                 if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
                 {
-                    GeneratePreWriteStart();
+                    RenderPreWriteStart();
                 }
 
                 Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.ResolveUrlMethodName)
@@ -105,7 +105,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             {
                 if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
                 {
-                    GeneratePreWriteStart();
+                    RenderPreWriteStart();
                 }
 
                 Writer.WriteStringLiteral(chunk.Text);
@@ -388,12 +388,12 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             }
         }
 
-        private CSharpCodeWriter GeneratePreWriteStart()
+        private CSharpCodeWriter RenderPreWriteStart()
         {
-            return GeneratePreWriteStart(Writer, Context);
+            return RenderPreWriteStart(Writer, Context);
         }
 
-        public static CSharpCodeWriter GeneratePreWriteStart(CSharpCodeWriter writer, CodeBuilderContext context)
+        public static CSharpCodeWriter RenderPreWriteStart(CSharpCodeWriter writer, CodeBuilderContext context)
         {
             if (!string.IsNullOrEmpty(context.TargetWriterName))
             {

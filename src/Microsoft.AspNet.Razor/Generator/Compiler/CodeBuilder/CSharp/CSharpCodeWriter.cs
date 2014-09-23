@@ -218,6 +218,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             return this;
         }
 
+        // Writes a method invocation for the given instance name.
         public CSharpCodeWriter WriteInstanceMethodInvocation(string instanceName,
                                                               string methodName,
                                                               params string[] parameters)
@@ -225,6 +226,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             return WriteInstanceMethodInvocation(instanceName, methodName, endLine: true, parameters: parameters);
         }
 
+        // Writes a method invocation for the given instance name.
         public CSharpCodeWriter WriteInstanceMethodInvocation(string instanceName,
                                                               string methodName,
                                                               bool endLine,
