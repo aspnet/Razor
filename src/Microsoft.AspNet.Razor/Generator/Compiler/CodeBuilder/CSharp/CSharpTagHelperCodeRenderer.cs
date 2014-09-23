@@ -313,7 +313,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private void RenderExecuteAndStartTag()
         {
             _writer.Write("await ")
-                   .WriteInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.ExecuteTagHelpersMethodName);
+                   .WriteInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.ExecuteTagHelpersAsyncMethodName);
 
             CSharpCodeVisitor.RenderPreWriteStart(_writer, _context);
 

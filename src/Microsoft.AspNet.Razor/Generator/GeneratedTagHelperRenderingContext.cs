@@ -15,7 +15,7 @@ namespace Microsoft.AspNet.Razor.Generator
         public GeneratedTagHelperRenderingContext()
         {
             InstantiateTagHelperMethodName = "InstantiateTagHelper";
-            ExecuteTagHelpersMethodName = "ExecuteTagHelpers";
+            ExecuteTagHelpersAsyncMethodName = "ExecuteTagHelpersAsync";
             StartActiveTagHelpersMethodName = "StartActiveTagHelpers";
             EndTagHelpersMethodName = "EndTagHelpers";
             GenerateTagStartMethodName = "GenerateTagStart";
@@ -30,7 +30,7 @@ namespace Microsoft.AspNet.Razor.Generator
         }
 
         public string InstantiateTagHelperMethodName { get; private set; }
-        public string ExecuteTagHelpersMethodName { get; private set; }
+        public string ExecuteTagHelpersAsyncMethodName { get; private set; }
         public string StartActiveTagHelpersMethodName { get; private set; }
         public string EndTagHelpersMethodName { get; private set; }
         public string GenerateTagStartMethodName { get; private set; }
