@@ -134,6 +134,91 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             Assert.Empty(descriptors);
         }
 
+        [Fact]
+        public void DescriptorResolver_ResolvesMultipleTagHelperDescriptorsFromSingleType()
+        {
+            // Arrange
+            var resolver = new TagHelperDescriptorResolver(
+                new CustomTagHelperTypeResolver(
+                    new Dictionary<string, IEnumerable<Type>>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        { "lookupText", new Type[]{ typeof(MultiTagTagHelper) } }
+                    }));
+            var validProp = typeof(MultiTagTagHelper).GetProperty(nameof(MultiTagTagHelper.ValidAttribute));
+            var expectedDescriptors = new[] {
+                new TagHelperDescriptor(
+                    "Foo",
+                    typeof(MultiTagTagHelper).FullName,
+                    ContentBehavior.None,
+                    new[] {
+                        new TagHelperAttributeDescriptor(nameof(MultiTagTagHelper.ValidAttribute), validProp)
+                    }),
+                new TagHelperDescriptor(
+                    "Bar",
+                    typeof(MultiTagTagHelper).FullName,
+                    ContentBehavior.None,
+                    new[] {
+                        new TagHelperAttributeDescriptor(nameof(MultiTagTagHelper.ValidAttribute), validProp)
+                    }),
+            };
+
+            // Act
+            var descriptors = resolver.Resolve("lookupText").ToArray();
+
+            // Assert
+            Assert.Equal(descriptors, expectedDescriptors, DefaultDescriptorComparer);
+        }
+
+        [Fact]
+        public void DescriptorResolver_DoesntResolveInheritedTagNames()
+        {
+            // Arrange
+            var resolver = new TagHelperDescriptorResolver(
+                new CustomTagHelperTypeResolver(
+                    new Dictionary<string, IEnumerable<Type>>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        { "lookupText", new Type[]{ typeof(InheritedMultiTagTagHelper) } }
+                    }));
+            var validProp = typeof(InheritedMultiTagTagHelper).GetProperty(nameof(InheritedMultiTagTagHelper.ValidAttribute));
+            var expectedDescriptors = new[] {
+                new TagHelperDescriptor(
+                    "InheritedMultiTag",
+                    typeof(InheritedMultiTagTagHelper).FullName,
+                    ContentBehavior.None,
+                    new[] {
+                        new TagHelperAttributeDescriptor(nameof(InheritedMultiTagTagHelper.ValidAttribute), validProp)
+                    })             
+            };
+
+            // Act
+            var descriptors = resolver.Resolve("lookupText").ToArray();
+
+            // Assert
+            Assert.Equal(descriptors, expectedDescriptors, DefaultDescriptorComparer);
+        }
+
+        [Fact]
+        public void DescriptorResolver_IgnoresDuplicateTagNamesFromAttribute()
+        {
+            // Arrange
+            var resolver = new TagHelperDescriptorResolver(
+                new CustomTagHelperTypeResolver(
+                    new Dictionary<string, IEnumerable<Type>>(StringComparer.OrdinalIgnoreCase)
+                    {
+                        { "lookupText", new Type[]{ typeof(DuplicateTagNameTagHelper) } }
+                    }));
+            var expectedDescriptors = new[] {
+                new TagHelperDescriptor("Foo", typeof(DuplicateTagNameTagHelper).FullName, ContentBehavior.None),
+                new TagHelperDescriptor("Bar", typeof(DuplicateTagNameTagHelper).FullName, ContentBehavior.None)
+            };
+
+            // Act
+            var descriptors = resolver.Resolve("lookupText").ToArray();
+
+            // Assert
+            Assert.Equal(descriptors, expectedDescriptors, DefaultDescriptorComparer);
+        }
+
         private class CustomTagHelperTypeResolver : ITagHelperTypeResolver
         {
             private Dictionary<string, IEnumerable<Type>> _lookupValues;
@@ -163,6 +248,21 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             public string ValidAttribute { get; set; }
             public string InvalidNoGetAttribute { set { } }
             public string InvalidNoSetAttribute { get { return string.Empty; } }
+        }
+
+        [TagName("Foo", "Bar")]
+        private class MultiTagTagHelper
+        {
+            public string ValidAttribute { get; set; }
+        }
+
+        private class InheritedMultiTagTagHelper : MultiTagTagHelper
+        {
+        }
+
+        [TagName("Foo", "Foo", "Bar", "Bar")]
+        private class DuplicateTagNameTagHelper
+        {
         }
 
         private class CompleteTagHelperDescriptorComparer : TagHelperDescriptorComparer
