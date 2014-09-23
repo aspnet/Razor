@@ -13,7 +13,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
     /// <summary>
     /// Renders code for tag helper property initialization.
     /// </summary>
-    public class TagHelperAttributeCodeRenderer
+    public class TagHelperAttributeValueCodeRenderer
     {
         /// <summary>
         /// Called during Razor's code generation process to generate code that instantiates the value of the tag 

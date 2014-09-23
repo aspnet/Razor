@@ -10,14 +10,14 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
     {
         private bool _foundTagHelpers;
         private HashSet<TagHelperDescriptor> _declaredDescriptors;
-        private GeneratedTagHelperRenderingContext _tagHelperContext;
+        private GeneratedTagHelperContext _tagHelperContext;
 
         public CSharpTagHelperDeclarationVisitor([NotNull] CSharpCodeWriter writer,
                                                  [NotNull] CodeBuilderContext context)
             : base(writer, context)
         {
             _declaredDescriptors = new HashSet<TagHelperDescriptor>(TagHelperDescriptorComparer.Default);
-            _tagHelperContext = Context.Host.GeneratedClassContext.GeneratedTagHelperRenderingContext;
+            _tagHelperContext = Context.Host.GeneratedClassContext.GeneratedTagHelperContext;
         }
 
         protected override void Visit(TagHelperChunk chunk)

@@ -6,13 +6,13 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
     public class CSharpPropertyVisitor : CodeVisitor<CSharpCodeWriter>
     {
         private bool _foundTagHelpers;
-        private GeneratedTagHelperRenderingContext _tagHelperContext;
+        private GeneratedTagHelperContext _tagHelperContext;
         private string _activateAttributeName;
 
         public CSharpPropertyVisitor(CSharpCodeWriter writer, CodeBuilderContext context)
             : base(writer, context)
         {
-            _tagHelperContext = Context.Host.GeneratedClassContext.GeneratedTagHelperRenderingContext;
+            _tagHelperContext = Context.Host.GeneratedClassContext.GeneratedTagHelperContext;
             _activateAttributeName = Context.Host.GeneratedClassContext.ActivateAttributeName;
         }
 

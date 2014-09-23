@@ -16,19 +16,19 @@ namespace Microsoft.AspNet.Razor.Generator
         public static readonly string DefaultWriteAttributeToMethodName = "WriteAttributeTo";
 
         public static readonly GeneratedClassContext Default = 
-            new GeneratedClassContext(GeneratedTagHelperRenderingContext.Default,
+            new GeneratedClassContext(GeneratedTagHelperContext.Default,
                                       DefaultExecuteMethodName,
                                       DefaultWriteMethodName,
                                       DefaultWriteLiteralMethodName);
 
-        public GeneratedClassContext(GeneratedTagHelperRenderingContext generatedTagHelperRenderingContext,
+        public GeneratedClassContext(GeneratedTagHelperContext generatedTagHelperContext,
                                      string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName)
         {
-            if (generatedTagHelperRenderingContext == null)
+            if (generatedTagHelperContext == null)
             {
-                throw new ArgumentNullException(nameof(generatedTagHelperRenderingContext));
+                throw new ArgumentNullException(nameof(generatedTagHelperContext));
             }
             if (string.IsNullOrEmpty(executeMethodName))
             {
@@ -49,7 +49,7 @@ namespace Microsoft.AspNet.Razor.Generator
                     nameof(writeLiteralMethodName));
             }
 
-            GeneratedTagHelperRenderingContext = generatedTagHelperRenderingContext;
+            GeneratedTagHelperContext = generatedTagHelperContext;
 
             WriteMethodName = writeMethodName;
             WriteLiteralMethodName = writeLiteralMethodName;
@@ -65,14 +65,14 @@ namespace Microsoft.AspNet.Razor.Generator
             WriteAttributeToMethodName = DefaultWriteAttributeToMethodName;
         }
 
-        public GeneratedClassContext(GeneratedTagHelperRenderingContext generatedTagHelperRenderingContext,
+        public GeneratedClassContext(GeneratedTagHelperContext generatedTagHelperContext,
                                      string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName,
                                      string writeToMethodName,
                                      string writeLiteralToMethodName,
                                      string templateTypeName)
-            : this(generatedTagHelperRenderingContext,
+            : this(generatedTagHelperContext,
                    executeMethodName, 
                    writeMethodName, 
                    writeLiteralMethodName)
@@ -82,7 +82,7 @@ namespace Microsoft.AspNet.Razor.Generator
             TemplateTypeName = templateTypeName;
         }
 
-        public GeneratedClassContext(GeneratedTagHelperRenderingContext generatedTagHelperRenderingContext,
+        public GeneratedClassContext(GeneratedTagHelperContext generatedTagHelperContext,
                                      string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName,
@@ -90,7 +90,7 @@ namespace Microsoft.AspNet.Razor.Generator
                                      string writeLiteralToMethodName,
                                      string templateTypeName,
                                      string defineSectionMethodName)
-            : this(generatedTagHelperRenderingContext,
+            : this(generatedTagHelperContext,
                    executeMethodName,
                    writeMethodName,
                    writeLiteralMethodName,
@@ -101,7 +101,7 @@ namespace Microsoft.AspNet.Razor.Generator
             DefineSectionMethodName = defineSectionMethodName;
         }
 
-        public GeneratedClassContext(GeneratedTagHelperRenderingContext generatedTagHelperRenderingContext,
+        public GeneratedClassContext(GeneratedTagHelperContext generatedTagHelperContext,
                                      string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName,
@@ -111,7 +111,7 @@ namespace Microsoft.AspNet.Razor.Generator
                                      string defineSectionMethodName,
                                      string beginContextMethodName,
                                      string endContextMethodName)
-            : this(generatedTagHelperRenderingContext,
+            : this(generatedTagHelperContext,
                    executeMethodName,
                    writeMethodName,
                    writeLiteralMethodName,
@@ -124,7 +124,7 @@ namespace Microsoft.AspNet.Razor.Generator
             EndContextMethodName = endContextMethodName;
         }
 
-        public GeneratedClassContext(GeneratedTagHelperRenderingContext generatedTagHelperRenderingContext,
+        public GeneratedClassContext(GeneratedTagHelperContext generatedTagHelperContext,
                                      string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName,
@@ -135,7 +135,7 @@ namespace Microsoft.AspNet.Razor.Generator
                                      string beginContextMethodName,
                                      string endContextMethodName,
                                      string activateAttributeName)
-            : this(generatedTagHelperRenderingContext,
+            : this(generatedTagHelperContext,
                    executeMethodName,
                    writeMethodName,
                    writeLiteralMethodName,
@@ -155,7 +155,7 @@ namespace Microsoft.AspNet.Razor.Generator
         public string WriteToMethodName { get; private set; }
         public string WriteLiteralToMethodName { get; private set; }
         public string ExecuteMethodName { get; private set; }
-        public GeneratedTagHelperRenderingContext GeneratedTagHelperRenderingContext { get; private set; }
+        public GeneratedTagHelperContext GeneratedTagHelperContext { get; private set; }
 
 
         // Optional Items

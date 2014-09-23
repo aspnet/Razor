@@ -24,13 +24,13 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             new TagHelperAttributeDescriptorComparer();
 
         // TODO: The work to properly implement this will be done in: https://github.com/aspnet/Razor/issues/74
-        private static readonly TagHelperAttributeCodeRenderer AttributeCodeGenerator =
-            new TagHelperAttributeCodeRenderer();
+        private static readonly TagHelperAttributeValueCodeRenderer AttributeValueCodeRenderer =
+            new TagHelperAttributeValueCodeRenderer();
 
         private readonly CSharpCodeWriter _writer;
         private readonly CodeBuilderContext _context;
         private readonly IChunkVisitor _bodyVisitor;
-        private readonly GeneratedTagHelperRenderingContext _tagHelperContext;
+        private readonly GeneratedTagHelperContext _tagHelperContext;
 
         /// <summary>
         /// Instantiates a new <see cref="CSharpTagHelperCodeRenderer"/>.
@@ -46,7 +46,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             _writer = writer;
             _context = context;
             _bodyVisitor = bodyVisitor;
-            _tagHelperContext = context.Host.GeneratedClassContext.GeneratedTagHelperRenderingContext;
+            _tagHelperContext = context.Host.GeneratedClassContext.GeneratedTagHelperContext;
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 }
 
                 _writer.WriteStartInstanceMethodInvocation(ManagerVariableName,
-                                                           _tagHelperContext.AddHTMLAttributeMethodName);
+                                                           _tagHelperContext.AddHtmlAttributeMethodName);
                 _writer.WriteStringLiteral(htmlAttribute.Key)
                        .WriteParameterSeparator();
 
@@ -247,7 +247,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private void RenderStartTagHelper(string tagName, ContentBehavior contentBehavior)
         {
             // Call into the Start of the tag helper
-            _writer.WriteStartInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.StartActiveTagHelpersMethodName)
+            _writer.WriteStartInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.StartTagHelpersScope)
                    .WriteStringLiteral(tagName)
                    .WriteEndMethodInvocation();
 
@@ -274,7 +274,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 {
                     var bodyWriterName = string.Format("{0}.{1}()",
                                                       ManagerVariableName,
-                                                      _tagHelperContext.GetTagBodyBufferMethodName);
+                                                      _tagHelperContext.GetContentBuffer);
 
                     BuildBufferedWritingScope(bodyWriterName, () =>
                     {
@@ -307,7 +307,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             RenderEndTag();
 
-            _writer.WriteInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.EndTagHelpersMethodName);
+            _writer.WriteInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.EndTagHelpersScope);
         }
 
         private void RenderExecuteAndStartTag()
@@ -406,7 +406,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private void RenderAttribute(TagHelperAttributeDescriptor attributeDescriptor,
                                      Action<CSharpCodeWriter> valueRenderer)
         {
-            AttributeCodeGenerator.RenderAttribute(attributeDescriptor, _writer, _context, valueRenderer);
+            AttributeValueCodeRenderer.RenderAttribute(attributeDescriptor, _writer, _context, valueRenderer);
         }
 
         private static bool AcceptsRazorCode(TagHelperAttributeDescriptor attributeDescriptor)
