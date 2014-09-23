@@ -22,10 +22,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             : base(writer, context)
         {
             _paddingBuilder = new CSharpPaddingBuilder(context.Host);
-            TagHelperRenderer = new CSharpTagHelperCodeRenderer(this, 
-                                                                new TagHelperAttributeValueCodeRenderer(), 
-                                                                writer, 
-                                                                context);
+            TagHelperRenderer = new CSharpTagHelperCodeRenderer(this, writer, context);
         }
 
         public CSharpTagHelperCodeRenderer TagHelperRenderer { get; set; }

@@ -13,7 +13,7 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            var __tagHelperAttributeValue = string.Empty;
+            var __tagHelperBufferedStringValue = string.Empty;
             PTagHelper __p_PTagHelper;
             InputTagHelper __input_InputTagHelper;
             InputTagHelper2 __input_InputTagHelper2;
@@ -32,7 +32,7 @@ namespace TestOutput
             __tagHelperManager.EndTagHelpersScope();
             WriteLiteral("\r\n        ");
             __input_InputTagHelper = __tagHelperManager.InstantiateTagHelper<InputTagHelper>();
-            __input_InputTagHelper.Type = **From custom attribute code generator**: "text";
+            __input_InputTagHelper.Type = **From custom attribute code renderer**: "text";
             __tagHelperManager.AddTagHelperAttribute("type", __input_InputTagHelper.Type);
             __input_InputTagHelper2 = __tagHelperManager.InstantiateTagHelper<InputTagHelper2>();
             __input_InputTagHelper2.Type = __input_InputTagHelper.Type;
@@ -43,11 +43,11 @@ namespace TestOutput
             __tagHelperManager.EndTagHelpersScope();
             WriteLiteral("\r\n        ");
             __input_InputTagHelper = __tagHelperManager.InstantiateTagHelper<InputTagHelper>();
-            __input_InputTagHelper.Type = **From custom attribute code generator**: "checkbox";
+            __input_InputTagHelper.Type = **From custom attribute code renderer**: "checkbox";
             __tagHelperManager.AddTagHelperAttribute("type", __input_InputTagHelper.Type);
             __input_InputTagHelper2 = __tagHelperManager.InstantiateTagHelper<InputTagHelper2>();
             __input_InputTagHelper2.Type = __input_InputTagHelper.Type;
-            __input_InputTagHelper2.Checked = **From custom attribute code generator**: true;
+            __input_InputTagHelper2.Checked = **From custom attribute code renderer**: true;
             __tagHelperManager.AddTagHelperAttribute("checked", __input_InputTagHelper2.Checked);
             __tagHelperManager.StartTagHelpersScope("input");
             await __tagHelperManager.ExecuteTagHelpersAsync();
