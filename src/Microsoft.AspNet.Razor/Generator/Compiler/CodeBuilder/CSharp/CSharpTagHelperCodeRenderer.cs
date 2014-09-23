@@ -406,7 +406,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private void RenderAttribute(TagHelperAttributeDescriptor attributeDescriptor,
                                      Action<CSharpCodeWriter> valueRenderer)
         {
-            AttributeValueCodeRenderer.RenderAttribute(attributeDescriptor, _writer, _context, valueRenderer);
+            AttributeValueCodeRenderer.RenderAttributeValue(attributeDescriptor, _writer, _context, valueRenderer);
         }
 
         private static bool AcceptsRazorCode(TagHelperAttributeDescriptor attributeDescriptor)
