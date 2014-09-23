@@ -17,13 +17,13 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         [Fact]
         public void TagHelpers_CanReplaceAttributeCodeGeneratorLogic()
         {
+            // Arrange
             var inputTypePropertyInfo = new Mock<PropertyInfo>();
             inputTypePropertyInfo.Setup(ipi => ipi.PropertyType).Returns(typeof(string));
             inputTypePropertyInfo.Setup(ipi => ipi.Name).Returns("Type");
             var checkedPropertyInfo = new Mock<PropertyInfo>();
             checkedPropertyInfo.Setup(ipi => ipi.PropertyType).Returns(typeof(bool));
             checkedPropertyInfo.Setup(ipi => ipi.Name).Returns("Checked");
-            // Arrange
             var tagHelperProvider = new TagHelperDescriptorProvider(
                 new TagHelperDescriptor[]
                 {
@@ -73,28 +73,25 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             {
             }
 
-            protected override CSharpCodeVisitor DecorateCSharpCodeVisitor([NotNull] CSharpCodeWriter writer,
-                                                                           [NotNull] CodeBuilderContext context,
-                                                                           [NotNull] CSharpCodeVisitor incomingVisitor)
+            protected override CSharpCodeVisitor CreateCSharpCodeVisitor([NotNull] CSharpCodeWriter writer,
+                                                                         [NotNull] CodeBuilderContext context)
             {
-                incomingVisitor.TagHelperRenderer =
-                    new CSharpTagHelperCodeRenderer(incomingVisitor,
-                                                    new CustomTagHelperAttributeCodeGenerator(),
-                                                    writer,
-                                                    context);
+                var bodyVisitor = base.CreateCSharpCodeVisitor(writer, context);
 
-                return base.DecorateCSharpCodeVisitor(writer, context, incomingVisitor);
+                bodyVisitor.TagHelperRenderer.AttributeValueCodeRenderer = new CustomTagHelperAttributeCodeRenderer();
+
+                return bodyVisitor;
             }
         }
 
-        private class CustomTagHelperAttributeCodeGenerator : TagHelperAttributeValueCodeRenderer
+        private class CustomTagHelperAttributeCodeRenderer : TagHelperAttributeValueCodeRenderer
         {
-            public override void RenderAttributeValue([NotNull]TagHelperAttributeDescriptor attributeInfo,
-                                                      [NotNull]CSharpCodeWriter writer,
-                                                      [NotNull]CodeGeneratorContext context,
-                                                      [NotNull]Action<CSharpCodeWriter> renderAttributeValue)
+            public override void RenderAttributeValue([NotNull] TagHelperAttributeDescriptor attributeInfo,
+                                                      [NotNull] CSharpCodeWriter writer,
+                                                      [NotNull] CodeBuilderContext context,
+                                                      [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
             {
-                writer.Write("**From custom attribute code generator**: ");
+                writer.Write("**From custom attribute code renderer**: ");
 
                 base.RenderAttributeValue(attributeInfo, writer, context, renderAttributeValue);
             }

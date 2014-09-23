@@ -39,9 +39,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                         writer.WriteLine("private static object @__o;");
                     }
 
-                    var csharpCodeVisitor = DecorateCSharpCodeVisitor(writer, 
-                                                                      Context, 
-                                                                      new CSharpCodeVisitor(writer, Context));
+                    var csharpCodeVisitor = CreateCSharpCodeVisitor(writer, Context);
 
                     new CSharpHelperVisitor(csharpCodeVisitor, writer, Context).Accept(Tree.Chunks);
                     new CSharpTypeMemberVisitor(csharpCodeVisitor, writer, Context).Accept(Tree.Chunks);
@@ -68,11 +66,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             return new CodeBuilderResult(writer.GenerateCode(), writer.LineMappingManager.Mappings);
         }
 
-        protected virtual CSharpCodeVisitor DecorateCSharpCodeVisitor([NotNull] CSharpCodeWriter writer,
-                                                                      [NotNull] CodeBuilderContext context,
-                                                                      [NotNull] CSharpCodeVisitor incomingVisitor)
+        protected virtual CSharpCodeVisitor CreateCSharpCodeVisitor([NotNull] CSharpCodeWriter writer,
+                                                                    [NotNull] CodeBuilderContext context)
         {
-            return incomingVisitor;
+            return new CSharpCodeVisitor(writer, context);
         }
 
         protected virtual CSharpCodeWritingScope BuildClassDeclaration(CSharpCodeWriter writer)
