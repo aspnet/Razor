@@ -17,7 +17,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
     public class CSharpTagHelperCodeRenderer
     {
         internal static readonly string ManagerVariableName = "__tagHelperManager";
-        internal static readonly string BufferedAttributeValueVariableName = "__tagHelperAttributeValue";
+        internal static readonly string BufferedStringValueVariableName = "__tagHelperBufferedStringValue";
 
         private static readonly TypeInfo StringTypeInfo = typeof(string).GetTypeInfo();
         private static readonly TagHelperAttributeDescriptorComparer AttributeDescriptorComparer =
@@ -237,7 +237,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 }
                 else
                 {
-                    _writer.Write(BufferedAttributeValueVariableName);
+                    _writer.Write(BufferedStringValueVariableName);
                 }
 
                 _writer.WriteEndMethodInvocation();
@@ -353,7 +353,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 attributeDescriptor,
                 valueRenderer: (writer) =>
                 {
-                    _writer.Write(BufferedAttributeValueVariableName);
+                    _writer.Write(BufferedStringValueVariableName);
                 });
         }
 
@@ -398,7 +398,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             _writer.Write("finally");
             using (_writer.BuildScope())
             {
-                _writer.WriteStartAssignment(BufferedAttributeValueVariableName)
+                _writer.WriteStartAssignment(BufferedStringValueVariableName)
                        .WriteMethodInvocation(_tagHelperContext.EndWritingScopeMethodName);
             }
         }

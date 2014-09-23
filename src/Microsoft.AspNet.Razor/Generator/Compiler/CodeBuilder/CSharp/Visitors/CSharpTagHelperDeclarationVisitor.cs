@@ -28,7 +28,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 _foundTagHelpers = true;
 
                 Writer.WriteVariableDeclaration("var",
-                                                CSharpTagHelperCodeRenderer.BufferedAttributeValueVariableName,
+                                                CSharpTagHelperCodeRenderer.BufferedStringValueVariableName,
                                                 "string.Empty");
             }
 
