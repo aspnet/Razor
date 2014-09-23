@@ -1,25 +1,35 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
-    public abstract class TagHelperManager<TExecutionContext, TTagHelperInterface>
-        where TExecutionContext : TagHelpersExecutionContext<TTagHelperInterface>, new()
+    /// <summary>
+    /// A class used to manage <see cref="TagHelper"/>s during runtime.
+    /// </summary>
+    public class TagHelperManager : ITagHelperManager
     {
-        private Stack<TExecutionContext> _executionContexts;
-        private TExecutionContext _currentExecutionContext;
+        private Stack<TagHelpersExecutionContext> _executionContexts;
+        private TagHelpersExecutionContext _currentExecutionContext;
         private bool _executionContextComplete;
 
+        /// <summary>
+        /// Instantiates a new instance of <see cref="TagHelperManager"/>.
+        /// </summary>
         public TagHelperManager()
         {
-            _executionContexts = new Stack<TExecutionContext>();
+            _executionContexts = new Stack<TagHelpersExecutionContext>();
             _executionContextComplete = true;
         }
 
-        protected TExecutionContext CurrentContext
+        /// <summary>
+        /// The current execution context.
+        /// </summary>
+        protected TagHelpersExecutionContext CurrentContext
         {
             get
             {
@@ -27,13 +37,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             }
         }
 
-        public TTagHelper StartTagHelper<TTagHelper>() where TTagHelper : TTagHelperInterface
+        /// <inheritdoc />
+        public TTagHelper InstantiateTagHelper<TTagHelper>() where TTagHelper : TagHelper
         {
             if (_executionContextComplete)
             {
                 _executionContextComplete = false;
 
-                _currentExecutionContext = new TExecutionContext();
+                _currentExecutionContext = new TagHelpersExecutionContext();
                 _executionContexts.Push(_currentExecutionContext);
             }
 
@@ -44,7 +55,15 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             return tagHelper;
         }
 
-        public void EndTagHelpers()
+        /// <inheritdoc />
+        public void StartTagHelpersScope(string tagName)
+        {
+            _executionContextComplete = true;
+            CurrentContext.CreateTagHelperOutput(tagName, CurrentContext.HTMLAttributes);
+        }
+
+        /// <inheritdoc />
+        public void EndTagHelpersScope()
         {
             _executionContextComplete = true;
             _executionContexts.Pop();
@@ -59,35 +78,63 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             }
         }
 
-        public void AddHTMLAttribute(string name, string value)
+        /// <inheritdoc />
+        public void AddHtmlAttribute(string name, string value)
         {
             _currentExecutionContext.HTMLAttributes.Add(name, value);
             _currentExecutionContext.AllAttributes.Add(name, value);
         }
 
+        /// <inheritdoc />
         public void AddTagHelperAttribute(string name, object value)
         {
             _currentExecutionContext.AllAttributes.Add(name, value);
         }
 
-        public void StartActiveTagHelpers(string tagName)
+        /// <inheritdoc />
+        public TextWriter GetContentBuffer()
         {
-            _executionContextComplete = true;
-            PrepareActiveTagHelpers(tagName);
+            return CurrentContext.TagHelperOutput.GetContentWriter();
         }
 
-        public abstract void ExecuteTagHelpers();
+        /// <inheritdoc />
+        public string GenerateTagStart()
+        {
+            return CurrentContext.TagHelperOutput.GenerateTagStart();
+        }
 
-        public abstract TextWriter GetTagBodyBuffer();
+        /// <inheritdoc />
+        public string GenerateTagContent()
+        {
+            return CurrentContext.TagHelperOutput.GenerateTagContent();
+        }
 
-        public abstract string GenerateTagStart();
+        /// <inheritdoc />
+        public string GenerateTagEnd()
+        {
+            return CurrentContext.TagHelperOutput.GenerateTagEnd();
+        }
 
-        public abstract string GenerateTagContent();
+        /// <inheritdoc />
+        public virtual async Task ExecuteTagHelpersAsync()
+        {
+            var context = new TagHelperContext(CurrentContext.AllAttributes);
 
-        public abstract string GenerateTagEnd();
+            foreach (var tagHelper in CurrentContext.ActiveTagHelpers)
+            {
+                await tagHelper.ProcessAsync(CurrentContext.TagHelperOutput, context);
+            }
+        }
 
-        protected abstract void PrepareActiveTagHelpers(string tagName);
-
-        protected abstract TTagHelper CreateTagHelper<TTagHelper>() where TTagHelper : TTagHelperInterface;
+        /// <summary>
+        /// Creates a <see cref="TagHelper"/> of type <typeparamref name="TTagHelper"/>.
+        /// </summary>
+        /// <typeparam name="TTagHelper">The <see cref="Type"/> of <see cref="TagHelper"/>
+        /// to create.</typeparam>
+        /// <returns>A <see cref="TagHelper"/> of type <typeparamref name="TTagHelper"/>.</returns>
+        protected virtual TTagHelper CreateTagHelper<TTagHelper>() where TTagHelper : TagHelper
+        {
+            return Activator.CreateInstance<TTagHelper>();
+        }
     }
 }
