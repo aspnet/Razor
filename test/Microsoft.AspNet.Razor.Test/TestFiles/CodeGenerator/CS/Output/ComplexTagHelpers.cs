@@ -6,7 +6,9 @@ namespace TestOutput
     public class ComplexTagHelpers
     {
         [Activate]
-        private ITagHelperManager __tagHelperManager { get; set; }
+        private ITagHelperRunner __tagHelperRunner { get; set; }
+        [Activate]
+        private ITagHelperScopeManager __tagHelperScopeManager { get; set; }
         #line hidden
         public ComplexTagHelpers()
         {
@@ -15,10 +17,11 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            var __tagHelperAttributeValue = string.Empty;
-            PTagHelper __p_PTagHelper_None;
-            InputTagHelper __input_InputTagHelper_None;
-            InputTagHelper2 __input_InputTagHelper2_None;
+            var __tagHelperBufferedStringValue = string.Empty;
+            TagHelperExecutionContext __executionContext = null;
+            PTagHelper __PTagHelper;
+            InputTagHelper __InputTagHelper;
+            InputTagHelper2 __InputTagHelper2;
 #line 1 "ComplexTagHelpers.cshtml"
  if (true)
 {
@@ -29,9 +32,11 @@ namespace TestOutput
 #line hidden
 
             WriteLiteral("    <div class=\"randomNonTagHelperAttribute\">\r\n        ");
-            __p_PTagHelper_None = __tagHelperManager.StartTagHelper<PTagHelper>();
+            __executionContext = __tagHelperScopeManager.Begin("p");
+            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __executionContext.Add(__PTagHelper);
             try {
-                NewWritingScope();
+                StartWritingScope();
                 WriteLiteral("Current Time: ");
                 Write(
 #line 6 "ComplexTagHelpers.cshtml"
@@ -43,12 +48,11 @@ DateTime.Now
 
             }
             finally {
-                __tagHelperAttributeValue = EndWritingScope();
+                __tagHelperBufferedStringValue = EndWritingScope();
             }
-            __tagHelperManager.AddHTMLAttribute("time", __tagHelperAttributeValue);
-            __tagHelperManager.StartActiveTagHelpers("p");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
+            __executionContext.AddHtmlAttribute("time", __tagHelperBufferedStringValue.ToString());
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
             WriteLiteral("\r\n            <h1>Set Time:</h1>\r\n");
 #line 8 "ComplexTagHelpers.cshtml"
             
@@ -64,25 +68,28 @@ DateTime.Now
 #line hidden
 
             WriteLiteral("                ");
-            __p_PTagHelper_None = __tagHelperManager.StartTagHelper<PTagHelper>();
-            __tagHelperManager.StartActiveTagHelpers("p");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
+            __executionContext = __tagHelperScopeManager.Begin("p");
+            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __executionContext.Add(__PTagHelper);
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
             WriteLiteral("New Time: ");
-            __input_InputTagHelper_None = __tagHelperManager.StartTagHelper<InputTagHelper>();
-            __input_InputTagHelper_None.Type = "text";
-            __tagHelperManager.AddTagHelperAttribute("type", __input_InputTagHelper_None.Type);
-            __input_InputTagHelper2_None = __tagHelperManager.StartTagHelper<InputTagHelper2>();
-            __input_InputTagHelper2_None.Type = __input_InputTagHelper_None.Type;
-            __tagHelperManager.AddHTMLAttribute("value", "");
-            __tagHelperManager.AddHTMLAttribute("placeholder", "Enter in a new time...");
-            __tagHelperManager.StartActiveTagHelpers("input");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            __executionContext = __tagHelperScopeManager.Begin("input");
+            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __executionContext.Add(__InputTagHelper);
+            __InputTagHelper.Type = "text";
+            __executionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
+            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __executionContext.Add(__InputTagHelper2);
+            __InputTagHelper2.Type = __InputTagHelper.Type;
+            __executionContext.AddHtmlAttribute("value", "");
+            __executionContext.AddHtmlAttribute("placeholder", "Enter in a new time...");
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n");
 #line 11 "ComplexTagHelpers.cshtml"
             }
@@ -93,14 +100,17 @@ DateTime.Now
 #line hidden
 
             WriteLiteral("                ");
-            __p_PTagHelper_None = __tagHelperManager.StartTagHelper<PTagHelper>();
-            __tagHelperManager.StartActiveTagHelpers("p");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
+            __executionContext = __tagHelperScopeManager.Begin("p");
+            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __executionContext.Add(__PTagHelper);
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
             WriteLiteral("Current Time: ");
-            __input_InputTagHelper_None = __tagHelperManager.StartTagHelper<InputTagHelper>();
+            __executionContext = __tagHelperScopeManager.Begin("input");
+            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __executionContext.Add(__InputTagHelper);
             try {
-                NewWritingScope();
+                StartWritingScope();
                 Write(
 #line 14 "ComplexTagHelpers.cshtml"
 checkbox
@@ -111,25 +121,27 @@ checkbox
 
             }
             finally {
-                __tagHelperAttributeValue = EndWritingScope();
+                __tagHelperBufferedStringValue = EndWritingScope();
             }
-            __input_InputTagHelper_None.Type = __tagHelperAttributeValue;
-            __tagHelperManager.AddTagHelperAttribute("type", __input_InputTagHelper_None.Type);
-            __input_InputTagHelper2_None = __tagHelperManager.StartTagHelper<InputTagHelper2>();
-            __input_InputTagHelper2_None.Type = __input_InputTagHelper_None.Type;
-            __input_InputTagHelper2_None.Checked = true;
-            __tagHelperManager.AddTagHelperAttribute("checked", __input_InputTagHelper2_None.Checked);
-            __tagHelperManager.StartActiveTagHelpers("input");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            __InputTagHelper.Type = __tagHelperBufferedStringValue.ToString();
+            __executionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
+            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __executionContext.Add(__InputTagHelper2);
+            __InputTagHelper2.Type = __InputTagHelper.Type;
+            __InputTagHelper2.Checked = true;
+            __executionContext.AddTagHelperAttribute("checked", __InputTagHelper2.Checked);
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n                ");
-            __input_InputTagHelper_None = __tagHelperManager.StartTagHelper<InputTagHelper>();
+            __executionContext = __tagHelperScopeManager.Begin("input");
+            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __executionContext.Add(__InputTagHelper);
             try {
-                NewWritingScope();
+                StartWritingScope();
                 Write(
 #line 15 "ComplexTagHelpers.cshtml"
 true ? "checkbox" : "anything"
@@ -140,21 +152,23 @@ true ? "checkbox" : "anything"
 
             }
             finally {
-                __tagHelperAttributeValue = EndWritingScope();
+                __tagHelperBufferedStringValue = EndWritingScope();
             }
-            __input_InputTagHelper_None.Type = __tagHelperAttributeValue;
-            __tagHelperManager.AddTagHelperAttribute("type", __input_InputTagHelper_None.Type);
-            __input_InputTagHelper2_None = __tagHelperManager.StartTagHelper<InputTagHelper2>();
-            __input_InputTagHelper2_None.Type = __input_InputTagHelper_None.Type;
-            __tagHelperManager.StartActiveTagHelpers("input");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            __InputTagHelper.Type = __tagHelperBufferedStringValue.ToString();
+            __executionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
+            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __executionContext.Add(__InputTagHelper2);
+            __InputTagHelper2.Type = __InputTagHelper.Type;
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n                ");
-            __input_InputTagHelper_None = __tagHelperManager.StartTagHelper<InputTagHelper>();
+            __executionContext = __tagHelperScopeManager.Begin("input");
+            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __executionContext.Add(__InputTagHelper);
             try {
-                NewWritingScope();
+                StartWritingScope();
 #line 16 "ComplexTagHelpers.cshtml"
 if(true) {
 
@@ -177,17 +191,17 @@ if(true) {
 
             }
             finally {
-                __tagHelperAttributeValue = EndWritingScope();
+                __tagHelperBufferedStringValue = EndWritingScope();
             }
-            __input_InputTagHelper_None.Type = __tagHelperAttributeValue;
-            __tagHelperManager.AddTagHelperAttribute("type", __input_InputTagHelper_None.Type);
-            __input_InputTagHelper2_None = __tagHelperManager.StartTagHelper<InputTagHelper2>();
-            __input_InputTagHelper2_None.Type = __input_InputTagHelper_None.Type;
-            __tagHelperManager.StartActiveTagHelpers("input");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            __InputTagHelper.Type = __tagHelperBufferedStringValue.ToString();
+            __executionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
+            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __executionContext.Add(__InputTagHelper2);
+            __InputTagHelper2.Type = __InputTagHelper.Type;
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n");
 #line 17 "ComplexTagHelpers.cshtml"
             }
@@ -196,8 +210,8 @@ if(true) {
 #line hidden
 
             WriteLiteral("        ");
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n    </div>\r\n");
 #line 20 "ComplexTagHelpers.cshtml"
 }

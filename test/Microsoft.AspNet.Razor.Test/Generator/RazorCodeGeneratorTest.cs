@@ -115,7 +115,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             host.DefaultClassName = name;
 
             // Add support for templates, etc.
-            host.GeneratedClassContext = new GeneratedClassContext(GeneratedTagHelperRenderingContext.Default,
+            host.GeneratedClassContext = new GeneratedClassContext(GeneratedTagHelperContext.Default,
                                                                    GeneratedClassContext.DefaultExecuteMethodName,
                                                                    GeneratedClassContext.DefaultWriteMethodName,
                                                                    GeneratedClassContext.DefaultWriteLiteralMethodName,

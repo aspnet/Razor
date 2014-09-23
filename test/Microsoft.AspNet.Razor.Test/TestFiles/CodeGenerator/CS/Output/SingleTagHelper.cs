@@ -6,7 +6,9 @@ namespace TestOutput
     public class SingleTagHelper
     {
         [Activate]
-        private ITagHelperManager __tagHelperManager { get; set; }
+        private ITagHelperRunner __tagHelperRunner { get; set; }
+        [Activate]
+        private ITagHelperScopeManager __tagHelperScopeManager { get; set; }
         #line hidden
         public SingleTagHelper()
         {
@@ -15,18 +17,20 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            var __tagHelperAttributeValue = string.Empty;
-            PTagHelper __p_PTagHelper_None;
-            __p_PTagHelper_None = __tagHelperManager.StartTagHelper<PTagHelper>();
-            __p_PTagHelper_None.Foo = 1337;
-            __tagHelperManager.AddTagHelperAttribute("foo", __p_PTagHelper_None.Foo);
-            __tagHelperManager.AddHTMLAttribute("class", "Hello World");
-            __tagHelperManager.StartActiveTagHelpers("p");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
+            var __tagHelperBufferedStringValue = string.Empty;
+            TagHelperExecutionContext __executionContext = null;
+            PTagHelper __PTagHelper;
+            __executionContext = __tagHelperScopeManager.Begin("p");
+            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __executionContext.Add(__PTagHelper);
+            __PTagHelper.Foo = 1337;
+            __executionContext.AddTagHelperAttribute("foo", __PTagHelper.Foo);
+            __executionContext.AddHtmlAttribute("class", "Hello World");
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
             WriteLiteral("Body of Tag");
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
         }
         #pragma warning restore 1998
     }

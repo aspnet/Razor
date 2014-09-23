@@ -6,7 +6,9 @@ namespace TestOutput
     public class BasicTagHelpers
     {
         [Activate]
-        private ITagHelperManager __tagHelperManager { get; set; }
+        private ITagHelperRunner __tagHelperRunner { get; set; }
+        [Activate]
+        private ITagHelperScopeManager __tagHelperScopeManager { get; set; }
         #line hidden
         public BasicTagHelpers()
         {
@@ -15,50 +17,57 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            var __tagHelperAttributeValue = string.Empty;
-            PTagHelper __p_PTagHelper_None;
-            InputTagHelper __input_InputTagHelper_None;
-            InputTagHelper2 __input_InputTagHelper2_None;
+            var __tagHelperBufferedStringValue = string.Empty;
+            TagHelperExecutionContext __executionContext = null;
+            PTagHelper __PTagHelper;
+            InputTagHelper __InputTagHelper;
+            InputTagHelper2 __InputTagHelper2;
             WriteLiteral("<div class=\"randomNonTagHelperAttribute\">\r\n    ");
-            __p_PTagHelper_None = __tagHelperManager.StartTagHelper<PTagHelper>();
-            __tagHelperManager.AddHTMLAttribute("class", "Hello World");
-            __tagHelperManager.StartActiveTagHelpers("p");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
+            __executionContext = __tagHelperScopeManager.Begin("p");
+            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __executionContext.Add(__PTagHelper);
+            __executionContext.AddHtmlAttribute("class", "Hello World");
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
             WriteLiteral("\r\n        ");
-            __p_PTagHelper_None = __tagHelperManager.StartTagHelper<PTagHelper>();
-            __tagHelperManager.StartActiveTagHelpers("p");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            __executionContext = __tagHelperScopeManager.Begin("p");
+            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __executionContext.Add(__PTagHelper);
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n        ");
-            __input_InputTagHelper_None = __tagHelperManager.StartTagHelper<InputTagHelper>();
-            __input_InputTagHelper_None.Type = "text";
-            __tagHelperManager.AddTagHelperAttribute("type", __input_InputTagHelper_None.Type);
-            __input_InputTagHelper2_None = __tagHelperManager.StartTagHelper<InputTagHelper2>();
-            __input_InputTagHelper2_None.Type = __input_InputTagHelper_None.Type;
-            __tagHelperManager.StartActiveTagHelpers("input");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            __executionContext = __tagHelperScopeManager.Begin("input");
+            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __executionContext.Add(__InputTagHelper);
+            __InputTagHelper.Type = "text";
+            __executionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
+            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __executionContext.Add(__InputTagHelper2);
+            __InputTagHelper2.Type = __InputTagHelper.Type;
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n        ");
-            __input_InputTagHelper_None = __tagHelperManager.StartTagHelper<InputTagHelper>();
-            __input_InputTagHelper_None.Type = "checkbox";
-            __tagHelperManager.AddTagHelperAttribute("type", __input_InputTagHelper_None.Type);
-            __input_InputTagHelper2_None = __tagHelperManager.StartTagHelper<InputTagHelper2>();
-            __input_InputTagHelper2_None.Type = __input_InputTagHelper_None.Type;
-            __input_InputTagHelper2_None.Checked = true;
-            __tagHelperManager.AddTagHelperAttribute("checked", __input_InputTagHelper2_None.Checked);
-            __tagHelperManager.StartActiveTagHelpers("input");
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            __executionContext = __tagHelperScopeManager.Begin("input");
+            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __executionContext.Add(__InputTagHelper);
+            __InputTagHelper.Type = "checkbox";
+            __executionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
+            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __executionContext.Add(__InputTagHelper2);
+            __InputTagHelper2.Type = __InputTagHelper.Type;
+            __InputTagHelper2.Checked = true;
+            __executionContext.AddTagHelperAttribute("checked", __InputTagHelper2.Checked);
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n    ");
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
             WriteLiteral("\r\n</div>");
         }
         #pragma warning restore 1998

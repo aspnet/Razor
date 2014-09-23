@@ -6,7 +6,9 @@ namespace TestOutput
     public class ContentBehaviorTagHelpers
     {
         [Activate]
-        private ITagHelperManager __tagHelperManager { get; set; }
+        private ITagHelperRunner __tagHelperRunner { get; set; }
+        [Activate]
+        private ITagHelperScopeManager __tagHelperScopeManager { get; set; }
         #line hidden
         public ContentBehaviorTagHelpers()
         {
@@ -15,68 +17,74 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            var __tagHelperAttributeValue = string.Empty;
-            ModifyTagHelper __modify_ModifyTagHelper_Modify;
-            NoneTagHelper __none_NoneTagHelper_None;
-            AppendTagHelper __append_AppendTagHelper_Append;
-            PrependTagHelper __prepend_PrependTagHelper_Prepend;
-            ReplaceTagHelper __replace_ReplaceTagHelper_Replace;
-            __modify_ModifyTagHelper_Modify = __tagHelperManager.StartTagHelper<ModifyTagHelper>();
-            __tagHelperManager.AddHTMLAttribute("class", "myModifyClass");
-            __tagHelperManager.AddHTMLAttribute("style", "color:red;");
-            __tagHelperManager.StartActiveTagHelpers("modify");
+            var __tagHelperBufferedStringValue = string.Empty;
+            TagHelperExecutionContext __executionContext = null;
+            ModifyTagHelper __ModifyTagHelper;
+            NoneTagHelper __NoneTagHelper;
+            AppendTagHelper __AppendTagHelper;
+            PrependTagHelper __PrependTagHelper;
+            ReplaceTagHelper __ReplaceTagHelper;
+            __executionContext = __tagHelperScopeManager.Begin("modify");
+            __ModifyTagHelper = CreateTagHelper<ModifyTagHelper>();
+            __executionContext.Add(__ModifyTagHelper);
+            __executionContext.AddHtmlAttribute("class", "myModifyClass");
+            __executionContext.AddHtmlAttribute("style", "color:red;");
             try {
-                NewWritingScope(__tagHelperManager.GetTagBodyBuffer());
+                StartWritingScope();
                 WriteLiteral("\r\n    ");
-                __none_NoneTagHelper_None = __tagHelperManager.StartTagHelper<NoneTagHelper>();
-                __tagHelperManager.AddHTMLAttribute("class", "myNoneClass");
-                __tagHelperManager.StartActiveTagHelpers("none");
-                __tagHelperManager.ExecuteTagHelpers();
-                WriteLiteral(__tagHelperManager.GenerateTagStart());
+                __executionContext = __tagHelperScopeManager.Begin("none");
+                __NoneTagHelper = CreateTagHelper<NoneTagHelper>();
+                __executionContext.Add(__NoneTagHelper);
+                __executionContext.AddHtmlAttribute("class", "myNoneClass");
+                __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+                WriteLiteral(__executionContext.Output.GenerateTagStart());
                 WriteLiteral("\r\n        ");
-                __append_AppendTagHelper_Append = __tagHelperManager.StartTagHelper<AppendTagHelper>();
-                __tagHelperManager.AddHTMLAttribute("style", "color:red;");
-                __tagHelperManager.StartActiveTagHelpers("append");
-                __tagHelperManager.ExecuteTagHelpers();
-                WriteLiteral(__tagHelperManager.GenerateTagStart());
+                __executionContext = __tagHelperScopeManager.Begin("append");
+                __AppendTagHelper = CreateTagHelper<AppendTagHelper>();
+                __executionContext.Add(__AppendTagHelper);
+                __executionContext.AddHtmlAttribute("style", "color:red;");
+                __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+                WriteLiteral(__executionContext.Output.GenerateTagStart());
                 WriteLiteral("\r\n            ");
-                __prepend_PrependTagHelper_Prepend = __tagHelperManager.StartTagHelper<PrependTagHelper>();
-                __tagHelperManager.AddHTMLAttribute("class", "myPrependClass");
-                __tagHelperManager.AddHTMLAttribute("customAttribute", "customValue");
-                __tagHelperManager.StartActiveTagHelpers("prepend");
-                __tagHelperManager.ExecuteTagHelpers();
-                WriteLiteral(__tagHelperManager.GenerateTagStart());
-                WriteLiteral(__tagHelperManager.GenerateTagContent());
+                __executionContext = __tagHelperScopeManager.Begin("prepend");
+                __PrependTagHelper = CreateTagHelper<PrependTagHelper>();
+                __executionContext.Add(__PrependTagHelper);
+                __executionContext.AddHtmlAttribute("class", "myPrependClass");
+                __executionContext.AddHtmlAttribute("customAttribute", "customValue");
+                __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+                WriteLiteral(__executionContext.Output.GenerateTagStart());
+                WriteLiteral(__executionContext.Output.GenerateTagContent());
                 WriteLiteral("\r\n                ");
-                __replace_ReplaceTagHelper_Replace = __tagHelperManager.StartTagHelper<ReplaceTagHelper>();
-                __tagHelperManager.AddHTMLAttribute("for", "hello");
-                __tagHelperManager.AddHTMLAttribute("id", "bar");
-                __tagHelperManager.StartActiveTagHelpers("replace");
-                __tagHelperManager.ExecuteTagHelpers();
-                WriteLiteral(__tagHelperManager.GenerateTagStart());
-                WriteLiteral(__tagHelperManager.GenerateTagContent());
-                WriteLiteral(__tagHelperManager.GenerateTagEnd());
-                __tagHelperManager.EndTagHelpers();
+                __executionContext = __tagHelperScopeManager.Begin("replace");
+                __ReplaceTagHelper = CreateTagHelper<ReplaceTagHelper>();
+                __executionContext.Add(__ReplaceTagHelper);
+                __executionContext.AddHtmlAttribute("for", "hello");
+                __executionContext.AddHtmlAttribute("id", "bar");
+                __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext);
+                WriteLiteral(__executionContext.Output.GenerateTagStart());
+                WriteLiteral(__executionContext.Output.GenerateTagContent());
+                WriteLiteral(__executionContext.Output.GenerateTagEnd());
+                __executionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n            ");
-                WriteLiteral(__tagHelperManager.GenerateTagEnd());
-                __tagHelperManager.EndTagHelpers();
+                WriteLiteral(__executionContext.Output.GenerateTagEnd());
+                __executionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
-                WriteLiteral(__tagHelperManager.GenerateTagContent());
-                WriteLiteral(__tagHelperManager.GenerateTagEnd());
-                __tagHelperManager.EndTagHelpers();
+                WriteLiteral(__executionContext.Output.GenerateTagContent());
+                WriteLiteral(__executionContext.Output.GenerateTagEnd());
+                __executionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n    ");
-                WriteLiteral(__tagHelperManager.GenerateTagEnd());
-                __tagHelperManager.EndTagHelpers();
+                WriteLiteral(__executionContext.Output.GenerateTagEnd());
+                __executionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n");
             }
             finally {
-                __tagHelperAttributeValue = EndWritingScope();
+                __tagHelperBufferedStringValue = EndWritingScope();
             }
-            __tagHelperManager.ExecuteTagHelpers();
-            WriteLiteral(__tagHelperManager.GenerateTagStart());
-            WriteLiteral(__tagHelperManager.GenerateTagContent());
-            WriteLiteral(__tagHelperManager.GenerateTagEnd());
-            __tagHelperManager.EndTagHelpers();
+            __executionContext.Output = await __tagHelperRunner.RunAsync(__executionContext, __tagHelperBufferedStringValue);
+            WriteLiteral(__executionContext.Output.GenerateTagStart());
+            WriteLiteral(__executionContext.Output.GenerateTagContent());
+            WriteLiteral(__executionContext.Output.GenerateTagEnd());
+            __executionContext = __tagHelperScopeManager.End();
         }
         #pragma warning restore 1998
     }
