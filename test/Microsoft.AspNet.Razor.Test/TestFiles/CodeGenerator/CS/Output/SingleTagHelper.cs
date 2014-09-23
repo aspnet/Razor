@@ -6,7 +6,7 @@ namespace TestOutput
     public class SingleTagHelper
     {
         [Activate]
-        private ITagHelperManager __tagHelperManager { get; set; }
+        private TagHelperManager __tagHelperManager { get; set; }
         #line hidden
         public SingleTagHelper()
         {
@@ -16,13 +16,13 @@ namespace TestOutput
         public override async Task ExecuteAsync()
         {
             var __tagHelperAttributeValue = string.Empty;
-            PTagHelper __p_PTagHelper_None;
-            __p_PTagHelper_None = __tagHelperManager.StartTagHelper<PTagHelper>();
-            __p_PTagHelper_None.Foo = 1337;
-            __tagHelperManager.AddTagHelperAttribute("foo", __p_PTagHelper_None.Foo);
+            PTagHelper __p_PTagHelper;
+            __p_PTagHelper = __tagHelperManager.InstantiateTagHelper<PTagHelper>();
+            __p_PTagHelper.Foo = 1337;
+            __tagHelperManager.AddTagHelperAttribute("foo", __p_PTagHelper.Foo);
             __tagHelperManager.AddHTMLAttribute("class", "Hello World");
             __tagHelperManager.StartActiveTagHelpers("p");
-            __tagHelperManager.ExecuteTagHelpers();
+            await __tagHelperManager.ExecuteTagHelpersAsync();
             WriteLiteral(__tagHelperManager.GenerateTagStart());
             WriteLiteral("Body of Tag");
             WriteLiteral(__tagHelperManager.GenerateTagEnd());
