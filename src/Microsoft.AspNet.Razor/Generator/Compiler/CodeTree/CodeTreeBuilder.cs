@@ -46,11 +46,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             if (literalChunk != null)
             {
                 // Literal chunks are always associated with Spans
-                var lastSpan = literalChunk.Association as Span;
-                var currentSpan = association as Span;
-
-                Debug.Assert(lastSpan != null);
-                Debug.Assert(currentSpan != null);
+                var lastSpan = (Span)literalChunk.Association;
+                var currentSpan = (Span)association;
 
                 var builder = new SpanBuilder(lastSpan);
                 foreach (var symbol in currentSpan.Symbols)

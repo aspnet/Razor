@@ -15,7 +15,7 @@ namespace Microsoft.AspNet.Razor
         public void AddLiteralChunk_AddsChunkToCodeTree()
         {
             // Arrange
-            var spanFactory = new SpanFactory();
+            var spanFactory = SpanFactory.CreateCsHtml();
             var previousSpan = spanFactory.EmptyHtml().Builder.Build();
             var builder = new CodeTreeBuilder();
             
@@ -26,7 +26,7 @@ namespace Microsoft.AspNet.Razor
             var chunk = Assert.Single(builder.CodeTree.Chunks);
             var literalChunk = Assert.IsType<LiteralChunk>(chunk);
             Assert.Equal("some text", literalChunk.Text);
-            Assert.Equal(previousSpan, literalChunk.Association);
+            Assert.Same(previousSpan, literalChunk.Association);
         }
 
         [Fact]

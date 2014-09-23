@@ -348,6 +348,13 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             if (generateInstrumentation)
             {
+                // For expression chunks, such as @value, @(value) etc, pick the first Code or Markup span
+                // from the expression (in this case "value") and use that to calculate the length. This works
+                // accurately for most parts. The scenarios that don't work are
+                // (a) Expressions with inline comments (e.g. @(a @* comment *@ b)) - these have multiple code spans
+                // (b) Expressions with inline templates (e.g. @Foo(@<p>Hello world</p>)).
+                // Tracked via #153
+
                 var block = (Block)chunk.Association;
                 contentSpan = block.Children
                                    .OfType<Span>()
