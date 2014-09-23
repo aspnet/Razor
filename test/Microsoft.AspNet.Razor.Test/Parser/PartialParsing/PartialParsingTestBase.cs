@@ -58,7 +58,7 @@ namespace Microsoft.AspNet.Razor.Test.Parser.PartialParsing
         {
             return new RazorEngineHost(new TLanguage())
             {
-                GeneratedClassContext = new GeneratedClassContext(GeneratedTagHelperRenderingContext.Default, 
+                GeneratedClassContext = new GeneratedClassContext(GeneratedTagHelperContext.Default, 
                                                                   "Execute", 
                                                                   "Write", 
                                                                   "WriteLiteral", 
