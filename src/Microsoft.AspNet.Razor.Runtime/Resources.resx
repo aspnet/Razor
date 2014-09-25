@@ -120,4 +120,7 @@
   <data name="TagHelpers_CannotHaveConflictingAttributeTypes" xml:space="preserve">
     <value>You cannot have multiple TagHelpers that target the same HTML attribute name with different types. TagHelper '{0}' targets the '{1}' HTML attribute with type '{2}' which conflicts with TagHelper '{3}' that expects the '{1}' attribute to be of type '{4}'.</value>
   </data>
+  <data name="ScopeManager_EndCannotBeCalledWithoutACallToBegin" xml:space="preserve">
+    <value>You cannot call '{0}' without first calling '{1}' on the TagHelperScopeManager.</value>
+  </data>
 </root>

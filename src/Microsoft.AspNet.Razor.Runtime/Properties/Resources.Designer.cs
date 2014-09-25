@@ -26,6 +26,22 @@ namespace Microsoft.AspNet.Razor.Runtime
             return string.Format(CultureInfo.CurrentCulture, GetString("TagHelpers_CannotHaveConflictingAttributeTypes"), p0, p1, p2, p3, p4);
         }
 
+        /// <summary>
+        /// You cannot call '{0}' without first calling '{1}' on the TagHelperScopeManager.
+        /// </summary>
+        internal static string ScopeManager_EndCannotBeCalledWithoutACallToBegin
+        {
+            get { return GetString("ScopeManager_EndCannotBeCalledWithoutACallToBegin"); }
+        }
+
+        /// <summary>
+        /// You cannot call '{0}' without first calling '{1}' on the TagHelperScopeManager.
+        /// </summary>
+        internal static string FormatScopeManager_EndCannotBeCalledWithoutACallToBegin(object p0, object p1)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("ScopeManager_EndCannotBeCalledWithoutACallToBegin"), p0, p1);
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);
