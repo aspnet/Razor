@@ -28,10 +28,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 _foundTagHelpers = true;
 
                 Writer.WriteVariableDeclaration("var",
-                                                CSharpTagHelperCodeRenderer.BufferedStringValueVariableName,
+                                                CSharpTagHelperCodeRenderer.DefaultBufferedStringValueVariableName,
                                                 "string.Empty");
                 Writer.WriteVariableDeclaration(_tagHelperContext.TagHelperExecutionContextTypeName,
-                                                CSharpTagHelperCodeRenderer.TagHelperExecutionContextVariableName,
+                                                CSharpTagHelperCodeRenderer.DefaultTagHelperExecutionContextVariableName,
                                                 null);
             }
 

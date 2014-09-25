@@ -33,7 +33,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// </remarks>
         public void RenderAttributeValue([NotNull] TagHelperAttributeDescriptor attributeDescriptor,
                                          [NotNull] CSharpCodeWriter writer,
-                                         [NotNull] CodeGeneratorContext context,
+                                         [NotNull] CodeBuilderContext context,
                                          [NotNull] Action<CSharpCodeWriter> renderAttributeValue)
         {
             renderAttributeValue(writer);

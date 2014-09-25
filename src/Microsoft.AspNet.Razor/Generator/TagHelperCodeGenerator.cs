@@ -21,8 +21,9 @@ namespace Microsoft.AspNet.Razor.Generator
         /// <summary>
         /// Instantiates a new <see cref="TagHelperCodeGenerator"/>.
         /// </summary>
-        /// <param name="tagHelperDescriptors"><see cref="TagHelperDescriptor"/>s associated with the current tag 
-        /// helper</param>
+        /// <param name="tagHelperDescriptors">
+        /// <see cref="TagHelperDescriptor"/>s associated with the current HTML tag.
+        /// </param>
         public TagHelperCodeGenerator(IEnumerable<TagHelperDescriptor> tagHelperDescriptors)
         {
             _tagHelperDescriptors = tagHelperDescriptors;

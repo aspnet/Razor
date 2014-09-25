@@ -23,9 +23,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 _foundTagHelpers = true;
 
                 WriteActivatedProperty(_tagHelperContext.TagHelperRunnerTypeName,
-                                       CSharpTagHelperCodeRenderer.TagHelperRunnerVariableName);
+                                       CSharpTagHelperCodeRenderer.DefaultTagHelperRunnerVariableName);
                 WriteActivatedProperty(_tagHelperContext.TagHelperScopeManagerTypeName,
-                                       CSharpTagHelperCodeRenderer.TagHelperScopeManagerVariableName);
+                                       CSharpTagHelperCodeRenderer.DefaultTagHelperScopeManagerVariableName);
             }
         }
 

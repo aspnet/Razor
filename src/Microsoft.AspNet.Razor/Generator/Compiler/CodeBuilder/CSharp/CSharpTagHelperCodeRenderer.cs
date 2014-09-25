@@ -16,10 +16,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
     /// </summary>
     public class CSharpTagHelperCodeRenderer
     {
-        internal static readonly string TagHelperScopeManagerVariableName = "__tagHelperScopeManager";
-        internal static readonly string TagHelperRunnerVariableName = "__tagHelperRunner";
-        internal static readonly string TagHelperExecutionContextVariableName = "__executionContext";
-        internal static readonly string BufferedStringValueVariableName = "__tagHelperBufferedStringValue";
+        internal static readonly string DefaultTagHelperScopeManagerVariableName = "__tagHelperScopeManager";
+        internal static readonly string DefaultTagHelperRunnerVariableName = "__tagHelperRunner";
+        internal static readonly string DefaultTagHelperExecutionContextVariableName = "__executionContext";
+        internal static readonly string DefaultBufferedStringValueVariableName = "__tagHelperBufferedStringValue";
 
         private static readonly TypeInfo StringTypeInfo = typeof(string).GetTypeInfo();
         private static readonly TagHelperAttributeDescriptorComparer AttributeDescriptorComparer =
@@ -37,8 +37,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         /// Instantiates a new <see cref="CSharpTagHelperCodeRenderer"/>.
         /// </summary>
         /// <param name="bodyVisitor">The <see cref="IChunkVisitor"/> used to render chunks found in the body.</param>
-        /// <param name="writer">The <see cref="CSharpCodeWriter"/> that's used to write code.</param>
-        /// <param name="context">A <see cref="CodeGeneratorContext"/> instance that contains information about 
+        /// <param name="writer">The <see cref="CSharpCodeWriter"/> used to write code.</param>
+        /// <param name="context">A <see cref="CodeBuilderContext"/> instance that contains information about 
         /// the current code generation process.</param>
         public CSharpTagHelperCodeRenderer([NotNull] IChunkVisitor bodyVisitor,
                                            [NotNull] CSharpCodeWriter writer,
@@ -66,7 +66,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             // Find the first content behavior that doesn't have a content behavior of None.
             // The resolver restricts content behavior collisions so the first one that's not None will be
-            // the content behavior we need to abide by.S
+            // the content behavior we need to abide by. None can work in unison with other ContentBehaviors.
             var contentBehavior = tagHelperDescriptors.Select(descriptor => descriptor.ContentBehavior)
                                                       .FirstOrDefault(
                                                             behavior => behavior != ContentBehavior.None);
@@ -98,7 +98,11 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 RenderTagOutput(_tagHelperContext.TagHelperOutputGenerateTagContentMethodName);
             }
 
-            RenderTagHelperBody(chunk.Children, contentBehavior);
+            // No need to render children if the body is being replaced anyways
+            if (contentBehavior != ContentBehavior.Replace)
+            {
+                RenderTagHelperBody(chunk.Children, contentBehavior);
+            }
 
             // If content behavior is modify then we need to execute AFTER now (after the children)
             // and then render the start tag.
@@ -121,18 +125,15 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         internal static string GetVariableName(TagHelperDescriptor descriptor)
         {
-            return string.Format(CultureInfo.InvariantCulture,
-                                 "__{0}_{1}",
-                                 descriptor.TagName.Replace('-', '_'),
-                                 descriptor.TagHelperName.Replace('.', '_'));
+            return "__" + descriptor.TagHelperName.Replace('.', '_');
         }
 
         private void RenderBeginTagHelperScope(string tagName, ContentBehavior contentBehavior)
         {
             // Call into the tag helper scope manager to start a new tag helper scope.
             // Also capture the value as the current execution context.
-            _writer.WriteStartAssignment(TagHelperExecutionContextVariableName)
-                   .WriteStartInstanceMethodInvocation(TagHelperScopeManagerVariableName,
+            _writer.WriteStartAssignment(DefaultTagHelperExecutionContextVariableName)
+                   .WriteStartInstanceMethodInvocation(DefaultTagHelperScopeManagerVariableName,
                                                        _tagHelperContext.TagHelperScopeManagerBeginMethodName);
             _writer.WriteStringLiteral(tagName)
                    .WriteEndMethodInvocation();
@@ -158,7 +159,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                                                    tagHelperDescriptor.TagHelperName)
                        .WriteEndMethodInvocation();
 
-                _writer.WriteInstanceMethodInvocation(TagHelperExecutionContextVariableName,
+                _writer.WriteInstanceMethodInvocation(DefaultTagHelperExecutionContextVariableName,
                                                       _tagHelperContext.ExecutionContextAddMethodName,
                                                       tagHelperVariableName);
 
@@ -244,7 +245,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
                         // We need to inform the context of the attribute value.
                         _writer.WriteStartInstanceMethodInvocation(
-                            TagHelperExecutionContextVariableName,
+                            DefaultTagHelperExecutionContextVariableName,
                             _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName);
 
                         _writer.WriteStringLiteral(attributeDescriptor.AttributeName)
@@ -278,7 +279,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                     BuildBufferedAttributeValue(attributeValue);
                 }
 
-                _writer.WriteStartInstanceMethodInvocation(TagHelperExecutionContextVariableName,
+                _writer.WriteStartInstanceMethodInvocation(DefaultTagHelperExecutionContextVariableName,
                                                            _tagHelperContext.ExecutionContextAddHtmlAttributeMethodName);
                 _writer.WriteStringLiteral(htmlAttribute.Key)
                        .WriteParameterSeparator();
@@ -299,30 +300,26 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderTagHelperBody(IList<Chunk> children, ContentBehavior contentBehavior)
         {
-            // No need to render children if the body is being replaced anyways
-            if (contentBehavior != ContentBehavior.Replace)
+            // If content behavior is modify we need to use a different writer to buffer the body.
+            if (contentBehavior == ContentBehavior.Modify)
             {
-                // If content behavior is modify we need to use a different writer to buffer the body.
-                if (contentBehavior == ContentBehavior.Modify)
-                {
-                    BuildBufferedWritingScope(() =>
-                    {
-                        // Render all of the tag helper children
-                        _bodyVisitor.Accept(children);
-                    });
-                }
-                else
+                BuildBufferedWritingScope(() =>
                 {
                     // Render all of the tag helper children
                     _bodyVisitor.Accept(children);
-                }
+                });
+            }
+            else
+            {
+                // Render all of the tag helper children
+                _bodyVisitor.Accept(children);
             }
         }
 
         private void RenderEndTagHelpersScope()
         {
-            _writer.WriteStartAssignment(TagHelperExecutionContextVariableName)
-                   .WriteInstanceMethodInvocation(TagHelperScopeManagerVariableName,
+            _writer.WriteStartAssignment(DefaultTagHelperExecutionContextVariableName)
+                   .WriteInstanceMethodInvocation(DefaultTagHelperScopeManagerVariableName,
                                                   _tagHelperContext.TagHelperScopeManagerEndMethodName);
         }
 
@@ -330,7 +327,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         {
             CSharpCodeVisitor.RenderPreWriteStart(_writer, _context);
 
-            _writer.Write(TagHelperExecutionContextVariableName)
+            _writer.Write(DefaultTagHelperExecutionContextVariableName)
                    .Write(".")
                    .Write(_tagHelperContext.ExecutionContextOutputPropertyName)
                    .Write(".")
@@ -340,18 +337,18 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderRunTagHelpers(bool bufferedBody)
         {
-            _writer.Write(TagHelperExecutionContextVariableName)
+            _writer.Write(DefaultTagHelperExecutionContextVariableName)
                    .Write(".")
                    .Write(_tagHelperContext.ExecutionContextOutputPropertyName)
                    .Write(" = await ")
-                   .WriteStartInstanceMethodInvocation(TagHelperRunnerVariableName,
+                   .WriteStartInstanceMethodInvocation(DefaultTagHelperRunnerVariableName,
                                                        _tagHelperContext.TagHelperRunnerRunAsyncMethodName);
-            _writer.Write(TagHelperExecutionContextVariableName);
+            _writer.Write(DefaultTagHelperExecutionContextVariableName);
 
-            if(bufferedBody)
+            if (bufferedBody)
             {
                 _writer.WriteParameterSeparator()
-                       .Write(BufferedStringValueVariableName);
+                       .Write(DefaultBufferedStringValueVariableName);
             }
 
             _writer.WriteEndMethodInvocation();
@@ -359,7 +356,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderBufferedAttributeValueAccessor()
         {
-            _writer.WriteInstanceMethodInvocation(BufferedStringValueVariableName,
+            _writer.WriteInstanceMethodInvocation(DefaultBufferedStringValueVariableName,
                                                   "ToString",
                                                   endLine: false);
         }
@@ -415,7 +412,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             _writer.Write("finally");
             using (_writer.BuildScope())
             {
-                _writer.WriteStartAssignment(BufferedStringValueVariableName)
+                _writer.WriteStartAssignment(DefaultBufferedStringValueVariableName)
                        .WriteMethodInvocation(_tagHelperContext.EndWritingScopeMethodName);
             }
         }

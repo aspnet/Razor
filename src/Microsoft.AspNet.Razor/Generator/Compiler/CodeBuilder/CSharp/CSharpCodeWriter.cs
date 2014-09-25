@@ -219,16 +219,16 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         }
 
         // Writes a method invocation for the given instance name.
-        public CSharpCodeWriter WriteInstanceMethodInvocation(string instanceName,
-                                                              string methodName,
+        public CSharpCodeWriter WriteInstanceMethodInvocation([NotNull] string instanceName,
+                                                              [NotNull] string methodName,
                                                               params string[] parameters)
         {
             return WriteInstanceMethodInvocation(instanceName, methodName, endLine: true, parameters: parameters);
         }
 
         // Writes a method invocation for the given instance name.
-        public CSharpCodeWriter WriteInstanceMethodInvocation(string instanceName,
-                                                              string methodName,
+        public CSharpCodeWriter WriteInstanceMethodInvocation([NotNull] string instanceName,
+                                                              [NotNull] string methodName,
                                                               bool endLine,
                                                               params string[] parameters)
         {
@@ -238,8 +238,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 parameters);
         }
 
-        public CSharpCodeWriter WriteStartInstanceMethodInvocation(string instanceName,
-                                                                   string methodName)
+        public CSharpCodeWriter WriteStartInstanceMethodInvocation([NotNull] string instanceName,
+                                                                   [NotNull] string methodName)
         {
             return WriteStartMethodInvocation(
                 string.Format(CultureInfo.InvariantCulture, InstanceMethodFormat, instanceName, methodName));
