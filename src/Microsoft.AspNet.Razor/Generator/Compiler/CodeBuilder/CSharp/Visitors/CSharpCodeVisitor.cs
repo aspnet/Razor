@@ -149,7 +149,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         protected override void Visit(ExpressionChunk chunk)
         {
-            CreateExpressionCodeMapping(chunk.Code, chunk);
+            Writer.Write(chunk.Code);
         }
 
         protected override void Visit(StatementChunk chunk)
@@ -343,28 +343,20 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         public void RenderRuntimeExpressionBlockChunk(ExpressionBlockChunk chunk)
         {
-            var generateInstrumentation = ShouldGenerateInstrumentationForExpressions();
-            Span contentSpan = null;
+            // For expression chunks, such as @value, @(value) etc, pick the first Code or Markup span
+            // from the expression (in this case "value") and use that to calculate the length. This works
+            // accurately for most parts. The scenarios that don't work are
+            // (a) Expressions with inline comments (e.g. @(a @* comment *@ b)) - these have multiple code spans
+            // (b) Expressions with inline templates (e.g. @Foo(@<p>Hello world</p>)).
+            // Tracked via https://github.com/aspnet/Razor/issues/153
 
-            if (generateInstrumentation)
-            {
-                // For expression chunks, such as @value, @(value) etc, pick the first Code or Markup span
-                // from the expression (in this case "value") and use that to calculate the length. This works
-                // accurately for most parts. The scenarios that don't work are
-                // (a) Expressions with inline comments (e.g. @(a @* comment *@ b)) - these have multiple code spans
-                // (b) Expressions with inline templates (e.g. @Foo(@<p>Hello world</p>)).
-                // Tracked via https://github.com/aspnet/Razor/issues/153
+            var block = (Block)chunk.Association;
+            var contentSpan = block.Children
+                               .OfType<Span>()
+                               .FirstOrDefault(s => s.Kind == SpanKind.Code || s.Kind == SpanKind.Markup);
 
-                var block = (Block)chunk.Association;
-                contentSpan = block.Children
-                                   .OfType<Span>()
-                                   .FirstOrDefault(s => s.Kind == SpanKind.Code || s.Kind == SpanKind.Markup);
-
-                if (contentSpan != null)
-                {
-                    Writer.WriteStartInstrumentationContext(Context, contentSpan, isLiteral: false);
-                }
-            }
+            var generateInstrumentation = ShouldGenerateInstrumentationForExpressions() &&
+                                          contentSpan != null;
 
             if (Context.ExpressionRenderingMode == ExpressionRenderingMode.InjectCode)
             {
@@ -372,37 +364,93 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             }
             else if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
             {
-                if (!String.IsNullOrEmpty(Context.TargetWriterName))
+                if (contentSpan != null)
                 {
-                    Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteToMethodName)
-                            .Write(Context.TargetWriterName)
-                            .WriteParameterSeparator();
+                    RenderRuntimeExpressionBlockChunkWithContentSpan(chunk, contentSpan);
                 }
                 else
                 {
-                    Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteMethodName);
+                    if (!string.IsNullOrEmpty(Context.TargetWriterName))
+                    {
+                        Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteToMethodName)
+                              .Write(Context.TargetWriterName)
+                              .WriteParameterSeparator();
+                    }
+                    else
+                    {
+                        Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteMethodName);
+                    }
+
+                    Accept(chunk.Children);
+
+                    Writer.WriteEndMethodInvocation()
+                          .WriteLine();
+                }
+            }
+        }
+
+        private void RenderRuntimeExpressionBlockChunkWithContentSpan(ExpressionBlockChunk chunk, Span contentSpan)
+        {
+            var generateInstrumentation = ShouldGenerateInstrumentationForExpressions();
+
+            if (generateInstrumentation)
+            {
+                Writer.WriteStartInstrumentationContext(Context, contentSpan, isLiteral: false);
+            }
+
+            using (var mappingWriter = Writer.BuildLineMapping(chunk.Start, contentSpan.Length, Context.SourceFile))
+            {
+                mappingWriter.MarkLineMappingStart();
+
+                var indent = Writer.CurrentIndent;
+                Writer.ResetIndent();
+
+                if (!string.IsNullOrEmpty(Context.TargetWriterName))
+                {
+                    var generatedStart = Context.Host.GeneratedClassContext.WriteToMethodName.Length +
+                                         Context.TargetWriterName.Length +
+                                         3; // 1 for the opening bracket and 2 for the parameter separator
+
+                    var padding = _paddingBuilder.BuildExpressionPadding(contentSpan, generatedStart);
+                    
+
+                    Writer.Write(padding)
+                          .WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteToMethodName)
+                          .Write(Context.TargetWriterName)
+                          .WriteParameterSeparator();
+                }
+                else
+                {
+                    var generatedStart = Context.Host.GeneratedClassContext.WriteMethodName.Length +
+                                         1; // for the opening bracket
+                    var padding = _paddingBuilder.BuildExpressionPadding(contentSpan, generatedStart);
+                    
+                    Writer.Write(padding)
+                          .WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteMethodName);
                 }
 
                 Accept(chunk.Children);
 
-                Writer.WriteEndMethodInvocation()
-                      .WriteLine();
+                Writer.WriteEndMethodInvocation();
+                Writer.SetIndent(indent);
+
+                mappingWriter.MarkLineMappingEnd();
             }
 
-            if (contentSpan != null)
+            if (generateInstrumentation)
             {
                 Writer.WriteEndInstrumentationContext(Context);
             }
         }
 
-        public void CreateExpressionCodeMapping(string code, Chunk chunk)
-        {
-            CreateCodeMapping(_paddingBuilder.BuildExpressionPadding((Span)chunk.Association), code, chunk);
-        }
-
         public void CreateStatementCodeMapping(string code, Chunk chunk)
         {
             CreateCodeMapping(_paddingBuilder.BuildStatementPadding((Span)chunk.Association), code, chunk);
+        }
+
+        public void CreateExpressionCodeMapping(string code, Chunk chunk)
+        {
+            CreateCodeMapping(_paddingBuilder.BuildExpressionPadding((Span)chunk.Association), code, chunk);
         }
 
         public void CreateCodeMapping(string padding, string code, Chunk chunk)
