@@ -34,8 +34,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         /// and <see cref="BlockBuilder.Type"/> from the <paramref name="startTag"/>.
         /// </summary>
         /// <param name="tagName">An HTML tag name.</param>
-        /// <param name="descriptors">The <see cref="TagHelperDescriptor"/>s associated with the current
-        /// tag helper.</param>
+        /// <param name="descriptors">The <see cref="TagHelperDescriptor"/>s associated with the current HTML
+        /// tag.</param>
         /// <param name="startTag">The <see cref="Block"/> that contains all information about the start
         /// of the HTML element.</param>
         public TagHelperBlockBuilder(string tagName, IEnumerable<TagHelperDescriptor> descriptors, Block startTag)

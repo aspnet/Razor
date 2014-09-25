@@ -22,19 +22,27 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             {
                 _foundTagHelpers = true;
 
-                if (_activateAttributeName != null)
-                {
-                    Writer.Write("[")
-                          .Write(_activateAttributeName)
-                          .WriteLine("]");
-                }
-
-                Writer.Write("private ")
-                      .Write(_tagHelperContext.TagHelperManagerName)
-                      .Write(" ")
-                      .Write(CSharpTagHelperCodeRenderer.ManagerVariableName)
-                      .WriteLine(" { get; set; }");
+                WriteActivatedProperty(_tagHelperContext.TagHelperRunnerTypeName,
+                                       CSharpTagHelperCodeRenderer.TagHelperRunnerVariableName);
+                WriteActivatedProperty(_tagHelperContext.TagHelperScopeManagerTypeName,
+                                       CSharpTagHelperCodeRenderer.TagHelperScopeManagerVariableName);
             }
+        }
+
+        private void WriteActivatedProperty(string typeName, string name)
+        {
+            if (_activateAttributeName != null)
+            {
+                Writer.Write("[")
+                      .Write(_activateAttributeName)
+                      .WriteLine("]");
+            }
+
+            Writer.Write("private ")
+                  .Write(typeName)
+                  .Write(" ")
+                  .Write(name)
+                  .WriteLine(" { get; set; }");
         }
     }
 }

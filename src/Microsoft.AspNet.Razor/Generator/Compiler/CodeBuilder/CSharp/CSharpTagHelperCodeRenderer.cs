@@ -16,7 +16,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
     /// </summary>
     public class CSharpTagHelperCodeRenderer
     {
-        internal static readonly string ManagerVariableName = "__tagHelperManager";
+        internal static readonly string TagHelperScopeManagerVariableName = "__tagHelperScopeManager";
+        internal static readonly string TagHelperRunnerVariableName = "__tagHelperRunner";
+        internal static readonly string TagHelperExecutionContextVariableName = "__executionContext";
         internal static readonly string BufferedStringValueVariableName = "__tagHelperBufferedStringValue";
 
         private static readonly TypeInfo StringTypeInfo = typeof(string).GetTypeInfo();
@@ -24,9 +26,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             new TagHelperAttributeDescriptorComparer();
 
         // TODO: The work to properly implement this will be done in: https://github.com/aspnet/Razor/issues/74
-        private static readonly TagHelperAttributeValueCodeRenderer AttributeValueCodeRenderer =
+        private readonly TagHelperAttributeValueCodeRenderer _attributeValueCodeRenderer =
             new TagHelperAttributeValueCodeRenderer();
-
         private readonly CSharpCodeWriter _writer;
         private readonly CodeBuilderContext _context;
         private readonly IChunkVisitor _bodyVisitor;
@@ -50,7 +51,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         }
 
         /// <summary>
-        /// Renders the code to render the given <paramref name="chunk"/>.
+        /// Renders the code for the given <paramref name="chunk"/>.
         /// </summary>
         /// <param name="chunk">A <see cref="TagHelperChunk"/> to render.</param>
         public void RenderTagHelper(TagHelperChunk chunk)
@@ -63,25 +64,59 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             var tagHelperDescriptors = chunk.Descriptors;
 
-            // Find the first content behavior that doesn't have a default content behavior.
-            // The resolver restricts content behavior collisions so the first one that's not the default will be
-            // the content behavior we need to abide by.
+            // Find the first content behavior that doesn't have a content behavior of None.
+            // The resolver restricts content behavior collisions so the first one that's not None will be
+            // the content behavior we need to abide by.S
             var contentBehavior = tagHelperDescriptors.Select(descriptor => descriptor.ContentBehavior)
                                                       .FirstOrDefault(
                                                             behavior => behavior != ContentBehavior.None);
 
-            RenderTagHelperCreation(chunk);
+            RenderBeginTagHelperScope(chunk.TagName, contentBehavior);
+
+            RenderTagHelpersCreation(chunk);
 
             var attributeDescriptors = tagHelperDescriptors.SelectMany(descriptor => descriptor.Attributes);
             var boundHTMLAttributes = attributeDescriptors.Select(descriptor => descriptor.AttributeName);
             var htmlAttributes = chunk.Attributes;
             var unboundHTMLAttributes =
-                htmlAttributes.Where(htmlAttribute => !boundHTMLAttributes.Contains(htmlAttribute.Key));
+                htmlAttributes.Where(htmlAttribute => !boundHTMLAttributes.Contains(htmlAttribute.Key,
+                                                                                    StringComparer.OrdinalIgnoreCase));
 
             RenderUnboundHTMLAttributes(unboundHTMLAttributes);
-            RenderStartTagHelper(chunk.TagName, contentBehavior);
+
+            // If the content behavior is NOT modify then we need to execute the tag helpers and render the start tag
+            // now
+            if (contentBehavior != ContentBehavior.Modify)
+            {
+                RenderRunTagHelpers(bufferedBody: false);
+
+                RenderTagOutput(_tagHelperContext.TagHelperOutputGenerateTagStartMethodName);
+            }
+
+            if (contentBehavior == ContentBehavior.Prepend)
+            {
+                RenderTagOutput(_tagHelperContext.TagHelperOutputGenerateTagContentMethodName);
+            }
+
             RenderTagHelperBody(chunk.Children, contentBehavior);
-            RenderEndTagHelper(contentBehavior);
+
+            // If content behavior is modify then we need to execute AFTER now (after the children)
+            // and then render the start tag.
+            if (contentBehavior == ContentBehavior.Modify)
+            {
+                RenderRunTagHelpers(bufferedBody: true);
+
+                RenderTagOutput(_tagHelperContext.TagHelperOutputGenerateTagStartMethodName);
+            }
+
+            if (contentBehavior != ContentBehavior.None && contentBehavior != ContentBehavior.Prepend)
+            {
+                RenderTagOutput(_tagHelperContext.TagHelperOutputGenerateTagContentMethodName);
+            }
+
+            RenderTagOutput(_tagHelperContext.TagHelperOutputGenerateTagEndMethodName);
+
+            RenderEndTagHelpersScope();
         }
 
         internal static string GetVariableName(TagHelperDescriptor descriptor)
@@ -92,9 +127,25 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                                  descriptor.TagHelperName.Replace('.', '_'));
         }
 
-        private void RenderTagHelperCreation(TagHelperChunk chunk)
+        private void RenderBeginTagHelperScope(string tagName, ContentBehavior contentBehavior)
+        {
+            // Call into the tag helper scope manager to start a new tag helper scope.
+            // Also capture the value as the current execution context.
+            _writer.WriteStartAssignment(TagHelperExecutionContextVariableName)
+                   .WriteStartInstanceMethodInvocation(TagHelperScopeManagerVariableName,
+                                                       _tagHelperContext.TagHelperScopeManagerBeginMethodName);
+            _writer.WriteStringLiteral(tagName)
+                   .WriteEndMethodInvocation();
+        }
+
+        private void RenderTagHelpersCreation(TagHelperChunk chunk)
         {
             var tagHelperDescriptors = chunk.Descriptors;
+
+            // This is to maintain value accessors for attributes when creating the TagHelpers.
+            // Ultimately it enables us to do scenarios like this:
+            // myTagHelper1.Foo = DateTime.Now;
+            // myTagHelper2.Foo = myTagHelper1.Foo;
             var htmlAttributeValues = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (var tagHelperDescriptor in tagHelperDescriptors)
@@ -103,12 +154,13 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
                 // Create the tag helper
                 _writer.WriteStartAssignment(tagHelperVariableName)
-                       .Write(ManagerVariableName)
-                       .Write(".")
-                       .Write(_tagHelperContext.InstantiateTagHelperMethodName)
-                       .Write("<")
-                       .Write(tagHelperDescriptor.TagHelperName)
-                       .WriteLine(">();");
+                       .WriteStartMethodInvocation(_tagHelperContext.CreateTagHelperMethodName,
+                                                   tagHelperDescriptor.TagHelperName)
+                       .WriteEndMethodInvocation();
+
+                _writer.WriteInstanceMethodInvocation(TagHelperExecutionContextVariableName,
+                                                      _tagHelperContext.ExecutionContextAddMethodName,
+                                                      tagHelperVariableName);
 
                 // Render all of the bound attribute values for the tag helper.
                 RenderBoundHTMLAttributes(chunk.Attributes,
@@ -135,10 +187,11 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                     var attributeValueRecorded = htmlAttributeValues.ContainsKey(attributeDescriptor.AttributeName);
 
                     // Bufferable attributes are attributes that can have Razor code inside of them.
-                    var bufferableAttribute = AcceptsRazorCode(attributeDescriptor);
+                    var bufferableAttribute = IsStringAttribute(attributeDescriptor);
 
-                    // Plain text values are non razor code values. If an attribute is bufferable it may still have
-                    // a plain text value if the value does not contain Razor code.
+                    // Plain text values are non Razor code (@DateTime.Now) values. If an attribute is bufferable it 
+                    // may be more than just a plain text value, it may also contain Razor code which is why we attempt 
+                    // to retrieve a plain text value here.
                     string textValue;
                     var isPlainTextValue = TryGetPlainTextValue(attributeValueChunk, out textValue);
 
@@ -175,7 +228,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                             }
                             else
                             {
-                                // The value contains more than plain text. i.g. someAttribute="Time: @DateTime.Now"
+                                // The value contains more than plain text. e.g. someAttribute="Time: @DateTime.Now"
                                 RenderBufferedAttributeValue(attributeDescriptor);
                             }
                         }
@@ -189,19 +242,19 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                         // Ends the assignment to the attribute.
                         _writer.WriteLine(";");
 
-                        _writer.WriteStartInstanceMethodInvocation(ManagerVariableName,
-                                                                   _tagHelperContext.AddTagHelperAttributeMethodName);
+                        // We need to inform the context of the attribute value.
+                        _writer.WriteStartInstanceMethodInvocation(
+                            TagHelperExecutionContextVariableName,
+                            _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName);
+
                         _writer.WriteStringLiteral(attributeDescriptor.AttributeName)
                                .WriteParameterSeparator()
-                               .Write(tagHelperVariableName)
-                               .Write(".")
-                               .Write(attributeDescriptor.AttributePropertyName)
+                               .Write(valueAccessor)
                                .WriteEndMethodInvocation();
                     }
                     else
                     {
                         // The attribute value has already been recorded, lets retrieve it from the stored value accessors.
-
                         _writer.Write(htmlAttributeValues[attributeDescriptor.AttributeName])
                                .WriteLine(";");
                     }
@@ -218,15 +271,15 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 var attributeValue = htmlAttribute.Value;
                 var isPlainTextValue = TryGetPlainTextValue(attributeValue, out textValue);
 
-                // HTML attributes are always strings, so if it's not a plain text value, aka
+                // HTML attributes are always strings, so if it's not a plain text value, i.e.
                 // something that has C# code then we need to buffer the value.
                 if (!isPlainTextValue)
                 {
                     BuildBufferedAttributeValue(attributeValue);
                 }
 
-                _writer.WriteStartInstanceMethodInvocation(ManagerVariableName,
-                                                           _tagHelperContext.AddHtmlAttributeMethodName);
+                _writer.WriteStartInstanceMethodInvocation(TagHelperExecutionContextVariableName,
+                                                           _tagHelperContext.ExecutionContextAddHtmlAttributeMethodName);
                 _writer.WriteStringLiteral(htmlAttribute.Key)
                        .WriteParameterSeparator();
 
@@ -237,30 +290,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 }
                 else
                 {
-                    _writer.Write(BufferedStringValueVariableName);
+                    RenderBufferedAttributeValueAccessor();
                 }
 
                 _writer.WriteEndMethodInvocation();
-            }
-        }
-
-        private void RenderStartTagHelper(string tagName, ContentBehavior contentBehavior)
-        {
-            // Call into the Start of the tag helper
-            _writer.WriteStartInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.StartTagHelpersScope)
-                   .WriteStringLiteral(tagName)
-                   .WriteEndMethodInvocation();
-
-            // If the content behavior is NOT modify then we need to execute the tag helpers and render the start tag
-            // now
-            if (contentBehavior != ContentBehavior.Modify)
-            {
-                RenderExecuteAndStartTag();
-            }
-
-            if (contentBehavior == ContentBehavior.Prepend)
-            {
-                RenderTagContent();
             }
         }
 
@@ -272,11 +305,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 // If content behavior is modify we need to use a different writer to buffer the body.
                 if (contentBehavior == ContentBehavior.Modify)
                 {
-                    var bodyWriterName = string.Format("{0}.{1}()",
-                                                      ManagerVariableName,
-                                                      _tagHelperContext.GetContentBuffer);
-
-                    BuildBufferedWritingScope(bodyWriterName, () =>
+                    BuildBufferedWritingScope(() =>
                     {
                         // Render all of the tag helper children
                         _bodyVisitor.Accept(children);
@@ -290,62 +319,50 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             }
         }
 
-        private void RenderEndTagHelper(ContentBehavior contentBehavior)
+        private void RenderEndTagHelpersScope()
         {
-            // If content behavior is modify then we need to execute AFTER now (after the children)
-            // and then render the start tag.
-            if (contentBehavior == ContentBehavior.Modify)
+            _writer.WriteStartAssignment(TagHelperExecutionContextVariableName)
+                   .WriteInstanceMethodInvocation(TagHelperScopeManagerVariableName,
+                                                  _tagHelperContext.TagHelperScopeManagerEndMethodName);
+        }
+
+        private void RenderTagOutput(string tagOutputMethodName)
+        {
+            CSharpCodeVisitor.RenderPreWriteStart(_writer, _context);
+
+            _writer.Write(TagHelperExecutionContextVariableName)
+                   .Write(".")
+                   .Write(_tagHelperContext.ExecutionContextOutputPropertyName)
+                   .Write(".")
+                   .WriteMethodInvocation(tagOutputMethodName, endLine: false)
+                   .WriteEndMethodInvocation(); ;
+        }
+
+        private void RenderRunTagHelpers(bool bufferedBody)
+        {
+            _writer.Write(TagHelperExecutionContextVariableName)
+                   .Write(".")
+                   .Write(_tagHelperContext.ExecutionContextOutputPropertyName)
+                   .Write(" = await ")
+                   .WriteStartInstanceMethodInvocation(TagHelperRunnerVariableName,
+                                                       _tagHelperContext.TagHelperRunnerRunAsyncMethodName);
+            _writer.Write(TagHelperExecutionContextVariableName);
+
+            if(bufferedBody)
             {
-                RenderExecuteAndStartTag();
+                _writer.WriteParameterSeparator()
+                       .Write(BufferedStringValueVariableName);
             }
 
-            if (contentBehavior != ContentBehavior.None &&
-                contentBehavior != ContentBehavior.Prepend)
-            {
-                RenderTagContent();
-            }
-
-            RenderEndTag();
-
-            _writer.WriteInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.EndTagHelpersScope);
-        }
-
-        private void RenderExecuteAndStartTag()
-        {
-            _writer.Write("await ")
-                   .WriteInstanceMethodInvocation(ManagerVariableName, _tagHelperContext.ExecuteTagHelpersAsyncMethodName);
-
-            CSharpCodeVisitor.RenderPreWriteStart(_writer, _context);
-
-            _writer.WriteInstanceMethodInvocation(ManagerVariableName,
-                                                  _tagHelperContext.GenerateTagStartMethodName,
-                                                  endLine: false);
-
             _writer.WriteEndMethodInvocation();
         }
 
-        private void RenderTagContent()
+        private void RenderBufferedAttributeValueAccessor()
         {
-            CSharpCodeVisitor.RenderPreWriteStart(_writer, _context);
-
-            _writer.WriteInstanceMethodInvocation(ManagerVariableName,
-                                                  _tagHelperContext.GenerateTagContentMethodName,
+            _writer.WriteInstanceMethodInvocation(BufferedStringValueVariableName,
+                                                  "ToString",
                                                   endLine: false);
-
-            _writer.WriteEndMethodInvocation();
         }
-
-        private void RenderEndTag()
-        {
-            CSharpCodeVisitor.RenderPreWriteStart(_writer, _context);
-
-            _writer.WriteInstanceMethodInvocation(ManagerVariableName,
-                                                  _tagHelperContext.GenerateTagEndMethodName,
-                                                  endLine: false);
-
-            _writer.WriteEndMethodInvocation();
-        }
-
 
         private void RenderBufferedAttributeValue(TagHelperAttributeDescriptor attributeDescriptor)
         {
@@ -353,7 +370,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 attributeDescriptor,
                 valueRenderer: (writer) =>
                 {
-                    _writer.Write(BufferedStringValueVariableName);
+                    RenderBufferedAttributeValueAccessor();
                 });
         }
 
@@ -379,19 +396,19 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void BuildBufferedAttributeValue(Chunk htmlAttributeChunk)
         {
-            BuildBufferedWritingScope(writerVariable: null, renderCode: () =>
+            BuildBufferedWritingScope(renderCode: () =>
             {
                 // Render the HTML's attribute chunk(s).
                 _bodyVisitor.Accept(htmlAttributeChunk);
             });
         }
 
-        private void BuildBufferedWritingScope(string writerVariable, Action renderCode)
+        private void BuildBufferedWritingScope(Action renderCode)
         {
             _writer.Write("try");
             using (_writer.BuildScope())
             {
-                _writer.WriteMethodInvocation(_tagHelperContext.NewWritingScopeMethodName, writerVariable);
+                _writer.WriteMethodInvocation(_tagHelperContext.StartWritingScopeMethodName);
 
                 renderCode();
             }
@@ -406,10 +423,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         private void RenderAttribute(TagHelperAttributeDescriptor attributeDescriptor,
                                      Action<CSharpCodeWriter> valueRenderer)
         {
-            AttributeValueCodeRenderer.RenderAttributeValue(attributeDescriptor, _writer, _context, valueRenderer);
+            _attributeValueCodeRenderer.RenderAttributeValue(attributeDescriptor, _writer, _context, valueRenderer);
         }
 
-        private static bool AcceptsRazorCode(TagHelperAttributeDescriptor attributeDescriptor)
+        private static bool IsStringAttribute(TagHelperAttributeDescriptor attributeDescriptor)
         {
             var attributeType = attributeDescriptor.PropertyInfo.PropertyType.GetTypeInfo();
 

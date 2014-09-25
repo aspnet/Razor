@@ -191,7 +191,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             return WriteStartMethodInvocation(methodName, new string[0]);
         }
 
-        public CSharpCodeWriter WriteStartMethodInvocation(string methodName, string[] genericArguments)
+        public CSharpCodeWriter WriteStartMethodInvocation(string methodName, params string[] genericArguments)
         {
             Write(methodName);
 
@@ -235,12 +235,11 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             return WriteMethodInvocation(
                 string.Format(CultureInfo.InvariantCulture, InstanceMethodFormat, instanceName, methodName),
                 endLine,
-                parameters: parameters);
+                parameters);
         }
 
         public CSharpCodeWriter WriteStartInstanceMethodInvocation(string instanceName,
-                                                                   string methodName,
-                                                                   params string[] parameters)
+                                                                   string methodName)
         {
             return WriteStartMethodInvocation(
                 string.Format(CultureInfo.InvariantCulture, InstanceMethodFormat, instanceName, methodName));

@@ -30,6 +30,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 Writer.WriteVariableDeclaration("var",
                                                 CSharpTagHelperCodeRenderer.BufferedStringValueVariableName,
                                                 "string.Empty");
+                Writer.WriteVariableDeclaration(_tagHelperContext.TagHelperExecutionContextTypeName,
+                                                CSharpTagHelperCodeRenderer.TagHelperExecutionContextVariableName,
+                                                null);
             }
 
             foreach (var descriptor in chunk.Descriptors)

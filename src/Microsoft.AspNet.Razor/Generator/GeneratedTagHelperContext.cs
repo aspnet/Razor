@@ -14,33 +14,39 @@ namespace Microsoft.AspNet.Razor.Generator
 
         public GeneratedTagHelperContext()
         {
-            InstantiateTagHelperMethodName = "InstantiateTagHelper";
-            ExecuteTagHelpersAsyncMethodName = "ExecuteTagHelpersAsync";
-            StartTagHelpersScope = "StartTagHelpersScope";
-            EndTagHelpersScope = "EndTagHelpersScope";
-            GenerateTagStartMethodName = "GenerateTagStart";
-            GenerateTagContentMethodName = "GenerateTagContent";
-            GenerateTagEndMethodName = "GenerateTagEnd";
-            GetContentBuffer = "GetContentBuffer";
-            AddTagHelperAttributeMethodName = "AddTagHelperAttribute";
-            AddHtmlAttributeMethodName = "AddHtmlAttribute";
-            TagHelperManagerName = "TagHelperManager";
-            NewWritingScopeMethodName = "NewWritingScope";
+            CreateTagHelperMethodName = "CreateTagHelper";
+            TagHelperRunnerRunAsyncMethodName = "RunAsync";
+            TagHelperScopeManagerBeginMethodName = "Begin";
+            TagHelperScopeManagerEndMethodName = "End";
+            TagHelperOutputGenerateTagStartMethodName = "GenerateTagStart";
+            TagHelperOutputGenerateTagContentMethodName = "GenerateTagContent";
+            TagHelperOutputGenerateTagEndMethodName = "GenerateTagEnd";
+            ExecutionContextAddMethodName = "Add";
+            ExecutionContextAddTagHelperAttributeMethodName = "AddTagHelperAttribute";
+            ExecutionContextAddHtmlAttributeMethodName = "AddHtmlAttribute";
+            TagHelperRunnerTypeName = "ITagHelperRunner";
+            TagHelperScopeManagerTypeName = "ITagHelperScopeManager";
+            TagHelperExecutionContextTypeName = "TagHelperExecutionContext";
+            ExecutionContextOutputPropertyName = "Output";
+            StartWritingScopeMethodName = "StartWritingScope";
             EndWritingScopeMethodName = "EndWritingScope";
         }
 
-        public string InstantiateTagHelperMethodName { get; set; }
-        public string ExecuteTagHelpersAsyncMethodName { get; set; }
-        public string StartTagHelpersScope { get; set; }
-        public string EndTagHelpersScope { get; set; }
-        public string GenerateTagStartMethodName { get; set; }
-        public string GenerateTagContentMethodName { get; set; }
-        public string GenerateTagEndMethodName { get; set; }
-        public string GetContentBuffer { get; set; }
-        public string AddTagHelperAttributeMethodName { get; set; }
-        public string AddHtmlAttributeMethodName { get; set; }
-        public string TagHelperManagerName { get; set; }
-        public string NewWritingScopeMethodName { get; set; }
+        public string CreateTagHelperMethodName { get; set; }
+        public string TagHelperRunnerRunAsyncMethodName { get; set; }
+        public string TagHelperScopeManagerBeginMethodName { get; set; }
+        public string TagHelperScopeManagerEndMethodName { get; set; }
+        public string TagHelperOutputGenerateTagStartMethodName { get; set; }
+        public string TagHelperOutputGenerateTagContentMethodName { get; set; }
+        public string TagHelperOutputGenerateTagEndMethodName { get; set; }
+        public string ExecutionContextAddTagHelperAttributeMethodName { get; set; }
+        public string ExecutionContextAddHtmlAttributeMethodName { get; set; }
+        public string TagHelperRunnerTypeName { get; set; }
+        public string ExecutionContextAddMethodName { get; set; }
+        public string TagHelperScopeManagerTypeName { get; set; }
+        public string TagHelperExecutionContextTypeName { get; set; }
+        public string ExecutionContextOutputPropertyName { get; set; }
+        public string StartWritingScopeMethodName { get; set; }
         public string EndWritingScopeMethodName { get; set; }
     }
 }
