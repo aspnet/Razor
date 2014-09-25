@@ -123,4 +123,16 @@
   <data name="ScopeManager_EndCannotBeCalledWithoutACallToBegin" xml:space="preserve">
     <value>You cannot call '{0}' without first calling '{1}' on the TagHelperScopeManager.</value>
   </data>
+  <data name="TagHelperTypeResolver_InvalidTagHelperLookupText" xml:space="preserve">
+    <value>Invalid TagHelper lookup text '{0}'. The correct lookup text formats are:
+"assemblyName"
+"assemblyName, #.#.#.#"
+"assemblyName, #.#.#.#, specificType"</value>
+  </data>
+  <data name="TagHelperTypeResolver_InvalidTagHelperLookupTextAssemblyVersion" xml:space="preserve">
+    <value>Invalid TagHelper lookup text assembly version '{0}'. The correct lookup text formats are:
+"assemblyName"
+"assemblyName, #.#.#.#"
+"assemblyName, #.#.#.#, specificType"</value>
+  </data>
 </root>
