@@ -42,6 +42,50 @@ namespace Microsoft.AspNet.Razor.Runtime
             return string.Format(CultureInfo.CurrentCulture, GetString("ScopeManager_EndCannotBeCalledWithoutACallToBegin"), p0, p1);
         }
 
+        /// <summary>
+        /// Invalid TagHelper lookup text '{0}'. The correct lookup text formats are:
+        /// "assemblyName"
+        /// "assemblyName, #.#.#.#"
+        /// "assemblyName, #.#.#.#, specificType"
+        /// </summary>
+        internal static string TagHelperTypeResolver_InvalidTagHelperLookupText
+        {
+            get { return GetString("TagHelperTypeResolver_InvalidTagHelperLookupText"); }
+        }
+
+        /// <summary>
+        /// Invalid TagHelper lookup text '{0}'. The correct lookup text formats are:
+        /// "assemblyName"
+        /// "assemblyName, #.#.#.#"
+        /// "assemblyName, #.#.#.#, specificType"
+        /// </summary>
+        internal static string FormatTagHelperTypeResolver_InvalidTagHelperLookupText(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("TagHelperTypeResolver_InvalidTagHelperLookupText"), p0);
+        }
+
+        /// <summary>
+        /// Invalid TagHelper lookup text assembly version '{0}'. The correct lookup text formats are:
+        /// "assemblyName"
+        /// "assemblyName, #.#.#.#"
+        /// "assemblyName, #.#.#.#, specificType"
+        /// </summary>
+        internal static string TagHelperTypeResolver_InvalidTagHelperLookupTextAssemblyVersion
+        {
+            get { return GetString("TagHelperTypeResolver_InvalidTagHelperLookupTextAssemblyVersion"); }
+        }
+
+        /// <summary>
+        /// Invalid TagHelper lookup text assembly version '{0}'. The correct lookup text formats are:
+        /// "assemblyName"
+        /// "assemblyName, #.#.#.#"
+        /// "assemblyName, #.#.#.#, specificType"
+        /// </summary>
+        internal static string FormatTagHelperTypeResolver_InvalidTagHelperLookupTextAssemblyVersion(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("TagHelperTypeResolver_InvalidTagHelperLookupTextAssemblyVersion"), p0);
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);
