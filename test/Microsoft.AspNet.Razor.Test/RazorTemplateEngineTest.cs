@@ -2,7 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Web.WebPages.TestUtils;
 using Microsoft.AspNet.Razor.Generator;
@@ -161,7 +163,7 @@ namespace Microsoft.AspNet.Razor.Test
 
             // Assert
             mockEngine.Verify(e => e.GenerateCodeCore(It.Is<SeekableTextReader>(l => l.ReadToEnd() == "foo"),
-                                                      className, ns, src, source.Token));
+                                                      className, ns, src, null, source.Token));
         }
 
         [Fact]
@@ -210,6 +212,65 @@ namespace Microsoft.AspNet.Razor.Test
             Assert.NotNull(results.Document);
             Assert.NotNull(results.GeneratedCode);
             Assert.NotNull(results.DesignTimeLineMappings);
+        }
+
+        public static IEnumerable<object[]> GenerateCodeCalculatesLinePragma_IfStreamInputIsUsedData
+        {
+            get
+            {
+                // Seekable stream
+                var content = Encoding.UTF8.GetBytes("Hello world");
+                var stream = new MemoryStream(content);
+
+                yield return new[] { stream };
+
+                // Non seekable stream
+                var mockStream = new Mock<MemoryStream>(content)
+                {
+                    CallBase = true
+                };
+                mockStream.Setup(m => m.CanSeek)
+                          .Returns(false);
+
+                yield return new[] { mockStream.Object };
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GenerateCodeCalculatesLinePragma_IfStreamInputIsUsedData))]
+        public void GenerateCodeCalculatesLinePragma_IfStreamInputIsUsed(Stream stream)
+        {
+            // Arrange
+            var expected = string.Join(Environment.NewLine,
+@"#pragma checksum ""foo.cshtml"" ""{ff1816ec-aa5e-4d10-87f7-6f4963833460}"" ""7b502c3a1f48c8609ae212cdfb639dee39673f5e""",
+@"namespace some-ns",
+@"{",
+@"    using System.Threading.Tasks;",
+"",
+@"    public class some-class",
+@"    {",
+@"        #line hidden",
+@"        public some-class()",
+@"        {",
+@"        }",
+"",
+@"        #pragma warning disable 1998",
+@"        public override async Task ExecuteAsync()",
+@"        {",
+@"            WriteLiteral(""Hello world"");",
+@"        }",
+@"        #pragma warning restore 1998",
+@"    }",
+@"}",
+"");
+            var engine = new RazorTemplateEngine(CreateHost());
+
+            // Act
+            var results = engine.GenerateCode(stream, "some-class", "some-ns", "foo.cshtml");
+
+            // Assert
+            Assert.True(results.Success);
+            Assert.Equal(expected, results.GeneratedCode);
         }
 
         private static RazorEngineHost CreateHost(bool designTime = false)
