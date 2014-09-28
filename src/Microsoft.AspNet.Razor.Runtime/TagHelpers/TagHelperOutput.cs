@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -78,7 +79,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// Generates the <see cref="TagHelperOutput"/>'s start tag.
         /// </summary>
         /// <returns>The string representation of the <see cref="TagHelperOutput"/>s start tag.</returns>
-        public string GenerateTagStart()
+        public string GenerateStartTag()
         {
             var sb = new StringBuilder();
 
@@ -113,7 +114,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// Generates the <see cref="TagHelperOutput"/>'s body.
         /// </summary>
         /// <returns>The string representation of the <see cref="TagHelperOutput"/>s Inner HTML.</returns>
-        public string GenerateTagContent()
+        public string GenerateContent()
         {
             if (SelfClosing)
             {
@@ -127,20 +128,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// Generates the <see cref="TagHelperOutput"/>'s end tag.
         /// </summary>
         /// <returns>The string representation of the <see cref="TagHelperOutput"/>s end tag.</returns>
-        public string GenerateTagEnd()
+        public string GenerateEndTag()
         {
-            if (SelfClosing && !string.IsNullOrWhiteSpace(TagName))
+            if (SelfClosing || string.IsNullOrWhiteSpace(TagName))
             {
                 return string.Empty;
             }
 
-            var sb = new StringBuilder();
-
-            sb.Append("</")
-              .Append(TagName)
-              .Append('>');
-
-            return sb.ToString();
+            return string.Format(CultureInfo.InvariantCulture, "</{0}>", TagName);
         }
     }
 }

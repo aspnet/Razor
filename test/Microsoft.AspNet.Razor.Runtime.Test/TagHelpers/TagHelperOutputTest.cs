@@ -47,7 +47,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
                 });
 
             // Act
-            var output = tagHelperOutput.GenerateTagStart();
+            var output = tagHelperOutput.GenerateStartTag();
 
             // Assert
             Assert.Equal("<p class=\"btn\" something=\"   spaced    \">", output);
@@ -60,7 +60,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             var tagHelperOutput = new TagHelperOutput("p");
 
             // Act
-            var output = tagHelperOutput.GenerateTagStart();
+            var output = tagHelperOutput.GenerateStartTag();
 
             // Assert
             Assert.Equal("<p>", output);
@@ -80,7 +80,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             tagHelperOutput.SelfClosing = true;
 
             // Act
-            var output = tagHelperOutput.GenerateTagStart();
+            var output = tagHelperOutput.GenerateStartTag();
 
             // Assert
             Assert.Equal("<p class=\"btn\" something=\"   spaced    \" />", output);
@@ -100,7 +100,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             tagHelperOutput.SelfClosing = true;
 
             // Act
-            var output = tagHelperOutput.GenerateTagStart();
+            var output = tagHelperOutput.GenerateStartTag();
 
             // Assert
             Assert.Equal(string.Empty, output);
@@ -115,7 +115,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             tagHelperOutput.Content = "Hello World";
 
             // Act
-            var output = tagHelperOutput.GenerateTagContent();
+            var output = tagHelperOutput.GenerateContent();
 
             // Assert
             Assert.Equal("Hello World", output);
@@ -133,7 +133,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             tagHelperOutput.Content = "Hello World";
 
             // Act
-            var output = tagHelperOutput.GenerateTagContent();
+            var output = tagHelperOutput.GenerateContent();
 
             // Assert
             Assert.Equal(string.Empty, output);
@@ -146,7 +146,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             var tagHelperOutput = new TagHelperOutput("p");
 
             // Act
-            var output = tagHelperOutput.GenerateTagEnd();
+            var output = tagHelperOutput.GenerateEndTag();
 
             // Assert
             Assert.Equal("</p>", output);
@@ -162,7 +162,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             };
 
             // Act
-            var output = tagHelperOutput.GenerateTagEnd();
+            var output = tagHelperOutput.GenerateEndTag();
 
             // Assert
             Assert.Equal(string.Empty, output);
