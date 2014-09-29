@@ -153,43 +153,54 @@ namespace Microsoft.AspNet.Razor
         /// Parses the contents specified by the <paramref name="inputStream"/> and returns the generated code.
         /// </summary>
         /// <param name="inputStream">A <see cref="Stream"/> that represents the contents to be parsed.</param>
-        /// <param name="className">The name of the generated class. When null, defaults to
+        /// <param name="className">The name of the generated class. When <c>null</c>, defaults to
         /// <see cref="Host.DefaultClassName"/>.</param>
-        /// <param name="rootNamespace">The namespace in which the generated class will reside. When null, defaults to
-        /// <see cref="Host.DefaultNamespace"/>.</param>
+        /// <param name="rootNamespace">The namespace in which the generated class will reside. When <c>null</c>,
+        /// defaults to <see cref="Host.DefaultNamespace"/>.</param>
         /// <param name="sourceFileName">The file name to use in line pragmas, usually the original Razor file.</param>
         /// <returns>A <see cref="GeneratorResults"/> that represents the results of parsing the content.</returns>
         /// <remarks>
         /// This overload calculates the checksum of the contents of <paramref name="inputStream"/> prior to code
-        /// generation. The checksum is used for producing a the <c>#pragma checksum</c> line pragma required for
+        /// generation. The checksum is used for producing the <c>#pragma checksum</c> line pragma required for
         /// debugging.
         /// </remarks>
         public GeneratorResults GenerateCode([NotNull] Stream inputStream,
-                                             [NotNull] string className,
-                                             [NotNull] string rootNamespace,
-                                             [NotNull] string sourceFileName)
+                                             string className,
+                                             string rootNamespace,
+                                             string sourceFileName)
         {
-            if (!inputStream.CanSeek)
+            MemoryStream memoryStream = null;
+            try
             {
-                var memoryStream = new MemoryStream();
-                inputStream.CopyTo(memoryStream);
+                if (!inputStream.CanSeek)
+                {
+                    memoryStream = new MemoryStream();
+                    inputStream.CopyTo(memoryStream);
 
-                // We don't have to dispose the input stream since it is owned externally.
-                inputStream = memoryStream;
+                    // We don't have to dispose the input stream since it is owned externally.
+                    inputStream = memoryStream;
+                }
+
+                inputStream.Position = 0;
+                var checksum = ComputeChecksum(inputStream);
+                inputStream.Position = 0;
+
+                using (var reader = new StreamReader(inputStream,
+                                                     Encoding.UTF8,
+                                                     detectEncodingFromByteOrderMarks: true,
+                                                     bufferSize: 1024,
+                                                     leaveOpen: true))
+                {
+                    var seekableStream = new SeekableTextReader(reader);
+                    return GenerateCodeCore(seekableStream, className, rootNamespace, sourceFileName, checksum, cancelToken: null);
+                }
             }
-
-            inputStream.Position = 0;
-            var checksum = ComputeChecksum(inputStream);
-            inputStream.Position = 0;
-
-            using (var reader = new StreamReader(inputStream,
-                                                 Encoding.UTF8,
-                                                 detectEncodingFromByteOrderMarks: true,
-                                                 bufferSize: 1024,
-                                                 leaveOpen: true))
+            finally
             {
-                var seekableStream = new SeekableTextReader(reader);
-                return GenerateCodeCore(seekableStream, className, rootNamespace, sourceFileName, checksum, cancelToken: null);
+                if (memoryStream != null)
+                {
+                    memoryStream.Dispose();
+                }
             }
         }
 
