@@ -355,9 +355,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                                .OfType<Span>()
                                .FirstOrDefault(s => s.Kind == SpanKind.Code || s.Kind == SpanKind.Markup);
 
-            var generateInstrumentation = ShouldGenerateInstrumentationForExpressions() &&
-                                          contentSpan != null;
-
             if (Context.ExpressionRenderingMode == ExpressionRenderingMode.InjectCode)
             {
                 Accept(chunk.Children);
@@ -398,33 +395,28 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 Writer.WriteStartInstrumentationContext(Context, contentSpan, isLiteral: false);
             }
 
-            using (var mappingWriter = Writer.BuildLineMapping(chunk.Start, contentSpan.Length, Context.SourceFile))
+            using (var mappingWriter = new CSharpLineMappingWriter(Writer, chunk.Start, Context.SourceFile))
             {
-                mappingWriter.MarkLineMappingStart();
-
-                var indent = Writer.CurrentIndent;
-                Writer.ResetIndent();
-
                 if (!string.IsNullOrEmpty(Context.TargetWriterName))
                 {
                     var generatedStart = Context.Host.GeneratedClassContext.WriteToMethodName.Length +
                                          Context.TargetWriterName.Length +
-                                         3; // 1 for the opening bracket and 2 for the parameter separator
+                                         3; // 1 for the opening '(' and 2 for ', '
 
                     var padding = _paddingBuilder.BuildExpressionPadding(contentSpan, generatedStart);
-                    
+
 
                     Writer.Write(padding)
-                          .WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteToMethodName)
-                          .Write(Context.TargetWriterName)
-                          .WriteParameterSeparator();
+                            .WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteToMethodName)
+                            .Write(Context.TargetWriterName)
+                            .WriteParameterSeparator();
                 }
                 else
                 {
                     var generatedStart = Context.Host.GeneratedClassContext.WriteMethodName.Length +
-                                         1; // for the opening bracket
+                                         1; // for the opening '('
                     var padding = _paddingBuilder.BuildExpressionPadding(contentSpan, generatedStart);
-                    
+
                     Writer.Write(padding)
                           .WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteMethodName);
                 }
@@ -432,9 +424,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 Accept(chunk.Children);
 
                 Writer.WriteEndMethodInvocation();
-                Writer.SetIndent(indent);
-
-                mappingWriter.MarkLineMappingEnd();
             }
 
             if (generateInstrumentation)
