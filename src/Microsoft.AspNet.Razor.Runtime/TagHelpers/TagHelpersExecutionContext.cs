@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     /// <summary>
-    /// Defines a class that is used to store information about a <see cref="TagHelper"/>s execution lifetime.
+    /// Defines a class that is used to store information about a <see cref="ITagHelper"/>s execution lifetime.
     /// </summary>
     public class TagHelpersExecutionContext
     {
@@ -19,7 +19,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             AllAttributes = new Dictionary<string, object>(StringComparer.Ordinal);
             HTMLAttributes = new Dictionary<string, string>(StringComparer.Ordinal);
-            TagHelpers = new List<TagHelper>();
+            TagHelpers = new List<ITagHelper>();
             TagName = tagName;
         }
 
@@ -29,14 +29,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public Dictionary<string, string> HTMLAttributes { get; private set; }
 
         /// <summary>
-        /// <see cref="TagHelper"/> bound attributes and HTML attributes.
+        /// <see cref="ITagHelper"/> bound attributes and HTML attributes.
         /// </summary>
         public Dictionary<string, object> AllAttributes { get; private set; }
 
         /// <summary>
-        /// <see cref="TagHelper"/>s that should be run for the current <see cref="TagHelpersExecutionContext"/>.
+        /// <see cref="ITagHelper"/>s that should be run for the current <see cref="TagHelpersExecutionContext"/>.
         /// </summary>
-        public List<TagHelper> TagHelpers { get; private set; }
+        public List<ITagHelper> TagHelpers { get; private set; }
 
         /// <summary>
         /// The HTML tag name for the current <see cref="TagHelpersExecutionContext"/>.
@@ -52,7 +52,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// Tracks the given <paramref name="tagHelper"/>.
         /// </summary>
         /// <param name="tagHelper">The tag helper to track.</param>
-        public void Add(TagHelper tagHelper)
+        public void Add(ITagHelper tagHelper)
         {
             TagHelpers.Add(tagHelper);
         }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     /// <summary>
-    /// Contains information related to the execution of <see cref="TagHelper"/>s.
+    /// Contains information related to the execution of <see cref="ITagHelper"/>s.
     /// </summary>
     public class TagHelperContext
     {
