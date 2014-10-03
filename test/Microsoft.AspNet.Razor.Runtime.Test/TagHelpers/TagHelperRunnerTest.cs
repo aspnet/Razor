@@ -4,10 +4,9 @@
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
+namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     public class TagHelperRunnerTest
     {

@@ -2,15 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
+namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     public class TagHelpersExecutionContextTest
     {
         [Fact]
-        public void TagHelperExecutionContext_MaintainsHTMLAttributes()
+        public void TagHelpersExecutionContext_MaintainsHTMLAttributes()
         {
             // Arrange
             var executionContext = new TagHelpersExecutionContext("p");
@@ -29,7 +28,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperExecutionContext_MaintainsAllAttributes()
+        public void TagHelpersExecutionContext_MaintainsAllAttributes()
         {
             // Arrange
             var executionContext = new TagHelpersExecutionContext("p");
@@ -50,7 +49,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperExecutionContext_MaintainsTagHelpers()
+        public void TagHelpersExecutionContext_MaintainsTagHelpers()
         {
             // Arrange
             var executionContext = new TagHelpersExecutionContext("p");

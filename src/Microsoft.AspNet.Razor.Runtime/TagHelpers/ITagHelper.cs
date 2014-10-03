@@ -11,8 +11,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     public interface ITagHelper
     {
         /// <summary>
-        /// Asynchronously executes the <see cref="ITagHelper"/> with the given <paramref name="output"/> and
-        /// <paramref name="context"/>.
+        /// Asynchronously executes the <see cref="ITagHelper"/> with the given <paramref name="context"/> and
+        /// <paramref name="output"/>.
         /// </summary>
         /// <param name="context">Contains information associated with the current HTML tags.</param>
         /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>

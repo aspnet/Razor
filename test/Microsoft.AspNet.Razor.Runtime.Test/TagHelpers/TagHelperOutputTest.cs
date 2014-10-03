@@ -2,15 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.AspNet.Razor.Runtime.TagHelpers;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
+namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     public class TagHelperOutputTest
     {
         [Fact]
-        public void TagHelperOutput_CannotSetTagNameToNull()
+        public void TagName_CannotSetToNull()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p");
@@ -23,7 +22,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperOutput_CannotSetContentToNull()
+        public void Content_CannotSetToNull()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p");
@@ -36,7 +35,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperOutput_GeneratesFullStartTag()
+        public void GenerateStartTag_ReturnsFullStartTag()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p", attributes:
@@ -54,7 +53,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperOutput_GeneratesNoAttributeStartTag()
+        public void GenerateStartTag_ReturnsNoAttributeStartTag()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p");
@@ -67,7 +66,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperOutput_GeneratesSelfclosingStartTag()
+        public void GenerateStartTag_ReturnsSelfClosingStartTag_Attributes()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p", attributes:
@@ -87,7 +86,22 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperOutput_GeneratesStartTagOutputsNothingWithEmptyTagName()
+        public void GenerateStartTag_ReturnsSelfClosingStartTag_NoAttributes()
+        {
+            // Arrange
+            var tagHelperOutput = new TagHelperOutput("p");
+
+            tagHelperOutput.SelfClosing = true;
+
+            // Act
+            var output = tagHelperOutput.GenerateStartTag();
+
+            // Assert
+            Assert.Equal("<p />", output);
+        }
+
+        [Fact]
+        public void GenerateStartTag_ReturnsNothingIfEmptyTagName()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("  ", attributes:
@@ -106,8 +120,24 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             Assert.Equal(string.Empty, output);
         }
 
+
         [Fact]
-        public void TagHelperOutput_GenerateTagContentReturnsContent()
+        public void GenerateEndTag_ReturnsNothingIfEmptyTagName()
+        {
+            // Arrange
+            var tagHelperOutput = new TagHelperOutput(" "); ;
+
+            tagHelperOutput.Content = "Hello World";
+
+            // Act
+            var output = tagHelperOutput.GenerateEndTag();
+
+            // Assert
+            Assert.Equal(string.Empty, output);
+        }
+
+        [Fact]
+        public void GenerateContent_ReturnsContent()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p");
@@ -121,8 +151,9 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             Assert.Equal("Hello World", output);
         }
 
+
         [Fact]
-        public void TagHelperOutput_GenerateTagContentGeneratesNothingIfSelfClosing()
+        public void GenerateTagContent_ReturnsNothingIfSelfClosing()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p")
@@ -140,7 +171,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperOutput_GenerateTagEndGeneratesEndTag()
+        public void GenerateTagEnd_ReturnsEndTag()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p");
@@ -153,7 +184,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         }
 
         [Fact]
-        public void TagHelperOutput_GenerateTagEndGeneratesNothingIfSelfClosing()
+        public void GenerateTagEnd_ReturnsNothingIfSelfClosing()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p")

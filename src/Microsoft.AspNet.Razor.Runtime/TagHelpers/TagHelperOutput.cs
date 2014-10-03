@@ -10,7 +10,7 @@ using System.Text;
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     /// <summary>
-    /// Defines a class used to represent the output of a tag helper.
+    /// Class used to represent the output of a tag helper.
     /// </summary>
     public class TagHelperOutput
     {
@@ -26,7 +26,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Instantiates a new instance of <see cref="TagHelperOutput"/>.
         /// </summary>
-        /// <param name="tagName">The HTML elements tag name.</param>
+        /// <param name="tagName">The HTML element's tag name.</param>
         /// <param name="attributes">The HTML attributes.</param>
         public TagHelperOutput(string tagName, Dictionary<string, string> attributes)
         {
@@ -36,7 +36,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <summary>
-        /// The HTML elements tag name.
+        /// The HTML element's tag name.
         /// </summary>
         public string TagName
         {
@@ -51,7 +51,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <summary>
-        /// The HTML elements content.
+        /// The HTML element's content.
         /// </summary>
         public string Content
         {
@@ -71,14 +71,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public bool SelfClosing { get; set; }
 
         /// <summary>
-        /// The HTML elements attributes.
+        /// The HTML element's attributes.
         /// </summary>
         public Dictionary<string, string> Attributes { get; private set; }
 
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s start tag.
         /// </summary>
-        /// <returns>The string representation of the <see cref="TagHelperOutput"/>s start tag.</returns>
+        /// <returns>The string representation of the <see cref="TagHelperOutput"/>'s start tag.</returns>
         public string GenerateStartTag()
         {
             var sb = new StringBuilder();
@@ -113,7 +113,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s body.
         /// </summary>
-        /// <returns>The string representation of the <see cref="TagHelperOutput"/>s Inner HTML.</returns>
+        /// <returns>The string representation of the <see cref="TagHelperOutput"/>'s Inner HTML.</returns>
         public string GenerateContent()
         {
             if (SelfClosing)
@@ -127,7 +127,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s end tag.
         /// </summary>
-        /// <returns>The string representation of the <see cref="TagHelperOutput"/>s end tag.</returns>
+        /// <returns>The string representation of the <see cref="TagHelperOutput"/>'s end tag.</returns>
         public string GenerateEndTag()
         {
             if (SelfClosing || string.IsNullOrWhiteSpace(TagName))

@@ -7,14 +7,14 @@ using System.Collections.Generic;
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     /// <summary>
-    /// Defines a class that is used to store information about a <see cref="ITagHelper"/>s execution lifetime.
+    /// Class used to store information about a <see cref="ITagHelper"/>'s execution lifetime.
     /// </summary>
     public class TagHelpersExecutionContext
     {
         /// <summary>
         /// Instantiates a new <see cref="TagHelpersExecutionContext"/>.
         /// </summary>
-        /// <param name="tagName">The HTML tag name associated with the current <see cref="TagHelpersExecutionContext"/>.</param>
+        /// <param name="tagName">The HTML tag name.</param>
         public TagHelpersExecutionContext(string tagName)
         {
             AllAttributes = new Dictionary<string, object>(StringComparer.Ordinal);
@@ -24,7 +24,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <summary>
-        /// HTML attributes for the current execution context.
+        /// HTML attributes.
         /// </summary>
         public Dictionary<string, string> HTMLAttributes { get; private set; }
 
@@ -34,17 +34,17 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public Dictionary<string, object> AllAttributes { get; private set; }
 
         /// <summary>
-        /// <see cref="ITagHelper"/>s that should be run for the current <see cref="TagHelpersExecutionContext"/>.
+        /// <see cref="ITagHelper"/>s that should be run.
         /// </summary>
         public List<ITagHelper> TagHelpers { get; private set; }
 
         /// <summary>
-        /// The HTML tag name for the current <see cref="TagHelpersExecutionContext"/>.
+        /// The HTML tag name.
         /// </summary>
         public string TagName { get; private set; }
 
         /// <summary>
-        /// The <see cref="TagHelperOutput"/> of the current <see cref="TagHelpersExecutionContext"/>.
+        /// The <see cref="TagHelperOutput"/>.
         /// </summary>
         public TagHelperOutput Output { get; set; }
 
@@ -58,7 +58,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <summary>
-        /// Tracks the HTML attribute.
+        /// Tracks the HTML attribute in <see cref="AllAttributes"/> and <see cref="HTMLAttributes"/>.
         /// </summary>
         /// <param name="name">The HTML attribute name.</param>
         /// <param name="value">The HTML attribute value.</param>
@@ -69,7 +69,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <summary>
-        /// Tracks the HTML attribute so it can be used by a <see cref="TagHelperContext.AllAttributes"/>.
+        /// Tracks the <see cref="ITagHelper"/> bound attribute in <see cref="AllAttributes"/>.
         /// </summary>
         /// <param name="name">The HTML attribute name.</param>
         /// <param name="value">The attribute value.</param>

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     /// <summary>
-    /// Defines a class that is used to filters matching HTML elements.
+    /// Class used to filters matching HTML elements.
     /// </summary>
     public abstract class TagHelper : ITagHelper
     {
         /// <summary>
-        /// Synchronously executes the <see cref="TagHelper"/> with the given <paramref name="output"/> and
-        /// <paramref name="context"/>.
+        /// Synchronously executes the <see cref="TagHelper"/> with the given <paramref name="context"/> and
+        /// <paramref name="output"/>.
         /// </summary>
         /// <param name="context">Contains information associated with the current HTML tags.</param>
         /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>
@@ -21,18 +21,18 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <summary>
-        /// Asynchronously executes the <see cref="TagHelper"/> with the given <paramref name="output"/> and
-        /// <paramref name="context"/>.
+        /// Asynchronously executes the <see cref="TagHelper"/> with the given <paramref name="context"/> and
+        /// <paramref name="output"/>.
         /// </summary>
         /// <param name="context">Contains information associated with the current HTML tags.</param>
         /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>
         /// <returns>A task that on completion updates the <paramref name="output"/>.</returns>
         /// <remarks>By default this calls into <see cref="Process(TagHelperContext, TagHelperOutput)"/>.</remarks>.
-        public virtual Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        #pragma warning disable 1998
+        public virtual async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             Process(context, output);
-
-            return Task.FromResult(result: true);
         }
+        #pragma warning restore 1998
     }
 }
