@@ -12,7 +12,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     public class TagHelperRunner
     {
         /// <summary>
-        /// Calls the <see cref="ITagHelper.ProcessAsync(TagHelperOutput, TagHelperContext)"/> method on
+        /// Calls the <see cref="ITagHelper.ProcessAsync(TagHelperContext, TagHelperOutput)"/> method on
         /// <see cref="ITagHelper"/>s.
         /// </summary>
         /// <param name="context">Contains information associated with running <see cref="ITagHelper"/>s.</param>
@@ -24,7 +24,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <summary>
-        /// Calls the <see cref="ITagHelper.ProcessAsync(TagHelperOutput, TagHelperContext)"/> method on
+        /// Calls the <see cref="ITagHelper.ProcessAsync(TagHelperContext, TagHelperOutput)"/> method on
         /// <see cref="ITagHelper"/>s with a <see cref="TagHelperOutput"/> whos <see cref="TagHelperOutput.Content"/>
         /// is set to the given <paramref name="bufferBody"/> <see cref="string"/> value.
         /// </summary>
@@ -48,7 +48,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             foreach (var tagHelper in executionContext.TagHelpers)
             {
-                await tagHelper.ProcessAsync(tagHelperOutput, tagHelperContext);
+                await tagHelper.ProcessAsync(tagHelperContext, tagHelperOutput);
             }
 
             return tagHelperOutput;

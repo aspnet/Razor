@@ -88,7 +88,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         {
             public bool Processed { get; set; }
 
-            public override void Process(TagHelperOutput output, TagHelperContext context)
+            public override void Process(TagHelperContext context, TagHelperOutput output)
             {
                 Processed = true;
 
@@ -101,7 +101,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
 
         private class TagHelperContextTouchingTagHelper : TagHelper
         {
-            public override void Process(TagHelperOutput output, TagHelperContext context)
+            public override void Process(TagHelperContext context, TagHelperOutput output)
             {
                 output.Attributes["foo"] = context.AllAttributes["foo"].ToString();
             }

@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     /// <summary>
-    /// Defines a contract that is used to control rendering of HTML elements.
+    /// Defines a contract used to filters matching HTML elements.
     /// </summary>
     public interface ITagHelper
     {
         /// <summary>
-        /// Synchronously executes the <see cref="ITagHelper"/> with the given <paramref name="output"/> and
+        /// Asynchronously executes the <see cref="ITagHelper"/> with the given <paramref name="output"/> and
         /// <paramref name="context"/>.
         /// </summary>
-        /// <param name="output">The stateful HTML element used to represent a tag</param>
-        /// <param name="context">Contains information associated with the current HTML tags execution.</param>
-        /// <returns>A task that represents when the method has completed.</returns>
-        Task ProcessAsync(TagHelperOutput output, TagHelperContext context);
+        /// <param name="context">Contains information associated with the current HTML tags.</param>
+        /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>
+        /// <returns>A task that on completion updates the <paramref name="output"/>.</returns>
+        Task ProcessAsync(TagHelperContext context, TagHelperOutput output);
     }
 }
