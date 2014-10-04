@@ -18,7 +18,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             tagHelperOutput.TagName = null;
 
             // Assert
-            Assert.Equal(string.Empty, tagHelperOutput.TagName);
+            Assert.Empty(tagHelperOutput.TagName);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             tagHelperOutput.Content = null;
 
             // Assert
-            Assert.Equal(string.Empty, tagHelperOutput.Content);
+            Assert.Empty(tagHelperOutput.Content);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var output = tagHelperOutput.GenerateStartTag();
 
             // Assert
-            Assert.Equal(string.Empty, output);
+            Assert.Empty(output);
         }
 
 
@@ -133,7 +133,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var output = tagHelperOutput.GenerateEndTag();
 
             // Assert
-            Assert.Equal(string.Empty, output);
+            Assert.Empty(output);
         }
 
         [Fact]
@@ -167,7 +167,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var output = tagHelperOutput.GenerateContent();
 
             // Assert
-            Assert.Equal(string.Empty, output);
+            Assert.Empty(output);
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var output = tagHelperOutput.GenerateEndTag();
 
             // Assert
-            Assert.Equal(string.Empty, output);
+            Assert.Empty(output);
         }
     }
 }
