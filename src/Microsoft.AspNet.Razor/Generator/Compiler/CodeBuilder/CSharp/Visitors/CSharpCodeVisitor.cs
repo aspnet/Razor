@@ -102,8 +102,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         protected override void Visit(LiteralChunk chunk)
         {
-            if (!Context.Host.DesignTimeMode && String.IsNullOrEmpty(chunk.Text))
+            if (Context.Host.DesignTimeMode || string.IsNullOrEmpty(chunk.Text))
             {
+                // Skip generating the chunk if we're in design time or if the chunk is empty.
                 return;
             }
 
@@ -112,22 +113,19 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 Writer.WriteStartInstrumentationContext(Context, chunk.Association, isLiteral: true);
             }
 
-            if (!String.IsNullOrEmpty(chunk.Text) && !Context.Host.DesignTimeMode)
+            if (!string.IsNullOrEmpty(Context.TargetWriterName))
             {
-                if (!String.IsNullOrEmpty(Context.TargetWriterName))
-                {
-                    Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralToMethodName)
-                           .Write(Context.TargetWriterName)
-                           .WriteParameterSeparator();
-                }
-                else
-                {
-                    Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralMethodName);
-                }
-
-                Writer.WriteStringLiteral(chunk.Text)
-                       .WriteEndMethodInvocation();
+                Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralToMethodName)
+                        .Write(Context.TargetWriterName)
+                        .WriteParameterSeparator();
             }
+            else
+            {
+                Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralMethodName);
+            }
+
+            Writer.WriteStringLiteral(chunk.Text)
+                    .WriteEndMethodInvocation();
 
             if (Context.Host.EnableInstrumentation)
             {
@@ -160,12 +158,23 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         protected override void Visit(DynamicCodeAttributeChunk chunk)
         {
+            var code = chunk.Children.FirstOrDefault();
+            var visitCodeChunk = (code is ExpressionChunk || code is ExpressionBlockChunk);
+
             if (Context.Host.DesignTimeMode)
             {
-                return; // Don't generate anything!
+                // Render the children as is without wrapping them in calls to WriteAttribute
+                if (visitCodeChunk)
+                {
+                    Accept(code);
+                }
+                else
+                {
+                    Accept(chunk.Children);
+                }
+                return;
             }
 
-            Chunk code = chunk.Children.FirstOrDefault();
             ExpressionRenderingMode currentRenderingMode = Context.ExpressionRenderingMode;
             string currentTargetWriterName = Context.TargetWriterName;
 
@@ -174,7 +183,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             Writer.WriteParameterSeparator()
                    .WriteLine();
 
-            if (code is ExpressionChunk || code is ExpressionBlockChunk)
+            if (visitCodeChunk)
             {
                 Writer.WriteStartMethodInvocation("Tuple.Create")
                         .WriteLocationTaggedString(chunk.Prefix)
@@ -220,9 +229,18 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         protected override void Visit(LiteralCodeAttributeChunk chunk)
         {
+            var visitChildren = chunk.Children.Count > 0 || chunk.Value == null;
+
             if (Context.Host.DesignTimeMode)
             {
-                return; // Don't generate anything!
+                // Render the attribute without wrapping it in a call to WriteAttribute
+                if (visitChildren)
+                {
+                    Accept(chunk.Children);
+                }
+                
+
+                return;
             }
 
             Writer.WriteParameterSeparator()
@@ -230,7 +248,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                    .WriteLocationTaggedString(chunk.Prefix)
                    .WriteParameterSeparator();
 
-            if (chunk.Children.Count > 0 || chunk.Value == null)
+            if (visitChildren)
             {
                 Writer.WriteStartMethodInvocation("Tuple.Create", new string[] { "System.Object", "System.Int32" });
 
@@ -247,7 +265,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                        .WriteParameterSeparator()
                        .WriteBooleanLiteral(false)
                        .WriteEndMethodInvocation(false);
-
             }
             else
             {
@@ -262,7 +279,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         {
             if (Context.Host.DesignTimeMode)
             {
-                return; // Don't generate anything!
+                // Render the attribute without wrapping it in a "WriteAttribute" invocation
+                Accept(chunk.Children);
+
+                return;
             }
 
             if (!String.IsNullOrEmpty(Context.TargetWriterName))
