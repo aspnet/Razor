@@ -116,8 +116,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             if (!string.IsNullOrEmpty(Context.TargetWriterName))
             {
                 Writer.WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralToMethodName)
-                        .Write(Context.TargetWriterName)
-                        .WriteParameterSeparator();
+                      .Write(Context.TargetWriterName)
+                      .WriteParameterSeparator();
             }
             else
             {
@@ -125,7 +125,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             }
 
             Writer.WriteStringLiteral(chunk.Text)
-                    .WriteEndMethodInvocation();
+                  .WriteEndMethodInvocation();
 
             if (Context.Host.EnableInstrumentation)
             {
@@ -158,20 +158,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         protected override void Visit(DynamicCodeAttributeChunk chunk)
         {
-            var code = chunk.Children.FirstOrDefault();
-            var visitCodeChunk = (code is ExpressionChunk || code is ExpressionBlockChunk);
-
             if (Context.Host.DesignTimeMode)
             {
                 // Render the children as is without wrapping them in calls to WriteAttribute
-                if (visitCodeChunk)
-                {
-                    Accept(code);
-                }
-                else
-                {
-                    Accept(chunk.Children);
-                }
+                Accept(chunk.Children);
                 return;
             }
 
@@ -183,7 +173,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             Writer.WriteParameterSeparator()
                    .WriteLine();
 
-            if (visitCodeChunk)
+            var code = chunk.Children.FirstOrDefault();
+            if (code is ExpressionChunk || code is ExpressionBlockChunk)
             {
                 Writer.WriteStartMethodInvocation("Tuple.Create")
                         .WriteLocationTaggedString(chunk.Prefix)
@@ -229,7 +220,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         protected override void Visit(LiteralCodeAttributeChunk chunk)
         {
-            var visitChildren = chunk.Children.Count > 0 || chunk.Value == null;
+            var visitChildren = chunk.Value == null;
 
             if (Context.Host.DesignTimeMode)
             {
@@ -238,7 +229,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 {
                     Accept(chunk.Children);
                 }
-                
 
                 return;
             }
