@@ -9,6 +9,59 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     public class TagHelperDescriptorFactoryTest
     {
         [Fact]
+        public void CreateDescriptor_OverridesAttributeNameFromAttribute()
+        {
+            // Arrange
+            var validProp1 = typeof(OverriddenAttributeTagHelper).GetProperty(
+                nameof(OverriddenAttributeTagHelper.ValidAttribute1));
+            var validProp2 = typeof(OverriddenAttributeTagHelper).GetProperty(
+                nameof(OverriddenAttributeTagHelper.ValidAttribute2));
+            var expectedDescriptors = new[] {
+                new TagHelperDescriptor(
+                    "OverriddenAttribute",
+                    typeof(OverriddenAttributeTagHelper).FullName,
+                    ContentBehavior.None,
+                    new[] {
+                        new TagHelperAttributeDescriptor("SomethingElse", validProp1),
+                        new TagHelperAttributeDescriptor("Something-Else", validProp2)
+                    })
+            };
+
+            // Act
+            var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(OverriddenAttributeTagHelper));
+
+            // Assert
+            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+        }
+
+        [Fact]
+        public void CreateDescriptor_DoesNotInheritOverridenAttributeName()
+        {
+            // Arrange
+            var validProp1 = typeof(InheritedOverriddenAttributeTagHelper).GetProperty(
+                nameof(InheritedOverriddenAttributeTagHelper.ValidAttribute1));
+            var validProp2 = typeof(InheritedOverriddenAttributeTagHelper).GetProperty(
+                nameof(InheritedOverriddenAttributeTagHelper.ValidAttribute2));
+            var expectedDescriptors = new[] {
+                new TagHelperDescriptor(
+                    "InheritedOverriddenAttribute",
+                    typeof(InheritedOverriddenAttributeTagHelper).FullName,
+                    ContentBehavior.None,
+                    new[] {
+                        new TagHelperAttributeDescriptor(nameof(InheritedOverriddenAttributeTagHelper.ValidAttribute1),
+                                                         validProp1),
+                        new TagHelperAttributeDescriptor("Something-Else", validProp2)
+                    })
+            };
+
+            // Act
+            var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(InheritedOverriddenAttributeTagHelper));
+
+            // Assert
+            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+        }
+
+        [Fact]
         public void CreateDescriptor_BuildsDescriptorsFromSimpleTypes()
         {
             // Arrange
@@ -282,6 +335,20 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         private class InheritedSingleAttributeTagHelper : SingleAttributeTagHelper
         {
+        }
+
+        private class OverriddenAttributeTagHelper
+        {
+            [HtmlAttributeName("SomethingElse")]
+            public virtual string ValidAttribute1 { get; set; }
+
+            [HtmlAttributeName("Something-Else")]
+            public string ValidAttribute2 { get; set; }
+        }
+
+        private class InheritedOverriddenAttributeTagHelper : OverriddenAttributeTagHelper
+        {
+            public override string ValidAttribute1 { get; set; }
         }
     }
 }
