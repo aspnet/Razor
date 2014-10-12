@@ -12,9 +12,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public void CreateDescriptor_OverridesAttributeNameFromAttribute()
         {
             // Arrange
-            var validProp1 = typeof(OverriddenAttributeTagHelper).GetProperty(
+            var validProperty1 = typeof(OverriddenAttributeTagHelper).GetProperty(
                 nameof(OverriddenAttributeTagHelper.ValidAttribute1));
-            var validProp2 = typeof(OverriddenAttributeTagHelper).GetProperty(
+            var validProperty2 = typeof(OverriddenAttributeTagHelper).GetProperty(
                 nameof(OverriddenAttributeTagHelper.ValidAttribute2));
             var expectedDescriptors = new[] {
                 new TagHelperDescriptor(
@@ -22,8 +22,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     typeof(OverriddenAttributeTagHelper).FullName,
                     ContentBehavior.None,
                     new[] {
-                        new TagHelperAttributeDescriptor("SomethingElse", validProp1),
-                        new TagHelperAttributeDescriptor("Something-Else", validProp2)
+                        new TagHelperAttributeDescriptor("SomethingElse", validProperty1),
+                        new TagHelperAttributeDescriptor("Something-Else", validProperty2)
                     })
             };
 
@@ -38,9 +38,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public void CreateDescriptor_DoesNotInheritOverridenAttributeName()
         {
             // Arrange
-            var validProp1 = typeof(InheritedOverriddenAttributeTagHelper).GetProperty(
+            var validProperty1 = typeof(InheritedOverriddenAttributeTagHelper).GetProperty(
                 nameof(InheritedOverriddenAttributeTagHelper.ValidAttribute1));
-            var validProp2 = typeof(InheritedOverriddenAttributeTagHelper).GetProperty(
+            var validProperty2 = typeof(InheritedOverriddenAttributeTagHelper).GetProperty(
                 nameof(InheritedOverriddenAttributeTagHelper.ValidAttribute2));
             var expectedDescriptors = new[] {
                 new TagHelperDescriptor(
@@ -49,8 +49,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     ContentBehavior.None,
                     new[] {
                         new TagHelperAttributeDescriptor(nameof(InheritedOverriddenAttributeTagHelper.ValidAttribute1),
-                                                         validProp1),
-                        new TagHelperAttributeDescriptor("Something-Else", validProp2)
+                                                         validProperty1),
+                        new TagHelperAttributeDescriptor("Something-Else", validProperty2)
                     })
             };
 

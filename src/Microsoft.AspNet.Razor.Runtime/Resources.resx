@@ -134,4 +134,7 @@
   <data name="TagNameAttribute_AdditionalTagsCannotContainNull" xml:space="preserve">
     <value>Parameter {0} must not contain null tag names.</value>
   </data>
+  <data name="Argument_Cannot_Be_Null_Or_Empty" xml:space="preserve">
+    <value>Value cannot be null or an empty string.</value>
+  </data>
 </root>

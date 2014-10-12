@@ -6,7 +6,7 @@ using System;
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     /// <summary>
-    /// Used to override a <see cref="ITagHelper"/> properties HTML attribute name target.
+    /// Used to override an <see cref="ITagHelper"/> property's HTML attribute name.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public sealed class HtmlAttributeNameAttribute : Attribute
@@ -14,14 +14,21 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Instantiates a new instance of the <see cref="HtmlAttributeNameAttribute"/> class.
         /// </summary>
-        /// <param name="name">HTML attribute name for the <see cref="ITagHelper"/>'s property to target.</param>
-        public HtmlAttributeNameAttribute([NotNull] string name)
+        /// <param name="name">HTML attribute name of the associated property.</param>
+        public HtmlAttributeNameAttribute(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentException(
+                    Resources.Argument_Cannot_Be_Null_Or_Empty,
+                    nameof(name));
+            }
+
             Name = name;
         }
 
         /// <summary>
-        /// HTML attribute name for the <see cref="ITagHelper"/>'s property to target.
+        /// HTML attribute name of the associated property.
         /// </summary>
         public string Name { get; private set; }
     }
