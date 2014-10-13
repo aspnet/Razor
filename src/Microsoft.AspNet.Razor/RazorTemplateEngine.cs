@@ -255,7 +255,7 @@ namespace Microsoft.AspNet.Razor
             var codeBuilderContext = new CodeBuilderContext(generator.Context);
             codeBuilderContext.Checksum = checksum;
             var builder = CreateCodeBuilder(codeBuilderContext);
-            var builderResult = builder.Build();
+            CodeBuilderResult builderResult = builder.Build();
 
             // Collect results and return
             return new GeneratorResults(results, builderResult, codeBuilderContext.CodeTreeBuilder.CodeTree);
