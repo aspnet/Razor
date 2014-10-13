@@ -87,7 +87,7 @@ namespace Microsoft.AspNet.Razor
         protected internal virtual ParserResults ParseTemplateCore(ITextDocument input, CancellationToken? cancelToken)
         {
             // Construct the parser
-            RazorParser parser = CreateParser();
+            RazorParser parser = CreateParser(sourceFileName: null);
             Debug.Assert(parser != null);
             return parser.Parse(input);
         }
@@ -243,7 +243,7 @@ namespace Microsoft.AspNet.Razor
             rootNamespace = (rootNamespace ?? Host.DefaultNamespace) ?? DefaultNamespace;
 
             // Run the parser
-            var parser = CreateParser();
+            var parser = CreateParser(sourceFileName);
             Debug.Assert(parser != null);
             var results = parser.Parse(input);
 
@@ -267,17 +267,19 @@ namespace Microsoft.AspNet.Razor
                 Host.CodeLanguage.CreateCodeGenerator(className, rootNamespace, sourceFileName, Host));
         }
 
-        protected internal virtual RazorParser CreateParser()
+        protected internal virtual RazorParser CreateParser(string sourceFileName)
         {
             var codeParser = Host.CodeLanguage.CreateCodeParser();
             var markupParser = Host.CreateMarkupParser();
 
-            return new RazorParser(Host.DecorateCodeParser(codeParser),
-                                   Host.DecorateMarkupParser(markupParser),
-                                   Host.TagHelperDescriptorResolver)
+            var parser = new RazorParser(Host.DecorateCodeParser(codeParser),
+                                         Host.DecorateMarkupParser(markupParser),
+                                         Host.TagHelperDescriptorResolver)
             {
                 DesignTimeMode = Host.DesignTimeMode
             };
+
+            return Host.DecorateRazorParser(parser, sourceFileName);
         }
 
         protected internal virtual CodeBuilder CreateCodeBuilder(CodeBuilderContext context)

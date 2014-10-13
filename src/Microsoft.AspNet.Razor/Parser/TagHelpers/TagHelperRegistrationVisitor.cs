@@ -7,7 +7,7 @@ using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 using Microsoft.AspNet.Razor.TagHelpers;
 
-namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
+namespace Microsoft.AspNet.Razor.Parser.TagHelpers
 {
     public class TagHelperRegistrationVisitor : ParserVisitor
     {
@@ -20,14 +20,14 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             _descriptorResolver = descriptorResolver;
         }
 
-        public TagHelperDescriptorProvider CreateProvider(Block root)
+        public IEnumerable<TagHelperDescriptor> GetDescriptors([NotNull] Block root)
         {
             _descriptors = new HashSet<TagHelperDescriptor>(TagHelperDescriptorComparer.Default);
 
             // This will recurse through the syntax tree.
             VisitBlock(root);
 
-            return new TagHelperDescriptorProvider(_descriptors);
+            return _descriptors;
         }
 
         public override void VisitSpan(Span span)

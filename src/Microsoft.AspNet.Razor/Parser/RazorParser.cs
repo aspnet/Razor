@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
+using Microsoft.AspNet.Razor.Parser.TagHelpers;
 using Microsoft.AspNet.Razor.Parser.TagHelpers.Internal;
 using Microsoft.AspNet.Razor.TagHelpers;
 using Microsoft.AspNet.Razor.Text;
@@ -17,33 +18,42 @@ namespace Microsoft.AspNet.Razor.Parser
 {
     public class RazorParser
     {
-        private ITagHelperDescriptorResolver _tagHelperDescriptorResolver;
-
         public RazorParser([NotNull] ParserBase codeParser,
                            [NotNull] ParserBase markupParser,
                            ITagHelperDescriptorResolver tagHelperDescriptorResolver)
+            : this(codeParser,
+                  markupParser,
+                  tagHelperDescriptorResolver,
+                  GetDefaultRewriters(markupParser))
         {
-            _tagHelperDescriptorResolver = tagHelperDescriptorResolver;
-            MarkupParser = markupParser;
-            CodeParser = codeParser;
-
-            Optimizers = new List<ISyntaxTreeRewriter>()
-            {
-                // TODO: Modify the below WhiteSpaceRewriter & ConditionalAttributeCollapser to handle 
-                // TagHelperBlock's: https://github.com/aspnet/Razor/issues/117
-
-                // Move whitespace from start of expression block to markup
-                new WhiteSpaceRewriter(MarkupParser.BuildSpan),
-                // Collapse conditional attributes where the entire value is literal
-                new ConditionalAttributeCollapser(MarkupParser.BuildSpan),
-            };
         }
 
-        internal ParserBase CodeParser { get; private set; }
-        internal ParserBase MarkupParser { get; private set; }
-        internal IList<ISyntaxTreeRewriter> Optimizers { get; private set; }
+        public RazorParser([NotNull] RazorParser parser)
+            : this(parser.CodeParser, parser.MarkupParser, parser.TagHelperDescriptorResolver, parser.Optimizers)
+        {
+            DesignTimeMode = parser.DesignTimeMode;
+        }
+
+        private RazorParser(ParserBase codeParser,
+                            ParserBase markupParser,
+                            ITagHelperDescriptorResolver tagHelperDescriptorResolver,
+                            IEnumerable<ISyntaxTreeRewriter> optimizers)
+        {
+            TagHelperDescriptorResolver = tagHelperDescriptorResolver;
+            MarkupParser = markupParser;
+            CodeParser = codeParser;
+            Optimizers = new List<ISyntaxTreeRewriter>(optimizers);
+        }
 
         public bool DesignTimeMode { get; set; }
+
+        public ParserBase CodeParser { get; }
+
+        public ParserBase MarkupParser { get; }
+
+        public List<ISyntaxTreeRewriter> Optimizers { get; }
+
+        public ITagHelperDescriptorResolver TagHelperDescriptorResolver { get; }
 
         public virtual void Parse(TextReader input, ParserVisitor visitor)
         {
@@ -142,10 +152,10 @@ namespace Microsoft.AspNet.Razor.Parser
                 rewriter.Rewrite(rewritingContext);
             }
 
-            if (_tagHelperDescriptorResolver != null)
+            if (TagHelperDescriptorResolver != null)
             {
-                var tagHelperRegistrationVisitor = new TagHelperRegistrationVisitor(_tagHelperDescriptorResolver);
-                var tagHelperProvider = tagHelperRegistrationVisitor.CreateProvider(rewritingContext.SyntaxTree);
+                var descriptors = GetTagHelperDescriptors(rewritingContext);
+                var tagHelperProvider = new TagHelperDescriptorProvider(descriptors);
 
                 var tagHelperParseTreeRewriter = new TagHelperParseTreeRewriter(tagHelperProvider);
                 // Rewrite the document to utilize tag helpers
@@ -172,6 +182,26 @@ namespace Microsoft.AspNet.Razor.Parser
 
             // Return the new result
             return new ParserResults(syntaxTree, errors);
+        }
+
+        protected virtual IEnumerable<TagHelperDescriptor> GetTagHelperDescriptors([NotNull] RewritingContext rewritingContext)
+        {
+            var tagHelperRegistrationVisitor = new TagHelperRegistrationVisitor(TagHelperDescriptorResolver);
+            return tagHelperRegistrationVisitor.GetDescriptors(rewritingContext.SyntaxTree);
+        }
+
+        private static IEnumerable<ISyntaxTreeRewriter> GetDefaultRewriters(ParserBase markupParser)
+        {
+            return new ISyntaxTreeRewriter[]
+            {
+                // TODO: Modify the below WhiteSpaceRewriter & ConditionalAttributeCollapser to handle 
+                // TagHelperBlock's: https://github.com/aspnet/Razor/issues/117
+
+                // Move whitespace from start of expression block to markup
+                new WhiteSpaceRewriter(markupParser.BuildSpan),
+                // Collapse conditional attributes where the entire value is literal
+                new ConditionalAttributeCollapser(markupParser.BuildSpan),
+            };
         }
     }
 }
