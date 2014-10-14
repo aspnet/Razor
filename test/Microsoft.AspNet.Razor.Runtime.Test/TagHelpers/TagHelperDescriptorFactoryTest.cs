@@ -31,7 +31,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(OverriddenAttributeTagHelper));
 
             // Assert
-            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptors, descriptors, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -58,7 +58,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(InheritedOverriddenAttributeTagHelper));
 
             // Assert
-            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptors, descriptors, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -84,7 +84,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(InheritedNotOverriddenAttributeTagHelper));
 
             // Assert
-            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptors, descriptors, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             var descriptor = Assert.Single(descriptors);
-            Assert.Equal(descriptor, expectedDescriptor, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             var descriptor = Assert.Single(descriptors);
-            Assert.Equal(descriptor, expectedDescriptor, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -141,7 +141,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             var descriptor = Assert.Single(descriptors);
-            Assert.Equal(descriptor, expectedDescriptor, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             var descriptor = Assert.Single(descriptors);
-            Assert.Equal(descriptor, expectedDescriptor, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -186,7 +186,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             var descriptor = Assert.Single(descriptors);
-            Assert.Equal(descriptor, expectedDescriptor, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -203,7 +203,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             var descriptor = Assert.Single(descriptors);
-            Assert.Equal(descriptor, expectedDescriptor, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -221,7 +221,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             var descriptor = Assert.Single(descriptors);
-            Assert.Equal(descriptor, expectedDescriptor, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -250,7 +250,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(MultiTagTagHelper));
 
             // Assert
-            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptors, descriptors, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -271,7 +271,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             var descriptor = Assert.Single(descriptors);
-            Assert.Equal(descriptor, expectedDescriptor, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -287,7 +287,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(DuplicateTagNameTagHelper));
 
             // Assert
-            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptors, descriptors, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -304,7 +304,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(OverrideNameTagHelper));
 
             // Assert
-            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptors, descriptors, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [Fact]
@@ -321,7 +321,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(MultipleAttributeTagHelper));
 
             // Assert
-            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptors, descriptors, CompleteTagHelperDescriptorComparer.Default);
         }
 
         [ContentBehavior(ContentBehavior.Append)]
