@@ -10,7 +10,8 @@ using Microsoft.AspNet.Razor.TagHelpers;
 namespace Microsoft.AspNet.Razor.Parser.TagHelpers
 {
     /// <summary>
-    /// A <see cref="ParserVisitor"/> that locates <see cref="TagHelperDescriptor"/>.
+    /// A <see cref="ParserVisitor"/> that generates <see cref="TagHelperDescriptor"/>s from
+    /// tag helper code generators in a Razor document.
     /// </summary>
     public class TagHelperRegistrationVisitor : ParserVisitor
     {

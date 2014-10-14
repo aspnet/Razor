@@ -172,10 +172,7 @@ namespace Microsoft.AspNet.Razor.Parser
 
             if (TagHelperDescriptorResolver != null)
             {
-                var descriptors = GetTagHelperDescriptors(rewritingContext.SyntaxTree);
-                var tagHelperProvider = new TagHelperDescriptorProvider(
-                    descriptors.Distinct(TagHelperDescriptorComparer.Default));
-
+                var tagHelperProvider = GetTagHelperProvider(rewritingContext.SyntaxTree);
                 var tagHelperParseTreeRewriter = new TagHelperParseTreeRewriter(tagHelperProvider);
                 // Rewrite the document to utilize tag helpers
                 tagHelperParseTreeRewriter.Rewrite(rewritingContext);
@@ -204,15 +201,18 @@ namespace Microsoft.AspNet.Razor.Parser
         }
 
         /// <summary>
-        /// Returns a sequence of <see cref="TagHelperDescriptor"/>s for tag helpers that are registered in the 
+        /// Returns a <see cref="TagHelperDescriptorProvider"/> for tag helpers that are defined in the
         /// specified <paramref name="documentRoot"/>.
         /// </summary>
         /// <param name="documentRoot">The <see cref="Block"/> to scan for tag helper registrations in.</param>
-        /// <returns></returns>
-        protected virtual IEnumerable<TagHelperDescriptor> GetTagHelperDescriptors([NotNull] Block documentRoot)
+        /// <returns>A <see cref="TagHelperDescriptorProvider"/> that contains <see cref="TagHelperDescriptor"/>s.
+        /// </returns>
+        protected virtual TagHelperDescriptorProvider GetTagHelperProvider([NotNull] Block documentRoot)
         {
-            var tagHelperRegistrationVisitor = new TagHelperRegistrationVisitor(TagHelperDescriptorResolver);
-            return tagHelperRegistrationVisitor.GetDescriptors(documentRoot);
+            var provider = new TagHelperDescriptorProvider();
+            var tagHelperRegistrationVisitor = new TagHelperRegistrationVisitor(provider, TagHelperDescriptorResolver);
+            var descriptors = tagHelperRegistrationVisitor.GetDescriptors(documentRoot);
+            return descriptors);
         }
 
         private static IEnumerable<ISyntaxTreeRewriter> GetDefaultRewriters(ParserBase markupParser)

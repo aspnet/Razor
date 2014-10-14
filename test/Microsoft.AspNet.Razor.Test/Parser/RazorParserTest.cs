@@ -23,9 +23,9 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            var parser = new RazorParser(new CSharpCodeParser(), 
-                                                 new HtmlMarkupParser(),
-                                                 tagHelperDescriptorResolver: null);
+            var parser = new RazorParser(new CSharpCodeParser(),
+                                         new HtmlMarkupParser(),
+                                         tagHelperDescriptorResolver: null);
 
             // Act/Assert
             ParserTestBase.EvaluateResults(parser.Parse(new StringReader("foo @bar baz")),
@@ -45,9 +45,9 @@ namespace Microsoft.AspNet.Razor.Test.Parser
             var factory = SpanFactory.CreateCsHtml();
 
             // Arrange
-            var parser = new RazorParser(new CSharpCodeParser(), 
-                                                 new HtmlMarkupParser(),
-                                                 tagHelperDescriptorResolver: null);
+            var parser = new RazorParser(new CSharpCodeParser(),
+                                         new HtmlMarkupParser(),
+                                         tagHelperDescriptorResolver: null);
 
             // Act
             var results = parser.Parse(new StringReader("foo @bar baz"));
