@@ -9,11 +9,14 @@ using Microsoft.AspNet.Razor.TagHelpers;
 
 namespace Microsoft.AspNet.Razor.Parser.TagHelpers
 {
+    /// <summary>
+    /// A <see cref="ParserVisitor"/> that locates <see cref="TagHelperDescriptor"/>.
+    /// </summary>
     public class TagHelperRegistrationVisitor : ParserVisitor
     {
         private readonly ITagHelperDescriptorResolver _descriptorResolver;
 
-        private HashSet<TagHelperDescriptor> _descriptors;
+        private List<TagHelperDescriptor> _descriptors;
 
         public TagHelperRegistrationVisitor(ITagHelperDescriptorResolver descriptorResolver)
         {
@@ -22,7 +25,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
 
         public IEnumerable<TagHelperDescriptor> GetDescriptors([NotNull] Block root)
         {
-            _descriptors = new HashSet<TagHelperDescriptor>(TagHelperDescriptorComparer.Default);
+            _descriptors = new List<TagHelperDescriptor>();
 
             // This will recurse through the syntax tree.
             VisitBlock(root);
@@ -50,10 +53,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                 var descriptors = _descriptorResolver.Resolve(addGenerator.LookupText);
 
                 // Add all the found descriptors to our HashSet.
-                foreach (var descriptor in descriptors)
-                {
-                    _descriptors.Add(descriptor);
-                }
+                _descriptors.AddRange(descriptors);
             }
         }
     }

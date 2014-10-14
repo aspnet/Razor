@@ -18,6 +18,13 @@ namespace Microsoft.AspNet.Razor.Parser
 {
     public class RazorParser
     {
+        /// <summary>
+        /// Initializes a new instance of <see cref="RazorParser"/>.
+        /// </summary>
+        /// <param name="codeParser">The <see cref="ParserBase"/> used for parsing code content.</param>
+        /// <param name="markupParser">The <see cref="ParserBase"/> used for parsing markpup content.</param>
+        /// <param name="tagHelperDescriptorResolver">The <see cref=ITagHelperDescriptorResolver"/> used to resolve
+        /// <see cref="TagHelperDescriptor"/>s.</param>
         public RazorParser([NotNull] ParserBase codeParser,
                            [NotNull] ParserBase markupParser,
                            ITagHelperDescriptorResolver tagHelperDescriptorResolver)
@@ -28,8 +35,12 @@ namespace Microsoft.AspNet.Razor.Parser
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="RazorParser"/> from the specified <paramref name="parser" />.
+        /// </summary>
+        /// <param name="parser">The <see cref="RazorParser"/> to copy values from.</param>
         public RazorParser([NotNull] RazorParser parser)
-            : this(parser.CodeParser, parser.MarkupParser, parser.TagHelperDescriptorResolver, parser.Optimizers)
+           : this(parser.CodeParser, parser.MarkupParser, parser.TagHelperDescriptorResolver, parser.Optimizers)
         {
             DesignTimeMode = parser.DesignTimeMode;
         }
@@ -39,21 +50,28 @@ namespace Microsoft.AspNet.Razor.Parser
                             ITagHelperDescriptorResolver tagHelperDescriptorResolver,
                             IEnumerable<ISyntaxTreeRewriter> optimizers)
         {
-            TagHelperDescriptorResolver = tagHelperDescriptorResolver;
-            MarkupParser = markupParser;
             CodeParser = codeParser;
-            Optimizers = new List<ISyntaxTreeRewriter>(optimizers);
+            MarkupParser = markupParser;
+            TagHelperDescriptorResolver = tagHelperDescriptorResolver;
+            Optimizers = optimizers.ToList();
         }
 
         public bool DesignTimeMode { get; set; }
 
-        public ParserBase CodeParser { get; }
+        /// <summary>
+        /// Gets the <see cref=ITagHelperDescriptorResolver"/> used to resolve
+        /// <see cref="TagHelperDescriptor"/>s.</param>
+        /// </summary>
+        protected ITagHelperDescriptorResolver TagHelperDescriptorResolver { get; private set; }
 
-        public ParserBase MarkupParser { get; }
+        // Internal for unit testing
+        internal ParserBase CodeParser { get; private set; }
 
-        public List<ISyntaxTreeRewriter> Optimizers { get; }
+        // Internal for unit testing
+        internal ParserBase MarkupParser { get; private set; }
 
-        public ITagHelperDescriptorResolver TagHelperDescriptorResolver { get; }
+        // Internal for unit testing
+        internal List<ISyntaxTreeRewriter> Optimizers { get; private set; }
 
         public virtual void Parse(TextReader input, ParserVisitor visitor)
         {
@@ -154,8 +172,9 @@ namespace Microsoft.AspNet.Razor.Parser
 
             if (TagHelperDescriptorResolver != null)
             {
-                var descriptors = GetTagHelperDescriptors(rewritingContext);
-                var tagHelperProvider = new TagHelperDescriptorProvider(descriptors);
+                var descriptors = GetTagHelperDescriptors(rewritingContext.SyntaxTree);
+                var tagHelperProvider = new TagHelperDescriptorProvider(
+                    descriptors.Distinct(TagHelperDescriptorComparer.Default));
 
                 var tagHelperParseTreeRewriter = new TagHelperParseTreeRewriter(tagHelperProvider);
                 // Rewrite the document to utilize tag helpers
@@ -184,10 +203,16 @@ namespace Microsoft.AspNet.Razor.Parser
             return new ParserResults(syntaxTree, errors);
         }
 
-        protected virtual IEnumerable<TagHelperDescriptor> GetTagHelperDescriptors([NotNull] RewritingContext rewritingContext)
+        /// <summary>
+        /// Returns a sequence of <see cref="TagHelperDescriptor"/>s for tag helpers that are registered in the 
+        /// specified <paramref name="documentRoot"/>.
+        /// </summary>
+        /// <param name="documentRoot">The <see cref="Block"/> to scan for tag helper registrations in.</param>
+        /// <returns></returns>
+        protected virtual IEnumerable<TagHelperDescriptor> GetTagHelperDescriptors([NotNull] Block documentRoot)
         {
             var tagHelperRegistrationVisitor = new TagHelperRegistrationVisitor(TagHelperDescriptorResolver);
-            return tagHelperRegistrationVisitor.GetDescriptors(rewritingContext.SyntaxTree);
+            return tagHelperRegistrationVisitor.GetDescriptors(documentRoot);
         }
 
         private static IEnumerable<ISyntaxTreeRewriter> GetDefaultRewriters(ParserBase markupParser)
