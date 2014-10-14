@@ -95,19 +95,19 @@ namespace Microsoft.AspNet.Razor.Runtime
         }
 
         /// <summary>
-        /// Value cannot be null or an empty string.
+        /// The value cannot be null or empty.
         /// </summary>
-        internal static string Argument_Cannot_Be_Null_Or_Empty
+        internal static string ArgumentCannotBeNullOrEmpty
         {
-            get { return GetString("Argument_Cannot_Be_Null_Or_Empty"); }
+            get { return GetString("ArgumentCannotBeNullOrEmpty"); }
         }
 
         /// <summary>
-        /// Value cannot be null or an empty string.
+        /// The value cannot be null or empty.
         /// </summary>
-        internal static string FormatArgument_Cannot_Be_Null_Or_Empty()
+        internal static string FormatArgumentCannotBeNullOrEmpty()
         {
-            return GetString("Argument_Cannot_Be_Null_Or_Empty");
+            return GetString("ArgumentCannotBeNullOrEmpty");
         }
 
         private static string GetString(string name, params string[] formatterNames)

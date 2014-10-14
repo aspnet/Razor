@@ -14,14 +14,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Instantiates a new instance of the <see cref="HtmlAttributeNameAttribute"/> class.
         /// </summary>
-        /// <param name="name">HTML attribute name of the associated property.</param>
+        /// <param name="name">HTML attribute name for the associated property.</param>
         public HtmlAttributeNameAttribute(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
-                throw new ArgumentException(
-                    Resources.Argument_Cannot_Be_Null_Or_Empty,
-                    nameof(name));
+                throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(name));
             }
 
             Name = name;

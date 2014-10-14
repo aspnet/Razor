@@ -62,6 +62,32 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         [Fact]
+        public void CreateDescriptor_AllowsOverridenAttributeNameOnUnimplementedVirtual()
+        {
+            // Arrange
+            var validProperty1 = typeof(InheritedNotOverriddenAttributeTagHelper).GetProperty(
+                nameof(InheritedNotOverriddenAttributeTagHelper.ValidAttribute1));
+            var validProperty2 = typeof(InheritedNotOverriddenAttributeTagHelper).GetProperty(
+                nameof(InheritedNotOverriddenAttributeTagHelper.ValidAttribute2));
+            var expectedDescriptors = new[] {
+                new TagHelperDescriptor(
+                    "InheritedNotOverriddenAttribute",
+                    typeof(InheritedNotOverriddenAttributeTagHelper).FullName,
+                    ContentBehavior.None,
+                    new[] {
+                        new TagHelperAttributeDescriptor("SomethingElse", validProperty1),
+                        new TagHelperAttributeDescriptor("Something-Else", validProperty2)
+                    })
+            };
+
+            // Act
+            var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(InheritedNotOverriddenAttributeTagHelper));
+
+            // Assert
+            Assert.Equal(descriptors, expectedDescriptors, CompleteTagHelperDescriptorComparer.Default);
+        }
+
+        [Fact]
         public void CreateDescriptor_BuildsDescriptorsFromSimpleTypes()
         {
             // Arrange
@@ -349,6 +375,10 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         private class InheritedOverriddenAttributeTagHelper : OverriddenAttributeTagHelper
         {
             public override string ValidAttribute1 { get; set; }
+        }
+
+        private class InheritedNotOverriddenAttributeTagHelper : OverriddenAttributeTagHelper
+        {
         }
     }
 }
