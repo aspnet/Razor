@@ -142,11 +142,13 @@ namespace Microsoft.AspNet.Razor.Test.Text
             RunDisposeTest(r => r.Dispose());
         }
 
+#if ASPNET50
         [Fact]
         public void CloseDisposesSourceReader()
         {
             RunDisposeTest(r => r.Close());
         }
+#endif
 
         [Fact]
         public void ReadWithBufferSupportsLookahead()
