@@ -36,6 +36,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public IDictionary<string, object> AllAttributes { get; private set; }
 
         /// <summary>
+        /// An identifier unique to the specific tag (element) instance this context is for.
+        /// </summary>
+        public string UniqueId { get; set; }
+
+        /// <summary>
         /// <see cref="ITagHelper"/>s that should be run.
         /// </summary>
         public IEnumerable<ITagHelper> TagHelpers

@@ -24,6 +24,7 @@ namespace Microsoft.AspNet.Razor.Generator
             ExecutionContextAddTagHelperAttributeMethodName = "AddTagHelperAttribute";
             ExecutionContextAddHtmlAttributeMethodName = "AddHtmlAttribute";
             ExecutionContextOutputPropertyName = "Output";
+            ExecutionContextUniqueIdPropertyName = "UniqueId";
             StartWritingScopeMethodName = "StartWritingScope";
             EndWritingScopeMethodName = "EndWritingScope";
             RunnerTypeName = "TagHelperRunner";
@@ -85,6 +86,11 @@ namespace Microsoft.AspNet.Razor.Generator
         /// The property accessor for the tag helper's output.
         /// </summary>
         public string ExecutionContextOutputPropertyName { get; set; }
+
+        /// <summary>
+        /// The property accessor for the tag's unique id.
+        /// </summary>
+        public string ExecutionContextUniqueIdPropertyName { get; private set; }
 
         /// <summary>
         /// The name of the method used to start a new writing scope.
