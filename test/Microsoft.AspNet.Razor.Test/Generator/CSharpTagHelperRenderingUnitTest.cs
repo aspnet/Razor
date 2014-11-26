@@ -63,7 +63,8 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             Assert.Equal(2, codeRenderer.GenerateUniqueIdCount);
         }
 
-        [Fact(Skip = "Not sure why this is failing because I can't debug on laptop. Will check when I get back to my main machine.")]
+        //[Fact(Skip = "Not sure why this is failing because I can't debug on laptop. Will check when I get back to my main machine.")]
+        [Fact]
         public void UsesDifferentUniqueIdForNestedTagHelperChunksForSameTagHelper()
         {
             // Arrange
@@ -144,10 +145,12 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         {
             var writer = new CSharpCodeWriter();
             var codeBuilderContext = CreateContext();
+            var visitor = new CSharpCodeVisitor(writer, codeBuilderContext);
             var codeRenderer = new TrackingUniqueIdsTagHelperCodeRenderer(
-                new CSharpCodeVisitor(writer, codeBuilderContext),
+                visitor,
                 writer,
                 codeBuilderContext);
+            visitor.TagHelperRenderer = codeRenderer;
             return codeRenderer;
         }
 
