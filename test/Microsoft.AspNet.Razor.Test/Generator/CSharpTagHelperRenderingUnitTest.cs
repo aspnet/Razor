@@ -144,7 +144,10 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         {
             var writer = new CSharpCodeWriter();
             var codeBuilderContext = CreateContext();
-            var codeRenderer = new TrackingUniqueIdsTagHelperCodeRenderer(new CSharpCodeVisitor(writer, codeBuilderContext), writer, codeBuilderContext);
+            var codeRenderer = new TrackingUniqueIdsTagHelperCodeRenderer(
+                new CSharpCodeVisitor(writer, codeBuilderContext),
+                writer,
+                codeBuilderContext);
             return codeRenderer;
         }
 

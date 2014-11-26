@@ -102,7 +102,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator
 
                 }
 
-                protected override CSharpCodeVisitor CreateCSharpCodeVisitor([NotNull]CSharpCodeWriter writer, [NotNull]CodeBuilderContext context)
+                protected override CSharpCodeVisitor CreateCSharpCodeVisitor(CSharpCodeWriter writer, CodeBuilderContext context)
                 {
                     var visitor = base.CreateCSharpCodeVisitor(writer, context);
                     visitor.TagHelperRenderer = new NoUniqueIdsTagHelperCodeRenderer(visitor, writer, context);
