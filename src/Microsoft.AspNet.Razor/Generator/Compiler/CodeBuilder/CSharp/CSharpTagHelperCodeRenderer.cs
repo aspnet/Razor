@@ -136,16 +136,20 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                    .WriteStartInstanceMethodInvocation(ScopeManagerVariableName,
                                                        _tagHelperContext.ScopeManagerBeginMethodName);
 
-            _writer.WriteStringLiteral(tagName)
-                   .WriteEndMethodInvocation();
-
             // Assign a unique ID for this instance of the source HTML tag. This must be unique
             // per call site, e.g. if the tag is on the view twice, there should be two IDs.
-            _writer.Write(ExecutionContextVariableName)
-                   .Write(".")
-                   .WriteStartAssignment(_tagHelperContext.ExecutionContextUniqueIdPropertyName)
-                   .WriteStringLiteral(Guid.NewGuid().ToString("N"))
-                   .WriteLine(";");
+            _writer.WriteStringLiteral(tagName)
+                   .WriteParameterSeparator()
+                   .WriteStringLiteral(GenerateUniqueId())
+                   .WriteEndMethodInvocation();
+        }
+
+        /// <summary>
+        /// This is internal for testing purposes only
+        /// </summary>
+        internal virtual string GenerateUniqueId()
+        {
+            return Guid.NewGuid().ToString("N");
         }
 
         private void RenderTagHelpersCreation(TagHelperChunk chunk)

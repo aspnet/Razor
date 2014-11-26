@@ -26,9 +26,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// </summary>
         /// <param name="tagName">The HTML tag name that the scope is associated with.</param>
         /// <returns>A <see cref="TagHelperExecutionContext"/> to use.</returns>
-        public TagHelperExecutionContext Begin(string tagName)
+        public TagHelperExecutionContext Begin(string tagName, string uniqueId)
         {
-            var executionContext = new TagHelperExecutionContext(tagName);
+            var executionContext = new TagHelperExecutionContext(tagName, uniqueId);
 
             _executionScopes.Push(executionContext);
 
