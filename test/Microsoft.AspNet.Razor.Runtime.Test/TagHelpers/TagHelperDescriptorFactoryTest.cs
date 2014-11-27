@@ -25,7 +25,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     "OverriddenAttribute",
                     typeof(OverriddenAttributeTagHelper).FullName,
                     AssemblyName,
-                    ContentBehavior.None,
                     new[] {
                         new TagHelperAttributeDescriptor("SomethingElse", validProperty1),
                         new TagHelperAttributeDescriptor("Something-Else", validProperty2)
@@ -52,7 +51,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     "InheritedOverriddenAttribute",
                     typeof(InheritedOverriddenAttributeTagHelper).FullName,
                     AssemblyName,
-                    ContentBehavior.None,
                     new[] {
                         new TagHelperAttributeDescriptor(nameof(InheritedOverriddenAttributeTagHelper.ValidAttribute1),
                                                          validProperty1),
@@ -80,7 +78,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     "InheritedNotOverriddenAttribute",
                     typeof(InheritedNotOverriddenAttributeTagHelper).FullName,
                     AssemblyName,
-                    ContentBehavior.None,
                     new[] {
                         new TagHelperAttributeDescriptor("SomethingElse", validProperty1),
                         new TagHelperAttributeDescriptor("Something-Else", validProperty2)
@@ -100,7 +97,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             // Arrange
             var objectAssemblyName = typeof(object).GetTypeInfo().Assembly.GetName().Name;
             var expectedDescriptor =
-                new TagHelperDescriptor("Object", "System.Object", objectAssemblyName, ContentBehavior.None);
+                new TagHelperDescriptor("Object", "System.Object", objectAssemblyName);
 
             // Act
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(object));
@@ -120,7 +117,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 "InheritedSingleAttribute",
                 typeof(InheritedSingleAttributeTagHelper).FullName,
                 AssemblyName,
-                ContentBehavior.None,
                 new[] {
                     new TagHelperAttributeDescriptor(nameof(InheritedSingleAttributeTagHelper.IntAttribute), intProperty)
                 });
@@ -142,7 +138,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 "SingleAttribute",
                 typeof(SingleAttributeTagHelper).FullName,
                 AssemblyName,
-                ContentBehavior.None,
                 new[] {
                     new TagHelperAttributeDescriptor(nameof(SingleAttributeTagHelper.IntAttribute), intProperty)
                 });
@@ -165,7 +160,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 "MissingAccessor",
                 typeof(MissingAccessorTagHelper).FullName,
                 AssemblyName,
-                ContentBehavior.None,
                 new[] {
                     new TagHelperAttributeDescriptor(nameof(MissingAccessorTagHelper.ValidAttribute), validProperty)
                 });
@@ -188,7 +182,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 "PrivateAccessor",
                 typeof(PrivateAccessorTagHelper).FullName,
                 AssemblyName,
-                ContentBehavior.None,
                 new[] {
                     new TagHelperAttributeDescriptor(
                         nameof(PrivateAccessorTagHelper.ValidAttribute), validProperty)
@@ -196,43 +189,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Act
             var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(PrivateAccessorTagHelper));
-
-            // Assert
-            var descriptor = Assert.Single(descriptors);
-            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
-        }
-
-        [Fact]
-        public void CreateDescriptor_ResolvesCustomContentBehavior()
-        {
-            // Arrange
-            var expectedDescriptor = new TagHelperDescriptor(
-                "CustomContentBehavior",
-                typeof(CustomContentBehaviorTagHelper).FullName,
-                AssemblyName,
-                ContentBehavior.Append);
-
-            // Act
-            var descriptors = TagHelperDescriptorFactory.CreateDescriptors(typeof(CustomContentBehaviorTagHelper));
-
-            // Assert
-            var descriptor = Assert.Single(descriptors);
-            Assert.Equal(expectedDescriptor, descriptor, CompleteTagHelperDescriptorComparer.Default);
-        }
-
-        [Fact]
-        public void CreateDescriptor_DoesNotResolveInheritedCustomContentBehavior()
-        {
-            // Arrange
-            var expectedDescriptor = new TagHelperDescriptor(
-                "InheritedCustomContentBehavior",
-                typeof(InheritedCustomContentBehaviorTagHelper).FullName,
-                AssemblyName,
-                ContentBehavior.None);
-
-            // Act
-            var descriptors = TagHelperDescriptorFactory.CreateDescriptors(
-                typeof(InheritedCustomContentBehaviorTagHelper));
 
             // Assert
             var descriptor = Assert.Single(descriptors);
@@ -249,7 +205,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     "div",
                     typeof(MultiTagTagHelper).FullName,
                     AssemblyName,
-                    ContentBehavior.None,
                     new[] {
                         new TagHelperAttributeDescriptor(nameof(MultiTagTagHelper.ValidAttribute), validProp)
                     }),
@@ -257,7 +212,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     "p",
                     typeof(MultiTagTagHelper).FullName,
                     AssemblyName,
-                    ContentBehavior.None,
                     new[] {
                         new TagHelperAttributeDescriptor(nameof(MultiTagTagHelper.ValidAttribute), validProp)
                     })
@@ -279,7 +233,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     "InheritedMultiTag",
                     typeof(InheritedMultiTagTagHelper).FullName,
                     AssemblyName,
-                    ContentBehavior.None,
                     new[] {
                         new TagHelperAttributeDescriptor(nameof(InheritedMultiTagTagHelper.ValidAttribute), validProp)
                     });
@@ -300,13 +253,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 new TagHelperDescriptor(
                     "p",
                     typeof(DuplicateTagNameTagHelper).FullName,
-                    AssemblyName,
-                    ContentBehavior.None),
+                    AssemblyName),
                 new TagHelperDescriptor(
                     "div",
                     typeof(DuplicateTagNameTagHelper).FullName,
-                    AssemblyName,
-                    ContentBehavior.None)
+                    AssemblyName)
             };
 
             // Act
@@ -323,8 +274,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var expectedDescriptors = new[] {
                 new TagHelperDescriptor("data-condition",
                                         typeof(OverrideNameTagHelper).FullName,
-                                        AssemblyName,
-                                        ContentBehavior.None),
+                                        AssemblyName),
             };
 
             // Act
@@ -342,18 +292,15 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 new TagHelperDescriptor(
                     "span",
                     typeof(MultipleAttributeTagHelper).FullName,
-                    AssemblyName,
-                    ContentBehavior.None),
+                    AssemblyName),
                 new TagHelperDescriptor(
                     "p",
                     typeof(MultipleAttributeTagHelper).FullName,
-                    AssemblyName,
-                    ContentBehavior.None),
+                    AssemblyName),
                 new TagHelperDescriptor(
                     "div",
                     typeof(MultipleAttributeTagHelper).FullName,
-                    AssemblyName,
-                    ContentBehavior.None)
+                    AssemblyName)
             };
 
             // Act
@@ -361,15 +308,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             Assert.Equal(expectedDescriptors, descriptors, CompleteTagHelperDescriptorComparer.Default);
-        }
-
-        [ContentBehavior(ContentBehavior.Append)]
-        private class CustomContentBehaviorTagHelper
-        {
-        }
-
-        private class InheritedCustomContentBehaviorTagHelper : CustomContentBehaviorTagHelper
-        {
         }
 
         [TagName("p", "div")]
