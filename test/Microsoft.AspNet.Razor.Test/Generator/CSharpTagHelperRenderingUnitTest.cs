@@ -63,7 +63,6 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             Assert.Equal(2, codeRenderer.GenerateUniqueIdCount);
         }
 
-        //[Fact(Skip = "Not sure why this is failing because I can't debug on laptop. Will check when I get back to my main machine.")]
         [Fact]
         public void UsesDifferentUniqueIdForNestedTagHelperChunksForSameTagHelper()
         {
