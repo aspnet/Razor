@@ -47,7 +47,7 @@ namespace TestOutput
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test");
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
             __tagHelperExecutionContext.Add(__InputTagHelper);
-            __InputTagHelper.Type = "text";
+            __InputTagHelper.Type = **From custom attribute code renderer**: "text";
             __tagHelperExecutionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
             __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
@@ -62,12 +62,12 @@ namespace TestOutput
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test");
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
             __tagHelperExecutionContext.Add(__InputTagHelper);
-            __InputTagHelper.Type = "checkbox";
+            __InputTagHelper.Type = **From custom attribute code renderer**: "checkbox";
             __tagHelperExecutionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
             __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
             __InputTagHelper2.Type = __InputTagHelper.Type;
-            __InputTagHelper2.Checked = true;
+            __InputTagHelper2.Checked = **From custom attribute code renderer**: true;
             __tagHelperExecutionContext.AddTagHelperAttribute("checked", __InputTagHelper2.Checked);
             __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
             WriteLiteral(__tagHelperExecutionContext.Output.GenerateStartTag());

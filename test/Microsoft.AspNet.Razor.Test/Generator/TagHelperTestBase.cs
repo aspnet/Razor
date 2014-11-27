@@ -82,7 +82,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator
 
             protected internal override CodeBuilder CreateCodeBuilder(CodeBuilderContext context)
             {
-                return new TestCSharpCodeBuilder(context);
+                return Host.DecorateCodeBuilder(new TestCSharpCodeBuilder(context), context);
             }
 
             protected internal override RazorParser CreateParser(string fileName)
@@ -93,36 +93,36 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                                        parser.MarkupParser,
                                        new CustomTagHelperDescriptorResolver(_tagHelperDescriptors));
             }
+        }
 
-            private class TestCSharpCodeBuilder : CSharpCodeBuilder
+        protected class TestCSharpCodeBuilder : CSharpCodeBuilder
+        {
+            public TestCSharpCodeBuilder(CodeBuilderContext context)
+                : base(context)
             {
-                public TestCSharpCodeBuilder(CodeBuilderContext context)
-                    : base(context)
+
+            }
+
+            protected override CSharpCodeVisitor CreateCSharpCodeVisitor(CSharpCodeWriter writer, CodeBuilderContext context)
+            {
+                var visitor = base.CreateCSharpCodeVisitor(writer, context);
+                visitor.TagHelperRenderer = new NoUniqueIdsTagHelperCodeRenderer(visitor, writer, context);
+                return visitor;
+            }
+
+            private class NoUniqueIdsTagHelperCodeRenderer : CSharpTagHelperCodeRenderer
+            {
+                public NoUniqueIdsTagHelperCodeRenderer(IChunkVisitor bodyVisitor,
+                                                        CSharpCodeWriter writer,
+                                                        CodeBuilderContext context)
+                    : base(bodyVisitor, writer, context)
                 {
 
                 }
 
-                protected override CSharpCodeVisitor CreateCSharpCodeVisitor(CSharpCodeWriter writer, CodeBuilderContext context)
+                internal override string GenerateUniqueId()
                 {
-                    var visitor = base.CreateCSharpCodeVisitor(writer, context);
-                    visitor.TagHelperRenderer = new NoUniqueIdsTagHelperCodeRenderer(visitor, writer, context);
-                    return visitor;
-                }
-
-                private class NoUniqueIdsTagHelperCodeRenderer : CSharpTagHelperCodeRenderer
-                {
-                    public NoUniqueIdsTagHelperCodeRenderer(IChunkVisitor bodyVisitor,
-                                                            CSharpCodeWriter writer,
-                                                            CodeBuilderContext context)
-                        : base(bodyVisitor, writer, context)
-                    {
-
-                    }
-
-                    internal override string GenerateUniqueId()
-                    {
-                        return "test";
-                    }
+                    return "test";
                 }
             }
         }
