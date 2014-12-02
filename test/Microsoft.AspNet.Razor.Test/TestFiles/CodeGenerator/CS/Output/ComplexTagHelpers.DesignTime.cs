@@ -41,12 +41,6 @@ if (true)
 #line default
 #line hidden
 
-            __PTagHelper = CreateTagHelper<PTagHelper>();
-#line 8 "ComplexTagHelpers.cshtml"
-__o = DateTime.Now;
-
-#line default
-#line hidden
 #line 10 "ComplexTagHelpers.cshtml"
             
 
@@ -60,11 +54,11 @@ __o = DateTime.Now;
 #line default
 #line hidden
 
-            __PTagHelper = CreateTagHelper<PTagHelper>();
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
             __InputTagHelper.Type = "text";
             __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
             __InputTagHelper2.Type = __InputTagHelper.Type;
+            __PTagHelper = CreateTagHelper<PTagHelper>();
 #line 13 "ComplexTagHelpers.cshtml"
             }
             else
@@ -73,7 +67,6 @@ __o = DateTime.Now;
 #line default
 #line hidden
 
-            __PTagHelper = CreateTagHelper<PTagHelper>();
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
 #line 16 "ComplexTagHelpers.cshtml"
 __o = checkbox;
@@ -84,6 +77,7 @@ __o = checkbox;
             __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
             __InputTagHelper2.Type = __InputTagHelper.Type;
             __InputTagHelper2.Checked = true;
+            __PTagHelper = CreateTagHelper<PTagHelper>();
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
 #line 17 "ComplexTagHelpers.cshtml"
 __o = true ? "checkbox" : "anything";
@@ -121,6 +115,12 @@ if(true) {
 #line default
 #line hidden
 
+            __PTagHelper = CreateTagHelper<PTagHelper>();
+#line 8 "ComplexTagHelpers.cshtml"
+__o = DateTime.Now;
+
+#line default
+#line hidden
 #line 22 "ComplexTagHelpers.cshtml"
 }
 
