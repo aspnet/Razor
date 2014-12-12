@@ -120,7 +120,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator
 
                 }
 
-                internal override string GenerateUniqueId()
+                protected override string GenerateUniqueId()
                 {
                     return "test";
                 }

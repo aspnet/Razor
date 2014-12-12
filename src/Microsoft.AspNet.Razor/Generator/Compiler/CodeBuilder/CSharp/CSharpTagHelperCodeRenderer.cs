@@ -145,9 +145,12 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         }
 
         /// <summary>
-        /// This is internal for testing purposes only
+        /// Generates a unique ID for an HTML element.
         /// </summary>
-        internal virtual string GenerateUniqueId()
+        /// <returns>
+        /// A globally unique ID.
+        /// </returns>
+        protected virtual string GenerateUniqueId()
         {
             return Guid.NewGuid().ToString("N");
         }
