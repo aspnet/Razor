@@ -2,14 +2,14 @@
     "description": "Runtime components for rendering Razor pages.",
     "version": "4.0.0-*",
     "dependencies": {
-        "Microsoft.AspNet.Razor": "4.0.0-*"
+        "Microsoft.AspNet.Razor": "4.0.0-beta2"
     },
     "frameworks": {
         "net45": { },
         "aspnet50": { },
         "aspnetcore50": {
             "dependencies": {
-                "System.Reflection.Extensions": "4.0.0-beta-*"
+                "System.Reflection.Extensions": "4.0.0-beta-22416"
             }
         }
     }

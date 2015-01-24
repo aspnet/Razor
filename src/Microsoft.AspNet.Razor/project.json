@@ -6,18 +6,18 @@
         "aspnet50": { },
         "aspnetcore50": {
             "dependencies": {
-                "System.Collections": "4.0.10-beta-*",
-                "System.Diagnostics.Debug": "4.0.10-beta-*",
-                "System.Diagnostics.Tools": "4.0.0-beta-*",
-                "System.IO.FileSystem": "4.0.0-beta-*",
-                "System.Linq": "4.0.0-beta-*",
-                "System.Reflection": "4.0.10-beta-*",
-                "System.Resources.ResourceManager": "4.0.0-beta-*",
-                "System.Runtime.Extensions": "4.0.10-beta-*",
-                "System.Threading": "4.0.0-beta-*",
-                "System.Threading.Tasks": "4.0.10-beta-*",
-                "System.Threading.Thread": "4.0.0-beta-*",
-                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-*"
+                "System.Collections": "4.0.10-beta-22416",
+                "System.Diagnostics.Debug": "4.0.10-beta-22416",
+                "System.Diagnostics.Tools": "4.0.0-beta-22416",
+                "System.IO.FileSystem": "4.0.0-beta-22416",
+                "System.Linq": "4.0.0-beta-22416",
+                "System.Reflection": "4.0.10-beta-22416",
+                "System.Resources.ResourceManager": "4.0.0-beta-22416",
+                "System.Runtime.Extensions": "4.0.10-beta-22416",
+                "System.Threading": "4.0.0-beta-22416",
+                "System.Threading.Tasks": "4.0.10-beta-22416",
+                "System.Threading.Thread": "4.0.0-beta-22416",
+                "System.Security.Cryptography.Hashing.Algorithms": "4.0.0-beta-22416"
             }
         }
     }
