@@ -422,4 +422,7 @@ Instead, wrap the contents of the block in "{{}}":
     <value>Inline markup blocks (e.g. @&lt;p&gt;content&lt;/p&gt;) must not appear in non-string tag helper attribute values.
  Expected a '{0}' attribute value, not a string.</value>
   </data>
+  <data name="RewriterError_DuplicateTagHelperBoundAttribute" xml:space="preserve">
+    <value>Attribute "{0}" is bound by tag helper "{1}" and already exists on the element "{2}". Attributes are case insensitive.</value>
+  </data>
 </root>

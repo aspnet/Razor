@@ -1530,6 +1530,22 @@ namespace Microsoft.AspNet.Razor
             return string.Format(CultureInfo.CurrentCulture, GetString("TagHelpers_InlineMarkupBlocks_NotSupported_InAttributes"), p0);
         }
 
+        /// <summary>
+        /// Attribute "{0}" is bound by tag helper "{1}" and already exists on the element "{2}". Attributes are case insensitive.
+        /// </summary>
+        internal static string RewriterError_DuplicateTagHelperBoundAttribute
+        {
+            get { return GetString("RewriterError_DuplicateTagHelperBoundAttribute"); }
+        }
+
+        /// <summary>
+        /// Attribute "{0}" is bound by tag helper "{1}" and already exists on the element "{2}". Attributes are case insensitive.
+        /// </summary>
+        internal static string FormatRewriterError_DuplicateTagHelperBoundAttribute(object p0, object p1, object p2)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("RewriterError_DuplicateTagHelperBoundAttribute"), p0, p1, p2);
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);
