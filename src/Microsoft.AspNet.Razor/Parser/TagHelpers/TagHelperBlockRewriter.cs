@@ -36,13 +36,13 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
         {
             var attributes = new Dictionary<string, SyntaxTreeNode>(StringComparer.OrdinalIgnoreCase);
 
-            // Build a dictionary so we can easily lookup expected attribute value lookups
-            IReadOnlyDictionary<string, string> attributeValueTypes =
-                descriptors.SelectMany(descriptor => descriptor.Attributes)
-                           .Distinct(TagHelperAttributeDescriptorComparer.Default)
-                           .ToDictionary(descriptor => descriptor.Name,
-                                       descriptor => descriptor.TypeName,
-                                       StringComparer.OrdinalIgnoreCase);
+            // Build a dictionary so we can easily lookup bound attributes values.
+            IReadOnlyDictionary<string, TagHelperAttributeDescriptor> boundAttributeDescriptors =
+                descriptors
+                .SelectMany(descriptor => descriptor.Attributes)
+                .Distinct(TagHelperAttributeDescriptorComparer.Default)
+                .ToDictionary(descriptor => descriptor.Name, StringComparer.OrdinalIgnoreCase);
+
 
             // We skip the first child "<tagname" and take everything up to the ending portion of the tag ">" or "/>".
             // The -2 accounts for both the start and end tags. If the tag does not have a valid structure then there's
@@ -57,17 +57,42 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
 
                 if (child.IsBlock)
                 {
-                    succeeded = TryParseBlock(tagName, (Block)child, attributeValueTypes, errorSink, out attribute);
+                    succeeded =
+                        TryParseBlock(tagName, (Block)child, boundAttributeDescriptors, errorSink, out attribute);
                 }
                 else
                 {
-                    succeeded = TryParseSpan((Span)child, attributeValueTypes, errorSink, out attribute);
+                    succeeded = TryParseSpan((Span)child, boundAttributeDescriptors, errorSink, out attribute);
                 }
 
                 // Only want to track the attribute if we succeeded in parsing its corresponding Block/Span.
                 if (succeeded)
                 {
-                    attributes[attribute.Key] = attribute.Value;
+                    TagHelperAttributeDescriptor boundAttributeDescriptor;
+
+                    // There should not be multiple attributes for bound attributes.
+                    if (attributes.ContainsKey(attribute.Key) &&
+                        boundAttributeDescriptors.TryGetValue(attribute.Key, out boundAttributeDescriptor))
+                    {
+                        var errorLocation = GetAttributeNameStartLocation(child);
+
+                        // Need to locate the parent of the TagHelperAttributeDescriptor so we can resolve its 
+                        // TypeName.
+                        var problemDescriptor = descriptors
+                            .First(descriptor => descriptor.Attributes.Contains(boundAttributeDescriptor));
+
+                        errorSink.OnError(
+                            errorLocation,
+                            RazorResources.FormatRewriterError_DuplicateTagHelperBoundAttribute(
+                                attribute.Key,
+                                problemDescriptor.TypeName,
+                                tagName),
+                            attribute.Key.Length);
+                    }
+                    else
+                    {
+                        attributes[attribute.Key] = attribute.Value;
+                    }
                 }
             }
 
@@ -79,7 +104,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
         // class="@myclass". Therefore the span.Content is equivalent to the entire attribute.
         private static bool TryParseSpan(
             Span span,
-            IReadOnlyDictionary<string, string> attributeValueTypes,
+            IReadOnlyDictionary<string, TagHelperAttributeDescriptor> boundAttributeDescriptors,
             ParserErrorSink errorSink,
             out KeyValuePair<string, SyntaxTreeNode> attribute)
         {
@@ -172,7 +197,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                 return false;
             }
 
-            attribute = CreateMarkupAttribute(name, builder, attributeValueTypes);
+            attribute = CreateMarkupAttribute(name, builder, boundAttributeDescriptors);
 
             return true;
         }
@@ -180,7 +205,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
         private static bool TryParseBlock(
             string tagName,
             Block block,
-            IReadOnlyDictionary<string, string> attributeValueTypes,
+            IReadOnlyDictionary<string, TagHelperAttributeDescriptor> boundAttributeDescriptors,
             ParserErrorSink errorSink,
             out KeyValuePair<string, SyntaxTreeNode> attribute)
         {
@@ -206,7 +231,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             // i.e. <div class="plain text in attribute">
             if (builder.Children.Count == 1)
             {
-                return TryParseSpan(childSpan, attributeValueTypes, errorSink, out attribute);
+                return TryParseSpan(childSpan, boundAttributeDescriptors, errorSink, out attribute);
             }
 
             var textSymbol = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text);
@@ -256,7 +281,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
 
                     var spanBuilder = new SpanBuilder(child);
 
-                    attribute = CreateMarkupAttribute(name, spanBuilder, attributeValueTypes);
+                    attribute = CreateMarkupAttribute(name, spanBuilder, boundAttributeDescriptors);
 
                     return true;
                 }
@@ -330,18 +355,50 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             return builder.Build();
         }
 
+        private static SourceLocation GetAttributeNameStartLocation(SyntaxTreeNode node)
+        {
+            var startOffset = node.Start;
+
+            while (node.IsBlock)
+            {
+                // We want to track the start of the parent node. Each iteration of this while loop we will dive deeper
+                // into the Block. Since the attribute name will always be located at .Children[0] we need to track the
+                // corresponding .Start location of the attribute names parent so we can offset its .Start based on the 
+                // leading whitespace.
+                startOffset = node.Start;
+
+                // An attribute must have at least one child element underneath it
+                node = ((Block)node).Children.First();
+            }
+
+            // At this point the node is not a block so it must be a Span.
+            var span = (Span)node;
+
+            // Attributes must have at least one non-whitespace character to represent the tagName (even if its a C#
+            // expression).
+            var firstNonWhitespaceSymbol = span
+                .Symbols
+                .OfType<HtmlSymbol>()
+                .First(sym => sym.Type != HtmlSymbolType.WhiteSpace && sym.Type != HtmlSymbolType.NewLine);
+
+            return startOffset + firstNonWhitespaceSymbol.Start;
+        }
+
         private static KeyValuePair<string, SyntaxTreeNode> CreateMarkupAttribute(
             string name,
             SpanBuilder builder,
-            IReadOnlyDictionary<string, string> attributeValueTypes)
+            IReadOnlyDictionary<string, TagHelperAttributeDescriptor> boundAttributes)
         {
-            string attributeTypeName;
+            TagHelperAttributeDescriptor attributeDescriptor;
 
             // If the attribute was requested by the tag helper and doesn't happen to be a string then we need to treat
             // its value as code. Any non-string value can be any C# value so we need to ensure the SyntaxTreeNode
             // reflects that.
-            if (attributeValueTypes.TryGetValue(name, out attributeTypeName) &&
-                !string.Equals(attributeTypeName, typeof(string).FullName, StringComparison.OrdinalIgnoreCase))
+            if (boundAttributes.TryGetValue(name, out attributeDescriptor) &&
+                !string.Equals(
+                    attributeDescriptor.TypeName,
+                    typeof(string).FullName,
+                    StringComparison.OrdinalIgnoreCase))
             {
                 builder.Kind = SpanKind.Code;
             }

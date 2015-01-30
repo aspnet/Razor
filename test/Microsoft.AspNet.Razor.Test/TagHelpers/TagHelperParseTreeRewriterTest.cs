@@ -19,6 +19,261 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
 {
     public class TagHelperParseTreeRewriterTest : CsHtmlMarkupParserTestBase
     {
+        public static TheoryData DuplicateTagHelperBoundAttributeData
+        {
+            get
+            {
+                var factory = CreateDefaultSpanFactory();
+                var duplicateAttributeError =
+                    "Attribute \"{0}\" is bound by tag helper \"{1}\" and already exists on the element \"{2}\". " +
+                    "Attributes are case insensitive.";
+                var dateTimeNow = new MarkupBlock(
+                    new MarkupBlock(
+                        new ExpressionBlock(
+                            factory.CodeTransition(),
+                                factory.Code("DateTime.Now")
+                                    .AsImplicitExpression(CSharpCodeParser.DefaultKeywords)
+                                    .Accepts(AcceptedCharacters.NonWhiteSpace))));
+
+                // documentContent, expectedOutput, expectedErrors
+                return new TheoryData<string, MarkupBlock, RazorError[]>
+                {
+                    {
+                        "<myth bound='true' bound='false'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bound", factory.CodeMarkup("true") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 19, lineIndex: 0, columnIndex: 19, length: 5)
+                        }
+                    },
+                    {
+                        "<myth bound='@DateTime.Now' bound='false'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bound", dateTimeNow }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 28, lineIndex: 0, columnIndex: 28, length: 5)
+                        }
+                    },
+                    {
+                        "<myth bound='true' bound='false'    bound='false'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bound", factory.CodeMarkup("true") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 19, lineIndex: 0, columnIndex: 19, length: 5),
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 36, lineIndex: 0, columnIndex: 36, length: 5)
+                        }
+                    },
+                    {
+                        "<myth bound='true' bound='false'    bound='@DateTime.Now'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bound", factory.CodeMarkup("true") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 19, lineIndex: 0, columnIndex: 19, length: 5),
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 36, lineIndex: 0, columnIndex: 36, length: 5)
+                        }
+                    },
+                    {
+                        "<myth bound='true' bound='false' name='john'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bound", factory.CodeMarkup("true") },
+                                    { "name", factory.Markup("john") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 19, lineIndex: 0, columnIndex: 19, length: 5)
+                        }
+                    },
+                    {
+                        "<myth bound='true' name='john' bound='false' name='doe'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bound", factory.CodeMarkup("true") },
+                                    { "name", factory.Markup("john") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 31, lineIndex: 0, columnIndex: 31, length: 5),
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "name", "mythTagHelper", "myth"),
+                                absoluteIndex: 45, lineIndex: 0, columnIndex: 45, length: 4),
+                        }
+                    },
+                    {
+                        "<myth bound='true' BouND='false'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bound", factory.CodeMarkup("true") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "BouND", "mythTagHelper", "myth"),
+                                absoluteIndex: 19, lineIndex: 0, columnIndex: 19, length: 5)
+                        }
+                    },
+
+                    {
+                        "<myth BOUND='true' bound='false'    bOUnd='false'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "BOUND", factory.CodeMarkup("true") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bound", "mythTagHelper", "myth"),
+                                absoluteIndex: 19, lineIndex: 0, columnIndex: 19, length: 5),
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "bOUnd", "mythTagHelper", "myth"),
+                                absoluteIndex: 36, lineIndex: 0, columnIndex: 36, length: 5)
+                        }
+                    },
+                    {
+                        "<myth BOUND='true' BOUND='false' nAMe='john'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "BOUND", factory.CodeMarkup("true") },
+                                    { "nAMe", factory.Markup("john") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "BOUND", "mythTagHelper", "myth"),
+                                absoluteIndex: 19, lineIndex: 0, columnIndex: 19, length: 5)
+                        }
+                    },
+                    {
+                        "<myth bouND='true' NAme='john' BOund='false' naME='doe'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bouND", factory.CodeMarkup("true") },
+                                    { "NAme", factory.Markup("john") }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "BOund", "mythTagHelper", "myth"),
+                                absoluteIndex: 31, lineIndex: 0, columnIndex: 31, length: 5),
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "naME", "mythTagHelper", "myth"),
+                                absoluteIndex: 45, lineIndex: 0, columnIndex: 45, length: 4),
+                        }
+                    },
+                    {
+                        "<myth bouND='@DateTime.Now' NAme='@DateTime.Now' BOund='false' naME='doe'></myth>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "myth",
+                                new Dictionary<string, SyntaxTreeNode>
+                                {
+                                    { "bouND", dateTimeNow },
+                                    { "NAme", dateTimeNow }
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "BOund", "mythTagHelper", "myth"),
+                                absoluteIndex: 49, lineIndex: 0, columnIndex: 49, length: 5),
+                            new RazorError(
+                                string.Format(duplicateAttributeError, "naME", "mythTagHelper", "myth"),
+                                absoluteIndex: 63, lineIndex: 0, columnIndex: 63, length: 4),
+                        }
+                    },
+                };
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(DuplicateTagHelperBoundAttributeData))]
+        public void Rewrite_CreatesErrorForDuplicateBoundTagHelperAttributes(
+            string documentContent,
+            MarkupBlock expectedOutput,
+            RazorError[] expectedErrors)
+        {
+            // Arrange
+            var descriptors = new TagHelperDescriptor[]
+                {
+                    new TagHelperDescriptor(
+                        tagName: "myth",
+                        typeName: "mythTagHelper",
+                        assemblyName: "SomeAssembly",
+                        attributes: new[]
+                        {
+                            new TagHelperAttributeDescriptor(
+                                name: "bound",
+                                propertyName: "Bound",
+                                typeName: typeof(bool).FullName),
+                            new TagHelperAttributeDescriptor(
+                                name: "name",
+                                propertyName: "Name",
+                                typeName: typeof(string).FullName)
+                        })
+                };
+            var descriptorProvider = new TagHelperDescriptorProvider(descriptors);
+
+            // Act & Assert
+            EvaluateData(descriptorProvider, documentContent, expectedOutput, expectedErrors);
+        }
+
         public static TheoryData<string, MarkupBlock, RazorError[]> MalformedTagHelperAttributeBlockData
         {
             get
