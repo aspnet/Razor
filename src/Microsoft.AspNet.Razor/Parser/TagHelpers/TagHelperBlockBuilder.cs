@@ -35,17 +35,20 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         /// <param name="tagName">An HTML tag name.</param>
         /// <param name="start">Starting location of the <see cref="TagHelperBlock"/>.</param>
         /// <param name="attributes">Attributes of the <see cref="TagHelperBlock"/>.</param>
+        /// <param name="selfClosing">The <c>bool</c> indicating whether or not the tag is self-closing.</param>
         /// <param name="descriptors">The <see cref="TagHelperDescriptor"/>s associated with the current HTML
         /// tag.</param>
         public TagHelperBlockBuilder(string tagName,
                                      SourceLocation start,
                                      IDictionary<string, SyntaxTreeNode> attributes,
+                                     bool selfClosing, 
                                      IEnumerable<TagHelperDescriptor> descriptors)
         {
             TagName = tagName;
             Start = start;
             Descriptors = descriptors;
             Type = BlockType.Tag;
+            SelfClosing = selfClosing;
             CodeGenerator = new TagHelperCodeGenerator(descriptors);
             Attributes = new Dictionary<string, SyntaxTreeNode>(attributes);
         }
@@ -53,10 +56,12 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         // Internal for testing
         internal TagHelperBlockBuilder(string tagName,
                                        IDictionary<string, SyntaxTreeNode> attributes,
+                                       bool selfClosing,
                                        IEnumerable<SyntaxTreeNode> children)
         {
             TagName = tagName;
             Attributes = attributes;
+            SelfClosing = selfClosing;
             Type = BlockType.Tag;
             CodeGenerator = new TagHelperCodeGenerator(tagHelperDescriptors: null);
 
@@ -66,6 +71,11 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                 Children.Add(child);
             }
         }
+
+        /// <summary>
+        /// Indicates whether or not the tag is self-closing.
+        /// </summary>
+        public bool SelfClosing { get; }
 
         /// <summary>
         /// <see cref="TagHelperDescriptor"/>s for the HTML element.

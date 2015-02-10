@@ -50,7 +50,7 @@ namespace TestOutput
 #line default
 #line hidden
                     }
-                    , StartWritingScope, EndWritingScope);
+                    , StartWritingScope, EndWritingScope, false);
                     __NestedTagHelper = CreateTagHelper<NestedTagHelper>();
                     __tagHelperExecutionContext.Add(__NestedTagHelper);
                     __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
@@ -73,7 +73,7 @@ namespace TestOutput
                     __tagHelperExecutionContext = __tagHelperScopeManager.End();
                     WriteLiteral("\r\n        ");
                 }
-                , StartWritingScope, EndWritingScope);
+                , StartWritingScope, EndWritingScope, false);
                 __MyTagHelper = CreateTagHelper<MyTagHelper>();
                 __tagHelperExecutionContext.Add(__MyTagHelper);
                 StartWritingScope();

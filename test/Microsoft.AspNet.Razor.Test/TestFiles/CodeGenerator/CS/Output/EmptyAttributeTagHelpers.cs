@@ -30,7 +30,7 @@ namespace TestOutput
             Instrumentation.EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
             }
-            , StartWritingScope, EndWritingScope);
+            , StartWritingScope, EndWritingScope, true);
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
             __tagHelperExecutionContext.Add(__InputTagHelper);
             __InputTagHelper.Type = "";
@@ -70,7 +70,7 @@ __InputTagHelper2.Checked = ;
                 WriteLiteral("\r\n        ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope);
+                , StartWritingScope, EndWritingScope, true);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper.Type = "";
@@ -105,7 +105,7 @@ __InputTagHelper2.Checked = ;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n    ");
             }
-            , StartWritingScope, EndWritingScope);
+            , StartWritingScope, EndWritingScope, false);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 5 "EmptyAttributeTagHelpers.cshtml"

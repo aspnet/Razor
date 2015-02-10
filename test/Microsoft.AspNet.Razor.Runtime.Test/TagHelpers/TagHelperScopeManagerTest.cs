@@ -27,7 +27,8 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
                                                       string.Empty,
                                                       DefaultExecuteChildContentAsync,
                                                       DefaultStartWritingScope,
-                                                      DefaultEndWritingScope);
+                                                      DefaultEndWritingScope,
+                                                      selfClosing: false);
 
             // Assert
             Assert.Equal("p", executionContext.TagName);
@@ -44,18 +45,40 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
                                                       string.Empty,
                                                       DefaultExecuteChildContentAsync,
                                                       DefaultStartWritingScope,
-                                                      DefaultEndWritingScope);
+                                                      DefaultEndWritingScope,
+                                                      selfClosing: false);
             executionContext = scopeManager.Begin("div",
                                                   string.Empty,
                                                   DefaultExecuteChildContentAsync,
                                                   DefaultStartWritingScope,
-                                                  DefaultEndWritingScope);
+                                                  DefaultEndWritingScope,
+                                                  selfClosing: false);
 
             // Assert
             Assert.Equal("div", executionContext.TagName);
         }
 
-        [Fact]
+        [Theory]
+        [InlineData("true")]
+        [InlineData("false")]
+        public void Begin_SetExecutionContextSelfClosing(bool isSelfClosing)
+        {
+            // Arrange
+            var scopeManager = new TagHelperScopeManager();
+
+            // Act
+            var executionContext = scopeManager.Begin("p",
+                                                      string.Empty,
+                                                      DefaultExecuteChildContentAsync,
+                                                      DefaultStartWritingScope,
+                                                      DefaultEndWritingScope,
+                                                      selfClosing: isSelfClosing);
+
+            // Assert
+            Assert.Equal(isSelfClosing, executionContext.SelfClosing);
+        }
+
+    [Fact]
         public void End_ReturnsParentExecutionContext()
         {
             // Arrange
@@ -66,12 +89,14 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
                                                       string.Empty,
                                                       DefaultExecuteChildContentAsync,
                                                       DefaultStartWritingScope,
-                                                      DefaultEndWritingScope);
+                                                      DefaultEndWritingScope,
+                                                      selfClosing: false);
             executionContext = scopeManager.Begin("div",
                                                   string.Empty,
                                                   DefaultExecuteChildContentAsync,
                                                   DefaultStartWritingScope,
-                                                  DefaultEndWritingScope);
+                                                  DefaultEndWritingScope,
+                                                  selfClosing: false);
             executionContext = scopeManager.End();
 
             // Assert
@@ -89,12 +114,14 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
                                                       string.Empty,
                                                       DefaultExecuteChildContentAsync,
                                                       DefaultStartWritingScope,
-                                                      DefaultEndWritingScope);
+                                                      DefaultEndWritingScope,
+                                                      selfClosing: false);
             executionContext = scopeManager.Begin("div",
                                                   string.Empty,
                                                   DefaultExecuteChildContentAsync,
                                                   DefaultStartWritingScope,
-                                                  DefaultEndWritingScope);
+                                                  DefaultEndWritingScope,
+                                                  selfClosing: false);
             executionContext = scopeManager.End();
             executionContext = scopeManager.End();
 

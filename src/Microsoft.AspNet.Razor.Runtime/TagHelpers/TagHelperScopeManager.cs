@@ -31,18 +31,23 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <param name="executeChildContentAsync">A delegate used to execute the child content asynchronously.</param>
         /// <param name="startWritingScope">A delegate used to start a writing scope in a Razor page.</param>
         /// <param name="endWritingScope">A delegate used to end a writing scope in a Razor page.</param>
+        /// <param name="selfClosing">
+        /// The <c>bool</c> indicating whether or not the tag of this scope is self-closing.
+        /// </param>
         /// <returns>A <see cref="TagHelperExecutionContext"/> to use.</returns>
         public TagHelperExecutionContext Begin([NotNull] string tagName,
                                                [NotNull] string uniqueId,
                                                [NotNull] Func<Task> executeChildContentAsync,
                                                [NotNull] Action startWritingScope,
-                                               [NotNull] Func<TextWriter> endWritingScope)
+                                               [NotNull] Func<TextWriter> endWritingScope,
+                                               bool selfClosing)
         {
             var executionContext = new TagHelperExecutionContext(tagName,
                                                                  uniqueId,
                                                                  executeChildContentAsync,
                                                                  startWritingScope,
-                                                                 endWritingScope);
+                                                                 endWritingScope,
+                                                                 selfClosing);
 
             _executionScopes.Push(executionContext);
 

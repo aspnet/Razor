@@ -27,7 +27,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                    uniqueId: string.Empty,
                    executeChildContentAsync: async () => await Task.FromResult(result: true),
                    startWritingScope: () => { },
-                   endWritingScope: () => new StringWriter())
+                   endWritingScope: () => new StringWriter(),
+                   selfClosing: false)
         {
         }
 
@@ -39,22 +40,32 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <param name="executeChildContentAsync">A delegate used to execute the child content asynchronously.</param>
         /// <param name="startWritingScope">A delegate used to start a writing scope in a Razor page.</param>
         /// <param name="endWritingScope">A delegate used to end a writing scope in a Razor page.</param>
+        /// <param name="selfClosing">
+        /// The <c>bool</c> indicating whether or not the tag in the Razor soruce is self-closing.
+        /// </param>
         public TagHelperExecutionContext([NotNull] string tagName,
                                          [NotNull] string uniqueId,
                                          [NotNull] Func<Task> executeChildContentAsync,
                                          [NotNull] Action startWritingScope,
-                                         [NotNull] Func<TextWriter> endWritingScope)
+                                         [NotNull] Func<TextWriter> endWritingScope, 
+                                         bool selfClosing)
         {
             _tagHelpers = new List<ITagHelper>();
             _executeChildContentAsync = executeChildContentAsync;
             _startWritingScope = startWritingScope;
             _endWritingScope = endWritingScope;
 
+            SelfClosing = selfClosing;
             AllAttributes = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
             HTMLAttributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             TagName = tagName;
             UniqueId = uniqueId;
         }
+
+        /// <summary>
+        /// Indicates whether or not the tag of the HTML element this context is for self-closing.
+        /// </summary>
+        public bool SelfClosing { get; }
 
         /// <summary>
         /// Indicates if <see cref="GetChildContentAsync"/> has been called.

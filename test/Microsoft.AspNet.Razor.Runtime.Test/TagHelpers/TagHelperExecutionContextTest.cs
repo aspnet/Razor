@@ -33,7 +33,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     return Task.FromResult(result: true);
                 },
                 startWritingScope: () => { },
-                endWritingScope: () => writer);
+                endWritingScope: () => writer,
+                selfClosing: false);
 
             // Act
             var content1 = await executionContext.GetChildContentAsync();
@@ -60,7 +61,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     return Task.FromResult(result: true);
                 },
                 startWritingScope: () => { },
-                endWritingScope: () => new StringWriter());
+                endWritingScope: () => new StringWriter(),
+                selfClosing: false);
 
             // Act
             await executionContext.ExecuteChildContentAsync();
@@ -191,6 +193,31 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         private class PTagHelper : TagHelper
         {
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void SelfClosing_ReturnsTrueOrFalseAsExpected(bool isSelfClosing)
+        {
+            // Arrange
+            var writer = new StringWriter();
+            Func<Task> executeChildContent = () =>
+            {
+                return Task.FromResult(result: true);
+            };
+
+            // Act
+            var executionContext = new TagHelperExecutionContext(
+                tagName: string.Empty,
+                uniqueId: string.Empty,
+                executeChildContentAsync: executeChildContent,
+                startWritingScope: () => { },
+                endWritingScope:  () => writer,
+                selfClosing: isSelfClosing);
+
+            // Assert 
+            Assert.Equal(isSelfClosing, executionContext.SelfClosing);
         }
     }
 }

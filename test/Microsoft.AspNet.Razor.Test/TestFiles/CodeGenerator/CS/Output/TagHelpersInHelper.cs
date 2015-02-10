@@ -34,7 +34,7 @@ MyHelper(string val)
 #line default
 #line hidden
                 }
-                , StartWritingScope, EndWritingScope);
+                , StartWritingScope, EndWritingScope, false);
                 __NestedTagHelper = CreateTagHelper<NestedTagHelper>();
                 __tagHelperExecutionContext.Add(__NestedTagHelper);
                 __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
@@ -57,7 +57,7 @@ MyHelper(string val)
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
             }
-            , StartWritingScope, EndWritingScope);
+            , StartWritingScope, EndWritingScope, false);
             __MyTagHelper = CreateTagHelper<MyTagHelper>();
             __tagHelperExecutionContext.Add(__MyTagHelper);
             StartWritingScope();
@@ -141,7 +141,7 @@ Write(MyHelper(item => new Template((__razor_template_writer) => {
     __tagHelperExecutionContext = __tagHelperScopeManager.Begin("nestedtaghelper", "test", async() => {
         WriteLiteral("Custom Value");
     }
-    , StartWritingScope, EndWritingScope);
+    , StartWritingScope, EndWritingScope, false);
     __NestedTagHelper = CreateTagHelper<NestedTagHelper>();
     __tagHelperExecutionContext.Add(__NestedTagHelper);
     __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
@@ -171,7 +171,7 @@ Write(MyHelper(item => new Template((__razor_template_writer) => {
 #line default
 #line hidden
             }
-            , StartWritingScope, EndWritingScope);
+            , StartWritingScope, EndWritingScope, false);
             __MyTagHelper = CreateTagHelper<MyTagHelper>();
             __tagHelperExecutionContext.Add(__MyTagHelper);
             __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;

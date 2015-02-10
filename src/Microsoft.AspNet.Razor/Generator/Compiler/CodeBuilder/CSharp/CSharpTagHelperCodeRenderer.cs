@@ -58,7 +58,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         {
             var tagHelperDescriptors = chunk.Descriptors;
 
-            RenderBeginTagHelperScope(chunk.TagName, chunk.Children);
+            RenderBeginTagHelperScope(chunk.TagName, chunk.Children, chunk.SelfClosing);
 
             RenderTagHelpersCreation(chunk);
 
@@ -89,7 +89,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             return "__" + descriptor.TypeName.Replace('.', '_');
         }
 
-        private void RenderBeginTagHelperScope(string tagName, IList<Chunk> children)
+        private void RenderBeginTagHelperScope(string tagName, IList<Chunk> children, bool selfClosing)
         {
             // Scopes/execution contexts are a runtime feature.
             if (_designTimeMode)
@@ -134,6 +134,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                    .Write(_tagHelperContext.StartWritingScopeMethodName)
                    .WriteParameterSeparator()
                    .Write(_tagHelperContext.EndWritingScopeMethodName)
+                   .WriteParameterSeparator()
+                   .WriteBooleanLiteral(selfClosing)
                    .WriteEndMethodInvocation();
         }
 
@@ -466,8 +468,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             _writer.Write(ExecutionContextVariableName)
                    .Write(".")
-                   .Write(_tagHelperContext.ExecutionContextOutputPropertyName)
-                   .Write(" = ")
+                   .WriteStartAssignment(_tagHelperContext.ExecutionContextOutputPropertyName)
                    .WriteStartInstanceMethodInvocation(RunnerVariableName,
                                                        _tagHelperContext.RunnerRunAsyncMethodName);
 

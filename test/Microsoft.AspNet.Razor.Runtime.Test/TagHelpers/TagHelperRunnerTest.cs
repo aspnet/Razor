@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -178,6 +179,35 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
                 ProcessOrderTracker.Add(Order);
             }
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task RunAsync_SetTagHelperOutputSelfClosing(bool isSelfClosing)
+        {
+            // Arrange
+            var runner = new TagHelperRunner();
+            var executionContext = new TagHelperExecutionContext(
+                "p",
+                uniqueId: string.Empty,
+                executeChildContentAsync: () =>
+                {
+                    return Task.FromResult(result: true);
+                },
+                startWritingScope: () => {}, 
+                endWritingScope: () => new StringWriter(),
+                selfClosing: isSelfClosing);
+
+            var tagHelper = new TagHelperContextTouchingTagHelper();
+            executionContext.Add(tagHelper);
+            executionContext.AddTagHelperAttribute("foo", true);
+
+            // Act
+            var output = await runner.RunAsync(executionContext);
+
+            // Assert
+            Assert.Equal(isSelfClosing, output.SelfClosing);
         }
     }
 }

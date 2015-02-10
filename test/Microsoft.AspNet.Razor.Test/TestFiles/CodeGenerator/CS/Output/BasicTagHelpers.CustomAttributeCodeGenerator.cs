@@ -31,7 +31,7 @@ namespace TestOutput
                 WriteLiteral("\r\n        ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope);
+                , StartWritingScope, EndWritingScope, false);
                 __PTagHelper = CreateTagHelper<PTagHelper>();
                 __tagHelperExecutionContext.Add(__PTagHelper);
                 __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
@@ -55,7 +55,7 @@ namespace TestOutput
                 WriteLiteral("\r\n        ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope);
+                , StartWritingScope, EndWritingScope, true);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper.Type = **From custom attribute code renderer**: "text";
@@ -84,7 +84,7 @@ namespace TestOutput
                 WriteLiteral("\r\n        ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope);
+                , StartWritingScope, EndWritingScope, true);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper.Type = **From custom attribute code renderer**: "checkbox";
@@ -118,7 +118,7 @@ namespace TestOutput
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n    ");
             }
-            , StartWritingScope, EndWritingScope);
+            , StartWritingScope, EndWritingScope, false);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
             __tagHelperExecutionContext.AddHtmlAttribute("class", "Hello World");

@@ -177,27 +177,43 @@ namespace Microsoft.AspNet.Razor.Test.Framework
 
     public class MarkupTagHelperBlock : TagHelperBlock
     {
-        public MarkupTagHelperBlock(string tagName)
-            : this(tagName, new Dictionary<string, SyntaxTreeNode>())
+        public MarkupTagHelperBlock(string tagName, bool selfClosing = false)
+            : this(tagName, new Dictionary<string, SyntaxTreeNode>(), selfClosing)
         {
         }
 
         public MarkupTagHelperBlock(string tagName,
-                                    IDictionary<string, SyntaxTreeNode> attributes)
-            : this(tagName, attributes, new SyntaxTreeNode[0])
+                                    IDictionary<string, SyntaxTreeNode> attributes,
+                                    bool selfClosing = false)
+            : this(tagName, attributes, selfClosing, new SyntaxTreeNode[0])
         {
         }
 
         public MarkupTagHelperBlock(string tagName,
                                     params SyntaxTreeNode[] children)
-            : this(tagName, new Dictionary<string, SyntaxTreeNode>(), children)
+            : this(tagName, new Dictionary<string, SyntaxTreeNode>(), false, children)
+        {
+        }
+
+        public MarkupTagHelperBlock(string tagName, 
+                                    bool selfClosing, 
+                                    params SyntaxTreeNode[] children)
+            : this(tagName, new Dictionary<string, SyntaxTreeNode>(), selfClosing, children)
         {
         }
 
         public MarkupTagHelperBlock(string tagName,
                                     IDictionary<string, SyntaxTreeNode> attributes,
                                     params SyntaxTreeNode[] children)
-            : base(new TagHelperBlockBuilder(tagName, attributes, children))
+            : base(new TagHelperBlockBuilder(tagName, attributes, false, children))
+        {
+        }
+        
+        public MarkupTagHelperBlock(string tagName,
+                                    IDictionary<string, SyntaxTreeNode> attributes,
+                                    bool selfClosing, 
+                                    params SyntaxTreeNode[] children)
+            : base(new TagHelperBlockBuilder(tagName, attributes, selfClosing, children))
         {
         }
     }

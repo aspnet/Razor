@@ -29,7 +29,7 @@ namespace TestOutput
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
                 WriteLiteral("Body of Tag");
             }
-            , StartWritingScope, EndWritingScope);
+            , StartWritingScope, EndWritingScope, false);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 3 "SingleTagHelper.cshtml"

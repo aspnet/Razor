@@ -39,7 +39,7 @@ namespace TestOutput
             Instrumentation.EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
             }
-            , StartWritingScope, EndWritingScope);
+            , StartWritingScope, EndWritingScope, true);
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
             __tagHelperExecutionContext.Add(__InputTagHelper);
             StartWritingScope();
