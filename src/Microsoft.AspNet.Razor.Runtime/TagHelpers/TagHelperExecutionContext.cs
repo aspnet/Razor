@@ -22,13 +22,13 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Internal for testing purposes only.
         /// </summary>
-        internal TagHelperExecutionContext(string tagName)
+        internal TagHelperExecutionContext(string tagName, bool selfClosing)
             : this(tagName,
                    uniqueId: string.Empty,
                    executeChildContentAsync: async () => await Task.FromResult(result: true),
                    startWritingScope: () => { },
                    endWritingScope: () => new StringWriter(),
-                   selfClosing: false)
+                   selfClosing: selfClosing)
         {
         }
 

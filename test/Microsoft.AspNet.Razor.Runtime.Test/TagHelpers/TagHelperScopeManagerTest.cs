@@ -61,7 +61,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
         [Theory]
         [InlineData("true")]
         [InlineData("false")]
-        public void Begin_SetExecutionContextSelfClosing(bool isSelfClosing)
+        public void Begin_SetExecutionContextSelfClosing(bool selfClosing)
         {
             // Arrange
             var scopeManager = new TagHelperScopeManager();
@@ -72,10 +72,10 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
                                                       DefaultExecuteChildContentAsync,
                                                       DefaultStartWritingScope,
                                                       DefaultEndWritingScope,
-                                                      selfClosing: isSelfClosing);
+                                                      selfClosing: selfClosing);
 
             // Assert
-            Assert.Equal(isSelfClosing, executionContext.SelfClosing);
+            Assert.Equal(selfClosing, executionContext.SelfClosing);
         }
 
     [Fact]
