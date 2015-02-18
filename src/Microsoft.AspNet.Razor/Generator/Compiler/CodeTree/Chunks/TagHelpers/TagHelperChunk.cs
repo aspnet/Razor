@@ -17,7 +17,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         /// <param name="tagName">The tag name associated with the tag helpers HTML element.</param>
         /// <param name="attributes">The attributes associated with the tag helpers HTML element.</param>
         /// <param name="selfClosing">
-        /// Indicates whether or not the tag of the tag helpers HTML element is self-closing.
+        /// The <c>bool</c> indicating whether or not the tag of the tag helpers HTML element is self-closing.
         /// </param>
         /// <param name="descriptors">
         /// The <see cref="TagHelperDescriptor"/>s associated with this tag helpers HTML element.
@@ -54,7 +54,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         public string TagName { get; set; }
 
         /// <summary>
-        /// Indicates whether or not the tag is self-closing.
+        /// Indicates whether or not the tag of the tag helpers HTML element is self-closing.
         /// </summary>
         public bool SelfClosing { get; }
     }
