@@ -40,9 +40,9 @@ namespace TestOutput
                 Instrumentation.BeginContext(93, 21, true);
                 WriteLiteralTo(__razor_template_writer, "\r\n    <div>\r\n        ");
                 Instrumentation.EndContext();
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("mytaghelper", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("mytaghelper", false, "test", async() => {
                     WriteLiteral("\r\n            In None ContentBehavior.\r\n            ");
-                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("nestedtaghelper", "test", async() => {
+                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("nestedtaghelper", false, "test", async() => {
                         WriteLiteral("Some buffered values with ");
 #line 11 "TagHelpersInSection.cshtml"
                                  Write(code);
@@ -50,7 +50,7 @@ namespace TestOutput
 #line default
 #line hidden
                     }
-                    , StartWritingScope, EndWritingScope, false);
+                    , StartWritingScope, EndWritingScope);
                     __NestedTagHelper = CreateTagHelper<NestedTagHelper>();
                     __tagHelperExecutionContext.Add(__NestedTagHelper);
                     __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
@@ -73,7 +73,7 @@ namespace TestOutput
                     __tagHelperExecutionContext = __tagHelperScopeManager.End();
                     WriteLiteral("\r\n        ");
                 }
-                , StartWritingScope, EndWritingScope, false);
+                , StartWritingScope, EndWritingScope);
                 __MyTagHelper = CreateTagHelper<MyTagHelper>();
                 __tagHelperExecutionContext.Add(__MyTagHelper);
                 StartWritingScope();

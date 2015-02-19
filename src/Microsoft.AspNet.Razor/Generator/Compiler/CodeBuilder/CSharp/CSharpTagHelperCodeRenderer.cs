@@ -109,6 +109,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             // per call site, e.g. if the tag is on the view twice, there should be two IDs.
             _writer.WriteStringLiteral(tagName)
                    .WriteParameterSeparator()
+                   .WriteBooleanLiteral(selfClosing)
+                   .WriteParameterSeparator()
                    .WriteStringLiteral(GenerateUniqueId())
                    .WriteParameterSeparator();
 
@@ -134,8 +136,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                    .Write(_tagHelperContext.StartWritingScopeMethodName)
                    .WriteParameterSeparator()
                    .Write(_tagHelperContext.EndWritingScopeMethodName)
-                   .WriteParameterSeparator()
-                   .WriteBooleanLiteral(selfClosing)
                    .WriteEndMethodInvocation();
         }
 

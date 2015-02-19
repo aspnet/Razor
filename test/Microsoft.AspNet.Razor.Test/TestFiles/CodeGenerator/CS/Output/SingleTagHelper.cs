@@ -26,10 +26,10 @@ namespace TestOutput
             Instrumentation.BeginContext(33, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 WriteLiteral("Body of Tag");
             }
-            , StartWritingScope, EndWritingScope, false);
+            , StartWritingScope, EndWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 3 "SingleTagHelper.cshtml"

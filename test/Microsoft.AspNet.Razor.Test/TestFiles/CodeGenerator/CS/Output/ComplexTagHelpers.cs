@@ -40,7 +40,7 @@ namespace TestOutput
             Instrumentation.BeginContext(84, 55, true);
             WriteLiteral("    <div class=\"randomNonTagHelperAttribute\">\r\n        ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 WriteLiteral("\r\n            <h1>Set Time:</h1>\r\n");
 #line 10 "ComplexTagHelpers.cshtml"
             
@@ -56,11 +56,11 @@ namespace TestOutput
 #line hidden
 
                 WriteLiteral("                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                     WriteLiteral("New Time: ");
-                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                     }
-                    , StartWritingScope, EndWritingScope, true);
+                    , StartWritingScope, EndWritingScope);
                     __InputTagHelper = CreateTagHelper<InputTagHelper>();
                     __tagHelperExecutionContext.Add(__InputTagHelper);
                     __InputTagHelper.Type = "text";
@@ -89,7 +89,7 @@ namespace TestOutput
                     WriteLiteral(__tagHelperExecutionContext.Output.GenerateEndTag());
                     __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 }
-                , StartWritingScope, EndWritingScope, false);
+                , StartWritingScope, EndWritingScope);
                 __PTagHelper = CreateTagHelper<PTagHelper>();
                 __tagHelperExecutionContext.Add(__PTagHelper);
                 __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
@@ -120,11 +120,11 @@ namespace TestOutput
 #line hidden
 
                 WriteLiteral("                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                     WriteLiteral("Current Time: ");
-                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                    __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                     }
-                    , StartWritingScope, EndWritingScope, true);
+                    , StartWritingScope, EndWritingScope);
                     __InputTagHelper = CreateTagHelper<InputTagHelper>();
                     __tagHelperExecutionContext.Add(__InputTagHelper);
                     StartWritingScope();
@@ -164,7 +164,7 @@ Write(checkbox);
                     WriteLiteral(__tagHelperExecutionContext.Output.GenerateEndTag());
                     __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 }
-                , StartWritingScope, EndWritingScope, false);
+                , StartWritingScope, EndWritingScope);
                 __PTagHelper = CreateTagHelper<PTagHelper>();
                 __tagHelperExecutionContext.Add(__PTagHelper);
                 __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
@@ -186,9 +186,9 @@ Write(checkbox);
                 WriteLiteral(__tagHelperExecutionContext.Output.GenerateEndTag());
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 StartWritingScope();
@@ -222,9 +222,9 @@ Write(true ? "checkbox" : "anything");
                 WriteLiteral(__tagHelperExecutionContext.Output.GenerateEndTag());
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 StartWritingScope();
@@ -281,7 +281,7 @@ if(true) {
 
                 WriteLiteral("        ");
             }
-            , StartWritingScope, EndWritingScope, false);
+            , StartWritingScope, EndWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
             StartWritingScope();
@@ -314,7 +314,7 @@ Write(DateTime.Now);
             Instrumentation.BeginContext(672, 10, true);
             WriteLiteral("\r\n        ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 WriteLiteral("\r\n");
 #line 22 "ComplexTagHelpers.cshtml"
             
@@ -329,9 +329,9 @@ Write(DateTime.Now);
 #line hidden
 
                 WriteLiteral("\r\n            ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
@@ -362,7 +362,7 @@ __InputTagHelper2.Checked = @object;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
             }
-            , StartWritingScope, EndWritingScope, false);
+            , StartWritingScope, EndWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 21 "ComplexTagHelpers.cshtml"
@@ -392,11 +392,11 @@ __PTagHelper.Age = DateTimeOffset.Now.Year - 1970;
             Instrumentation.BeginContext(819, 10, true);
             WriteLiteral("\r\n        ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 WriteLiteral("\r\n            ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
@@ -427,7 +427,7 @@ __InputTagHelper2.Checked = DateTimeOffset.Now.Year > 2014;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
             }
-            , StartWritingScope, EndWritingScope, false);
+            , StartWritingScope, EndWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 25 "ComplexTagHelpers.cshtml"
@@ -457,11 +457,11 @@ __PTagHelper.Age = -1970 + DateTimeOffset.Now.Year;
             Instrumentation.BeginContext(952, 10, true);
             WriteLiteral("\r\n        ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 WriteLiteral("\r\n            ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
@@ -492,7 +492,7 @@ __InputTagHelper2.Checked = DateTimeOffset.Now.Year > 2014;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
             }
-            , StartWritingScope, EndWritingScope, false);
+            , StartWritingScope, EndWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 28 "ComplexTagHelpers.cshtml"
@@ -522,11 +522,11 @@ __PTagHelper.Age = DateTimeOffset.Now.Year - 1970;
             Instrumentation.BeginContext(1080, 10, true);
             WriteLiteral("\r\n        ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 WriteLiteral("\r\n            ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
@@ -557,7 +557,7 @@ __InputTagHelper2.Checked =      DateTimeOffset.Now.Year   > 2014   ;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
             }
-            , StartWritingScope, EndWritingScope, false);
+            , StartWritingScope, EndWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 31 "ComplexTagHelpers.cshtml"

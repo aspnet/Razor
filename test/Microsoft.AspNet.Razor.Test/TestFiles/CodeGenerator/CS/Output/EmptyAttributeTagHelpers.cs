@@ -28,9 +28,9 @@ namespace TestOutput
             Instrumentation.BeginContext(27, 13, true);
             WriteLiteral("\r\n<div>\r\n    ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
             }
-            , StartWritingScope, EndWritingScope, true);
+            , StartWritingScope, EndWritingScope);
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
             __tagHelperExecutionContext.Add(__InputTagHelper);
             __InputTagHelper.Type = "";
@@ -66,11 +66,11 @@ __InputTagHelper2.Checked = ;
             Instrumentation.BeginContext(74, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 WriteLiteral("\r\n        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper.Type = "";
@@ -105,7 +105,7 @@ __InputTagHelper2.Checked = ;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n    ");
             }
-            , StartWritingScope, EndWritingScope, false);
+            , StartWritingScope, EndWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 5 "EmptyAttributeTagHelpers.cshtml"

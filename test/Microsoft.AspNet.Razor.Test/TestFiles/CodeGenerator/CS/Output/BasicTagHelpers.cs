@@ -28,11 +28,11 @@ namespace TestOutput
             Instrumentation.BeginContext(33, 49, true);
             WriteLiteral("\r\n<div class=\"randomNonTagHelperAttribute\">\r\n    ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 WriteLiteral("\r\n        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", false, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, false);
+                , StartWritingScope, EndWritingScope);
                 __PTagHelper = CreateTagHelper<PTagHelper>();
                 __tagHelperExecutionContext.Add(__PTagHelper);
                 __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
@@ -54,9 +54,9 @@ namespace TestOutput
                 WriteLiteral(__tagHelperExecutionContext.Output.GenerateEndTag());
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper.Type = "text";
@@ -83,9 +83,9 @@ namespace TestOutput
                 WriteLiteral(__tagHelperExecutionContext.Output.GenerateEndTag());
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", "test", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
                 }
-                , StartWritingScope, EndWritingScope, true);
+                , StartWritingScope, EndWritingScope);
                 __InputTagHelper = CreateTagHelper<InputTagHelper>();
                 __tagHelperExecutionContext.Add(__InputTagHelper);
                 __InputTagHelper.Type = "checkbox";
@@ -119,7 +119,7 @@ namespace TestOutput
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n    ");
             }
-            , StartWritingScope, EndWritingScope, false);
+            , StartWritingScope, EndWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
             __tagHelperExecutionContext.AddHtmlAttribute("class", "Hello World");
