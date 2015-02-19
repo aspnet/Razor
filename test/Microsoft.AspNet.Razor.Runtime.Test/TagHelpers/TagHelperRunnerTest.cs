@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -80,6 +79,26 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             Assert.Equal(expectedTagHelperOrders, processOrder);
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public async Task RunAsync_SetTagHelperOutputSelfClosing(bool selfClosing)
+        {
+            // Arrange
+            var runner = new TagHelperRunner();
+            var executionContext = new TagHelperExecutionContext("p", selfClosing);
+            var tagHelper = new TagHelperContextTouchingTagHelper();
+
+            executionContext.Add(tagHelper);
+            executionContext.AddTagHelperAttribute("foo", true);
+
+            // Act
+            var output = await runner.RunAsync(executionContext);
+
+            // Assert
+            Assert.Equal(selfClosing, output.SelfClosing);
         }
 
         [Fact]
@@ -179,26 +198,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
                 ProcessOrderTracker.Add(Order);
             }
-        }
-
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public async Task RunAsync_SetTagHelperOutputSelfClosing(bool selfClosing)
-        {
-            // Arrange
-            var runner = new TagHelperRunner();
-            var executionContext = new TagHelperExecutionContext("p", selfClosing);
-            var tagHelper = new TagHelperContextTouchingTagHelper();
-
-            executionContext.Add(tagHelper);
-            executionContext.AddTagHelperAttribute("foo", true);
-
-            // Act
-            var output = await runner.RunAsync(executionContext);
-
-            // Assert
-            Assert.Equal(selfClosing, output.SelfClosing);
         }
     }
 }

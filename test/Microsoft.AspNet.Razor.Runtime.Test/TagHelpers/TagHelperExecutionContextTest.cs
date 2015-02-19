@@ -12,6 +12,19 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     public class TagHelperExecutionContextTest
     {
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void SelfClosing_ReturnsTrueOrFalseAsExpected(bool selfClosing)
+        {
+            // Arrange & Act
+            var executionContext = new TagHelperExecutionContext("p", selfClosing);
+
+            // Assert 
+            Assert.Equal(selfClosing, executionContext.SelfClosing);
+        }
+
         [Fact]
         public async Task GetChildContentAsync_CachesValue()
         {
@@ -193,18 +206,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         private class PTagHelper : TagHelper
         {
-        }
-
-        [Theory]
-        [InlineData(true)]
-        [InlineData(false)]
-        public void SelfClosing_ReturnsTrueOrFalseAsExpected(bool selfClosing)
-        {
-            // Arrange & Act
-            var executionContext = new TagHelperExecutionContext("p", selfClosing);
-
-            // Assert 
-            Assert.Equal(selfClosing, executionContext.SelfClosing);
         }
     }
 }

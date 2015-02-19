@@ -16,7 +16,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     {
         private string _content;
         private bool _contentSet;
-        private bool _isTagNameNullOrWhitespaces;
+        private bool _isTagNameNullOrWhitespace;
         private string _tagName;
 
         // Internal for testing
@@ -55,7 +55,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             set
             {
                 _tagName = value;
-                _isTagNameNullOrWhitespaces = string.IsNullOrWhiteSpace(_tagName);
+                _isTagNameNullOrWhitespace = string.IsNullOrWhiteSpace(_tagName);
             }
         }
 
@@ -113,12 +113,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s start tag.
         /// </summary>
-        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is <c>null</c> or whitespaces. Otherwise, the
+        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is <c>null</c> or whitespace. Otherwise, the
         /// <see cref="string"/> representation of the <see cref="TagHelperOutput"/>'s start tag.</returns>
         public string GenerateStartTag()
         {
             // Only render a start tag if the tag name is not whitespace
-            if (_isTagNameNullOrWhitespaces)
+            if (_isTagNameNullOrWhitespace)
             {
                 return string.Empty;
             }
@@ -151,12 +151,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s <see cref="PreContent"/>.
         /// </summary>
-        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is <c>null</c> or whitespaces.
-        /// Otherwise, <see cref="PreContent"/>.
-        /// </returns>
+        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is not <c>null</c> or whitespace
+        /// and <see cref="SelfClosing"/> is <c>true</c>. Otherwise, <see cref="PreContent"/>.</returns>
         public string GeneratePreContent()
         {
-            if (!_isTagNameNullOrWhitespaces && SelfClosing)
+            if (!_isTagNameNullOrWhitespace && SelfClosing)
             {
                 return string.Empty;
             }
@@ -167,12 +166,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s body.
         /// </summary>
-        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is <c>null</c> or whitespaces.
-        /// Otherwise, <see cref="Content"/>.
-        /// </returns>
+        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is not <c>null</c> or whitespace
+        /// and <see cref="SelfClosing"/> is <c>true</c>. Otherwise, <see cref="Content"/>.</returns>
         public string GenerateContent()
         {
-            if (!_isTagNameNullOrWhitespaces && SelfClosing)
+            if (!_isTagNameNullOrWhitespace && SelfClosing)
             {
                 return string.Empty;
             }
@@ -183,12 +181,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s <see cref="PostContent"/>.
         /// </summary>
-        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is <c>null</c> or whitespaces.
-        /// Otherwise, <see cref="PostContent"/>.
-        /// </returns>
+        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is not <c>null</c> or whitespace
+        /// and <see cref="SelfClosing"/> is <c>true</c>. Otherwise, <see cref="PostContent"/>.</returns>
         public string GeneratePostContent()
         {
-            if (!_isTagNameNullOrWhitespaces && SelfClosing)
+            if (!_isTagNameNullOrWhitespace && SelfClosing)
             {
                 return string.Empty;
             }
@@ -199,11 +196,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s end tag.
         /// </summary>
-        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is <c>null</c> or whitespaces. Otherwise, the
+        /// <returns><c>string.Empty</c> if <see cref="TagName"/> is <c>null</c> or whitespace. Otherwise, the
         /// <see cref="string"/> representation of the <see cref="TagHelperOutput"/>'s end tag.</returns>
         public string GenerateEndTag()
         {
-            if (SelfClosing || _isTagNameNullOrWhitespaces)
+            if (SelfClosing || _isTagNameNullOrWhitespace)
             {
                 return string.Empty;
             }

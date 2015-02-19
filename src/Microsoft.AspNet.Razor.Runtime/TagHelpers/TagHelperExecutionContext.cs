@@ -24,11 +24,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// </summary>
         internal TagHelperExecutionContext(string tagName, bool selfClosing)
             : this(tagName,
+                   selfClosing,
                    uniqueId: string.Empty,
                    executeChildContentAsync: async () => await Task.FromResult(result: true),
                    startWritingScope: () => { },
-                   endWritingScope: () => new StringWriter(),
-                   selfClosing: selfClosing)
+                   endWritingScope: () => new StringWriter())
         {
         }
 
@@ -36,19 +36,19 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// Instantiates a new <see cref="TagHelperExecutionContext"/>.
         /// </summary>
         /// <param name="tagName">The HTML tag name in the Razor source.</param>
+        /// <param name="selfClosing">
+        /// <see cref="bool"/> indicating whether or not the tag in the Razor source was self-closing.
+        /// </param>
         /// <param name="uniqueId">An identifier unique to the HTML element this context is for.</param>
         /// <param name="executeChildContentAsync">A delegate used to execute the child content asynchronously.</param>
         /// <param name="startWritingScope">A delegate used to start a writing scope in a Razor page.</param>
         /// <param name="endWritingScope">A delegate used to end a writing scope in a Razor page.</param>
-        /// <param name="selfClosing">
-        /// The <c>bool</c> indicating whether or not the tag in the Razor soruce is self-closing.
-        /// </param>
         public TagHelperExecutionContext([NotNull] string tagName,
+                                         bool selfClosing, 
                                          [NotNull] string uniqueId,
                                          [NotNull] Func<Task> executeChildContentAsync,
                                          [NotNull] Action startWritingScope,
-                                         [NotNull] Func<TextWriter> endWritingScope, 
-                                         bool selfClosing)
+                                         [NotNull] Func<TextWriter> endWritingScope)
         {
             _tagHelpers = new List<ITagHelper>();
             _executeChildContentAsync = executeChildContentAsync;
@@ -63,7 +63,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <summary>
-        /// Indicates whether or not the tag of the HTML element this context is for self-closing.
+        /// Gets a value indicating whether or not the tag in the Razor source was self-closing.
         /// </summary>
         public bool SelfClosing { get; }
 

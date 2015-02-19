@@ -58,7 +58,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         {
             var tagHelperDescriptors = chunk.Descriptors;
 
-            RenderBeginTagHelperScope(chunk.TagName, chunk.Children, chunk.SelfClosing);
+            RenderBeginTagHelperScope(chunk.TagName, chunk.SelfClosing, chunk.Children);
 
             RenderTagHelpersCreation(chunk);
 
@@ -89,7 +89,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             return "__" + descriptor.TypeName.Replace('.', '_');
         }
 
-        private void RenderBeginTagHelperScope(string tagName, IList<Chunk> children, bool selfClosing)
+        private void RenderBeginTagHelperScope(string tagName, bool selfClosing, IList<Chunk> children)
         {
             // Scopes/execution contexts are a runtime feature.
             if (_designTimeMode)

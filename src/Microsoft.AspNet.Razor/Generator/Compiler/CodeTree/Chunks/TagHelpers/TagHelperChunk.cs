@@ -15,17 +15,17 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         /// Instantiates a new <see cref="TagHelperChunk"/>.
         /// </summary>
         /// <param name="tagName">The tag name associated with the tag helpers HTML element.</param>
-        /// <param name="attributes">The attributes associated with the tag helpers HTML element.</param>
         /// <param name="selfClosing">
-        /// The <c>bool</c> indicating whether or not the tag of the tag helpers HTML element is self-closing.
+        /// <see cref="bool"/> indicating whether or not the tag of the tag helpers HTML element is self-closing.
         /// </param>
+        /// <param name="attributes">The attributes associated with the tag helpers HTML element.</param>
         /// <param name="descriptors">
         /// The <see cref="TagHelperDescriptor"/>s associated with this tag helpers HTML element.
         /// </param>
         public TagHelperChunk(
             string tagName,
-            IDictionary<string, Chunk> attributes,
             bool selfClosing,
+            IDictionary<string, Chunk> attributes,
             IEnumerable<TagHelperDescriptor> descriptors)
         {
             TagName = tagName;
@@ -54,7 +54,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         public string TagName { get; set; }
 
         /// <summary>
-        /// Indicates whether or not the tag of the tag helpers HTML element is self-closing.
+        /// Gets a value indicating whether or not the tag of the tag helpers HTML element is self-closing.
         /// </summary>
         public bool SelfClosing { get; }
     }

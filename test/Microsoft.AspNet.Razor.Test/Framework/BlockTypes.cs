@@ -205,7 +205,7 @@ namespace Microsoft.AspNet.Razor.Test.Framework
         public MarkupTagHelperBlock(string tagName,
                                     IDictionary<string, SyntaxTreeNode> attributes,
                                     params SyntaxTreeNode[] children)
-            : base(new TagHelperBlockBuilder(tagName, attributes, false, children))
+            : base(new TagHelperBlockBuilder(tagName, false, attributes, children))
         {
         }
         
@@ -213,7 +213,7 @@ namespace Microsoft.AspNet.Razor.Test.Framework
                                     IDictionary<string, SyntaxTreeNode> attributes,
                                     bool selfClosing, 
                                     params SyntaxTreeNode[] children)
-            : base(new TagHelperBlockBuilder(tagName, attributes, selfClosing, children))
+            : base(new TagHelperBlockBuilder(tagName, selfClosing, attributes, children))
         {
         }
     }

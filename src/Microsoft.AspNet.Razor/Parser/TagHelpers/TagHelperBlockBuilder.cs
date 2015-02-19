@@ -33,15 +33,17 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         /// and <see cref="BlockBuilder.Type"/> from the <paramref name="startTag"/>.
         /// </summary>
         /// <param name="tagName">An HTML tag name.</param>
+        /// <param name="selfClosing">
+        /// <see cref="bool"/> indicating whether or not the tag in the Razor source was self-closing.
+        /// </param>
         /// <param name="start">Starting location of the <see cref="TagHelperBlock"/>.</param>
         /// <param name="attributes">Attributes of the <see cref="TagHelperBlock"/>.</param>
-        /// <param name="selfClosing">The <c>bool</c> indicating whether or not the current tag is self-closing.</param>
         /// <param name="descriptors">The <see cref="TagHelperDescriptor"/>s associated with the current HTML
         /// tag.</param>
         public TagHelperBlockBuilder(string tagName,
+                                     bool selfClosing,
                                      SourceLocation start,
                                      IDictionary<string, SyntaxTreeNode> attributes,
-                                     bool selfClosing,
                                      IEnumerable<TagHelperDescriptor> descriptors)
         {
             TagName = tagName;
@@ -55,8 +57,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
 
         // Internal for testing
         internal TagHelperBlockBuilder(string tagName,
-                                       IDictionary<string, SyntaxTreeNode> attributes,
                                        bool selfClosing,
+                                       IDictionary<string, SyntaxTreeNode> attributes,
                                        IEnumerable<SyntaxTreeNode> children)
         {
             TagName = tagName;
@@ -73,7 +75,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         }
 
         /// <summary>
-        /// Indicates whether or not the tag is self-closing.
+        /// Gets a value indicating whether or not the tag in the Razor source was self-closing.
         /// </summary>
         public bool SelfClosing { get; }
 

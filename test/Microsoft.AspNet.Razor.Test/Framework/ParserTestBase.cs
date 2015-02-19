@@ -398,7 +398,7 @@ namespace Microsoft.AspNet.Razor.Test.Framework
             }
             else
             {
-                if (!string.Equals(actual.TagName, expected.TagName, StringComparison.Ordinal))
+                if (!string.Equals(expected.TagName, actual.TagName, StringComparison.Ordinal))
                 {
                     collector.AddError(
                         "{0} - FAILED :: TagName mismatch for TagHelperBlock :: ACTUAL: {1}",
@@ -406,10 +406,13 @@ namespace Microsoft.AspNet.Razor.Test.Framework
                         actual.TagName);
                 }
 
-                if (actual.SelfClosing != expected.SelfClosing)
+                if (expected.SelfClosing != actual.SelfClosing)
                 {
                     collector.AddError(
-                        "{0} - FAILED :: SelfClosing should be {1}", actual.TagName, expected.SelfClosing);
+                        "{0} - FAILED :: SelfClosing for TagHelperBlock {1} :: ACTUAL: {2}",
+                        expected.SelfClosing,
+                        actual.TagName,
+                        actual.SelfClosing);
                 }
                 
                 var expectedAttributes = expected.Attributes.GetEnumerator();

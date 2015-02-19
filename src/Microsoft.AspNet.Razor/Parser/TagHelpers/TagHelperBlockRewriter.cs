@@ -28,7 +28,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             var attributes = GetTagAttributes(tagName, validStructure, tag, descriptors, errorSink);
             var selfClosing = IsSelfClosing(tag);
 
-            return new TagHelperBlockBuilder(tagName, start, attributes, selfClosing, descriptors);
+            return new TagHelperBlockBuilder(tagName, selfClosing, start, attributes, descriptors);
         }
 
         private static IDictionary<string, SyntaxTreeNode> GetTagAttributes(
