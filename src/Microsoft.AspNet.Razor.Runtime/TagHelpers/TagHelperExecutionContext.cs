@@ -44,7 +44,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <param name="startWritingScope">A delegate used to start a writing scope in a Razor page.</param>
         /// <param name="endWritingScope">A delegate used to end a writing scope in a Razor page.</param>
         public TagHelperExecutionContext([NotNull] string tagName,
-                                         bool selfClosing, 
+                                         bool selfClosing,
                                          [NotNull] string uniqueId,
                                          [NotNull] Func<Task> executeChildContentAsync,
                                          [NotNull] Action startWritingScope,
