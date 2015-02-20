@@ -177,41 +177,53 @@ namespace Microsoft.AspNet.Razor.Test.Framework
 
     public class MarkupTagHelperBlock : TagHelperBlock
     {
-        public MarkupTagHelperBlock(string tagName, bool selfClosing = false)
-            : this(tagName, new Dictionary<string, SyntaxTreeNode>(), selfClosing)
+        public MarkupTagHelperBlock(string tagName)
+            : this(tagName, selfClosing: false, attributes: new Dictionary<string, SyntaxTreeNode>())
+        {
+        }
+
+        public MarkupTagHelperBlock(string tagName, bool selfClosing)
+            : this(tagName, selfClosing, new Dictionary<string, SyntaxTreeNode>())
+        {
+        }
+
+        public MarkupTagHelperBlock(string tagName,
+                                    IDictionary<string, SyntaxTreeNode> attributes)
+            : this(tagName, selfClosing: false, attributes: attributes, children: new SyntaxTreeNode[0])
+        {
+        }
+
+        public MarkupTagHelperBlock(string tagName,
+                                    bool selfClosing,
+                                    IDictionary<string, SyntaxTreeNode> attributes)
+            : this(tagName, selfClosing, attributes, new SyntaxTreeNode[0])
+        {
+        }
+
+        public MarkupTagHelperBlock(string tagName, params SyntaxTreeNode[] children)
+            : this(
+                  tagName,
+                  selfClosing: false,
+                  attributes: new Dictionary<string, SyntaxTreeNode>(),
+                  children: children)
+        {
+        }
+
+        public MarkupTagHelperBlock(string tagName, bool selfClosing, params SyntaxTreeNode[] children)
+            : this(tagName, selfClosing, new Dictionary<string, SyntaxTreeNode>(), children)
         {
         }
 
         public MarkupTagHelperBlock(string tagName,
                                     IDictionary<string, SyntaxTreeNode> attributes,
-                                    bool selfClosing = false)
-            : this(tagName, attributes, selfClosing, new SyntaxTreeNode[0])
-        {
-        }
-
-        public MarkupTagHelperBlock(string tagName,
                                     params SyntaxTreeNode[] children)
-            : this(tagName, new Dictionary<string, SyntaxTreeNode>(), false, children)
-        {
-        }
-
-        public MarkupTagHelperBlock(string tagName, 
-                                    bool selfClosing, 
-                                    params SyntaxTreeNode[] children)
-            : this(tagName, new Dictionary<string, SyntaxTreeNode>(), selfClosing, children)
-        {
-        }
-
-        public MarkupTagHelperBlock(string tagName,
-                                    IDictionary<string, SyntaxTreeNode> attributes,
-                                    params SyntaxTreeNode[] children)
-            : base(new TagHelperBlockBuilder(tagName, false, attributes, children))
+            : base(new TagHelperBlockBuilder(tagName, selfClosing: false, attributes: attributes, children: children))
         {
         }
         
         public MarkupTagHelperBlock(string tagName,
+                                    bool selfClosing,
                                     IDictionary<string, SyntaxTreeNode> attributes,
-                                    bool selfClosing, 
                                     params SyntaxTreeNode[] children)
             : base(new TagHelperBlockBuilder(tagName, selfClosing, attributes, children))
         {

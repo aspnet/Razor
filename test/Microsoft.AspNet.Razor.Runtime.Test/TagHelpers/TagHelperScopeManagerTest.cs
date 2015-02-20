@@ -23,7 +23,8 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             var scopeManager = new TagHelperScopeManager();
 
             // Act
-            var executionContext = scopeManager.Begin("p",
+            var executionContext = scopeManager.Begin(
+                "p",
                 selfClosing: false,
                 uniqueId: string.Empty,
                 executeChildContentAsync: DefaultExecuteChildContentAsync,
@@ -41,14 +42,16 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             var scopeManager = new TagHelperScopeManager();
 
             // Act
-            var executionContext = scopeManager.Begin("p",
+            var executionContext = scopeManager.Begin(
+                "p",
                 selfClosing: false,
                 uniqueId: string.Empty,
                 executeChildContentAsync: DefaultExecuteChildContentAsync,
                 startWritingScope: DefaultStartWritingScope,
                 endWritingScope: DefaultEndWritingScope);
 
-            executionContext = scopeManager.Begin("div",
+            executionContext = scopeManager.Begin(
+               "div",
                selfClosing: false,
                uniqueId: string.Empty,
                executeChildContentAsync: DefaultExecuteChildContentAsync,
@@ -68,7 +71,8 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             var scopeManager = new TagHelperScopeManager();
 
             // Act
-            var executionContext = scopeManager.Begin("p",
+            var executionContext = scopeManager.Begin(
+                "p",
                 selfClosing: selfClosing,
                 uniqueId: string.Empty,
                 executeChildContentAsync: DefaultExecuteChildContentAsync,
@@ -86,14 +90,16 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             var scopeManager = new TagHelperScopeManager();
 
             // Act
-            var executionContext = scopeManager.Begin("p",
+            var executionContext = scopeManager.Begin(
+                "p",
                 selfClosing: false,
                 uniqueId: string.Empty,
                 executeChildContentAsync: DefaultExecuteChildContentAsync,
                 startWritingScope: DefaultStartWritingScope,
                 endWritingScope: DefaultEndWritingScope);
 
-            executionContext = scopeManager.Begin("div",
+            executionContext = scopeManager.Begin(
+               "div",
                selfClosing: false,
                uniqueId: string.Empty,
                executeChildContentAsync: DefaultExecuteChildContentAsync,
@@ -113,14 +119,16 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.TagHelpers
             var scopeManager = new TagHelperScopeManager();
 
             // Act
-            var executionContext = scopeManager.Begin("p",
+            var executionContext = scopeManager.Begin(
+                "p",
                 selfClosing: false,
                 uniqueId: string.Empty,
                 executeChildContentAsync: DefaultExecuteChildContentAsync,
                 startWritingScope: DefaultStartWritingScope,
                 endWritingScope: DefaultEndWritingScope);
 
-            executionContext = scopeManager.Begin("div",
+            executionContext = scopeManager.Begin(
+               "div",
                selfClosing: false,
                uniqueId: string.Empty,
                executeChildContentAsync: DefaultExecuteChildContentAsync,

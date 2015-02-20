@@ -47,12 +47,12 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                                      IEnumerable<TagHelperDescriptor> descriptors)
         {
             TagName = tagName;
+            SelfClosing = selfClosing;
             Start = start;
             Descriptors = descriptors;
-            Type = BlockType.Tag;
-            SelfClosing = selfClosing;
-            CodeGenerator = new TagHelperCodeGenerator(descriptors);
             Attributes = new Dictionary<string, SyntaxTreeNode>(attributes);
+            Type = BlockType.Tag;
+            CodeGenerator = new TagHelperCodeGenerator(descriptors);
         }
 
         // Internal for testing
@@ -62,8 +62,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
                                        IEnumerable<SyntaxTreeNode> children)
         {
             TagName = tagName;
-            Attributes = attributes;
             SelfClosing = selfClosing;
+            Attributes = attributes;
             Type = BlockType.Tag;
             CodeGenerator = new TagHelperCodeGenerator(tagHelperDescriptors: null);
 

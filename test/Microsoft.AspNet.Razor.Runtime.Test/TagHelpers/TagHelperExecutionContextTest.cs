@@ -33,6 +33,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var expectedContent = string.Empty;
             var executionContext = new TagHelperExecutionContext(
                 "p",
+                selfClosing: false,
                 uniqueId: string.Empty,
                 executeChildContentAsync: () =>
                 {
@@ -46,8 +47,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     return Task.FromResult(result: true);
                 },
                 startWritingScope: () => { },
-                endWritingScope: () => writer,
-                selfClosing: false);
+                endWritingScope: () => writer);
 
             // Act
             var content1 = await executionContext.GetChildContentAsync();

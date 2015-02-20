@@ -133,8 +133,8 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         {
             return new TagHelperChunk(
                 tagName,
-                attributes: new Dictionary<string, Chunk>(),
                 selfClosing: false,
+                attributes: new Dictionary<string, Chunk>(),
                 descriptors: tagHelperDescriptors)
             {
                 Children = new List<Chunk>(),

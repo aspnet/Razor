@@ -29,8 +29,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             IEnumerable<TagHelperDescriptor> descriptors)
         {
             TagName = tagName;
-            Attributes = attributes;
             SelfClosing = selfClosing;
+            Attributes = attributes;
             Descriptors = descriptors;
         }
 
