@@ -75,7 +75,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     return Task.FromResult(result: true);
                 },
                 startWritingScope: () => { },
-                endWritingScope: () => new StringWriter());
+                endWritingScope: () => new StringWriter(),
+                selfClosing: false);
 
             // Act
             await executionContext.ExecuteChildContentAsync();
