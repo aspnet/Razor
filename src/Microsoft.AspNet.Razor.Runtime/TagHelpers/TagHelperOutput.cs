@@ -18,6 +18,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         private bool _isTagNameNullOrWhitespace;
         private string _tagName;
         private readonly IHtmlEncoder _htmlEncoder;
+        private readonly DefaultTagHelperContent _preContent;
+        private readonly DefaultTagHelperContent _content;
+        private readonly DefaultTagHelperContent _postContent;
 
         // Internal for testing
         internal TagHelperOutput(string tagName)
@@ -39,9 +42,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             TagName = tagName;
             Attributes = new Dictionary<string, string>(attributes, StringComparer.OrdinalIgnoreCase);
-            PreContent = new DefaultTagHelperContent();
-            Content = new DefaultTagHelperContent();
-            PostContent = new DefaultTagHelperContent();
+            _preContent = new DefaultTagHelperContent();
+            _content = new DefaultTagHelperContent();
+            _postContent = new DefaultTagHelperContent();
             _htmlEncoder = htmlEncoder;
         }
 
@@ -68,20 +71,20 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// The HTML element's pre content.
         /// </summary>
         /// <remarks>Value is prepended to the <see cref="ITagHelper"/>'s final output.</remarks>
-        public TagHelperContent PreContent { get; }
+        public TagHelperContent PreContent { get { return _preContent; } }
 
         /// <summary>
         /// The HTML element's main content.
         /// </summary>
         /// <remarks>Value occurs in the <see cref="ITagHelper"/>'s final output after <see cref="PreContent"/> and 
         /// before <see cref="PostContent"/></remarks>
-        public TagHelperContent Content { get; }
+        public TagHelperContent Content { get { return _content; } }
 
         /// <summary>
         /// The HTML element's post content.
         /// </summary>
         /// <remarks>Value is appended to the <see cref="ITagHelper"/>'s final output.</remarks>
-        public TagHelperContent PostContent { get; }
+        public TagHelperContent PostContent { get { return _postContent; } }
 
         /// <summary>
         /// <c>true</c> if <see cref="Content"/> has been set, <c>false</c> otherwise.
@@ -147,7 +150,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// </summary>
         /// <returns><c>null</c> if <see cref="TagName"/> is not <c>null</c> or whitespace
         /// and <see cref="SelfClosing"/> is <c>true</c>.
-        /// Otherwise, an <see cref="ITextWriterCopyable"/> containing the <see cref="PreContent"/> content.</returns>
+        /// Otherwise, an <see cref="ITextWriterCopyable"/> containing the <see cref="PreContent"/>.</returns>
         public ITextWriterCopyable GeneratePreContent()
         {
             if (!_isTagNameNullOrWhitespace && SelfClosing)
@@ -155,7 +158,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 return null;
             }
 
-            return (ITextWriterCopyable)PreContent;
+            return _preContent;
         }
 
         /// <summary>
@@ -163,7 +166,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// </summary>
         /// <returns><c>null</c> if <see cref="TagName"/> is not <c>null</c> or whitespace
         /// and <see cref="SelfClosing"/> is <c>true</c>.
-        /// Otherwise, an <see cref="ITextWriterCopyable"/> containing the <see cref="PreContent"/> content.</returns>
+        /// Otherwise, an <see cref="ITextWriterCopyable"/> containing the <see cref="Content"/>.</returns>
         public ITextWriterCopyable GenerateContent()
         {
             if (!_isTagNameNullOrWhitespace && SelfClosing)
@@ -171,7 +174,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 return null;
             }
 
-            return (ITextWriterCopyable)Content;
+            return _content;
         }
 
         /// <summary>
@@ -179,7 +182,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// </summary>
         /// <returns><c>null</c> if <see cref="TagName"/> is not <c>null</c> or whitespace
         /// and <see cref="SelfClosing"/> is <c>true</c>.
-        /// Otherwise, an <see cref="ITextWriterCopyable"/> containing the <see cref="PreContent"/> content.</returns>
+        /// Otherwise, an <see cref="ITextWriterCopyable"/> containing the <see cref="PostContent"/>.</returns>
         public ITextWriterCopyable GeneratePostContent()
         {
             if (!_isTagNameNullOrWhitespace && SelfClosing)
@@ -187,7 +190,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 return null;
             }
 
-            return (ITextWriterCopyable)PostContent;
+            return _postContent;
         }
 
         /// <summary>

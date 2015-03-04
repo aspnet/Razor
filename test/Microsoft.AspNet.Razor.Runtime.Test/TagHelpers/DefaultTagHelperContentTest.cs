@@ -1,12 +1,14 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#if !ASPNETCORE50
 using System;
 using System.IO;
 using System.Linq;
-using Moq;
 using Xunit;
+
+#if !ASPNETCORE50
+using Moq;
+#endif
 
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
@@ -182,7 +184,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         [Fact]
-        public void IsEmpty_InitiallyFalse()
+        public void IsEmpty_InitiallyTrue()
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
@@ -192,7 +194,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         [Fact]
-        public void IsEmpty_FalseAfterSetEmptyContent()
+        public void IsEmpty_TrueAfterSetEmptyContent()
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
@@ -205,7 +207,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         [Fact]
-        public void IsEmpty_FalseAfterAppendEmptyContent()
+        public void IsEmpty_TrueAfterAppendEmptyContent()
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
@@ -219,7 +221,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         [Fact]
-        public void IsEmpty_FalseAfterAppendEmptyTagHelperContent()
+        public void IsEmpty_TrueAfterAppendEmptyTagHelperContent()
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
@@ -233,7 +235,60 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Assert.True(tagHelperContent.IsEmpty);
         }
 
-        // Clear
+        [Fact]
+        public void IsEmpty_TrueAfterClear()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.Clear();
+
+            // Assert
+            Assert.True(tagHelperContent.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_FalseAfterSetContent()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.SetContent("Hello");
+
+            // Assert
+            Assert.False(tagHelperContent.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_FalseAfterAppend()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.Append("Hello");
+
+            // Assert
+            Assert.False(tagHelperContent.IsEmpty);
+        }
+
+        [Fact]
+        public void IsEmpty_FalseAfterAppendTagHelper()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var copiedTagHelperContent = new DefaultTagHelperContent();
+            copiedTagHelperContent.SetContent("Hello");
+
+            // Act
+            tagHelperContent.Append(copiedTagHelperContent);
+
+            // Assert
+            Assert.False(tagHelperContent.IsEmpty);
+        }
+
         [Fact]
         public void CanClearContent()
         {
@@ -265,6 +320,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Assert.Equal(expected, writer.ToString());
         }
 
+#if !ASPNETCORE50
         [Fact]
         public void CanWriteToTextWriter_MultipleAppends()
         {
@@ -285,6 +341,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Assert.Equal(expected, writer.Object.ToString());
             writer.Verify(w => w.Write(It.IsAny<string>()), Times.Exactly(2));
         }
+#endif
 
         [Fact]
         public void ToString_ReturnsExpectedValue()
@@ -363,4 +420,3 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
     }
 }
-#endif

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -51,7 +50,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Appends <paramref name="tagHelperContent"/> to the existing content.
         /// </summary>
-        /// <param name="tagHelperContent">The <see cref="TagHelperContent"/> that is appended to the content.</param>
+        /// <param name="tagHelperContent">The <see cref="TagHelperContent"/> to be appended.</param>
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         public abstract TagHelperContent Append(TagHelperContent tagHelperContent);
 
@@ -64,7 +63,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// Gets the content.
         /// </summary>
-        /// <returns>A string containing the content.</returns>
+        /// <returns>A <see cref="string"/> containing the content.</returns>
         public abstract string GetContent();
 
         /// <inheritdoc />

@@ -85,7 +85,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <inheritdoc />
         public override TagHelperContent Append(string value)
         {
-            _buffer.Add(value);
+            if (value != null)
+            {
+                _buffer.Add(value);
+            }
+
             return this;
         }
 

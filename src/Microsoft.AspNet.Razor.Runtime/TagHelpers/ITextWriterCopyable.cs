@@ -11,7 +11,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     public interface ITextWriterCopyable
     {
         /// <summary>
-        /// Method which needs to be implemented to copy the particular type of a <paramref name="writer"/>..
+        /// Copies to the <paramref name="writer"/>..
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter"/> target.</param>
         void CopyTo(TextWriter writer);

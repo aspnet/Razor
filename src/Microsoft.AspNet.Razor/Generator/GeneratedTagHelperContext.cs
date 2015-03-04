@@ -36,7 +36,7 @@ namespace Microsoft.AspNet.Razor.Generator
             ScopeManagerTypeName = "TagHelperScopeManager";
             ExecutionContextTypeName = "TagHelperExecutionContext";
             HtmlEncoderPropertyName = "HtmlEncoder";
-            TagHelperContentVariableName = "TagHelperContent";
+            TagHelperContentTypeName = "TagHelperContent";
         }
 
         /// <summary>
@@ -159,11 +159,11 @@ namespace Microsoft.AspNet.Razor.Generator
         public string HtmlEncoderPropertyName { get; set; }
 
         /// <summary>
-        /// The name of the type describing tag helper content.
+        /// The name of the type containing tag helper content.
         /// </summary>
         /// <remarks>
         /// Contains the data returned by EndTagHelperWriteScope().
         /// </remarks>
-        public string TagHelperContentVariableName { get; set; }
+        public string TagHelperContentTypeName { get; set; }
     }
 }

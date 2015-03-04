@@ -1,7 +1,6 @@
 {
     "version": "1.0.0",
     "dependencies": {
-        "Moq": "4.2.1312.1622",
         "Microsoft.AspNet.Razor.Runtime": "4.0.0-*",
         "Microsoft.AspNet.Testing": "1.0.0-*",
         "xunit.runner.kre": "1.0.0-*"
@@ -10,7 +9,11 @@
         "test": "xunit.runner.kre"
     },
     "frameworks": {
-        "aspnet50": { },
+        "aspnet50": {
+            "dependencies": {
+                "Moq": "4.2.1312.1622"
+            }
+        },
         "aspnetcore50": {
             "dependencies": {
                 "System.Reflection.TypeExtensions": "4.0.0-beta-*",
