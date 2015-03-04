@@ -71,20 +71,38 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// The HTML element's pre content.
         /// </summary>
         /// <remarks>Value is prepended to the <see cref="ITagHelper"/>'s final output.</remarks>
-        public TagHelperContent PreContent { get { return _preContent; } }
+        public TagHelperContent PreContent
+        {
+            get
+            {
+                return _preContent;
+            }
+        }
 
         /// <summary>
         /// The HTML element's main content.
         /// </summary>
         /// <remarks>Value occurs in the <see cref="ITagHelper"/>'s final output after <see cref="PreContent"/> and 
         /// before <see cref="PostContent"/></remarks>
-        public TagHelperContent Content { get { return _content; } }
+        public TagHelperContent Content
+        {
+            get
+            {
+                return _content;
+            }
+        }
 
         /// <summary>
         /// The HTML element's post content.
         /// </summary>
         /// <remarks>Value is appended to the <see cref="ITagHelper"/>'s final output.</remarks>
-        public TagHelperContent PostContent { get { return _postContent; } }
+        public TagHelperContent PostContent
+        {
+            get
+            {
+                return _postContent;
+            }
+        }
 
         /// <summary>
         /// <c>true</c> if <see cref="Content"/> has been set, <c>false</c> otherwise.

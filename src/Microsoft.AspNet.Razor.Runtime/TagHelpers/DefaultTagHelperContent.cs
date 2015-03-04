@@ -85,11 +85,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <inheritdoc />
         public override TagHelperContent Append(string value)
         {
-            if (value != null)
-            {
-                _buffer.Add(value);
-            }
-
+            _buffer.Add(value);
             return this;
         }
 
@@ -102,6 +98,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 {
                     Append(value);
                 }
+            }
+
+            // If Append() was called with an empty TagHelperContent IsModified should
+            // still be true. If the content was not already modified, it means it is empty.
+            // So the Clear() method can be used to indirectly set the IsModified.
+            if (!IsModified)
+            {
+                Clear();
             }
 
             return this;

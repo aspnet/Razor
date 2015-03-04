@@ -4,11 +4,10 @@
 using System;
 using System.IO;
 using System.Linq;
-using Xunit;
-
 #if !ASPNETCORE50
 using Moq;
 #endif
+using Xunit;
 
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
