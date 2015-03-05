@@ -24,7 +24,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         // Internal for testing
         internal TagHelperOutput(string tagName)
-            : this(tagName, new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase), null)
+            : this(tagName, new TagHelperAttributes<string>(), null)
         {
         }
 
@@ -37,11 +37,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// to encode HTML attribute values.</param>
         public TagHelperOutput(
             string tagName,
-            [NotNull] IDictionary<string, string> attributes,
+            [NotNull] TagHelperAttributes<string> attributes,
             [NotNull] IHtmlEncoder htmlEncoder)
         {
             TagName = tagName;
-            Attributes = new Dictionary<string, string>(attributes, StringComparer.OrdinalIgnoreCase);
+            Attributes = attributes;
             _preContent = new DefaultTagHelperContent();
             _content = new DefaultTagHelperContent();
             _postContent = new DefaultTagHelperContent();
@@ -123,7 +123,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <summary>
         /// The HTML element's attributes.
         /// </summary>
-        public IDictionary<string, string> Attributes { get; }
+        public TagHelperAttributes<string> Attributes { get; }
 
         /// <summary>
         /// Generates the <see cref="TagHelperOutput"/>'s start tag.
