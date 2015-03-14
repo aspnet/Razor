@@ -10,7 +10,6 @@ using Microsoft.Framework.Internal;
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
     public class TagHelperAttributes<TAttributeValue> : IList<TagHelperAttribute<TAttributeValue>>
-        where TAttributeValue : class
     {
         private readonly IList<TagHelperAttribute<TAttributeValue>> _attributes;
 

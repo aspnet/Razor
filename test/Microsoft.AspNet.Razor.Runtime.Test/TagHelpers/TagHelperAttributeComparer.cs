@@ -19,9 +19,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers.Test
 
         public bool Equals(TagHelperAttribute<TAttributeValue> attributeX, TagHelperAttribute<TAttributeValue> attributeY)
         {
-            return 
+            return
                 string.Equals(attributeX.Key, attributeY.Key, StringComparison.OrdinalIgnoreCase) &&
-                Equals(attributeX.Value, attributeY.Value);
+                object.Equals(attributeX.Value, attributeY.Value);
         }
 
         public int GetHashCode(TagHelperAttribute<TAttributeValue> attribute)

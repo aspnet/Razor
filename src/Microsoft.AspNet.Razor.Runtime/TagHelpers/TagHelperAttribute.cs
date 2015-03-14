@@ -6,7 +6,7 @@ using Microsoft.Framework.Internal;
 
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
-    public class TagHelperAttribute<TValue> where TValue : class
+    public class TagHelperAttribute<TValue>
     {
         private string _key;
 
@@ -15,8 +15,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         public TagHelperAttribute([NotNull] string key)
-            : this(key, value: null)
         {
+            Key = key;
         }
 
         public TagHelperAttribute([NotNull] string key, TValue value)
@@ -36,7 +36,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 // Keys aren't allowed to be null.
                 if (value == null)
                 {
-                    throw new ArgumentNullException(nameof(Key));
+                    throw new ArgumentNullException(nameof(value));
                 }
 
                 _key = value;
