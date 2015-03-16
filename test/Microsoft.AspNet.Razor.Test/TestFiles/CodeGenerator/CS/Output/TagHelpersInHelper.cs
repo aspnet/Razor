@@ -38,7 +38,7 @@ MyHelper(string val)
                 __NestedTagHelper = CreateTagHelper<NestedTagHelper>();
                 __tagHelperExecutionContext.Add(__NestedTagHelper);
                 __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
-                WriteTagHelper(__tagHelperExecutionContext);
+                WriteTagHelperAsync(__tagHelperExecutionContext).Wait();
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n        ");
             }
@@ -65,7 +65,7 @@ Write(DateTime.Now);
             __tagHelperStringValueBuffer = EndTagHelperWritingScope();
             __tagHelperExecutionContext.AddHtmlAttribute("unboundproperty", __tagHelperStringValueBuffer.ToString());
             __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
-            WriteTagHelperTo(__razor_helper_writer, __tagHelperExecutionContext);
+            WriteTagHelperToAsync(__razor_helper_writer, __tagHelperExecutionContext).Wait();
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             Instrumentation.BeginContext(342, 14, true);
             WriteLiteralTo(__razor_helper_writer, "\r\n    </div>\r\n");
@@ -114,7 +114,7 @@ Write(MyHelper(item => new Template((__razor_template_writer) => {
     __NestedTagHelper = CreateTagHelper<NestedTagHelper>();
     __tagHelperExecutionContext.Add(__NestedTagHelper);
     __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
-    WriteTagHelperTo(__razor_template_writer, __tagHelperExecutionContext);
+    WriteTagHelperToAsync(__razor_template_writer, __tagHelperExecutionContext).Wait();
     __tagHelperExecutionContext = __tagHelperScopeManager.End();
 }
 )
@@ -127,7 +127,7 @@ Write(MyHelper(item => new Template((__razor_template_writer) => {
             __MyTagHelper = CreateTagHelper<MyTagHelper>();
             __tagHelperExecutionContext.Add(__MyTagHelper);
             __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
-            WriteTagHelper(__tagHelperExecutionContext);
+            WriteTagHelperAsync(__tagHelperExecutionContext).Wait();
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             Instrumentation.BeginContext(445, 2, true);
             WriteLiteral("\r\n");

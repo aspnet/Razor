@@ -47,7 +47,7 @@ __InputTagHelper2.Checked = ;
             __tagHelperExecutionContext.AddTagHelperAttribute("checked", __InputTagHelper2.Checked);
             __tagHelperExecutionContext.AddHtmlAttribute("class", "");
             __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
-            WriteTagHelper(__tagHelperExecutionContext);
+            WriteTagHelperAsync(__tagHelperExecutionContext).Wait();
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             Instrumentation.BeginContext(74, 6, true);
             WriteLiteral("\r\n    ");
@@ -72,7 +72,7 @@ __InputTagHelper2.Checked = ;
                 __tagHelperExecutionContext.AddTagHelperAttribute("checked", __InputTagHelper2.Checked);
                 __tagHelperExecutionContext.AddHtmlAttribute("class", "");
                 __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
-                WriteTagHelper(__tagHelperExecutionContext);
+                WriteTagHelperAsync(__tagHelperExecutionContext).Wait();
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 WriteLiteral("\r\n    ");
             }
@@ -86,7 +86,7 @@ __PTagHelper.Age = ;
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("age", __PTagHelper.Age);
             __tagHelperExecutionContext.Output = __tagHelperRunner.RunAsync(__tagHelperExecutionContext).Result;
-            WriteTagHelper(__tagHelperExecutionContext);
+            WriteTagHelperAsync(__tagHelperExecutionContext).Wait();
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             Instrumentation.BeginContext(144, 8, true);
             WriteLiteral("\r\n</div>");

@@ -75,8 +75,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             if (!_designTimeMode)
             {
                 RenderRunTagHelpers();
-                RenderStartWriteTagHelperMethod();
-                _writer.Write(ExecutionContextVariableName).WriteEndMethodInvocation();
+                RenderWriteTagHelperMethodCall();
                 RenderEndTagHelpersScope();
             }
         }
@@ -360,19 +359,23 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                                                   _tagHelperContext.ScopeManagerEndMethodName);
         }
 
-        private void RenderStartWriteTagHelperMethod()
+        private void RenderWriteTagHelperMethodCall()
         {
             if (!string.IsNullOrEmpty(_context.TargetWriterName))
             {
                 _writer
-                    .WriteStartMethodInvocation(_tagHelperContext.WriteTagHelperToMethodName)
+                    .WriteStartMethodInvocation(_tagHelperContext.WriteTagHelperToAsyncMethodName)
                     .Write(_context.TargetWriterName)
                     .WriteParameterSeparator();
             }
             else
             {
-                _writer.WriteStartMethodInvocation(_tagHelperContext.WriteTagHelperMethodName);
+                _writer.WriteStartMethodInvocation(_tagHelperContext.WriteTagHelperAsyncMethodName);
             }
+
+            _writer.Write(ExecutionContextVariableName)
+                   .WriteEndMethodInvocation(endLine: false)
+                   .WriteLine(".Wait();");
         }
 
         private void RenderRunTagHelpers()

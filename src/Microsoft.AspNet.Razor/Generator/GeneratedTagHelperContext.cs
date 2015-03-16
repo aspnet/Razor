@@ -27,8 +27,8 @@ namespace Microsoft.AspNet.Razor.Generator
             ScopeManagerTypeName = "TagHelperScopeManager";
             ExecutionContextTypeName = "TagHelperExecutionContext";
             TagHelperContentTypeName = "TagHelperContent";
-            WriteTagHelperMethodName = "WriteTagHelper";
-            WriteTagHelperToMethodName = "WriteTagHelperTo";
+            WriteTagHelperAsyncMethodName = "WriteTagHelperAsync";
+            WriteTagHelperToAsyncMethodName = "WriteTagHelperToAsync";
         }
 
         /// <summary>
@@ -108,13 +108,14 @@ namespace Microsoft.AspNet.Razor.Generator
         public string TagHelperContentTypeName { get; set; }
 
         /// <summary>
-        /// The Write method name for tag helpers.
+        /// The name of the method used to write <see cref="ExecutionContextTypeName"/>.
         /// </summary>
-        public string WriteTagHelperMethodName { get; set; }
+        public string WriteTagHelperAsyncMethodName { get; set; }
 
         /// <summary>
-        /// The WriteTo method name for tag helpers.
+        /// The name of the method used to write <see cref="ExecutionContextTypeName"/> to a specified
+        /// <see cref="System.IO.TextWriter"/>.
         /// </summary>
-        public string WriteTagHelperToMethodName { get; set; }
+        public string WriteTagHelperToAsyncMethodName { get; set; }
     }
 }
