@@ -10,7 +10,6 @@ namespace Microsoft.AspNet.Razor.Generator
     {
         public static readonly string DefaultWriteMethodName = "Write";
         public static readonly string DefaultWriteLiteralMethodName = "WriteLiteral";
-        public static readonly string DefaultWriteTagHelperMethodName = "WriteTagHelper";
         public static readonly string DefaultExecuteMethodName = "ExecuteAsync";
         public static readonly string DefaultLayoutPropertyName = "Layout";
         public static readonly string DefaultWriteAttributeMethodName = "WriteAttribute";
@@ -20,13 +19,11 @@ namespace Microsoft.AspNet.Razor.Generator
             new GeneratedClassContext(DefaultExecuteMethodName,
                                       DefaultWriteMethodName,
                                       DefaultWriteLiteralMethodName,
-                                      DefaultWriteTagHelperMethodName,
                                       new GeneratedTagHelperContext());
 
         public GeneratedClassContext(string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName,
-                                     string writeTagHelperMethodName,
                                      [NotNull] GeneratedTagHelperContext generatedTagHelperContext)
             : this()
         {
@@ -53,12 +50,10 @@ namespace Microsoft.AspNet.Razor.Generator
 
             WriteMethodName = writeMethodName;
             WriteLiteralMethodName = writeLiteralMethodName;
-            WriteTagHelperMethodName = writeTagHelperMethodName;
             ExecuteMethodName = executeMethodName;
 
             WriteToMethodName = null;
             WriteLiteralToMethodName = null;
-            WriteTagHelperToMethodName = null;
             TemplateTypeName = null;
             DefineSectionMethodName = null;
 
@@ -70,41 +65,33 @@ namespace Microsoft.AspNet.Razor.Generator
         public GeneratedClassContext(string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName,
-                                     string writeTagHelperMethodName,
                                      string writeToMethodName,
                                      string writeLiteralToMethodName,
-                                     string writeTagHelperToMethodName,
                                      string templateTypeName,
                                      GeneratedTagHelperContext generatedTagHelperContext)
             : this(executeMethodName,
                    writeMethodName,
                    writeLiteralMethodName,
-                   writeTagHelperMethodName,
                    generatedTagHelperContext)
         {
             WriteToMethodName = writeToMethodName;
             WriteLiteralToMethodName = writeLiteralToMethodName;
-            WriteTagHelperToMethodName = writeTagHelperToMethodName;
             TemplateTypeName = templateTypeName;
         }
 
         public GeneratedClassContext(string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName,
-                                     string writeTagHelperMethodName,
                                      string writeToMethodName,
                                      string writeLiteralToMethodName,
-                                     string writeTagHelperToMethodName,
                                      string templateTypeName,
                                      string defineSectionMethodName,
                                      GeneratedTagHelperContext generatedTagHelperContext)
             : this(executeMethodName,
                    writeMethodName,
                    writeLiteralMethodName,
-                   writeTagHelperMethodName,
                    writeToMethodName,
                    writeLiteralToMethodName,
-                   writeTagHelperToMethodName,
                    templateTypeName,
                    generatedTagHelperContext)
         {
@@ -114,10 +101,8 @@ namespace Microsoft.AspNet.Razor.Generator
         public GeneratedClassContext(string executeMethodName,
                                      string writeMethodName,
                                      string writeLiteralMethodName,
-                                     string writeTagHelperMethodName,
                                      string writeToMethodName,
                                      string writeLiteralToMethodName,
-                                     string writeTagHelperToMethodName,
                                      string templateTypeName,
                                      string defineSectionMethodName,
                                      string beginContextMethodName,
@@ -126,10 +111,8 @@ namespace Microsoft.AspNet.Razor.Generator
             : this(executeMethodName,
                    writeMethodName,
                    writeLiteralMethodName,
-                   writeTagHelperMethodName,
                    writeToMethodName,
                    writeLiteralToMethodName,
-                   writeTagHelperToMethodName,
                    templateTypeName,
                    defineSectionMethodName,
                    generatedTagHelperContext)
@@ -141,10 +124,8 @@ namespace Microsoft.AspNet.Razor.Generator
         // Required Items
         public string WriteMethodName { get; private set; }
         public string WriteLiteralMethodName { get; private set; }
-        public string WriteTagHelperMethodName { get; private set; }
         public string WriteToMethodName { get; private set; }
         public string WriteLiteralToMethodName { get; private set; }
-        public string WriteTagHelperToMethodName { get; private set; }
         public string ExecuteMethodName { get; private set; }
         public GeneratedTagHelperContext GeneratedTagHelperContext { get; private set; }
 

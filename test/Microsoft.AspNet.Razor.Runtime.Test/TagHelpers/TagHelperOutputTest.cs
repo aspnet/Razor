@@ -32,39 +32,45 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         [Fact]
-        public void CanSetPreContent()
+        public void PreContent_SetContent_ChangesValue()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p");
             tagHelperOutput.PreContent.SetContent("Hello World");
 
             // Act & Assert
-            var result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.PreContent);
-            Assert.Equal("Hello World", result.GetContent());
+            Assert.NotNull(tagHelperOutput.PreContent);
+            Assert.NotNull(tagHelperOutput.Content);
+            Assert.NotNull(tagHelperOutput.PostContent);
+            Assert.Equal("Hello World", tagHelperOutput.PreContent.GetContent());
         }
 
         [Fact]
-        public void CanSetContent()
+        public void Content_SetContent_ChangesValue()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p");
             tagHelperOutput.Content.SetContent("Hello World");
 
             // Act & Assert
-            var result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.Content);
-            Assert.Equal("Hello World", result.GetContent());
+            Assert.NotNull(tagHelperOutput.PreContent);
+            Assert.NotNull(tagHelperOutput.Content);
+            Assert.NotNull(tagHelperOutput.PostContent);
+            Assert.Equal("Hello World", tagHelperOutput.Content.GetContent());
         }
 
         [Fact]
-        public void CanSetPostContent()
+        public void PostContent_SetContent_ChangesValue()
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p");
             tagHelperOutput.PostContent.SetContent("Hello World");
 
             // Act & Assert
-            var result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.PostContent);
-            Assert.Equal("Hello World", result.GetContent());
+            Assert.NotNull(tagHelperOutput.PreContent);
+            Assert.NotNull(tagHelperOutput.Content);
+            Assert.NotNull(tagHelperOutput.PostContent);
+            Assert.Equal("Hello World", tagHelperOutput.PostContent.GetContent());
         }
 
         [Fact]
@@ -81,12 +87,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             Assert.Null(tagHelperOutput.TagName);
-            var result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.PreContent);
-            Assert.Empty(result.GetContent());
-            result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.Content);
-            Assert.Empty(result.GetContent());
-            result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.PostContent);
-            Assert.Empty(result.GetContent());
+            Assert.NotNull(tagHelperOutput.PreContent);
+            Assert.Empty(tagHelperOutput.PreContent.GetContent());
+            Assert.NotNull(tagHelperOutput.Content);
+            Assert.Empty(tagHelperOutput.Content.GetContent());
+            Assert.NotNull(tagHelperOutput.PostContent);
+            Assert.Empty(tagHelperOutput.PostContent.GetContent());
         }
 
         [Fact]
@@ -107,12 +113,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             tagHelperOutput.SuppressOutput();
 
             // Assert
-            var result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.PreContent);
-            Assert.Empty(result.GetContent());
-            result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.Content);
-            Assert.Empty(result.GetContent());
-            result = Assert.IsType<DefaultTagHelperContent>(tagHelperOutput.PostContent);
-            Assert.Empty(result.GetContent());
+            Assert.NotNull(tagHelperOutput.PreContent);
+            Assert.Empty(tagHelperOutput.PreContent.GetContent());
+            Assert.NotNull(tagHelperOutput.Content);
+            Assert.Empty(tagHelperOutput.Content.GetContent());
+            Assert.NotNull(tagHelperOutput.PostContent);
+            Assert.Empty(tagHelperOutput.PostContent.GetContent());
         }
 
         [Theory]

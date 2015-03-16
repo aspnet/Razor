@@ -27,6 +27,8 @@ namespace Microsoft.AspNet.Razor.Generator
             ScopeManagerTypeName = "TagHelperScopeManager";
             ExecutionContextTypeName = "TagHelperExecutionContext";
             TagHelperContentTypeName = "TagHelperContent";
+            WriteTagHelperMethodName = "WriteTagHelper";
+            WriteTagHelperToMethodName = "WriteTagHelperTo";
         }
 
         /// <summary>
@@ -104,5 +106,15 @@ namespace Microsoft.AspNet.Razor.Generator
         /// Contains the data returned by EndTagHelperWriteScope().
         /// </remarks>
         public string TagHelperContentTypeName { get; set; }
+
+        /// <summary>
+        /// The Write method name for tag helpers.
+        /// </summary>
+        public string WriteTagHelperMethodName { get; set; }
+
+        /// <summary>
+        /// The WriteTo method name for tag helpers.
+        /// </summary>
+        public string WriteTagHelperToMethodName { get; set; }
     }
 }

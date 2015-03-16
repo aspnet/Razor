@@ -75,7 +75,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             if (!_designTimeMode)
             {
                 RenderRunTagHelpers();
-                RenderWriteTagHelper();
+                RenderStartWriteTagHelperMethod();
+                _writer.Write(ExecutionContextVariableName).WriteEndMethodInvocation();
                 RenderEndTagHelpersScope();
             }
         }
@@ -359,39 +360,18 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                                                   _tagHelperContext.ScopeManagerEndMethodName);
         }
 
-        private void RenderWriteTagHelper()
-        {
-            RenderStartWriteTagHelperMethod();
-            _writer.Write(ExecutionContextVariableName).WriteEndMethodInvocation();
-        }
-
         private void RenderStartWriteTagHelperMethod()
         {
             if (!string.IsNullOrEmpty(_context.TargetWriterName))
             {
                 _writer
-                    .WriteStartMethodInvocation(_context.Host.GeneratedClassContext.WriteTagHelperToMethodName)
+                    .WriteStartMethodInvocation(_tagHelperContext.WriteTagHelperToMethodName)
                     .Write(_context.TargetWriterName)
                     .WriteParameterSeparator();
             }
             else
             {
-                _writer.WriteStartMethodInvocation(_context.Host.GeneratedClassContext.WriteTagHelperMethodName);
-            }
-        }
-
-        private void RenderStartWriteMethod()
-        {
-            if (!string.IsNullOrEmpty(_context.TargetWriterName))
-            {
-                _writer
-                    .WriteStartMethodInvocation(_context.Host.GeneratedClassContext.WriteToMethodName)
-                    .Write(_context.TargetWriterName)
-                    .WriteParameterSeparator();
-            }
-            else
-            {
-                _writer.WriteStartMethodInvocation(_context.Host.GeneratedClassContext.WriteMethodName);
+                _writer.WriteStartMethodInvocation(_tagHelperContext.WriteTagHelperMethodName);
             }
         }
 
