@@ -37,7 +37,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p", attributes:
-                new Dictionary<string, string>
+                new TagHelperAttributes<string>
                 {
                     { "class", "btn" },
                     { "something", "   spaced    " }
@@ -69,7 +69,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p",
-                attributes: new Dictionary<string, string>
+                new TagHelperAttributes<string>
                 {
                     { "class", "btn" },
                     { "something", "   spaced    " }
@@ -105,7 +105,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p",
-                attributes: new Dictionary<string, string>
+                new TagHelperAttributes<string>
                 {
                     { "hello", "world" },
                 },
@@ -125,7 +125,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("  ",
-                attributes: new Dictionary<string, string>
+                new TagHelperAttributes<string>
                 {
                     { "class", "btn" },
                     { "something", "   spaced    " }
@@ -382,7 +382,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p",
-                attributes: new Dictionary<string, string>
+                new TagHelperAttributes<string>
                 {
                     { "class", "btn" },
                     { "something", "   spaced    " }
@@ -414,18 +414,21 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperOutput = new TagHelperOutput("p",
-                attributes: new Dictionary<string, string>
+                new TagHelperAttributes<string>
                 {
                     { originalName, "btn" },
                 },
                 htmlEncoder: new NullHtmlEncoder());
 
             // Act
-            tagHelperOutput.Attributes[updateName] = "super button";
+            tagHelperOutput.Attributes[updateName].Value = "super button";
 
             // Assert
             var attribute = Assert.Single(tagHelperOutput.Attributes);
-            Assert.Equal(new KeyValuePair<string, string>(originalName, "super button"), attribute);
+            Assert.Equal(
+                new TagHelperAttribute<string>(originalName, "super button"), 
+                attribute, 
+                TagHelperAttributeComparer<string>.Default);
         }
     }
 }

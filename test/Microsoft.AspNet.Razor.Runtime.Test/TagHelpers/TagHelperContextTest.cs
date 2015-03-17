@@ -21,7 +21,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Act
             var context = new TagHelperContext(
-                allAttributes: new Dictionary<string, object>(),
+                allAttributes: new TagHelperAttributes<object>(),
                 items: expectedItems,
                 uniqueId: string.Empty,
                 getChildContentAsync: () => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));

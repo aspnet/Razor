@@ -136,8 +136,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             Assert.Equal("foo", output.TagName);
-            Assert.Equal("somethingelse", output.Attributes["class"]);
-            Assert.Equal("world", output.Attributes["hello"]);
+            Assert.Equal("somethingelse", output.Attributes["class"].Value);
+            Assert.Equal("world", output.Attributes["hello"].Value);
             Assert.Equal(true, output.SelfClosing);
         }
 
@@ -155,7 +155,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var output = await runner.RunAsync(executionContext);
 
             // Assert
-            Assert.Equal("True", output.Attributes["foo"]);
+            Assert.Equal("True", output.Attributes["foo"].Value);
         }
 
         [Fact]
@@ -200,8 +200,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 Processed = true;
 
                 output.TagName = "foo";
-                output.Attributes["class"] = "somethingelse";
-                output.Attributes["hello"] = "world";
+
+                TagHelperAttribute<string> classAttribute;
+                if (output.Attributes.TryGetAttribute("class", out classAttribute))
+                {
+                    classAttribute.Value = "somethingelse";
+                }
+
+                output.Attributes.Add("hello", "world");
                 output.SelfClosing = true;
             }
         }
@@ -220,7 +226,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             public override void Process(TagHelperContext context, TagHelperOutput output)
             {
-                output.Attributes["foo"] = context.AllAttributes["foo"].ToString();
+                output.Attributes.Add("foo", context.AllAttributes["foo"].Value.ToString());
             }
         }
 

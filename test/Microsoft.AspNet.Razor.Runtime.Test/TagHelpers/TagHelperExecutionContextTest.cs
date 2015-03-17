@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Razor.Runtime.TagHelpers.Test;
 using Xunit;
 
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
@@ -153,14 +154,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var executionContext = new TagHelperExecutionContext("p", selfClosing: false);
-            executionContext.HTMLAttributes[originalName] = "hello";
+            executionContext.HTMLAttributes[originalName].Value = "hello";
 
             // Act
-            executionContext.HTMLAttributes[updatedName] = "something else";
+            executionContext.HTMLAttributes[updatedName].Value = "something else";
 
             // Assert
             var attribute = Assert.Single(executionContext.HTMLAttributes);
-            Assert.Equal(new KeyValuePair<string, string>(originalName, "something else"), attribute);
+            Assert.Equal(new TagHelperAttribute<string>(originalName, "something else"), attribute);
         }
 
         [MemberData(nameof(DictionaryCaseTestingData))]
@@ -168,14 +169,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var executionContext = new TagHelperExecutionContext("p", selfClosing: false);
-            executionContext.AllAttributes[originalName] = false;
+            executionContext.AllAttributes[originalName].Value = false;
 
             // Act
-            executionContext.AllAttributes[updatedName] = true;
+            executionContext.AllAttributes[updatedName].Value = true;
 
             // Assert
             var attribute = Assert.Single(executionContext.AllAttributes);
-            Assert.Equal(new KeyValuePair<string, object>(originalName, true), attribute);
+            Assert.Equal(new TagHelperAttribute<object>(originalName, true), attribute);
         }
 
         [Fact]
@@ -183,7 +184,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var executionContext = new TagHelperExecutionContext("p", selfClosing: false);
-            var expectedAttributes = new Dictionary<string, string>
+            var expectedAttributes = new TagHelperAttributes<string>
             {
                 { "class", "btn" },
                 { "foo", "bar" }
@@ -194,7 +195,10 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             executionContext.AddHtmlAttribute("foo", "bar");
 
             // Assert
-            Assert.Equal(expectedAttributes, executionContext.HTMLAttributes);
+            Assert.Equal(
+                expectedAttributes,
+                executionContext.HTMLAttributes,
+                TagHelperAttributeComparer<string>.Default);
         }
 
         [Fact]
@@ -202,7 +206,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var executionContext = new TagHelperExecutionContext("p", selfClosing: false);
-            var expectedAttributes = new Dictionary<string, object>
+            var expectedAttributes = new TagHelperAttributes<object>
             {
                 { "class", "btn" },
                 { "something", true },
@@ -215,7 +219,10 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             executionContext.AddHtmlAttribute("foo", "bar");
 
             // Assert
-            Assert.Equal(expectedAttributes, executionContext.AllAttributes);
+            Assert.Equal(
+                expectedAttributes, 
+                executionContext.AllAttributes,
+                TagHelperAttributeComparer<object>.Default);
         }
 
         [Fact]
