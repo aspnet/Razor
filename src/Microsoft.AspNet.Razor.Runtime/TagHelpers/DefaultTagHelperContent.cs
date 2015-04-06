@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Framework.Internal;
@@ -86,6 +87,21 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public override TagHelperContent Append(string value)
         {
             _buffer.Add(value);
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override TagHelperContent AppendFormat([NotNull] string format, params object[] args)
+        {
+            _buffer.Add(string.Format(format, args));
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override TagHelperContent AppendFormat(
+            [NotNull] IFormatProvider provider, [NotNull] string format, params object[] args)
+        {
+            _buffer.Add(string.Format(provider, format, args));
             return this;
         }
 

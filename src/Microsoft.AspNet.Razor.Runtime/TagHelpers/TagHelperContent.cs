@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -46,6 +47,25 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <param name="value">The <see cref="string"/> to be appended.</param>
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         public abstract TagHelperContent Append(string value);
+
+        /// <summary>
+        /// Appends formatted string by replacing each format item in the specified string 
+        /// with the text equivalent of a corresponding object's value.
+        /// </summary>
+        /// <param name="format">A composite format string.</param>
+        /// <param name="args">The object array to format.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TagHelperContent AppendFormat(string format, params object[] args);
+
+        /// <summary>
+        /// Appends formatted string with formatting information from <param name="provider"/> by replacing 
+        /// each format item in the specified string with the text equivalent of a corresponding object's value.
+        /// </summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">A composite format string.</param>
+        /// <param name="args">The object array to format.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TagHelperContent AppendFormat(IFormatProvider provider, string format, params object[] args);
 
         /// <summary>
         /// Appends <paramref name="tagHelperContent"/> to the existing content.

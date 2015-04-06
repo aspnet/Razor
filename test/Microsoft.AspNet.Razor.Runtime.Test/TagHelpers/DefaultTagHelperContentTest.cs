@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.IO;
+using System.Globalization;
 using System.Linq;
 using Xunit;
 
@@ -81,6 +81,65 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Act
             tagHelperContent.Append(expected);
+
+            // Assert
+            Assert.Equal(expected, tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormatContent()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var expected = "Hello World!";
+
+            // Act
+            tagHelperContent.AppendFormat("{0} World!", "Hello");
+
+            // Assert
+            Assert.Equal(expected, tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormat_WithCulture()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var expected = "Hello World!";
+
+            // Act
+            tagHelperContent.AppendFormat(CultureInfo.InvariantCulture, "{0} World!", "Hello");
+
+            // Assert
+            Assert.Equal(expected, tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormat_WithDifferentCulture()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var expected = "1,1 in french!";
+            var culture = new CultureInfo("fr-FR");
+
+            // Act
+            tagHelperContent.AppendFormat(culture, "{0} in french!", 1.1);
+
+            // Assert
+            Assert.Equal(expected, tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendDefaultTagHelperContent()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var helloWorldContent = new DefaultTagHelperContent();
+            helloWorldContent.SetContent("HelloWorld");
+            var expected = "Content was HelloWorld";
+
+            // Act
+            tagHelperContent.AppendFormat("Content was {0}", helloWorldContent);
 
             // Assert
             Assert.Equal(expected, tagHelperContent.GetContent());
@@ -354,6 +413,37 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Act
             tagHelperContent.SetContent("Hello ").Append("World!");
+
+            // Assert
+            Assert.Equal(expected, tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void Fluent_SetContent_AppendFormat_WritesExpectedContent()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var expected = "Hello World test";
+
+            // Act
+            tagHelperContent.SetContent("Hello ").AppendFormat("{0} test", "World");
+
+            // Assert
+            Assert.Equal(expected, tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void Fluent_SetContent_AppendFormat_Append_WritesExpectedContent()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var expected = "Hello World foo bar";
+
+            // Act
+            tagHelperContent
+                .SetContent("Hello ")
+                .AppendFormat("{0} foo ", "World")
+                .Append("bar");
 
             // Assert
             Assert.Equal(expected, tagHelperContent.GetContent());
