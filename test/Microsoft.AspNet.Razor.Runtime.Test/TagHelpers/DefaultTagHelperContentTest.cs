@@ -4,6 +4,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using Microsoft.AspNet.Testing;
 using Xunit;
 
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
@@ -91,13 +92,38 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
-            var expected = "Hello World!";
 
             // Act
             tagHelperContent.AppendFormat("{0} World!", "Hello");
 
             // Assert
-            Assert.Equal(expected, tagHelperContent.GetContent());
+            Assert.Equal("Hello World!", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormat_WithAlignmentComponent()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat("{0, -10} World!", "Hello");
+
+            // Assert
+            Assert.Equal("Hello      World!", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormat_WithFormatStringComponent()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat("0x{0:X}", 50);
+
+            // Assert
+            Assert.Equal("0x32", tagHelperContent.GetContent());
         }
 
         [Fact]
@@ -105,13 +131,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
-            var expected = "Hello World!";
 
             // Act
             tagHelperContent.AppendFormat(CultureInfo.InvariantCulture, "{0} World!", "Hello");
 
             // Assert
-            Assert.Equal(expected, tagHelperContent.GetContent());
+            Assert.Equal("Hello World!", tagHelperContent.GetContent());
         }
 
         [Fact]
@@ -119,14 +144,27 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
-            var expected = "1,1 in french!";
             var culture = new CultureInfo("fr-FR");
 
             // Act
             tagHelperContent.AppendFormat(culture, "{0} in french!", 1.1);
 
             // Assert
-            Assert.Equal(expected, tagHelperContent.GetContent());
+            Assert.Equal("1,1 in french!", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        [ReplaceCulture]
+        public void CanAppendFormat_WithDifferentCurrentCulture()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat(CultureInfo.CurrentCulture, "{0:D}", DateTime.Parse("01/02/2015"));
+
+            // Assert
+            Assert.Equal("01 February 2015", tagHelperContent.GetContent());
         }
 
         [Fact]

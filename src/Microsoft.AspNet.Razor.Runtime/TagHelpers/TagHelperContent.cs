@@ -52,7 +52,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// Appends formatted string by replacing each format item in the specified string 
         /// with the text equivalent of a corresponding object's value.
         /// </summary>
-        /// <param name="format">A composite format string.</param>
+        /// <param name="format">
+        /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
+        /// </param>
         /// <param name="args">The object array to format.</param>
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         public abstract TagHelperContent AppendFormat(string format, params object[] args);
@@ -62,7 +64,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// each format item in the specified string with the text equivalent of a corresponding object's value.
         /// </summary>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
-        /// <param name="format">A composite format string.</param>
+        /// <param name="format">
+        /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
+        /// </param>
         /// <param name="args">The object array to format.</param>
         /// <returns>A reference to this instance after the append operation has completed.</returns>
         public abstract TagHelperContent AppendFormat(IFormatProvider provider, string format, params object[] args);
