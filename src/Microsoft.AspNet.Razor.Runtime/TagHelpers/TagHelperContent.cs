@@ -49,8 +49,48 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public abstract TagHelperContent Append(string value);
 
         /// <summary>
-        /// Appends formatted string by replacing each format item in the specified string 
-        /// with the text equivalent of a corresponding object's value.
+        /// Appends the specified <paramref name="format"/> to the existing content after
+        /// replacing the format item with the <see cref="string"/> representation of the
+        /// <paramref name="arg0"/>.
+        /// </summary>
+        /// <param name="format">
+        /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
+        /// </param>
+        /// <param name="arg0">The object to format.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TagHelperContent AppendFormat(string format, object arg0);
+
+        /// <summary>
+        /// Appends the specified <paramref name="format"/> to the existing content after
+        /// replacing each format item with the <see cref="string"/> representation of the
+        /// <paramref name="arg0"/> and <paramref name="arg1"/>.
+        /// </summary>
+        /// <param name="format">
+        /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
+        /// </param>
+        /// <param name="arg0">The object to format.</param>
+        /// <param name="arg1">The object to format.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TagHelperContent AppendFormat(string format, object arg0, object arg1);
+
+        /// <summary>
+        /// Appends the specified <paramref name="format"/> to the existing content after
+        /// replacing each format item with the <see cref="string"/> representation of the
+        /// <paramref name="arg0"/>, <paramref name="arg1"/> and <paramref name="arg2"/>.
+        /// </summary>
+        /// <param name="format">
+        /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
+        /// </param>
+        /// <param name="arg0">The object to format.</param>
+        /// <param name="arg1">The object to format.</param>
+        /// <param name="arg2">The object to format.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TagHelperContent AppendFormat(string format, object arg0, object arg1, object arg2);
+
+        /// <summary>
+        /// Appends the specified <paramref name="format"/> to the existing content after
+        /// replacing each format item with the <see cref="string"/> representation of the
+        /// corresponding item in the <paramref name="args"/> array.
         /// </summary>
         /// <param name="format">
         /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
@@ -60,8 +100,61 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public abstract TagHelperContent AppendFormat(string format, params object[] args);
 
         /// <summary>
-        /// Appends formatted string with formatting information from <param name="provider"/> by replacing 
-        /// each format item in the specified string with the text equivalent of a corresponding object's value.
+        /// Appends the specified <paramref name="format"/> to the existing content with information from the
+        /// <paramref name="provider"/> after replacing the format item with the <see cref="string"/>
+        /// representation of the corresponding item in <paramref name="arg0"/>.
+        /// </summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">
+        /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
+        /// </param>
+        /// <param name="arg0">The object to format.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TagHelperContent AppendFormat(IFormatProvider provider, string format, object arg0);
+
+        /// <summary>
+        /// Appends the specified <paramref name="format"/> to the existing content with information from the
+        /// <paramref name="provider"/> after replacing each format item with the <see cref="string"/>
+        /// representation of the corresponding item in <paramref name="arg0"/> and <paramref name="arg1"/>.
+        /// </summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">
+        /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
+        /// </param>
+        /// <param name="arg0">The object to format.</param>
+        /// <param name="arg1">The object to format.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TagHelperContent AppendFormat(
+            IFormatProvider provider,
+            string format,
+            object arg0,
+            object arg1);
+
+        /// <summary>
+        /// Appends the specified <paramref name="format"/> to the existing content with information from the
+        /// <paramref name="provider"/> after replacing each format item with the <see cref="string"/>
+        /// representation of the corresponding item in <paramref name="arg0"/>, <paramref name="arg1"/>
+        /// and <paramref name="arg2"/>.
+        /// </summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <param name="format">
+        /// The composite format <see cref="string"/> (see http://msdn.microsoft.com/en-us/library/txafckwd.aspx).
+        /// </param>
+        /// <param name="arg0">The object to format.</param>
+        /// <param name="arg1">The object to format.</param>
+        /// <param name="arg2">The object to format.</param>
+        /// <returns>A reference to this instance after the append operation has completed.</returns>
+        public abstract TagHelperContent AppendFormat(
+            IFormatProvider provider,
+            string format,
+            object arg0,
+            object arg1,
+            object arg2);
+
+        /// <summary>
+        /// Appends the specified <paramref name="format"/> to the existing content with information from the
+        /// <paramref name="provider"/> after replacing each format item with the <see cref="string"/>
+        /// representation of the corresponding item in the <paramref name="args"/> array.
         /// </summary>
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
         /// <param name="format">

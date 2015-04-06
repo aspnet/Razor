@@ -87,6 +87,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Assert.Equal(expected, tagHelperContent.GetContent());
         }
 
+        // Overload with args array is called.
         [Fact]
         public void CanAppendFormatContent()
         {
@@ -94,10 +95,49 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var tagHelperContent = new DefaultTagHelperContent();
 
             // Act
-            tagHelperContent.AppendFormat("{0} World!", "Hello");
+            tagHelperContent.AppendFormat("{0} {1} {2} {3}!", "First", "Second", "Third", "Fourth");
 
             // Assert
-            Assert.Equal("Hello World!", tagHelperContent.GetContent());
+            Assert.Equal("First Second Third Fourth!", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormatContent_With1Argument()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat("0x{0, -5:X} - hex equivalent for 50.", 50);
+
+            // Assert
+            Assert.Equal("0x32    - hex equivalent for 50.", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormatContent_With2Arguments()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat("0x{0, -5:X} - hex equivalent for {1}.", 50, 50);
+
+            // Assert
+            Assert.Equal("0x32    - hex equivalent for 50.", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormatContent_With3Arguments()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat("0x{0, -5:X} - {1} equivalent for {2}.", 50, "hex", 50);
+
+            // Assert
+            Assert.Equal("0x32    - hex equivalent for 50.", tagHelperContent.GetContent());
         }
 
         [Fact]
@@ -126,6 +166,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Assert.Equal("0x32", tagHelperContent.GetContent());
         }
 
+        // Overload with args array is called.
         [Fact]
         public void CanAppendFormat_WithCulture()
         {
@@ -133,10 +174,67 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var tagHelperContent = new DefaultTagHelperContent();
 
             // Act
-            tagHelperContent.AppendFormat(CultureInfo.InvariantCulture, "{0} World!", "Hello");
+            tagHelperContent.AppendFormat(
+                CultureInfo.InvariantCulture,
+                "Numbers in InvariantCulture - {0, -5:N} {1} {2} {3}!",
+                1.1,
+                2.98,
+                145.82,
+                32.86);
 
             // Assert
-            Assert.Equal("Hello World!", tagHelperContent.GetContent());
+            Assert.Equal("Numbers in InvariantCulture - 1.10  2.98 145.82 32.86!", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormat_WithCulture_1Argument()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat(
+                CultureInfo.InvariantCulture,
+                "Numbers in InvariantCulture - {0, -5:N}!",
+                1.1);
+
+            // Assert
+            Assert.Equal("Numbers in InvariantCulture - 1.10 !", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormat_WithCulture_2Arguments()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat(
+                CultureInfo.InvariantCulture,
+                "Numbers in InvariantCulture - {0, -5:N} {1}!",
+                1.1,
+                2.98);
+
+            // Assert
+            Assert.Equal("Numbers in InvariantCulture - 1.10  2.98!", tagHelperContent.GetContent());
+        }
+
+        [Fact]
+        public void CanAppendFormat_WithCulture_3Arguments()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+
+            // Act
+            tagHelperContent.AppendFormat(
+                CultureInfo.InvariantCulture,
+                "Numbers in InvariantCulture - {0, -5:N} {1} {2}!",
+                1.1,
+                2.98,
+                3.12);
+
+            // Assert
+            Assert.Equal("Numbers in InvariantCulture - 1.10  2.98 3.12!", tagHelperContent.GetContent());
         }
 
         [Fact]
@@ -147,10 +245,10 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var culture = new CultureInfo("fr-FR");
 
             // Act
-            tagHelperContent.AppendFormat(culture, "{0} in french!", 1.1);
+            tagHelperContent.AppendFormat(culture, "{0} in french!", 1.21);
 
             // Assert
-            Assert.Equal("1,1 in french!", tagHelperContent.GetContent());
+            Assert.Equal("1,21 in french!", tagHelperContent.GetContent());
         }
 
         [Fact]
@@ -461,13 +559,17 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
-            var expected = "Hello World test";
+            var expected = new[] { "First ", "Second Third" };
+            var i = 0;
 
             // Act
-            tagHelperContent.SetContent("Hello ").AppendFormat("{0} test", "World");
+            tagHelperContent.SetContent("First ").AppendFormat("{0} Third", "Second");
 
             // Assert
-            Assert.Equal(expected, tagHelperContent.GetContent());
+            foreach (var value in tagHelperContent)
+            {
+                Assert.Equal(expected[i++], value);
+            }
         }
 
         [Fact]
@@ -475,16 +577,20 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
-            var expected = "Hello World foo bar";
+            var expected = new[] { "First ", "Second Third ", "Fourth" };
+            var i = 0;
 
             // Act
             tagHelperContent
-                .SetContent("Hello ")
-                .AppendFormat("{0} foo ", "World")
-                .Append("bar");
+                .SetContent("First ")
+                .AppendFormat("{0} Third ", "Second")
+                .Append("Fourth");
 
             // Assert
-            Assert.Equal(expected, tagHelperContent.GetContent());
+            foreach (var value in tagHelperContent)
+            {
+                Assert.Equal(expected[i++], value);
+            }
         }
 
         [Fact]

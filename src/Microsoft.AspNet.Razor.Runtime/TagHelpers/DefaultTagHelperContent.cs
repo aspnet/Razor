@@ -91,9 +91,60 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <inheritdoc />
+        public override TagHelperContent AppendFormat(string format, object arg0)
+        {
+            _buffer.Add(string.Format(format, arg0));
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override TagHelperContent AppendFormat(string format, object arg0, object arg1)
+        {
+            _buffer.Add(string.Format(format, arg0, arg1));
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override TagHelperContent AppendFormat(string format, object arg0, object arg1, object arg2)
+        {
+            _buffer.Add(string.Format(format, arg0, arg1, arg2));
+            return this;
+        }
+
+        /// <inheritdoc />
         public override TagHelperContent AppendFormat([NotNull] string format, params object[] args)
         {
             _buffer.Add(string.Format(format, args));
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override TagHelperContent AppendFormat(IFormatProvider provider, string format, object arg0)
+        {
+            _buffer.Add(string.Format(provider, format, arg0));
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override TagHelperContent AppendFormat(
+            IFormatProvider provider,
+            string format,
+            object arg0,
+            object arg1)
+        {
+            _buffer.Add(string.Format(provider, format, arg0, arg1));
+            return this;
+        }
+
+        /// <inheritdoc />
+        public override TagHelperContent AppendFormat(
+            IFormatProvider provider,
+            string format,
+            object arg0,
+            object arg1,
+            object arg2)
+        {
+            _buffer.Add(string.Format(provider, format, arg0, arg1, arg2));
             return this;
         }
 
