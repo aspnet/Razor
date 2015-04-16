@@ -17,8 +17,18 @@ namespace Microsoft.AspNet.Razor
 #endif
     public struct SourceLocation : IEquatable<SourceLocation>, IComparable<SourceLocation>
     {
-        public static readonly SourceLocation Undefined = CreateUndefined();
-        public static readonly SourceLocation Zero = new SourceLocation(0, 0, 0);
+        /// <summary>
+        /// An undefined <see cref="SourceLocation"/>.
+        /// </summary>
+        public static readonly SourceLocation Undefined =
+            new SourceLocation(absoluteIndex: -1, lineIndex: -1, characterIndex: -1);
+
+        /// <summary>
+        /// A <see cref="SourceLocation"/> with <see cref="AbsoluteIndex"/>, <see cref="LineIndex"/>, and
+        /// <see cref="CharacterIndex"/> initialized to 0.
+        /// </summary>
+        public static readonly SourceLocation Zero =
+            new SourceLocation(absoluteIndex: 0, lineIndex: 0, characterIndex: 0);
 
         /// <summary>
         /// Initializes a new instance of <see cref="SourceLocation"/>.
@@ -38,7 +48,7 @@ namespace Microsoft.AspNet.Razor
         /// <param name="absoluteIndex">The absolute index.</param>
         /// <param name="lineIndex">The line index.</param>
         /// <param name="characterIndex">The character index.</param>
-        public SourceLocation(string filePath, int absoluteIndex, int lineIndex, int characterIndex)
+        public SourceLocation([NotNull] string filePath, int absoluteIndex, int lineIndex, int characterIndex)
         {
             FilePath = filePath;
             AbsoluteIndex = absoluteIndex;
@@ -49,7 +59,8 @@ namespace Microsoft.AspNet.Razor
         /// <summary>
         /// Path of the file.
         /// </summary>
-        /// <remarks>When <c>null</c>, the parser assumes it is the file currently being processed.</remarks>
+        /// <remarks>When <c>null</c>, the parser assumes the location is in the file currently being processed.
+        /// </remarks>
         public string FilePath { get; set; }
 
         /// <remarks>Set property is only accessible for deserialization purposes.</remarks>
@@ -74,7 +85,6 @@ namespace Microsoft.AspNet.Razor
                 LineIndex,
                 CharacterIndex);
         }
-
 
         /// <inheritdoc />
         public override bool Equals(object obj)
@@ -102,8 +112,6 @@ namespace Microsoft.AspNet.Razor
         }
 
         /// <inheritdoc />
-        /// <exception cref="ArgumentException">if the <see cref="FilePath"/> of the left and right operands
-        /// are different.</exception>
         public int CompareTo(SourceLocation other)
         {
             var filePathOrdinal = string.Compare(FilePath, other.FilePath, StringComparison.Ordinal);
@@ -121,20 +129,11 @@ namespace Microsoft.AspNet.Razor
         /// <param name="left">The <see cref="SourceLocation"/> to advance.</param>
         /// <param name="text">The <see cref="string"/> to advance <paramref name="left"/> by.</param>
         /// <returns>The advanced <see cref="SourceLocation"/>.</returns>
-        public static SourceLocation Advance(SourceLocation left, string text)
+        public static SourceLocation Advance(SourceLocation left, [NotNull] string text)
         {
             var tracker = new SourceLocationTracker(left);
             tracker.UpdateLocation(text);
             return tracker.CurrentLocation;
-        }
-
-        private static SourceLocation CreateUndefined()
-        {
-            var sl = new SourceLocation();
-            sl.AbsoluteIndex = -1;
-            sl.LineIndex = -1;
-            sl.CharacterIndex = -1;
-            return sl;
         }
 
         /// <summary>
@@ -150,7 +149,7 @@ namespace Microsoft.AspNet.Razor
             if (!string.Equals(left.FilePath, right.FilePath, StringComparison.Ordinal))
             {
                 throw new ArgumentException(
-                    RazorResources.FormatSourceLocationFilePathDoesNotMatch(nameof(SourceLocation)),
+                    RazorResources.FormatSourceLocationFilePathDoesNotMatch(nameof(SourceLocation), "+"),
                     nameof(right));
             }
 
@@ -186,23 +185,26 @@ namespace Microsoft.AspNet.Razor
             if (!string.Equals(left.FilePath, right.FilePath, StringComparison.Ordinal))
             {
                 throw new ArgumentException(
-                    RazorResources.FormatSourceLocationFilePathDoesNotMatch(nameof(SourceLocation)),
+                    RazorResources.FormatSourceLocationFilePathDoesNotMatch(nameof(SourceLocation), "-"),
                     nameof(right));
             }
 
+            var characterIndex = left.LineIndex != right.LineIndex ?
+                left.CharacterIndex : left.CharacterIndex - right.CharacterIndex;
+
             return new SourceLocation(
-                left.FilePath,
-                left.AbsoluteIndex - right.AbsoluteIndex,
-                left.LineIndex - right.LineIndex,
-                left.LineIndex != right.LineIndex ? left.CharacterIndex : left.CharacterIndex - right.CharacterIndex);
+                filePath: null,
+                absoluteIndex: left.AbsoluteIndex - right.AbsoluteIndex,
+                lineIndex: left.LineIndex - right.LineIndex,
+                characterIndex: characterIndex);
         }
 
         /// <summary>
-        /// Determines whether the first operand is lesser than the second operand.
+        /// Determines whether the first operand is less than the second operand.
         /// </summary>
         /// <param name="left">The left operand.</param>
         /// <param name="right">The right operand.</param>
-        /// <returns><c>true</c> if <paramref name="left"/> is lesser than <paramref name="right"/>.</returns>
+        /// <returns><c>true</c> if <paramref name="left"/> is less than <paramref name="right"/>.</returns>
         public static bool operator <(SourceLocation left, SourceLocation right)
         {
             return left.CompareTo(right) < 0;

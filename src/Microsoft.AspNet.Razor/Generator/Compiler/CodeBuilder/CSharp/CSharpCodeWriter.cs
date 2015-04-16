@@ -190,7 +190,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         /// <returns>The current instance of <see cref="CSharpCodeWriter"/>.</returns>
         public CSharpCodeWriter WriteLineNumberDirective(SourceLocation location, string file)
         {
-            if (!string.IsNullOrEmpty(location.FilePath))
+            if (location.FilePath != null)
             {
                 file = location.FilePath;
             }

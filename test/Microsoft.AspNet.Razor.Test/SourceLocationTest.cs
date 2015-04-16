@@ -47,13 +47,16 @@ namespace Microsoft.AspNet.Razor
             // Arrange
             var sourceLocationA = new SourceLocation(10, 3, 4);
             var sourceLocationB = new SourceLocation(10, 45, 8754);
+            var sourceLocationC = new SourceLocation(12, 45, 8754);
 
             // Act
             var hashCodeA = sourceLocationA.GetHashCode();
             var hashCodeB = sourceLocationB.GetHashCode();
+            var hashCodeC = sourceLocationC.GetHashCode();
 
             // Assert
             Assert.Equal(hashCodeA, hashCodeB);
+            Assert.NotEqual(hashCodeA, hashCodeC);
         }
 
         [Fact]
@@ -61,14 +64,17 @@ namespace Microsoft.AspNet.Razor
         {
             // Arrange
             var sourceLocationA = new SourceLocation("some-path", 3, 53, 94);
-            var sourceLocationB = new SourceLocation("some-path", 3, 37, 46);
+            var sourceLocationB = new SourceLocation("some-path", 3, 43, 87);
+            var sourceLocationC = new SourceLocation(3, 53, 94);
 
             // Act
             var hashCodeA = sourceLocationA.GetHashCode();
             var hashCodeB = sourceLocationB.GetHashCode();
+            var hashCodeC = sourceLocationC.GetHashCode();
 
             // Assert
             Assert.Equal(hashCodeA, hashCodeB);
+            Assert.NotEqual(hashCodeA, hashCodeC);
         }
 
         [Fact]
@@ -119,7 +125,7 @@ namespace Microsoft.AspNet.Razor
         }
 
         [Fact]
-        public void CompareTo_ReturnsResultOfFilePathComparisons_IfSourceLocationsDoNotMatch()
+        public void CompareTo_ReturnsResultOfFilePathComparisons_WhenFilePathsAreDifferent()
         {
             // Arrange
             var sourceLocationA = new SourceLocation("a-path", 1, 1, 1);
@@ -138,7 +144,7 @@ namespace Microsoft.AspNet.Razor
         [InlineData(null, 32, 32)]
         [InlineData("same-path", 34, 32)]
         [InlineData("same-path-b", 18, 32)]
-        public void CompareTo_ReturnsResultOfAbsoluteIndexComparisons_IfSourceLocationsMatch(
+        public void CompareTo_ReturnsResultOfAbsoluteIndexComparisons_IfFilePathsMatch(
             string path, int indexA, int indexB)
         {
             // Arrange
@@ -153,7 +159,7 @@ namespace Microsoft.AspNet.Razor
         }
 
         [Fact]
-        public void Add_Throws_IfSourceLocationsDoNotMatch()
+        public void Add_Throws_IfFilePathsDoNotMatch()
         {
             // Arrange
             var sourceLocationA = new SourceLocation("a-path", 1, 1, 1);
@@ -163,7 +169,7 @@ namespace Microsoft.AspNet.Razor
             ExceptionAssert.ThrowsArgument(
                 () => { var result = sourceLocationA + sourceLocationB; },
                 "right",
-                $"Cannot perform operations on 'SourceLocation' instances with different file paths.");
+                $"Cannot perform '+' operations on 'SourceLocation' instances with different file paths.");
         }
 
         [Theory]
@@ -205,7 +211,7 @@ namespace Microsoft.AspNet.Razor
         }
 
         [Fact]
-        public void Subtract_Throws_IfSourceLocationsDoNotMatch()
+        public void Subtract_Throws_IfFilePathsDoNotMatch()
         {
             // Arrange
             var sourceLocationA = new SourceLocation("a-path", 1, 1, 1);
@@ -215,7 +221,7 @@ namespace Microsoft.AspNet.Razor
             ExceptionAssert.ThrowsArgument(
                 () => { var result = sourceLocationA - sourceLocationB; },
                 "right",
-                "Cannot perform operations on 'SourceLocation' instances with different file paths.");
+                "Cannot perform '-' operations on 'SourceLocation' instances with different file paths.");
         }
 
         [Theory]
@@ -231,7 +237,7 @@ namespace Microsoft.AspNet.Razor
             var result = sourceLocationB - sourceLocationA;
 
             // Assert
-            Assert.Equal(path, result.FilePath);
+            Assert.Null(result.FilePath);
             Assert.Equal(4, result.AbsoluteIndex);
             Assert.Equal(0, result.LineIndex);
             Assert.Equal(3, result.CharacterIndex);
@@ -250,7 +256,7 @@ namespace Microsoft.AspNet.Razor
             var result = sourceLocationB - sourceLocationA;
 
             // Assert
-            Assert.Equal(path, result.FilePath);
+            Assert.Null(result.FilePath);
             Assert.Equal(2, result.AbsoluteIndex);
             Assert.Equal(5, result.LineIndex);
             Assert.Equal(6, result.CharacterIndex);

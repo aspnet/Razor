@@ -7,17 +7,14 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 {
     public class CSharpCodeWriterTest
     {
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        public void WriteLineNumberDirective_UsesFilePath_WhenFileInSourceLocationIsNullOrEmpty(
-            string sourceLocationFilePath)
+        [Fact]
+        public void WriteLineNumberDirective_UsesFilePath_WhenFileInSourceLocationIsNull()
         {
             // Arrange
             var filePath = "some-path";
             var writer = new CSharpCodeWriter();
             var expected = $"#line 5 \"{filePath}\"" + writer.NewLine;
-            var sourceLocation = new SourceLocation(sourceLocationFilePath, 10, 4, 3);
+            var sourceLocation = new SourceLocation(10, 4, 3);
 
             // Act
             writer.WriteLineNumberDirective(sourceLocation, filePath);
@@ -27,12 +24,14 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             Assert.Equal(expected, code);
         }
 
-        [Fact]
-        public void WriteLineNumberDirectives_UsesSourceLocationFilePath_IfAvailable()
+        [Theory]
+        [InlineData("")]
+        [InlineData("source-location-file-path")]
+        public void WriteLineNumberDirective_UsesSourceLocationFilePath_IfAvailable(
+            string sourceLocationFilePath)
         {
             // Arrange
             var filePath = "some-path";
-            var sourceLocationFilePath = "source-location-file-path";
             var writer = new CSharpCodeWriter();
             var expected = $"#line 5 \"{sourceLocationFilePath}\"" + writer.NewLine;
             var sourceLocation = new SourceLocation(sourceLocationFilePath, 10, 4, 3);

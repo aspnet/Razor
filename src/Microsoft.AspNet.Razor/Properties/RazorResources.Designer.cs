@@ -1467,7 +1467,7 @@ namespace Microsoft.AspNet.Razor
         }
 
         /// <summary>
-        /// Cannot perform operations on '{0}' instances with different file paths.
+        /// Cannot perform '{1}' operations on '{0}' instances with different file paths.
         /// </summary>
         internal static string SourceLocationFilePathDoesNotMatch
         {
@@ -1475,11 +1475,11 @@ namespace Microsoft.AspNet.Razor
         }
 
         /// <summary>
-        /// Cannot perform operations on '{0}' instances with different file paths.
+        /// Cannot perform '{1}' operations on '{0}' instances with different file paths.
         /// </summary>
-        internal static string FormatSourceLocationFilePathDoesNotMatch(object p0)
+        internal static string FormatSourceLocationFilePathDoesNotMatch(object p0, object p1)
         {
-            return string.Format(CultureInfo.CurrentCulture, GetString("SourceLocationFilePathDoesNotMatch"), p0);
+            return string.Format(CultureInfo.CurrentCulture, GetString("SourceLocationFilePathDoesNotMatch"), p0, p1);
         }
 
         private static string GetString(string name, params string[] formatterNames)
