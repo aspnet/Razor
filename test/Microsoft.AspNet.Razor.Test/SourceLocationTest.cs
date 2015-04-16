@@ -175,7 +175,7 @@ namespace Microsoft.AspNet.Razor
         [Theory]
         [InlineData(null)]
         [InlineData("same-path")]
-        public void Add_IgnoresCharacterIndexIfLineIndexIsNonZero(string path)
+        public void Add_IgnoresCharacterIndexIfRightLineIndexIsNonZero(string path)
         {
             // Arrange
             var sourceLocationA = new SourceLocation(path, 1, 2, 3);
@@ -207,6 +207,40 @@ namespace Microsoft.AspNet.Razor
             Assert.Equal(path, result.FilePath);
             Assert.Equal(6, result.AbsoluteIndex);
             Assert.Equal(5, result.LineIndex);
+            Assert.Equal(9, result.CharacterIndex);
+        }
+
+        [Fact]
+        public void Add_AllowsRightFilePathToBeNull_WhenLeftFilePathIsNonNull()
+        {
+            // Arrange
+            var left = new SourceLocation("left-path", 7, 1, 7);
+            var right = new SourceLocation(13, 1, 4);
+
+            // Act
+            var result = left + right;
+
+            // Assert
+            Assert.Equal(left.FilePath, result.FilePath);
+            Assert.Equal(20, result.AbsoluteIndex);
+            Assert.Equal(2, result.LineIndex);
+            Assert.Equal(4, result.CharacterIndex);
+        }
+
+        [Fact]
+        public void Add_AllowsLeftFilePathToBeNull_WhenRightFilePathIsNonNull()
+        {
+            // Arrange
+            var left = new SourceLocation(4, 5, 6);
+            var right = new SourceLocation("right-path", 7, 8, 9);
+
+            // Act
+            var result = left + right;
+
+            // Assert
+            Assert.Equal(right.FilePath, result.FilePath);
+            Assert.Equal(11, result.AbsoluteIndex);
+            Assert.Equal(13, result.LineIndex);
             Assert.Equal(9, result.CharacterIndex);
         }
 

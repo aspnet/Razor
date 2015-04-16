@@ -48,7 +48,7 @@ namespace Microsoft.AspNet.Razor
         /// <param name="absoluteIndex">The absolute index.</param>
         /// <param name="lineIndex">The line index.</param>
         /// <param name="characterIndex">The character index.</param>
-        public SourceLocation([NotNull] string filePath, int absoluteIndex, int lineIndex, int characterIndex)
+        public SourceLocation(string filePath, int absoluteIndex, int lineIndex, int characterIndex)
         {
             FilePath = filePath;
             AbsoluteIndex = absoluteIndex;
@@ -146,18 +146,22 @@ namespace Microsoft.AspNet.Razor
         /// are different.</exception>
         public static SourceLocation operator +(SourceLocation left, SourceLocation right)
         {
-            if (!string.Equals(left.FilePath, right.FilePath, StringComparison.Ordinal))
+            if (!string.Equals(left.FilePath, right.FilePath, StringComparison.Ordinal) &&
+                left.FilePath != null &&
+                right.FilePath != null)
             {
+                // Throw if FilePath for left and right are different, and neither is null.
                 throw new ArgumentException(
                     RazorResources.FormatSourceLocationFilePathDoesNotMatch(nameof(SourceLocation), "+"),
                     nameof(right));
             }
 
+            var resultFilePath = left.FilePath ?? right.FilePath;
             if (right.LineIndex > 0)
             {
                 // Column index doesn't matter
                 return new SourceLocation(
-                    left.FilePath,
+                    resultFilePath,
                     left.AbsoluteIndex + right.AbsoluteIndex,
                     left.LineIndex + right.LineIndex,
                     right.CharacterIndex);
@@ -165,7 +169,7 @@ namespace Microsoft.AspNet.Razor
             else
             {
                 return new SourceLocation(
-                    left.FilePath,
+                    resultFilePath,
                     left.AbsoluteIndex + right.AbsoluteIndex,
                     left.LineIndex + right.LineIndex,
                     left.CharacterIndex + right.CharacterIndex);
