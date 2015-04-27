@@ -8,6 +8,8 @@ namespace Microsoft.AspNet.Razor
 {
     public class RazorError : IEquatable<RazorError>
     {
+        private static readonly int TypeHashCode = typeof(RazorError).GetHashCode();
+
         public RazorError()
             : this(message: string.Empty, location: SourceLocation.Undefined)
         {
@@ -46,19 +48,21 @@ namespace Microsoft.AspNet.Razor
 
         public override bool Equals(object obj)
         {
-            var err = obj as RazorError;
-            return (err != null) && Equals(err);
+            var error = obj as RazorError;
+            return Equals(error);
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            // Hash code should include only immutable properties but Equals also checks the type.
+            return TypeHashCode;
         }
 
         public bool Equals(RazorError other)
         {
-            return string.Equals(other.Message, Message, StringComparison.Ordinal) &&
-                   Location.Equals(other.Location);
+            return other != null &&
+                string.Equals(other.Message, Message, StringComparison.Ordinal) &&
+                Location.Equals(other.Location);
         }
     }
 }

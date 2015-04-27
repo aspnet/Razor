@@ -29,11 +29,11 @@ namespace Microsoft.AspNet.Razor.Tokenizer.Symbols
         }
 
         public SourceLocation Start { get; private set; }
-        public string Content { get; private set; }
-        public IEnumerable<RazorError> Errors { get; private set; }
+        public string Content { get; }
+        public IEnumerable<RazorError> Errors { get; }
 
         [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "This is the most appropriate name for this property and conflicts are unlikely")]
-        public TType Type { get; private set; }
+        public TType Type { get; }
 
         public override bool Equals(object obj)
         {
@@ -46,9 +46,9 @@ namespace Microsoft.AspNet.Razor.Tokenizer.Symbols
 
         public override int GetHashCode()
         {
+            // Hash code should include only immutable properties.
             return HashCodeCombiner.Start()
-                .Add(Start)
-                .Add(Content)
+                .Add(Content, StringComparer.Ordinal)
                 .Add(Type)
                 .CombinedHash;
         }

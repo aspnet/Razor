@@ -10,12 +10,12 @@ using Microsoft.AspNet.Razor.Editor;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.AspNet.Razor.Text;
 using Microsoft.AspNet.Razor.Tokenizer.Symbols;
-using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
 {
     public class Span : SyntaxTreeNode
     {
+        private static readonly int TypeHashCode = typeof(Span).GetHashCode();
         private SourceLocation _start;
 
         public Span(SpanBuilder builder)
@@ -132,6 +132,12 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                    string.Equals(other.Content, Content, StringComparison.Ordinal);
         }
 
+        public override int GetEquivalenceHash()
+        {
+            // Hash code should include only immutable properties but EquivalentTo also checks the type.
+            return TypeHashCode;
+        }
+
         public override bool Equals(object obj)
         {
             var other = obj as Span;
@@ -144,11 +150,8 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
 
         public override int GetHashCode()
         {
-            return HashCodeCombiner.Start()
-                .Add((int)Kind)
-                .Add(Start)
-                .Add(Content)
-                .CombinedHash;
+            // Hash code should include only immutable properties but Equals also checks the type.
+            return TypeHashCode;
         }
     }
 }

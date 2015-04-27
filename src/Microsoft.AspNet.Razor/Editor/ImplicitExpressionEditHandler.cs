@@ -18,15 +18,18 @@ namespace Microsoft.AspNet.Razor.Editor
 {
     public class ImplicitExpressionEditHandler : SpanEditHandler
     {
+        private static readonly int TypeHashCode = typeof(ImplicitExpressionEditHandler).GetHashCode();
+
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Func<T> is the recommended delegate type and requires this level of nesting.")]
         public ImplicitExpressionEditHandler(Func<string, IEnumerable<ISymbol>> tokenizer, ISet<string> keywords, bool acceptTrailingDot)
             : base(tokenizer)
         {
-            Initialize(keywords, acceptTrailingDot);
+            Keywords = keywords ?? new HashSet<string>();
+            AcceptTrailingDot = acceptTrailingDot;
         }
 
-        public bool AcceptTrailingDot { get; private set; }
-        public ISet<string> Keywords { get; private set; }
+        public bool AcceptTrailingDot { get; }
+        public ISet<string> Keywords { get; }
 
         public override string ToString()
         {
@@ -36,18 +39,17 @@ namespace Microsoft.AspNet.Razor.Editor
         public override bool Equals(object obj)
         {
             var other = obj as ImplicitExpressionEditHandler;
-            return other != null &&
-                   base.Equals(other) &&
-                   Keywords.SetEquals(other.Keywords) &&
-                   AcceptTrailingDot == other.AcceptTrailingDot;
+            return base.Equals(other) &&
+                Keywords.SetEquals(other.Keywords) &&
+                AcceptTrailingDot == other.AcceptTrailingDot;
         }
 
         public override int GetHashCode()
         {
+            // Hash code should include only immutable properties but Equals also checks the type.
             return HashCodeCombiner.Start()
-                .Add(base.GetHashCode())
+                .Add(TypeHashCode)
                 .Add(AcceptTrailingDot)
-                .Add(Keywords)
                 .CombinedHash;
         }
 
@@ -102,12 +104,6 @@ namespace Microsoft.AspNet.Razor.Editor
             }
 
             return PartialParseResult.Rejected;
-        }
-
-        private void Initialize(ISet<string> keywords, bool acceptTrailingDot)
-        {
-            Keywords = keywords ?? new HashSet<string>();
-            AcceptTrailingDot = acceptTrailingDot;
         }
 
         // A dotless commit is the process of inserting a '.' with an intellisense selection.

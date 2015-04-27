@@ -7,6 +7,8 @@ namespace Microsoft.AspNet.Razor.Generator
 {
     public class StatementCodeGenerator : SpanCodeGenerator
     {
+        private static readonly int TypeHashCode = typeof(StatementCodeGenerator).GetHashCode();
+
         public override void GenerateCode(Span target, CodeGeneratorContext context)
         {
             context.CodeTreeBuilder.AddStatementChunk(target.Content, target);
@@ -24,7 +26,7 @@ namespace Microsoft.AspNet.Razor.Generator
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return TypeHashCode;
         }
     }
 }

@@ -3,7 +3,6 @@
 
 using System;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor.Generator
 {
@@ -15,7 +14,7 @@ namespace Microsoft.AspNet.Razor.Generator
             NamespaceKeywordLength = namespaceKeywordLength;
         }
 
-        public string Namespace { get; private set; }
+        public string Namespace { get; }
         public int NamespaceKeywordLength { get; set; }
 
         public override void GenerateCode(Span target, CodeGeneratorContext context)
@@ -45,10 +44,8 @@ namespace Microsoft.AspNet.Razor.Generator
 
         public override int GetHashCode()
         {
-            return HashCodeCombiner.Start()
-                .Add(Namespace)
-                .Add(NamespaceKeywordLength)
-                .CombinedHash;
+            // Hash code should include only immutable properties.
+            return Namespace == null ? 0 : StringComparer.Ordinal.GetHashCode(Namespace);
         }
     }
 }

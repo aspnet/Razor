@@ -7,6 +7,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
     public class LineMapping
     {
+        private static readonly int TypeHashCode = typeof(LineMapping).GetHashCode();
+
         public LineMapping()
             : this(documentLocation: null, generatedLocation: null)
         {
@@ -24,22 +26,50 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         public override bool Equals(object obj)
         {
             var other = obj as LineMapping;
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
             return DocumentLocation.Equals(other.DocumentLocation) &&
-                   GeneratedLocation.Equals(other.GeneratedLocation);
+                GeneratedLocation.Equals(other.GeneratedLocation);
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            // Hash code should include only immutable properties but Equals also checks the type.
+            return TypeHashCode;
         }
 
         public static bool operator ==(LineMapping left, LineMapping right)
         {
+            if (ReferenceEquals(left, right))
+            {
+                // Exact equality e.g. both objects are null.
+                return true;
+            }
+
+            if (ReferenceEquals(left, null))
+            {
+                return false;
+            }
+
             return left.Equals(right);
         }
 
         public static bool operator !=(LineMapping left, LineMapping right)
         {
+            if (ReferenceEquals(left, right))
+            {
+                // Exact equality e.g. both objects are null.
+                return false;
+            }
+
+            if (ReferenceEquals(left, null))
+            {
+                return true;
+            }
+
             return !left.Equals(right);
         }
 

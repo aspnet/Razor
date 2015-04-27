@@ -7,7 +7,11 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
     public class MappingLocation
     {
-        public MappingLocation() : base() { }
+        private static readonly int TypeHashCode = typeof(MappingLocation).GetHashCode();
+
+        public MappingLocation()
+        {
+        }
 
         public MappingLocation(SourceLocation location, int contentLength)
         {
@@ -25,16 +29,21 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
         public override bool Equals(object obj)
         {
             var other = obj as MappingLocation;
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
 
             return AbsoluteIndex == other.AbsoluteIndex &&
-                   ContentLength == other.ContentLength &&
-                   LineIndex == other.LineIndex &&
-                   CharacterIndex == other.CharacterIndex;
+                ContentLength == other.ContentLength &&
+                LineIndex == other.LineIndex &&
+                CharacterIndex == other.CharacterIndex;
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            // Hash code should include only immutable properties but Equals also checks the type.
+            return TypeHashCode;
         }
 
         public override string ToString()
@@ -49,11 +58,33 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 
         public static bool operator ==(MappingLocation left, MappingLocation right)
         {
+            if (ReferenceEquals(left, right))
+            {
+                // Exact equality e.g. both objects are null.
+                return true;
+            }
+
+            if (ReferenceEquals(left, null))
+            {
+                return false;
+            }
+
             return left.Equals(right);
         }
 
         public static bool operator !=(MappingLocation left, MappingLocation right)
         {
+            if (ReferenceEquals(left, right))
+            {
+                // Exact equality e.g. both objects are null.
+                return false;
+            }
+
+            if (ReferenceEquals(left, null))
+            {
+                return true;
+            }
+
             return !left.Equals(right);
         }
     }

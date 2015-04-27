@@ -7,12 +7,13 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNet.Razor.Editor;
 using Microsoft.AspNet.Razor.Text;
 using Microsoft.AspNet.Razor.Tokenizer.Symbols;
-using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
 {
     public class AutoCompleteEditHandler : SpanEditHandler
     {
+        private static readonly int TypeHashCode = typeof(AutoCompleteEditHandler).GetHashCode();
+
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Func<T> is the recommended delegate type and requires this level of nesting.")]
         public AutoCompleteEditHandler(Func<string, IEnumerable<ISymbol>> tokenizer)
             : base(tokenizer)
@@ -48,18 +49,15 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
         public override bool Equals(object obj)
         {
             var other = obj as AutoCompleteEditHandler;
-            return base.Equals(obj) &&
-                   other != null &&
-                   string.Equals(other.AutoCompleteString, AutoCompleteString, StringComparison.Ordinal) &&
-                   AutoCompleteAtEndOfSpan == other.AutoCompleteAtEndOfSpan;
+            return base.Equals(other) &&
+                string.Equals(other.AutoCompleteString, AutoCompleteString, StringComparison.Ordinal) &&
+                AutoCompleteAtEndOfSpan == other.AutoCompleteAtEndOfSpan;
         }
 
         public override int GetHashCode()
         {
-            return HashCodeCombiner.Start()
-                .Add(base.GetHashCode())
-                .Add(AutoCompleteString)
-                .CombinedHash;
+            // Hash code should include only immutable properties but Equals also checks the type.
+            return TypeHashCode;
         }
     }
 }

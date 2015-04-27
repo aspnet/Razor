@@ -38,17 +38,17 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// <summary>
         /// The HTML attribute name.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// The name of the CLR property name that corresponds to the HTML attribute name.
         /// </summary>
-        public string PropertyName { get; private set; }
+        public string PropertyName { get; }
 
         /// <summary>
         /// The full name of the named (see <see name="PropertyName"/>) property's
         /// <see cref="System.Type"/>.
         /// </summary>
-        public string TypeName { get; private set; }
+        public string TypeName { get; }
     }
 }

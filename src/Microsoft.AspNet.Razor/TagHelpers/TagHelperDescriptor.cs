@@ -68,7 +68,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// <paramref name="attributes"/>.
         /// </summary>
         /// <param name="prefix">
-        /// Text used as a required prefix when matching HTML start and end tags in the Razor source to available 
+        /// Text used as a required prefix when matching HTML start and end tags in the Razor source to available
         /// tag helpers.
         /// </param>
         /// <param name="tagName">The tag name that the tag helper targets. '*' indicates a catch-all
@@ -99,40 +99,40 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         }
 
         /// <summary>
-        /// Text used as a required prefix when matching HTML start and end tags in the Razor source to available 
+        /// Text used as a required prefix when matching HTML start and end tags in the Razor source to available
         /// tag helpers.
         /// </summary>
-        public string Prefix { get; private set; }
+        public string Prefix { get; }
 
         /// <summary>
         /// The tag name that the tag helper should target.
         /// </summary>
-        public string TagName { get; private set; }
+        public string TagName { get; }
 
         /// <summary>
         /// The full tag name that is required for the tag helper to target an HTML element.
         /// </summary>
         /// <remarks>This is equivalent to <see cref="Prefix"/> and <see cref="TagName"/> concatenated.</remarks>
-        public string FullTagName { get; private set; }
+        public string FullTagName { get; }
 
         /// <summary>
         /// The full name of the tag helper class.
         /// </summary>
-        public string TypeName { get; private set; }
+        public string TypeName { get; }
 
         /// <summary>
         /// The name of the assembly containing the tag helper class.
         /// </summary>
-        public string AssemblyName { get; private set; }
+        public string AssemblyName { get; }
 
         /// <summary>
         /// The list of attributes the tag helper expects.
         /// </summary>
-        public IList<TagHelperAttributeDescriptor> Attributes { get; private set; }
+        public IReadOnlyList<TagHelperAttributeDescriptor> Attributes { get; }
 
         /// <summary>
         /// The list of required attribute names the tag helper expects to target an element.
         /// </summary>
-        public IList<string> RequiredAttributes { get; private set; }
+        public IReadOnlyList<string> RequiredAttributes { get; }
     }
 }

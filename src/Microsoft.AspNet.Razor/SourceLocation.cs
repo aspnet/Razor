@@ -5,7 +5,6 @@ using System;
 using System.Globalization;
 using Microsoft.AspNet.Razor.Text;
 using Microsoft.Framework.Internal;
-using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor
 {
@@ -18,6 +17,8 @@ namespace Microsoft.AspNet.Razor
 #endif
     public struct SourceLocation : IEquatable<SourceLocation>, IComparable<SourceLocation>
     {
+        private static readonly int TypeHashCode = typeof(SourceLocation).GetHashCode();
+
         /// <summary>
         /// An undefined <see cref="SourceLocation"/>.
         /// </summary>
@@ -96,20 +97,15 @@ namespace Microsoft.AspNet.Razor
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            // LineIndex and CharacterIndex can be calculated from AbsoluteIndex and the document content.
-            return HashCodeCombiner.Start()
-                .Add(FilePath, StringComparer.Ordinal)
-                .Add(AbsoluteIndex)
-                .CombinedHash;
+            // Hash code should include only immutable properties but Equals also checks the type.
+            return TypeHashCode;
         }
 
         /// <inheritdoc />
         public bool Equals(SourceLocation other)
         {
-            return string.Equals(FilePath, other.FilePath, StringComparison.Ordinal) &&
-                AbsoluteIndex == other.AbsoluteIndex &&
-                LineIndex == other.LineIndex &&
-                CharacterIndex == other.CharacterIndex;
+            // LineIndex and CharacterIndex can be calculated from AbsoluteIndex and the document content.
+            return CompareTo(other) == 0;
         }
 
         /// <inheritdoc />

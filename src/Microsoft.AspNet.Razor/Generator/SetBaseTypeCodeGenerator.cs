@@ -13,7 +13,7 @@ namespace Microsoft.AspNet.Razor.Generator
             BaseType = baseType;
         }
 
-        public string BaseType { get; private set; }
+        public string BaseType { get; }
 
         public override void GenerateCode(Span target, CodeGeneratorContext context)
         {

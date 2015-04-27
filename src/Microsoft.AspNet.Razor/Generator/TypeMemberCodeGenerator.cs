@@ -7,6 +7,8 @@ namespace Microsoft.AspNet.Razor.Generator
 {
     public class TypeMemberCodeGenerator : SpanCodeGenerator
     {
+        private static readonly int TypeHashCode = typeof(TypeMemberCodeGenerator).GetHashCode();
+
         public override void GenerateCode(Span target, CodeGeneratorContext context)
         {
             context.CodeTreeBuilder.AddTypeMemberChunk(target.Content, target);
@@ -25,7 +27,7 @@ namespace Microsoft.AspNet.Razor.Generator
         // C# complains at us if we don't provide an implementation, even one like this
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return TypeHashCode;
         }
     }
 }

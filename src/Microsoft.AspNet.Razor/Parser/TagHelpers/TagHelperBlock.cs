@@ -81,7 +81,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         /// <summary>
         /// The HTML tag name.
         /// </summary>
-        public string TagName { get; private set; }
+        public string TagName { get; }
 
         public override int Length
         {
