@@ -98,7 +98,7 @@ namespace Microsoft.AspNet.Razor
         public override int GetHashCode()
         {
             return HashCodeCombiner.Start()
-                .Add(FilePath)
+                .Add(FilePath, StringComparer.Ordinal)
                 .Add(AbsoluteIndex)
                 .CombinedHash;
         }
