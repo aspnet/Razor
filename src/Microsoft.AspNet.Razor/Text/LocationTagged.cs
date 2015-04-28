@@ -34,6 +34,7 @@ namespace Microsoft.AspNet.Razor.Text
         }
 
         public SourceLocation Location { get; }
+
         public T Value { get; }
 
         public override bool Equals(object obj)

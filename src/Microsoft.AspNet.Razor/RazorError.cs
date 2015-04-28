@@ -3,13 +3,12 @@
 
 using System;
 using System.Globalization;
+using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor
 {
     public class RazorError : IEquatable<RazorError>
     {
-        private static readonly int TypeHashCode = typeof(RazorError).GetHashCode();
-
         public RazorError()
             : this(message: string.Empty, location: SourceLocation.Undefined)
         {
@@ -37,8 +36,22 @@ namespace Microsoft.AspNet.Razor
         {
         }
 
+        /// <summary>
+        /// Gets (or sets) the message describing the error.
+        /// </summary>
+        /// <remarks>Set property is only accessible for deserialization purposes.</remarks>
         public string Message { get; set; }
+
+        /// <summary>
+        /// Gets (or sets) the start position of the erroneous text.
+        /// </summary>
+        /// <remarks>Set property is only accessible for deserialization purposes.</remarks>
         public SourceLocation Location { get; set; }
+
+        /// <summary>
+        /// Gets or sets the length of the erroneous text.
+        /// </summary>
+        /// <remarks>Set property is only accessible for deserialization purposes.</remarks>
         public int Length { get; set; }
 
         public override string ToString()
@@ -54,8 +67,10 @@ namespace Microsoft.AspNet.Razor
 
         public override int GetHashCode()
         {
-            // Hash code should include only immutable properties but Equals also checks the type.
-            return TypeHashCode;
+            return HashCodeCombiner.Start()
+                .Add(Message, StringComparer.Ordinal)
+                .Add(Location)
+                .CombinedHash;
         }
 
         public bool Equals(RazorError other)

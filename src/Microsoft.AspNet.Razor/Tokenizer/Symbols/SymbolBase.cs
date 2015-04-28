@@ -29,7 +29,9 @@ namespace Microsoft.AspNet.Razor.Tokenizer.Symbols
         }
 
         public SourceLocation Start { get; private set; }
+
         public string Content { get; }
+
         public IEnumerable<RazorError> Errors { get; }
 
         [SuppressMessage("Microsoft.Naming", "CA1721:PropertyNamesShouldNotMatchGetMethods", Justification = "This is the most appropriate name for this property and conflicts are unlikely")]
@@ -39,9 +41,9 @@ namespace Microsoft.AspNet.Razor.Tokenizer.Symbols
         {
             SymbolBase<TType> other = obj as SymbolBase<TType>;
             return other != null &&
-                   Start.Equals(other.Start) &&
-                   string.Equals(Content, other.Content, StringComparison.Ordinal) &&
-                   Type.Equals(other.Type);
+                Start.Equals(other.Start) &&
+                string.Equals(Content, other.Content, StringComparison.Ordinal) &&
+                Type.Equals(other.Type);
         }
 
         public override int GetHashCode()

@@ -29,7 +29,9 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         }
 
         public SpanKind Kind { get; }
+
         public int Start { get; }
+
         public int End { get; }
 
         public override string ToString()
@@ -40,15 +42,10 @@ namespace Microsoft.AspNet.Razor.Test.Generator
         public override bool Equals(object obj)
         {
             var other = obj as TestSpan;
-
-            if (other != null)
-            {
-                return (Kind == other.Kind) &&
-                       (Start == other.Start) &&
-                       (End == other.End);
-            }
-
-            return false;
+            return other != null &&
+                Kind == other.Kind &&
+                Start == other.Start &&
+                End == other.End;
         }
 
         public override int GetHashCode()

@@ -32,7 +32,7 @@ namespace Microsoft.AspNet.Razor.Generator
         {
             var other = obj as SectionCodeGenerator;
             return base.Equals(other) &&
-                   string.Equals(SectionName, other.SectionName, StringComparison.Ordinal);
+                string.Equals(SectionName, other.SectionName, StringComparison.Ordinal);
         }
 
         public override int GetHashCode()

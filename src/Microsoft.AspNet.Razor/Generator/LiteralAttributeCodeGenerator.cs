@@ -24,7 +24,9 @@ namespace Microsoft.AspNet.Razor.Generator
         }
 
         public LocationTagged<string> Prefix { get; }
+
         public LocationTagged<string> Value { get; }
+
         public LocationTagged<SpanCodeGenerator> ValueGenerator { get; }
 
         public override void GenerateCode(Span target, CodeGeneratorContext context)
@@ -61,9 +63,9 @@ namespace Microsoft.AspNet.Razor.Generator
         {
             var other = obj as LiteralAttributeCodeGenerator;
             return other != null &&
-                   Equals(other.Prefix, Prefix) &&
-                   Equals(other.Value, Value) &&
-                   Equals(other.ValueGenerator, ValueGenerator);
+                Equals(other.Prefix, Prefix) &&
+                Equals(other.Value, Value) &&
+                Equals(other.ValueGenerator, ValueGenerator);
         }
 
         public override int GetHashCode()

@@ -102,37 +102,37 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// Text used as a required prefix when matching HTML start and end tags in the Razor source to available
         /// tag helpers.
         /// </summary>
-        public string Prefix { get; }
+        public string Prefix { get; private set; }
 
         /// <summary>
         /// The tag name that the tag helper should target.
         /// </summary>
-        public string TagName { get; }
+        public string TagName { get; private set; }
 
         /// <summary>
         /// The full tag name that is required for the tag helper to target an HTML element.
         /// </summary>
         /// <remarks>This is equivalent to <see cref="Prefix"/> and <see cref="TagName"/> concatenated.</remarks>
-        public string FullTagName { get; }
+        public string FullTagName { get; private set; }
 
         /// <summary>
         /// The full name of the tag helper class.
         /// </summary>
-        public string TypeName { get; }
+        public string TypeName { get; private set; }
 
         /// <summary>
         /// The name of the assembly containing the tag helper class.
         /// </summary>
-        public string AssemblyName { get; }
+        public string AssemblyName { get; private set; }
 
         /// <summary>
         /// The list of attributes the tag helper expects.
         /// </summary>
-        public IReadOnlyList<TagHelperAttributeDescriptor> Attributes { get; }
+        public IReadOnlyList<TagHelperAttributeDescriptor> Attributes { get; private set; }
 
         /// <summary>
         /// The list of required attribute names the tag helper expects to target an element.
         /// </summary>
-        public IReadOnlyList<string> RequiredAttributes { get; }
+        public IReadOnlyList<string> RequiredAttributes { get; private set; }
     }
 }

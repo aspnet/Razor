@@ -2,13 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Globalization;
+using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
     public class MappingLocation
     {
-        private static readonly int TypeHashCode = typeof(MappingLocation).GetHashCode();
-
         public MappingLocation()
         {
         }
@@ -21,10 +20,13 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
             CharacterIndex = location.CharacterIndex;
         }
 
-        public int ContentLength { get; set; }
-        public int AbsoluteIndex { get; set; }
-        public int LineIndex { get; set; }
-        public int CharacterIndex { get; set; }
+        public int ContentLength { get; }
+
+        public int AbsoluteIndex { get; }
+
+        public int LineIndex { get; }
+
+        public int CharacterIndex { get; }
 
         public override bool Equals(object obj)
         {
@@ -42,8 +44,12 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 
         public override int GetHashCode()
         {
-            // Hash code should include only immutable properties but Equals also checks the type.
-            return TypeHashCode;
+            return HashCodeCombiner.Start()
+                .Add(AbsoluteIndex)
+                .Add(ContentLength)
+                .Add(LineIndex)
+                .Add(CharacterIndex)
+                .CombinedHash;
         }
 
         public override string ToString()

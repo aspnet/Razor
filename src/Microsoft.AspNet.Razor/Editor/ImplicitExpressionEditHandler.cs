@@ -18,18 +18,25 @@ namespace Microsoft.AspNet.Razor.Editor
 {
     public class ImplicitExpressionEditHandler : SpanEditHandler
     {
-        private static readonly int TypeHashCode = typeof(ImplicitExpressionEditHandler).GetHashCode();
+        private readonly ISet<string> _keywords;
 
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Func<T> is the recommended delegate type and requires this level of nesting.")]
         public ImplicitExpressionEditHandler(Func<string, IEnumerable<ISymbol>> tokenizer, ISet<string> keywords, bool acceptTrailingDot)
             : base(tokenizer)
         {
-            Keywords = keywords ?? new HashSet<string>();
+            _keywords = keywords ?? new HashSet<string>();
             AcceptTrailingDot = acceptTrailingDot;
         }
 
         public bool AcceptTrailingDot { get; }
-        public ISet<string> Keywords { get; }
+
+        public IReadOnlyCollection<string> Keywords
+        {
+            get
+            {
+                return (IReadOnlyCollection<string>)_keywords;
+            }
+        }
 
         public override string ToString()
         {
@@ -40,15 +47,15 @@ namespace Microsoft.AspNet.Razor.Editor
         {
             var other = obj as ImplicitExpressionEditHandler;
             return base.Equals(other) &&
-                Keywords.SetEquals(other.Keywords) &&
+                _keywords.SetEquals(other._keywords) &&
                 AcceptTrailingDot == other.AcceptTrailingDot;
         }
 
         public override int GetHashCode()
         {
-            // Hash code should include only immutable properties but Equals also checks the type.
+            // Hash code should include only immutable properties and base has none.
             return HashCodeCombiner.Start()
-                .Add(TypeHashCode)
+                .Add(Keywords)
                 .Add(AcceptTrailingDot)
                 .CombinedHash;
         }
@@ -306,7 +313,7 @@ namespace Microsoft.AspNet.Razor.Editor
         {
             using (var reader = new StringReader(newContent))
             {
-                return Keywords.Contains(reader.ReadWhile(ParserHelpers.IsIdentifierPart));
+                return _keywords.Contains(reader.ReadWhile(ParserHelpers.IsIdentifierPart));
             }
         }
     }

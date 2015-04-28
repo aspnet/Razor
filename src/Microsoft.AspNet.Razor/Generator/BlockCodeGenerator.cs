@@ -23,7 +23,8 @@ namespace Microsoft.AspNet.Razor.Generator
 
         public override bool Equals(object obj)
         {
-            return obj is IBlockCodeGenerator;
+            return obj != null &&
+                GetType() == obj.GetType();
         }
 
         public override int GetHashCode()

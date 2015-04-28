@@ -17,34 +17,32 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                 return new TheoryData<AutoCompleteEditHandler, AutoCompleteEditHandler>
                 {
                     {
-                        new AutoCompleteEditHandler(tokenizer: null)
+                        new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "one string",
                             EditorHints = EditorHints.LayoutPage,
                         },
-                        new AutoCompleteEditHandler(tokenizer: null)
+                        new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "one string",
                             EditorHints = EditorHints.LayoutPage,
                         }
                     },
                     {
                         // Tokenizer not involved in equality check or hash code calculation.
-                        new AutoCompleteEditHandler(tokenizer: null)
+                        new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.Any,
-                            AutoCompleteAtEndOfSpan = true,
                             AutoCompleteString = "two string",
                             EditorHints = EditorHints.None,
                         },
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.Any,
-                            AutoCompleteAtEndOfSpan = true,
                             AutoCompleteString = "two string",
                             EditorHints = EditorHints.None,
                         }
@@ -60,30 +58,33 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                 return new TheoryData<AutoCompleteEditHandler, object>
                 {
                     {
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "three string",
                             EditorHints = EditorHints.VirtualPath,
                         },
                         null
                     },
                     {
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "three string",
                             EditorHints = EditorHints.VirtualPath,
                         },
                         new object()
                     },
                     {
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "three string",
                             EditorHints = EditorHints.VirtualPath,
                         },
@@ -91,85 +92,87 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                     },
                     {
                         // Different AcceptedCharacters.
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "three string",
                             EditorHints = EditorHints.VirtualPath,
                         },
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "three string",
                             EditorHints = EditorHints.VirtualPath,
                         }
                     },
                     {
                         // Different AutoCompleteAtEndOfSpan.
-                        new AutoCompleteEditHandler(tokenizer: null)
+                        new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "four string",
                             EditorHints = EditorHints.LayoutPage,
                         },
-                        new AutoCompleteEditHandler(tokenizer: null)
+                        new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
-                            AutoCompleteAtEndOfSpan = true,
                             AutoCompleteString = "four string",
                             EditorHints = EditorHints.LayoutPage,
                         }
                     },
                     {
                         // Different AutoCompleteString.
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.NewLine,
-                            AutoCompleteAtEndOfSpan = true,
                             AutoCompleteString = "some string",
                             EditorHints = EditorHints.None,
                         },
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.NewLine,
-                            AutoCompleteAtEndOfSpan = true,
                             AutoCompleteString = "different string",
                             EditorHints = EditorHints.None,
                         }
                     },
                     {
                         // Different AutoCompleteString (case sensitive).
-                        new AutoCompleteEditHandler(tokenizer: null)
+                        new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.None,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "some string",
                             EditorHints = EditorHints.VirtualPath,
                         },
-                        new AutoCompleteEditHandler(tokenizer: null)
+                        new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.None,
-                            AutoCompleteAtEndOfSpan = false,
                             AutoCompleteString = "Some String",
                             EditorHints = EditorHints.VirtualPath,
                         }
                     },
                     {
                         // Different EditorHints.
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.NonWhiteSpace,
-                            AutoCompleteAtEndOfSpan = true,
                             AutoCompleteString = "five string",
                             EditorHints = EditorHints.LayoutPage,
                         },
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.NonWhiteSpace,
-                            AutoCompleteAtEndOfSpan = true,
                             AutoCompleteString = "five string",
                             EditorHints = EditorHints.None,
                         }

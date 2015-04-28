@@ -2,26 +2,21 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Globalization;
+using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
     public class LineMapping
     {
-        private static readonly int TypeHashCode = typeof(LineMapping).GetHashCode();
-
-        public LineMapping()
-            : this(documentLocation: null, generatedLocation: null)
-        {
-        }
-
         public LineMapping(MappingLocation documentLocation, MappingLocation generatedLocation)
         {
             DocumentLocation = documentLocation;
             GeneratedLocation = generatedLocation;
         }
 
-        public MappingLocation DocumentLocation { get; set; }
-        public MappingLocation GeneratedLocation { get; set; }
+        public MappingLocation DocumentLocation { get; }
+
+        public MappingLocation GeneratedLocation { get; }
 
         public override bool Equals(object obj)
         {
@@ -37,8 +32,10 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler
 
         public override int GetHashCode()
         {
-            // Hash code should include only immutable properties but Equals also checks the type.
-            return TypeHashCode;
+            return HashCodeCombiner.Start()
+                .Add(DocumentLocation)
+                .Add(GeneratedLocation)
+                .CombinedHash;
         }
 
         public static bool operator ==(LineMapping left, LineMapping right)

@@ -20,7 +20,9 @@ namespace Microsoft.AspNet.Razor.Generator
         }
 
         public string Name { get; }
+
         public LocationTagged<string> Prefix { get; }
+
         public LocationTagged<string> Suffix { get; }
 
         public override void GenerateStartBlockCode(Block target, CodeGeneratorContext context)
@@ -46,9 +48,9 @@ namespace Microsoft.AspNet.Razor.Generator
         {
             var other = obj as AttributeBlockCodeGenerator;
             return other != null &&
-                   string.Equals(other.Name, Name, StringComparison.Ordinal) &&
-                   Equals(other.Prefix, Prefix) &&
-                   Equals(other.Suffix, Suffix);
+                string.Equals(other.Name, Name, StringComparison.Ordinal) &&
+                Equals(other.Prefix, Prefix) &&
+                Equals(other.Suffix, Suffix);
         }
 
         public override int GetHashCode()

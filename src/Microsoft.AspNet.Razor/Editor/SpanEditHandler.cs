@@ -170,9 +170,10 @@ namespace Microsoft.AspNet.Razor.Editor
         public override bool Equals(object obj)
         {
             var other = obj as SpanEditHandler;
-            return other != null &&
-                   AcceptedCharacters == other.AcceptedCharacters &&
-                   EditorHints == other.EditorHints;
+            return obj != null &&
+                GetType() == obj.GetType() &&
+                AcceptedCharacters == other.AcceptedCharacters &&
+                EditorHints == other.EditorHints;
         }
 
         public override int GetHashCode()

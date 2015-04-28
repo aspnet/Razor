@@ -116,9 +116,9 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         public bool Equals(TagHelperBlock other)
         {
             return other != null &&
-                   TagName == other.TagName &&
-                   Attributes.SequenceEqual(other.Attributes) &&
-                   base.Equals(other);
+                TagName == other.TagName &&
+                Attributes.SequenceEqual(other.Attributes) &&
+                base.Equals(other);
         }
 
         /// <inheritdoc />

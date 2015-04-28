@@ -60,10 +60,15 @@ namespace Microsoft.AspNet.Razor.Text
         }
 
         public int OldPosition { get; }
+
         public int NewPosition { get; }
+
         public int OldLength { get; }
+
         public int NewLength { get; }
+
         public ITextBuffer NewBuffer { get; }
+
         public ITextBuffer OldBuffer { get; }
 
         /// <remark>
@@ -121,13 +126,14 @@ namespace Microsoft.AspNet.Razor.Text
             {
                 return false;
             }
+
             var change = (TextChange)obj;
-            return (change.OldPosition == OldPosition) &&
-                   (change.NewPosition == NewPosition) &&
-                   (change.OldLength == OldLength) &&
-                   (change.NewLength == NewLength) &&
-                   OldBuffer.Equals(change.OldBuffer) &&
-                   NewBuffer.Equals(change.NewBuffer);
+            return change.OldPosition == OldPosition &&
+                change.NewPosition == NewPosition &&
+                change.OldLength == OldLength &&
+                change.NewLength == NewLength &&
+                OldBuffer.Equals(change.OldBuffer) &&
+                NewBuffer.Equals(change.NewBuffer);
         }
 
         public override int GetHashCode()

@@ -15,6 +15,7 @@ namespace Microsoft.AspNet.Razor.Generator
         }
 
         public string Namespace { get; }
+
         public int NamespaceKeywordLength { get; set; }
 
         public override void GenerateCode(Span target, CodeGeneratorContext context)
@@ -38,8 +39,8 @@ namespace Microsoft.AspNet.Razor.Generator
         {
             var other = obj as AddImportCodeGenerator;
             return other != null &&
-                   string.Equals(Namespace, other.Namespace, StringComparison.Ordinal) &&
-                   NamespaceKeywordLength == other.NamespaceKeywordLength;
+                string.Equals(Namespace, other.Namespace, StringComparison.Ordinal) &&
+                NamespaceKeywordLength == other.NamespaceKeywordLength;
         }
 
         public override int GetHashCode()

@@ -112,9 +112,9 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
         {
             var other = obj as Block;
             return other != null &&
-                   Type == other.Type &&
-                   Equals(CodeGenerator, other.CodeGenerator) &&
-                   ChildrenEqual(Children, other.Children);
+                Type == other.Type &&
+                Equals(CodeGenerator, other.CodeGenerator) &&
+                ChildrenEqual(Children, other.Children);
         }
 
         public override int GetHashCode()

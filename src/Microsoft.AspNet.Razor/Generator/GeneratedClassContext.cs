@@ -161,16 +161,17 @@ namespace Microsoft.AspNet.Razor.Generator
             {
                 return false;
             }
+
             var other = (GeneratedClassContext)obj;
             return string.Equals(DefineSectionMethodName, other.DefineSectionMethodName, StringComparison.Ordinal) &&
-                   string.Equals(WriteMethodName, other.WriteMethodName, StringComparison.Ordinal) &&
-                   string.Equals(WriteLiteralMethodName, other.WriteLiteralMethodName, StringComparison.Ordinal) &&
-                   string.Equals(WriteToMethodName, other.WriteToMethodName, StringComparison.Ordinal) &&
-                   string.Equals(WriteLiteralToMethodName, other.WriteLiteralToMethodName, StringComparison.Ordinal) &&
-                   string.Equals(ExecuteMethodName, other.ExecuteMethodName, StringComparison.Ordinal) &&
-                   string.Equals(TemplateTypeName, other.TemplateTypeName, StringComparison.Ordinal) &&
-                   string.Equals(BeginContextMethodName, other.BeginContextMethodName, StringComparison.Ordinal) &&
-                   string.Equals(EndContextMethodName, other.EndContextMethodName, StringComparison.Ordinal);
+                string.Equals(WriteMethodName, other.WriteMethodName, StringComparison.Ordinal) &&
+                string.Equals(WriteLiteralMethodName, other.WriteLiteralMethodName, StringComparison.Ordinal) &&
+                string.Equals(WriteToMethodName, other.WriteToMethodName, StringComparison.Ordinal) &&
+                string.Equals(WriteLiteralToMethodName, other.WriteLiteralToMethodName, StringComparison.Ordinal) &&
+                string.Equals(ExecuteMethodName, other.ExecuteMethodName, StringComparison.Ordinal) &&
+                string.Equals(TemplateTypeName, other.TemplateTypeName, StringComparison.Ordinal) &&
+                string.Equals(BeginContextMethodName, other.BeginContextMethodName, StringComparison.Ordinal) &&
+                string.Equals(EndContextMethodName, other.EndContextMethodName, StringComparison.Ordinal);
         }
 
         public override int GetHashCode()

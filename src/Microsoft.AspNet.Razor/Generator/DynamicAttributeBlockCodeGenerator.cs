@@ -22,6 +22,7 @@ namespace Microsoft.AspNet.Razor.Generator
         }
 
         public LocationTagged<string> Prefix { get; }
+
         public SourceLocation ValueStart { get; }
 
         public override void GenerateStartBlockCode(Block target, CodeGeneratorContext context)
@@ -45,7 +46,7 @@ namespace Microsoft.AspNet.Razor.Generator
         {
             var other = obj as DynamicAttributeBlockCodeGenerator;
             return other != null &&
-                   Equals(other.Prefix, Prefix);
+                Equals(other.Prefix, Prefix);
         }
 
         public override int GetHashCode()

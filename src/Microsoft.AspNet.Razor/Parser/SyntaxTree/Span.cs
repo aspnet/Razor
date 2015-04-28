@@ -126,10 +126,10 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
         {
             var other = node as Span;
             return other != null &&
-                   Kind.Equals(other.Kind) &&
-                   Start.Equals(other.Start) &&
-                   EditHandler.Equals(other.EditHandler) &&
-                   string.Equals(other.Content, Content, StringComparison.Ordinal);
+                Kind.Equals(other.Kind) &&
+                Start.Equals(other.Start) &&
+                EditHandler.Equals(other.EditHandler) &&
+                string.Equals(other.Content, Content, StringComparison.Ordinal);
         }
 
         public override int GetEquivalenceHash()
@@ -142,10 +142,10 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
         {
             var other = obj as Span;
             return other != null &&
-                   Kind.Equals(other.Kind) &&
-                   EditHandler.Equals(other.EditHandler) &&
-                   CodeGenerator.Equals(other.CodeGenerator) &&
-                   Symbols.SequenceEqual(other.Symbols);
+                Kind.Equals(other.Kind) &&
+                EditHandler.Equals(other.EditHandler) &&
+                CodeGenerator.Equals(other.CodeGenerator) &&
+                Symbols.SequenceEqual(other.Symbols);
         }
 
         public override int GetHashCode()

@@ -5,6 +5,7 @@ using System;
 using System.Globalization;
 using Microsoft.AspNet.Razor.Text;
 using Microsoft.Framework.Internal;
+using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor
 {
@@ -17,8 +18,6 @@ namespace Microsoft.AspNet.Razor
 #endif
     public struct SourceLocation : IEquatable<SourceLocation>, IComparable<SourceLocation>
     {
-        private static readonly int TypeHashCode = typeof(SourceLocation).GetHashCode();
-
         /// <summary>
         /// An undefined <see cref="SourceLocation"/>.
         /// </summary>
@@ -91,14 +90,17 @@ namespace Microsoft.AspNet.Razor
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            return (obj is SourceLocation) && Equals((SourceLocation)obj);
+            return obj is SourceLocation &&
+                Equals((SourceLocation)obj);
         }
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            // Hash code should include only immutable properties but Equals also checks the type.
-            return TypeHashCode;
+            return HashCodeCombiner.Start()
+                .Add(FilePath)
+                .Add(AbsoluteIndex)
+                .CombinedHash;
         }
 
         /// <inheritdoc />

@@ -46,47 +46,6 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
             }
         }
 
-        // Following cases involve other SpanEditHandler that SpanEditHandler thinks are equal. But they have
-        // their own Equals() and GetHashCode() implementations, leading to X==Y but Y!=X and different hash codes.
-        public static TheoryData<SpanEditHandler, SpanEditHandler> SlightlyMatchingTestDataSet
-        {
-            get
-            {
-                return new TheoryData<SpanEditHandler, SpanEditHandler>
-                {
-                    {
-                        new SpanEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
-                        {
-                            AcceptedCharacters = AcceptedCharacters.Any,
-                            EditorHints = EditorHints.None,
-                        },
-                        new AutoCompleteEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
-                        {
-                            AcceptedCharacters = AcceptedCharacters.Any,
-                            AutoCompleteAtEndOfSpan = true,
-                            AutoCompleteString = "two string",
-                            EditorHints = EditorHints.None,
-                        }
-                    },
-                    {
-                        new SpanEditHandler(tokenizer: null)
-                        {
-                            AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
-                            EditorHints = EditorHints.VirtualPath,
-                        },
-                        new ImplicitExpressionEditHandler(
-                            tokenizer: null,
-                            keywords: new HashSet<string>(),
-                            acceptTrailingDot: false)
-                        {
-                            AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
-                            EditorHints = EditorHints.VirtualPath,
-                        }
-                    },
-                };
-            }
-        }
-
         public static TheoryData<SpanEditHandler, object> NonMatchingTestDataSet
         {
             get
@@ -108,6 +67,36 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             EditorHints = EditorHints.VirtualPath,
                         },
                         new object()
+                    },
+                    {
+                        new SpanEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
+                        {
+                            AcceptedCharacters = AcceptedCharacters.Any,
+                            EditorHints = EditorHints.None,
+                        },
+                        new AutoCompleteEditHandler(
+                            tokenizer: _ => Enumerable.Empty<ISymbol>(),
+                            autoCompleteAtEndOfSpan: true)
+                        {
+                            AcceptedCharacters = AcceptedCharacters.Any,
+                            AutoCompleteString = "two string",
+                            EditorHints = EditorHints.None,
+                        }
+                    },
+                    {
+                        new SpanEditHandler(tokenizer: null)
+                        {
+                            AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
+                            EditorHints = EditorHints.VirtualPath,
+                        },
+                        new ImplicitExpressionEditHandler(
+                            tokenizer: null,
+                            keywords: new HashSet<string>(),
+                            acceptTrailingDot: false)
+                        {
+                            AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
+                            EditorHints = EditorHints.VirtualPath,
+                        }
                     },
                     {
                         // Different AcceptedCharacters.
@@ -141,7 +130,6 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
 
         [Theory]
         [MemberData(nameof(MatchingTestDataSet))]
-        [MemberData(nameof(SlightlyMatchingTestDataSet))]
         public void Equals_True_WhenExpected(SpanEditHandler leftObject, SpanEditHandler rightObject)
         {
             // Arrange & Act
@@ -149,28 +137,6 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
 
             // Assert
             Assert.True(result);
-        }
-
-        [Theory]
-        [MemberData(nameof(MatchingTestDataSet))]
-        public void Equals_True_Symmetric(SpanEditHandler leftObject, SpanEditHandler rightObject)
-        {
-            // Arrange & Act
-            var result = rightObject.Equals(leftObject);
-
-            // Assert
-            Assert.True(result);
-        }
-
-        [Theory]
-        [MemberData(nameof(SlightlyMatchingTestDataSet))]
-        public void Equals_False_NotSymmetric(SpanEditHandler leftObject, SpanEditHandler rightObject)
-        {
-            // Arrange & Act
-            var result = rightObject.Equals(leftObject);
-
-            // Assert
-            Assert.False(result);
         }
 
         [Theory]
@@ -194,20 +160,6 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
 
             // Assert
             Assert.Equal(leftResult, rightResult);
-        }
-
-        [Theory]
-        [MemberData(nameof(SlightlyMatchingTestDataSet))]
-        public void GetHashCode_ReturnsDifferentValues_NotSymmetric(
-            SpanEditHandler leftObject,
-            SpanEditHandler rightObject)
-        {
-            // Arrange & Act
-            var leftResult = leftObject.GetHashCode();
-            var rightResult = rightObject.GetHashCode();
-
-            // Assert
-            Assert.NotEqual(leftResult, rightResult);
         }
     }
 }

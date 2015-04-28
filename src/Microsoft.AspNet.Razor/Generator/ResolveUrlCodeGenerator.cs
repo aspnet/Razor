@@ -7,8 +7,6 @@ namespace Microsoft.AspNet.Razor.Generator
 {
     public class ResolveUrlCodeGenerator : SpanCodeGenerator
     {
-        private static readonly int TypeHashCode = typeof(ResolveUrlCodeGenerator).GetHashCode();
-
         public override void GenerateCode(Span target, CodeGeneratorContext context)
         {
             // Check if the host supports it
@@ -25,16 +23,6 @@ namespace Microsoft.AspNet.Razor.Generator
         public override string ToString()
         {
             return "VirtualPath";
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is ResolveUrlCodeGenerator;
-        }
-
-        public override int GetHashCode()
-        {
-            return TypeHashCode;
         }
     }
 }
