@@ -21,13 +21,13 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
                             AutoCompleteString = "one string",
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
                             AutoCompleteString = "one string",
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         }
                     },
                     {
@@ -115,13 +115,13 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                         {
                             AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
                             AutoCompleteString = "four string",
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.None,
                         },
                         new AutoCompleteEditHandler(tokenizer: null, autoCompleteAtEndOfSpan: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
                             AutoCompleteString = "four string",
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.None,
                         }
                     },
                     {
@@ -166,7 +166,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                         {
                             AcceptedCharacters = AcceptedCharacters.NonWhiteSpace,
                             AutoCompleteString = "five string",
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         new AutoCompleteEditHandler(
                             tokenizer: _ => Enumerable.Empty<ISymbol>(),

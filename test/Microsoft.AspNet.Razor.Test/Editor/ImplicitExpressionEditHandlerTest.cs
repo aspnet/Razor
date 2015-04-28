@@ -25,7 +25,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         new ImplicitExpressionEditHandler(
                             tokenizer: null,
@@ -33,7 +33,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         }
                     },
                     {
@@ -91,7 +91,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.WhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         null
                     },
@@ -102,7 +102,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.WhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         new object()
                     },
@@ -113,7 +113,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.WhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.None,
                         },
                         new SpanEditHandler( tokenizer: _ => null)
                     },
@@ -144,7 +144,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: false)
                         {
                             AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         new ImplicitExpressionEditHandler(
                             tokenizer: _ => null,
@@ -152,7 +152,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.AnyExceptNewline,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         }
                     },
                     {
@@ -201,7 +201,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.NonWhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.None,
                         },
                         new ImplicitExpressionEditHandler(
                             tokenizer: _ => Enumerable.Empty<ISymbol>(),
@@ -209,7 +209,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.NonWhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.None,
                         }
                     },
                     {
@@ -239,7 +239,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                             acceptTrailingDot: true)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         new ImplicitExpressionEditHandler(
                             tokenizer: _ => Enumerable.Empty<ISymbol>(),

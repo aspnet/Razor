@@ -21,12 +21,12 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                         new SpanEditHandler(tokenizer: null)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         new SpanEditHandler(tokenizer: null)
                         {
                             AcceptedCharacters = AcceptedCharacters.AllWhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         }
                     },
                     {
@@ -116,7 +116,7 @@ namespace Microsoft.AspNet.Razor.Parser.SyntaxTree
                         new SpanEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
                         {
                             AcceptedCharacters = AcceptedCharacters.NonWhiteSpace,
-                            EditorHints = EditorHints.LayoutPage,
+                            EditorHints = EditorHints.VirtualPath,
                         },
                         new SpanEditHandler(tokenizer: _ => Enumerable.Empty<ISymbol>())
                         {
