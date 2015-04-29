@@ -19,12 +19,18 @@ namespace Microsoft.AspNet.Razor.Editor
     public class ImplicitExpressionEditHandler : SpanEditHandler
     {
         private readonly ISet<string> _keywords;
+        private readonly IReadOnlyCollection<string> _readOnlyKeywords;
 
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Func<T> is the recommended delegate type and requires this level of nesting.")]
         public ImplicitExpressionEditHandler(Func<string, IEnumerable<ISymbol>> tokenizer, ISet<string> keywords, bool acceptTrailingDot)
             : base(tokenizer)
         {
             _keywords = keywords ?? new HashSet<string>();
+
+            // HashSet<T> implements IReadOnlyCollection<T> as of 4.6, but does not for 4.5.1. If the runtime cast
+            // succeeds, avoid creating a new collection.
+            _readOnlyKeywords = (_keywords as IReadOnlyCollection<string>) ?? _keywords.ToArray();
+
             AcceptTrailingDot = acceptTrailingDot;
         }
 
@@ -34,7 +40,7 @@ namespace Microsoft.AspNet.Razor.Editor
         {
             get
             {
-                return (IReadOnlyCollection<string>)_keywords;
+                return _readOnlyKeywords;
             }
         }
 
