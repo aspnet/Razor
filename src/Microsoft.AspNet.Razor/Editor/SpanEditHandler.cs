@@ -170,8 +170,8 @@ namespace Microsoft.AspNet.Razor.Editor
         public override bool Equals(object obj)
         {
             var other = obj as SpanEditHandler;
-            return obj != null &&
-                GetType() == obj.GetType() &&
+            return other != null &&
+                GetType() == other.GetType() &&
                 AcceptedCharacters == other.AcceptedCharacters &&
                 EditorHints == other.EditorHints;
         }

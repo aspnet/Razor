@@ -115,20 +115,18 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers
         /// </returns>
         public bool Equals(TagHelperBlock other)
         {
-            return other != null &&
-                TagName == other.TagName &&
-                Attributes.SequenceEqual(other.Attributes) &&
-                base.Equals(other);
+            return base.Equals(other) &&
+                string.Equals(TagName, other.TagName, StringComparison.OrdinalIgnoreCase) &&
+                Attributes.SequenceEqual(other.Attributes);
         }
 
         /// <inheritdoc />
         public override int GetHashCode()
         {
-            return HashCodeCombiner
-                .Start()
-                .Add(TagName)
-                .Add(Attributes)
+            return HashCodeCombiner.Start()
                 .Add(base.GetHashCode())
+                .Add(TagName, StringComparer.OrdinalIgnoreCase)
+                .Add(Attributes)
                 .CombinedHash;
         }
     }
