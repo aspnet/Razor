@@ -4,6 +4,7 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using Microsoft.Framework.Internal;
 using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor.Text
@@ -17,18 +18,13 @@ namespace Microsoft.AspNet.Razor.Text
             Value = default(T);
         }
 
-        public LocationTagged(T value, int offset, int line, int col)
+        public LocationTagged([NotNull] T value, int offset, int line, int col)
             : this(value, new SourceLocation(offset, line, col))
         {
         }
 
-        public LocationTagged(T value, SourceLocation location)
+        public LocationTagged([NotNull] T value, SourceLocation location)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException("value");
-            }
-
             Location = location;
             Value = value;
         }
