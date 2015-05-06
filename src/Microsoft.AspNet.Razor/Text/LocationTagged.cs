@@ -10,20 +10,20 @@ using Microsoft.Internal.Web.Utils;
 namespace Microsoft.AspNet.Razor.Text
 {
     [DebuggerDisplay("({Location})\"{Value}\"")]
-    public class LocationTagged<T> : IFormattable
+    public class LocationTagged<TValue> : IFormattable
     {
         private LocationTagged()
         {
             Location = SourceLocation.Undefined;
-            Value = default(T);
+            Value = default(TValue);
         }
 
-        public LocationTagged([NotNull] T value, int offset, int line, int col)
+        public LocationTagged([NotNull] TValue value, int offset, int line, int col)
             : this(value, new SourceLocation(offset, line, col))
         {
         }
 
-        public LocationTagged([NotNull] T value, SourceLocation location)
+        public LocationTagged([NotNull] TValue value, SourceLocation location)
         {
             Location = location;
             Value = value;
@@ -31,11 +31,11 @@ namespace Microsoft.AspNet.Razor.Text
 
         public SourceLocation Location { get; }
 
-        public T Value { get; }
+        public TValue Value { get; }
 
         public override bool Equals(object obj)
         {
-            LocationTagged<T> other = obj as LocationTagged<T>;
+            LocationTagged<TValue> other = obj as LocationTagged<TValue>;
             if (ReferenceEquals(other, null))
             {
                 return false;
@@ -77,17 +77,17 @@ namespace Microsoft.AspNet.Razor.Text
             }
         }
 
-        public static implicit operator T(LocationTagged<T> value)
+        public static implicit operator TValue(LocationTagged<TValue> value)
         {
             return value.Value;
         }
 
-        public static bool operator ==(LocationTagged<T> left, LocationTagged<T> right)
+        public static bool operator ==(LocationTagged<TValue> left, LocationTagged<TValue> right)
         {
             return Equals(left, right);
         }
 
-        public static bool operator !=(LocationTagged<T> left, LocationTagged<T> right)
+        public static bool operator !=(LocationTagged<TValue> left, LocationTagged<TValue> right)
         {
             return !Equals(left, right);
         }

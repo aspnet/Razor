@@ -5,9 +5,10 @@ using Microsoft.Framework.Internal;
 
 namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
-    public class CodeVisitor<T> : ChunkVisitor<T> where T : CodeWriter
+    public class CodeVisitor<TWriter> : ChunkVisitor<TWriter>
+        where TWriter : CodeWriter
     {
-        public CodeVisitor([NotNull] T writer, [NotNull] CodeBuilderContext context)
+        public CodeVisitor([NotNull] TWriter writer, [NotNull] CodeBuilderContext context)
             : base(writer, context)
         {
         }

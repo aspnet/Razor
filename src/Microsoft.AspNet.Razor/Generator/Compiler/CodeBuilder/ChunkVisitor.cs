@@ -6,15 +6,16 @@ using Microsoft.Framework.Internal;
 
 namespace Microsoft.AspNet.Razor.Generator.Compiler
 {
-    public abstract class ChunkVisitor<T> : IChunkVisitor where T : CodeWriter
+    public abstract class ChunkVisitor<TWriter> : IChunkVisitor
+        where TWriter : CodeWriter
     {
-        public ChunkVisitor([NotNull] T writer, [NotNull] CodeBuilderContext context)
+        public ChunkVisitor([NotNull] TWriter writer, [NotNull] CodeBuilderContext context)
         {
             Writer = writer;
             Context = context;
         }
 
-        protected T Writer { get; private set; }
+        protected TWriter Writer { get; private set; }
         protected CodeBuilderContext Context { get; private set; }
 
         public void Accept([NotNull] IList<Chunk> chunks)
