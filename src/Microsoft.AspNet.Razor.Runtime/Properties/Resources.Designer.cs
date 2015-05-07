@@ -187,6 +187,38 @@ namespace Microsoft.AspNet.Razor.Runtime
         }
 
         /// <summary>
+        /// name
+        /// </summary>
+        internal static string TagHelperDescriptorFactory_Name
+        {
+            get { return GetString("TagHelperDescriptorFactory_Name"); }
+        }
+
+        /// <summary>
+        /// name
+        /// </summary>
+        internal static string FormatTagHelperDescriptorFactory_Name()
+        {
+            return GetString("TagHelperDescriptorFactory_Name");
+        }
+
+        /// <summary>
+        /// prefix
+        /// </summary>
+        internal static string TagHelperDescriptorFactory_Prefix
+        {
+            get { return GetString("TagHelperDescriptorFactory_Prefix"); }
+        }
+
+        /// <summary>
+        /// prefix
+        /// </summary>
+        internal static string FormatTagHelperDescriptorFactory_Prefix()
+        {
+            return GetString("TagHelperDescriptorFactory_Prefix");
+        }
+
+        /// <summary>
         /// Tag
         /// </summary>
         internal static string TagHelperDescriptorFactory_Tag
@@ -203,7 +235,7 @@ namespace Microsoft.AspNet.Razor.Runtime
         }
 
         /// <summary>
-        /// Invalid tag helper bound property '{0}.{1}'. Tag helpers cannot bind to HTML attributes beginning with '{2}'.
+        /// Invalid tag helper bound property '{0}.{1}'. Tag helpers cannot bind to HTML attributes with {2} '{3}' because {2} starts with '{4}'.
         /// </summary>
         internal static string TagHelperDescriptorFactory_InvalidBoundAttributeName
         {
@@ -211,11 +243,43 @@ namespace Microsoft.AspNet.Razor.Runtime
         }
 
         /// <summary>
-        /// Invalid tag helper bound property '{0}.{1}'. Tag helpers cannot bind to HTML attributes beginning with '{2}'.
+        /// Invalid tag helper bound property '{0}.{1}'. Tag helpers cannot bind to HTML attributes with {2} '{3}' because {2} starts with '{4}'.
         /// </summary>
-        internal static string FormatTagHelperDescriptorFactory_InvalidBoundAttributeName(object p0, object p1, object p2)
+        internal static string FormatTagHelperDescriptorFactory_InvalidBoundAttributeName(object p0, object p1, object p2, object p3, object p4)
         {
-            return string.Format(CultureInfo.CurrentCulture, GetString("TagHelperDescriptorFactory_InvalidBoundAttributeName"), p0, p1, p2);
+            return string.Format(CultureInfo.CurrentCulture, GetString("TagHelperDescriptorFactory_InvalidBoundAttributeName"), p0, p1, p2, p3, p4);
+        }
+
+        /// <summary>
+        /// Invalid tag helper bound property '{0}.{1}'. Tag helpers cannot bind to HTML attributes with {2} '{3}' because {2} contains a '{4}' character.
+        /// </summary>
+        internal static string TagHelperDescriptorFactory_InvalidBoundAttributeNameCharacter
+        {
+            get { return GetString("TagHelperDescriptorFactory_InvalidBoundAttributeNameCharacter"); }
+        }
+
+        /// <summary>
+        /// Invalid tag helper bound property '{0}.{1}'. Tag helpers cannot bind to HTML attributes with {2} '{3}' because {2} contains a '{4}' character.
+        /// </summary>
+        internal static string FormatTagHelperDescriptorFactory_InvalidBoundAttributeNameCharacter(object p0, object p1, object p2, object p3, object p4)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("TagHelperDescriptorFactory_InvalidBoundAttributeNameCharacter"), p0, p1, p2, p3, p4);
+        }
+
+        /// <summary>
+        /// Invalid tag helper bound property '{0}.{1}'. '{2}.{3}' must be null unless property type implements '{4}'.
+        /// </summary>
+        internal static string TagHelperDescriptorFactory_InvalidBoundAttributePrefix
+        {
+            get { return GetString("TagHelperDescriptorFactory_InvalidBoundAttributePrefix"); }
+        }
+
+        /// <summary>
+        /// Invalid tag helper bound property '{0}.{1}'. '{2}.{3}' must be null unless property type implements '{4}'.
+        /// </summary>
+        internal static string FormatTagHelperDescriptorFactory_InvalidBoundAttributePrefix(object p0, object p1, object p2, object p3, object p4)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("TagHelperDescriptorFactory_InvalidBoundAttributePrefix"), p0, p1, p2, p3, p4);
         }
 
         /// <summary>

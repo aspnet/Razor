@@ -15,6 +15,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             new CaseSensitiveTagHelperDescriptorComparer();
 
         private CaseSensitiveTagHelperDescriptorComparer()
+            : base()
         {
         }
 

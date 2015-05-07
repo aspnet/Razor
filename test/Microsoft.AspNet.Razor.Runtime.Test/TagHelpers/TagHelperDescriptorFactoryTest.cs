@@ -911,7 +911,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             get
             {
                 var errorFormat = "Invalid tag helper bound property '{0}.{1}'. Tag helpers cannot bind to HTML " +
-                    "attributes beginning with 'data-'.";
+                    "attributes with name '{2}' because name starts with 'data-'.";
 
                 // type, expectedAttributeDescriptors, expectedErrors
                 return new TheoryData<Type, IEnumerable<TagHelperAttributeDescriptor>, string[]>
@@ -922,8 +922,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                         new[] {
                             string.Format(
                                 errorFormat,
+                                typeof(InvalidBoundAttribute).FullName,
                                 nameof(InvalidBoundAttribute.DataSomething),
-                                typeof(InvalidBoundAttribute).FullName)
+                                "data-something")
                         }
                     },
                     {
@@ -937,8 +938,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                         new[] {
                             string.Format(
                                 errorFormat,
+                                typeof(InvalidBoundAttributeWithValid).FullName,
                                 nameof(InvalidBoundAttributeWithValid.DataSomething),
-                                typeof(InvalidBoundAttributeWithValid).FullName)
+                                "data-something")
                         }
                     },
                     {
@@ -957,8 +959,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                         new[] {
                             string.Format(
                                 errorFormat,
+                                typeof(OverriddenValidBoundAttributeWithInvalid).FullName,
                                 nameof(OverriddenValidBoundAttributeWithInvalid.ValidSomething),
-                                typeof(OverriddenValidBoundAttributeWithInvalid).FullName)
+                                "data-something")
                         }
                     },
                     {
@@ -967,8 +970,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                         new[] {
                             string.Format(
                                 errorFormat,
+                                typeof(OverriddenValidBoundAttributeWithInvalidUpperCase).FullName,
                                 nameof(OverriddenValidBoundAttributeWithInvalidUpperCase.ValidSomething),
-                                typeof(OverriddenValidBoundAttributeWithInvalidUpperCase).FullName)
+                                "DATA-SOMETHING")
                         }
                     },
                 };
