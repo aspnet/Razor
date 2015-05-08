@@ -20,9 +20,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
         internal static readonly string ScopeManagerVariableName = "__tagHelperScopeManager";
         internal static readonly string RunnerVariableName = "__tagHelperRunner";
 
-        private static readonly TagHelperAttributeDescriptorComparer AttributeDescriptorComparer =
-            new TagHelperAttributeDescriptorComparer();
-
         private readonly CSharpCodeWriter _writer;
         private readonly CodeBuilderContext _context;
         private readonly IChunkVisitor _bodyVisitor;
@@ -64,20 +61,33 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             // multiple TargetElement attributes are on a TagHelper type and matches overlap for an HTML element.
             // Having more than one descriptor with the same TagHelper type results in generated code that runs
             // the same TagHelper X many times (instead of once) over a single HTML element.
-            var tagHelperDescriptors = chunk.Descriptors.Distinct(TypeNameTagHelperDescriptorComparer.Default);
+            var tagHelperDescriptors = chunk.Descriptors.Distinct(TypeBasedTagHelperDescriptorComparer.Default);
 
             RenderBeginTagHelperScope(chunk.TagName, chunk.SelfClosing, chunk.Children);
 
-            RenderTagHelpersCreation(chunk, tagHelperDescriptors);
-
-            var attributeDescriptors = tagHelperDescriptors.SelectMany(descriptor => descriptor.Attributes);
-            var boundHTMLAttributes = attributeDescriptors.Select(descriptor => descriptor.Name);
+            // Determine what attributes exist in the element and divide them up.
             var htmlAttributes = chunk.Attributes;
-            var unboundHTMLAttributes =
-                htmlAttributes.Where(htmlAttribute => !boundHTMLAttributes.Contains(htmlAttribute.Key,
-                                                                                    StringComparer.OrdinalIgnoreCase));
+            var attributeDescriptors = tagHelperDescriptors.SelectMany(descriptor => descriptor.Attributes);
+            var boundAttributes = htmlAttributes.Where(htmlAttribute =>
+            {
+                var name = htmlAttribute.Key;
+                return attributeDescriptors.Any(descriptor =>
+                    string.Equals(name, descriptor.Name, StringComparison.OrdinalIgnoreCase) ||
+                    (descriptor.Prefix != null &&
+                     name.StartsWith(descriptor.Prefix, StringComparison.OrdinalIgnoreCase)));
+            });
+            var unboundHtmlAttributes = htmlAttributes.Except(boundAttributes);
 
-            RenderUnboundHTMLAttributes(unboundHTMLAttributes);
+            var boundNonStringAttributes = boundAttributes.Where(attribute =>
+            {
+                var name = attribute.Key;
+                return TagHelperHelper.IsBoundNonStringAttribute(name, tagHelperDescriptors);
+            });
+            var boundStringAttributes = boundAttributes.Except(boundNonStringAttributes);
+
+            RenderTagHelpersCreation(chunk, tagHelperDescriptors, boundStringAttributes);
+
+            RenderUnboundHTMLAttributes(unboundHtmlAttributes);
 
             // No need to run anything in design time mode.
             if (!_designTimeMode)
@@ -156,8 +166,12 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderTagHelpersCreation(
             TagHelperChunk chunk,
-            IEnumerable<TagHelperDescriptor> tagHelperDescriptors)
+            IEnumerable<TagHelperDescriptor> tagHelperDescriptors,
+            IEnumerable<KeyValuePair<string, Chunk>> boundStringAttributes)
         {
+            var boundStringAttributeNames =
+                new HashSet<string>(boundStringAttributes.Select(kvp => kvp.Key), StringComparer.OrdinalIgnoreCase);
+
             // This is to maintain value accessors for attributes when creating the TagHelpers.
             // Ultimately it enables us to do scenarios like this:
             // myTagHelper1.Foo = DateTime.Now;
@@ -183,53 +197,68 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 }
 
                 // Render all of the bound attribute values for the tag helper.
-                RenderBoundHTMLAttributes(chunk.Attributes,
-                                          tagHelperVariableName,
-                                          tagHelperDescriptor.Attributes,
-                                          htmlAttributeValues);
+                RenderBoundHTMLAttributes(
+                    chunk.Attributes,
+                    tagHelperVariableName,
+                    tagHelperDescriptor.Attributes,
+                    boundStringAttributeNames,
+                    htmlAttributeValues);
             }
         }
 
-        private void RenderBoundHTMLAttributes(IList<KeyValuePair<string, Chunk>> chunkAttributes,
-                                               string tagHelperVariableName,
-                                               IEnumerable<TagHelperAttributeDescriptor> attributeDescriptors,
-                                               Dictionary<string, string> htmlAttributeValues)
+        private void RenderBoundHTMLAttributes(
+            IList<KeyValuePair<string, Chunk>> chunkAttributes,
+            string tagHelperVariableName,
+            IEnumerable<TagHelperAttributeDescriptor> attributeDescriptors,
+            HashSet<string> boundStringAttributeNames,
+            Dictionary<string, string> htmlAttributeValues)
         {
+            // Pass 1: Initialize all dictionary-typed properties we can (if they're null at runtime).
+            foreach (var attributeDescriptor in attributeDescriptors)
+            {
+                if (!string.IsNullOrEmpty(attributeDescriptor.ObjectCreationExpression))
+                {
+                    var valueAccessor = string.Format(
+                        CultureInfo.InvariantCulture,
+                        "{0}.{1}",
+                        tagHelperVariableName,
+                        attributeDescriptor.PropertyName);
+
+                    _writer
+                        .Write("if (")
+                        .Write(valueAccessor)
+                        .WriteLine(" == null)");
+                    using (_writer.BuildScope())
+                    {
+                        _writer
+                            .WriteStartAssignment(valueAccessor)
+                            .Write(attributeDescriptor.ObjectCreationExpression)
+                            .WriteLine(";");
+                    }
+                }
+            }
+
+            // Pass 2: Set all individually-bound properties.
+            var attributeNames = chunkAttributes.Select(kvp => kvp.Key);
+            var remainingAttributeNames = new HashSet<string>(attributeNames, StringComparer.OrdinalIgnoreCase);
             foreach (var attributeDescriptor in attributeDescriptors)
             {
                 var matchingAttributes = chunkAttributes.Where(
-                    attr => string.Equals(attr.Key, attributeDescriptor.Name, StringComparison.OrdinalIgnoreCase));
+                    kvp => string.Equals(kvp.Key, attributeDescriptor.Name, StringComparison.OrdinalIgnoreCase));
 
                 if (matchingAttributes.Any())
                 {
-                    // First attribute wins, even if there's duplicates.
-                    var attributeValueChunk = matchingAttributes.First().Value;
-
-                    var attributeValueRecorded = htmlAttributeValues.ContainsKey(attributeDescriptor.Name);
-
-                    // Bufferable attributes are attributes that can have Razor code inside of them.
-                    var bufferableAttribute = IsStringAttribute(attributeDescriptor);
-
-                    // Plain text values are non Razor code (@DateTime.Now) values. If an attribute is bufferable it
-                    // may be more than just a plain text value, it may also contain Razor code which is why we attempt
-                    // to retrieve a plain text value here.
-                    string textValue;
-                    var isPlainTextValue = TryGetPlainTextValue(attributeValueChunk, out textValue);
-
-                    // If we haven't recorded a value and we need to buffer an attribute value and the value is not
-                    // plain text then we need to prepare the value prior to setting it below.
-                    if (!attributeValueRecorded && bufferableAttribute && !isPlainTextValue)
-                    {
-                        BuildBufferedWritingScope(attributeValueChunk, htmlEncodeValues: false);
-                    }
+                    remainingAttributeNames.Remove(attributeDescriptor.Name);
 
                     // We capture the tag helpers property value accessor so we can retrieve it later (if we need to).
-                    var valueAccessor = string.Format(CultureInfo.InvariantCulture,
-                                                      "{0}.{1}",
-                                                      tagHelperVariableName,
-                                                      attributeDescriptor.PropertyName);
+                    var valueAccessor = string.Format(
+                        CultureInfo.InvariantCulture,
+                        "{0}.{1}",
+                        tagHelperVariableName,
+                        attributeDescriptor.PropertyName);
 
                     // If we haven't recorded this attribute value before then we need to record its value.
+                    var attributeValueRecorded = htmlAttributeValues.ContainsKey(attributeDescriptor.Name);
                     if (!attributeValueRecorded)
                     {
                         // We only need to create attribute values once per HTML element (not once per tag helper).
@@ -237,58 +266,19 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                         // helpers that need the value.
                         htmlAttributeValues.Add(attributeDescriptor.Name, valueAccessor);
 
-                        if (bufferableAttribute)
-                        {
-                            _writer.WriteStartAssignment(valueAccessor);
+                        // First attribute wins, even if there are duplicates.
+                        var attributeValueChunk = matchingAttributes.First().Value;
 
-                            if (isPlainTextValue)
-                            {
-                                // If the attribute is bufferable but has a plain text value that means the value
-                                // is a string which needs to be surrounded in quotes.
-                                RenderQuotedAttributeValue(textValue, attributeDescriptor);
-                            }
-                            else
-                            {
-                                // The value contains more than plain text e.g.
-                                // stringAttribute ="Time: @DateTime.Now"
-                                RenderBufferedAttributeValue(attributeDescriptor);
-                            }
+                        // Bufferable attributes are attributes that can have Razor code inside of them. Such
+                        // attributes have string values and may be calculated using a temporary TextWriter or other
+                        // buffer.
+                        var bufferableAttribute = boundStringAttributeNames.Contains(attributeDescriptor.Name);
 
-                            _writer.WriteLine(";");
-                        }
-                        else
-                        {
-                            // Write out simple assignment for non-string property value. Try to keep the whole
-                            // statement together and the #line pragma correct to make debugging possible.
-                            using (var lineMapper = new CSharpLineMappingWriter(
-                                _writer,
-                                attributeValueChunk.Association.Start,
-                                _context.SourceFile))
-                            {
-                                // Place the assignment LHS to align RHS with original attribute value's indentation.
-                                // Unfortunately originalIndent is incorrect if original line contains tabs. Unable to
-                                // use a CSharpPaddingBuilder because the Association has no Previous node; lost the
-                                // original Span sequence when the parse tree was rewritten.
-                                var originalIndent = attributeValueChunk.Start.CharacterIndex;
-                                var generatedLength = valueAccessor.Length + " = ".Length;
-                                var newIndent = originalIndent - generatedLength;
-                                if (newIndent > 0)
-                                {
-                                    _writer.Indent(newIndent);
-                                }
-
-                                _writer.WriteStartAssignment(valueAccessor);
-                                lineMapper.MarkLineMappingStart();
-
-                                // Write out bare expression for this attribute value. Property is not a string.
-                                // So quoting or buffering are not helpful.
-                                RenderRawAttributeValue(attributeValueChunk, attributeDescriptor, isPlainTextValue);
-
-                                // End the assignment to the attribute.
-                                lineMapper.MarkLineMappingEnd();
-                                _writer.WriteLine(";");
-                            }
-                        }
+                        RenderNewAttributeValueAssignment(
+                            attributeDescriptor,
+                            bufferableAttribute,
+                            attributeValueChunk,
+                            valueAccessor);
 
                         // Execution contexts are a runtime feature.
                         if (_designTimeMode)
@@ -315,6 +305,155 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                             .Write(htmlAttributeValues[attributeDescriptor.Name])
                             .WriteLine(";");
                     }
+                }
+            }
+
+            // Pass 3: Add all remaining attributes that match a prefix to corresponding dictionary. Use same order as
+            // above loops but skip everything already bound to a specific property of this tag helper.
+            foreach (var attributeDescriptor in attributeDescriptors)
+            {
+                if (attributeDescriptor.Prefix == null)
+                {
+                    continue;
+                }
+
+                var matchingNames = remainingAttributeNames
+                    .Where(name => name.StartsWith(attributeDescriptor.Prefix, StringComparison.OrdinalIgnoreCase));
+                foreach (var matchingName in matchingNames)
+                {
+                    // We capture the dictionary lookup so we can retrieve it later (if we need to).
+                    var dictionaryKey = matchingName.Substring(attributeDescriptor.Prefix.Length);
+                    var valueAccessor = string.Format(
+                        CultureInfo.InvariantCulture,
+                        "{0}.{1}[\"{2}\"]",
+                        tagHelperVariableName,
+                        attributeDescriptor.PropertyName,
+                        dictionaryKey);
+
+                    // If we haven't recorded this attribute value before then we need to record its value.
+                    var attributeValueRecorded = htmlAttributeValues.ContainsKey(matchingName);
+                    if (!attributeValueRecorded)
+                    {
+                        // We only need to create attribute values once per HTML element (not once per tag helper).
+                        // We're saving the value accessor so we can retrieve it later if there are more tag
+                        // helpers that need the value.
+                        htmlAttributeValues.Add(matchingName, valueAccessor);
+
+                        // First attribute wins, even if there are duplicates.
+                        var attributeValueChunk = chunkAttributes
+                            .Where(kvp => string.Equals(kvp.Key, matchingName, StringComparison.OrdinalIgnoreCase))
+                            .First()
+                            .Value;
+
+                        // Bufferable attributes are attributes that can have Razor code inside of them. Such
+                        // attributes have string values and may be calculated using a temporary TextWriter or other
+                        // buffer.
+                        var bufferableAttribute = boundStringAttributeNames.Contains(matchingName);
+
+                        RenderNewAttributeValueAssignment(
+                            attributeDescriptor,
+                            bufferableAttribute,
+                            attributeValueChunk,
+                            valueAccessor);
+
+                        // Execution contexts are a runtime feature.
+                        if (_designTimeMode)
+                        {
+                            continue;
+                        }
+
+                        // We need to inform the context of the attribute value.
+                        _writer
+                            .WriteStartInstanceMethodInvocation(
+                                ExecutionContextVariableName,
+                                _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName)
+                            .WriteStringLiteral(matchingName)
+                            .WriteParameterSeparator()
+                            .Write(valueAccessor)
+                            .WriteEndMethodInvocation();
+                    }
+                    else
+                    {
+                        // The attribute value has already been recorded, lets retrieve it from the stored value
+                        // accessors.
+                        _writer
+                            .WriteStartAssignment(valueAccessor)
+                            .Write(htmlAttributeValues[matchingName])
+                            .WriteLine(";");
+                    }
+                }
+            }
+        }
+
+        // Render assignment of attribute value to the value accessor.
+        private void RenderNewAttributeValueAssignment(
+            TagHelperAttributeDescriptor attributeDescriptor,
+            bool bufferableAttribute,
+            Chunk attributeValueChunk,
+            string valueAccessor)
+        {
+            // Plain text values are non Razor code (@DateTime.Now) values. If an attribute is bufferable it
+            // may be more than just a plain text value, it may also contain Razor code which is why we attempt
+            // to retrieve a plain text value here.
+            string textValue;
+            var isPlainTextValue = TryGetPlainTextValue(attributeValueChunk, out textValue);
+
+            if (bufferableAttribute)
+            {
+                if (!isPlainTextValue)
+                {
+                    // If we haven't recorded a value and we need to buffer an attribute value and the value is not
+                    // plain text then we need to prepare the value prior to setting it below.
+                    BuildBufferedWritingScope(attributeValueChunk, htmlEncodeValues: false);
+                }
+
+                _writer.WriteStartAssignment(valueAccessor);
+
+                if (isPlainTextValue)
+                {
+                    // If the attribute is bufferable but has a plain text value that means the value
+                    // is a string which needs to be surrounded in quotes.
+                    RenderQuotedAttributeValue(textValue, attributeDescriptor);
+                }
+                else
+                {
+                    // The value contains more than plain text e.g. stringAttribute ="Time: @DateTime.Now".
+                    RenderBufferedAttributeValue(attributeDescriptor);
+                }
+
+                _writer.WriteLine(";");
+            }
+            else
+            {
+                // Write out simple assignment for non-string property value. Try to keep the whole
+                // statement together and the #line pragma correct to make debugging possible.
+                using (var lineMapper = new CSharpLineMappingWriter(
+                    _writer,
+                    attributeValueChunk.Association.Start,
+                    _context.SourceFile))
+                {
+                    // Place the assignment LHS to align RHS with original attribute value's indentation.
+                    // Unfortunately originalIndent is incorrect if original line contains tabs. Unable to
+                    // use a CSharpPaddingBuilder because the Association has no Previous node; lost the
+                    // original Span sequence when the parse tree was rewritten.
+                    var originalIndent = attributeValueChunk.Start.CharacterIndex;
+                    var generatedLength = valueAccessor.Length + " = ".Length;
+                    var newIndent = originalIndent - generatedLength;
+                    if (newIndent > 0)
+                    {
+                        _writer.Indent(newIndent);
+                    }
+
+                    _writer.WriteStartAssignment(valueAccessor);
+                    lineMapper.MarkLineMappingStart();
+
+                    // Write out bare expression for this attribute value. Property is not a string.
+                    // So quoting or buffering are not helpful.
+                    RenderRawAttributeValue(attributeValueChunk, attributeDescriptor, isPlainTextValue);
+
+                    // End the assignment to the attribute.
+                    lineMapper.MarkLineMappingEnd();
+                    _writer.WriteLine(";");
                 }
             }
         }
@@ -516,14 +655,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             }
         }
 
-        private static bool IsStringAttribute(TagHelperAttributeDescriptor attributeDescriptor)
-        {
-            return string.Equals(
-                attributeDescriptor.TypeName,
-                typeof(string).FullName,
-                StringComparison.Ordinal);
-        }
-
         private static bool TryGetPlainTextValue(Chunk chunk, out string plainText)
         {
             var chunkBlock = chunk as ChunkBlock;
@@ -575,40 +706,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 {
                     return Context.Host.GeneratedClassContext.WriteLiteralToMethodName;
                 }
-            }
-        }
-
-        // This class is used to compare tag helper attributes by comparing only the HTML attribute name.
-        private class TagHelperAttributeDescriptorComparer : IEqualityComparer<TagHelperAttributeDescriptor>
-        {
-            public bool Equals(TagHelperAttributeDescriptor descriptorX, TagHelperAttributeDescriptor descriptorY)
-            {
-                return string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.OrdinalIgnoreCase);
-            }
-
-            public int GetHashCode(TagHelperAttributeDescriptor descriptor)
-            {
-                return StringComparer.OrdinalIgnoreCase.GetHashCode(descriptor.Name);
-            }
-        }
-
-        private class TypeNameTagHelperDescriptorComparer : IEqualityComparer<TagHelperDescriptor>
-        {
-            public static readonly TypeNameTagHelperDescriptorComparer Default =
-                new TypeNameTagHelperDescriptorComparer();
-
-            private TypeNameTagHelperDescriptorComparer()
-            {
-            }
-
-            public bool Equals(TagHelperDescriptor descriptorX, TagHelperDescriptor descriptorY)
-            {
-                return string.Equals(descriptorX.TypeName, descriptorY.TypeName, StringComparison.Ordinal);
-            }
-
-            public int GetHashCode(TagHelperDescriptor descriptor)
-            {
-                return StringComparer.Ordinal.GetHashCode(descriptor.TypeName);
             }
         }
     }

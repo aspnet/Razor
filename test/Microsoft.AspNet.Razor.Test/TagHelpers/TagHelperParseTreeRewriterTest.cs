@@ -905,7 +905,8 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 name: "bound",
                                 propertyName: "Bound",
-                                typeName: typeof(bool).FullName),
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
                         },
                         requiredAttributes: Enumerable.Empty<string>())
                 };
@@ -928,7 +929,8 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 name: "bound",
                                 propertyName: "Bound",
-                                typeName: typeof(bool).FullName),
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
                         },
                         requiredAttributes: Enumerable.Empty<string>())
                 };
@@ -1466,11 +1468,13 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 name: "bound",
                                 propertyName: "Bound",
-                                typeName: typeof(bool).FullName),
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
                             new TagHelperAttributeDescriptor(
                                 name: "name",
                                 propertyName: "Name",
-                                typeName: typeof(string).FullName)
+                                typeName: typeof(string).FullName,
+                                isStringProperty: true)
                         })
                 };
             var descriptorProvider = new TagHelperDescriptorProvider(descriptors);
@@ -3713,9 +3717,17 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                 new TagHelperDescriptor("person", "PersonTagHelper", "personAssembly",
                     attributes: new[]
                     {
-                        new TagHelperAttributeDescriptor("age", "Age", typeof(int).FullName),
-                        new TagHelperAttributeDescriptor("birthday", "BirthDay", typeof(DateTime).FullName),
-                        new TagHelperAttributeDescriptor("name", "Name", typeof(string).FullName),
+                        new TagHelperAttributeDescriptor("age", "Age", typeof(int).FullName, isStringProperty: false),
+                        new TagHelperAttributeDescriptor(
+                            "birthday",
+                            "BirthDay",
+                            typeof(DateTime).FullName,
+                            isStringProperty: false),
+                        new TagHelperAttributeDescriptor(
+                            "name",
+                            "Name",
+                            typeof(string).FullName,
+                            isStringProperty: true),
                     })
             };
             var providerContext = new TagHelperDescriptorProvider(descriptors);

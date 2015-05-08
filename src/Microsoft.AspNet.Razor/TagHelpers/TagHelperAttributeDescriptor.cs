@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Reflection;
+using Microsoft.Framework.Internal;
 
 namespace Microsoft.AspNet.Razor.TagHelpers
 {
@@ -11,8 +12,30 @@ namespace Microsoft.AspNet.Razor.TagHelpers
     public class TagHelperAttributeDescriptor
     {
         // Internal for testing
-        internal TagHelperAttributeDescriptor(string name, PropertyInfo propertyInfo)
-            : this(name, propertyInfo.Name, propertyInfo.PropertyType.FullName)
+        internal TagHelperAttributeDescriptor([NotNull] string name, [NotNull] PropertyInfo propertyInfo)
+            : this(
+                  name,
+                  propertyInfo.Name,
+                  propertyInfo.PropertyType.FullName,
+                  isStringProperty: propertyInfo.PropertyType == typeof(string))
+        {
+        }
+
+        // Internal for testing
+        internal TagHelperAttributeDescriptor(
+            [NotNull] string name,
+            [NotNull] string propertyName,
+            [NotNull] string typeName,
+            bool isStringProperty)
+            : this(
+                  name,
+                  propertyName,
+                  typeName,
+                  isStringProperty,
+                  prefix: null,
+                  objectCreationExpression: null,
+                  prefixedValueTypeName: null,
+                  areStringPrefixedValues: false)
         {
         }
 
@@ -20,35 +43,117 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// Instantiates a new instance of the <see cref="TagHelperAttributeDescriptor"/> class.
         /// </summary>
         /// <param name="name">The HTML attribute name.</param>
-        /// <param name="propertyName">The name of the CLR property name that corresponds to the HTML
-        /// attribute.</param>
+        /// <param name="propertyName">The name of the CLR property that corresponds to the HTML attribute.</param>
         /// <param name="typeName">
-        /// The full name of the named (see <paramref name="propertyName"/>) property's
-        /// <see cref="System.Type"/>.
+        /// The full name of the named (see <paramref name="propertyName"/>) property's <see cref="System.Type"/>.
         /// </param>
-        public TagHelperAttributeDescriptor(string name,
-                                            string propertyName,
-                                            string typeName)
+        /// <param name="isStringProperty">
+        /// An indication whether this property is of type <see cref="string"/>.
+        /// </param>
+        /// <param name="prefix">
+        /// The prefix used to match HTML attribute names. Matching attributes are added to the associated property
+        /// (an <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>).
+        /// </param>
+        /// <param name="objectCreationExpression">
+        /// The C# object creation expression (<c>new</c> operator invocation) used to create an instance for
+        /// assignment to the property.
+        /// </param>
+        /// <param name="prefixedValueTypeName">
+        /// The full name of <c>TValue</c> in the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>
+        /// the named (see <paramref name="propertyName"/>) property implements.
+        /// </param>
+        /// <param name="areStringPrefixedValues">
+        /// An indication whether this property type implements
+        /// <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> where <c>TValue</c> is
+        /// <see cref="string"/>.
+        /// </param>
+        /// <remarks>
+        /// <paramref name="objectCreationExpression"/>, <paramref name="prefixedValueTypeName"/> and
+        /// <paramref name="areStringPrefixedValues"/> are ignored if <paramref name="prefix"/> is <c>null</c>. In
+        /// turn <paramref name="prefix"/> is expected to be non-<c>null</c> only if <paramref name="typeName"/>
+        /// implements <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> where <c>TKey</c> is
+        /// <see cref="string"/>.
+        /// </remarks>
+        public TagHelperAttributeDescriptor(
+            [NotNull] string name,
+            [NotNull] string propertyName,
+            [NotNull] string typeName,
+            bool isStringProperty,
+            string prefix,
+            string objectCreationExpression,
+            string prefixedValueTypeName,
+            bool areStringPrefixedValues)
         {
             Name = name;
             PropertyName = propertyName;
             TypeName = typeName;
+            IsStringProperty = isStringProperty;
+
+            Prefix = prefix;
+            if (prefix != null)
+            {
+                ObjectCreationExpression = objectCreationExpression;
+                PrefixedValueTypeName = prefixedValueTypeName;
+                AreStringPrefixedValues = areStringPrefixedValues;
+            }
         }
+
+        /// <summary>
+        /// Gets an indication whether this property type implements
+        /// <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> where <c>TValue</c> is
+        /// <see cref="string"/>.
+        /// </summary>
+        /// <value>
+        /// If <c>true</c> the <see cref="TypeName"/> is for an
+        /// <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> where both <c>TKey</c> and
+        /// <c>TValue</c> are <see cref="string"/>. This causes the razor parser to allow empty values for attributes
+        /// that have names starting with <see cref="Prefix"/>. If <c>false</c> empty values for such matching
+        /// attributes lead to errors.
+        /// </value>
+        public bool AreStringPrefixedValues { get; }
+
+        /// <summary>
+        /// Gets an indication whether this property is of type <see cref="string"/>.
+        /// </summary>
+        /// <value>
+        /// If <c>true</c> the <see cref="TypeName"/> is for <see cref="string"/>. This causes the Razor parser
+        /// to allow empty values for attributes that have names matching <see cref="Name"/>. If <c>false</c>
+        /// empty values for such matching attributes lead to errors.
+        /// </value>
+        public bool IsStringProperty { get; }
 
         /// <summary>
         /// The HTML attribute name.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
-        /// The name of the CLR property name that corresponds to the HTML attribute name.
+        /// Gets the C# object creation expression (<c>new</c> operator invocation) used to create an instance for
+        /// assignment to the property. Ignored if <paramref name="prefix"/> is <c>null</c>.
         /// </summary>
-        public string PropertyName { get; private set; }
+        public string ObjectCreationExpression { get; }
 
         /// <summary>
-        /// The full name of the named (see <see name="PropertyName"/>) property's
-        /// <see cref="System.Type"/>.
+        /// Gets the prefix used to match HTML attribute names. Matching attributes are added to the associated
+        /// property (an <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>).
         /// </summary>
-        public string TypeName { get; private set; }
+        public string Prefix { get; }
+
+        /// <summary>
+        /// Gets the full name of <c>TValue</c> in the
+        /// <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> the named (see
+        /// <see cref="PropertyName"/>) property implements.
+        /// </summary>
+        public string PrefixedValueTypeName { get; }
+
+        /// <summary>
+        /// The name of the CLR property that corresponds to the HTML attribute.
+        /// </summary>
+        public string PropertyName { get; }
+
+        /// <summary>
+        /// The full name of the named (see <see name="PropertyName"/>) property's <see cref="System.Type"/>.
+        /// </summary>
+        public string TypeName { get; }
     }
 }
