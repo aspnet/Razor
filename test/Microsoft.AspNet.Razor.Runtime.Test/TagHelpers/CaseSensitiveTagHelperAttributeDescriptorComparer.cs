@@ -19,6 +19,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         public override bool Equals(TagHelperAttributeDescriptor descriptorX, TagHelperAttributeDescriptor descriptorY)
         {
+            if (descriptorX == descriptorY)
+            {
+                return true;
+            }
+
             return base.Equals(descriptorX, descriptorY) &&
                 // Normal comparer doesn't care about case, in tests we do.
                 string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.Ordinal);
@@ -27,7 +32,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public override int GetHashCode(TagHelperAttributeDescriptor descriptor)
         {
             return HashCodeCombiner.Start()
-                .Add(base.GetHashCode())
+                .Add(base.GetHashCode(descriptor))
                 .Add(descriptor.Name, StringComparer.Ordinal)
                 .CombinedHash;
         }

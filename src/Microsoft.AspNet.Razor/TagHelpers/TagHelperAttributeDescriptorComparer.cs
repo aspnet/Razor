@@ -35,12 +35,13 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// </remarks>
         public virtual bool Equals(TagHelperAttributeDescriptor descriptorX, TagHelperAttributeDescriptor descriptorY)
         {
-            if (descriptorX == null || descriptorY == null)
+            if (descriptorX == descriptorY)
             {
-                return descriptorX == null && descriptorY == null;
+                return true;
             }
 
-            return string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.OrdinalIgnoreCase) &&
+            return descriptorX != null &&
+                string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.OrdinalIgnoreCase) &&
                 string.Equals(descriptorX.PropertyName, descriptorY.PropertyName, StringComparison.Ordinal) &&
                 string.Equals(descriptorX.TypeName, descriptorY.TypeName, StringComparison.Ordinal);
         }

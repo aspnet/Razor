@@ -35,12 +35,13 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// </remarks>
         public virtual bool Equals(TagHelperDescriptor descriptorX, TagHelperDescriptor descriptorY)
         {
-            if (descriptorX == null || descriptorY == null)
+            if (descriptorX == descriptorY)
             {
-                return descriptorX == null && descriptorY == null;
+                return true;
             }
 
-            return string.Equals(descriptorX.TypeName, descriptorY.TypeName, StringComparison.Ordinal) &&
+            return descriptorX != null &&
+                string.Equals(descriptorX.TypeName, descriptorY.TypeName, StringComparison.Ordinal) &&
                 string.Equals(descriptorX.TagName, descriptorY.TagName, StringComparison.OrdinalIgnoreCase) &&
                 string.Equals(descriptorX.AssemblyName, descriptorY.AssemblyName, StringComparison.Ordinal) &&
                 Enumerable.SequenceEqual(
@@ -52,8 +53,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// <inheritdoc />
         public virtual int GetHashCode([NotNull] TagHelperDescriptor descriptor)
         {
-            var hashCodeCombiner = HashCodeCombiner
-                .Start()
+            var hashCodeCombiner = HashCodeCombiner.Start()
                 .Add(descriptor.TypeName, StringComparer.Ordinal)
                 .Add(descriptor.TagName, StringComparer.OrdinalIgnoreCase)
                 .Add(descriptor.AssemblyName, StringComparer.Ordinal);

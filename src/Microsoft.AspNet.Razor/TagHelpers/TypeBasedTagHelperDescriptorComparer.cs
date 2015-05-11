@@ -37,9 +37,9 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// </remarks>
         public bool Equals(TagHelperDescriptor descriptorX, TagHelperDescriptor descriptorY)
         {
-            if (descriptorX == null || descriptorY == null)
+            if (descriptorX == descriptorY)
             {
-                return descriptorX == null && descriptorY == null;
+                return true;
             }
 
             return string.Equals(descriptorX.AssemblyName, descriptorY.AssemblyName, StringComparison.Ordinal) &&
