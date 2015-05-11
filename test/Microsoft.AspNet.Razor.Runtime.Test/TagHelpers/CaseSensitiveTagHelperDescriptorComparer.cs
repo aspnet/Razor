@@ -2,23 +2,23 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNet.Razor.TagHelpers;
 using Microsoft.Internal.Web.Utils;
 
 namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 {
-    public class CaseSensitiveTagHelperDescriptorComparer : TagHelperDescriptorComparer, IEqualityComparer<TagHelperDescriptor>
+    public class CaseSensitiveTagHelperDescriptorComparer : TagHelperDescriptorComparer
     {
         public new static readonly CaseSensitiveTagHelperDescriptorComparer Default =
             new CaseSensitiveTagHelperDescriptorComparer();
 
         private CaseSensitiveTagHelperDescriptorComparer()
+            : base()
         {
         }
 
-        bool IEqualityComparer<TagHelperDescriptor>.Equals(
+        public override bool Equals(
             TagHelperDescriptor descriptorX,
             TagHelperDescriptor descriptorY)
         {
@@ -36,7 +36,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     CaseSensitiveTagHelperAttributeDescriptorComparer.Default);
         }
 
-        int IEqualityComparer<TagHelperDescriptor>.GetHashCode(TagHelperDescriptor descriptor)
+        public override int GetHashCode(TagHelperDescriptor descriptor)
         {
             var hashCodeCombiner = HashCodeCombiner
                 .Start()
