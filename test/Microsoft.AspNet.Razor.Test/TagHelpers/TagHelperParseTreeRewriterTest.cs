@@ -921,7 +921,8 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 name: "bound",
                                 propertyName: "Bound",
-                                typeName: typeof(bool).FullName),
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
                         },
                         requiredAttributes: Enumerable.Empty<string>())
                 };
@@ -944,7 +945,8 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 name: "bound",
                                 propertyName: "Bound",
-                                typeName: typeof(bool).FullName),
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
                         },
                         requiredAttributes: Enumerable.Empty<string>())
                 };
@@ -1508,11 +1510,115 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 name: "bound",
                                 propertyName: "Bound",
-                                typeName: typeof(bool).FullName),
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
                             new TagHelperAttributeDescriptor(
                                 name: "name",
                                 propertyName: "Name",
-                                typeName: typeof(string).FullName)
+                                typeName: typeof(string).FullName,
+                                isStringProperty: true)
+                        })
+                };
+            var descriptorProvider = new TagHelperDescriptorProvider(descriptors);
+
+            // Act & Assert
+            EvaluateData(descriptorProvider, documentContent, expectedOutput, expectedErrors);
+        }
+
+        [Theory]
+        [MemberData(nameof(EmptyTagHelperBoundAttributeData))]
+        public void Rewrite_CreatesErrorForEmptyTagHelperBoundAttributes_WhenStringMatchIsFirst(
+            string documentContent,
+            MarkupBlock expectedOutput,
+            RazorError[] expectedErrors)
+        {
+            // Arrange
+            var descriptors = new TagHelperDescriptor[]
+                {
+                    new TagHelperDescriptor(
+                        tagName: "myth",
+                        typeName: "mythTagHelper1",
+                        assemblyName: "SomeAssembly",
+                        attributes: new[]
+                        {
+                            new TagHelperAttributeDescriptor(
+                                name: "bound",
+                                propertyName: "Bound",
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "name",
+                                propertyName: "Name",
+                                typeName: typeof(string).FullName,
+                                isStringProperty: true)
+                        }),
+                    new TagHelperDescriptor(
+                        tagName: "myth",
+                        typeName: "mythTagHelper2",
+                        assemblyName: "SomeAssembly",
+                        attributes: new[]
+                        {
+                            new TagHelperAttributeDescriptor(
+                                name: "bound",
+                                propertyName: "Bound",
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "name",
+                                propertyName: "Name",
+                                typeName: typeof(object).FullName,
+                                isStringProperty: false)
+                        })
+                };
+            var descriptorProvider = new TagHelperDescriptorProvider(descriptors);
+
+            // Act & Assert
+            EvaluateData(descriptorProvider, documentContent, expectedOutput, expectedErrors);
+        }
+
+        [Theory]
+        [MemberData(nameof(EmptyTagHelperBoundAttributeData))]
+        public void Rewrite_CreatesErrorForEmptyTagHelperBoundAttributes_WhenStringMatchIsSecond(
+            string documentContent,
+            MarkupBlock expectedOutput,
+            RazorError[] expectedErrors)
+        {
+            // Arrange
+            var descriptors = new TagHelperDescriptor[]
+                {
+                    new TagHelperDescriptor(
+                        tagName: "myth",
+                        typeName: "mythTagHelper1",
+                        assemblyName: "SomeAssembly",
+                        attributes: new[]
+                        {
+                            new TagHelperAttributeDescriptor(
+                                name: "bound",
+                                propertyName: "Bound",
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "name",
+                                propertyName: "Name",
+                                typeName: typeof(object).FullName,
+                                isStringProperty: false)
+                        }),
+                    new TagHelperDescriptor(
+                        tagName: "myth",
+                        typeName: "mythTagHelper2",
+                        assemblyName: "SomeAssembly",
+                        attributes: new[]
+                        {
+                            new TagHelperAttributeDescriptor(
+                                name: "bound",
+                                propertyName: "Bound",
+                                typeName: typeof(bool).FullName,
+                                isStringProperty: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "name",
+                                propertyName: "Name",
+                                typeName: typeof(string).FullName,
+                                isStringProperty: true)
                         })
                 };
             var descriptorProvider = new TagHelperDescriptorProvider(descriptors);
@@ -3356,6 +3462,95 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                         }
                     },
                     {
+                        "<p bar='false  <strong'",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock("p",
+                                new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>(
+                                        "bar",
+                                        new MarkupBlock(
+                                            factory.Markup("false"),
+                                            factory.Markup("  <strong")))
+                                })),
+                        new []
+                        {
+                            new RazorError(
+                                string.Format(CultureInfo.InvariantCulture, errorFormatNoCloseAngle, "p"),
+                                SourceLocation.Zero),
+                            new RazorError(
+                                string.Format(CultureInfo.InvariantCulture, errorFormatUnclosed, "p"),
+                                SourceLocation.Zero)
+                        }
+                    },
+                    {
+                        "<p bar=false'",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock("p",
+                                new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>(
+                                        "bar",
+                                        factory.Markup("false"))
+                                })),
+                        new []
+                        {
+                            new RazorError(
+                                string.Format(CultureInfo.InvariantCulture, errorFormatNoCloseAngle, "p"),
+                                SourceLocation.Zero),
+                            new RazorError(
+                                string.Format(CultureInfo.InvariantCulture, errorFormatUnclosed, "p"),
+                                SourceLocation.Zero),
+                            new RazorError(
+                                "TagHelper attributes must be welformed.",
+                                absoluteIndex: 12,
+                                lineIndex: 0,
+                                columnIndex: 12)
+                        }
+                    },
+                    {
+                        "<p bar=\"false'",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock("p",
+                                new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>(
+                                        "bar",
+                                        factory.Markup("false'"))
+                                })),
+                        new []
+                        {
+                            new RazorError(
+                                string.Format(CultureInfo.InvariantCulture, errorFormatNoCloseAngle, "p"),
+                                SourceLocation.Zero),
+                            new RazorError(
+                                string.Format(CultureInfo.InvariantCulture, errorFormatUnclosed, "p"),
+                                SourceLocation.Zero)
+                        }
+                    },
+                    {
+                        "<p bar=\"false' ></p>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock("p",
+                                new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>(
+                                        "bar",
+                                        new MarkupBlock(
+                                            factory.Markup("false'"),
+                                            factory.Markup(" ></p>")))
+                                })),
+                        new []
+                        {
+                            new RazorError(
+                                string.Format(CultureInfo.InvariantCulture, errorFormatNoCloseAngle, "p"),
+                                SourceLocation.Zero),
+                            new RazorError(
+                                string.Format(CultureInfo.InvariantCulture, errorFormatUnclosed, "p"),
+                                SourceLocation.Zero)
+                        }
+                    },
+                    {
                         "<p foo bar<strong>",
                         new MarkupBlock(
                             new MarkupTagHelperBlock("p",
@@ -3873,9 +4068,17 @@ namespace Microsoft.AspNet.Razor.Test.TagHelpers
                 new TagHelperDescriptor("person", "PersonTagHelper", "personAssembly",
                     attributes: new[]
                     {
-                        new TagHelperAttributeDescriptor("age", "Age", typeof(int).FullName),
-                        new TagHelperAttributeDescriptor("birthday", "BirthDay", typeof(DateTime).FullName),
-                        new TagHelperAttributeDescriptor("name", "Name", typeof(string).FullName),
+                        new TagHelperAttributeDescriptor("age", "Age", typeof(int).FullName, isStringProperty: false),
+                        new TagHelperAttributeDescriptor(
+                            "birthday",
+                            "BirthDay",
+                            typeof(DateTime).FullName,
+                            isStringProperty: false),
+                        new TagHelperAttributeDescriptor(
+                            "name",
+                            "Name",
+                            typeof(string).FullName,
+                            isStringProperty: true),
                     })
             };
             var providerContext = new TagHelperDescriptorProvider(descriptors);

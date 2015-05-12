@@ -246,11 +246,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         private static TagHelperAttributeDescriptor ToAttributeDescriptor(PropertyInfo property)
         {
             var attributeNameAttribute = property.GetCustomAttribute<HtmlAttributeNameAttribute>(inherit: false);
-            var attributeName = attributeNameAttribute != null ?
-                                attributeNameAttribute.Name :
-                                ToHtmlCase(property.Name);
+            var attributeName = attributeNameAttribute?.Name ?? ToHtmlCase(property.Name);
+            var isStringProperty = property.PropertyType == typeof(string);
 
-            return new TagHelperAttributeDescriptor(attributeName, property.Name, property.PropertyType.FullName);
+            return new TagHelperAttributeDescriptor(
+                attributeName,
+                property.Name,
+                property.PropertyType.FullName,
+                isStringProperty);
         }
 
         private static bool IsAccessibleProperty(PropertyInfo property)

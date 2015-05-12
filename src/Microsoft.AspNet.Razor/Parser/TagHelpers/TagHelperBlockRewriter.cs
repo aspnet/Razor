@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -38,15 +37,11 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             IEnumerable<TagHelperDescriptor> descriptors,
             ErrorSink errorSink)
         {
-            var attributes = new List<KeyValuePair<string, SyntaxTreeNode>>();
+            // Ignore all but one descriptor per type since this method uses the TagHelperDescriptors only to get the
+            // contained TagHelperAttributeDescriptor's.
+            descriptors = descriptors.Distinct(TypeBasedTagHelperDescriptorComparer.Default);
 
-            // Build a dictionary so we can easily lookup expected attribute value lookups
-            IReadOnlyDictionary<string, string> attributeValueTypes =
-                descriptors.SelectMany(descriptor => descriptor.Attributes)
-                           .Distinct(TagHelperAttributeDescriptorComparer.Default)
-                           .ToDictionary(descriptor => descriptor.Name,
-                                       descriptor => descriptor.TypeName,
-                                       StringComparer.OrdinalIgnoreCase);
+            var attributes = new List<KeyValuePair<string, SyntaxTreeNode>>();
 
             // We skip the first child "<tagname" and take everything up to the ending portion of the tag ">" or "/>".
             // The -2 accounts for both the start and end tags. If the tag does not have a valid structure then there's
@@ -57,26 +52,38 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             foreach (var child in attributeChildren)
             {
                 KeyValuePair<string, SyntaxTreeNode> attribute;
-                bool succeeded = true;
-
+                bool isBoundAttribute;
+                bool isBoundNonStringAttribute;
+                bool succeeded;
                 if (child.IsBlock)
                 {
-                    succeeded = TryParseBlock(tagName, (Block)child, attributeValueTypes, errorSink, out attribute);
+                    succeeded = TryParseBlock(
+                        tagName,
+                        (Block)child,
+                        descriptors,
+                        errorSink,
+                        out attribute,
+                        out isBoundAttribute,
+                        out isBoundNonStringAttribute);
                 }
                 else
                 {
-                    succeeded = TryParseSpan((Span)child, attributeValueTypes, errorSink, out attribute);
+                    succeeded = TryParseSpan(
+                        (Span)child,
+                        descriptors,
+                        errorSink,
+                        out attribute,
+                        out isBoundAttribute,
+                        out isBoundNonStringAttribute);
                 }
 
                 // Only want to track the attribute if we succeeded in parsing its corresponding Block/Span.
                 if (succeeded)
                 {
-                    // Check if it's a bound attribute that is minimized or not of type string and null or whitespace.
-                    string attributeValueType;
-                    if (attributeValueTypes.TryGetValue(attribute.Key, out attributeValueType) &&
-                        (attribute.Value == null ||
-                        !IsStringAttribute(attributeValueType) &&
-                        IsNullOrWhitespaceAttributeValue(attribute.Value)))
+                    // Check if it's a bound attribute that is minimized or if it's a bound non-string attribute that
+                    // is null or whitespace.
+                    if ((isBoundAttribute && attribute.Value == null) ||
+                        (isBoundNonStringAttribute && IsNullOrWhitespaceAttributeValue(attribute.Value)))
                     {
                         var errorLocation = GetAttributeNameStartLocation(child);
 
@@ -85,7 +92,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                             RazorResources.FormatRewriterError_EmptyTagHelperBoundAttribute(
                                 attribute.Key,
                                 tagName,
-                                attributeValueType),
+                                TagHelperDescriptorMatcher.GetPropertyType(attribute.Key, descriptors)),
                             attribute.Key.Length);
                     }
 
@@ -108,9 +115,11 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
         // class="@myclass". Therefore the span.Content is equivalent to the entire attribute.
         private static bool TryParseSpan(
             Span span,
-            IReadOnlyDictionary<string, string> attributeValueTypes,
+            IEnumerable<TagHelperDescriptor> descriptors,
             ErrorSink errorSink,
-            out KeyValuePair<string, SyntaxTreeNode> attribute)
+            out KeyValuePair<string, SyntaxTreeNode> attribute,
+            out bool isBoundAttribute,
+            out bool isBoundNonStringAttribute)
         {
             var afterEquals = false;
             var builder = new SpanBuilder
@@ -236,13 +245,18 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                 }
 
                 attribute = default(KeyValuePair<string, SyntaxTreeNode>);
+                isBoundAttribute = false;
+                isBoundNonStringAttribute = false;
 
                 return false;
             }
 
+            isBoundAttribute =
+                TagHelperDescriptorMatcher.IsBoundAttribute(name, descriptors, out isBoundNonStringAttribute);
+
             // If we're not after an equal then we should treat the value as if it were a minimized attribute.
             var attributeValueBuilder = afterEquals ? builder : null;
-            attribute = CreateMarkupAttribute(name, attributeValueBuilder, attributeValueTypes);
+            attribute = CreateMarkupAttribute(name, attributeValueBuilder, isBoundNonStringAttribute);
 
             return true;
         }
@@ -250,9 +264,11 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
         private static bool TryParseBlock(
             string tagName,
             Block block,
-            IReadOnlyDictionary<string, string> attributeValueTypes,
+            IEnumerable<TagHelperDescriptor> descriptors,
             ErrorSink errorSink,
-            out KeyValuePair<string, SyntaxTreeNode> attribute)
+            out KeyValuePair<string, SyntaxTreeNode> attribute,
+            out bool isBoundAttribute,
+            out bool isBoundNonStringAttribute)
         {
             // TODO: Accept more than just spans: https://github.com/aspnet/Razor/issues/96.
             // The first child will only ever NOT be a Span if a user is doing something like:
@@ -266,6 +282,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                                   RazorResources.FormatTagHelpers_CannotHaveCSharpInTagDeclaration(tagName));
 
                 attribute = default(KeyValuePair<string, SyntaxTreeNode>);
+                isBoundAttribute = false;
+                isBoundNonStringAttribute = false;
 
                 return false;
             }
@@ -276,7 +294,13 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             // i.e. <div class="plain text in attribute">
             if (builder.Children.Count == 1)
             {
-                return TryParseSpan(childSpan, attributeValueTypes, errorSink, out attribute);
+                return TryParseSpan(
+                    childSpan,
+                    descriptors,
+                    errorSink,
+                    out attribute,
+                    out isBoundAttribute,
+                    out isBoundNonStringAttribute);
             }
 
             var textSymbol = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.Text);
@@ -287,9 +311,15 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                 errorSink.OnError(childSpan.Start, RazorResources.FormatTagHelpers_AttributesMustHaveAName(tagName));
 
                 attribute = default(KeyValuePair<string, SyntaxTreeNode>);
+                isBoundAttribute = false;
+                isBoundNonStringAttribute = false;
 
                 return false;
             }
+
+            // Have a name now. Able to determine correct isBoundNonStringAttribute value.
+            isBoundAttribute =
+                TagHelperDescriptorMatcher.IsBoundAttribute(name, descriptors, out isBoundNonStringAttribute);
 
             // TODO: Support no attribute values: https://github.com/aspnet/Razor/issues/220
 
@@ -301,10 +331,14 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             if (!endNode.IsBlock)
             {
                 var endSpan = (Span)endNode;
-                var endSymbol = (HtmlSymbol)endSpan.Symbols.Last();
+
+                // In some malformed cases e.g. <p bar="false', the last Span (false' in the ex.) may contain more
+                // than a single HTML symbol. Do not ignore those other symbols.
+                var symbolCount = endSpan.Symbols.Count();
+                var endSymbol = symbolCount == 1 ? (HtmlSymbol)endSpan.Symbols.First() : null;
 
                 // Checking to see if it's a quoted attribute, if so we should remove end quote
-                if (IsQuote(endSymbol))
+                if (endSymbol != null && IsQuote(endSymbol))
                 {
                     builder.Children.RemoveAt(builder.Children.Count - 1);
                 }
@@ -323,15 +357,16 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                 if (child != null)
                 {
                     // After pulling apart the block we just have a value span.
-
                     var spanBuilder = new SpanBuilder(child);
 
-                    attribute = CreateMarkupAttribute(name, spanBuilder, attributeValueTypes);
+                    attribute = CreateMarkupAttribute(name, spanBuilder, isBoundNonStringAttribute);
 
                     return true;
                 }
             }
 
+            // May need to update block Kind of all descendant Spans in this more complex case.
+            // Examples may include name="@aaa + @bbb" and name="@* commented *@ code".
             attribute = new KeyValuePair<string, SyntaxTreeNode>(name, block);
 
             return true;
@@ -432,19 +467,17 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
         private static KeyValuePair<string, SyntaxTreeNode> CreateMarkupAttribute(
             string name,
             SpanBuilder builder,
-            IReadOnlyDictionary<string, string> attributeValueTypes)
+            bool isBoundNonStringAttribute)
         {
-            string attributeTypeName;
             Span value = null;
 
             // Builder will be null in the case of minimized attributes
             if (builder != null)
             {
-                // If the attribute was requested by the tag helper and doesn't happen to be a string then we need to treat
-                // its value as code. Any non-string value can be any C# value so we need to ensure the SyntaxTreeNode
-                // reflects that.
-                if (attributeValueTypes.TryGetValue(name, out attributeTypeName) &&
-                    !IsStringAttribute(attributeTypeName))
+                // If the attribute was requested by a tag helper but none required it to be a string then we need to
+                // treat its value as code. Any non-string value can be any C# value so we need to ensure the
+                // SyntaxTreeNode reflects that.
+                if (isBoundNonStringAttribute)
                 {
                     builder.Kind = SpanKind.Code;
                 }
@@ -473,11 +506,6 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             {
                 return string.IsNullOrWhiteSpace(((Span)attributeValue).Content);
             }
-        }
-
-        private static bool IsStringAttribute(string attributeTypeName)
-        {
-            return string.Equals(attributeTypeName, StringTypeName, StringComparison.OrdinalIgnoreCase);
         }
 
         private static bool IsQuote(HtmlSymbol htmlSymbol)
