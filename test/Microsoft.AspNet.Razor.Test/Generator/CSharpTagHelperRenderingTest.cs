@@ -15,11 +15,9 @@ namespace Microsoft.AspNet.Razor.Test.Generator
     public class CSharpTagHelperRenderingTest : TagHelperTestBase
     {
         private static IEnumerable<TagHelperDescriptor> DefaultPAndInputTagHelperDescriptors { get; }
-            = BuildPAndInputTagHelperDescriptors(prefix: string.Empty, switchAttributes: false);
-        private static IEnumerable<TagHelperDescriptor> SwitchedPAndInputTagHelperDescriptors { get; }
-            = BuildPAndInputTagHelperDescriptors(prefix: string.Empty, switchAttributes: true);
+            = BuildPAndInputTagHelperDescriptors(prefix: string.Empty);
         private static IEnumerable<TagHelperDescriptor> PrefixedPAndInputTagHelperDescriptors { get; }
-            = BuildPAndInputTagHelperDescriptors(prefix: "THS", switchAttributes: false);
+            = BuildPAndInputTagHelperDescriptors(prefix: "THS");
 
         private static IEnumerable<TagHelperDescriptor> MinimizedTagHelpers_Descriptors
         {
@@ -183,13 +181,6 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                         "BasicTagHelpers",
                         DefaultPAndInputTagHelperDescriptors,
                         DefaultPAndInputTagHelperDescriptors,
-                        false
-                    },
-                    {
-                        "BasicTagHelpers",
-                        "BasicTagHelpers",
-                        SwitchedPAndInputTagHelperDescriptors,
-                        SwitchedPAndInputTagHelperDescriptors,
                         false
                     },
                     {
@@ -613,22 +604,12 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             RunTagHelperTest("TagHelpersInSection", tagHelperDescriptors: tagHelperDescriptors);
         }
 
-        private static IEnumerable<TagHelperDescriptor> BuildPAndInputTagHelperDescriptors(
-            string prefix,
-            bool switchAttributes)
+        private static IEnumerable<TagHelperDescriptor> BuildPAndInputTagHelperDescriptors(string prefix)
         {
             var pAgePropertyInfo = typeof(TestType).GetProperty("Age");
+            var inputTypePropertyInfo = typeof(TestType).GetProperty("Type");
             var checkedPropertyInfo = typeof(TestType).GetProperty("Checked");
-            var objectInputTypeAttribute = new TagHelperAttributeDescriptor(
-                "type",
-                nameof(TestType.Type),
-                typeof(object).FullName,
-                isStringProperty: false);
-            var stringInputTypeAttribute = new TagHelperAttributeDescriptor(
-                "type",
-                nameof(TestType.Type),
-                typeof(string).FullName,
-                isStringProperty: true);
+
             return new[]
             {
                 new TagHelperDescriptor(
@@ -646,7 +627,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                     typeName: "InputTagHelper",
                     assemblyName: "SomeAssembly",
                     attributes: new TagHelperAttributeDescriptor[] {
-                        switchAttributes ? objectInputTypeAttribute : stringInputTypeAttribute,
+                        new TagHelperAttributeDescriptor("type", inputTypePropertyInfo)
                     },
                     requiredAttributes: Enumerable.Empty<string>()),
                 new TagHelperDescriptor(
@@ -655,7 +636,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                     typeName: "InputTagHelper2",
                     assemblyName: "SomeAssembly",
                     attributes: new TagHelperAttributeDescriptor[] {
-                        switchAttributes ? stringInputTypeAttribute : objectInputTypeAttribute,
+                        new TagHelperAttributeDescriptor("type", inputTypePropertyInfo),
                         new TagHelperAttributeDescriptor("checked", checkedPropertyInfo)
                     },
                     requiredAttributes: Enumerable.Empty<string>())

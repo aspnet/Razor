@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Reflection;
 using Microsoft.Framework.Internal;
 
@@ -11,7 +12,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
     /// </summary>
     public class TagHelperAttributeDescriptor
     {
-        // Internal for testing
+        // Internal for testing i.e. for easy TagHelperAttributeDescriptor when PropertyInfo is available.
         internal TagHelperAttributeDescriptor([NotNull] string name, [NotNull] PropertyInfo propertyInfo)
             : this(
                   name,
@@ -29,10 +30,20 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// <param name="typeName">
         /// The full name of the named (see <paramref name="propertyName"/>) property's <see cref="System.Type"/>.
         /// </param>
-        /// <param name="isStringProperty">
-        /// An indication whether this property is of type <see cref="string"/>.
-        /// </param>
         public TagHelperAttributeDescriptor(
+            [NotNull] string name,
+            [NotNull] string propertyName,
+            [NotNull] string typeName)
+            : this(
+                  name,
+                  propertyName,
+                  typeName,
+                  isStringProperty: string.Equals(typeName, typeof(string).FullName, StringComparison.Ordinal))
+        {
+        }
+
+        // Internal for testing i.e. for confirming above constructor sets `IsStringProperty` as expected.
+        internal TagHelperAttributeDescriptor(
             [NotNull] string name,
             [NotNull] string propertyName,
             [NotNull] string typeName,

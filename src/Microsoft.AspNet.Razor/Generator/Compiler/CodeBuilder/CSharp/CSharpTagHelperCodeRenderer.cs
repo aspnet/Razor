@@ -65,27 +65,14 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             RenderBeginTagHelperScope(chunk.TagName, chunk.SelfClosing, chunk.Children);
 
+            RenderTagHelpersCreation(chunk, tagHelperDescriptors);
+
             // Determine what attributes exist in the element and divide them up.
             var htmlAttributes = chunk.Attributes;
             var attributeDescriptors = tagHelperDescriptors.SelectMany(descriptor => descriptor.Attributes);
-            var boundAttributes = htmlAttributes.Where(
-                attribute => attributeDescriptors.Any(
+            var unboundHtmlAttributes = htmlAttributes.Where(
+                attribute => !attributeDescriptors.Any(
                     descriptor => string.Equals(attribute.Key, descriptor.Name, StringComparison.OrdinalIgnoreCase)));
-            var unboundHtmlAttributes = htmlAttributes.Except(boundAttributes);
-
-            var boundNonStringAttributes = boundAttributes.Where(attribute =>
-            {
-                bool isBoundNonStringAttribute;
-                TagHelperDescriptorMatcher.IsBoundAttribute(
-                    attribute.Key,
-                    tagHelperDescriptors,
-                    out isBoundNonStringAttribute);
-
-                return isBoundNonStringAttribute;
-            });
-            var boundStringAttributes = boundAttributes.Except(boundNonStringAttributes);
-
-            RenderTagHelpersCreation(chunk, tagHelperDescriptors, boundStringAttributes);
 
             RenderUnboundHTMLAttributes(unboundHtmlAttributes);
 
@@ -166,12 +153,8 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderTagHelpersCreation(
             TagHelperChunk chunk,
-            IEnumerable<TagHelperDescriptor> tagHelperDescriptors,
-            IEnumerable<KeyValuePair<string, Chunk>> boundStringAttributes)
+            IEnumerable<TagHelperDescriptor> tagHelperDescriptors)
         {
-            var boundStringAttributeNames =
-                new HashSet<string>(boundStringAttributes.Select(kvp => kvp.Key), StringComparer.OrdinalIgnoreCase);
-
             // This is to maintain value accessors for attributes when creating the TagHelpers.
             // Ultimately it enables us to do scenarios like this:
             // myTagHelper1.Foo = DateTime.Now;
@@ -201,7 +184,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                     chunk.Attributes,
                     tagHelperVariableName,
                     tagHelperDescriptor.Attributes,
-                    boundStringAttributeNames,
                     htmlAttributeValues);
             }
         }
@@ -210,7 +192,6 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             IList<KeyValuePair<string, Chunk>> chunkAttributes,
             string tagHelperVariableName,
             IEnumerable<TagHelperAttributeDescriptor> attributeDescriptors,
-            HashSet<string> boundStringAttributeNames,
             Dictionary<string, string> htmlAttributeValues)
         {
             foreach (var attributeDescriptor in attributeDescriptors)
@@ -250,7 +231,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                         // Bufferable attributes are attributes that can have Razor code inside of them. Such
                         // attributes have string values and may be calculated using a temporary TextWriter or other
                         // buffer.
-                        var bufferableAttribute = boundStringAttributeNames.Contains(attributeDescriptor.Name);
+                        var bufferableAttribute = attributeDescriptor.IsStringProperty;
 
                         RenderNewAttributeValueAssignment(
                             attributeDescriptor,

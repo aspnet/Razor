@@ -365,8 +365,6 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                 }
             }
 
-            // May need to update block Kind of all descendant Spans in this more complex case.
-            // Examples may include name="@aaa + @bbb" and name="@* commented *@ code".
             attribute = new KeyValuePair<string, SyntaxTreeNode>(name, block);
 
             return true;
@@ -474,8 +472,8 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             // Builder will be null in the case of minimized attributes
             if (builder != null)
             {
-                // If the attribute was requested by a tag helper but none required it to be a string then we need to
-                // treat its value as code. Any non-string value can be any C# value so we need to ensure the
+                // If the attribute was requested by a tag helper but the corresponding property was not a string,
+                // then treat its value as code. A non-string value can be any C# value so we need to ensure the
                 // SyntaxTreeNode reflects that.
                 if (isBoundNonStringAttribute)
                 {
