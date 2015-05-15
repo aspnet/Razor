@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -92,7 +93,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                             RazorResources.FormatRewriterError_EmptyTagHelperBoundAttribute(
                                 attribute.Key,
                                 tagName,
-                                TagHelperDescriptorMatcher.GetPropertyType(attribute.Key, descriptors)),
+                                GetPropertyType(attribute.Key, descriptors)),
                             attribute.Key.Length);
                     }
 
@@ -251,8 +252,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                 return false;
             }
 
-            isBoundAttribute =
-                TagHelperDescriptorMatcher.IsBoundAttribute(name, descriptors, out isBoundNonStringAttribute);
+            isBoundAttribute = IsBoundAttribute(name, descriptors, out isBoundNonStringAttribute);
 
             // If we're not after an equal then we should treat the value as if it were a minimized attribute.
             var attributeValueBuilder = afterEquals ? builder : null;
@@ -318,8 +318,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             }
 
             // Have a name now. Able to determine correct isBoundNonStringAttribute value.
-            isBoundAttribute =
-                TagHelperDescriptorMatcher.IsBoundAttribute(name, descriptors, out isBoundNonStringAttribute);
+            isBoundAttribute = IsBoundAttribute(name, descriptors, out isBoundNonStringAttribute);
 
             // TODO: Support no attribute values: https://github.com/aspnet/Razor/issues/220
 
@@ -504,6 +503,39 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             {
                 return string.IsNullOrWhiteSpace(((Span)attributeValue).Content);
             }
+        }
+
+        // Determines the full name of the <see cref="Type"/> of the property corresponding to an attribute named
+        // <paramref name="name"/>.
+        private static string GetPropertyType(string name, IEnumerable<TagHelperDescriptor> descriptors)
+        {
+            var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors);
+
+            return firstBoundAttribute?.TypeName;
+        }
+
+        // Determines whether an attribute named <paramref name="name"/> is bound to a non-<see cref="string"/> tag
+        // helper property.
+        private static bool IsBoundAttribute(
+            string name,
+            IEnumerable<TagHelperDescriptor> descriptors,
+            out bool isBoundNonStringAttribute)
+        {
+            var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors);
+            var isBoundAttribute = firstBoundAttribute != null;
+            isBoundNonStringAttribute = isBoundAttribute && !firstBoundAttribute.IsStringProperty;
+
+            return isBoundAttribute;
+        }
+
+        // Finds first TagHelperAttributeDescriptor matching given name.
+        private static TagHelperAttributeDescriptor FindFirstBoundAttribute(
+            string name,
+            IEnumerable<TagHelperDescriptor> descriptors)
+        {
+            return descriptors
+                .SelectMany(descriptor => descriptor.Attributes)
+                .FirstOrDefault(attribute => string.Equals(attribute.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         private static bool IsQuote(HtmlSymbol htmlSymbol)
