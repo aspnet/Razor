@@ -12,7 +12,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
     /// </summary>
     public class TagHelperAttributeDescriptor
     {
-        // Internal for testing i.e. for easy TagHelperAttributeDescriptor when PropertyInfo is available.
+        // Internal for testing i.e. for easy TagHelperAttributeDescriptor creation when PropertyInfo is available.
         internal TagHelperAttributeDescriptor([NotNull] string name, [NotNull] PropertyInfo propertyInfo)
             : this(
                   name,
