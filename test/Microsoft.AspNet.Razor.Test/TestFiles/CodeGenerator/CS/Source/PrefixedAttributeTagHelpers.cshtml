@@ -1,0 +1,21 @@
+﻿@addTagHelper "something, nice"
+
+@{ 
+    var intDictionary = new Dictionary<string, int>
+    {
+        { "three", 3 },
+    };
+    var stringDictionary = new SortedDictionary<string, string>
+    {
+        { "name", "value" },
+    };
+}
+
+<div class="randomNonTagHelperAttribute">
+    <input type="checkbox" int-dictionary="intDictionary" string-dictionary="stringDictionary"/>
+    <input type="password" int-dictionary="intDictionary" int-prefix-="37" int-prefix-grabber="42" />
+    <input type="radio"
+           int-prefix-grabber="42" int-prefix-="37"
+           string-prefix-grabber="string" string-prefix-value="another string"/>
+    <input int-prefix-value="37" string-prefix-value="string" />
+</div>

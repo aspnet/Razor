@@ -270,6 +270,184 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                         new[] { new RazorError(string.Format(errorFormat, "bound-int", "p", intType), 3, 0, 3, 9) }
                     },
                     {
+                        "<input int-dictionary/>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("int-dictionary", null),
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(errorFormat, "int-dictionary", "input", typeof(IDictionary<string, int>).FullName),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 14),
+                        }
+                    },
+                    {
+                        "<input string-dictionary />",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("string-dictionary", null),
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(errorFormat, "string-dictionary", "input", typeof(IDictionary<string, string>).FullName),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 17),
+                        }
+                    },
+                    {
+                        "<input int-prefix- />",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("int-prefix-", null),
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(errorFormat, "int-prefix-", "input", typeof(int).FullName),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 11),
+                        }
+                    },
+                    {
+                        "<input string-prefix-/>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("string-prefix-", null),
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(errorFormat, "string-prefix-", "input", typeof(string).FullName),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 14),
+                        }
+                    },
+                    {
+                        "<input int-prefix-value/>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("int-prefix-value", null),
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(errorFormat, "int-prefix-value", "input", typeof(int).FullName),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 16),
+                        }
+                    },
+                    {
+                        "<input string-prefix-value />",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("string-prefix-value", null),
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(errorFormat, "string-prefix-value", "input", typeof(string).FullName),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 19),
+                        }
+                    },
+                    {
+                        "<input int-prefix-value='' />",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("int-prefix-value", new MarkupBlock()),
+                                })),
+                        new[]
+                        {
+                            new RazorError(
+                                string.Format(errorFormat, "int-prefix-value", "input", typeof(int).FullName),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 16),
+                        }
+                    },
+                    {
+                        "<input string-prefix-value=''/>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("string-prefix-value", new MarkupBlock()),
+                                })),
+                        new RazorError[0]
+                    },
+                    {
+                        "<input int-prefix-value='3'/>",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("int-prefix-value", factory.CodeMarkup("3")),
+                                })),
+                        new RazorError[0]
+                    },
+                    {
+                        "<input string-prefix-value='some string' />",
+                        new MarkupBlock(
+                            new MarkupTagHelperBlock(
+                                "input",
+                                selfClosing: true,
+                                attributes: new List<KeyValuePair<string, SyntaxTreeNode>>
+                                {
+                                    new KeyValuePair<string, SyntaxTreeNode>("string-prefix-value", new MarkupBlock(
+                                        factory.Markup("some"),
+                                        factory.Markup(" string"))),
+                                })),
+                        new RazorError[0]
+                    },
+                    {
                         "<input unbound-required bound-required-string />",
                         new MarkupBlock(
                             new MarkupTagHelperBlock(
@@ -905,6 +1083,28 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                                 typeof(int).FullName)
                         },
                         requiredAttributes: new[] { "bound-required-int" }),
+                    new TagHelperDescriptor(
+                        tagName: "input",
+                        typeName: "InputTagHelper3",
+                        assemblyName: "SomeAssembly",
+                        attributes: new[]
+                        {
+                            new TagHelperAttributeDescriptor(
+                                "int-dictionary",
+                                "DictionaryOfIntProperty",
+                                typeof(IDictionary<string, int>).FullName,
+                                prefix: "int-prefix-",
+                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, int>()",
+                                prefixedValueTypeName: typeof(int).FullName),
+                            new TagHelperAttributeDescriptor(
+                                "string-dictionary",
+                                "DictionaryOfStringProperty",
+                                typeof(IDictionary<string, string>).FullName,
+                                prefix: "string-prefix-",
+                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, string>()",
+                                prefixedValueTypeName: typeof(string).FullName),
+                        },
+                        requiredAttributes: Enumerable.Empty<string>()),
                     new TagHelperDescriptor(
                         tagName: "p",
                         typeName: "PTagHelper",

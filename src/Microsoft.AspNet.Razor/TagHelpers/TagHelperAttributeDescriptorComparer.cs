@@ -42,6 +42,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
 
             return descriptorX != null &&
                 string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(descriptorX.Prefix, descriptorY.Prefix, StringComparison.OrdinalIgnoreCase) &&
                 string.Equals(descriptorX.PropertyName, descriptorY.PropertyName, StringComparison.Ordinal) &&
                 string.Equals(descriptorX.TypeName, descriptorY.TypeName, StringComparison.Ordinal);
         }
@@ -51,6 +52,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         {
             return HashCodeCombiner.Start()
                 .Add(descriptor.Name, StringComparer.OrdinalIgnoreCase)
+                .Add(descriptor.Prefix, StringComparer.OrdinalIgnoreCase)
                 .Add(descriptor.PropertyName, StringComparer.Ordinal)
                 .Add(descriptor.TypeName, StringComparer.Ordinal)
                 .CombinedHash;

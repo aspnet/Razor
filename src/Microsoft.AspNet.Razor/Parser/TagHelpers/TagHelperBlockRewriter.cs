@@ -480,9 +480,14 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
         // Determines the full name of the Type of the property corresponding to an attribute with the given name.
         private static string GetPropertyType(string name, IEnumerable<TagHelperDescriptor> descriptors)
         {
-            var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors);
+            bool isNameMatch;
+            var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors, out isNameMatch);
+            if (isNameMatch)
+            {
+                return firstBoundAttribute.TypeName;
+            }
 
-            return firstBoundAttribute?.TypeName;
+            return firstBoundAttribute?.PrefixedValueTypeName;
         }
 
         // Determines whether an attribute with the given name is bound to a non-string tag helper property.
@@ -491,9 +496,17 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             IEnumerable<TagHelperDescriptor> descriptors,
             out bool isBoundNonStringAttribute)
         {
-            var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors);
+            bool isNameMatch;
+            var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors, out isNameMatch);
             var isBoundAttribute = firstBoundAttribute != null;
-            isBoundNonStringAttribute = isBoundAttribute && !firstBoundAttribute.IsStringProperty;
+            if (isNameMatch)
+            {
+                isBoundNonStringAttribute = !firstBoundAttribute.IsStringProperty;
+            }
+            else
+            {
+                isBoundNonStringAttribute = isBoundAttribute && !firstBoundAttribute.AreStringPrefixedValues;
+            }
 
             return isBoundAttribute;
         }
@@ -501,11 +514,26 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
         // Finds first TagHelperAttributeDescriptor matching given name.
         private static TagHelperAttributeDescriptor FindFirstBoundAttribute(
             string name,
-            IEnumerable<TagHelperDescriptor> descriptors)
+            IEnumerable<TagHelperDescriptor> descriptors,
+            out bool isNameMatch)
         {
-            return descriptors
+            var matchedName = false;
+            var firstBoundAttribute = descriptors
                 .SelectMany(descriptor => descriptor.Attributes)
-                .FirstOrDefault(attribute => string.Equals(attribute.Name, name, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(attribute =>
+                {
+                    if (string.Equals(attribute.Name, name, StringComparison.OrdinalIgnoreCase))
+                    {
+                        matchedName = true;
+                        return true;
+                    }
+
+                    return attribute.Prefix != null &&
+                        name.StartsWith(attribute.Prefix, StringComparison.OrdinalIgnoreCase);
+                });
+
+            isNameMatch = matchedName;
+            return firstBoundAttribute;
         }
 
         private static bool IsQuote(HtmlSymbol htmlSymbol)
