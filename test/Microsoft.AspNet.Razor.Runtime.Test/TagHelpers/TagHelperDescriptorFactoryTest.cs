@@ -380,11 +380,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                         "int-attribute",
                         nameof(InheritedSingleAttributeTagHelper.IntAttribute),
                         typeof(int).FullName,
-                        isStringProperty: false,
-                        prefix: null,
-                        objectCreationExpression: null,
-                        prefixedValueTypeName: null,
-                        areStringPrefixedValues: false)
+                        isIndexer: false,
+                        isStringProperty: false)
                 });
 
             // Act
@@ -499,11 +496,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                         "bound-property",
                         nameof(NotBoundAttributeTagHelper.BoundProperty),
                         typeof(object).FullName,
-                        isStringProperty: false,
-                        prefix: null,
-                        objectCreationExpression: null,
-                        prefixedValueTypeName: null,
-                        areStringPrefixedValues: false)
+                        isIndexer: false,
+                        isStringProperty: false)
                 });
 
             // Act
@@ -554,11 +548,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                             "valid-attribute",
                             nameof(MultiTagTagHelper.ValidAttribute),
                             typeof(string).FullName,
-                            isStringProperty: true,
-                            prefix: null,
-                            objectCreationExpression: null,
-                            prefixedValueTypeName: null,
-                            areStringPrefixedValues: false)
+                            isIndexer: false,
+                            isStringProperty: true)
                     }),
                 new TagHelperDescriptor(
                     "p",
@@ -570,11 +561,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                             "valid-attribute",
                             nameof(MultiTagTagHelper.ValidAttribute),
                             typeof(string).FullName,
-                            isStringProperty: true,
-                            prefix: null,
-                            objectCreationExpression: null,
-                            prefixedValueTypeName: null,
-                            areStringPrefixedValues: false)
+                            isIndexer: false,
+                            isStringProperty: true)
                     })
             };
 
@@ -897,11 +885,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                                 name: "dictionary-property",
                                 propertyName: nameof(DefaultValidHtmlAttributePrefix.DictionaryProperty),
                                 typeName: typeof(IDictionary<string, string>).FullName,
-                                isStringProperty: false,
-                                prefix: "dictionary-property-",
-                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, string>()",
-                                prefixedValueTypeName: typeof(string).FullName,
-                                areStringPrefixedValues: true),
+                                isIndexer: false,
+                                isStringProperty: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "dictionary-property-",
+                                propertyName: nameof(DefaultValidHtmlAttributePrefix.DictionaryProperty),
+                                typeName: typeof(string).FullName,
+                                isIndexer: true,
+                                isStringProperty: true),
                         },
                         new string[0]
                     },
@@ -913,11 +904,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                                 name: "valid-name",
                                 propertyName: nameof(SingleValidHtmlAttributePrefix.DictionaryProperty),
                                 typeName: typeof(IDictionary<string, string>).FullName,
-                                isStringProperty: false,
-                                prefix: "valid-prefix",
-                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, string>()",
-                                prefixedValueTypeName: typeof(string).FullName,
-                                areStringPrefixedValues: true),
+                                isIndexer: false,
+                                isStringProperty: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "valid-prefix",
+                                propertyName: nameof(SingleValidHtmlAttributePrefix.DictionaryProperty),
+                                typeName: typeof(string).FullName,
+                                isIndexer: true,
+                                isStringProperty: true),
                         },
                         new string[0]
                     },
@@ -929,60 +923,68 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                                 name: "valid-name1",
                                 propertyName: nameof(MultipleValidHtmlAttributePrefix.DictionaryProperty),
                                 typeName: typeof(Dictionary<string, object>).FullName,
-                                isStringProperty: false,
-                                prefix: "valid-prefix1-",
-                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, object>()",
-                                prefixedValueTypeName: typeof(object).FullName,
-                                areStringPrefixedValues: false),
+                                isIndexer: false,
+                                isStringProperty: false),
                             new TagHelperAttributeDescriptor(
                                 name: "valid-name2",
                                 propertyName: nameof(MultipleValidHtmlAttributePrefix.DictionarySubclassProperty),
                                 typeName: typeof(DictionarySubclass).FullName,
-                                isStringProperty: false,
-                                prefix: "valid-prefix2-",
-                                // See minor aspnet/Common#21 bug here. Separator should be a '.'.
-                                objectCreationExpression: $"new { typeof(TagHelperDescriptorFactoryTest).FullName }+" +
-                                    $"{ nameof(DictionarySubclass) }()",
-                                prefixedValueTypeName: typeof(string).FullName,
-                                areStringPrefixedValues: true),
+                                isIndexer: false,
+                                isStringProperty: false),
                             new TagHelperAttributeDescriptor(
                                 name: "valid-name3",
                                 propertyName: nameof(MultipleValidHtmlAttributePrefix.DictionaryWithoutParameterlessConstructorProperty),
                                 typeName: typeof(DictionaryWithoutParameterlessConstructor).FullName,
-                                isStringProperty: false,
-                                prefix: "valid-prefix3-",
-                                objectCreationExpression: null,
-                                prefixedValueTypeName: typeof(string).FullName,
-                                areStringPrefixedValues: true),
+                                isIndexer: false,
+                                isStringProperty: false),
                             new TagHelperAttributeDescriptor(
                                 name: "valid-name4",
                                 propertyName: nameof(MultipleValidHtmlAttributePrefix.GenericDictionarySubclassProperty),
                                 typeName: typeof(GenericDictionarySubclass<object>).FullName,
-                                isStringProperty: false,
-                                prefix: "valid-prefix4-",
-                                // See minor aspnet/Common#21 bug here. Separator should be a '.'.
-                                objectCreationExpression: $"new { typeof(TagHelperDescriptorFactoryTest).FullName }+" +
-                                    $"{ nameof(GenericDictionarySubclass<object>) }<object>()",
-                                prefixedValueTypeName: typeof(object).FullName,
-                                areStringPrefixedValues: false),
+                                isIndexer: false,
+                                isStringProperty: false),
                             new TagHelperAttributeDescriptor(
                                 name: "valid-name5",
                                 propertyName: nameof(MultipleValidHtmlAttributePrefix.SortedDictionaryProperty),
                                 typeName: typeof(SortedDictionary<string, int>).FullName,
-                                isStringProperty: false,
-                                prefix: "valid-prefix5-",
-                                objectCreationExpression: "new System.Collections.Generic.SortedDictionary<string, int>()",
-                                prefixedValueTypeName: typeof(int).FullName,
-                                areStringPrefixedValues: false),
+                                isIndexer: false,
+                                isStringProperty: false),
                             new TagHelperAttributeDescriptor(
                                 name: "valid-name6",
                                 propertyName: nameof(MultipleValidHtmlAttributePrefix.StringProperty),
                                 typeName: typeof(string).FullName,
-                                isStringProperty: true,
-                                prefix: null,
-                                objectCreationExpression: null,
-                                prefixedValueTypeName: null,
-                                areStringPrefixedValues: false),
+                                isIndexer: false,
+                                isStringProperty: true),
+                            new TagHelperAttributeDescriptor(
+                                name: "valid-prefix1-",
+                                propertyName: nameof(MultipleValidHtmlAttributePrefix.DictionaryProperty),
+                                typeName: typeof(object).FullName,
+                                isIndexer: true,
+                                isStringProperty: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "valid-prefix2-",
+                                propertyName: nameof(MultipleValidHtmlAttributePrefix.DictionarySubclassProperty),
+                                typeName: typeof(string).FullName,
+                                isIndexer: true,
+                                isStringProperty: true),
+                            new TagHelperAttributeDescriptor(
+                                name: "valid-prefix3-",
+                                propertyName: nameof(MultipleValidHtmlAttributePrefix.DictionaryWithoutParameterlessConstructorProperty),
+                                typeName: typeof(string).FullName,
+                                isIndexer: true,
+                                isStringProperty: true),
+                            new TagHelperAttributeDescriptor(
+                                name: "valid-prefix4-",
+                                propertyName: nameof(MultipleValidHtmlAttributePrefix.GenericDictionarySubclassProperty),
+                                typeName: typeof(object).FullName,
+                                isIndexer: true,
+                                isStringProperty: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "valid-prefix5-",
+                                propertyName: nameof(MultipleValidHtmlAttributePrefix.SortedDictionaryProperty),
+                                typeName: typeof(int).FullName,
+                                isIndexer: true,
+                                isStringProperty: false),
                         },
                         new string[0]
                     },
@@ -1004,11 +1006,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                                 name: "valid-name1",
                                 propertyName: nameof(MultipleInvalidHtmlAttributePrefix.LongProperty),
                                 typeName: typeof(long).FullName,
-                                isStringProperty: false,
-                                prefix: null,
-                                objectCreationExpression: null,
-                                prefixedValueTypeName: null,
-                                areStringPrefixedValues: false),
+                                isIndexer: false,
+                                isStringProperty: false),
                         },
                         new[]
                         {
@@ -1084,16 +1083,18 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public void ValidateTagHelperAttributeDescriptor_WithValidName_ReturnsTrue(string name)
         {
             // Arrange
-            var descriptor =
-                new TagHelperAttributeDescriptor(name, propertyName: "ValidProperty", typeName: "PropertyType");
+            var descriptor = new TagHelperAttributeDescriptor(
+                name,
+                propertyName: "ValidProperty",
+                typeName: "PropertyType",
+                isIndexer: false);
             var errorSink = new ErrorSink();
 
             // Act
             var result = TagHelperDescriptorFactory.ValidateTagHelperAttributeDescriptor(
                 descriptor,
                 typeof(MultiTagTagHelper),
-                errorSink,
-                isExplicitPrefix: false);
+                errorSink);
 
             // Assert
             Assert.True(result);
@@ -1102,24 +1103,21 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         [Theory]
         [MemberData(nameof(ValidAttributeNameOrPrefixData))]
-        public void ValidateTagHelperAttributeDescriptor_WithValidNameAndValidPrefix_ReturnsTrue(string prefix)
+        public void ValidateTagHelperAttributeDescriptor_WithValidPrefix_ReturnsTrue(string prefix)
         {
             // Arrange
             var descriptor = new TagHelperAttributeDescriptor(
-                name: "ValidName",
-                propertyName: "InvalidProperty",
+                name: prefix,
+                propertyName: "ValidProperty",
                 typeName: "PropertyType",
-                prefix: prefix,
-                objectCreationExpression: null,
-                prefixedValueTypeName: "ValuesType");
+                isIndexer: true);
             var errorSink = new ErrorSink();
 
             // Act
             var result = TagHelperDescriptorFactory.ValidateTagHelperAttributeDescriptor(
                 descriptor,
                 typeof(MultiTagTagHelper),
-                errorSink,
-                isExplicitPrefix: true);
+                errorSink);
 
             // Assert
             Assert.True(result);
@@ -1153,93 +1151,22 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             string[] expectedErrorMessages)
         {
             // Arrange
-            var descriptor =
-                new TagHelperAttributeDescriptor(name, propertyName: "InvalidProperty", typeName: "PropertyType");
-            var errorSink = new ErrorSink();
-
-            // Act
-            var result = TagHelperDescriptorFactory.ValidateTagHelperAttributeDescriptor(
-                descriptor,
-                typeof(MultiTagTagHelper),
-                errorSink,
-                isExplicitPrefix: false);
-
-            // Assert
-            Assert.False(result);
-
-            var errors = errorSink.Errors.ToArray();
-            Assert.Equal(expectedErrorMessages.Length, errors.Length);
-            for (var i = 0; i < expectedErrorMessages.Length; i++)
-            {
-                Assert.Equal(1, errors[i].Length);
-                Assert.Equal(SourceLocation.Zero, errors[i].Location);
-                Assert.Equal(expectedErrorMessages[i], errors[i].Message, StringComparer.Ordinal);
-            }
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidAttributeNameData))]
-        public void ValidateTagHelperAttributeDescriptor_WithInvalidNameAndValidPrefix_AddsExpectedErrors(
-            string name,
-            string[] expectedErrorMessages)
-        {
-            // Arrange
             var descriptor = new TagHelperAttributeDescriptor(
                 name,
                 propertyName: "InvalidProperty",
                 typeName: "PropertyType",
-                prefix: "ValidPrefix",
-                objectCreationExpression: null,
-                prefixedValueTypeName: "ValuesType");
+                isIndexer: false);
             var errorSink = new ErrorSink();
 
             // Act
             var result = TagHelperDescriptorFactory.ValidateTagHelperAttributeDescriptor(
                 descriptor,
                 typeof(MultiTagTagHelper),
-                errorSink,
-                isExplicitPrefix: true);
+                errorSink);
 
             // Assert
             Assert.False(result);
 
-            var errors = errorSink.Errors.ToArray();
-            Assert.Equal(expectedErrorMessages.Length, errors.Length);
-            for (var i = 0; i < expectedErrorMessages.Length; i++)
-            {
-                Assert.Equal(1, errors[i].Length);
-                Assert.Equal(SourceLocation.Zero, errors[i].Location);
-                Assert.Equal(expectedErrorMessages[i], errors[i].Message, StringComparer.Ordinal);
-            }
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidAttributeNameData))]
-        public void ValidateTagHelperAttributeDescriptor_WithInvalidNameAndDefaultPrefix_AddsExpectedErrors(
-            string name,
-            string[] expectedErrorMessages)
-        {
-            // Arrange
-            var descriptor = new TagHelperAttributeDescriptor(
-                name,
-                propertyName: "InvalidProperty",
-                typeName: "PropertyType",
-                prefix: (name + "-"),
-                objectCreationExpression: null,
-                prefixedValueTypeName: "ValuesType");
-            var errorSink = new ErrorSink();
-
-            // Act
-            var result = TagHelperDescriptorFactory.ValidateTagHelperAttributeDescriptor(
-                descriptor,
-                typeof(MultiTagTagHelper),
-                errorSink,
-                isExplicitPrefix: false);
-
-            // Assert
-            Assert.False(result);
-
-            // Errors are not duplicated for the invalid prefix.
             var errors = errorSink.Errors.ToArray();
             Assert.Equal(expectedErrorMessages.Length, errors.Length);
             for (var i = 0; i < expectedErrorMessages.Length; i++)
@@ -1272,114 +1199,23 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         [Theory]
         [MemberData(nameof(InvalidAttributePrefixData))]
-        public void ValidateTagHelperAttributeDescriptor_WithValidNameAndInvalidPrefix_AddsExpectedErrors(
+        public void ValidateTagHelperAttributeDescriptor_WithInvalidPrefix_AddsExpectedErrors(
             string prefix,
             string[] expectedErrorMessages)
         {
             // Arrange
             var descriptor = new TagHelperAttributeDescriptor(
-                name: "ValidName",
+                name: prefix,
                 propertyName: "InvalidProperty",
-                typeName: "PropertyType",
-                prefix: prefix,
-                objectCreationExpression: null,
-                prefixedValueTypeName: "ValuesType");
+                typeName: "ValuesType",
+                isIndexer: true);
             var errorSink = new ErrorSink();
 
             // Act
             var result = TagHelperDescriptorFactory.ValidateTagHelperAttributeDescriptor(
                 descriptor,
                 typeof(MultiTagTagHelper),
-                errorSink,
-                isExplicitPrefix: true);
-
-            // Assert
-            Assert.False(result);
-
-            var errors = errorSink.Errors.ToArray();
-            Assert.Equal(expectedErrorMessages.Length, errors.Length);
-            for (var i = 0; i < expectedErrorMessages.Length; i++)
-            {
-                Assert.Equal(1, errors[i].Length);
-                Assert.Equal(SourceLocation.Zero, errors[i].Location);
-                Assert.Equal(expectedErrorMessages[i], errors[i].Message, StringComparer.Ordinal);
-            }
-        }
-
-        // name and prefix, expectedErrorMessages
-        public static TheoryData<string, string[]> InvalidAttributeNameAndPrefixData
-        {
-            get
-            {
-                Func<string, string, string> onNameError = (invalidText, invalidCharacter) => "Invalid tag helper " +
-                    $"bound property '{ typeof(MultiTagTagHelper).FullName }.InvalidProperty'. Tag helpers cannot " +
-                    $"bind to HTML attributes with name '{ invalidText }' because name contains a " +
-                    $"'{ invalidCharacter }' character.";
-                var whitespaceNameErrorString = "Invalid tag helper bound property " +
-                    $"'{ typeof(MultiTagTagHelper).FullName }.InvalidProperty'. Tag helpers cannot bind to HTML " +
-                    "attributes with a whitespace name.";
-                Func<string, string> onNameDataError = invalidText => "Invalid tag helper bound property " +
-                    $"'{ typeof(MultiTagTagHelper).FullName }.InvalidProperty'. Tag helpers cannot bind to HTML " +
-                    $"attributes with name '{ invalidText }' because name starts with 'data-'.";
-                Func<string, string, string> onPrefixError = (invalidText, invalidCharacter) => "Invalid tag helper " +
-                    $"bound property '{ typeof(MultiTagTagHelper).FullName }.InvalidProperty'. Tag helpers cannot " +
-                    $"bind to HTML attributes with prefix '{ invalidText }' because prefix contains a " +
-                    $"'{ invalidCharacter }' character.";
-                var whitespacePrefixErrorString = "Invalid tag helper bound property " +
-                    $"'{ typeof(MultiTagTagHelper).FullName }.InvalidProperty'. Tag helpers cannot bind to HTML " +
-                    "attributes with a whitespace prefix.";
-                Func<string, string> onPrefixDataError = invalidText => "Invalid tag helper bound property " +
-                    $"'{ typeof(MultiTagTagHelper).FullName }.InvalidProperty'. Tag helpers cannot bind to HTML " +
-                    $"attributes with prefix '{ invalidText }' because prefix starts with 'data-'.";
-
-                var invalidNameData =
-                    GetInvalidNameOrPrefixData(onNameError, whitespaceNameErrorString, onNameDataError);
-                var invalidPrefixData =
-                    GetInvalidNameOrPrefixData(onPrefixError, whitespacePrefixErrorString, onPrefixDataError);
-
-                var combinedData = new TheoryData<string, string[]>();
-                var index = 0;
-                foreach (var invalidName in invalidNameData)
-                {
-                    var invalidNameErrors = (string[])invalidName[1];
-                    var invalidPrefix = invalidPrefixData.ElementAt(index);
-                    var invalidPrefixErrors = (string[])invalidPrefix[1];
-
-                    var errors = new string[invalidNameErrors.Length * 2];
-                    invalidNameErrors.CopyTo(errors, 0);
-                    invalidPrefixErrors.CopyTo(errors, invalidNameErrors.Length);
-
-                    combinedData.Add((string)invalidName[0], errors);
-
-                    index++;
-                }
-
-                return combinedData;
-            }
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidAttributeNameAndPrefixData))]
-        public void ValidateTagHelperAttributeDescriptor_WithInvalidNameAndInvalidPrefix_AddsExpectedErrors(
-            string nameAndPrefix,
-            string[] expectedErrorMessages)
-        {
-            // Arrange
-            var descriptor = new TagHelperAttributeDescriptor(
-                name: nameAndPrefix,
-                propertyName: "InvalidProperty",
-                typeName: "PropertyType",
-                prefix: nameAndPrefix,
-                objectCreationExpression: null,
-                prefixedValueTypeName: "ValuesType");
-            var errorSink = new ErrorSink();
-
-            // Act
-            var result = TagHelperDescriptorFactory.ValidateTagHelperAttributeDescriptor(
-                descriptor,
-                typeof(MultiTagTagHelper),
-                errorSink,
-                isExplicitPrefix: true);
+                errorSink);
 
             // Assert
             Assert.False(result);
@@ -1434,7 +1270,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 { "he/lo", new[] { onNameError("he/lo", "/") } },
                 {
                     "/he/lo/",
-                    new[] {
+                    new[]
+                    {
                         onNameError("/he/lo/", "/"),
                         onNameError("/he/lo/", "/"),
                         onNameError("/he/lo/", "/"),

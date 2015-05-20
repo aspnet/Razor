@@ -34,7 +34,8 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                             new TagHelperAttributeDescriptor(
                                 "catchall-bound-string",
                                 "BoundRequiredString",
-                                typeof(string).FullName),
+                                typeof(string).FullName,
+                                isIndexer: false),
                         },
                         requiredAttributes: new[] { "catchall-unbound-required" }),
                     new TagHelperDescriptor(
@@ -46,11 +47,13 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                             new TagHelperAttributeDescriptor(
                                 "input-bound-required-string",
                                 "BoundRequiredString",
-                                typeof(string).FullName),
+                                typeof(string).FullName,
+                                isIndexer: false),
                             new TagHelperAttributeDescriptor(
                                 "input-bound-string",
                                 "BoundString",
-                                typeof(string).FullName)
+                                typeof(string).FullName,
+                                isIndexer: false)
                         },
                         requiredAttributes: new[] { "input-bound-required-string", "input-unbound-required" }),
                 };
@@ -167,25 +170,33 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                             new TagHelperAttributeDescriptor(
                                 name: "int-prefix-grabber",
                                 propertyName: "IntProperty",
-                                typeName: typeof(int).FullName),
+                                typeName: typeof(int).FullName,
+                                isIndexer: false),
                             new TagHelperAttributeDescriptor(
                                 name: "int-dictionary",
                                 propertyName: "IntDictionaryProperty",
                                 typeName: typeof(IDictionary<string, int>).FullName,
-                                prefix: "int-prefix-",
-                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, int>()",
-                                prefixedValueTypeName: typeof(int).FullName),
+                                isIndexer: false),
                             new TagHelperAttributeDescriptor(
                                 name: "string-dictionary",
                                 propertyName: "StringDictionaryProperty",
                                 typeName: "Namespace.DictionaryWithoutParameterlessConstructor<string, string>",
-                                prefix: "string-prefix-",
-                                objectCreationExpression: null,
-                                prefixedValueTypeName: typeof(string).FullName),
+                                isIndexer: false),
                             new TagHelperAttributeDescriptor(
                                 name: "string-prefix-grabber",
                                 propertyName: "StringProperty",
-                                typeName: typeof(string).FullName),
+                                typeName: typeof(string).FullName,
+                                isIndexer: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "int-prefix-",
+                                propertyName: "IntDictionaryProperty",
+                                typeName: typeof(int).FullName,
+                                isIndexer: true),
+                            new TagHelperAttributeDescriptor(
+                                name: "string-prefix-",
+                                propertyName: "StringDictionaryProperty",
+                                typeName: typeof(string).FullName,
+                                isIndexer: true),
                         }),
                     new TagHelperDescriptor(
                         tagName: "input",
@@ -197,16 +208,22 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                                 name: "int-dictionary",
                                 propertyName: "IntDictionaryProperty",
                                 typeName: typeof(IDictionary<string, int>).FullName,
-                                prefix: "int-prefix-",
-                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, int>()",
-                                prefixedValueTypeName: typeof(int).FullName),
+                                isIndexer: false),
                             new TagHelperAttributeDescriptor(
                                 name: "string-dictionary",
                                 propertyName: "StringDictionaryProperty",
                                 typeName: "Namespace.DictionaryWithoutParameterlessConstructor<string, string>",
-                                prefix: "string-prefix-",
-                                objectCreationExpression: null,
-                                prefixedValueTypeName: typeof(string).FullName),
+                                isIndexer: false),
+                            new TagHelperAttributeDescriptor(
+                                name: "int-prefix-",
+                                propertyName: "IntDictionaryProperty",
+                                typeName: typeof(int).FullName,
+                                isIndexer: true),
+                            new TagHelperAttributeDescriptor(
+                                name: "string-prefix-",
+                                propertyName: "StringDictionaryProperty",
+                                typeName: typeof(string).FullName,
+                                isIndexer: true),
                         }),
                 };
             }

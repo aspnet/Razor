@@ -211,15 +211,46 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             var accessibleProperties = type.GetRuntimeProperties().Where(IsAccessibleProperty);
             var attributeDescriptors = new List<TagHelperAttributeDescriptor>();
 
+            // Keep indexer descriptors separate to avoid sorting the combined list later.
+            var indexerDescriptors = new List<TagHelperAttributeDescriptor>();
+
             foreach (var property in accessibleProperties)
             {
-                bool isExplicitPrefix;
-                var descriptor = ToAttributeDescriptor(property, type, errorSink, out isExplicitPrefix);
-                if (ValidateTagHelperAttributeDescriptor(descriptor, type, errorSink, isExplicitPrefix))
+                var attributeNameAttribute = property.GetCustomAttribute<HtmlAttributeNameAttribute>(inherit: false);
+                var descriptor = ToAttributeDescriptor(property, attributeNameAttribute);
+                if (ValidateTagHelperAttributeDescriptor(descriptor, type, errorSink))
                 {
+                    // Does this property also support indexer assignments?
+                    bool isInvalid;
+                    var indexerDescriptor = ToIndexerAttributeDescriptor(
+                        property,
+                        attributeNameAttribute,
+                        parentType: type,
+                        errorSink: errorSink,
+                        defaultPrefix: descriptor.Name + "-",
+                        isInvalid: out isInvalid);
+
+                    if (indexerDescriptor != null &&
+                        !ValidateTagHelperAttributeDescriptor(indexerDescriptor, type, errorSink))
+                    {
+                        isInvalid = true;
+                    }
+
+                    if (isInvalid)
+                    {
+                        // HtmlAttributeNameAttribute was not valid. Ignore this property completely.
+                        continue;
+                    }
+
                     attributeDescriptors.Add(descriptor);
+                    if (indexerDescriptor != null)
+                    {
+                        indexerDescriptors.Add(indexerDescriptor);
+                    }
                 }
             }
+
+            attributeDescriptors.AddRange(indexerDescriptors);
 
             return attributeDescriptors;
         }
@@ -228,31 +259,22 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         internal static bool ValidateTagHelperAttributeDescriptor(
             TagHelperAttributeDescriptor attributeDescriptor,
             Type parentType,
-            ErrorSink errorSink,
-            bool isExplicitPrefix)
+            ErrorSink errorSink)
         {
             if (attributeDescriptor == null)
             {
                 return false;
             }
 
-            var validName = ValidateTagHelperAttributeNameOrPrefix(
+            var nameOrPrefix = attributeDescriptor.IsIndexer ?
+                Resources.TagHelperDescriptorFactory_Prefix :
+                Resources.TagHelperDescriptorFactory_Name;
+            return ValidateTagHelperAttributeNameOrPrefix(
                 attributeDescriptor.Name,
                 parentType,
                 attributeDescriptor.PropertyName,
                 errorSink,
-                Resources.TagHelperDescriptorFactory_Name);
-
-            // Validate an explicit prefix even if name is invalid. Never validate default prefix because that would
-            // only duplicate the name's errors.
-            var validPrefix = !isExplicitPrefix || ValidateTagHelperAttributeNameOrPrefix(
-                attributeDescriptor.Prefix,
-                parentType,
-                attributeDescriptor.PropertyName,
-                errorSink,
-                Resources.TagHelperDescriptorFactory_Prefix);
-
-            return validName && validPrefix;
+                nameOrPrefix);
         }
 
         private static bool ValidateTagHelperAttributeNameOrPrefix(
@@ -264,7 +286,10 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             if (string.IsNullOrEmpty(attributeNameOrPrefix))
             {
-                // HtmlAttributeNameAttribute validates Name is non-null and non-empty. Both are valid for Prefix.
+                // HtmlAttributeNameAttribute validates Name is non-null and non-empty. Both are valid for
+                // DictionaryAttributePrefix. (Empty DictionaryAttributePrefix is a corner case which would bind every
+                // attribute of a target element. Likely not particularly useful but unclear what minimum length
+                // should be required and what scenarios a minimum length would break.)
                 return true;
             }
 
@@ -320,20 +345,28 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         private static TagHelperAttributeDescriptor ToAttributeDescriptor(
             PropertyInfo property,
-            Type parentType,
-            ErrorSink errorSink,
-            out bool isExplicitPrefix)
+            HtmlAttributeNameAttribute attributeNameAttribute)
         {
-            isExplicitPrefix = false;
-
-            var attributeNameAttribute = property.GetCustomAttribute<HtmlAttributeNameAttribute>(inherit: false);
             var attributeName = attributeNameAttribute != null ?
                                 attributeNameAttribute.Name :
                                 ToHtmlCase(property.Name);
-            string prefix = null;
-            string objectCreationExpression = null;
-            string prefixedValueTypeName = null;
 
+            return new TagHelperAttributeDescriptor(
+                attributeName,
+                property.Name,
+                property.PropertyType.FullName,
+                isIndexer: false);
+        }
+
+        private static TagHelperAttributeDescriptor ToIndexerAttributeDescriptor(
+            PropertyInfo property,
+            HtmlAttributeNameAttribute attributeNameAttribute,
+            Type parentType,
+            ErrorSink errorSink,
+            string defaultPrefix,
+            out bool isInvalid)
+        {
+            isInvalid = false;
             var dictionaryTypeArguments = ClosedGenericMatcher.ExtractGenericInterface(
                     property.PropertyType,
                     typeof(IDictionary<,>))
@@ -344,6 +377,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 {
                     // DictionaryAttributePrefix is not supported unless associated with an
                     // IDictionary<string, TValue> property.
+                    isInvalid = true;
                     errorSink.OnError(
                         SourceLocation.Zero,
                         Resources.FormatTagHelperDescriptorFactory_InvalidAttributePrefix(
@@ -352,36 +386,26 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                             nameof(HtmlAttributeNameAttribute),
                             nameof(HtmlAttributeNameAttribute.DictionaryAttributePrefix),
                             "IDictionary<string, TValue>"));
-                    return null;
                 }
-            }
-            else
-            {
-                // Potential prefix case.
-                isExplicitPrefix = attributeNameAttribute?.DictionaryAttributePrefixSet == true;
 
-                prefix =  isExplicitPrefix ? attributeNameAttribute.DictionaryAttributePrefix : (attributeName + "-");
-                if (prefix == null)
-                {
-                    // Explicitly set to null. Ignore.
-                    isExplicitPrefix = false;
-                }
-                else
-                {
-                    objectCreationExpression = GetObjectCreationExpression(
-                        property.PropertyType,
-                        dictionaryTypeArguments);
-                    prefixedValueTypeName = dictionaryTypeArguments[1].FullName;
-                }
+                return null;
+            }
+
+            // Potential prefix case. Use default prefix (based on name)?
+            var useDefault = attributeNameAttribute == null || !attributeNameAttribute.DictionaryAttributePrefixSet;
+
+            var prefix = useDefault ? defaultPrefix : attributeNameAttribute.DictionaryAttributePrefix;
+            if (prefix == null)
+            {
+                // DictionaryAttributePrefix explicitly set to null. Ignore.
+                return null;
             }
 
             return new TagHelperAttributeDescriptor(
-                attributeName,
-                property.Name,
-                property.PropertyType.FullName,
-                prefix,
-                objectCreationExpression,
-                prefixedValueTypeName);
+                name: prefix,
+                propertyName: property.Name,
+                typeName: dictionaryTypeArguments[1].FullName,
+                isIndexer: true);
         }
 
         private static bool IsAccessibleProperty(PropertyInfo property)
@@ -407,32 +431,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         private static string ToHtmlCase(string name)
         {
             return HtmlCaseRegex.Replace(name, HtmlCaseRegexReplacement).ToLowerInvariant();
-        }
-
-        private static string GetObjectCreationExpression(Type propertyType, Type[] dictionaryTypeArguments)
-        {
-            var propertyTypeInfo = propertyType.GetTypeInfo();
-
-            // First see if default constructor is available and public.
-            if (!propertyTypeInfo.IsAbstract && !propertyTypeInfo.IsInterface)
-            {
-                var defaultConstructor = propertyTypeInfo.DeclaredConstructors
-                    .SingleOrDefault(constructor => constructor.IsPublic && constructor.GetParameters().Length == 0);
-                if (defaultConstructor != null)
-                {
-                    return $"new { TypeNameHelper.GetTypeDisplayName(propertyType, fullName: true) }()";
-                }
-            }
-
-            // Second try Dictionary<TKey, TValue>.
-            var dictionaryType = typeof(Dictionary<,>).MakeGenericType(dictionaryTypeArguments);
-            if (propertyTypeInfo.IsAssignableFrom(dictionaryType.GetTypeInfo()))
-            {
-                return $"new { TypeNameHelper.GetTypeDisplayName(dictionaryType, fullName: true) }()";
-            }
-
-            // Otherwise rely on the tag helper developer or Razor author to initialize the property.
-            return null;
         }
     }
 }

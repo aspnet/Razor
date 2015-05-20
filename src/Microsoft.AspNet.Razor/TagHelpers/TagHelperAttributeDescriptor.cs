@@ -18,150 +18,87 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                   name,
                   propertyInfo.Name,
                   propertyInfo.PropertyType.FullName,
-                  isStringProperty: propertyInfo.PropertyType == typeof(string),
-                  prefix: null,
-                  objectCreationExpression: null,
-                  prefixedValueTypeName: null,
-                  areStringPrefixedValues: false)
-        {
-        }
-
-        // Internal for testing i.e. for easy TagHelperAttributeDescriptor creation without Prefix information.
-        internal TagHelperAttributeDescriptor(
-            [NotNull] string name,
-            [NotNull] string propertyName,
-            [NotNull] string typeName)
-            : this(
-                  name,
-                  propertyName,
-                  typeName,
-                  prefix: null,
-                  objectCreationExpression: null,
-                  prefixedValueTypeName: null)
+                  isIndexer: false,
+                  isStringProperty: propertyInfo.PropertyType == typeof(string))
         {
         }
 
         /// <summary>
         /// Instantiates a new instance of the <see cref="TagHelperAttributeDescriptor"/> class.
         /// </summary>
-        /// <param name="name">The HTML attribute name.</param>
+        /// <param name="name">
+        /// The HTML attribute name or, if <paramref name="isIndexer"/> is <c>true</c>, the prefix for matching
+        /// attribute names.
+        /// </param>
         /// <param name="propertyName">The name of the CLR property that corresponds to the HTML attribute.</param>
         /// <param name="typeName">
-        /// The full name of the named (see <paramref name="propertyName"/>) property's <see cref="System.Type"/>.
+        /// The full name of the named (see <paramref name="propertyName"/>) property's <see cref="Type"/> or,
+        /// if <paramref name="isIndexer"/> is <c>true</c>, the full name of the indexer's value <see cref="Type"/>.
         /// </param>
-        /// <param name="prefix">
-        /// The prefix used to match HTML attribute names. Matching attributes are added to the associated property
-        /// (an <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>).
-        /// </param>
-        /// <param name="objectCreationExpression">
-        /// The C# object creation expression (<c>new</c> operator invocation) used to initialize the property.
-        /// </param>
-        /// <param name="prefixedValueTypeName">
-        /// The full name of <c>TValue</c> in the <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>
-        /// the named (see <paramref name="propertyName"/>) property implements.
+        /// <param name="isIndexer">
+        /// If <c>true</c> this <see cref="TagHelperAttributeDescriptor"/> is used for dictionary indexer assignments.
+        /// Otherwise this <see cref="TagHelperAttributeDescriptor"/> is used for property assignment.
         /// </param>
         /// <remarks>
-        /// <paramref name="objectCreationExpression"/> and <paramref name="prefixedValueTypeName"/> are
-        /// ignored if <paramref name="prefix"/> is <c>null</c>. In turn <paramref name="prefix"/> is expected to be
-        /// non-<c>null</c> only if <paramref name="typeName"/> implements
-        /// <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> where <c>TKey</c> is
-        /// <see cref="string"/>.
+        /// HTML attribute names are matched case-insensitively, regardless of <paramref name="isIndexer"/>.
         /// </remarks>
         public TagHelperAttributeDescriptor(
             [NotNull] string name,
             [NotNull] string propertyName,
             [NotNull] string typeName,
-            string prefix,
-            string objectCreationExpression,
-            string prefixedValueTypeName)
+            bool isIndexer)
             : this(
                   name,
                   propertyName,
                   typeName,
-                  isStringProperty: string.Equals(typeName, typeof(string).FullName, StringComparison.Ordinal),
-                  prefix: prefix,
-                  objectCreationExpression: objectCreationExpression,
-                  prefixedValueTypeName: prefixedValueTypeName,
-                  areStringPrefixedValues: string.Equals(
-                      prefixedValueTypeName,
-                      typeof(string).FullName,
-                      StringComparison.Ordinal))
+                  isIndexer,
+                  isStringProperty: string.Equals(typeName, typeof(string).FullName, StringComparison.Ordinal))
         {
         }
 
-        // Internal for testing i.e. for confirming above constructor sets IsStringProperty and
-        // AreStringPrefixedValues as expected.
+        // Internal for testing i.e. for confirming above constructor sets IsStringProperty as expected.
         internal TagHelperAttributeDescriptor(
             [NotNull] string name,
             [NotNull] string propertyName,
             [NotNull] string typeName,
-            bool isStringProperty,
-            string prefix,
-            string objectCreationExpression,
-            string prefixedValueTypeName,
-            bool areStringPrefixedValues)
+            bool isIndexer,
+            bool isStringProperty)
         {
             Name = name;
             PropertyName = propertyName;
             TypeName = typeName;
+            IsIndexer = isIndexer;
             IsStringProperty = isStringProperty;
-
-            Prefix = prefix;
-            if (prefix != null)
-            {
-                ObjectCreationExpression = objectCreationExpression;
-                PrefixedValueTypeName = prefixedValueTypeName;
-                AreStringPrefixedValues = areStringPrefixedValues;
-            }
         }
 
         /// <summary>
-        /// Gets an indication whether this property type implements
-        /// <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> where <c>TValue</c> is
-        /// <see cref="string"/>.
+        /// Gets an indication whether this <see cref="TagHelperAttributeDescriptor"/> is used for dictionary indexer
+        /// assignments.
         /// </summary>
         /// <value>
-        /// If <c>true</c> the <see cref="TypeName"/> is for an
-        /// <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> where both <c>TKey</c> and
-        /// <c>TValue</c> are <see cref="string"/>. This causes the razor parser to allow empty values for attributes
-        /// that have names starting with <see cref="Prefix"/>. If <c>false</c> empty values for such matching
-        /// attributes lead to errors.
+        /// If <c>true</c> this <see cref="TagHelperAttributeDescriptor"/> should be associated with all HTML
+        /// attributes that have names starting with <see cref="Name"/>. Otherwise this
+        /// <see cref="TagHelperAttributeDescriptor"/> is used for property assignment and is only associated with an
+        /// HTML attribute that has the exact <see cref="Name"/>.
         /// </value>
-        public bool AreStringPrefixedValues { get; }
+        public bool IsIndexer { get; }
 
         /// <summary>
-        /// Gets an indication whether this property is of type <see cref="string"/>.
+        /// Gets an indication whether this property is of type <see cref="string"/> or, if <see cref="IsIndexer"/> is
+        /// <c>true</c>, whether the indexer's value is of type <see cref="string"/>.
         /// </summary>
         /// <value>
         /// If <c>true</c> the <see cref="TypeName"/> is for <see cref="string"/>. This causes the Razor parser
-        /// to allow empty values for attributes that have names matching <see cref="Name"/>. If <c>false</c>
-        /// empty values for such matching attributes lead to errors.
+        /// to allow empty values for HTML attributes matching this <see cref="TagHelperAttributeDescriptor"/>. If
+        /// <c>false</c> empty values for such matching attributes lead to errors.
         /// </value>
         public bool IsStringProperty { get; }
 
         /// <summary>
-        /// The HTML attribute name.
+        /// The HTML attribute name or, if <see cref="IsIndexer"/> is <c>true</c>, the prefix for matching attribute
+        /// names.
         /// </summary>
         public string Name { get; }
-
-        /// <summary>
-        /// Gets the C# object creation expression (<c>new</c> operator invocation) used to initialize the property.
-        /// Ignored if <paramref name="prefix"/> is <c>null</c>.
-        /// </summary>
-        public string ObjectCreationExpression { get; }
-
-        /// <summary>
-        /// Gets the prefix used to match HTML attribute names. Matching attributes are added to the associated
-        /// property (an <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/>).
-        /// </summary>
-        public string Prefix { get; }
-
-        /// <summary>
-        /// Gets the full name of <c>TValue</c> in the
-        /// <see cref="System.Collections.Generic.IDictionary{TKey, TValue}"/> the named (see
-        /// <see cref="PropertyName"/>) property implements.
-        /// </summary>
-        public string PrefixedValueTypeName { get; }
 
         /// <summary>
         /// The name of the CLR property that corresponds to the HTML attribute.
@@ -169,8 +106,30 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         public string PropertyName { get; }
 
         /// <summary>
-        /// The full name of the named (see <see name="PropertyName"/>) property's <see cref="System.Type"/>.
+        /// The full name of the named (see <see name="PropertyName"/>) property's <see cref="Type"/> or, if
+        /// <see cref="IsIndexer"/> is <c>true</c>, the full name of the indexer's value <see cref="Type"/>.
         /// </summary>
         public string TypeName { get; }
+
+        /// <summary>
+        /// Determines whether HTML attribute <paramref name="name"/> matches this
+        /// <see cref="TagHelperAttributeDescriptor"/>.
+        /// </summary>
+        /// <param name="name">Name of the HTML attribute to check.</param>
+        /// <returns>
+        /// <c>true</c> if this <see cref="TagHelperAttributeDescriptor"/> matches <paramref name="name"/>.
+        /// <c>false</c> otherwise.
+        /// </returns>
+        public bool IsNameMatch(string name)
+        {
+            if (IsIndexer)
+            {
+                return name.StartsWith(Name, StringComparison.OrdinalIgnoreCase);
+            }
+            else
+            {
+                return string.Equals(name, Name, StringComparison.OrdinalIgnoreCase);
+            }
+        }
     }
 }

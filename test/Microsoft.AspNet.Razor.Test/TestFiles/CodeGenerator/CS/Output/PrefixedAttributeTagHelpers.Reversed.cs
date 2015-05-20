@@ -1,4 +1,4 @@
-#pragma checksum "PrefixedAttributeTagHelpers.cshtml" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "ad6b545da741ad711339a34893d12d2da6f945c6"
+#pragma checksum "PrefixedAttributeTagHelpers.cshtml" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "f60f9d6a7ca3b1b2b1b337737ef23552228df78c"
 namespace TestOutput
 {
     using Microsoft.AspNet.Razor.Runtime.TagHelpers;
@@ -50,10 +50,6 @@ namespace TestOutput
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
-            if (__InputTagHelper2.IntDictionaryProperty == null)
-            {
-                __InputTagHelper2.IntDictionaryProperty = new System.Collections.Generic.Dictionary<string, int>();
-            }
 #line 15 "PrefixedAttributeTagHelpers.cshtml"
  __InputTagHelper2.IntDictionaryProperty = intDictionary;
 
@@ -68,10 +64,6 @@ namespace TestOutput
             __tagHelperExecutionContext.AddTagHelperAttribute("string-dictionary", __InputTagHelper2.StringDictionaryProperty);
             __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
-            if (__InputTagHelper1.IntDictionaryProperty == null)
-            {
-                __InputTagHelper1.IntDictionaryProperty = new System.Collections.Generic.Dictionary<string, int>();
-            }
             __InputTagHelper1.IntDictionaryProperty = __InputTagHelper2.IntDictionaryProperty;
             __InputTagHelper1.StringDictionaryProperty = __InputTagHelper2.StringDictionaryProperty;
             __tagHelperExecutionContext.AddHtmlAttribute("type", Html.Raw("checkbox"));
@@ -86,42 +78,42 @@ namespace TestOutput
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
-            if (__InputTagHelper2.IntDictionaryProperty == null)
-            {
-                __InputTagHelper2.IntDictionaryProperty = new System.Collections.Generic.Dictionary<string, int>();
-            }
 #line 16 "PrefixedAttributeTagHelpers.cshtml"
  __InputTagHelper2.IntDictionaryProperty = intDictionary;
 
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("int-dictionary", __InputTagHelper2.IntDictionaryProperty);
+            if (__InputTagHelper2.IntDictionaryProperty == null)
+            {
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-garlic", "InputTagHelper2", "IntDictionaryProperty"));
+            }
 #line 16 "PrefixedAttributeTagHelpers.cshtml"
-                         __InputTagHelper2.IntDictionaryProperty[""] = 37;
+                         __InputTagHelper2.IntDictionaryProperty["garlic"] = 37;
 
 #line default
 #line hidden
-            __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-", __InputTagHelper2.IntDictionaryProperty[""]);
+            __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-garlic", __InputTagHelper2.IntDictionaryProperty["garlic"]);
 #line 16 "PrefixedAttributeTagHelpers.cshtml"
-                                          __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
+                                                __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
 
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-grabber", __InputTagHelper2.IntDictionaryProperty["grabber"]);
             __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
+            __InputTagHelper1.IntDictionaryProperty = __InputTagHelper2.IntDictionaryProperty;
             if (__InputTagHelper1.IntDictionaryProperty == null)
             {
-                __InputTagHelper1.IntDictionaryProperty = new System.Collections.Generic.Dictionary<string, int>();
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-garlic", "InputTagHelper1", "IntDictionaryProperty"));
             }
+            __InputTagHelper1.IntDictionaryProperty["garlic"] = __InputTagHelper2.IntDictionaryProperty["garlic"];
             __InputTagHelper1.IntProperty = __InputTagHelper2.IntDictionaryProperty["grabber"];
-            __InputTagHelper1.IntDictionaryProperty = __InputTagHelper2.IntDictionaryProperty;
-            __InputTagHelper1.IntDictionaryProperty[""] = __InputTagHelper2.IntDictionaryProperty[""];
             __tagHelperExecutionContext.AddHtmlAttribute("type", Html.Raw("password"));
             __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             await WriteTagHelperAsync(__tagHelperExecutionContext);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            Instrumentation.BeginContext(490, 6, true);
+            Instrumentation.BeginContext(496, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
@@ -131,7 +123,7 @@ namespace TestOutput
             __tagHelperExecutionContext.Add(__InputTagHelper2);
             if (__InputTagHelper2.IntDictionaryProperty == null)
             {
-                __InputTagHelper2.IntDictionaryProperty = new System.Collections.Generic.Dictionary<string, int>();
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-grabber", "InputTagHelper2", "IntDictionaryProperty"));
             }
 #line 18 "PrefixedAttributeTagHelpers.cshtml"
 __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
@@ -140,30 +132,45 @@ __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-grabber", __InputTagHelper2.IntDictionaryProperty["grabber"]);
 #line 18 "PrefixedAttributeTagHelpers.cshtml"
-  __InputTagHelper2.IntDictionaryProperty[""] = 37;
+  __InputTagHelper2.IntDictionaryProperty["salt"] = 37;
 
 #line default
 #line hidden
-            __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-", __InputTagHelper2.IntDictionaryProperty[""]);
+            __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-salt", __InputTagHelper2.IntDictionaryProperty["salt"]);
+#line 18 "PrefixedAttributeTagHelpers.cshtml"
+                       __InputTagHelper2.IntDictionaryProperty["pepper"] = 98;
+
+#line default
+#line hidden
+            __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-pepper", __InputTagHelper2.IntDictionaryProperty["pepper"]);
+            if (__InputTagHelper2.StringDictionaryProperty == null)
+            {
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("string-prefix-grabber", "InputTagHelper2", "StringDictionaryProperty"));
+            }
             __InputTagHelper2.StringDictionaryProperty["grabber"] = "string";
             __tagHelperExecutionContext.AddTagHelperAttribute("string-prefix-grabber", __InputTagHelper2.StringDictionaryProperty["grabber"]);
-            __InputTagHelper2.StringDictionaryProperty["value"] = "another string";
-            __tagHelperExecutionContext.AddTagHelperAttribute("string-prefix-value", __InputTagHelper2.StringDictionaryProperty["value"]);
+            __InputTagHelper2.StringDictionaryProperty["paprika"] = "another string";
+            __tagHelperExecutionContext.AddTagHelperAttribute("string-prefix-paprika", __InputTagHelper2.StringDictionaryProperty["paprika"]);
             __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
+            __InputTagHelper1.IntProperty = __InputTagHelper2.IntDictionaryProperty["grabber"];
             if (__InputTagHelper1.IntDictionaryProperty == null)
             {
-                __InputTagHelper1.IntDictionaryProperty = new System.Collections.Generic.Dictionary<string, int>();
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-salt", "InputTagHelper1", "IntDictionaryProperty"));
             }
-            __InputTagHelper1.IntProperty = __InputTagHelper2.IntDictionaryProperty["grabber"];
+            __InputTagHelper1.IntDictionaryProperty["salt"] = __InputTagHelper2.IntDictionaryProperty["salt"];
+            __InputTagHelper1.IntDictionaryProperty["pepper"] = __InputTagHelper2.IntDictionaryProperty["pepper"];
             __InputTagHelper1.StringProperty = __InputTagHelper2.StringDictionaryProperty["grabber"];
-            __InputTagHelper1.IntDictionaryProperty[""] = __InputTagHelper2.IntDictionaryProperty[""];
-            __InputTagHelper1.StringDictionaryProperty["value"] = __InputTagHelper2.StringDictionaryProperty["value"];
+            if (__InputTagHelper1.StringDictionaryProperty == null)
+            {
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("string-prefix-paprika", "InputTagHelper1", "StringDictionaryProperty"));
+            }
+            __InputTagHelper1.StringDictionaryProperty["paprika"] = __InputTagHelper2.StringDictionaryProperty["paprika"];
             __tagHelperExecutionContext.AddHtmlAttribute("type", Html.Raw("radio"));
             __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             await WriteTagHelperAsync(__tagHelperExecutionContext);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            Instrumentation.BeginContext(650, 6, true);
+            Instrumentation.BeginContext(705, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
@@ -173,7 +180,7 @@ __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
             __tagHelperExecutionContext.Add(__InputTagHelper2);
             if (__InputTagHelper2.IntDictionaryProperty == null)
             {
-                __InputTagHelper2.IntDictionaryProperty = new System.Collections.Generic.Dictionary<string, int>();
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-value", "InputTagHelper2", "IntDictionaryProperty"));
             }
 #line 20 "PrefixedAttributeTagHelpers.cshtml"
 __InputTagHelper2.IntDictionaryProperty["value"] = 37;
@@ -181,20 +188,28 @@ __InputTagHelper2.IntDictionaryProperty["value"] = 37;
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-value", __InputTagHelper2.IntDictionaryProperty["value"]);
-            __InputTagHelper2.StringDictionaryProperty["value"] = "string";
-            __tagHelperExecutionContext.AddTagHelperAttribute("string-prefix-value", __InputTagHelper2.StringDictionaryProperty["value"]);
+            if (__InputTagHelper2.StringDictionaryProperty == null)
+            {
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("string-prefix-thyme", "InputTagHelper2", "StringDictionaryProperty"));
+            }
+            __InputTagHelper2.StringDictionaryProperty["thyme"] = "string";
+            __tagHelperExecutionContext.AddTagHelperAttribute("string-prefix-thyme", __InputTagHelper2.StringDictionaryProperty["thyme"]);
             __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
             if (__InputTagHelper1.IntDictionaryProperty == null)
             {
-                __InputTagHelper1.IntDictionaryProperty = new System.Collections.Generic.Dictionary<string, int>();
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-value", "InputTagHelper1", "IntDictionaryProperty"));
             }
             __InputTagHelper1.IntDictionaryProperty["value"] = __InputTagHelper2.IntDictionaryProperty["value"];
-            __InputTagHelper1.StringDictionaryProperty["value"] = __InputTagHelper2.StringDictionaryProperty["value"];
+            if (__InputTagHelper1.StringDictionaryProperty == null)
+            {
+                throw new InvalidOperationException(FormatInvalidIndexerAssignment("string-prefix-thyme", "InputTagHelper1", "StringDictionaryProperty"));
+            }
+            __InputTagHelper1.StringDictionaryProperty["thyme"] = __InputTagHelper2.StringDictionaryProperty["thyme"];
             __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             await WriteTagHelperAsync(__tagHelperExecutionContext);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            Instrumentation.BeginContext(716, 8, true);
+            Instrumentation.BeginContext(771, 8, true);
             WriteLiteral("\r\n</div>");
             Instrumentation.EndContext();
         }

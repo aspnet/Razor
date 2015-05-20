@@ -24,27 +24,20 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 return true;
             }
 
-            // Normal comparer doesn't care about case, in tests we do. Also double-check ObjectCreationExpression
-            // and both bool properties though all are inferred from TypeName.
+            // Base comparer does not care about Name case but in tests we do. Also double-check IsStringProperty
+            // though it is inferred from TypeName.
             return base.Equals(descriptorX, descriptorY) &&
-                descriptorX.AreStringPrefixedValues == descriptorY.AreStringPrefixedValues &&
                 descriptorX.IsStringProperty == descriptorY.IsStringProperty &&
-                string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.Ordinal) &&
-                string.Equals(
-                    descriptorX.ObjectCreationExpression,
-                    descriptorY.ObjectCreationExpression,
-                    StringComparison.Ordinal) &&
-                string.Equals(descriptorX.Prefix, descriptorY.Prefix, StringComparison.Ordinal);
+                string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.Ordinal);
         }
 
         public override int GetHashCode(TagHelperAttributeDescriptor descriptor)
         {
-            // Rarely if ever hash TagHelperAttributeDescriptor. If we do, ignore ObjectCreationExpression and both
-            // bool properties since they should not vary for a given TypeName i.e. will not change the bucket.
+            // Ignore IsStringProperty because it is directly inferred from TypeName and thus won't vary the hash
+            // bucket. Base comparer does not care about Name case in its hash code but in tests we do.
             return HashCodeCombiner.Start()
                 .Add(base.GetHashCode(descriptor))
                 .Add(descriptor.Name, StringComparer.Ordinal)
-                .Add(descriptor.Prefix, StringComparer.Ordinal)
                 .CombinedHash;
         }
     }

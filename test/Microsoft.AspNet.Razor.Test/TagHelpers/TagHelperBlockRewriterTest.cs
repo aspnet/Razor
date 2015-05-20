@@ -181,6 +181,8 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                 var noErrors = new RazorError[0];
                 var errorFormat = "Attribute '{0}' on tag helper element '{1}' requires a value. Tag helper bound " +
                     "attributes of type '{2}' cannot be empty or contain only whitespace.";
+                var emptyKeyFormat = "The tag helper attribute '{0}' in element '{1}' is missing a key. The " +
+                    "syntax is '<{1} {0}{{ key }}=\"value\">'.";
                 var stringType = typeof(string).FullName;
                 var intType = typeof(int).FullName;
                 var expressionString = "@DateTime.Now + 1";
@@ -327,6 +329,12 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                                 lineIndex: 0,
                                 columnIndex: 7,
                                 length: 11),
+                            new RazorError(
+                                string.Format(emptyKeyFormat, "int-prefix-", "input"),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 11),
                         }
                     },
                     {
@@ -343,6 +351,12 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                         {
                             new RazorError(
                                 string.Format(errorFormat, "string-prefix-", "input", typeof(string).FullName),
+                                absoluteIndex: 7,
+                                lineIndex: 0,
+                                columnIndex: 7,
+                                length: 14),
+                            new RazorError(
+                                string.Format(emptyKeyFormat, "string-prefix-", "input"),
                                 absoluteIndex: 7,
                                 lineIndex: 0,
                                 columnIndex: 7,
@@ -1056,7 +1070,8 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 "bound-required-string",
                                 "BoundRequiredString",
-                                typeof(string).FullName)
+                                typeof(string).FullName,
+                                isIndexer: false)
                         },
                         requiredAttributes: new[] { "unbound-required" }),
                     new TagHelperDescriptor(
@@ -1068,7 +1083,8 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 "bound-required-string",
                                 "BoundRequiredString",
-                                typeof(string).FullName)
+                                typeof(string).FullName,
+                                isIndexer: false)
                         },
                         requiredAttributes: new[] { "bound-required-string" }),
                     new TagHelperDescriptor(
@@ -1080,7 +1096,8 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 "bound-required-int",
                                 "BoundRequiredInt",
-                                typeof(int).FullName)
+                                typeof(int).FullName,
+                                isIndexer: false)
                         },
                         requiredAttributes: new[] { "bound-required-int" }),
                     new TagHelperDescriptor(
@@ -1093,16 +1110,22 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                                 "int-dictionary",
                                 "DictionaryOfIntProperty",
                                 typeof(IDictionary<string, int>).FullName,
-                                prefix: "int-prefix-",
-                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, int>()",
-                                prefixedValueTypeName: typeof(int).FullName),
+                                isIndexer: false),
                             new TagHelperAttributeDescriptor(
                                 "string-dictionary",
                                 "DictionaryOfStringProperty",
                                 typeof(IDictionary<string, string>).FullName,
-                                prefix: "string-prefix-",
-                                objectCreationExpression: "new System.Collections.Generic.Dictionary<string, string>()",
-                                prefixedValueTypeName: typeof(string).FullName),
+                                isIndexer: false),
+                            new TagHelperAttributeDescriptor(
+                                "int-prefix-",
+                                "DictionaryOfIntProperty",
+                                typeof(int).FullName,
+                                isIndexer: true),
+                            new TagHelperAttributeDescriptor(
+                                "string-prefix-",
+                                "DictionaryOfStringProperty",
+                                typeof(string).FullName,
+                                isIndexer: true),
                         },
                         requiredAttributes: Enumerable.Empty<string>()),
                     new TagHelperDescriptor(
@@ -1114,11 +1137,13 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                             new TagHelperAttributeDescriptor(
                                 "bound-string",
                                 "BoundRequiredString",
-                                typeof(string).FullName),
+                                typeof(string).FullName,
+                                isIndexer: false),
                             new TagHelperAttributeDescriptor(
                                 "bound-int",
                                 "BoundRequiredString",
-                                typeof(int).FullName)
+                                typeof(int).FullName,
+                                isIndexer: false)
                         },
                         requiredAttributes: Enumerable.Empty<string>()),
                 };

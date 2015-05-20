@@ -69,12 +69,9 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
             // Determine what attributes exist in the element and divide them up.
             var htmlAttributes = chunk.Attributes;
-            var attributeDescriptors = tagHelperDescriptors.SelectMany(descriptor => descriptor.Attributes);
-            var unboundHtmlAttributes = htmlAttributes.Where(
-                attribute => !attributeDescriptors.Any(
-                    descriptor => string.Equals(attribute.Key, descriptor.Name, StringComparison.OrdinalIgnoreCase) ||
-                        (descriptor.Prefix != null &&
-                         attribute.Key.StartsWith(descriptor.Prefix, StringComparison.OrdinalIgnoreCase))));
+            var attributeDescriptors = tagHelperDescriptors.SelectMany(descriptor => descriptor.Attributes).ToArray();
+            var unboundHtmlAttributes = htmlAttributes.Where(attribute => !attributeDescriptors.Any(
+                attributeDescriptor => attributeDescriptor.IsNameMatch(attribute.Key)));
 
             RenderUnboundHTMLAttributes(unboundHtmlAttributes);
 
@@ -184,6 +181,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                 // Render all of the bound attribute values for the tag helper.
                 RenderBoundHTMLAttributes(
                     chunk.Attributes,
+                    tagHelperDescriptor.TypeName,
                     tagHelperVariableName,
                     tagHelperDescriptor.Attributes,
                     htmlAttributeValues);
@@ -192,192 +190,126 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
 
         private void RenderBoundHTMLAttributes(
             IList<KeyValuePair<string, Chunk>> chunkAttributes,
+            string tagHelperTypeName,
             string tagHelperVariableName,
             IEnumerable<TagHelperAttributeDescriptor> attributeDescriptors,
             Dictionary<string, string> htmlAttributeValues)
         {
-            // Pass 1: Initialize all dictionary-typed properties we can (if they're null at runtime).
-            foreach (var attributeDescriptor in attributeDescriptors)
+            // Track dictionary properties we have confirmed are non-null.
+            var confirmedDictionaries = new HashSet<string>(StringComparer.Ordinal);
+
+            // First attribute wins, even if there are duplicates.
+            var distinctAttributes = chunkAttributes.Distinct(KeyValuePairKeyComparer.Default);
+
+            // Go through the HTML attributes in source order, assigning to properties or indexers as we go.
+            foreach (var attributeKeyValuePair in distinctAttributes)
             {
-                if (!string.IsNullOrEmpty(attributeDescriptor.ObjectCreationExpression))
+                var attributeName = attributeKeyValuePair.Key;
+                var attributeValueChunk = attributeKeyValuePair.Value;
+                if (attributeValueChunk == null)
                 {
-                    var valueAccessor = string.Format(
-                        CultureInfo.InvariantCulture,
-                        "{0}.{1}",
-                        tagHelperVariableName,
-                        attributeDescriptor.PropertyName);
-
-                    _writer
-                        .Write("if (")
-                        .Write(valueAccessor)
-                        .WriteLine(" == null)");
-                    using (_writer.BuildScope())
-                    {
-                        _writer
-                            .WriteStartAssignment(valueAccessor)
-                            .Write(attributeDescriptor.ObjectCreationExpression)
-                            .WriteLine(";");
-                    }
-                }
-            }
-
-            // Pass 2: Set all individually-bound properties.
-            var attributeNames = chunkAttributes.Select(kvp => kvp.Key);
-            var remainingAttributeNames = new HashSet<string>(attributeNames, StringComparer.OrdinalIgnoreCase);
-            foreach (var attributeDescriptor in attributeDescriptors)
-            {
-                var matchingAttributes = chunkAttributes.Where(
-                    kvp => string.Equals(kvp.Key, attributeDescriptor.Name, StringComparison.OrdinalIgnoreCase));
-                if (matchingAttributes.Any())
-                {
-                    remainingAttributeNames.Remove(attributeDescriptor.Name);
-
-                    // First attribute wins, even if there are duplicates.
-                    var firstAttribute = matchingAttributes.First();
-                    var attributeValueChunk = firstAttribute.Value;
-
                     // Minimized attributes are not valid for bound attributes. TagHelperBlockRewriter has already
-                    // logged an error for the bound attribute; so we can skip.
-                    if (attributeValueChunk == null)
-                    {
-                        continue;
-                    }
-
-                    // We capture the tag helpers property value accessor so we can retrieve it later (if we need to).
-                    var valueAccessor = string.Format(
-                        CultureInfo.InvariantCulture,
-                        "{0}.{1}",
-                        tagHelperVariableName,
-                        attributeDescriptor.PropertyName);
-
-                    // If we haven't recorded this attribute value before then we need to record its value.
-                    var attributeValueRecorded = htmlAttributeValues.ContainsKey(attributeDescriptor.Name);
-                    if (!attributeValueRecorded)
-                    {
-                        // We only need to create attribute values once per HTML element (not once per tag helper).
-                        // We're saving the value accessor so we can retrieve it later if there are more tag
-                        // helpers that need the value.
-                        htmlAttributeValues.Add(attributeDescriptor.Name, valueAccessor);
-
-                        // Bufferable attributes are attributes that can have Razor code inside of them. Such
-                        // attributes have string values and may be calculated using a temporary TextWriter or other
-                        // buffer.
-                        var bufferableAttribute = attributeDescriptor.IsStringProperty;
-
-                        RenderNewAttributeValueAssignment(
-                            attributeDescriptor,
-                            bufferableAttribute,
-                            attributeValueChunk,
-                            valueAccessor);
-
-                        // Execution contexts are a runtime feature.
-                        if (_designTimeMode)
-                        {
-                            continue;
-                        }
-
-                        // We need to inform the context of the attribute value.
-                        var attributeName = firstAttribute.Key;
-                        _writer
-                            .WriteStartInstanceMethodInvocation(
-                                ExecutionContextVariableName,
-                                _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName)
-                            .WriteStringLiteral(attributeName)
-                            .WriteParameterSeparator()
-                            .Write(valueAccessor)
-                            .WriteEndMethodInvocation();
-                    }
-                    else
-                    {
-                        // The attribute value has already been recorded, lets retrieve it from the stored value
-                        // accessors.
-                        _writer
-                            .WriteStartAssignment(valueAccessor)
-                            .Write(htmlAttributeValues[attributeDescriptor.Name])
-                            .WriteLine(";");
-                    }
-                }
-            }
-
-            // Pass 3: Add all remaining attributes that match a prefix to corresponding dictionary. Use same order as
-            // above loops but skip everything already bound to a specific property of this tag helper.
-            foreach (var attributeDescriptor in attributeDescriptors)
-            {
-                if (attributeDescriptor.Prefix == null)
-                {
+                    // logged an error if it was a bound attribute; so we can skip.
                     continue;
                 }
 
-                var matchingNames = remainingAttributeNames
-                    .Where(name => name.StartsWith(attributeDescriptor.Prefix, StringComparison.OrdinalIgnoreCase));
-                foreach (var matchingName in matchingNames)
+                // Find the matching TagHelperAttributeDescriptor.
+                var attributeDescriptor = attributeDescriptors.FirstOrDefault(
+                    descriptor => descriptor.IsNameMatch(attributeName));
+                if (attributeDescriptor == null)
                 {
-                    // First attribute wins, even if there are duplicates.
-                    var attributeValueChunk = chunkAttributes
-                        .First(kvp => string.Equals(kvp.Key, matchingName, StringComparison.OrdinalIgnoreCase))
-                        .Value;
+                    // Attribute is not bound to a property or indexer in this tag helper.
+                    continue;
+                }
 
-                    // Minimized attributes are not valid for bound attributes. TagHelperBlockRewriter has already
-                    // logged an error for the bound attribute; so we can skip.
-                    if (attributeValueChunk == null)
+                // We capture the tag helper's property value accessor so we can retrieve it later (if we need to).
+                var valueAccessor = string.Format(
+                    CultureInfo.InvariantCulture,
+                    "{0}.{1}",
+                    tagHelperVariableName,
+                    attributeDescriptor.PropertyName);
+
+                if (attributeDescriptor.IsIndexer)
+                {
+                    // Need a different valueAccessor in this case. But first need to throw a reasonable Exception at
+                    // runtime if the property is null. The check is not required at design time.
+                    if (!_designTimeMode && confirmedDictionaries.Add(attributeDescriptor.PropertyName))
                     {
-                        continue;
+                        _writer
+                            .Write("if (")
+                            .Write(valueAccessor)
+                            .WriteLine(" == null)");
+                        using (_writer.BuildScope())
+                        {
+                            // System is in Host.NamespaceImports for all MVC scenarios. No need to generate FullName
+                            // of InvalidOperationException type.
+                            _writer
+                                .Write("throw ")
+                                .WriteStartNewObject(typeof(InvalidOperationException).Name)
+                                .WriteStartMethodInvocation(_tagHelperContext.FormatInvalidIndexerAssignmentMethodName)
+                                .WriteStringLiteral(attributeName)
+                                .WriteParameterSeparator()
+                                .WriteStringLiteral(tagHelperTypeName)
+                                .WriteParameterSeparator()
+                                .WriteStringLiteral(attributeDescriptor.PropertyName)
+                                .WriteEndMethodInvocation(endLine: false)   // End of method call
+                                .WriteEndMethodInvocation(endLine: true);   // End of new expression / throw statement
+                        }
                     }
 
-                    // We capture the dictionary lookup so we can retrieve it later (if we need to).
-                    var dictionaryKey = matchingName.Substring(attributeDescriptor.Prefix.Length);
-                    var valueAccessor = string.Format(
+                    var dictionaryKey = attributeName.Substring(attributeDescriptor.Name.Length);
+                    valueAccessor = string.Format(
                         CultureInfo.InvariantCulture,
                         "{0}.{1}[\"{2}\"]",
                         tagHelperVariableName,
                         attributeDescriptor.PropertyName,
                         dictionaryKey);
+                }
 
-                    // If we haven't recorded this attribute value before then we need to record its value.
-                    var attributeValueRecorded = htmlAttributeValues.ContainsKey(matchingName);
-                    if (!attributeValueRecorded)
+                // If we haven't recorded this attribute value before then we need to record its value.
+                var attributeValueRecorded = htmlAttributeValues.ContainsKey(attributeName);
+                if (!attributeValueRecorded)
+                {
+                    // We only need to create attribute values once per HTML element (not once per tag helper).
+                    // We're saving the value accessor so we can retrieve it later if there are more tag
+                    // helpers that need the value.
+                    htmlAttributeValues.Add(attributeName, valueAccessor);
+
+                    // Bufferable attributes are attributes that can have Razor code inside of them. Such
+                    // attributes have string values and may be calculated using a temporary TextWriter or other
+                    // buffer.
+                    var bufferableAttribute = attributeDescriptor.IsStringProperty;
+
+                    RenderNewAttributeValueAssignment(
+                        attributeDescriptor,
+                        bufferableAttribute,
+                        attributeValueChunk,
+                        valueAccessor);
+
+                    // Execution contexts are a runtime feature.
+                    if (_designTimeMode)
                     {
-                        // We only need to create attribute values once per HTML element (not once per tag helper).
-                        // We're saving the value accessor so we can retrieve it later if there are more tag
-                        // helpers that need the value.
-                        htmlAttributeValues.Add(matchingName, valueAccessor);
-
-                        // Bufferable attributes are attributes that can have Razor code inside of them. Such
-                        // attributes have string values and may be calculated using a temporary TextWriter or other
-                        // buffer.
-                        var bufferableAttribute = attributeDescriptor.AreStringPrefixedValues;
-
-                        RenderNewAttributeValueAssignment(
-                            attributeDescriptor,
-                            bufferableAttribute,
-                            attributeValueChunk,
-                            valueAccessor);
-
-                        // Execution contexts are a runtime feature.
-                        if (_designTimeMode)
-                        {
-                            continue;
-                        }
-
-                        // We need to inform the context of the attribute value.
-                        _writer
-                            .WriteStartInstanceMethodInvocation(
-                                ExecutionContextVariableName,
-                                _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName)
-                            .WriteStringLiteral(matchingName)
-                            .WriteParameterSeparator()
-                            .Write(valueAccessor)
-                            .WriteEndMethodInvocation();
+                        continue;
                     }
-                    else
-                    {
-                        // The attribute value has already been recorded, lets retrieve it from the stored value
-                        // accessors.
-                        _writer
-                            .WriteStartAssignment(valueAccessor)
-                            .Write(htmlAttributeValues[matchingName])
-                            .WriteLine(";");
-                    }
+
+                    // We need to inform the context of the attribute value.
+                    _writer
+                        .WriteStartInstanceMethodInvocation(
+                            ExecutionContextVariableName,
+                            _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName)
+                        .WriteStringLiteral(attributeName)
+                        .WriteParameterSeparator()
+                        .Write(valueAccessor)
+                        .WriteEndMethodInvocation();
+                }
+                else
+                {
+                    // The attribute value has already been recorded, lets retrieve it from the stored value
+                    // accessors.
+                    _writer
+                        .WriteStartAssignment(valueAccessor)
+                        .Write(htmlAttributeValues[attributeName])
+                        .WriteLine(";");
                 }
             }
         }
@@ -691,6 +623,26 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
             plainText = literalChildChunk.Text;
 
             return true;
+        }
+
+        // An IEqualityComparer for string -> Chunk mappings which compares only the Key.
+        private class KeyValuePairKeyComparer : IEqualityComparer<KeyValuePair<string, Chunk>>
+        {
+            public static KeyValuePairKeyComparer Default = new KeyValuePairKeyComparer();
+
+            private KeyValuePairKeyComparer()
+            {
+            }
+
+            public bool Equals(KeyValuePair<string, Chunk> keyValuePairX, KeyValuePair<string, Chunk> keyValuePairY)
+            {
+                return string.Equals(keyValuePairX.Key, keyValuePairY.Key, StringComparison.OrdinalIgnoreCase);
+            }
+
+            public int GetHashCode(KeyValuePair<string, Chunk> keyValuePair)
+            {
+                return keyValuePair.Key.GetHashCode();
+            }
         }
 
         // A CSharpCodeVisitor which does not HTML encode values. Used when rendering bound string attribute values.
