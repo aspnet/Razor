@@ -1,4 +1,4 @@
-#pragma checksum "PrefixedAttributeTagHelpers.cshtml" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "f60f9d6a7ca3b1b2b1b337737ef23552228df78c"
+#pragma checksum "PrefixedAttributeTagHelpers.cshtml" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "4e7fe9697b745af1a07d41f6a8532fdc288fa046"
 namespace TestOutput
 {
     using Microsoft.AspNet.Razor.Runtime.TagHelpers;
@@ -29,7 +29,8 @@ namespace TestOutput
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
 #line 3 "PrefixedAttributeTagHelpers.cshtml"
-   
+  
+    var literate = "or illiterate";
     var intDictionary = new Dictionary<string, int>
     {
         { "three", 3 },
@@ -42,7 +43,7 @@ namespace TestOutput
 #line default
 #line hidden
 
-            Instrumentation.BeginContext(244, 51, true);
+            Instrumentation.BeginContext(280, 51, true);
             WriteLiteral("\r\n\r\n<div class=\"randomNonTagHelperAttribute\">\r\n    ");
             Instrumentation.EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
@@ -50,13 +51,13 @@ namespace TestOutput
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
-#line 15 "PrefixedAttributeTagHelpers.cshtml"
+#line 16 "PrefixedAttributeTagHelpers.cshtml"
  __InputTagHelper2.IntDictionaryProperty = intDictionary;
 
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("int-dictionary", __InputTagHelper2.IntDictionaryProperty);
-#line 15 "PrefixedAttributeTagHelpers.cshtml"
+#line 16 "PrefixedAttributeTagHelpers.cshtml"
                                 __InputTagHelper2.StringDictionaryProperty = stringDictionary;
 
 #line default
@@ -70,7 +71,7 @@ namespace TestOutput
             __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             await WriteTagHelperAsync(__tagHelperExecutionContext);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            Instrumentation.BeginContext(387, 6, true);
+            Instrumentation.BeginContext(423, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
@@ -78,7 +79,7 @@ namespace TestOutput
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
-#line 16 "PrefixedAttributeTagHelpers.cshtml"
+#line 17 "PrefixedAttributeTagHelpers.cshtml"
  __InputTagHelper2.IntDictionaryProperty = intDictionary;
 
 #line default
@@ -88,13 +89,13 @@ namespace TestOutput
             {
                 throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-garlic", "InputTagHelper2", "IntDictionaryProperty"));
             }
-#line 16 "PrefixedAttributeTagHelpers.cshtml"
+#line 17 "PrefixedAttributeTagHelpers.cshtml"
                          __InputTagHelper2.IntDictionaryProperty["garlic"] = 37;
 
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-garlic", __InputTagHelper2.IntDictionaryProperty["garlic"]);
-#line 16 "PrefixedAttributeTagHelpers.cshtml"
+#line 17 "PrefixedAttributeTagHelpers.cshtml"
                                                 __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
 
 #line default
@@ -113,7 +114,7 @@ namespace TestOutput
             __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             await WriteTagHelperAsync(__tagHelperExecutionContext);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            Instrumentation.BeginContext(496, 6, true);
+            Instrumentation.BeginContext(532, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
@@ -125,19 +126,19 @@ namespace TestOutput
             {
                 throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-grabber", "InputTagHelper2", "IntDictionaryProperty"));
             }
-#line 18 "PrefixedAttributeTagHelpers.cshtml"
+#line 19 "PrefixedAttributeTagHelpers.cshtml"
 __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
 
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-grabber", __InputTagHelper2.IntDictionaryProperty["grabber"]);
-#line 18 "PrefixedAttributeTagHelpers.cshtml"
+#line 19 "PrefixedAttributeTagHelpers.cshtml"
   __InputTagHelper2.IntDictionaryProperty["salt"] = 37;
 
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("int-prefix-salt", __InputTagHelper2.IntDictionaryProperty["salt"]);
-#line 18 "PrefixedAttributeTagHelpers.cshtml"
+#line 19 "PrefixedAttributeTagHelpers.cshtml"
                        __InputTagHelper2.IntDictionaryProperty["pepper"] = 98;
 
 #line default
@@ -151,6 +152,17 @@ __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
             __tagHelperExecutionContext.AddTagHelperAttribute("string-prefix-grabber", __InputTagHelper2.StringDictionaryProperty["grabber"]);
             __InputTagHelper2.StringDictionaryProperty["paprika"] = "another string";
             __tagHelperExecutionContext.AddTagHelperAttribute("string-prefix-paprika", __InputTagHelper2.StringDictionaryProperty["paprika"]);
+            StartTagHelperWritingScope();
+            WriteLiteral("literate ");
+#line 21 "PrefixedAttributeTagHelpers.cshtml"
+WriteLiteral(literate);
+
+#line default
+#line hidden
+            WriteLiteral("?");
+            __tagHelperStringValueBuffer = EndTagHelperWritingScope();
+            __InputTagHelper2.StringDictionaryProperty["cumin"] = __tagHelperStringValueBuffer.ToString();
+            __tagHelperExecutionContext.AddTagHelperAttribute("string-prefix-cumin", __InputTagHelper2.StringDictionaryProperty["cumin"]);
             __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
             __InputTagHelper1.IntProperty = __InputTagHelper2.IntDictionaryProperty["grabber"];
@@ -166,11 +178,12 @@ __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
                 throw new InvalidOperationException(FormatInvalidIndexerAssignment("string-prefix-paprika", "InputTagHelper1", "StringDictionaryProperty"));
             }
             __InputTagHelper1.StringDictionaryProperty["paprika"] = __InputTagHelper2.StringDictionaryProperty["paprika"];
+            __InputTagHelper1.StringDictionaryProperty["cumin"] = __InputTagHelper2.StringDictionaryProperty["cumin"];
             __tagHelperExecutionContext.AddHtmlAttribute("type", Html.Raw("radio"));
             __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             await WriteTagHelperAsync(__tagHelperExecutionContext);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            Instrumentation.BeginContext(705, 6, true);
+            Instrumentation.BeginContext(795, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", true, "test", async() => {
@@ -182,7 +195,7 @@ __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
             {
                 throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-value", "InputTagHelper2", "IntDictionaryProperty"));
             }
-#line 20 "PrefixedAttributeTagHelpers.cshtml"
+#line 22 "PrefixedAttributeTagHelpers.cshtml"
 __InputTagHelper2.IntDictionaryProperty["value"] = 37;
 
 #line default
@@ -209,7 +222,7 @@ __InputTagHelper2.IntDictionaryProperty["value"] = 37;
             __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             await WriteTagHelperAsync(__tagHelperExecutionContext);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            Instrumentation.BeginContext(771, 8, true);
+            Instrumentation.BeginContext(861, 8, true);
             WriteLiteral("\r\n</div>");
             Instrumentation.EndContext();
         }

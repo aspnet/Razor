@@ -220,7 +220,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 var descriptor = ToAttributeDescriptor(property, attributeNameAttribute);
                 if (ValidateTagHelperAttributeDescriptor(descriptor, type, errorSink))
                 {
-                    // Does this property also support indexer assignments?
                     bool isInvalid;
                     var indexerDescriptor = ToIndexerAttributeDescriptor(
                         property,
@@ -261,11 +260,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Type parentType,
             ErrorSink errorSink)
         {
-            if (attributeDescriptor == null)
-            {
-                return false;
-            }
-
             var nameOrPrefix = attributeDescriptor.IsIndexer ?
                 Resources.TagHelperDescriptorFactory_Prefix :
                 Resources.TagHelperDescriptorFactory_Name;

@@ -245,7 +245,7 @@ namespace Microsoft.AspNet.Razor.Generator.Compiler.CSharp
                             // of InvalidOperationException type.
                             _writer
                                 .Write("throw ")
-                                .WriteStartNewObject(typeof(InvalidOperationException).Name)
+                                .WriteStartNewObject(nameof(InvalidOperationException))
                                 .WriteStartMethodInvocation(_tagHelperContext.FormatInvalidIndexerAssignmentMethodName)
                                 .WriteStringLiteral(attributeName)
                                 .WriteParameterSeparator()

@@ -575,6 +575,101 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                                              contentLength: 4)
                         }
                     },
+                    {
+                        "PrefixedAttributeTagHelpers",
+                        "PrefixedAttributeTagHelpers.DesignTime",
+                        PrefixedAttributeTagHelperDescriptors,
+                        new List<LineMapping>
+                        {
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 14,
+                                documentLineIndex: 0,
+                                generatedAbsoluteIndex: 499,
+                                generatedLineIndex: 15,
+                                characterOffsetIndex: 14,
+                                contentLength: 17),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 37,
+                                documentLineIndex: 2,
+                                generatedAbsoluteIndex: 996,
+                                generatedLineIndex: 34,
+                                characterOffsetIndex: 2,
+                                contentLength: 242),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 370,
+                                documentLineIndex: 15,
+                                generatedAbsoluteIndex: 1430,
+                                generatedLineIndex: 50,
+                                characterOffsetIndex: 43,
+                                contentLength: 13),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 404,
+                                documentLineIndex: 15,
+                                generatedAbsoluteIndex: 1601,
+                                generatedLineIndex: 55,
+                                characterOffsetIndex: 77,
+                                contentLength: 16),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 468,
+                                documentLineIndex: 16,
+                                generatedAbsoluteIndex: 2077,
+                                generatedLineIndex: 64,
+                                characterOffsetIndex: 43,
+                                contentLength: 13),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 502,
+                                documentLineIndex: 16,
+                                generatedAbsoluteIndex: 2248,
+                                generatedLineIndex: 69,
+                                characterOffsetIndex: 77,
+                                contentLength: 2),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 526,
+                                documentLineIndex: 16,
+                                generatedAbsoluteIndex: 2432,
+                                generatedLineIndex: 74,
+                                characterOffsetIndex: 101,
+                                contentLength: 2),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 590,
+                                documentLineIndex: 18,
+                                documentCharacterOffsetIndex: 31,
+                                generatedAbsoluteIndex: 2994,
+                                generatedLineIndex: 84,
+                                generatedCharacterOffsetIndex: 32,
+                                contentLength: 2),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 611,
+                                documentLineIndex: 18,
+                                generatedAbsoluteIndex: 3129,
+                                generatedLineIndex: 89,
+                                characterOffsetIndex: 52,
+                                contentLength: 2),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 634,
+                                documentLineIndex: 18,
+                                generatedAbsoluteIndex: 3287,
+                                generatedLineIndex: 94,
+                                characterOffsetIndex: 75,
+                                contentLength: 2),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 783,
+                                documentLineIndex: 20,
+                                documentCharacterOffsetIndex: 42,
+                                generatedAbsoluteIndex: 3521,
+                                generatedLineIndex: 101,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 8),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 826,
+                                documentLineIndex: 21,
+                                documentCharacterOffsetIndex: 29,
+                                generatedAbsoluteIndex: 4552,
+                                generatedLineIndex: 115,
+                                generatedCharacterOffsetIndex: 51,
+                                contentLength: 2),
+                        }
+                    },
                 };
             }
         }
@@ -628,13 +723,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             string baseLineName,
             IEnumerable<TagHelperDescriptor> tagHelperDescriptors)
         {
-            // Arrange
-            if (baseLineName == null)
-            {
-                baseLineName = testName;
-            }
-
-            // Act & Assert
+            // Arrange & Act & Assert
             RunTagHelperTest(testName, baseLineName, tagHelperDescriptors: tagHelperDescriptors);
         }
 
