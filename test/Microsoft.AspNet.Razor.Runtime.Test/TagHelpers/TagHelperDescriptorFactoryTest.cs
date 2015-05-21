@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNet.Razor.TagHelpers;
@@ -166,6 +167,30 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                                 AssemblyName,
                                 attributes,
                                 requiredAttributes: new[] { "class", "style" }),
+                        }
+                    },
+                    {
+                        typeof(AttributeWildcardTargetingTagHelper),
+                        new[]
+                        {
+                            new TagHelperDescriptor(
+                                TagHelperDescriptorProvider.CatchAllDescriptorTarget,
+                                typeof(AttributeWildcardTargetingTagHelper).FullName,
+                                AssemblyName,
+                                attributes,
+                                requiredAttributes: new[] { "class*" })
+                        }
+                    },
+                    {
+                        typeof(MultiAttributeWildcardTargetingTagHelper),
+                        new[]
+                        {
+                            new TagHelperDescriptor(
+                                TagHelperDescriptorProvider.CatchAllDescriptorTarget,
+                                typeof(MultiAttributeWildcardTargetingTagHelper).FullName,
+                                AssemblyName,
+                                attributes,
+                                requiredAttributes: new[] { "class*", "style*" })
                         }
                     },
                 };
@@ -1381,51 +1406,65 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                         onNameError("'he'lo'", "'"),
                     }
                 },
+                { "hello*", new[] { onNameError("hello*", "*") } },
+                { "*hello", new[] { onNameError("*hello", "*") } },
+                { "he*lo", new[] { onNameError("he*lo", "*") } },
+                {
+                    "*he*lo*",
+                    new[]
+                    {
+                        onNameError("*he*lo*", "*"),
+                        onNameError("*he*lo*", "*"),
+                        onNameError("*he*lo*", "*"),
+                    }
+                },
                 { Environment.NewLine, new[] { whitespaceErrorString } },
                 { "\t", new[] { whitespaceErrorString } },
                 { " \t ", new[] { whitespaceErrorString } },
                 { " ", new[] { whitespaceErrorString } },
                 { Environment.NewLine + " ", new[] { whitespaceErrorString } },
                 {
-                    "! \t\r\n@/<>?[]=\"'",
+                    "! \t\r\n@/<>?[]=\"'*",
                     new[]
                     {
-                        onNameError("! \t\r\n@/<>?[]=\"'", "!"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", " "),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "\t"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "\r"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "\n"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "@"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "/"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "<"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", ">"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "?"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "["),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "]"),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "="),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "\""),
-                        onNameError("! \t\r\n@/<>?[]=\"'", "'"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "!"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", " "),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "\t"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "\r"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "\n"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "@"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "/"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "<"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", ">"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "?"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "["),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "]"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "="),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "\""),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "'"),
+                        onNameError("! \t\r\n@/<>?[]=\"'*", "*"),
                     }
                 },
                 {
-                    "! \tv\ra\nl@i/d<>?[]=\"'",
+                    "! \tv\ra\nl@i/d<>?[]=\"'*",
                     new[]
                     {
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "!"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", " "),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "\t"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "\r"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "\n"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "@"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "/"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "<"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", ">"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "?"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "["),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "]"),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "="),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "\""),
-                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'", "'"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "!"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", " "),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "\t"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "\r"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "\n"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "@"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "/"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "<"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", ">"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "?"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "["),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "]"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "="),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "\""),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "'"),
+                        onNameError("! \tv\ra\nl@i/d<>?[]=\"'*", "*"),
                     }
                 },
             };
@@ -1439,6 +1478,16 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             }
 
             return data;
+        }
+
+        [TargetElement(Attributes = "class*")]
+        private class AttributeWildcardTargetingTagHelper : TagHelper
+        {
+        }
+
+        [TargetElement(Attributes = "class*,style*")]
+        private class MultiAttributeWildcardTargetingTagHelper : TagHelper
+        {
         }
 
         [TargetElement(Attributes = "class")]

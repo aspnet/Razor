@@ -25,6 +25,12 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                     assemblyName: "SomeAssembly",
                     attributes: Enumerable.Empty<TagHelperAttributeDescriptor>(),
                     requiredAttributes: new[] { "class", "style" });
+                var inputWildcardPrefixDescriptor = new TagHelperDescriptor(
+                    tagName: "input",
+                    typeName: "InputWildCardAttribute",
+                    assemblyName: "SomeAssembly",
+                    attributes: Enumerable.Empty<TagHelperAttributeDescriptor>(),
+                    requiredAttributes: new[] { "nodashprefix*" });
                 var catchAllDescriptor = new TagHelperDescriptor(
                     tagName: TagHelperDescriptorProvider.CatchAllDescriptorTarget,
                     typeName: "CatchAllTagHelper",
@@ -37,8 +43,16 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                     assemblyName: "SomeAssembly",
                     attributes: Enumerable.Empty<TagHelperAttributeDescriptor>(),
                     requiredAttributes: new[] { "custom", "class" });
+                var catchAllWildcardPrefixDescriptor = new TagHelperDescriptor(
+                    tagName: TagHelperDescriptorProvider.CatchAllDescriptorTarget,
+                    typeName: "CatchAllWildCardAttribute",
+                    assemblyName: "SomeAssembly",
+                    attributes: Enumerable.Empty<TagHelperAttributeDescriptor>(),
+                    requiredAttributes: new[] { "prefix-*" });
                 var defaultAvailableDescriptors =
                     new[] { divDescriptor, inputDescriptor, catchAllDescriptor, catchAllDescriptor2 };
+                var defaultWildcardDescriptors =
+                    new[] { inputWildcardPrefixDescriptor, catchAllWildcardPrefixDescriptor };
 
                 return new TheoryData<
                     string, // tagName
@@ -95,6 +109,48 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                         new[] { "class", "custom" },
                         defaultAvailableDescriptors,
                         new[] { catchAllDescriptor, catchAllDescriptor2 }
+                    },
+                    {
+                        "input",
+                        new[] { "nodashprefixA" },
+                        defaultWildcardDescriptors,
+                        new[] { inputWildcardPrefixDescriptor }
+                    },
+                    {
+                        "input",
+                        new[] { "nodashprefix-ABC-DEF", "random" },
+                        defaultWildcardDescriptors,
+                        new[] { inputWildcardPrefixDescriptor }
+                    },
+                    {
+                        "input",
+                        new[] { "prefixABCnodashprefix" },
+                        defaultWildcardDescriptors,
+                        Enumerable.Empty<TagHelperDescriptor>()
+                    },
+                    {
+                        "input",
+                        new[] { "prefix-A" },
+                        defaultWildcardDescriptors,
+                        new[] { catchAllWildcardPrefixDescriptor }
+                    },
+                    {
+                        "input",
+                        new[] { "prefix-ABC-DEF", "random" },
+                        defaultWildcardDescriptors,
+                        new[] { catchAllWildcardPrefixDescriptor }
+                    },
+                    {
+                        "input",
+                        new[] { "prefix-abc", "nodashprefix-def" },
+                        defaultWildcardDescriptors,
+                        new[] { inputWildcardPrefixDescriptor, catchAllWildcardPrefixDescriptor }
+                    },
+                    {
+                        "input",
+                        new[] { "class", "prefix-abc", "onclick", "nodashprefix-def", "style" },
+                        defaultWildcardDescriptors,
+                        new[] { inputWildcardPrefixDescriptor, catchAllWildcardPrefixDescriptor }
                     },
                 };
             }

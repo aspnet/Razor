@@ -14,6 +14,8 @@ namespace Microsoft.AspNet.Razor.TagHelpers
     {
         public const string CatchAllDescriptorTarget = "*";
 
+        public static readonly string RequiredAttributeWildcardSuffix = "*";
+
         private IDictionary<string, HashSet<TagHelperDescriptor>> _registrations;
         private string _tagHelperPrefix;
 
@@ -68,7 +70,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
             // descriptors.
             if (!tagName.Equals(CatchAllDescriptorTarget, StringComparison.OrdinalIgnoreCase))
             {
-                // If we have a tag name associated with the requested name, we need to combine matchingDescriptors 
+                // If we have a tag name associated with the requested name, we need to combine matchingDescriptors
                 // with all the catch-all descriptors.
                 HashSet<TagHelperDescriptor> matchingDescriptors;
                 if (_registrations.TryGetValue(tagName, out matchingDescriptors))
@@ -91,7 +93,21 @@ namespace Microsoft.AspNet.Razor.TagHelpers
                 {
                     foreach (var requiredAttribute in descriptor.RequiredAttributes)
                     {
-                        if (!attributeNames.Contains(requiredAttribute, StringComparer.OrdinalIgnoreCase))
+                        // '*' at the end of a required attribute indicates: apply to attributes prefixed with the
+                        // required attribute value.
+                        if (requiredAttribute.EndsWith(
+                            RequiredAttributeWildcardSuffix,
+                            StringComparison.OrdinalIgnoreCase))
+                        {
+                            var prefix = requiredAttribute.Substring(0, requiredAttribute.Length - 1);
+
+                            if (!attributeNames.Any(
+                                attributeName => attributeName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                return false;
+                            }
+                        }
+                        else if (!attributeNames.Contains(requiredAttribute, StringComparer.OrdinalIgnoreCase))
                         {
                             return false;
                         }
