@@ -38,7 +38,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             {
                 foreach (var value in _buffer)
                 {
-                    if (!string.IsNullOrWhiteSpace(value))
+                    if (value is string && !string.IsNullOrWhiteSpace((string)value))
                     {
                         return false;
                     }
@@ -55,7 +55,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             {
                 foreach (var value in _buffer)
                 {
-                    if (!string.IsNullOrEmpty(value))
+                    if (value is string && !string.IsNullOrEmpty((string)value))
                     {
                         return false;
                     }
@@ -81,6 +81,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             return this;
         }
 
+        public override TagHelperContent Append(object value)
+        {
+            _buffer.Add(value);
+            return this;
+        }
 
         /// <inheritdoc />
         public override TagHelperContent Append(string value)
@@ -202,7 +207,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <inheritdoc />
-        public override IEnumerator<string> GetEnumerator()
+        public override IEnumerator<object> GetEnumerator()
         {
             // The enumerator is exposed so that SetContent(TagHelperContent) and Append(TagHelperContent)
             // can use this to iterate through the values of the buffer.

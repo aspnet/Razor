@@ -10,7 +10,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     /// <summary>
     /// Abstract class used to buffer content returned by <see cref="ITagHelper"/>s.
     /// </summary>
-    public abstract class TagHelperContent : IEnumerable<string>
+    public abstract class TagHelperContent : IEnumerable<object>
     {
         /// <summary>
         /// Gets a value indicating whether the content was modifed.
@@ -40,6 +40,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <param name="tagHelperContent">The <see cref="TagHelperContent"/> that replaces the content.</param>
         /// <returns>A reference to this instance after the set operation has completed.</returns>
         public abstract TagHelperContent SetContent(TagHelperContent tagHelperContent);
+
+        public abstract TagHelperContent Append(object value);
 
         /// <summary>
         /// Appends <paramref name="value"/> to the existing content.
@@ -184,7 +186,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         public abstract string GetContent();
 
         /// <inheritdoc />
-        public abstract IEnumerator<string> GetEnumerator();
+        public abstract IEnumerator<object> GetEnumerator();
 
         /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
