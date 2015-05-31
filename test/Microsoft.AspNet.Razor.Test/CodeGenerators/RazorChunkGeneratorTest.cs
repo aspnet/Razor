@@ -127,9 +127,22 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             }
 
             var sourceLocation = string.Format("TestFiles/CodeGenerator/Source/{0}.{1}", name, FileExtension);
-            var expectedOutput = TestFile
-                .Create(string.Format("TestFiles/CodeGenerator/Output/{0}.{1}", baselineName, BaselineExtension))
-                .ReadAllText();
+            var testFile = TestFile
+                .Create(string.Format("TestFiles/CodeGenerator/Output/{0}.{1}", baselineName, BaselineExtension));
+
+            string expectedOutput;
+#if GENERATE_BASELINES
+            if (testFile.Exists())
+            {
+                expectedOutput = testFile.ReadAllText();
+            }
+            else
+            {
+                expectedOutput = null;
+            }
+#else
+            expectedOutput = testFile.ReadAllText();
+#endif
 
             // Set up the host and engine
             var host = CreateHost();
@@ -179,17 +192,20 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                     rootNamespace: TestRootNamespaceName,
                     sourceFileName: sourceFileName);
             }
-            // Only called if GENERATE_BASELINES is set, otherwise compiled out.
-            BaselineWriter.WriteBaseline(
-                string.Format(
-                    @"test\Microsoft.AspNet.Razor.Test\TestFiles\ChunkGenerator\Output\{0}.{1}",
-                    baselineName,
-                    BaselineExtension),
-                results.GeneratedCode);
 
-#if !GENERATE_BASELINES
             var textOutput = results.GeneratedCode;
-
+#if GENERATE_BASELINES
+            // Update baseline files if files do not already match.
+            if (!string.Equals(expectedOutput, textOutput, StringComparison.Ordinal))
+            {
+            BaselineWriter.WriteBaseline(
+                    string.Format(
+                        @"test\Microsoft.AspNet.Razor.Test\TestFiles\ChunkGenerator\Output\{0}.{1}",
+                        baselineName,
+                        BaselineExtension),
+                    textOutput);
+            }
+#else
             if (onResults != null)
             {
                 onResults(results);
