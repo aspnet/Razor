@@ -15,6 +15,7 @@ namespace Microsoft.AspNet.Razor.Tokenizer.Symbols
         RealLiteral,
         CharacterLiteral,
         StringLiteral,
+        InterpolatedStringLiteral,
 
         // Operators
         Arrow,

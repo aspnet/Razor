@@ -96,7 +96,7 @@ namespace Microsoft.AspNet.Razor.Tokenizer
             {
                 return Identifier();
             }
-            else if (Char.IsDigit(CurrentCharacter))
+            else if (char.IsDigit(CurrentCharacter))
             {
                 return NumericLiteral();
             }
@@ -110,8 +110,10 @@ namespace Microsoft.AspNet.Razor.Tokenizer
                 case '"':
                     TakeCurrent();
                     return Transition(() => QuotedLiteral('"', CSharpSymbolType.StringLiteral));
+                case '$':
+                    return InterpolatedStringStart();
                 case '.':
-                    if (Char.IsDigit(Peek()))
+                    if (char.IsDigit(Peek()))
                     {
                         return RealLiteral();
                     }
@@ -428,6 +430,117 @@ namespace Microsoft.AspNet.Razor.Tokenizer
             }
             StartSymbol();
             return Stay(sym);
+        }
+
+
+        private StateResult InterpolatedStringStart()
+        {
+            // Take the '$'
+            TakeCurrent();
+
+            if (CurrentCharacter == '"')
+            {
+                // Take the '"'
+                TakeCurrent();
+                return Transition(() => InterpolatedStringLiteral(verbatimStringLiteral: false));
+            }
+            else if (CurrentCharacter == '@' && Peek() == '"')
+            {
+                // Take the '@'
+                TakeCurrent();
+
+                // Take the '"'
+                TakeCurrent();
+
+                return Transition(() => InterpolatedStringLiteral(verbatimStringLiteral: true));
+            }
+
+            // Invalid string interpolation, mark the '$' as an unknown symbol.
+            return Stay(EndSymbol(CSharpSymbolType.Unknown));
+        }
+
+        private StateResult InterpolatedStringLiteral(bool verbatimStringLiteral)
+        {
+            if (verbatimStringLiteral)
+            {
+                TakeUntil(InvalidInterpolatedVerbatimStringLiteralCharacter);
+            }
+            else
+            {
+                TakeUntil(InvalidInterpolatedStringLiteralCharacter);
+            }
+
+            if (CurrentCharacter == '\\')
+            {
+                // Take the '\'
+                TakeCurrent();
+
+                // If the current char is a quote or a backlash we need to take them to move onto the next symbol.
+                if (CurrentCharacter == '"' || CurrentCharacter == '\\')
+                {
+                    // Take it so that we don't prematurely end the literal.
+                    TakeCurrent();
+                }
+
+                return Stay();
+            }
+            else if (CurrentCharacter == '{')
+            {
+                // Take the '{'
+                TakeCurrent();
+
+                // If the current char is an open curly brace then the previous curly brace was escaped.
+                if (CurrentCharacter == '{')
+                {
+                    // Take it so we can continue parsing;
+                    TakeCurrent();
+                    return Stay();
+                }
+
+                // String interpolation
+                return Transition(StringInterpolation);
+            }
+            else if (EndOfFile || (!verbatimStringLiteral && ParserHelpers.IsNewLine(CurrentCharacter)))
+            {
+                CurrentErrors.Add(
+                    new RazorError(
+                        RazorResources.ParseError_Unterminated_String_Literal,
+                        CurrentStart,
+                        Buffer.Length));
+            }
+            else
+            {
+                // End of string.
+                TakeCurrent();
+            }
+            var a = $"prefix {$"{"sdf"}"} suffix";
+            return Transition(EndSymbol(CSharpSymbolType.InterpolatedStringLiteral), Data);
+        }
+
+        private StateResult StringInterpolation()
+        {
+            TakeUntil(InvalidStringInterpolationCharacter);
+        }
+
+        private static bool InvalidInterpolatedVerbatimStringLiteralCharacter(char character)
+        {
+            return character == '\\' || character == '"' || character == '{';
+        }
+
+        private static bool InvalidInterpolatedStringLiteralCharacter(char character)
+        {
+            return InvalidInterpolatedVerbatimStringLiteralCharacter(character) || ParserHelpers.IsNewLine(character);
+        }
+
+        private static bool InvalidStringInterpolationCharacter(char character)
+        {
+            return
+                character == '@' ||
+                character == '"' ||
+                character == '$' ||
+                character == '(' ||
+                character == '[' ||
+                character == '{';
         }
     }
 }

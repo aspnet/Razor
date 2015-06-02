@@ -52,6 +52,12 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             new RazorChunkGenerator("Foo", string.Empty, TestPhysicalPath, CreateHost());
         }
 
+        [Fact]
+        public void StringInterpolation()
+        {
+            RunTest("StringInterpolation");
+        }
+
         [Theory]
         [InlineData("NullConditionalExpressions")]
         [InlineData("NestedCodeBlocks")]
