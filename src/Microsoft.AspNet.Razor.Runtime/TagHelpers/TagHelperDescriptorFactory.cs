@@ -256,45 +256,60 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             bool designTime,
             ErrorSink errorSink)
         {
-            var accessibleProperties = type.GetRuntimeProperties().Where(IsAccessibleProperty);
             var attributeDescriptors = new List<TagHelperAttributeDescriptor>();
 
             // Keep indexer descriptors separate to avoid sorting the combined list later.
             var indexerDescriptors = new List<TagHelperAttributeDescriptor>();
 
+            var accessibleProperties = type.GetRuntimeProperties().Where(IsAccessibleProperty);
             foreach (var property in accessibleProperties)
             {
                 var attributeNameAttribute = property.GetCustomAttribute<HtmlAttributeNameAttribute>(inherit: false);
-                var descriptor = ToAttributeDescriptor(property, attributeNameAttribute, designTime);
-                if (ValidateTagHelperAttributeDescriptor(descriptor, type, errorSink))
+                var attributeName = attributeNameAttribute != null ?
+                    attributeNameAttribute.Name :
+                    ToHtmlCase(property.Name);
+
+                TagHelperAttributeDescriptor mainDescriptor = null;
+                if (property.SetMethod?.IsPublic == true)
                 {
-                    bool isInvalid;
-                    var indexerDescriptor = ToIndexerAttributeDescriptor(
-                        property,
-                        attributeNameAttribute,
-                        parentType: type,
-                        errorSink: errorSink,
-                        defaultPrefix: descriptor.Name + "-",
-                        designTime: designTime,
-                        isInvalid: out isInvalid);
-
-                    if (indexerDescriptor != null &&
-                        !ValidateTagHelperAttributeDescriptor(indexerDescriptor, type, errorSink))
+                    mainDescriptor = ToAttributeDescriptor(property, attributeName, designTime);
+                    if (!ValidateTagHelperAttributeDescriptor(mainDescriptor, type, errorSink))
                     {
-                        isInvalid = true;
-                    }
-
-                    if (isInvalid)
-                    {
-                        // HtmlAttributeNameAttribute was not valid. Ignore this property completely.
+                        // HtmlAttributeNameAttribute.Name is invalid. Ignore this property completely.
                         continue;
                     }
+                }
 
-                    attributeDescriptors.Add(descriptor);
-                    if (indexerDescriptor != null)
-                    {
-                        indexerDescriptors.Add(indexerDescriptor);
-                    }
+                bool isInvalid;
+                var indexerDescriptor = ToIndexerAttributeDescriptor(
+                    property,
+                    attributeNameAttribute,
+                    parentType: type,
+                    errorSink: errorSink,
+                    defaultPrefix: attributeName + "-",
+                    designTime: designTime,
+                    isInvalid: out isInvalid);
+                if (indexerDescriptor != null &&
+                    !ValidateTagHelperAttributeDescriptor(indexerDescriptor, type, errorSink))
+                {
+                    isInvalid = true;
+                }
+
+                if (isInvalid)
+                {
+                    // The property type, HtmlAttributeNameAttribute.DictionaryAttributePrefix or ...Name is invalid.
+                    // Ignore this property completely.
+                    continue;
+                }
+
+                if (mainDescriptor != null)
+                {
+                    attributeDescriptors.Add(mainDescriptor);
+                }
+
+                if (indexerDescriptor != null)
+                {
+                    indexerDescriptors.Add(indexerDescriptor);
                 }
             }
 
@@ -388,13 +403,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         private static TagHelperAttributeDescriptor ToAttributeDescriptor(
             PropertyInfo property,
-            HtmlAttributeNameAttribute attributeNameAttribute,
+            string attributeName,
             bool designTime)
         {
-            var attributeName = attributeNameAttribute != null ?
-                                attributeNameAttribute.Name :
-                                ToHtmlCase(property.Name);
-
             return ToAttributeDescriptor(
                 property,
                 attributeName,
@@ -482,9 +493,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         private static bool IsAccessibleProperty(PropertyInfo property)
         {
-            // Accessible properties are those with public getters and setters and without [HtmlAttributeNotBound].
+            // Accessible properties are those with public getters and without [HtmlAttributeNotBound].
             return property.GetMethod?.IsPublic == true &&
-                property.SetMethod?.IsPublic == true &&
                 property.GetCustomAttribute<HtmlAttributeNotBoundAttribute>(inherit: false) == null;
         }
 
