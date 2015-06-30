@@ -24,8 +24,8 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         private ChunkTree Tree { get { return Context.ChunkTreeBuilder.ChunkTree; } }
         public RazorEngineHost Host { get { return Context.Host; } }
 
-        // Internal for testing
-        internal virtual CSharpCodeWriter CreateCodeWriter()
+        // Protected for testing
+        protected virtual CSharpCodeWriter CreateCodeWriter()
         {
             return new CSharpCodeWriter();
         }
