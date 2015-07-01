@@ -958,7 +958,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                                 isStringProperty: false,
                                 designTimeDescriptor: null),
                             new TagHelperAttributeDescriptor(
-                                name: "valid-prefix",
+                                name: "valid-name-",
                                 propertyName: nameof(SingleValidHtmlAttributePrefix.DictionaryProperty),
                                 typeName: typeof(string).FullName,
                                 isIndexer: true,
@@ -1056,14 +1056,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                                 isStringProperty: false,
                                 designTimeDescriptor: null),
                             new TagHelperAttributeDescriptor(
-                                name: "valid-name8-",
-                                propertyName: nameof(MultipleValidHtmlAttributePrefix.GetOnlyDictionaryPropertyWithAttributeName),
-                                typeName: typeof(object).FullName,
-                                isIndexer: true,
-                                isStringProperty: false,
-                                designTimeDescriptor: null),
-                            new TagHelperAttributeDescriptor(
-                                name: "valid-prefix9",
+                                name: "valid-prefix6",
                                 propertyName: nameof(MultipleValidHtmlAttributePrefix.GetOnlyDictionaryPropertyWithAttributePrefix),
                                 typeName: typeof(string).FullName,
                                 isIndexer: true,
@@ -1111,6 +1104,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                             onError(
                                 typeof(MultipleInvalidHtmlAttributePrefix).FullName,
                                 nameof(MultipleInvalidHtmlAttributePrefix.GetOnlyDictionaryAttributePrefix)),
+                            $"Invalid tag helper bound property '{ typeof(MultipleInvalidHtmlAttributePrefix).FullName }." +
+                            $"{ nameof(MultipleInvalidHtmlAttributePrefix.GetOnlyDictionaryPropertyWithAttributeName) }'. " +
+                            $"'{ typeof(HtmlAttributeNameAttribute).FullName }." +
+                            $"{ nameof(HtmlAttributeNameAttribute.Name) }' must be null or empty if property has " +
+                            "no public setter.",
                         }
                     },
                 };
@@ -1152,14 +1150,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 TagHelperAttributeDescriptorComparer.Default);
         }
 
-        public static TheoryData<string> ValidAttributeNameOrPrefixData
+        public static TheoryData<string> ValidAttributeNameData
         {
             get
             {
                 return new TheoryData<string>
                 {
-                    null,
-                    string.Empty,
                     "data",
                     "dataa-",
                     "ValidName",
@@ -1171,7 +1167,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         [Theory]
-        [MemberData(nameof(ValidAttributeNameOrPrefixData))]
+        [MemberData(nameof(ValidAttributeNameData))]
         public void ValidateTagHelperAttributeDescriptor_WithValidName_ReturnsTrue(string name)
         {
             // Arrange
@@ -1194,8 +1190,25 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Assert.Empty(errorSink.Errors);
         }
 
+        public static TheoryData<string> ValidAttributePrefixData
+        {
+            get
+            {
+                return new TheoryData<string>
+                {
+                    string.Empty,
+                    "data",
+                    "dataa-",
+                    "ValidName",
+                    "valid-name",
+                    "--valid--name--",
+                    ",,--__..oddly.valid::;;",
+                };
+            }
+        }
+
         [Theory]
-        [MemberData(nameof(ValidAttributeNameOrPrefixData))]
+        [MemberData(nameof(ValidAttributePrefixData))]
         public void ValidateTagHelperAttributeDescriptor_WithValidPrefix_ReturnsTrue(string prefix)
         {
             // Arrange
@@ -1756,7 +1769,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
         private class SingleValidHtmlAttributePrefix : TagHelper
         {
-            [HtmlAttributeName("valid-name", DictionaryAttributePrefix = "valid-prefix")]
+            [HtmlAttributeName("valid-name")]
             public IDictionary<string, string> DictionaryProperty { get; set; }
         }
 
@@ -1782,10 +1795,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             public IDictionary<string, int> GetOnlyDictionaryProperty { get; }
 
-            [HtmlAttributeName("valid-name8")]
-            public IDictionary<string, object> GetOnlyDictionaryPropertyWithAttributeName { get; }
-
-            [HtmlAttributeName("ignored-name9", DictionaryAttributePrefix = "valid-prefix9")]
+            [HtmlAttributeName(DictionaryAttributePrefix = "valid-prefix6")]
             public IDictionary<string, string> GetOnlyDictionaryPropertyWithAttributePrefix { get; }
         }
 
@@ -1812,8 +1822,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             [HtmlAttributeName("valid-name5", DictionaryAttributePrefix = "valid-prefix5-")]
             public DictionaryOfIntSubclass DictionaryOfIntSubclassProperty { get; set; }
 
-            [HtmlAttributeName("ignored-name6", DictionaryAttributePrefix = "valid-prefix6")]
+            [HtmlAttributeName(DictionaryAttributePrefix = "valid-prefix6")]
             public IDictionary<int, string> GetOnlyDictionaryAttributePrefix { get; }
+
+            [HtmlAttributeName("invalid-name7")]
+            public IDictionary<string, object> GetOnlyDictionaryPropertyWithAttributeName { get; }
         }
 
         private class DictionarySubclass : Dictionary<string, string>
