@@ -13,6 +13,12 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         /// </summary>
         public GeneratedTagHelperContext()
         {
+            OutputTextWriterPropertyName = "Output";
+            ShouldRenderAttributeValueMethodName = "ShouldRenderAttributeValue";
+            GetStringAttributeValueMethodName = "GetStringAttributeValue";
+            WriteUnprefixedAttributeValueToMethodName = "WriteUnprefixedAttributeValueTo";
+            UnchangedTagHelperAttributeValueBufferTypeName = "StringCollectionTextWriter";
+            AddHtmlAttributeOnlyMethodName = "HtmlAttributes.Add";
             CreateTagHelperMethodName = "CreateTagHelper";
             RunnerRunAsyncMethodName = "RunAsync";
             ScopeManagerBeginMethodName = "Begin";
@@ -33,6 +39,36 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             WriteTagHelperAsyncMethodName = "WriteTagHelperAsync";
             WriteTagHelperToAsyncMethodName = "WriteTagHelperToAsync";
         }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string OutputTextWriterPropertyName { get; set; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string ShouldRenderAttributeValueMethodName { get; set; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string GetStringAttributeValueMethodName { get; set; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string WriteUnprefixedAttributeValueToMethodName { get; set; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string UnchangedTagHelperAttributeValueBufferTypeName { get; set; }
+
+        /// <summary>
+        /// TODO
+        /// </summary>
+        public string AddHtmlAttributeOnlyMethodName { get; set; }
 
         /// <summary>
         /// The name of the method used to create a tag helper.

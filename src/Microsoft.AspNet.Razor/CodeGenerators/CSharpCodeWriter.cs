@@ -63,6 +63,11 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             return (CSharpCodeWriter)base.WriteLine();
         }
 
+        public CSharpCodeWriter WriteEndLine()
+        {
+            return WriteLine(";");
+        }
+
         public CSharpCodeWriter WriteVariableDeclaration(string type, string name, string value)
         {
             Write(type).Write(" ").Write(name);

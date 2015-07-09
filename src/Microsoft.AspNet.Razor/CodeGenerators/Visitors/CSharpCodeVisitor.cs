@@ -196,57 +196,23 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
                 return;
             }
 
-            var currentRenderingMode = Context.ExpressionRenderingMode;
-            var currentTargetWriterName = Context.TargetWriterName;
+            Writer
+                .WriteParameterSeparator()
+                .WriteLine()
+                .WriteStartMethodInvocation("Tuple.Create")
+                .WriteLocationTaggedString(chunk.Prefix)
+                .WriteParameterSeparator()
+                .WriteStartMethodInvocation("Tuple.Create", new string[] { "System.Object", "System.Int32" });
 
-            Context.TargetWriterName = ValueWriterName;
+            RenderDynamicAttributeValue(chunk);
 
-            Writer.WriteParameterSeparator()
-                   .WriteLine();
-
-            var code = chunk.Children.FirstOrDefault();
-            if (code is ExpressionChunk || code is ExpressionBlockChunk)
-            {
-                Writer.WriteStartMethodInvocation("Tuple.Create")
-                        .WriteLocationTaggedString(chunk.Prefix)
-                        .WriteParameterSeparator()
-                        .WriteStartMethodInvocation("Tuple.Create", new string[] { "System.Object", "System.Int32" });
-
-                Context.ExpressionRenderingMode = ExpressionRenderingMode.InjectCode;
-
-                Accept(code);
-
-                Writer.WriteParameterSeparator()
-                       .Write(chunk.Start.AbsoluteIndex.ToString(CultureInfo.CurrentCulture))
-                       .WriteEndMethodInvocation(endLine: false)
-                       .WriteParameterSeparator()
-                       .WriteBooleanLiteral(value: false)
-                       .WriteEndMethodInvocation(endLine: false);
-            }
-            else
-            {
-                Writer.WriteStartMethodInvocation("Tuple.Create")
-                       .WriteLocationTaggedString(chunk.Prefix)
-                       .WriteParameterSeparator()
-                       .WriteStartMethodInvocation("Tuple.Create", new string[] { "System.Object", "System.Int32" })
-                       .WriteStartNewObject(Context.Host.GeneratedClassContext.TemplateTypeName);
-
-                using (Writer.BuildLambda(endLine: false, parameterNames: ValueWriterName))
-                {
-                    Accept(chunk.Children);
-                }
-
-                Writer.WriteEndMethodInvocation(false)
-                       .WriteParameterSeparator()
-                       .Write(chunk.Start.AbsoluteIndex.ToString(CultureInfo.CurrentCulture))
-                       .WriteEndMethodInvocation(endLine: false)
-                       .WriteParameterSeparator()
-                       .WriteBooleanLiteral(false)
-                       .WriteEndMethodInvocation(false);
-            }
-
-            Context.TargetWriterName = currentTargetWriterName;
-            Context.ExpressionRenderingMode = currentRenderingMode;
+            Writer
+                .WriteParameterSeparator()
+                .Write(chunk.Start.AbsoluteIndex.ToString(CultureInfo.CurrentCulture))
+                .WriteEndMethodInvocation(endLine: false)
+                .WriteParameterSeparator()
+                .WriteBooleanLiteral(value: false)
+                .WriteEndMethodInvocation(endLine: false);
         }
 
         protected override void Visit(LiteralCodeAttributeChunk chunk)
@@ -343,6 +309,36 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
             }
             Context.TargetWriterName = currentTargetWriterName;
             Writer.WriteEndMethodInvocation();
+        }
+
+        internal void RenderDynamicAttributeValue(DynamicCodeAttributeChunk chunk)
+        {
+            var currentTargetWriterName = Context.TargetWriterName;
+            Context.TargetWriterName = ValueWriterName;
+
+            var code = chunk.Children.FirstOrDefault();
+            if (code is ExpressionChunk || code is ExpressionBlockChunk)
+            {
+                var currentRenderingMode = Context.ExpressionRenderingMode;
+                Context.ExpressionRenderingMode = ExpressionRenderingMode.InjectCode;
+
+                Accept(code);
+
+                Context.ExpressionRenderingMode = currentRenderingMode;
+            }
+            else
+            {
+                Writer.WriteStartNewObject(Context.Host.GeneratedClassContext.TemplateTypeName);
+
+                using (Writer.BuildLambda(endLine: false, parameterNames: ValueWriterName))
+                {
+                    Accept(chunk.Children);
+                }
+
+                Writer.WriteEndMethodInvocation(endLine: false);
+            }
+
+            Context.TargetWriterName = currentTargetWriterName;
         }
 
         public void RenderDesignTimeExpressionBlockChunk(ExpressionBlockChunk chunk)

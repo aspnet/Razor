@@ -14,6 +14,9 @@ namespace TestOutput
         private TagHelperExecutionContext __tagHelperExecutionContext = null;
         private TagHelperRunner __tagHelperRunner = null;
         private TagHelperScopeManager __tagHelperScopeManager = new TagHelperScopeManager();
+        private StringCollectionTextWriter __originalTagHelperAttributeValue = null;
+        private object __rawTagHelperAttributeValue = null;
+        private bool __shouldRenderTagHelperAttribute = false;
         private PTagHelper __PTagHelper = null;
         private InputTagHelper __InputTagHelper = null;
         private InputTagHelper2 __InputTagHelper2 = null;

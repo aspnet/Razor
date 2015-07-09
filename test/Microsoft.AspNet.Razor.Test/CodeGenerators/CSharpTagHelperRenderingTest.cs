@@ -63,6 +63,29 @@ namespace Microsoft.AspNet.Razor.Test.Generator
             }
         }
 
+        private static IEnumerable<TagHelperDescriptor> DynamicAttributeTagHelpers_Descriptors
+        {
+            get
+            {
+                return new[]
+                {
+                    new TagHelperDescriptor(
+                        tagName: "input",
+                        typeName: "InputTagHelper",
+                        assemblyName: "SomeAssembly",
+                        attributes: new[]
+                        {
+                            new TagHelperAttributeDescriptor(
+                                "bound",
+                                "Bound",
+                                typeof(string).FullName,
+                                isIndexer: false,
+                                designTimeDescriptor: null)
+                        }),
+                };
+            }
+        }
+
         private static IEnumerable<TagHelperDescriptor> DuplicateTargetTagHelperDescriptors
         {
             get
@@ -922,6 +945,261 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                                 contentLength: 1),
                         }
                     },
+                    {
+                        "DynamicAttributeTagHelpers",
+                        "DynamicAttributeTagHelpers.DesignTime",
+                        DefaultPAndInputTagHelperDescriptors,
+                        new List<LineMapping>
+                        {
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 14,
+                                documentLineIndex: 0,
+                                generatedAbsoluteIndex: 497,
+                                generatedLineIndex: 15,
+                                characterOffsetIndex: 14,
+                                contentLength: 17),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 61,
+                                documentLineIndex: 3,
+                                documentCharacterOffsetIndex: 24,
+                                generatedAbsoluteIndex: 1130,
+                                generatedLineIndex: 36,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 98,
+                                documentLineIndex: 5,
+                                documentCharacterOffsetIndex: 17,
+                                generatedAbsoluteIndex: 1357,
+                                generatedLineIndex: 43,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 111,
+                                documentLineIndex: 5,
+                                documentCharacterOffsetIndex: 30,
+                                generatedAbsoluteIndex: 1455,
+                                generatedLineIndex: 49,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 123,
+                                documentLineIndex: 5,
+                                documentCharacterOffsetIndex: 42,
+                                generatedAbsoluteIndex: 1546,
+                                generatedLineIndex: 54,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 10),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 134,
+                                documentLineIndex: 5,
+                                documentCharacterOffsetIndex: 53,
+                                generatedAbsoluteIndex: 1642,
+                                generatedLineIndex: 60,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 5),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 139,
+                                documentLineIndex: 5,
+                                documentCharacterOffsetIndex: 58,
+                                generatedAbsoluteIndex: 1726,
+                                generatedLineIndex: 65,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 2),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 178,
+                                documentLineIndex: 7,
+                                documentCharacterOffsetIndex: 22,
+                                generatedAbsoluteIndex: 1950,
+                                generatedLineIndex: 73,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 216,
+                                documentLineIndex: 7,
+                                documentCharacterOffsetIndex: 60,
+                                generatedAbsoluteIndex: 2047,
+                                generatedLineIndex: 78,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 258,
+                                documentLineIndex: 9,
+                                documentCharacterOffsetIndex: 15,
+                                generatedAbsoluteIndex: 2281,
+                                generatedLineIndex: 85,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 13),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 273,
+                                documentLineIndex: 9,
+                                documentCharacterOffsetIndex: 30,
+                                generatedAbsoluteIndex: 2374,
+                                generatedLineIndex: 90,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 286,
+                                documentLineIndex: 9,
+                                documentCharacterOffsetIndex: 43,
+                                generatedAbsoluteIndex: 2473,
+                                generatedLineIndex: 96,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 298,
+                                documentLineIndex: 9,
+                                documentCharacterOffsetIndex: 55,
+                                generatedAbsoluteIndex: 2565,
+                                generatedLineIndex: 101,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 10),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 309,
+                                documentLineIndex: 9,
+                                documentCharacterOffsetIndex: 66,
+                                generatedAbsoluteIndex: 2662,
+                                generatedLineIndex: 107,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 5),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 314,
+                                documentLineIndex: 9,
+                                documentCharacterOffsetIndex: 71,
+                                generatedAbsoluteIndex: 2747,
+                                generatedLineIndex: 112,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 2),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 318,
+                                documentLineIndex: 9,
+                                documentCharacterOffsetIndex: 75,
+                                generatedAbsoluteIndex: 2836,
+                                generatedLineIndex: 118,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 350,
+                                documentLineIndex: 10,
+                                documentCharacterOffsetIndex: 17,
+                                generatedAbsoluteIndex: 2934,
+                                generatedLineIndex: 123,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 13),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 365,
+                                documentLineIndex: 10,
+                                documentCharacterOffsetIndex: 32,
+                                generatedAbsoluteIndex: 3027,
+                                generatedLineIndex: 128,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 378,
+                                documentLineIndex: 10,
+                                documentCharacterOffsetIndex: 45,
+                                generatedAbsoluteIndex: 3126,
+                                generatedLineIndex: 134,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 390,
+                                documentLineIndex: 10,
+                                documentCharacterOffsetIndex: 57,
+                                generatedAbsoluteIndex: 3218,
+                                generatedLineIndex: 139,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 10),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 401,
+                                documentLineIndex: 10,
+                                documentCharacterOffsetIndex: 68,
+                                generatedAbsoluteIndex: 3315,
+                                generatedLineIndex: 145,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 5),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 406,
+                                documentLineIndex: 10,
+                                documentCharacterOffsetIndex: 73,
+                                generatedAbsoluteIndex: 3400,
+                                generatedLineIndex: 150,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 2),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 410,
+                                documentLineIndex: 10,
+                                documentCharacterOffsetIndex: 77,
+                                generatedAbsoluteIndex: 3489,
+                                generatedLineIndex: 156,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 447,
+                                documentLineIndex: 12,
+                                documentCharacterOffsetIndex: 17,
+                                generatedAbsoluteIndex: 3723,
+                                generatedLineIndex: 163,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 13),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 462,
+                                documentLineIndex: 12,
+                                documentCharacterOffsetIndex: 32,
+                                generatedAbsoluteIndex: 3822,
+                                generatedLineIndex: 168,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 494,
+                                documentLineIndex: 12,
+                                documentCharacterOffsetIndex: 64,
+                                generatedAbsoluteIndex: 3920,
+                                generatedLineIndex: 173,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 531,
+                                documentLineIndex: 14,
+                                documentCharacterOffsetIndex: 17,
+                                generatedAbsoluteIndex: 4148,
+                                generatedLineIndex: 180,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 544,
+                                documentLineIndex: 14,
+                                documentCharacterOffsetIndex: 30,
+                                generatedAbsoluteIndex: 4247,
+                                generatedLineIndex: 186,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 12),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 556,
+                                documentLineIndex: 14,
+                                documentCharacterOffsetIndex: 42,
+                                generatedAbsoluteIndex: 4339,
+                                generatedLineIndex: 191,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 10),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 567,
+                                documentLineIndex: 14,
+                                documentCharacterOffsetIndex: 53,
+                                generatedAbsoluteIndex: 4436,
+                                generatedLineIndex: 197,
+                                generatedCharacterOffsetIndex: 6,
+                                contentLength: 5),
+                            BuildLineMapping(
+                                documentAbsoluteIndex: 572,
+                                documentLineIndex: 14,
+                                documentCharacterOffsetIndex: 58,
+                                generatedAbsoluteIndex: 4521,
+                                generatedLineIndex: 202,
+                                generatedCharacterOffsetIndex: 0,
+                                contentLength: 2),
+                        }
+                    },
                 };
             }
         }
@@ -965,6 +1243,7 @@ namespace Microsoft.AspNet.Razor.Test.Generator
                         PrefixedAttributeTagHelperDescriptors.Reverse()
                     },
                     { "DuplicateAttributeTagHelpers", null, DefaultPAndInputTagHelperDescriptors },
+                    { "DynamicAttributeTagHelpers", null, DynamicAttributeTagHelpers_Descriptors },
                 };
             }
         }
