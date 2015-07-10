@@ -1,20 +1,20 @@
 {
     "description": "Runtime components for rendering Razor pages.",
-    "version": "4.0.0-*",
+    "version": "4.0.0-beta5",
     "dependencies": {
-        "Microsoft.AspNet.Razor": "4.0.0-*",
-        "Microsoft.Framework.BufferEntryCollection.Sources": { "type": "build", "version": "1.0.0-*" },
-        "Microsoft.Framework.ClosedGenericMatcher.Sources": { "type": "build", "version": "1.0.0-*" },
-        "Microsoft.Framework.CopyOnWriteDictionary.Sources": { "type": "build", "version": "1.0.0-*" },
-        "Microsoft.Framework.NotNullAttribute.Sources": { "type": "build", "version": "1.0.0-*" }
+        "Microsoft.AspNet.Razor": "4.0.0-beta5",
+        "Microsoft.Framework.BufferEntryCollection.Sources": { "type": "build", "version": "1.0.0-beta5" },
+        "Microsoft.Framework.ClosedGenericMatcher.Sources": { "type": "build", "version": "1.0.0-beta5" },
+        "Microsoft.Framework.CopyOnWriteDictionary.Sources": { "type": "build", "version": "1.0.0-beta5" },
+        "Microsoft.Framework.NotNullAttribute.Sources": { "type": "build", "version": "1.0.0-beta5" }
     },
     "frameworks": {
         "net45": { },
         "dnx451": { },
         "dnxcore50": {
             "dependencies": {
-                "System.Reflection.Extensions": "4.0.0-beta-*",
-                "System.Text.RegularExpressions": "4.0.10-beta-*"
+                "System.Reflection.Extensions": "4.0.0-beta-23019",
+                "System.Text.RegularExpressions": "4.0.10-beta-23019"
             }
         }
     }
