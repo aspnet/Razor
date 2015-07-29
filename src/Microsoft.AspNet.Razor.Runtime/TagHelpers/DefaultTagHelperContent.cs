@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
+using Microsoft.AspNet.Html.Abstractions;
 using Microsoft.Framework.Internal;
 using Microsoft.Framework.WebEncoders;
 
@@ -14,14 +14,20 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     /// </summary>
     public class DefaultTagHelperContent : TagHelperContent
     {
-        private readonly BufferEntryCollection _buffer;
+        private BufferedHtmlContent _buffer;
 
-        /// <summary>
-        /// Instantiates a new instance of <see cref="DefaultTagHelperContent"/>.
-        /// </summary>
-        public DefaultTagHelperContent()
+        // internal for testing
+        internal BufferedHtmlContent Buffer
         {
-            _buffer = new BufferEntryCollection();
+            get
+            {
+                if (_buffer == null)
+                {
+                    _buffer = new BufferedHtmlContent();
+                }
+
+                return _buffer;
+            }
         }
 
         /// <inheritdoc />
@@ -29,7 +35,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             get
             {
-                return _buffer.IsModified;
+                return (_buffer != null);
             }
         }
 
@@ -38,15 +44,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             get
             {
-                foreach (var value in _buffer)
+                if (_buffer == null)
                 {
-                    if (!string.IsNullOrWhiteSpace(value))
-                    {
-                        return false;
-                    }
+                    return true;
                 }
 
-                return true;
+                return CheckIfBufferedHtmlContentIsWhiteSpace(Buffer);
             }
         }
 
@@ -55,67 +58,47 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             get
             {
-                foreach (var value in _buffer)
+                if (_buffer == null)
                 {
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        return false;
-                    }
+                    return true;
                 }
 
-                return true;
+                return CheckIfBufferedHtmlContentIsEmpty(Buffer);
             }
         }
 
         /// <inheritdoc />
-        public override TagHelperContent SetContent(string value)
-        {
-            Clear();
-            Append(value);
-            return this;
-        }
-
-        /// <inheritdoc />
-        public override TagHelperContent SetContent(TagHelperContent tagHelperContent)
-        {
-            Clear();
-            Append(tagHelperContent);
-            return this;
-        }
-
-
-        /// <inheritdoc />
         public override TagHelperContent Append(string value)
         {
-            _buffer.Add(value);
+            Buffer.Append(value);
             return this;
         }
 
         /// <inheritdoc />
         public override TagHelperContent AppendFormat([NotNull] string format, object arg0)
         {
-            _buffer.Add(string.Format(format, arg0));
+            Buffer.Append(string.Format(format, arg0));
             return this;
         }
 
         /// <inheritdoc />
         public override TagHelperContent AppendFormat([NotNull] string format, object arg0, object arg1)
         {
-            _buffer.Add(string.Format(format, arg0, arg1));
+            Buffer.Append(string.Format(format, arg0, arg1));
             return this;
         }
 
         /// <inheritdoc />
         public override TagHelperContent AppendFormat([NotNull] string format, object arg0, object arg1, object arg2)
         {
-            _buffer.Add(string.Format(format, arg0, arg1, arg2));
+            Buffer.Append(string.Format(format, arg0, arg1, arg2));
             return this;
         }
 
         /// <inheritdoc />
         public override TagHelperContent AppendFormat([NotNull] string format, params object[] args)
         {
-            _buffer.Add(string.Format(format, args));
+            Buffer.Append(string.Format(format, args));
             return this;
         }
 
@@ -125,7 +108,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             [NotNull] string format,
             object arg0)
         {
-            _buffer.Add(string.Format(provider, format, arg0));
+            Buffer.Append(string.Format(provider, format, arg0));
             return this;
         }
 
@@ -136,7 +119,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             object arg0,
             object arg1)
         {
-            _buffer.Add(string.Format(provider, format, arg0, arg1));
+            Buffer.Append(string.Format(provider, format, arg0, arg1));
             return this;
         }
 
@@ -148,7 +131,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             object arg1,
             object arg2)
         {
-            _buffer.Add(string.Format(provider, format, arg0, arg1, arg2));
+            Buffer.Append(string.Format(provider, format, arg0, arg1, arg2));
             return this;
         }
 
@@ -158,66 +141,119 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             [NotNull] string format,
             params object[] args)
         {
-            _buffer.Add(string.Format(provider, format, args));
+            Buffer.Append(string.Format(provider, format, args));
             return this;
         }
 
         /// <inheritdoc />
-        public override TagHelperContent Append(TagHelperContent tagHelperContent)
+        public override TagHelperContent Append(IHtmlContent htmlContent)
         {
-            if (tagHelperContent != null)
-            {
-                foreach (var value in tagHelperContent)
-                {
-                    Append(value);
-                }
-            }
-
-            // If Append() was called with an empty TagHelperContent IsModified should
-            // still be true. If the content was not already modified, it means it is empty.
-            // So the Clear() method can be used to indirectly set the IsModified.
-            if (!IsModified)
-            {
-                Clear();
-            }
-
+            Buffer.Append(htmlContent);
             return this;
         }
 
         /// <inheritdoc />
         public override TagHelperContent Clear()
         {
-            _buffer.Clear();
+            Buffer.Clear();
             return this;
         }
 
         /// <inheritdoc />
         public override string GetContent()
         {
-            return string.Join(string.Empty, _buffer);
+            if (_buffer == null)
+            {
+                return string.Empty;
+            }
+
+            return string.Join(string.Empty, Buffer);
         }
 
         /// <inheritdoc />
         public override string ToString()
         {
-            return GetContent();
-        }
-
-        /// <inheritdoc />
-        public override IEnumerator<string> GetEnumerator()
-        {
-            // The enumerator is exposed so that SetContent(TagHelperContent) and Append(TagHelperContent)
-            // can use this to iterate through the values of the buffer.
-            return _buffer.GetEnumerator();
-        }
-
-        /// <inheritdoc />
-        public override void WriteTo(TextWriter writer, IHtmlEncoder encoder)
-        {
-            foreach (var entry in _buffer)
+            using (var writer = new StringWriter())
             {
-                writer.Write(entry);
+                WriteTo(writer, new HtmlEncoder());
+                return writer.ToString();
             }
+        }
+
+        /// <inheritdoc />
+        public override void WriteTo([NotNull] TextWriter writer, [NotNull] IHtmlEncoder encoder)
+        {
+            Buffer.WriteTo(writer, encoder);
+        }
+
+        private bool CheckIfBufferedHtmlContentIsEmpty(BufferedHtmlContent buffer)
+        {
+            foreach (var value in buffer)
+            {
+                var valueAsString = value as string;
+                if (valueAsString != null)
+                {
+                    if (!string.IsNullOrEmpty(valueAsString))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    var valueAsBufferedHtmlContent = value as BufferedHtmlContent;
+                    if (valueAsBufferedHtmlContent != null)
+                    {
+                        if (!CheckIfBufferedHtmlContentIsEmpty(valueAsBufferedHtmlContent))
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(value.ToString()))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool CheckIfBufferedHtmlContentIsWhiteSpace(BufferedHtmlContent buffer)
+        {
+            foreach (var value in buffer)
+            {
+                var valueAsString = value as string;
+                if (valueAsString != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(valueAsString))
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    var valueAsBufferedHtmlContent = value as BufferedHtmlContent;
+                    if (valueAsBufferedHtmlContent != null)
+                    {
+                        if (!CheckIfBufferedHtmlContentIsWhiteSpace(valueAsBufferedHtmlContent))
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrWhiteSpace(value.ToString()))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

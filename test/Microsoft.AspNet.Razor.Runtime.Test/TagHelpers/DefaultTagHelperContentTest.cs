@@ -301,7 +301,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Assert
             Assert.Equal(expected, copiedTagHelperContent.GetContent());
-            Assert.Equal(new[] { text1, text2 }, copiedTagHelperContent.ToArray());
         }
 
         [Fact]
@@ -527,23 +526,6 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         [Fact]
-        public void GetEnumerator_EnumeratesThroughBuffer()
-        {
-            // Arrange
-            var tagHelperContent = new DefaultTagHelperContent();
-            var expected = new string[] { "Hello", "World" };
-            tagHelperContent.SetContent(expected[0]);
-            tagHelperContent.Append(expected[1]);
-            var i = 0;
-
-            // Act & Assert
-            foreach (var val in tagHelperContent)
-            {
-                Assert.Equal(expected[i++], val);
-            }
-        }
-
-        [Fact]
         public void Fluent_SetContent_Append_WritesExpectedContent()
         {
             // Arrange
@@ -569,7 +551,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             tagHelperContent.SetContent("First ").AppendFormat("{0} Third", "Second");
 
             // Assert
-            foreach (var value in tagHelperContent)
+            foreach (var value in tagHelperContent.Buffer)
             {
                 Assert.Equal(expected[i++], value);
             }
@@ -590,7 +572,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 .Append("Fourth");
 
             // Assert
-            foreach (var value in tagHelperContent)
+            foreach (var value in tagHelperContent.Buffer)
             {
                 Assert.Equal(expected[i++], value);
             }
