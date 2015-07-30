@@ -3,7 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNet.Razor.Chunks;
 using Microsoft.AspNet.Razor.CodeGenerators.Visitors;
@@ -21,6 +23,11 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         internal static readonly string StringValueBufferVariableName = "__tagHelperStringValueBuffer";
         internal static readonly string ScopeManagerVariableName = "__tagHelperScopeManager";
         internal static readonly string RunnerVariableName = "__tagHelperRunner";
+        internal static readonly string RawAttributeValueVariableName = "__rawTagHelperAttributeValue";
+        internal static readonly string OriginalTagHelperAttributeValueVariableName =
+            "__originalTagHelperAttributeValue";
+        internal static readonly string ShouldRenderTagHelperAttributeVariableName =
+            "__shouldRenderTagHelperAttribute";
 
         private readonly CSharpCodeWriter _writer;
         private readonly CodeGeneratorContext _context;
@@ -304,12 +311,12 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 }
 
                 // We need to inform the context of the attribute value.
+                RenderStartAddAttributes(
+                    _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName,
+                    attributeName,
+                    encodedValue: false);
+
                 _writer
-                    .WriteStartInstanceMethodInvocation(
-                        ExecutionContextVariableName,
-                        _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName)
-                    .WriteStringLiteral(attributeName)
-                    .WriteParameterSeparator()
                     .Write(currentValueAccessor)
                     .WriteEndMethodInvocation();
 
@@ -323,7 +330,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 _writer
                     .WriteStartAssignment(currentValueAccessor)
                     .Write(previousValueAccessor)
-                    .WriteLine(";");
+                    .WriteEndLine();
 
                 return previousValueAccessor;
             }
@@ -348,7 +355,10 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 {
                     // If we haven't recorded a value and we need to buffer an attribute value and the value is not
                     // plain text then we need to prepare the value prior to setting it below.
-                    BuildBufferedWritingScope(attributeValueChunk, htmlEncodeValues: false);
+                    BuildBufferedWritingScope(renderValue: () =>
+                    {
+                        _literalBodyVisitor.Accept(attributeValueChunk);
+                    });
                 }
 
                 _writer.WriteStartAssignment(valueAccessor);
@@ -365,7 +375,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                     RenderBufferedAttributeValue(attributeDescriptor);
                 }
 
-                _writer.WriteLine(";");
+                _writer.WriteEndLine();
             }
             else
             {
@@ -397,7 +407,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
 
                     // End the assignment to the attribute.
                     lineMapper.MarkLineMappingEnd();
-                    _writer.WriteLine(";");
+                    _writer.WriteEndLine();
                 }
             }
         }
@@ -406,6 +416,8 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         {
             string textValue = null;
             var isPlainTextValue = false;
+            var containsDynamicCodeAttributeChunk = false;
+            var forceRenderAttribute = false;
 
             // A null attribute value means the HTML attribute is minimized.
             if (attributeValueChunk != null)
@@ -416,7 +428,54 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 // C# code, then we need to buffer it.
                 if (!isPlainTextValue)
                 {
-                    BuildBufferedWritingScope(attributeValueChunk, htmlEncodeValues: true);
+                    BuildBufferedWritingScope(renderValue: () =>
+                    {
+                        IChunkVisitor visitor;
+                        var parentChunk = attributeValueChunk as ParentChunk;
+                        containsDynamicCodeAttributeChunk = parentChunk
+                            .Children
+                            .Any(child => child is DynamicCodeAttributeChunk);
+
+                        if (!_designTimeMode && containsDynamicCodeAttributeChunk)
+                        {
+                            // If there are any non-dynamic code attribute chunks at the top level of the attribute
+                            // value's chunk it means there's static content in the value, the attribute will always
+                            // render.
+                            forceRenderAttribute = parentChunk
+                                .Children
+                                .Any(child => !(child is DynamicCodeAttributeChunk));
+
+                            if (!forceRenderAttribute)
+                            {
+                                _writer
+                                    .WriteStartAssignment(ShouldRenderTagHelperAttributeVariableName)
+                                    .WriteBooleanLiteral(value: false)
+                                    .WriteEndLine();
+                            }
+
+                            _writer
+                                .WriteStartAssignment(OriginalTagHelperAttributeValueVariableName)
+                                .WriteStartNewObject(_tagHelperContext.UnchangedTagHelperAttributeValueBufferTypeName)
+                                .Write(_tagHelperContext.OutputTextWriterPropertyName)
+                                .Write(".")
+                                .Write(nameof(TextWriter.Encoding))
+                                .WriteLine(");");
+
+                            visitor = new UnboundDynamicAttributeValueVisitor(
+                                attributeName,
+                                forceRenderAttribute,
+                                this,
+                                _writer,
+                                _context);
+                        }
+                        else
+                        {
+                            visitor = new CSharpCodeVisitor(_writer, _context);
+                        }
+
+                        // Render the attribute value
+                        visitor.Accept(attributeValueChunk);
+                    });
                 }
             }
 
@@ -436,29 +495,86 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                     .WriteStringLiteral(attributeName)
                     .WriteEndMethodInvocation();
             }
-            else
+            else if (isPlainTextValue)
             {
-                _writer
-                    .WriteStartInstanceMethodInvocation(
-                        ExecutionContextVariableName,
-                        _tagHelperContext.ExecutionContextAddHtmlAttributeMethodName)
-                    .WriteStringLiteral(attributeName)
-                    .WriteParameterSeparator()
-                    .WriteStartMethodInvocation(_tagHelperContext.MarkAsHtmlEncodedMethodName);
-
-                // If it's a plain text value then we need to surround the value with quotes.
-                if (isPlainTextValue)
-                {
-                    _writer.WriteStringLiteral(textValue);
-                }
-                else
-                {
-                    RenderBufferedAttributeValueAccessor(_writer);
-                }
+                RenderStartAddAttributes(
+                    _tagHelperContext.ExecutionContextAddHtmlAttributeMethodName,
+                    attributeName,
+                    encodedValue: true);
 
                 _writer
+                    .WriteStringLiteral(textValue)
                     .WriteEndMethodInvocation(endLine: false)
                     .WriteEndMethodInvocation();
+            }
+            else if (containsDynamicCodeAttributeChunk)
+            {
+                // Complex attribute value that had to be buffered.
+
+                IDisposable ifScope = null;
+
+                if (!forceRenderAttribute)
+                {
+                    _writer
+                        .Write("if (")
+                        .Write(ShouldRenderTagHelperAttributeVariableName)
+                        .WriteLine(")");
+                    ifScope = _writer.BuildScope();
+                }
+
+                RenderStartAddAttributes(
+                    _tagHelperContext.AddHtmlAttributeOnlyMethodName,
+                    attributeName,
+                    encodedValue: true);
+
+                _writer
+                    .Write(StringValueBufferVariableName)
+                    .WriteEndMethodInvocation(endLine: false)
+                    .WriteEndMethodInvocation();
+
+                if (!forceRenderAttribute)
+                {
+                    ifScope.Dispose();
+                }
+
+                RenderStartAddAttributes(
+                    _tagHelperContext.ExecutionContextAddTagHelperAttributeMethodName,
+                    attributeName,
+                    encodedValue: true);
+
+                _writer
+                    .Write(OriginalTagHelperAttributeValueVariableName)
+                    .WriteEndMethodInvocation(endLine: false)
+                    .WriteEndMethodInvocation();
+            }
+            else
+            {
+                // Couldn't resolve a plain text version of the attribute and it didn't contain any dynamic code
+                // attribute chunks. Its values were buffered without any dynamic attribute logic; handle it as a
+                // normal buffered HTML element.
+
+                RenderStartAddAttributes(
+                    _tagHelperContext.ExecutionContextAddHtmlAttributeMethodName,
+                    attributeName,
+                    encodedValue: true);
+
+                _writer
+                    .Write(StringValueBufferVariableName)
+                    .WriteEndMethodInvocation(endLine: false)
+                    .WriteEndMethodInvocation();
+            }
+        }
+
+        private void RenderStartAddAttributes(string methodName, string attributeName, bool encodedValue)
+        {
+            _writer
+                .WriteStartInstanceMethodInvocation(ExecutionContextVariableName, methodName)
+                .WriteStringLiteral(attributeName)
+                .WriteParameterSeparator();
+
+            if (encodedValue)
+            {
+                _writer.WriteStartMethodInvocation(_tagHelperContext.MarkAsHtmlEncodedMethodName);
             }
         }
 
@@ -513,7 +629,19 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 attributeDescriptor,
                 valueRenderer: (writer) =>
                 {
-                    RenderBufferedAttributeValueAccessor(writer);
+                    if (_designTimeMode)
+                    {
+                        // There is no value buffer in design time mode. Write a value to ensure the tag helper's
+                        // property type is string.
+                        writer.Write("string.Empty");
+                    }
+                    else
+                    {
+                        writer.WriteInstanceMethodInvocation(
+                            StringValueBufferVariableName,
+                            "ToString",
+                            endLine: false);
+                    }
                 },
                 complexValue: false);
         }
@@ -546,7 +674,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         }
 
         // Render a buffered writing scope for the HTML attribute value.
-        private void BuildBufferedWritingScope(Chunk htmlAttributeChunk, bool htmlEncodeValues)
+        private void BuildBufferedWritingScope(Action renderValue)
         {
             // We're building a writing scope around the provided chunks which captures everything written from the
             // page. Therefore, we do not want to write to any other buffer since we're using the pages buffer to
@@ -568,8 +696,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                     _writer.WriteMethodInvocation(_tagHelperContext.StartTagHelperWritingScopeMethodName);
                 }
 
-                var visitor = htmlEncodeValues ? _bodyVisitor : _literalBodyVisitor;
-                visitor.Accept(htmlAttributeChunk);
+                renderValue();
 
                 // Scopes are a runtime feature.
                 if (!_designTimeMode)
@@ -600,22 +727,6 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 complexValue);
         }
 
-        private void RenderBufferedAttributeValueAccessor(CSharpCodeWriter writer)
-        {
-            if (_designTimeMode)
-            {
-                // There is no value buffer in design time mode but we still want to write out a value. We write a
-                // value to ensure the tag helper's property type is string.
-                writer.Write("string.Empty");
-            }
-            else
-            {
-                writer.WriteInstanceMethodInvocation(StringValueBufferVariableName,
-                                                     "ToString",
-                                                     endLine: false);
-            }
-        }
-
         private static bool TryGetPlainTextValue(Chunk chunk, out string plainText)
         {
             var parentChunk = chunk as ParentChunk;
@@ -637,6 +748,126 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             plainText = literalChildChunk.Text;
 
             return true;
+        }
+
+        private class UnboundDynamicAttributeValueVisitor : CSharpCodeVisitor
+        {
+            private bool _renderingDynamicValue;
+            private readonly bool _forceRenderAttribute;
+            private readonly string _attributeName;
+            private readonly GeneratedTagHelperContext _tagHelperContext;
+
+            public UnboundDynamicAttributeValueVisitor(
+                string attributeName,
+                bool forceRenderAttribute,
+                CSharpTagHelperCodeRenderer tagHelperRenderer,
+                CSharpCodeWriter writer,
+                CodeGeneratorContext context)
+                : base(writer, context)
+            {
+                Debug.Assert(
+                    !Context.Host.DesignTimeMode,
+                    $"{nameof(UnboundDynamicAttributeValueVisitor)} should not be used during design time.");
+
+                _attributeName = attributeName;
+                _forceRenderAttribute = forceRenderAttribute;
+                _tagHelperContext = context.Host.GeneratedClassContext.GeneratedTagHelperContext;
+
+                // Ensure that no matter how this class is used, we don't create numerous CSharpTagHelperCodeRenderer
+                // instances.
+                TagHelperRenderer = tagHelperRenderer;
+            }
+
+            protected override void Visit(LiteralChunk chunk)
+            {
+                base.Visit(chunk);
+
+                if (!_renderingDynamicValue)
+                {
+                    var currentWriter = Context.TargetWriterName;
+                    Context.TargetWriterName = OriginalTagHelperAttributeValueVariableName;
+
+                    var currentInstrumentation = Context.Host.EnableInstrumentation;
+                    Context.Host.EnableInstrumentation = false;
+
+                    // Need to render the LiteralChunk a second time so it writes to the original attribute value.
+                    base.Visit(chunk);
+
+                    Context.Host.EnableInstrumentation = currentInstrumentation;
+                    Context.TargetWriterName = currentWriter;
+                }
+            }
+
+            protected override void Visit(DynamicCodeAttributeChunk chunk)
+            {
+                Writer.WriteStartAssignment(RawAttributeValueVariableName);
+                _renderingDynamicValue = true;
+                RenderDynamicAttributeValue(chunk);
+                _renderingDynamicValue = false;
+                Writer.WriteEndLine();
+
+                Writer
+                    .Write("if (")
+                    .WriteMethodInvocation(
+                        _tagHelperContext.ShouldRenderAttributeValueMethodName,
+                        endLine: false,
+                        parameters: RawAttributeValueVariableName)
+                    .WriteLine(")");
+                using (Writer.BuildScope())
+                {
+                    // Write out modified attribute value.
+
+                    if (!string.IsNullOrEmpty(chunk.Prefix.Value))
+                    {
+                        RenderPreWriteStart(Writer, Context)
+                            .WriteStringLiteral(chunk.Prefix.Value)
+                            .WriteEndMethodInvocation();
+                    }
+
+                    Writer
+                        .WriteStartMethodInvocation(_tagHelperContext.WriteUnprefixedAttributeValueToMethodName)
+                        .Write(_tagHelperContext.OutputTextWriterPropertyName)
+                        .WriteParameterSeparator()
+                        .WriteStartMethodInvocation(_tagHelperContext.GetStringAttributeValueMethodName)
+                        .WriteStringLiteral(_attributeName)
+                        .WriteParameterSeparator()
+                        .Write(RawAttributeValueVariableName)
+                        .WriteEndMethodInvocation(endLine: false)
+                        .WriteParameterSeparator()
+                        .Write(RawAttributeValueVariableName)
+                        .WriteParameterSeparator()
+                        .WriteBooleanLiteral(value: false)
+                        .WriteEndMethodInvocation();
+
+                    if (!_forceRenderAttribute)
+                    {
+                        // Set the render attribute variable to true
+                        Writer
+                            .WriteStartAssignment(ShouldRenderTagHelperAttributeVariableName)
+                            .WriteBooleanLiteral(value: true)
+                            .WriteEndLine();
+                    }
+                }
+
+                // Always write out unchanged attribute value.
+
+                if (!string.IsNullOrEmpty(chunk.Prefix.Value))
+                {
+                    Writer
+                        .WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteLiteralToMethodName)
+                        .Write(OriginalTagHelperAttributeValueVariableName)
+                        .WriteParameterSeparator()
+                        .WriteStringLiteral(chunk.Prefix.Value)
+                        .WriteEndMethodInvocation();
+                }
+
+                Writer
+                    .WriteStartMethodInvocation(Context.Host.GeneratedClassContext.WriteToMethodName)
+                    .Write(OriginalTagHelperAttributeValueVariableName)
+                    .WriteParameterSeparator()
+                    .Write(RawAttributeValueVariableName)
+                    .WriteEndMethodInvocation();
+            }
         }
 
         // A CSharpCodeVisitor which does not HTML encode values. Used when rendering bound string attribute values.

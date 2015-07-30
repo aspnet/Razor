@@ -50,9 +50,9 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
                     Writer
                         .Write("private ")
                         .WriteVariableDeclaration(
-                        _tagHelperContext.RunnerTypeName,
-                        CSharpTagHelperCodeRenderer.RunnerVariableName,
-                        value: null);
+                            _tagHelperContext.RunnerTypeName,
+                            CSharpTagHelperCodeRenderer.RunnerVariableName,
+                            value: null);
 
                     Writer.Write("private ")
                           .Write(_tagHelperContext.ScopeManagerTypeName)
@@ -60,6 +60,28 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
                           .WriteStartAssignment(CSharpTagHelperCodeRenderer.ScopeManagerVariableName)
                           .WriteStartNewObject(_tagHelperContext.ScopeManagerTypeName)
                           .WriteEndMethodInvocation();
+
+                    Writer
+                        .Write("private ")
+                        .WriteVariableDeclaration(
+                            _tagHelperContext.UnchangedTagHelperAttributeValueBufferTypeName,
+                            CSharpTagHelperCodeRenderer.OriginalTagHelperAttributeValueVariableName,
+                            value: null);
+
+                    Writer
+                        .Write("private ")
+                        .WriteVariableDeclaration(
+                            "object",
+                            CSharpTagHelperCodeRenderer.RawAttributeValueVariableName,
+                            value: null);
+
+                    Writer
+                        .Write("private ")
+                        .WriteVariableDeclaration(
+                            "bool",
+                            CSharpTagHelperCodeRenderer.ShouldRenderTagHelperAttributeVariableName,
+                            value: "false");
+
                 }
             }
 

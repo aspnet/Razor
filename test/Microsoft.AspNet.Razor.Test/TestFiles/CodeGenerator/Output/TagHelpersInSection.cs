@@ -14,6 +14,9 @@ namespace TestOutput
         private TagHelperExecutionContext __tagHelperExecutionContext = null;
         private TagHelperRunner __tagHelperRunner = null;
         private TagHelperScopeManager __tagHelperScopeManager = new TagHelperScopeManager();
+        private StringCollectionTextWriter __originalTagHelperAttributeValue = null;
+        private object __rawTagHelperAttributeValue = null;
+        private bool __shouldRenderTagHelperAttribute = false;
         private MyTagHelper __MyTagHelper = null;
         private NestedTagHelper __NestedTagHelper = null;
         #line hidden
@@ -84,14 +87,20 @@ WriteLiteral(DateTime.Now);
                 __MyTagHelper.BoundProperty = __tagHelperStringValueBuffer.ToString();
                 __tagHelperExecutionContext.AddTagHelperAttribute("boundproperty", __MyTagHelper.BoundProperty);
                 StartTagHelperWritingScope();
-                WriteLiteral("Current Time: ");
-#line 9 "TagHelpersInSection.cshtml"
-Write(DateTime.Now);
-
-#line default
-#line hidden
+                __originalTagHelperAttributeValue = new StringCollectionTextWriter(Output.Encoding);
+                WriteLiteral("Current Time:");
+                WriteLiteralTo(__originalTagHelperAttributeValue, "Current Time:");
+                __rawTagHelperAttributeValue = DateTime.Now;
+                if (ShouldRenderAttributeValue(__rawTagHelperAttributeValue))
+                {
+                    WriteLiteral(" ");
+                    WriteUnprefixedAttributeValueTo(Output, GetStringAttributeValue("unboundproperty", __rawTagHelperAttributeValue), __rawTagHelperAttributeValue, false);
+                }
+                WriteLiteralTo(__originalTagHelperAttributeValue, " ");
+                WriteTo(__originalTagHelperAttributeValue, __rawTagHelperAttributeValue);
                 __tagHelperStringValueBuffer = EndTagHelperWritingScope();
-                __tagHelperExecutionContext.AddHtmlAttribute("unboundproperty", Html.Raw(__tagHelperStringValueBuffer.ToString()));
+                __tagHelperExecutionContext.HtmlAttributes.Add("unboundproperty", Html.Raw(__tagHelperStringValueBuffer));
+                __tagHelperExecutionContext.AddTagHelperAttribute("unboundproperty", Html.Raw(__originalTagHelperAttributeValue));
                 __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
                 Instrumentation.BeginContext(114, 245, false);
                 await WriteTagHelperToAsync(__razor_template_writer, __tagHelperExecutionContext);

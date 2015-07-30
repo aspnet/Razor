@@ -14,6 +14,9 @@ namespace TestOutput
         private TagHelperExecutionContext __tagHelperExecutionContext = null;
         private TagHelperRunner __tagHelperRunner = null;
         private TagHelperScopeManager __tagHelperScopeManager = new TagHelperScopeManager();
+        private StringCollectionTextWriter __originalTagHelperAttributeValue = null;
+        private object __rawTagHelperAttributeValue = null;
+        private bool __shouldRenderTagHelperAttribute = false;
         private PTagHelper __PTagHelper = null;
         private InputTagHelper __InputTagHelper = null;
         private InputTagHelper2 __InputTagHelper2 = null;
@@ -240,14 +243,20 @@ if(true) {
             __PTagHelper = CreateTagHelper<PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
             StartTagHelperWritingScope();
-            WriteLiteral("Current Time: ");
-#line 8 "ComplexTagHelpers.cshtml"
-Write(DateTime.Now);
-
-#line default
-#line hidden
+            __originalTagHelperAttributeValue = new StringCollectionTextWriter(Output.Encoding);
+            WriteLiteral("Current Time:");
+            WriteLiteralTo(__originalTagHelperAttributeValue, "Current Time:");
+            __rawTagHelperAttributeValue = DateTime.Now;
+            if (ShouldRenderAttributeValue(__rawTagHelperAttributeValue))
+            {
+                WriteLiteral(" ");
+                WriteUnprefixedAttributeValueTo(Output, GetStringAttributeValue("time", __rawTagHelperAttributeValue), __rawTagHelperAttributeValue, false);
+            }
+            WriteLiteralTo(__originalTagHelperAttributeValue, " ");
+            WriteTo(__originalTagHelperAttributeValue, __rawTagHelperAttributeValue);
             __tagHelperStringValueBuffer = EndTagHelperWritingScope();
-            __tagHelperExecutionContext.AddHtmlAttribute("time", Html.Raw(__tagHelperStringValueBuffer.ToString()));
+            __tagHelperExecutionContext.HtmlAttributes.Add("time", Html.Raw(__tagHelperStringValueBuffer));
+            __tagHelperExecutionContext.AddTagHelperAttribute("time", Html.Raw(__originalTagHelperAttributeValue));
             __tagHelperExecutionContext.Output = await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             Instrumentation.BeginContext(139, 531, false);
             await WriteTagHelperAsync(__tagHelperExecutionContext);

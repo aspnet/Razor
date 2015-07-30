@@ -324,7 +324,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
 
             // We need to rebuild the chunk generators of the builder and its children (this is needed to
             // ensure we don't do special attribute chunk generation since this is a tag helper).
-            block = RebuildChunkGenerators(builder.Build());
+            block = RebuildChunkGenerators(builder.Build(), result.IsBoundAttribute);
 
             // If there's only 1 child at this point its value could be a simple markup span (treated differently than
             // block level elements for attributes).
@@ -376,14 +376,14 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
             return blockBuilder.Build();
         }
 
-        private static Block RebuildChunkGenerators(Block block)
+        private static Block RebuildChunkGenerators(Block block, bool boundAttribute)
         {
             var builder = new BlockBuilder(block);
 
-            var isDynamic = builder.ChunkGenerator is DynamicAttributeBlockChunkGenerator;
+            var isBoundDynamic = builder.ChunkGenerator is DynamicAttributeBlockChunkGenerator && boundAttribute;
 
             // We don't want any attribute specific logic here, null out the block chunk generator.
-            if (isDynamic || builder.ChunkGenerator is AttributeBlockChunkGenerator)
+            if (isBoundDynamic || builder.ChunkGenerator is AttributeBlockChunkGenerator)
             {
                 builder.ChunkGenerator = ParentChunkGenerator.Null;
             }
@@ -395,7 +395,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                 if (child.IsBlock)
                 {
                     // The child is a block, recurse down into the block to rebuild its children
-                    builder.Children[i] = RebuildChunkGenerators((Block)child);
+                    builder.Children[i] = RebuildChunkGenerators((Block)child, boundAttribute);
                 }
                 else
                 {
@@ -414,7 +414,7 @@ namespace Microsoft.AspNet.Razor.Parser.TagHelpers.Internal
                             newChunkGenerator = literalGenerator.ValueGenerator.Value;
                         }
                     }
-                    else if (isDynamic && childSpan.ChunkGenerator == SpanChunkGenerator.Null)
+                    else if (isBoundDynamic && childSpan.ChunkGenerator == SpanChunkGenerator.Null)
                     {
                         // Usually the dynamic chunk generator handles creating the null chunk generators underneath
                         // it. This doesn't make sense in terms of tag helpers though, we need to change null code
