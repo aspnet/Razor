@@ -1,0 +1,46 @@
+// Copyright (c) .NET Foundation. All rights reserved.
+// Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using Microsoft.AspNet.Razor.Parser;
+using Microsoft.AspNet.Razor.Tests.Framework;
+using Xunit;
+
+namespace Microsoft.AspNet.Razor.Tests.Parser
+{
+    public class WhitespaceRewriterTest
+    {
+        [Fact]
+        public void Rewrite_Moves_Whitespace_Preceeding_ExpressionBlock_To_Parent_Block()
+        {
+            // Arrange
+            var factory = SpanFactory.CreateCsHtml();
+            var start = new MarkupBlock(
+                factory.Markup("test"),
+                new ExpressionBlock(
+                    factory.Code("    ").AsExpression(),
+                    factory.CodeTransition(SyntaxConstants.TransitionString),
+                    factory.Code("foo").AsExpression()
+                    ),
+                factory.Markup("test")
+                );
+            var rewriter = new WhiteSpaceRewriter(new HtmlMarkupParser().BuildSpan);
+            var rewritingContext = new RewritingContext(start, new ErrorSink());
+
+            // Act
+            rewriter.Rewrite(rewritingContext);
+
+            factory.Reset();
+
+            // Assert
+            ParserTestBase.EvaluateParseTree(rewritingContext.SyntaxTree, new MarkupBlock(
+                                                         factory.Markup("test"),
+                                                         factory.Markup("    "),
+                                                         new ExpressionBlock(
+                                                             factory.CodeTransition(SyntaxConstants.TransitionString),
+                                                             factory.Code("foo").AsExpression()
+                                                             ),
+                                                         factory.Markup("test")
+                                                         ));
+        }
+    }
+}

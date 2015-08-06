@@ -9,11 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{92463391-8
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNet.Razor", "src\Microsoft.AspNet.Razor\Microsoft.AspNet.Razor.xproj", "{EDA30434-C567-44DC-B8B6-2566A7F77163}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNet.Razor.Test", "test\Microsoft.AspNet.Razor.Test\Microsoft.AspNet.Razor.Test.xproj", "{87C7338B-0C06-4C7B-BE75-A2368AE26797}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNet.Razor.Tests", "test\Microsoft.AspNet.Razor.Tests\Microsoft.AspNet.Razor.Tests.xproj", "{87C7338B-0C06-4C7B-BE75-A2368AE26797}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNet.Razor.Runtime", "src\Microsoft.AspNet.Razor.Runtime\Microsoft.AspNet.Razor.Runtime.xproj", "{D0196096-1B01-4133-AACE-1A10A0F7247C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNet.Razor.Runtime.Test", "test\Microsoft.AspNet.Razor.Runtime.Test\Microsoft.AspNet.Razor.Runtime.Test.xproj", "{0535998A-E32C-4D1A-80D1-0B15A513C471}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNet.Razor.Runtime.Tests", "test\Microsoft.AspNet.Razor.Runtime.Tests\Microsoft.AspNet.Razor.Runtime.Tests.xproj", "{0535998A-E32C-4D1A-80D1-0B15A513C471}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Microsoft.AspNet.Razor.Test.Sources", "src\Microsoft.AspNet.Razor.Test.Sources\Microsoft.AspNet.Razor.Test.Sources.xproj", "{E3A2A305-634D-4BA6-95DB-AA06D6C442B0}"
 EndProject
