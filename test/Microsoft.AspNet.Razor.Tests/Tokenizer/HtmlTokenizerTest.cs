@@ -4,7 +4,7 @@
 using Microsoft.AspNet.Razor.Tokenizer.Symbols;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Tokenizer
+namespace Microsoft.AspNet.Razor.Tests.Tokenizer
 {
     public class HtmlTokenizerTest : HtmlTokenizerTestBase
     {

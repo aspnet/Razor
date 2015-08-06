@@ -5,7 +5,7 @@
 using Microsoft.AspNet.Razor.Utils;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Utils
+namespace Microsoft.AspNet.Razor.Tests.Utils
 {
     public class DisposableActionTest
     {

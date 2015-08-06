@@ -10,7 +10,7 @@ using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Generator
+namespace Microsoft.AspNet.Razor.Tests.Generator
 {
     public class CSharpPaddingBuilderTests
     {

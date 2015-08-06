@@ -6,7 +6,7 @@ using Microsoft.AspNet.Razor.CodeGenerators;
 using Microsoft.AspNet.Razor.Parser;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test
+namespace Microsoft.AspNet.Razor.Tests
 {
     public class RazorEngineHostTest
     {

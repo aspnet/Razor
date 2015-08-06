@@ -9,7 +9,7 @@ using Microsoft.AspNet.Razor.CodeGenerators.Visitors;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.TagHelpers;
 
-namespace Microsoft.AspNet.Razor.Test.Generator
+namespace Microsoft.AspNet.Razor.Tests.Generator
 {
     public class TagHelperTestBase : RazorCodeGeneratorTest
     {

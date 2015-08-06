@@ -10,7 +10,7 @@ using Microsoft.AspNet.Razor.Tokenizer;
 using Microsoft.AspNet.Razor.Tokenizer.Symbols;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Tokenizer
+namespace Microsoft.AspNet.Razor.Tests.Tokenizer
 {
     public abstract class TokenizerTestBase<TSymbol, TSymbolType>
         where TSymbolType : struct

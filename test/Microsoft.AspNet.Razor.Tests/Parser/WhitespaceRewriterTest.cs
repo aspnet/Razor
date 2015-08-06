@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.AspNet.Razor.Parser;
-using Microsoft.AspNet.Razor.Test.Framework;
+using Microsoft.AspNet.Razor.Tests.Framework;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Parser
+namespace Microsoft.AspNet.Razor.Tests.Parser
 {
     public class WhitespaceRewriterTest
     {

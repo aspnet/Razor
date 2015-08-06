@@ -6,11 +6,11 @@ using System.Linq;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.TagHelpers.Internal;
 using Microsoft.AspNet.Razor.TagHelpers;
-using Microsoft.AspNet.Razor.Test.Framework;
+using Microsoft.AspNet.Razor.Tests.Framework;
 using Microsoft.AspNet.Razor.Text;
 using Microsoft.AspNet.Razor.Tokenizer;
 
-namespace Microsoft.AspNet.Razor.Test.TagHelpers
+namespace Microsoft.AspNet.Razor.Tests.TagHelpers
 {
     public class TagHelperRewritingTestBase : CsHtmlMarkupParserTestBase
     {

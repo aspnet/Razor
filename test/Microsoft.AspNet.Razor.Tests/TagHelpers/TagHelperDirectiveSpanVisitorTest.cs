@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 using Microsoft.AspNet.Razor.Parser.TagHelpers;
-using Microsoft.AspNet.Razor.Test.Framework;
+using Microsoft.AspNet.Razor.Tests.Framework;
 using Microsoft.Framework.Internal;
 #if !DNXCORE50
 using Moq;

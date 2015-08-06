@@ -13,7 +13,7 @@ using Microsoft.AspNet.Razor.Parser.TagHelpers;
 using Microsoft.AspNet.Razor.Text;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Framework
+namespace Microsoft.AspNet.Razor.Tests.Framework
 {
     public abstract class ParserTestBase
     {

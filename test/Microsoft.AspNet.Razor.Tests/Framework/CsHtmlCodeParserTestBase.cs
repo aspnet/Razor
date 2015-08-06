@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNet.Razor.Parser;
 
-namespace Microsoft.AspNet.Razor.Test.Framework
+namespace Microsoft.AspNet.Razor.Tests.Framework
 {
     public abstract class CsHtmlCodeParserTestBase : CodeParserTestBase
     {

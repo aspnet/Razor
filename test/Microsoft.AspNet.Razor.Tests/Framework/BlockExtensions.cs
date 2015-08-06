@@ -3,7 +3,7 @@
 
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 
-namespace Microsoft.AspNet.Razor.Test.Framework
+namespace Microsoft.AspNet.Razor.Tests.Framework
 {
     public static class BlockExtensions
     {

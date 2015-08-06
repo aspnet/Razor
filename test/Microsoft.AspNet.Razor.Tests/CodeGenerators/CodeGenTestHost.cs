@@ -3,7 +3,7 @@
 
 using Microsoft.AspNet.Razor.CodeGenerators;
 
-namespace Microsoft.AspNet.Razor.Test.Generator
+namespace Microsoft.AspNet.Razor.Tests.Generator
 {
     public class CodeGenTestHost : RazorEngineHost
     {

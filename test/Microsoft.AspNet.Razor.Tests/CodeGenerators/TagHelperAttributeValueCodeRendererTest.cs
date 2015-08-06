@@ -10,7 +10,7 @@ using Microsoft.AspNet.Razor.CodeGenerators.Visitors;
 using Microsoft.AspNet.Razor.TagHelpers;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Generator
+namespace Microsoft.AspNet.Razor.Tests.Generator
 {
     public class TagHelperAttributeValueCodeRendererTest : TagHelperTestBase
     {

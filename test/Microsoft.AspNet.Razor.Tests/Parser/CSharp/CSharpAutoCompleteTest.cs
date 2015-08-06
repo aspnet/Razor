@@ -5,11 +5,11 @@ using System;
 using Microsoft.AspNet.Razor.Chunks.Generators;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.Test.Framework;
+using Microsoft.AspNet.Razor.Tests.Framework;
 using Microsoft.AspNet.Razor.Tokenizer.Symbols;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Parser.CSharp
+namespace Microsoft.AspNet.Razor.Tests.Parser.CSharp
 {
     public class CSharpAutoCompleteTest : CsHtmlCodeParserTestBase
     {

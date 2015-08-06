@@ -5,7 +5,7 @@ using Microsoft.AspNet.Razor.Text;
 using Microsoft.AspNet.Razor.Tokenizer;
 using Microsoft.AspNet.Razor.Tokenizer.Symbols;
 
-namespace Microsoft.AspNet.Razor.Test.Tokenizer
+namespace Microsoft.AspNet.Razor.Tests.Tokenizer
 {
     public abstract class CSharpTokenizerTestBase : TokenizerTestBase<CSharpSymbol, CSharpSymbolType>
     {

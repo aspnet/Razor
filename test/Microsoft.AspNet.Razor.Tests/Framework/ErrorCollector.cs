@@ -5,7 +5,7 @@ using System;
 using System.Text;
 using Microsoft.AspNet.Razor.Utils;
 
-namespace Microsoft.AspNet.Razor.Test.Framework
+namespace Microsoft.AspNet.Razor.Tests.Framework
 {
     public class ErrorCollector
     {

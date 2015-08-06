@@ -3,10 +3,10 @@
 
 using System.Collections.Generic;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.Test.Framework;
+using Microsoft.AspNet.Razor.Tests.Framework;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Parser.Html
+namespace Microsoft.AspNet.Razor.Tests.Parser.Html
 {
     public class HtmlTagsTest : CsHtmlMarkupParserTestBase
     {

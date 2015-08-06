@@ -4,9 +4,9 @@
 using System;
 using Microsoft.AspNet.Razor.Parser;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.Test.Framework;
+using Microsoft.AspNet.Razor.Tests.Framework;
 
-namespace Microsoft.AspNet.Razor.Test.Parser.Html
+namespace Microsoft.AspNet.Razor.Tests.Parser.Html
 {
     internal class HtmlParserTestUtils
     {

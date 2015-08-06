@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Microsoft.AspNet.Razor.TagHelpers;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.TagHelpers
+namespace Microsoft.AspNet.Razor.Tests.TagHelpers
 {
     public class TagHelperAttributeDescriptorTest
     {

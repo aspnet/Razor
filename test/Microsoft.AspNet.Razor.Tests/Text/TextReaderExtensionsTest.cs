@@ -6,7 +6,7 @@ using System.IO;
 using Microsoft.AspNet.Razor.Parser;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Text
+namespace Microsoft.AspNet.Razor.Tests.Text
 {
     public class TextReaderExtensionsTest
     {

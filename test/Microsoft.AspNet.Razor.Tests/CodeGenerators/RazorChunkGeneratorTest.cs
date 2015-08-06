@@ -7,11 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNet.Razor.CodeGenerators;
-using Microsoft.AspNet.Razor.Test.Utils;
+using Microsoft.AspNet.Razor.Tests.Utils;
 using Microsoft.AspNet.Testing;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Generator
+namespace Microsoft.AspNet.Razor.Tests.Generator
 {
     public abstract class RazorCodeGeneratorTest<TLanguage>
         where TLanguage : RazorCodeLanguage, new()

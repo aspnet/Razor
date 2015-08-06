@@ -10,7 +10,7 @@ using Microsoft.AspNet.Razor.TagHelpers;
 using Moq;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Parser
+namespace Microsoft.AspNet.Razor.Tests.Parser
 {
     public class ParserVisitorExtensionsTest
     {

@@ -4,7 +4,7 @@
 using Microsoft.AspNet.Razor.CodeGenerators;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Generator
+namespace Microsoft.AspNet.Razor.Tests.Generator
 {
     public class LineMappingTest
     {

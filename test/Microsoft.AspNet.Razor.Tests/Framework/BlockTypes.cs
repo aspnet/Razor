@@ -6,7 +6,7 @@ using Microsoft.AspNet.Razor.Chunks.Generators;
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
 using Microsoft.AspNet.Razor.Parser.TagHelpers;
 
-namespace Microsoft.AspNet.Razor.Test.Framework
+namespace Microsoft.AspNet.Razor.Tests.Framework
 {
     // The product code doesn't need this, but having subclasses for the block types makes tests much cleaner :)
 

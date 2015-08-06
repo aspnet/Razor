@@ -6,9 +6,9 @@
 using System;
 #endif
 using Microsoft.AspNet.Razor.Parser.SyntaxTree;
-using Microsoft.AspNet.Razor.Test;
-using Microsoft.AspNet.Razor.Test.Generator;
-using Microsoft.AspNet.Razor.Test.Utils;
+using Microsoft.AspNet.Razor.Tests;
+using Microsoft.AspNet.Razor.Tests.Generator;
+using Microsoft.AspNet.Razor.Tests.Utils;
 using Moq;
 using Xunit;
 

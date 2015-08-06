@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.AspNet.Razor.Text;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Text
+namespace Microsoft.AspNet.Razor.Tests.Text
 {
     public abstract class LookaheadTextReaderTestBase
     {

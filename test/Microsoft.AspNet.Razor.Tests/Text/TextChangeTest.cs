@@ -9,7 +9,7 @@ using Moq;
 #endif
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Text
+namespace Microsoft.AspNet.Razor.Tests.Text
 {
     public class TextChangeTest
     {

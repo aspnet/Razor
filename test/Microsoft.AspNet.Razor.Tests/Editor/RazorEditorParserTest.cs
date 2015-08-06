@@ -6,14 +6,14 @@ using System.Threading;
 using System.Web.WebPages.TestUtils;
 using Microsoft.AspNet.Razor.Editor;
 using Microsoft.AspNet.Razor.Parser;
-using Microsoft.AspNet.Razor.Test.Framework;
-using Microsoft.AspNet.Razor.Test.Generator;
-using Microsoft.AspNet.Razor.Test.Utils;
+using Microsoft.AspNet.Razor.Tests.Framework;
+using Microsoft.AspNet.Razor.Tests.Generator;
+using Microsoft.AspNet.Razor.Tests.Utils;
 using Microsoft.AspNet.Razor.Text;
 using Microsoft.AspNet.Testing;
 using Xunit;
 
-namespace Microsoft.AspNet.Razor.Test.Editor
+namespace Microsoft.AspNet.Razor.Tests.Editor
 {
     public class RazorEditorParserTest
     {
