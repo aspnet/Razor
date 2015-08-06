@@ -1182,13 +1182,13 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             // Act
             var descriptors = tagHelperDescriptorResolver.Resolve(
-                "Microsoft.AspNet.Razor.Runtime.Test.TagHelpers.Invalid_AbstractTagHelper, " + AssemblyName,
-                "Microsoft.AspNet.Razor.Runtime.Test.TagHelpers.Invalid_GenericTagHelper`, " + AssemblyName,
-                "Microsoft.AspNet.Razor.Runtime.Test.TagHelpers.Invalid_NestedPublicTagHelper, " + AssemblyName,
-                "Microsoft.AspNet.Razor.Runtime.Test.TagHelpers.Invalid_NestedInternalTagHelper, " + AssemblyName,
-                "Microsoft.AspNet.Razor.Runtime.Test.TagHelpers.Invalid_PrivateTagHelper, " + AssemblyName,
-                "Microsoft.AspNet.Razor.Runtime.Test.TagHelpers.Invalid_ProtectedTagHelper, " + AssemblyName,
-                "Microsoft.AspNet.Razor.Runtime.Test.TagHelpers.Invalid_InternalTagHelper, " + AssemblyName);
+                "Microsoft.AspNet.Razor.Runtime.Tests.TagHelpers.Invalid_AbstractTagHelper, " + AssemblyName,
+                "Microsoft.AspNet.Razor.Runtime.Tests.TagHelpers.Invalid_GenericTagHelper`, " + AssemblyName,
+                "Microsoft.AspNet.Razor.Runtime.Tests.TagHelpers.Invalid_NestedPublicTagHelper, " + AssemblyName,
+                "Microsoft.AspNet.Razor.Runtime.Tests.TagHelpers.Invalid_NestedInternalTagHelper, " + AssemblyName,
+                "Microsoft.AspNet.Razor.Runtime.Tests.TagHelpers.Invalid_PrivateTagHelper, " + AssemblyName,
+                "Microsoft.AspNet.Razor.Runtime.Tests.TagHelpers.Invalid_ProtectedTagHelper, " + AssemblyName,
+                "Microsoft.AspNet.Razor.Runtime.Tests.TagHelpers.Invalid_InternalTagHelper, " + AssemblyName);
 
             // Assert
             Assert.Empty(descriptors);

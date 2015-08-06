@@ -5,4 +5,4 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyMetadata("Serviceable", "True")]
-[assembly: InternalsVisibleTo("Microsoft.AspNet.Razor.Runtime.Test")]
+[assembly: InternalsVisibleTo("Microsoft.AspNet.Razor.Runtime.Tests")]
