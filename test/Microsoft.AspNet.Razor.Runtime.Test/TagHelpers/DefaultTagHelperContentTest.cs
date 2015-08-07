@@ -544,17 +544,14 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
-            var expected = new[] { "First ", "Second Third" };
+            var expected = "First Second Third";
             var i = 0;
 
             // Act
             tagHelperContent.SetContent("First ").AppendFormat("{0} Third", "Second");
 
             // Assert
-            foreach (var value in tagHelperContent.Buffer)
-            {
-                Assert.Equal(expected[i++], value);
-            }
+            Assert.Equal(expected, tagHelperContent.GetContent());
         }
 
         [Fact]
@@ -562,7 +559,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
-            var expected = new[] { "First ", "Second Third ", "Fourth" };
+            var expected = "First Second Third Fourth";
             var i = 0;
 
             // Act
@@ -572,10 +569,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 .Append("Fourth");
 
             // Assert
-            foreach (var value in tagHelperContent.Buffer)
-            {
-                Assert.Equal(expected[i++], value);
-            }
+            Assert.Equal(expected, tagHelperContent.GetContent());
         }
 
         [Fact]

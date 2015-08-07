@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 using Microsoft.AspNet.Html.Abstractions;
 using Microsoft.Framework.Internal;
 using Microsoft.Framework.WebEncoders;
@@ -31,15 +32,10 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         /// <inheritdoc />
-        public override bool IsModified
-        {
-            get
-            {
-                return (_buffer != null);
-            }
-        }
+        public override bool IsModified => _buffer != null;
 
         /// <inheritdoc />
+        /// <remarks>Returns <c>true</c> for a cleared <see cref="TagHelperContent"/>.</remarks>
         public override bool IsWhiteSpace
         {
             get
@@ -49,7 +45,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     return true;
                 }
 
-                return CheckIfBufferedHtmlContentIsWhiteSpace(Buffer);
+                using (var writer = new EmptyOrWhitespaceWriter())
+                {
+                    WriteTo(writer, HtmlEncoder.Default);
+                    return writer.IsWhitespace;
+                }
             }
         }
 
@@ -63,7 +63,11 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     return true;
                 }
 
-                return CheckIfBufferedHtmlContentIsEmpty(Buffer);
+                using (var writer = new EmptyOrWhitespaceWriter())
+                {
+                    WriteTo(writer, HtmlEncoder.Default);
+                    return writer.IsEmpty;
+                }
             }
         }
 
@@ -167,15 +171,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 return string.Empty;
             }
 
-            return string.Join(string.Empty, Buffer);
-        }
-
-        /// <inheritdoc />
-        public override string ToString()
-        {
             using (var writer = new StringWriter())
             {
-                WriteTo(writer, new HtmlEncoder());
+                WriteTo(writer, HtmlEncoder.Default);
                 return writer.ToString();
             }
         }
@@ -186,74 +184,47 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Buffer.WriteTo(writer, encoder);
         }
 
-        private bool CheckIfBufferedHtmlContentIsEmpty(BufferedHtmlContent buffer)
+        /// <inheritdoc />
+        public override string ToString()
         {
-            foreach (var value in buffer)
-            {
-                var valueAsString = value as string;
-                if (valueAsString != null)
-                {
-                    if (!string.IsNullOrEmpty(valueAsString))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    var valueAsBufferedHtmlContent = value as BufferedHtmlContent;
-                    if (valueAsBufferedHtmlContent != null)
-                    {
-                        if (!CheckIfBufferedHtmlContentIsEmpty(valueAsBufferedHtmlContent))
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrEmpty(value.ToString()))
-                        {
-                            return false;
-                        }
-                    }
-                }
-            }
-
-            return true;
+            return GetContent();
         }
 
-        private bool CheckIfBufferedHtmlContentIsWhiteSpace(BufferedHtmlContent buffer)
+        // Overrides Write(string) to find if the content written is empty/whitespace.
+        private class EmptyOrWhitespaceWriter : TextWriter
         {
-            foreach (var value in buffer)
+            public override Encoding Encoding
             {
-                var valueAsString = value as string;
-                if (valueAsString != null)
+                get
                 {
-                    if (!string.IsNullOrWhiteSpace(valueAsString))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    var valueAsBufferedHtmlContent = value as BufferedHtmlContent;
-                    if (valueAsBufferedHtmlContent != null)
-                    {
-                        if (!CheckIfBufferedHtmlContentIsWhiteSpace(valueAsBufferedHtmlContent))
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (!string.IsNullOrWhiteSpace(value.ToString()))
-                        {
-                            return false;
-                        }
-                    }
+                    throw new NotImplementedException();
                 }
             }
 
-            return true;
+            public bool IsEmpty { get; private set; } = true;
+
+            public bool IsWhitespace { get; private set; } = true;
+
+#if DNXCORE50
+            // This is an abstract method in DNXCore
+            public override void Write(char value)
+            {
+                throw new NotImplementedException();
+            }
+#endif
+
+            public override void Write(string value)
+            {
+                if (IsEmpty && !string.IsNullOrEmpty(value))
+                {
+                    IsEmpty = false;
+                }
+
+                if (IsWhitespace && !string.IsNullOrWhiteSpace(value))
+                {
+                    IsWhitespace = false;
+                }
+            }
         }
     }
 }
