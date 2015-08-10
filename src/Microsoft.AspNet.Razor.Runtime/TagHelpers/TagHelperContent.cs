@@ -33,7 +33,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// </summary>
         /// <param name="value">The <see cref="string"/> that replaces the content.</param>
         /// <returns>A reference to this instance after the set operation has completed.</returns>
-        public virtual TagHelperContent SetContent(string value)
+        public TagHelperContent SetContent(string value)
         {
             Clear();
             Append(value);
@@ -45,7 +45,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// </summary>
         /// <param name="htmlContent">The <see cref="IHtmlContent"/> that replaces the content.</param>
         /// <returns>A reference to this instance after the set operation has completed.</returns>
-        public virtual TagHelperContent SetContent(IHtmlContent htmlContent)
+        public TagHelperContent SetContent(IHtmlContent htmlContent)
         {
             Clear();
             Append(htmlContent);

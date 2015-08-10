@@ -17,8 +17,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     {
         private BufferedHtmlContent _buffer;
 
-        // internal for testing
-        internal BufferedHtmlContent Buffer
+        private BufferedHtmlContent Buffer
         {
             get
             {
@@ -45,11 +44,35 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     return true;
                 }
 
-                using (var writer = new EmptyOrWhitespaceWriter())
+                using (var writer = new EmptyOrWhiteSpaceWriter())
                 {
-                    WriteTo(writer, HtmlEncoder.Default);
-                    return writer.IsWhitespace;
+                    foreach (var entry in _buffer.Entries)
+                    {
+                        if (entry == null)
+                        {
+                            continue;
+                        }
+
+                        var stringValue = entry as string;
+                        if (stringValue != null)
+                        {
+                            if (!string.IsNullOrWhiteSpace(stringValue))
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            ((IHtmlContent)entry).WriteTo(writer, HtmlEncoder.Default);
+                            if (!writer.IsWhiteSpace)
+                            {
+                                return false;
+                            }
+                        }
+                    }
                 }
+
+                return true;
             }
         }
 
@@ -63,11 +86,35 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     return true;
                 }
 
-                using (var writer = new EmptyOrWhitespaceWriter())
+                using (var writer = new EmptyOrWhiteSpaceWriter())
                 {
-                    WriteTo(writer, HtmlEncoder.Default);
-                    return writer.IsEmpty;
+                    foreach (var entry in _buffer.Entries)
+                    {
+                        if (entry == null)
+                        {
+                            continue;
+                        }
+
+                        var stringValue = entry as string;
+                        if (stringValue != null)
+                        {
+                            if (!string.IsNullOrEmpty(stringValue))
+                            {
+                                return false;
+                            }
+                        }
+                        else
+                        {
+                            ((IHtmlContent)entry).WriteTo(writer, HtmlEncoder.Default);
+                            if (!writer.IsEmpty)
+                            {
+                                return false;
+                            }
+                        }
+                    }
                 }
+
+                return true;
             }
         }
 
@@ -191,7 +238,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         }
 
         // Overrides Write(string) to find if the content written is empty/whitespace.
-        private class EmptyOrWhitespaceWriter : TextWriter
+        private class EmptyOrWhiteSpaceWriter : TextWriter
         {
             public override Encoding Encoding
             {
@@ -203,7 +250,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
             public bool IsEmpty { get; private set; } = true;
 
-            public bool IsWhitespace { get; private set; } = true;
+            public bool IsWhiteSpace { get; private set; } = true;
 
 #if DNXCORE50
             // This is an abstract method in DNXCore
@@ -220,9 +267,9 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                     IsEmpty = false;
                 }
 
-                if (IsWhitespace && !string.IsNullOrWhiteSpace(value))
+                if (IsWhiteSpace && !string.IsNullOrWhiteSpace(value))
                 {
-                    IsWhitespace = false;
+                    IsWhiteSpace = false;
                 }
             }
         }
