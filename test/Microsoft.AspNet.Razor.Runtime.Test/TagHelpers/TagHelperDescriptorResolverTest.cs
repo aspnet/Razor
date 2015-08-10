@@ -1511,7 +1511,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 return types?.Select(type => type.GetTypeInfo()) ?? Enumerable.Empty<TypeInfo>();
             }
 
-            internal override bool IsTagHelper(TypeInfo typeInfo)
+            internal override bool IsTagHelper(ITypeInfo typeInfo)
             {
                 return true;
             }
