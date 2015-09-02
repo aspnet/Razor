@@ -1,13 +1,13 @@
 {
-  "version": "4.0.0-*",
-  "shared": "*.cs",
-  "dependencies": { },
-  "frameworks": {
-    "net45": { },
-    "dotnet": {
-      "dependencies": {
-        "System.Runtime": "4.0.21-beta-*"
-      }
+    "version": "4.0.0-beta7",
+    "shared": "*.cs",
+    "dependencies": {},
+    "frameworks": {
+        "net45": {},
+        "dotnet": {
+            "dependencies": {
+                "System.Runtime": "4.0.21-beta-23225"
+            }
+        }
     }
-  }
 }
