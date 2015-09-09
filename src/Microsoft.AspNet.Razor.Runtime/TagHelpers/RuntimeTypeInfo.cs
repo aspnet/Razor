@@ -17,7 +17,8 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
     {
         private static readonly Regex _fullNameSanitizer = new Regex(
             @", [A-Za-z\.]+, Version=\d+\.\d+\.\d+\.\d+, Culture=neutral, PublicKeyToken=\w+",
-            RegexOptions.ExplicitCapture);
+            RegexOptions.ExplicitCapture,
+            matchTimeout: TimeSpan.FromSeconds(10));
         
         private static readonly TypeInfo TagHelperTypeInfo = typeof(ITagHelper).GetTypeInfo();
         private IEnumerable<IPropertyInfo> _properties;
