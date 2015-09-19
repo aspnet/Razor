@@ -23,6 +23,9 @@
     },
     "frameworks": {
         "dnx451": {
+            "frameworkAssemblies": {
+                "System.Text.Encoding": "4.0.0.0"
+            },
             "dependencies": {
                 "Moq": "4.2.1312.1622"
             }
