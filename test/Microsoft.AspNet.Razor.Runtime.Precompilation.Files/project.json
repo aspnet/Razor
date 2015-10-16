@@ -1,7 +1,7 @@
-﻿{
+{
     "version": "1.0.0-*",
     "dependencies": {
-        "Microsoft.AspNet.Razor.Runtime.Precompilation": "4.0.0-*"
+        "Microsoft.AspNet.Razor.Runtime.Precompilation": "4.0.0-beta8"
     },
     "frameworks": {
         "dnx451": {
@@ -11,7 +11,7 @@
         },
         "dnxcore50": {
             "dependencies": {
-                "System.ComponentModel.Annotations": "4.0.11-*"
+                "System.ComponentModel.Annotations": "4.0.11-beta-23409"
             }
         }
     }
