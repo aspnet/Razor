@@ -473,11 +473,11 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         }
 
         [Fact]
-        public void AppendEncoded_DoesNotGetEncoded()
+        public void AppendHtml_DoesNotGetEncoded()
         {
             // Arrange
             var tagHelperContent = new DefaultTagHelperContent();
-            tagHelperContent.AppendEncoded("Hi");
+            tagHelperContent.AppendHtml("Hi");
 
             var writer = new StringWriter();
 

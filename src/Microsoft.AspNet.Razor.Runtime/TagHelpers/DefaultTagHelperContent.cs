@@ -128,9 +128,9 @@ namespace Microsoft.AspNet.Razor.TagHelpers
             return this;
         }
 
-        public override TagHelperContent AppendEncoded(string value)
+        public override TagHelperContent AppendHtml(string value)
         {
-            Buffer.AppendEncoded(value);
+            Buffer.AppendHtml(value);
             return this;
         }
 

@@ -87,7 +87,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// </summary>
         /// <param name="value">The <see cref="string"/> to be appended.</param>
         /// <returns>A reference to this instance after the append operation has completed.</returns>
-        public abstract TagHelperContent AppendEncoded(string value);
+        public abstract TagHelperContent AppendHtml(string value);
 
         /// <summary>
         /// Appends the specified <paramref name="format"/> to the existing content after
@@ -157,9 +157,9 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         }
 
         /// <inheritdoc />
-        IHtmlContentBuilder IHtmlContentBuilder.AppendEncoded(string encoded)
+        IHtmlContentBuilder IHtmlContentBuilder.AppendHtml(string encoded)
         {
-            return AppendEncoded(encoded);
+            return AppendHtml(encoded);
         }
 
         /// <inheritdoc />
