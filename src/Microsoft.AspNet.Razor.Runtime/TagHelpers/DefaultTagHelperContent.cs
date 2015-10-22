@@ -122,15 +122,16 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         }
 
         /// <inheritdoc />
-        public override TagHelperContent Append(string value)
+        public override TagHelperContent Append(string unencoded)
         {
-            Buffer.Append(value);
+            Buffer.Append(unencoded);
             return this;
         }
 
-        public override TagHelperContent AppendHtml(string value)
+        /// <inheritdoc />
+        public override TagHelperContent AppendHtml(string encoded)
         {
-            Buffer.AppendHtml(value);
+            Buffer.AppendHtml(encoded);
             return this;
         }
 
