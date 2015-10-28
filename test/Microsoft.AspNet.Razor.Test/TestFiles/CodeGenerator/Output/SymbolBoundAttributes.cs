@@ -1,8 +1,6 @@
 #pragma checksum "SymbolBoundAttributes.cshtml" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "65ef0c8f673481f5ab85bd4936f91f31e84c490c"
 namespace TestOutput
 {
-    using Microsoft.AspNet.Razor.TagHelpers;
-    using Microsoft.AspNet.Razor.Runtime.TagHelpers;
     using System;
     using System.Threading.Tasks;
 
@@ -10,11 +8,11 @@ namespace TestOutput
     {
         #line hidden
         #pragma warning disable 0414
-        private TagHelperContent __tagHelperStringValueBuffer = null;
+        private Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
         #pragma warning restore 0414
-        private TagHelperExecutionContext __tagHelperExecutionContext = null;
-        private TagHelperRunner __tagHelperRunner = null;
-        private TagHelperScopeManager __tagHelperScopeManager = new TagHelperScopeManager();
+        private Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
+        private Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
+        private Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
         private CatchAllTagHelper __CatchAllTagHelper = null;
         #line hidden
         public SymbolBoundAttributes()
@@ -24,14 +22,14 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __tagHelperRunner = __tagHelperRunner ?? new TagHelperRunner();
+            __tagHelperRunner = __tagHelperRunner ?? new Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
             Instrumentation.BeginContext(25, 253, true);
             WriteLiteral("\r\n<ul [item]=\"items\"></ul>\r\n<ul [(item)]=\"items\"></ul>\r\n<button (click)=\"doSometh" +
 "ing()\">Click Me</button>\r\n<button (^click)=\"doSomething()\">Click Me</button>\r\n<t" +
 "emplate *something=\"value\">\r\n</template>\r\n<div #local></div>\r\n<div #local=\"value" +
 "\"></div>\r\n\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("ul", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("ul", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
@@ -52,7 +50,7 @@ __CatchAllTagHelper.ListItems = items;
             Instrumentation.BeginContext(323, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("ul", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("ul", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
@@ -73,7 +71,7 @@ __CatchAllTagHelper.ArrayItems = items;
             Instrumentation.BeginContext(374, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("button", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("button", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 Instrumentation.BeginContext(438, 8, true);
                 WriteLiteral("Click Me");
                 Instrumentation.EndContext();
@@ -97,7 +95,7 @@ __CatchAllTagHelper.Event1 = doSomething();
             Instrumentation.BeginContext(455, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("button", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("button", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 Instrumentation.BeginContext(521, 8, true);
                 WriteLiteral("Click Me");
                 Instrumentation.EndContext();
@@ -121,7 +119,7 @@ __CatchAllTagHelper.Event2 = doSomething();
             Instrumentation.BeginContext(538, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("template", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("template", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 Instrumentation.BeginContext(594, 2, true);
                 WriteLiteral("\r\n");
                 Instrumentation.EndContext();
@@ -141,7 +139,7 @@ __CatchAllTagHelper.Event2 = doSomething();
             Instrumentation.BeginContext(607, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
@@ -156,7 +154,7 @@ __CatchAllTagHelper.Event2 = doSomething();
             Instrumentation.BeginContext(642, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();

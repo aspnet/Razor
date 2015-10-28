@@ -125,7 +125,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             // per call site, e.g. if the tag is on the view twice, there should be two IDs.
             _writer.WriteStringLiteral(tagName)
                    .WriteParameterSeparator()
-                   .Write(nameof(TagMode))
+                   .Write(typeof(TagMode).FullName)
                    .Write(".")
                    .Write(tagMode.ToString())
                    .WriteParameterSeparator()

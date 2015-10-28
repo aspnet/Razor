@@ -1,8 +1,6 @@
 #pragma checksum "TransitionsInTagHelperAttributes.cshtml" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "050ce5cabf326eaa117aa12f5a1a10dbf82a8917"
 namespace TestOutput
 {
-    using Microsoft.AspNet.Razor.TagHelpers;
-    using Microsoft.AspNet.Razor.Runtime.TagHelpers;
     using System;
     using System.Threading.Tasks;
 
@@ -10,11 +8,11 @@ namespace TestOutput
     {
         #line hidden
         #pragma warning disable 0414
-        private TagHelperContent __tagHelperStringValueBuffer = null;
+        private Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
         #pragma warning restore 0414
-        private TagHelperExecutionContext __tagHelperExecutionContext = null;
-        private TagHelperRunner __tagHelperRunner = null;
-        private TagHelperScopeManager __tagHelperScopeManager = new TagHelperScopeManager();
+        private Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
+        private Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
+        private Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
         private PTagHelper __PTagHelper = null;
         #line hidden
         public TransitionsInTagHelperAttributes()
@@ -24,7 +22,7 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __tagHelperRunner = __tagHelperRunner ?? new TagHelperRunner();
+            __tagHelperRunner = __tagHelperRunner ?? new Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
 #line 2 "TransitionsInTagHelperAttributes.cshtml"
    
     var @class = "container-fluid";
@@ -36,7 +34,7 @@ namespace TestOutput
             Instrumentation.BeginContext(97, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 Instrumentation.BeginContext(128, 11, true);
                 WriteLiteral("Body of Tag");
                 Instrumentation.EndContext();
@@ -63,7 +61,7 @@ namespace TestOutput
             Instrumentation.BeginContext(143, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
@@ -89,7 +87,7 @@ AddHtmlAttributeValue("", 155, @class, 155, 9, false);
             Instrumentation.BeginContext(179, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
@@ -109,7 +107,7 @@ AddHtmlAttributeValue("", 155, @class, 155, 9, false);
             Instrumentation.BeginContext(217, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
@@ -129,7 +127,7 @@ AddHtmlAttributeValue("", 155, @class, 155, 9, false);
             Instrumentation.BeginContext(250, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
@@ -149,7 +147,7 @@ AddHtmlAttributeValue("", 155, @class, 155, 9, false);
             Instrumentation.BeginContext(286, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();

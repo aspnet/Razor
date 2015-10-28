@@ -1,8 +1,6 @@
 #pragma checksum "TagHelpersWithWeirdlySpacedAttributes.cshtml" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "61ec0611b60d88357a6c3b6551513ebf6223f6ee"
 namespace TestOutput
 {
-    using Microsoft.AspNet.Razor.TagHelpers;
-    using Microsoft.AspNet.Razor.Runtime.TagHelpers;
     using System;
     using System.Threading.Tasks;
 
@@ -10,11 +8,11 @@ namespace TestOutput
     {
         #line hidden
         #pragma warning disable 0414
-        private TagHelperContent __tagHelperStringValueBuffer = null;
+        private Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
         #pragma warning restore 0414
-        private TagHelperExecutionContext __tagHelperExecutionContext = null;
-        private TagHelperRunner __tagHelperRunner = null;
-        private TagHelperScopeManager __tagHelperScopeManager = new TagHelperScopeManager();
+        private Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
+        private Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
+        private Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
         private PTagHelper __PTagHelper = null;
         private InputTagHelper __InputTagHelper = null;
         private InputTagHelper2 __InputTagHelper2 = null;
@@ -26,11 +24,11 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __tagHelperRunner = __tagHelperRunner ?? new TagHelperRunner();
+            __tagHelperRunner = __tagHelperRunner ?? new Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
             Instrumentation.BeginContext(33, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 Instrumentation.BeginContext(105, 11, true);
                 WriteLiteral("Body of Tag");
                 Instrumentation.EndContext();
@@ -61,7 +59,7 @@ namespace TestOutput
             Instrumentation.BeginContext(120, 4, true);
             WriteLiteral("\r\n\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
@@ -80,7 +78,7 @@ namespace TestOutput
             Instrumentation.BeginContext(171, 4, true);
             WriteLiteral("\r\n\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __PTagHelper = CreateTagHelper<PTagHelper>();
@@ -100,7 +98,7 @@ __PTagHelper.Age = 1234;
             Instrumentation.BeginContext(221, 4, true);
             WriteLiteral("\r\n\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __InputTagHelper = CreateTagHelper<InputTagHelper>();

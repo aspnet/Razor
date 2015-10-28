@@ -1,8 +1,6 @@
 #pragma checksum "DuplicateTargetTagHelper.cshtml" "{ff1816ec-aa5e-4d10-87f7-6f4963833460}" "77e70e938d77f71e489354b1e7c351c588001690"
 namespace TestOutput
 {
-    using Microsoft.AspNet.Razor.TagHelpers;
-    using Microsoft.AspNet.Razor.Runtime.TagHelpers;
     using System;
     using System.Threading.Tasks;
 
@@ -10,11 +8,11 @@ namespace TestOutput
     {
         #line hidden
         #pragma warning disable 0414
-        private TagHelperContent __tagHelperStringValueBuffer = null;
+        private Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
         #pragma warning restore 0414
-        private TagHelperExecutionContext __tagHelperExecutionContext = null;
-        private TagHelperRunner __tagHelperRunner = null;
-        private TagHelperScopeManager __tagHelperScopeManager = new TagHelperScopeManager();
+        private Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
+        private Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
+        private Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
         private InputTagHelper __InputTagHelper = null;
         private CatchAllTagHelper __CatchAllTagHelper = null;
         #line hidden
@@ -25,11 +23,11 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __tagHelperRunner = __tagHelperRunner ?? new TagHelperRunner();
+            __tagHelperRunner = __tagHelperRunner ?? new Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
             Instrumentation.BeginContext(33, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
             __InputTagHelper = CreateTagHelper<InputTagHelper>();
