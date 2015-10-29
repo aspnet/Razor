@@ -20,8 +20,8 @@ namespace TestOutput
             #pragma warning restore 219
         }
         #line hidden
-        private InputTagHelper __InputTagHelper = null;
-        private CatchAllTagHelper __CatchAllTagHelper = null;
+        private global::InputTagHelper __InputTagHelper = null;
+        private global::CatchAllTagHelper __CatchAllTagHelper = null;
         #line hidden
         public EnumTagHelpers()
         {
@@ -37,29 +37,29 @@ namespace TestOutput
 #line default
 #line hidden
 
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
 #line 7 "EnumTagHelpers.cshtml"
 __InputTagHelper.Value = MyEnum.MyValue;
 
 #line default
 #line hidden
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
 #line 8 "EnumTagHelpers.cshtml"
          __o = MyEnum.MySecondValue;
 
 #line default
 #line hidden
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
 #line 9 "EnumTagHelpers.cshtml"
 __InputTagHelper.Value = Microsoft.AspNet.Razor.Test.Generator.MyEnum.MyValue;
 
 #line default
 #line hidden
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
 #line 10 "EnumTagHelpers.cshtml"
 __InputTagHelper.Value = Microsoft.AspNet.Razor.Test.Generator.MyEnum.MySecondValue;
 
@@ -70,8 +70,8 @@ __InputTagHelper.Value = Microsoft.AspNet.Razor.Test.Generator.MyEnum.MySecondVa
 
 #line default
 #line hidden
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
 #line 11 "EnumTagHelpers.cshtml"
 __InputTagHelper.Value = enumValue;
 

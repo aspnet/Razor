@@ -20,9 +20,9 @@ namespace TestOutput
             #pragma warning restore 219
         }
         #line hidden
-        private PTagHelper __PTagHelper = null;
-        private InputTagHelper __InputTagHelper = null;
-        private InputTagHelper2 __InputTagHelper2 = null;
+        private global::PTagHelper __PTagHelper = null;
+        private global::InputTagHelper __InputTagHelper = null;
+        private global::InputTagHelper2 __InputTagHelper2 = null;
         #line hidden
         public BasicTagHelpers()
         {
@@ -31,9 +31,9 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __PTagHelper = CreateTagHelper<PTagHelper>();
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
 #line 6 "BasicTagHelpers.cshtml"
                                 __o = ViewBag.DefaultInterval;
 
@@ -41,8 +41,8 @@ namespace TestOutput
 #line hidden
             __InputTagHelper.Type = "text";
             __InputTagHelper2.Type = __InputTagHelper.Type;
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
             __InputTagHelper.Type = "checkbox";
             __InputTagHelper2.Type = __InputTagHelper.Type;
 #line 7 "BasicTagHelpers.cshtml"
@@ -50,7 +50,7 @@ namespace TestOutput
 
 #line default
 #line hidden
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
         }
         #pragma warning restore 1998
     }

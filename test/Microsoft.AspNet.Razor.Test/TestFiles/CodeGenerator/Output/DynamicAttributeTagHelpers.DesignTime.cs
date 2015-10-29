@@ -20,7 +20,7 @@ namespace TestOutput
             #pragma warning restore 219
         }
         #line hidden
-        private InputTagHelper __InputTagHelper = null;
+        private global::InputTagHelper __InputTagHelper = null;
         #line hidden
         public DynamicAttributeTagHelpers()
         {
@@ -29,13 +29,13 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
 #line 3 "DynamicAttributeTagHelpers.cshtml"
                   __o = DateTime.Now;
 
 #line default
 #line hidden
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
 #line 5 "DynamicAttributeTagHelpers.cshtml"
                 if (true) { 
 
@@ -64,7 +64,7 @@ namespace TestOutput
 #line default
 #line hidden
 
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
 #line 7 "DynamicAttributeTagHelpers.cshtml"
                 __o = DateTime.Now;
 
@@ -76,7 +76,7 @@ namespace TestOutput
 
 #line default
 #line hidden
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
 #line 9 "DynamicAttributeTagHelpers.cshtml"
          __o = long.MinValue;
 
@@ -154,7 +154,7 @@ namespace TestOutput
 
 #line default
 #line hidden
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
 #line 12 "DynamicAttributeTagHelpers.cshtml"
            __o = long.MinValue;
 
@@ -170,7 +170,7 @@ namespace TestOutput
 
 #line default
 #line hidden
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
 #line 14 "DynamicAttributeTagHelpers.cshtml"
                 if (true) { 
 

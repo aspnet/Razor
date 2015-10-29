@@ -20,7 +20,7 @@ namespace TestOutput
             #pragma warning restore 219
         }
         #line hidden
-        private PTagHelper __PTagHelper = null;
+        private global::PTagHelper __PTagHelper = null;
         #line hidden
         public TransitionsInTagHelperAttributes()
         {
@@ -37,13 +37,13 @@ namespace TestOutput
 #line default
 #line hidden
 
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
 #line 7 "TransitionsInTagHelperAttributes.cshtml"
     __PTagHelper.Age = 1337;
 
 #line default
 #line hidden
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
 #line 8 "TransitionsInTagHelperAttributes.cshtml"
       __o = @class;
 
@@ -54,25 +54,25 @@ namespace TestOutput
 
 #line default
 #line hidden
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
 #line 9 "TransitionsInTagHelperAttributes.cshtml"
   __PTagHelper.Age = 42 + @int;
 
 #line default
 #line hidden
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
 #line 10 "TransitionsInTagHelperAttributes.cshtml"
   __PTagHelper.Age = int;
 
 #line default
 #line hidden
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
 #line 11 "TransitionsInTagHelperAttributes.cshtml"
   __PTagHelper.Age = (@int);
 
 #line default
 #line hidden
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
 #line 12 "TransitionsInTagHelperAttributes.cshtml"
              __o = @class;
 
