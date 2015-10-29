@@ -8,13 +8,13 @@ namespace TestOutput
     {
         #line hidden
         #pragma warning disable 0414
-        private Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
+        private global::Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
         #pragma warning restore 0414
-        private Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
-        private Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
-        private Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
-        private InputTagHelper2 __InputTagHelper2 = null;
-        private InputTagHelper1 __InputTagHelper1 = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new global::Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
+        private global::InputTagHelper2 __InputTagHelper2 = null;
+        private global::InputTagHelper1 __InputTagHelper1 = null;
         #line hidden
         public PrefixedAttributeTagHelpers()
         {
@@ -23,7 +23,7 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __tagHelperRunner = __tagHelperRunner ?? new Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
+            __tagHelperRunner = __tagHelperRunner ?? new global::Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
             Instrumentation.BeginContext(33, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
@@ -45,12 +45,12 @@ namespace TestOutput
             Instrumentation.BeginContext(282, 49, true);
             WriteLiteral("\r\n<div class=\"randomNonTagHelperAttribute\">\r\n    ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
-            __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
+            __InputTagHelper1 = CreateTagHelper<global::InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
             __tagHelperExecutionContext.AddHtmlAttribute("type", Html.Raw("checkbox"));
 #line 16 "PrefixedAttributeTagHelpers.cshtml"
@@ -75,16 +75,16 @@ namespace TestOutput
             Instrumentation.BeginContext(423, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
             if (__InputTagHelper2.IntDictionaryProperty == null)
             {
                 throw new InvalidOperationException(FormatInvalidIndexerAssignment("int-prefix-garlic", "InputTagHelper2", "IntDictionaryProperty"));
             }
-            __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
+            __InputTagHelper1 = CreateTagHelper<global::InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
             if (__InputTagHelper1.IntDictionaryProperty == null)
             {
@@ -120,10 +120,10 @@ namespace TestOutput
             Instrumentation.BeginContext(532, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
             if (__InputTagHelper2.IntDictionaryProperty == null)
             {
@@ -133,7 +133,7 @@ namespace TestOutput
             {
                 throw new InvalidOperationException(FormatInvalidIndexerAssignment("string-prefix-grabber", "InputTagHelper2", "StringDictionaryProperty"));
             }
-            __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
+            __InputTagHelper1 = CreateTagHelper<global::InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
             if (__InputTagHelper1.IntDictionaryProperty == null)
             {
@@ -192,10 +192,10 @@ __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
             Instrumentation.BeginContext(795, 6, true);
             WriteLiteral("\r\n    ");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
             if (__InputTagHelper2.IntDictionaryProperty == null)
             {
@@ -205,7 +205,7 @@ __InputTagHelper2.IntDictionaryProperty["grabber"] = 42;
             {
                 throw new InvalidOperationException(FormatInvalidIndexerAssignment("string-prefix-thyme", "InputTagHelper2", "StringDictionaryProperty"));
             }
-            __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
+            __InputTagHelper1 = CreateTagHelper<global::InputTagHelper1>();
             __tagHelperExecutionContext.Add(__InputTagHelper1);
             if (__InputTagHelper1.IntDictionaryProperty == null)
             {

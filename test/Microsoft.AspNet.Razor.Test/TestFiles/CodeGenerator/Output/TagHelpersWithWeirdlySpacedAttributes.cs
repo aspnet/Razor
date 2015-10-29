@@ -8,14 +8,14 @@ namespace TestOutput
     {
         #line hidden
         #pragma warning disable 0414
-        private Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
+        private global::Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
         #pragma warning restore 0414
-        private Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
-        private Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
-        private Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
-        private PTagHelper __PTagHelper = null;
-        private InputTagHelper __InputTagHelper = null;
-        private InputTagHelper2 __InputTagHelper2 = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new global::Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
+        private global::PTagHelper __PTagHelper = null;
+        private global::InputTagHelper __InputTagHelper = null;
+        private global::InputTagHelper2 __InputTagHelper2 = null;
         #line hidden
         public TagHelpersWithWeirdlySpacedAttributes()
         {
@@ -24,17 +24,17 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __tagHelperRunner = __tagHelperRunner ?? new Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
+            __tagHelperRunner = __tagHelperRunner ?? new global::Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
             Instrumentation.BeginContext(33, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 Instrumentation.BeginContext(105, 11, true);
                 WriteLiteral("Body of Tag");
                 Instrumentation.EndContext();
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
             __tagHelperExecutionContext.AddHtmlAttribute("class", Html.Raw("Hello World"));
 #line 6 "TagHelpersWithWeirdlySpacedAttributes.cshtml"
@@ -59,12 +59,12 @@ namespace TestOutput
             Instrumentation.BeginContext(120, 4, true);
             WriteLiteral("\r\n\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
             __tagHelperExecutionContext.Add(__InputTagHelper);
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
             __InputTagHelper.Type = "text";
             __tagHelperExecutionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
@@ -78,10 +78,10 @@ namespace TestOutput
             Instrumentation.BeginContext(171, 4, true);
             WriteLiteral("\r\n\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
             __tagHelperExecutionContext.Add(__PTagHelper);
 #line 11 "TagHelpersWithWeirdlySpacedAttributes.cshtml"
 __PTagHelper.Age = 1234;
@@ -98,12 +98,12 @@ __PTagHelper.Age = 1234;
             Instrumentation.BeginContext(221, 4, true);
             WriteLiteral("\r\n\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
             __tagHelperExecutionContext.Add(__InputTagHelper);
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
             __tagHelperExecutionContext.Add(__InputTagHelper2);
             __InputTagHelper.Type = "password";
             __tagHelperExecutionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);

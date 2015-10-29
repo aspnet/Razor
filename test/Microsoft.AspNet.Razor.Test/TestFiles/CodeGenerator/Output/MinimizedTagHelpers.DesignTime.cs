@@ -20,8 +20,8 @@ namespace TestOutput
             #pragma warning restore 219
         }
         #line hidden
-        private CatchAllTagHelper __CatchAllTagHelper = null;
-        private InputTagHelper __InputTagHelper = null;
+        private global::CatchAllTagHelper __CatchAllTagHelper = null;
+        private global::InputTagHelper __InputTagHelper = null;
         #line hidden
         public MinimizedTagHelpers()
         {
@@ -30,18 +30,18 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
             __InputTagHelper.BoundRequiredString = "hello";
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
             __CatchAllTagHelper.BoundRequiredString = "world";
             __InputTagHelper.BoundRequiredString = "hello2";
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
             __InputTagHelper.BoundRequiredString = "world";
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
         }
         #pragma warning restore 1998
     }

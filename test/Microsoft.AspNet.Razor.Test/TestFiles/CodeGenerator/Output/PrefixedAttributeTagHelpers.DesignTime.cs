@@ -20,8 +20,8 @@ namespace TestOutput
             #pragma warning restore 219
         }
         #line hidden
-        private InputTagHelper1 __InputTagHelper1 = null;
-        private InputTagHelper2 __InputTagHelper2 = null;
+        private global::InputTagHelper1 __InputTagHelper1 = null;
+        private global::InputTagHelper2 __InputTagHelper2 = null;
         #line hidden
         public PrefixedAttributeTagHelpers()
         {
@@ -45,8 +45,8 @@ namespace TestOutput
 #line default
 #line hidden
 
-            __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper1 = CreateTagHelper<global::InputTagHelper1>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
 #line 16 "PrefixedAttributeTagHelpers.cshtml"
  __InputTagHelper1.IntDictionaryProperty = intDictionary;
 
@@ -59,8 +59,8 @@ namespace TestOutput
 #line default
 #line hidden
             __InputTagHelper2.StringDictionaryProperty = __InputTagHelper1.StringDictionaryProperty;
-            __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper1 = CreateTagHelper<global::InputTagHelper1>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
 #line 17 "PrefixedAttributeTagHelpers.cshtml"
  __InputTagHelper1.IntDictionaryProperty = intDictionary;
 
@@ -79,8 +79,8 @@ namespace TestOutput
 #line default
 #line hidden
             __InputTagHelper2.IntDictionaryProperty["grabber"] = __InputTagHelper1.IntProperty;
-            __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper1 = CreateTagHelper<global::InputTagHelper1>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
 #line 19 "PrefixedAttributeTagHelpers.cshtml"
 __InputTagHelper1.IntProperty = 42;
 
@@ -110,8 +110,8 @@ __InputTagHelper1.IntProperty = 42;
 #line hidden
             __InputTagHelper1.StringDictionaryProperty["cumin"] = string.Empty;
             __InputTagHelper2.StringDictionaryProperty["cumin"] = __InputTagHelper1.StringDictionaryProperty["cumin"];
-            __InputTagHelper1 = CreateTagHelper<InputTagHelper1>();
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper1 = CreateTagHelper<global::InputTagHelper1>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
 #line 22 "PrefixedAttributeTagHelpers.cshtml"
 __InputTagHelper1.IntDictionaryProperty["value"] = 37;
 

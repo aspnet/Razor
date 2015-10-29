@@ -20,9 +20,9 @@ namespace TestOutput
             #pragma warning restore 219
         }
         #line hidden
-        private PTagHelper __PTagHelper = null;
-        private InputTagHelper __InputTagHelper = null;
-        private InputTagHelper2 __InputTagHelper2 = null;
+        private global::PTagHelper __PTagHelper = null;
+        private global::InputTagHelper __InputTagHelper = null;
+        private global::InputTagHelper2 __InputTagHelper2 = null;
         #line hidden
         public NestedScriptTagTagHelpers()
         {
@@ -43,8 +43,8 @@ namespace TestOutput
 #line default
 #line hidden
 
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
-            __InputTagHelper2 = CreateTagHelper<InputTagHelper2>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
+            __InputTagHelper2 = CreateTagHelper<global::InputTagHelper2>();
 #line 8 "NestedScriptTagTagHelpers.cshtml"
                                             __o = ViewBag.DefaultInterval;
 
@@ -63,7 +63,7 @@ namespace TestOutput
 #line default
 #line hidden
 
-            __PTagHelper = CreateTagHelper<PTagHelper>();
+            __PTagHelper = CreateTagHelper<global::PTagHelper>();
         }
         #pragma warning restore 1998
     }

@@ -125,6 +125,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             // per call site, e.g. if the tag is on the view twice, there should be two IDs.
             _writer.WriteStringLiteral(tagName)
                    .WriteParameterSeparator()
+                   .Write("global::")
                    .Write(typeof(TagMode).FullName)
                    .Write(".")
                    .Write(tagMode.ToString())
@@ -178,8 +179,9 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
 
                 // Create the tag helper
                 _writer.WriteStartAssignment(tagHelperVariableName)
-                       .WriteStartMethodInvocation(_tagHelperContext.CreateTagHelperMethodName,
-                                                   tagHelperDescriptor.TypeName)
+                       .WriteStartMethodInvocation(
+                            _tagHelperContext.CreateTagHelperMethodName,
+                            "global::" + tagHelperDescriptor.TypeName)
                        .WriteEndMethodInvocation();
 
                 // Execution contexts and throwing errors for null dictionary properties are a runtime feature.

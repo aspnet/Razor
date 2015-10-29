@@ -8,13 +8,13 @@ namespace TestOutput
     {
         #line hidden
         #pragma warning disable 0414
-        private Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
+        private global::Microsoft.AspNet.Razor.TagHelperContent __tagHelperStringValueBuffer = null;
         #pragma warning restore 0414
-        private Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
-        private Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
-        private Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
-        private InputTagHelper __InputTagHelper = null;
-        private CatchAllTagHelper __CatchAllTagHelper = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperExecutionContext __tagHelperExecutionContext = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperRunner __tagHelperRunner = null;
+        private global::Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager __tagHelperScopeManager = new global::Microsoft.AspNet.Razor.Runtime.TagHelperScopeManager();
+        private global::InputTagHelper __InputTagHelper = null;
+        private global::CatchAllTagHelper __CatchAllTagHelper = null;
         #line hidden
         public DuplicateTargetTagHelper()
         {
@@ -23,16 +23,16 @@ namespace TestOutput
         #pragma warning disable 1998
         public override async Task ExecuteAsync()
         {
-            __tagHelperRunner = __tagHelperRunner ?? new Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
+            __tagHelperRunner = __tagHelperRunner ?? new global::Microsoft.AspNet.Razor.Runtime.TagHelperRunner();
             Instrumentation.BeginContext(33, 2, true);
             WriteLiteral("\r\n");
             Instrumentation.EndContext();
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNet.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             , StartTagHelperWritingScope, EndTagHelperWritingScope);
-            __InputTagHelper = CreateTagHelper<InputTagHelper>();
+            __InputTagHelper = CreateTagHelper<global::InputTagHelper>();
             __tagHelperExecutionContext.Add(__InputTagHelper);
-            __CatchAllTagHelper = CreateTagHelper<CatchAllTagHelper>();
+            __CatchAllTagHelper = CreateTagHelper<global::CatchAllTagHelper>();
             __tagHelperExecutionContext.Add(__CatchAllTagHelper);
             __InputTagHelper.Type = "checkbox";
             __tagHelperExecutionContext.AddTagHelperAttribute("type", __InputTagHelper.Type);
