@@ -21,8 +21,8 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         {
         }
 
-        private ChunkTree Tree { get { return Context.ChunkTreeBuilder.ChunkTree; } }
-        public RazorEngineHost Host { get { return Context.Host; } }
+        private ParentChunk Tree => Context.ChunkTreeBuilder.Root;
+        public RazorEngineHost Host => Context.Host;
 
         /// <summary>
         /// Protected for testing.
@@ -64,10 +64,10 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
 
                     var csharpCodeVisitor = CreateCSharpCodeVisitor(writer, Context);
 
-                    new CSharpTypeMemberVisitor(csharpCodeVisitor, writer, Context).Accept(Tree.Chunks);
+                    new CSharpTypeMemberVisitor(csharpCodeVisitor, writer, Context).Accept(Tree.Children);
                     CreateCSharpDesignTimeCodeVisitor(csharpCodeVisitor, writer, Context)
                         .AcceptTree(Tree);
-                    new CSharpTagHelperFieldDeclarationVisitor(writer, Context).Accept(Tree.Chunks);
+                    new CSharpTagHelperFieldDeclarationVisitor(writer, Context).Accept(Tree.Children);
 
                     BuildConstructor(writer);
 
@@ -78,8 +78,8 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                     {
                         using (writer.BuildMethodDeclaration("public override async", "Task", Host.GeneratedClassContext.ExecuteMethodName))
                         {
-                            new CSharpTagHelperRunnerInitializationVisitor(writer, Context).Accept(Tree.Chunks);
-                            csharpCodeVisitor.Accept(Tree.Chunks);
+                            new CSharpTagHelperRunnerInitializationVisitor(writer, Context).Accept(Tree.Children);
+                            csharpCodeVisitor.Accept(Tree.Children);
                         }
                     }
                 }
@@ -131,7 +131,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         protected virtual CSharpCodeWritingScope BuildClassDeclaration(CSharpCodeWriter writer)
         {
             var baseTypeVisitor = new CSharpBaseTypeVisitor(writer, Context);
-            baseTypeVisitor.Accept(Tree.Chunks);
+            baseTypeVisitor.Accept(Tree.Children);
 
             var baseType = baseTypeVisitor.CurrentBaseType ?? Host.DefaultBaseClass;
 
@@ -149,11 +149,11 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             };
         }
 
-        private void AddImports(ChunkTree chunkTree, CSharpCodeWriter writer, IEnumerable<string> defaultImports)
+        private void AddImports(ParentChunk tree, CSharpCodeWriter writer, IEnumerable<string> defaultImports)
         {
             // Write out using directives
             var usingVisitor = new CSharpUsingVisitor(writer, Context);
-            foreach (Chunk chunk in Tree.Chunks)
+            foreach (Chunk chunk in tree.Children)
             {
                 usingVisitor.Accept(chunk);
             }
