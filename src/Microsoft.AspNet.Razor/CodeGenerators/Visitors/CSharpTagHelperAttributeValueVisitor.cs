@@ -102,6 +102,11 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
             RenderCode(chunk.Text, (Span)chunk.Association);
         }
 
+        protected override void Visit(ParentLiteralChunk chunk)
+        {
+            RenderCode(chunk.GetText(), (Span)chunk.Children[0].Association);
+        }
+
         /// <summary>
         /// Writes code for the given <paramref name="chunk"/>.
         /// </summary>
