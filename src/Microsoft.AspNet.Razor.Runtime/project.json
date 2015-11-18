@@ -1,6 +1,6 @@
 {
   "description": "Runtime components for rendering Razor pages.",
-  "version": "4.0.0-*",
+  "version": "4.0.0-rc1-final",
   "compilationOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk"
@@ -10,19 +10,19 @@
     "url": "git://github.com/aspnet/razor"
   },
   "dependencies": {
-    "Microsoft.AspNet.Html.Abstractions": "1.0.0-*",
-    "Microsoft.AspNet.Razor": "4.0.0-*",
+    "Microsoft.AspNet.Html.Abstractions": "1.0.0-rc1-final",
+    "Microsoft.AspNet.Razor": "4.0.0-rc1-final",
     "Microsoft.Extensions.BufferedHtmlContent.Sources": {
       "type": "build",
-      "version": "1.0.0-*"
+      "version": "1.0.0-rc1-final"
     },
     "Microsoft.Extensions.ClosedGenericMatcher.Sources": {
       "type": "build",
-      "version": "1.0.0-*"
+      "version": "1.0.0-rc1-final"
     },
     "Microsoft.Extensions.CopyOnWriteDictionary.Sources": {
       "type": "build",
-      "version": "1.0.0-*"
+      "version": "1.0.0-rc1-final"
     }
   },
   "frameworks": {
@@ -34,8 +34,8 @@
     },
     "dotnet5.4": {
       "dependencies": {
-        "System.Reflection.Extensions": "4.0.1-beta-*",
-        "System.Text.RegularExpressions": "4.0.11-beta-*"
+        "System.Reflection.Extensions": "4.0.1-beta-23516",
+        "System.Text.RegularExpressions": "4.0.11-beta-23516"
       }
     }
   }

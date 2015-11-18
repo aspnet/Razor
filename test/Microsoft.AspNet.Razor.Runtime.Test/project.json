@@ -5,18 +5,18 @@
     "keyFile": "../../tools/Key.snk"
   },
   "dependencies": {
-    "Microsoft.AspNet.Razor.Runtime": "4.0.0-*",
+    "Microsoft.AspNet.Razor.Runtime": "4.0.0-rc1-final",
     "Microsoft.AspNet.Razor.Test.Sources": {
-      "version": "4.0.0-*",
+      "version": "4.0.0-rc1-final",
       "type": "build"
     },
-    "Microsoft.AspNet.Testing": "1.0.0-*",
+    "Microsoft.AspNet.Testing": "1.0.0-rc1-final",
     "Microsoft.Extensions.HashCodeCombiner.Sources": {
       "type": "build",
-      "version": "1.0.0-*"
+      "version": "1.0.0-rc1-final"
     },
-    "Microsoft.Extensions.WebEncoders.Testing": "1.0.0-*",
-    "xunit.runner.aspnet": "2.0.0-aspnet-*"
+    "Microsoft.Extensions.WebEncoders.Testing": "1.0.0-rc1-final",
+    "xunit.runner.aspnet": "2.0.0-aspnet-rc1-final"
   },
   "commands": {
     "test": "xunit.runner.aspnet"
@@ -29,8 +29,8 @@
     },
     "dnxcore50": {
       "dependencies": {
-        "System.Reflection.TypeExtensions": "4.0.1-beta-*",
-        "System.Runtime.Extensions": "4.0.11-beta-*"
+        "System.Reflection.TypeExtensions": "4.1.0-beta-23516",
+        "System.Runtime.Extensions": "4.0.11-beta-23516"
       }
     }
   }

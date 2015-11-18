@@ -2,13 +2,13 @@
   "version": "1.0.0",
   "resource": "TestFiles/**/*",
   "dependencies": {
-    "Microsoft.AspNet.Razor": "4.0.0-*",
+    "Microsoft.AspNet.Razor": "4.0.0-rc1-final",
     "Microsoft.AspNet.Razor.Test.Sources": {
-      "version": "4.0.0-*",
+      "version": "4.0.0-rc1-final",
       "type": "build"
     },
-    "Microsoft.AspNet.Testing": "1.0.0-*",
-    "xunit.runner.aspnet": "2.0.0-aspnet-*"
+    "Microsoft.AspNet.Testing": "1.0.0-rc1-final",
+    "xunit.runner.aspnet": "2.0.0-aspnet-rc1-final"
   },
   "commands": {
     "test": "xunit.runner.aspnet"
@@ -21,14 +21,16 @@
     },
     "dnxcore50": {
       "dependencies": {
-        "System.Diagnostics.TraceSource": "4.0.0-beta-*",
-        "System.Reflection.TypeExtensions": "4.0.1-beta-*",
-        "System.Runtime.Serialization.Primitives": "4.0.11-beta-*"
+        "System.Diagnostics.TraceSource": "4.0.0-beta-23516",
+        "System.Reflection.TypeExtensions": "4.1.0-beta-23516",
+        "System.Runtime.Serialization.Primitives": "4.1.0-beta-23516"
       }
     }
   },
   "compilationOptions": {
-    "define": [ "__RemoveThisBitTo__GENERATE_BASELINES" ],
+    "define": [
+      "__RemoveThisBitTo__GENERATE_BASELINES"
+    ],
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk"
   }
