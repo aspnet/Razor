@@ -27,7 +27,7 @@ namespace Microsoft.AspNet.Razor.Chunks
         {
             _lastChunk = chunk;
 
-            chunk.Start = association?.Start ?? default(SourceLocation);
+            chunk.Start = association.Start;
             chunk.Association = association;
 
             // If we're not in the middle of a parent chunk
@@ -72,8 +72,12 @@ namespace Microsoft.AspNet.Razor.Chunks
         {
             ParentLiteralChunk parentLiteralChunk;
 
-            // We try to join literal chunks where possible, so that we have fewer 'writes' in the generated
-            // code.
+            // We try to join literal chunks where possible, so that we have fewer 'writes' in the generated code.
+            //
+            // Possible cases here:
+            //  - We just added a LiteralChunk and we need to add another - so merge them into ParentLiteralChunk.
+            //  - We have a ParentLiteralChunk - merge the new chunk into it.
+            //  - We just added something <else> - just add the LiteralChunk like normal.
             if (_lastChunk is LiteralChunk)
             {
                 parentLiteralChunk = new ParentLiteralChunk()

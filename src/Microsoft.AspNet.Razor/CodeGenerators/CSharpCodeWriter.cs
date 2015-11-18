@@ -505,19 +505,18 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
 
         public CSharpCodeWriter WriteStartInstrumentationContext(
             ChunkGeneratorContext context,
-            int start,
+            int absoluteIndex,
             int length,
             bool isLiteral)
         {
             WriteStartMethodInvocation(context.Host.GeneratedClassContext.BeginContextMethodName);
-            Write(start.ToString(CultureInfo.InvariantCulture));
+            Write(absoluteIndex.ToString(CultureInfo.InvariantCulture));
             WriteParameterSeparator();
             Write(length.ToString(CultureInfo.InvariantCulture));
             WriteParameterSeparator();
             Write(isLiteral ? "true" : "false");
             return WriteEndMethodInvocation();
         }
-
 
         public CSharpCodeWriter WriteEndInstrumentationContext(ChunkGeneratorContext context)
         {

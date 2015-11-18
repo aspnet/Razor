@@ -119,23 +119,20 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
 
         protected override void Visit(ParentLiteralChunk chunk)
         {
+            Debug.Assert(chunk.Children.Count > 1);
+
             if (Context.Host.DesignTimeMode)
             {
                 // Skip generating the chunk if we're in design time or if the chunk is empty.
                 return;
             }
-            
+
+            var text = chunk.GetText();
+
             if (Context.Host.EnableInstrumentation)
             {
-                var start = chunk.Children[0].Association.Start.AbsoluteIndex;
-
-                var length = 0;
-                for (var i = 0; i < chunk.Children.Count; i++)
-                {
-                    length += chunk.Children[i].Association.Length;
-                }
-
-                Writer.WriteStartInstrumentationContext(Context, start, length, isLiteral: true);
+                var start = chunk.Start.AbsoluteIndex;
+                Writer.WriteStartInstrumentationContext(Context, start, text.Length, isLiteral: true);
             }
 
             if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
@@ -143,7 +140,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
                 RenderPreWriteStart();
             }
 
-            Writer.WriteStringLiteral(chunk.GetText());
+            Writer.WriteStringLiteral(text);
 
             if (Context.ExpressionRenderingMode == ExpressionRenderingMode.WriteToOutput)
             {
