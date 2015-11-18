@@ -3,7 +3,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using Microsoft.AspNet.Razor.Chunks;
 
 namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
@@ -33,7 +32,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
 
         public CSharpCodeVisitor CSharpCodeVisitor { get; }
 
-        public void AcceptTree(ChunkTree tree)
+        public void AcceptTree(ParentChunk tree)
         {
             if (Context.Host.DesignTimeMode)
             {
@@ -47,9 +46,9 @@ namespace Microsoft.AspNet.Razor.CodeGenerators.Visitors
             }
         }
 
-        protected virtual void AcceptTreeCore(ChunkTree tree)
+        protected virtual void AcceptTreeCore(ParentChunk tree)
         {
-            Accept(tree.Chunks);
+            Accept(tree.Children);
         }
 
         protected override void Visit(SetBaseTypeChunk chunk)

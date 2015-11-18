@@ -19,10 +19,10 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         /// </summary>
         /// <param name="parserResults">The results of parsing a document.</param>
         /// <param name="codeGeneratorResult">The results of generating code for the document.</param>
-        /// <param name="chunkTree">A <see cref="ChunkTree"/> for the document.</param>
+        /// <param name="chunkTree">A <see cref="ParentChunk"/> for the document.</param>
         public GeneratorResults(ParserResults parserResults,
                                 CodeGeneratorResult codeGeneratorResult,
-                                ChunkTree chunkTree)
+                                ParentChunk chunkTree)
             : this(parserResults.Document,
                    parserResults.TagHelperDescriptors,
                    parserResults.ErrorSink,
@@ -60,7 +60,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                                 IEnumerable<TagHelperDescriptor> tagHelperDescriptors,
                                 ErrorSink errorSink,
                                 CodeGeneratorResult codeGeneratorResult,
-                                ChunkTree chunkTree)
+                                ParentChunk chunkTree)
             : base(document, tagHelperDescriptors, errorSink)
         {
             if (document == null)
@@ -104,8 +104,8 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         public IList<LineMapping> DesignTimeLineMappings { get; }
 
         /// <summary>
-        /// A <see cref="Chunks.ChunkTree"/> for the document.
+        /// A <see cref="Chunks.ParentChunk"/> for the document.
         /// </summary>
-        public ChunkTree ChunkTree { get; }
+        public ParentChunk ChunkTree { get; }
     }
 }
