@@ -79,7 +79,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
 
         public void MarkLineMappingEnd()
         {
-            _generatedContentLength = _writer.GenerateCode().Length - _generatedLocation.AbsoluteIndex;
+            _generatedContentLength = _writer.Builder.Length - _generatedLocation.AbsoluteIndex;
         }
 
         public void Dispose()
@@ -89,7 +89,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 // Verify that the generated length has not already been calculated
                 if (_generatedContentLength == 0)
                 {
-                    _generatedContentLength = _writer.GenerateCode().Length - _generatedLocation.AbsoluteIndex;
+                    _generatedContentLength = _writer.Builder.Length - _generatedLocation.AbsoluteIndex;
                 }
 
                 var generatedLocation = new MappingLocation(_generatedLocation, _generatedContentLength);
