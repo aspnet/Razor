@@ -114,7 +114,8 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             {
                 // Need to add an additional line at the end IF there wasn't one already written.
                 // This is needed to work with the C# editor's handling of #line ...
-                var endsWithNewline = _writer.Builder[_writer.Builder.Length - 1] == '\n';
+                var builder = _writer.Builder;
+                var endsWithNewline = builder.Length > 0 && builder[builder.Length - 1] == '\n';
 
                 // Always write at least 1 empty line to potentially separate code from pragmas.
                 _writer.WriteLine();
