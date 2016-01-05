@@ -433,7 +433,6 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             return new CSharpCodeWritingScope(this);
         }
 
-        // TODO: Do I need to look at the document content to determine its mapping length?
         public CSharpLineMappingWriter BuildLineMapping(
             SourceLocation documentLocation,
             int contentLength,

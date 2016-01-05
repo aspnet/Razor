@@ -18,7 +18,7 @@ namespace Microsoft.AspNet.Razor
     /// <para>
     /// This parser is designed to allow editors to avoid having to worry about incremental parsing.
     /// The <see cref="CheckForStructureChanges"/> method can be called with every change made by a user in an editor
-    /// and the parser will provide a result indicating if it was able to incrementally reparse the document.
+    /// and the parser will provide a result indicating if it was able to incrementally apply the change.
     /// </para>
     /// <para>
     /// The general workflow for editors with this parser is:
@@ -49,11 +49,6 @@ namespace Microsoft.AspNet.Razor
     /// within it's boundaries or b) it is a pure insertion (see <see cref="TextChange"/>) at the end of a
     /// <see cref="Span"/> whose <see cref="Span.EditHandler"/> can accept the change (see
     /// <see cref="SpanEditHandler.CanAcceptChange"/>).
-    /// </para>
-    /// <para>
-    /// Even if a single unique <see cref="Span"/> owner can be identified, it's possible the edit will cause the
-    /// <see cref="Span"/> to split or merge with other <see cref="Span"/>s, in which case, a full reparse is necessary
-    /// to identify the extent of the changes to the tree.
     /// </para>
     /// <para>
     /// When the <see cref="RazorEditorParser"/> returns <see cref="PartialParseResult.Accepted"/>, it updates
@@ -90,7 +85,7 @@ namespace Microsoft.AspNet.Razor
         /// instance <em>can</em> be shared among reparses, but should <em>never</em> be shared between documents.
         /// </summary>
         /// <param name="host">The <see cref="RazorEngineHost"/> which defines the environment in which the generated
-        /// code will live. <see cref="RazorEngineHost.DesignTimeMode"/> should be set if design-time code mappings
+        /// code will live. <see cref="RazorEngineHost.DesignTimeMode"/> should be set if design-time behavior is
         /// are desired.</param>
         /// <param name="sourceFileName">The physical path to use in line pragmas.</param>
         public RazorEditorParser(RazorEngineHost host, string sourceFileName)
