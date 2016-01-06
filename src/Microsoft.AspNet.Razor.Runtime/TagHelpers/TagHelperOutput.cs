@@ -14,7 +14,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
     /// </summary>
     public class TagHelperOutput : IHtmlContent
     {
-        private readonly Func<bool, Task<TagHelperContent>> _getChildContentAsync;
+        private readonly Func<bool, HtmlEncoder, Task<TagHelperContent>> _getChildContentAsync;
         private TagHelperContent _preElement;
         private TagHelperContent _preContent;
         private TagHelperContent _content;
@@ -27,7 +27,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
             : this(
                 tagName,
                 new TagHelperAttributeList(),
-                (cachedResult) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()))
+                (useCachedResult, encoder) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()))
         {
         }
 
@@ -36,12 +36,14 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         /// </summary>
         /// <param name="tagName">The HTML element's tag name.</param>
         /// <param name="attributes">The HTML attributes.</param>
-        /// <param name="getChildContentAsync">A delegate used to execute and retrieve the rendered child content
-        /// asynchronously.</param>
+        /// <param name="getChildContentAsync">
+        /// A delegate used to execute children asynchronously with the given <see cref="HtmlEncoder"/> in scope and
+        /// return their rendered content.
+        /// </param>
         public TagHelperOutput(
             string tagName,
             TagHelperAttributeList attributes,
-            Func<bool, Task<TagHelperContent>> getChildContentAsync)
+            Func<bool, HtmlEncoder, Task<TagHelperContent>> getChildContentAsync)
         {
             if (attributes == null)
             {
@@ -206,24 +208,53 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         }
 
         /// <summary>
-        /// A delegate used to execute children asynchronously.
+        /// Execute children asynchronously and return their rendered content.
         /// </summary>
         /// <returns>A <see cref="Task"/> that on completion returns content rendered by children.</returns>
         /// <remarks>This method is memoized.</remarks>
         public Task<TagHelperContent> GetChildContentAsync()
         {
-            return GetChildContentAsync(useCachedResult: true);
+            return GetChildContentAsync(useCachedResult: true, encoder: null);
         }
 
         /// <summary>
-        /// A delegate used to execute children asynchronously.
+        /// Execute children asynchronously and return their rendered content.
         /// </summary>
         /// <param name="useCachedResult">If <c>true</c> multiple calls to this method will not cause re-execution
         /// of child content; cached content will be returned.</param>
         /// <returns>A <see cref="Task"/> that on completion returns content rendered by children.</returns>
         public Task<TagHelperContent> GetChildContentAsync(bool useCachedResult)
         {
-            return _getChildContentAsync(useCachedResult);
+            return GetChildContentAsync(useCachedResult, encoder: null);
+        }
+
+        /// <summary>
+        /// Execute children asynchronously with the given <paramref name="encoder"/> in scope and return their
+        /// rendered content.
+        /// </summary>
+        /// <param name="encoder">
+        /// The <see cref="HtmlEncoder"/> to use. Does not override all HTML encodings which may occur.
+        /// </param>
+        /// <returns>A <see cref="Task"/> that on completion returns content rendered by children.</returns>
+        /// <remarks>This method is memoized.</remarks>
+        public Task<TagHelperContent> GetChildContentAsync(HtmlEncoder encoder)
+        {
+            return GetChildContentAsync(useCachedResult: true, encoder: encoder);
+        }
+
+        /// <summary>
+        /// Execute children asynchronously with the given <paramref name="encoder"/> in scope and return their
+        /// rendered content.
+        /// </summary>
+        /// <param name="useCachedResult">If <c>true</c> multiple calls to this method will not cause re-execution
+        /// of child content; cached content will be returned.</param>
+        /// <param name="encoder">
+        /// The <see cref="HtmlEncoder"/> to use. Does not override all HTML encodings which may occur.
+        /// </param>
+        /// <returns>A <see cref="Task"/> that on completion returns content rendered by children.</returns>
+        public Task<TagHelperContent> GetChildContentAsync(bool useCachedResult, HtmlEncoder encoder)
+        {
+            return _getChildContentAsync(useCachedResult, encoder);
         }
 
         /// <inheritdoc />

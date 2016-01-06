@@ -19,7 +19,7 @@ namespace Microsoft.AspNet.Razor.TagHelpers
             var output = new TagHelperOutput(
                 tagName: "p",
                 attributes: new TagHelperAttributeList(),
-                getChildContentAsync: useCachedResult =>
+                getChildContentAsync: (useCachedResult, encoder) =>
                 {
                     useCachedResultValue = useCachedResult;
                     return Task.FromResult<TagHelperContent>(new DefaultTagHelperContent());
@@ -175,13 +175,14 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         public void SuppressOutput_PreventsTagOutput()
         {
             // Arrange
-            var tagHelperOutput = new TagHelperOutput("p",
+            var tagHelperOutput = new TagHelperOutput(
+                "p",
                 new TagHelperAttributeList
                 {
                     { "class", "btn" },
                     { "something", "   spaced    " }
                 },
-                (cachedResult) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+                (cachedResult, encoder) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
             tagHelperOutput.PreContent.Append("Pre Content");
             tagHelperOutput.Content.Append("Content");
             tagHelperOutput.PostContent.Append("Post Content");
@@ -209,12 +210,13 @@ namespace Microsoft.AspNet.Razor.TagHelpers
         public void Attributes_IgnoresCase(string originalName, string updateName)
         {
             // Arrange
-            var tagHelperOutput = new TagHelperOutput("p",
+            var tagHelperOutput = new TagHelperOutput(
+                "p",
                 new TagHelperAttributeList
                 {
                     { originalName, "btn" },
                 },
-                (cachedResult) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+                (cachedResult, encoder) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
 
             // Act
             tagHelperOutput.Attributes[updateName] = "super button";

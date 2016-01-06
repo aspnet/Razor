@@ -1,4 +1,4 @@
-// Copyright (c) .NET Foundation. All rights reserved.
+// Copyright (c) .NET Foundation. All rights areserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
@@ -228,7 +228,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 tagMode,
                 uniqueId: string.Empty,
                 executeChildContentAsync: async () => await Task.FromResult(result: true),
-                startTagHelperWritingScope: () => { },
+                startTagHelperWritingScope: _ => { },
                 endTagHelperWritingScope: () => new DefaultTagHelperContent());
         }
     }

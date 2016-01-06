@@ -43,7 +43,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 items: expectedItems,
                 uniqueId: string.Empty,
                 executeChildContentAsync: async () => await Task.FromResult(result: true),
-                startTagHelperWritingScope: () => { },
+                startTagHelperWritingScope: _ => { },
                 endTagHelperWritingScope: () => new DefaultTagHelperContent());
 
             // Assert
@@ -75,12 +75,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
                     return Task.FromResult(result: true);
                 },
-                startTagHelperWritingScope: () => { },
+                startTagHelperWritingScope: _ => { },
                 endTagHelperWritingScope: () => defaultTagHelperContent);
 
             // Act
-            var content1 = await executionContext.GetChildContentAsync(useCachedResult: true);
-            var content2 = await executionContext.GetChildContentAsync(useCachedResult: true);
+            var content1 = await executionContext.GetChildContentAsync(useCachedResult: true, encoder: null);
+            var content2 = await executionContext.GetChildContentAsync(useCachedResult: true, encoder: null);
 
             // Assert
             Assert.Equal(expectedContent, content1.GetContent(new HtmlTestEncoder()));
@@ -103,12 +103,12 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
 
                     return Task.FromResult(result: true);
                 },
-                startTagHelperWritingScope: () => { },
+                startTagHelperWritingScope: _ => { },
                 endTagHelperWritingScope: () => new DefaultTagHelperContent());
 
             // Act
-            await executionContext.GetChildContentAsync(useCachedResult: false);
-            await executionContext.GetChildContentAsync(useCachedResult: false);
+            await executionContext.GetChildContentAsync(useCachedResult: false, encoder: null);
+            await executionContext.GetChildContentAsync(useCachedResult: false, encoder: null);
 
             // Assert
             Assert.Equal(2, executionCount);
@@ -127,19 +127,19 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
                 items: new Dictionary<object, object>(),
                 uniqueId: string.Empty,
                 executeChildContentAsync: () => { return Task.FromResult(result: true); },
-                startTagHelperWritingScope: () => { },
+                startTagHelperWritingScope: _ => { },
                 endTagHelperWritingScope: () => defaultTagHelperContent);
 
             // Act
-            var content1 = await executionContext.GetChildContentAsync(useCachedResult);
+            var content1 = await executionContext.GetChildContentAsync(useCachedResult, encoder: null);
             content1.Append("Hello");
-            var content2 = await executionContext.GetChildContentAsync(useCachedResult);
+            var content2 = await executionContext.GetChildContentAsync(useCachedResult, encoder: null);
             content2.Append("World!");
 
             // Assert
             Assert.NotSame(content1, content2);
 
-            var content3 = await executionContext.GetChildContentAsync(useCachedResult);
+            var content3 = await executionContext.GetChildContentAsync(useCachedResult, encoder: null);
             Assert.Empty(content3.GetContent(new HtmlTestEncoder()));
         }
 

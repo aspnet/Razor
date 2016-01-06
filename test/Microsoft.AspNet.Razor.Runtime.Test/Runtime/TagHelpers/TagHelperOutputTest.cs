@@ -637,7 +637,7 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.Runtime.TagHelpers
                 items: new Dictionary<object, object>(),
                 uniqueId: string.Empty,
                 executeChildContentAsync: () => Task.FromResult(result: true),
-                startTagHelperWritingScope: () => { },
+                startTagHelperWritingScope: _ => { },
                 endTagHelperWritingScope: () => new DefaultTagHelperContent());
             tagHelperExecutionContext.Output = output;
             var testEncoder = new HtmlTestEncoder();
@@ -662,7 +662,8 @@ namespace Microsoft.AspNet.Razor.Runtime.Test.Runtime.TagHelpers
             var output = new TagHelperOutput(
                 tagName,
                 attributes,
-                getChildContentAsync: (_) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()))
+                getChildContentAsync: (useCachedContent, encoder) => Task.FromResult<TagHelperContent>(
+                    new DefaultTagHelperContent()))
             {
                 TagMode = tagMode
             };
