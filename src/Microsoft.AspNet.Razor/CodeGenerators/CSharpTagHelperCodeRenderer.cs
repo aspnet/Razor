@@ -659,9 +659,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 // Scopes are a runtime feature.
                 if (!_designTimeMode)
                 {
-                    _writer.WriteMethodInvocation(
-                        _tagHelperContext.StartTagHelperWritingScopeMethodName,
-                        "encoder: null");
+                    _writer.WriteMethodInvocation(_tagHelperContext.StartTagHelperWritingScopeMethodName, "null");
                 }
 
                 var visitor = htmlEncodeValues ? _bodyVisitor : _literalBodyVisitor;
