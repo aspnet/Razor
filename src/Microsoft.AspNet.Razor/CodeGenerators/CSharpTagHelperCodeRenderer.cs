@@ -661,7 +661,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 {
                     _writer.WriteMethodInvocation(
                         _tagHelperContext.StartTagHelperWritingScopeMethodName,
-                        _tagHelperContext.HtmlEncoderPropertyName);
+                        "encoder: null");
                 }
 
                 var visitor = htmlEncodeValues ? _bodyVisitor : _literalBodyVisitor;
@@ -711,7 +711,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                     StringValueBufferVariableName,
                     _tagHelperContext.TagHelperContentGetContentMethodName,
                     endLine: false,
-                    parameters: new string[] { _tagHelperContext.HtmlEncoderPropertyName });
+                    parameters: _tagHelperContext.HtmlEncoderPropertyName);
             }
         }
 
