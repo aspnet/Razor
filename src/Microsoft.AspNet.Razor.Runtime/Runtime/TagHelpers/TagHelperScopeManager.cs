@@ -33,7 +33,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
         /// <param name="uniqueId">An identifier unique to the HTML element this scope is for.</param>
         /// <param name="executeChildContentAsync">A delegate used to execute the child content asynchronously.</param>
         /// <param name="startTagHelperWritingScope">
-        /// A delegate used to start a writing scope in a Razor page and to override the page's current
+        /// A delegate used to start a writing scope in a Razor page and optionally override the page's
         /// <see cref="HtmlEncoder"/> within that scope.
         /// </param>
         /// <param name="endTagHelperWritingScope">A delegate used to end a writing scope in a Razor page.</param>
