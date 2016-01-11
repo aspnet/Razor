@@ -167,7 +167,7 @@ namespace Microsoft.AspNet.Razor.Runtime.TagHelpers
             Assert.Equal(tagMode, executionContext.TagMode);
         }
 
-    [Fact]
+        [Fact]
         public void End_ReturnsParentExecutionContext()
         {
             // Arrange
