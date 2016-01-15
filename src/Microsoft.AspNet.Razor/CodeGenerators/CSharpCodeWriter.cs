@@ -463,10 +463,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             int end;
             while ((end = literal.IndexOf('\"', start)) > -1)
             {
-                if (end > start)
-                {
-                    Write(literal, start, end - start);
-                }
+                Write(literal, start, end - start);
 
                 Write("\"\"");
 
@@ -491,10 +488,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             int end;
             while ((end = literal.IndexOfAny(CStyleStringLiteralEscapeChars, start)) > -1)
             {
-                if (end > start)
-                {
-                    Write(literal, start, end - start);
-                }
+                Write(literal, start, end - start);
 
                 switch (literal[end])
                 {
@@ -523,6 +517,9 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                     case '\u2029':
                         Write("\\u");
                         Write(((int)literal[end]).ToString("X4", CultureInfo.InvariantCulture));
+                        break;
+                    default:
+                        Debug.Assert(false, "Unknown escape character.");
                         break;
                 }
 
