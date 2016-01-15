@@ -10,9 +10,8 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
     {
         private static readonly char[] NewLineCharacters = new char[] { '\r', '\n' };
 
-        private bool _isAfterNewLine;
         private string _cache = string.Empty;
-        private bool _dirty = false;
+        private bool _dirty;
 
         private int _absoluteIndex;
         private int _currentLineIndex;
@@ -22,7 +21,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
 
         public int CurrentIndent { get; private set; }
 
-        public bool IsAfterNewLine => _isAfterNewLine;
+        public bool IsAfterNewLine { get; private set; }
 
         public string NewLine { get; set; } = Environment.NewLine;
 
@@ -54,7 +53,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
 
         public CodeWriter Indent(int size)
         {
-            if (_isAfterNewLine)
+            if (IsAfterNewLine)
             {
                 Builder.Append(' ', size);
 
@@ -62,7 +61,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
                 _absoluteIndex += size;
 
                 _dirty = true;
-                _isAfterNewLine = false;
+                IsAfterNewLine = false;
             }
 
             return this;
@@ -90,7 +89,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             Builder.Append(data, index, count);
 
             _dirty = true;
-            _isAfterNewLine = false;
+            IsAfterNewLine = false;
 
             _absoluteIndex += count;
 
@@ -162,7 +161,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
             _absoluteIndex += NewLine.Length;
 
             _dirty = true;
-            _isAfterNewLine = true;
+            IsAfterNewLine = true;
 
             return this;
         }
@@ -192,6 +191,7 @@ namespace Microsoft.AspNet.Razor.CodeGenerators
         {
             if (disposing)
             {
+                Builder.Clear();
             }
         }
 
