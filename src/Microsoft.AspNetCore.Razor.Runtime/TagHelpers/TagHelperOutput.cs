@@ -277,164 +277,77 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 throw new ArgumentNullException(nameof(writer));
             }
 
-            var htmlTextWriter = writer as HtmlTextWriter;
-            if (htmlTextWriter != null)
-            {
-                WriteTo(htmlTextWriter, encoder);
-                return;
-            }
-
             _preElement?.WriteTo(writer, encoder);
 
             var isTagNameNullOrWhitespace = string.IsNullOrWhiteSpace(TagName);
 
             if (!isTagNameNullOrWhitespace)
             {
-                WriteBeginTag(writer, encoder, TagName, Attributes, TagMode);
-            }
+                writer.Write("<");
+                writer.Write(TagName);
 
-            if (isTagNameNullOrWhitespace || TagMode == TagMode.StartTagAndEndTag)
-            {
-                _preContent?.WriteTo(writer, encoder);
-
-                _content?.WriteTo(writer, encoder);
-
-                _postContent?.WriteTo(writer, encoder);
-            }
-
-            if (!isTagNameNullOrWhitespace && TagMode == TagMode.StartTagAndEndTag)
-            {
-                WriteEndTag(writer, encoder, TagName);
-            }
-
-            _postElement?.WriteTo(writer, encoder);
-        }
-
-        private void WriteTo(HtmlTextWriter writer, HtmlEncoder encoder)
-        {
-            _preElement?.WriteTo(writer, encoder);
-
-            var isTagNameNullOrWhitespace = string.IsNullOrWhiteSpace(TagName);
-
-            if (!isTagNameNullOrWhitespace)
-            {
-                writer.Write(new BeginTag(TagName, Attributes, TagMode));
-            }
-
-            if (isTagNameNullOrWhitespace || TagMode == TagMode.StartTagAndEndTag)
-            {
-                _preContent?.WriteTo(writer, encoder);
-
-                _content?.WriteTo(writer, encoder);
-
-                _postContent?.WriteTo(writer, encoder);
-            }
-
-            if (!isTagNameNullOrWhitespace && TagMode == TagMode.StartTagAndEndTag)
-            {
-                writer.Write(new EndTag(TagName));
-            }
-
-            _postElement?.WriteTo(writer, encoder);
-        }
-
-        private static void WriteBeginTag(
-            TextWriter writer,
-            HtmlEncoder encoder,
-            string tagName,
-            TagHelperAttributeList attributes,
-            TagMode tagMode)
-        {
-            writer.Write('<');
-            writer.Write(tagName);
-
-            // Perf: Avoid allocating enumerator
-            for (var i = 0; i < attributes.Count; i++)
-            {
-                var attribute = attributes[i];
-                writer.Write(' ');
-                writer.Write(attribute.Name);
-
-                if (attribute.Minimized)
+                // Perf: Avoid allocating enumerator
+                for (var i = 0; i < Attributes.Count; i++)
                 {
-                    continue;
-                }
+                    var attribute = Attributes[i];
+                    writer.Write(" ");
+                    writer.Write(attribute.Name);
 
-                writer.Write("=\"");
-                var value = attribute.Value;
-                var htmlContent = value as IHtmlContent;
-                if (htmlContent != null)
-                {
-                    // There's no way of tracking the attribute value quotations in the Razor source. Therefore, we
-                    // must escape any IHtmlContent double quote values in the case that a user wrote:
-                    // <p name='A " is valid in single quotes'></p>
-                    using (var stringWriter = new StringWriter())
+                    if (attribute.Minimized)
                     {
-                        htmlContent.WriteTo(stringWriter, encoder);
-
-                        var stringValue = stringWriter.ToString();
-                        stringValue = stringValue.Replace("\"", "&quot;");
-
-                        writer.Write(stringValue);
+                        continue;
                     }
+
+                    writer.Write("=\"");
+                    var value = attribute.Value;
+                    var htmlContent = value as IHtmlContent;
+                    if (htmlContent != null)
+                    {
+                        // There's no way of tracking the attribute value quotations in the Razor source. Therefore, we
+                        // must escape any IHtmlContent double quote values in the case that a user wrote:
+                        // <p name='A " is valid in single quotes'></p>
+                        using (var stringWriter = new StringWriter())
+                        {
+                            htmlContent.WriteTo(stringWriter, encoder);
+                            stringWriter.GetStringBuilder().Replace("\"", "&quot;");
+
+                            var stringValue = stringWriter.ToString();
+                            writer.Write(stringValue);
+                        }
+                    }
+                    else if (value != null)
+                    {
+                        encoder.Encode(writer, value.ToString());
+                    }
+
+                    writer.Write("\"");
                 }
-                else if (value != null)
+
+                if (TagMode == TagMode.SelfClosing)
                 {
-                    encoder.Encode(writer, value.ToString());
+                    writer.Write(" /");
                 }
 
-                writer.Write('"');
+                writer.Write(">");
             }
 
-            if (tagMode == TagMode.SelfClosing)
+            if (isTagNameNullOrWhitespace || TagMode == TagMode.StartTagAndEndTag)
             {
-                writer.Write(" /");
+                _preContent?.WriteTo(writer, encoder);
+
+                _content?.WriteTo(writer, encoder);
+
+                _postContent?.WriteTo(writer, encoder);
             }
 
-            writer.Write('>');
-        }
-
-        private static void WriteEndTag(TextWriter writer, HtmlEncoder encoder, string tagName)
-        {
-            writer.Write("</");
-            writer.Write(tagName);
-            writer.Write(">");
-        }
-
-        private class BeginTag : IHtmlContent
-        {
-            public BeginTag(string tagName, TagHelperAttributeList attributes, TagMode tagMode)
+            if (!isTagNameNullOrWhitespace && TagMode == TagMode.StartTagAndEndTag)
             {
-                TagName = tagName;
-                Attributes = attributes;
-                TagMode = tagMode;
+                writer.Write("</");
+                writer.Write(TagName);
+                writer.Write(">");
             }
 
-            public TagHelperAttributeList Attributes { get; }
-
-            public TagMode TagMode { get; }
-
-            public string TagName { get; }
-
-            public void WriteTo(TextWriter writer, HtmlEncoder encoder)
-            {
-                WriteBeginTag(writer, encoder, TagName, Attributes, TagMode);
-            }
-        }
-
-        private class EndTag : IHtmlContent
-        {
-            public EndTag(string tagName)
-            {
-                TagName = tagName;
-            }
-
-            public string TagName { get; }
-
-            public void WriteTo(TextWriter writer, HtmlEncoder encoder)
-            {
-                WriteEndTag(writer, encoder, TagName);
-            }
+            _postElement?.WriteTo(writer, encoder);
         }
     }
 }

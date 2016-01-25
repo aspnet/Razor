@@ -7,7 +7,7 @@ using System.IO;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Html;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.Runtime.TagHelpers;
 using Microsoft.Extensions.WebEncoders.Testing;
 using Xunit;
