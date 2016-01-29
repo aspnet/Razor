@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.TagHelpers
 {
@@ -11,8 +12,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
     /// </summary>
     public class TagHelperContext
     {
-        private ReadOnlyTagHelperAttributeList _allAttributes;
-        private IEnumerable<TagHelperAttribute> _allAttributesData;
+        private static ReadOnlyTagHelperAttributeList EmptyAttributes = new TagHelperAttributeList();
 
         /// <summary>
         /// Instantiates a new <see cref="TagHelperContext"/>.
@@ -22,15 +22,10 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// <param name="uniqueId">The unique identifier for the source element this <see cref="TagHelperContext" />
         /// applies to.</param>
         public TagHelperContext(
-            IEnumerable<TagHelperAttribute> allAttributes,
+            ReadOnlyTagHelperAttributeList allAttributes,
             IDictionary<object, object> items,
             string uniqueId)
         {
-            if (allAttributes == null)
-            {
-                throw new ArgumentNullException(nameof(allAttributes));
-            }
-
             if (items == null)
             {
                 throw new ArgumentNullException(nameof(items));
@@ -41,7 +36,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 throw new ArgumentNullException(nameof(uniqueId));
             }
 
-            _allAttributesData = allAttributes;
+            AllAttributes = allAttributes ?? EmptyAttributes;
             Items = items;
             UniqueId = uniqueId;
         }
@@ -49,18 +44,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// <summary>
         /// Every attribute associated with the current HTML element.
         /// </summary>
-        public ReadOnlyTagHelperAttributeList AllAttributes
-        {
-            get
-            {
-                if (_allAttributes == null)
-                {
-                    _allAttributes = new TagHelperAttributeList(_allAttributesData);
-                }
-
-                return _allAttributes;
-            }
-        }
+        public ReadOnlyTagHelperAttributeList AllAttributes { get; }
 
         /// <summary>
         /// Gets the collection of items used to communicate with other <see cref="ITagHelper"/>s.

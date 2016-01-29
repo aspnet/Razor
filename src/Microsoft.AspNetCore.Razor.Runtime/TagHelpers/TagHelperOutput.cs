@@ -15,6 +15,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
     public class TagHelperOutput : IHtmlContent
     {
         private readonly Func<bool, HtmlEncoder, Task<TagHelperContent>> _getChildContentAsync;
+        private TagHelperAttributeList _attributes;
         private TagHelperContent _preElement;
         private TagHelperContent _preContent;
         private TagHelperContent _content;
@@ -26,7 +27,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         internal TagHelperOutput(string tagName)
             : this(
                 tagName,
-                new TagHelperAttributeList(),
+                null,
                 (useCachedResult, encoder) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()))
         {
         }
@@ -45,19 +46,14 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             TagHelperAttributeList attributes,
             Func<bool, HtmlEncoder, Task<TagHelperContent>> getChildContentAsync)
         {
-            if (attributes == null)
-            {
-                throw new ArgumentNullException(nameof(attributes));
-            }
-
             if (getChildContentAsync == null)
             {
                 throw new ArgumentNullException(nameof(getChildContentAsync));
             }
 
             TagName = tagName;
-            Attributes = attributes;
             _getChildContentAsync = getChildContentAsync;
+            _attributes = attributes;
         }
 
         /// <summary>
@@ -187,7 +183,18 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// a <c>Microsoft.AspNetCore.Mvc.Rendering.HtmlString</c> instance. MVC converts most other types to a
         /// <see cref="string"/>, then HTML encodes the result.
         /// </remarks>
-        public TagHelperAttributeList Attributes { get; }
+        public TagHelperAttributeList Attributes
+        {
+            get
+            {
+                if (_attributes == null)
+                {
+                    _attributes = new TagHelperAttributeList();
+                }
+
+                return _attributes;
+            }
+        }
 
         /// <summary>
         /// Changes <see cref="TagHelperOutput"/> to generate nothing.
@@ -286,41 +293,44 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 writer.Write("<");
                 writer.Write(TagName);
 
-                // Perf: Avoid allocating enumerator
-                for (var i = 0; i < Attributes.Count; i++)
+                if (_attributes != null)
                 {
-                    var attribute = Attributes[i];
-                    writer.Write(" ");
-                    writer.Write(attribute.Name);
-
-                    if (attribute.Minimized)
+                    // Perf: Avoid allocating enumerator
+                    for (var i = 0; i < _attributes.Count; i++)
                     {
-                        continue;
-                    }
+                        var attribute = _attributes[i];
+                        writer.Write(" ");
+                        writer.Write(attribute.Name);
 
-                    writer.Write("=\"");
-                    var value = attribute.Value;
-                    var htmlContent = value as IHtmlContent;
-                    if (htmlContent != null)
-                    {
-                        // There's no way of tracking the attribute value quotations in the Razor source. Therefore, we
-                        // must escape any IHtmlContent double quote values in the case that a user wrote:
-                        // <p name='A " is valid in single quotes'></p>
-                        using (var stringWriter = new StringWriter())
+                        if (attribute.Minimized)
                         {
-                            htmlContent.WriteTo(stringWriter, encoder);
+                            continue;
+                        }
+
+                        writer.Write("=\"");
+                        var value = attribute.Value;
+                        var htmlContent = value as IHtmlContent;
+                        if (htmlContent != null)
+                        {
+                            // There's no way of tracking the attribute value quotations in the Razor source. Therefore, we
+                            // must escape any IHtmlContent double quote values in the case that a user wrote:
+                            // <p name='A " is valid in single quotes'></p>
+                            using (var stringWriter = new StringWriter())
+                            {
+                                htmlContent.WriteTo(stringWriter, encoder);
                             stringWriter.GetStringBuilder().Replace("\"", "&quot;");
 
-                            var stringValue = stringWriter.ToString();
-                            writer.Write(stringValue);
+                                var stringValue = stringWriter.ToString();
+                                writer.Write(stringValue);
+                            }
                         }
-                    }
-                    else if (value != null)
-                    {
-                        encoder.Encode(writer, value.ToString());
-                    }
+                        else if (value != null)
+                        {
+                            encoder.Encode(writer, value.ToString());
+                        }
 
                     writer.Write("\"");
+                    }
                 }
 
                 if (TagMode == TagMode.SelfClosing)
