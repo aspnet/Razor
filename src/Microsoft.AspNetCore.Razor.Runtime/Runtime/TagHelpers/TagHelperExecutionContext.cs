@@ -214,9 +214,7 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             _allAttributes.Add(name, value);
         }
 
-        /// <summary>
-        /// Internal for testing.
-        /// </summary>
+        // Internal for testing.
         internal async Task<TagHelperContent> GetChildContentAsync(bool useCachedResult, HtmlEncoder encoder)
         {
             // Get cached content for this encoder.

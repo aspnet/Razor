@@ -293,44 +293,41 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 writer.Write("<");
                 writer.Write(TagName);
 
-                if (_attributes != null)
+                // Perf: Avoid allocating enumerator
+                for (var i = 0; i < (_attributes?.Count ?? 0); i++)
                 {
-                    // Perf: Avoid allocating enumerator
-                    for (var i = 0; i < _attributes.Count; i++)
+                    var attribute = _attributes[i];
+                    writer.Write(" ");
+                    writer.Write(attribute.Name);
+
+                    if (attribute.Minimized)
                     {
-                        var attribute = _attributes[i];
-                        writer.Write(" ");
-                        writer.Write(attribute.Name);
+                        continue;
+                    }
 
-                        if (attribute.Minimized)
+                    writer.Write("=\"");
+                    var value = attribute.Value;
+                    var htmlContent = value as IHtmlContent;
+                    if (htmlContent != null)
+                    {
+                        // There's no way of tracking the attribute value quotations in the Razor source. Therefore, we
+                        // must escape any IHtmlContent double quote values in the case that a user wrote:
+                        // <p name='A " is valid in single quotes'></p>
+                        using (var stringWriter = new StringWriter())
                         {
-                            continue;
-                        }
-
-                        writer.Write("=\"");
-                        var value = attribute.Value;
-                        var htmlContent = value as IHtmlContent;
-                        if (htmlContent != null)
-                        {
-                            // There's no way of tracking the attribute value quotations in the Razor source. Therefore, we
-                            // must escape any IHtmlContent double quote values in the case that a user wrote:
-                            // <p name='A " is valid in single quotes'></p>
-                            using (var stringWriter = new StringWriter())
-                            {
-                                htmlContent.WriteTo(stringWriter, encoder);
+                            htmlContent.WriteTo(stringWriter, encoder);
                             stringWriter.GetStringBuilder().Replace("\"", "&quot;");
 
-                                var stringValue = stringWriter.ToString();
-                                writer.Write(stringValue);
-                            }
+                            var stringValue = stringWriter.ToString();
+                            writer.Write(stringValue);
                         }
-                        else if (value != null)
-                        {
-                            encoder.Encode(writer, value.ToString());
-                        }
+                    }
+                    else if (value != null)
+                    {
+                        encoder.Encode(writer, value.ToString());
+                    }
 
                     writer.Write("\"");
-                    }
                 }
 
                 if (TagMode == TagMode.SelfClosing)
