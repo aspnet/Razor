@@ -129,6 +129,12 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         public abstract TagHelperContent Clear();
 
         /// <summary>
+        /// Copies the content to another <see cref="IHtmlContentBuilder"/>.
+        /// </summary>
+        /// <param name="destination">The destination <see cref="IHtmlContentBuilder"/>.</param>
+        public abstract void CopyTo(IHtmlContentBuilder destination);
+
+        /// <summary>
         /// Gets the content.
         /// </summary>
         /// <returns>A <see cref="string"/> containing the content.</returns>
@@ -166,6 +172,18 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         IHtmlContentBuilder IHtmlContentBuilder.Clear()
         {
             return Clear();
+        }
+
+        /// <inheritdoc />
+        void IHtmlContentContainer.MoveTo(IHtmlContentBuilder destination)
+        {
+            if (destination == null)
+            {
+                throw new ArgumentNullException(nameof(destination));
+            }
+
+            CopyTo(destination);
+            Clear();
         }
     }
 }

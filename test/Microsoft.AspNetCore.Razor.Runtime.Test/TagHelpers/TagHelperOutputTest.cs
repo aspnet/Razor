@@ -981,7 +981,9 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             // Arrange
             var inner = new StringWriter();
             var testEncoder = new HtmlTestEncoder();
-            var writer = new MockHtmlTextWriter(inner, testEncoder);
+
+            var writer = new StringWriter();
+            var buffer = new HtmlContentBuilder();
 
             var tagHelperExecutionContext = new TagHelperExecutionContext(
                 tagName: output.TagName,
@@ -1045,30 +1047,6 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             }
 
             return output;
-        }
-
-        private class MockHtmlTextWriter : HtmlTextWriter
-        {
-            private readonly HtmlEncoder _encoder;
-            private readonly TextWriter _inner;
-
-            public MockHtmlTextWriter(TextWriter inner, HtmlEncoder encoder)
-            {
-                _inner = inner;
-                _encoder = encoder;
-            }
-
-            public override Encoding Encoding => _inner.Encoding;
-
-            public override void Write(IHtmlContent value)
-            {
-                value.WriteTo(_inner, _encoder);
-            }
-
-            public override void Write(char value)
-            {
-                _inner.Write(value);
-            }
         }
     }
 }

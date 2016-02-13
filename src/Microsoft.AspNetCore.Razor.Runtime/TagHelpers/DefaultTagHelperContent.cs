@@ -149,6 +149,29 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         }
 
         /// <inheritdoc />
+        public override void CopyTo(IHtmlContentBuilder destination)
+        {
+            for (var i = 0; i < Buffer.Count; i++)
+            {
+                var entry = Buffer[i];
+                if (entry == null)
+                {
+                    continue;
+                }
+
+                var stringValue = entry as string;
+                if (stringValue != null)
+                {
+                    destination.Append(stringValue);
+                }
+                else
+                {
+                    destination.AppendHtml((IHtmlContent)entry);
+                }
+            }
+        }
+
+        /// <inheritdoc />
         public override TagHelperContent Clear()
         {
             Buffer.Clear();
