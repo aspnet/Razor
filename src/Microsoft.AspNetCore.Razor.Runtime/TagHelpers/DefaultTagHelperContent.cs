@@ -151,6 +151,16 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// <inheritdoc />
         public override void CopyTo(IHtmlContentBuilder destination)
         {
+            if (destination == null)
+            {
+                throw new ArgumentNullException(nameof(destination));
+            }
+
+            if (_buffer == null)
+            {
+                return;
+            }
+
             for (var i = 0; i < Buffer.Count; i++)
             {
                 var entry = Buffer[i];
@@ -159,16 +169,61 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                     continue;
                 }
 
-                var stringValue = entry as string;
-                if (stringValue != null)
+                string entryAsString;
+                IHtmlContentContainer entryAsContainer;
+                if ((entryAsString = entry as string) != null)
                 {
-                    destination.Append(stringValue);
+                    destination.Append(entryAsString);
+                }
+                else if ((entryAsContainer = entry as IHtmlContentContainer) != null)
+                {
+                    entryAsContainer.CopyTo(destination);
                 }
                 else
                 {
                     destination.AppendHtml((IHtmlContent)entry);
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public override void MoveTo(IHtmlContentBuilder destination)
+        {
+            if (destination == null)
+            {
+                throw new ArgumentNullException(nameof(destination));
+            }
+
+            if (_buffer == null)
+            {
+                return;
+            }
+
+            for (var i = 0; i < Buffer.Count; i++)
+            {
+                var entry = Buffer[i];
+                if (entry == null)
+                {
+                    continue;
+                }
+
+                string entryAsString;
+                IHtmlContentContainer entryAsContainer;
+                if ((entryAsString = entry as string) != null)
+                {
+                    destination.Append(entryAsString);
+                }
+                else if ((entryAsContainer = entry as IHtmlContentContainer) != null)
+                {
+                    entryAsContainer.MoveTo(destination);
+                }
+                else
+                {
+                    destination.AppendHtml((IHtmlContent)entry);
+                }
+            }
+
+            Buffer.Clear();
         }
 
         /// <inheritdoc />
