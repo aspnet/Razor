@@ -977,6 +977,8 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         public void CopyTo_CopiesToBuilder(TagHelperOutput output, string expected)
         {
             // Arrange
+            var attributeCount = output.Attributes.Count;
+
             var writer = new StringWriter();
             var testEncoder = new HtmlTestEncoder();
 
@@ -998,6 +1000,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             // Assert
             buffer.WriteTo(writer, testEncoder);
 
+            Assert.Equal(attributeCount, output.Attributes.Count);
             Assert.Equal(expected, writer.ToString(), StringComparer.Ordinal);
         }
 

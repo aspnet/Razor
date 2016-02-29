@@ -278,6 +278,11 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
 
         void IHtmlContentContainer.CopyTo(IHtmlContentBuilder destination)
         {
+            if (destination == null)
+            {
+                throw new ArgumentNullException(nameof(destination));
+            }
+
             _preElement?.CopyTo(destination);
 
             var isTagNameNullOrWhitespace = string.IsNullOrWhiteSpace(TagName);
@@ -288,7 +293,6 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 destination.AppendHtml(TagName);
 
                 CopyAttributesTo(destination);
-                _attributes?.Clear();
 
                 if (TagMode == TagMode.SelfClosing)
                 {
@@ -319,6 +323,11 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
 
         void IHtmlContentContainer.MoveTo(IHtmlContentBuilder destination)
         {
+            if (destination == null)
+            {
+                throw new ArgumentNullException(nameof(destination));
+            }
+
             _preElement?.MoveTo(destination);
 
             var isTagNameNullOrWhitespace = string.IsNullOrWhiteSpace(TagName);
@@ -329,6 +338,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 destination.AppendHtml(TagName);
                 
                 CopyAttributesTo(destination);
+                _attributes?.Clear();
 
                 if (TagMode == TagMode.SelfClosing)
                 {
@@ -357,6 +367,16 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
 
         public void WriteTo(TextWriter writer, HtmlEncoder encoder)
         {
+            if (writer == null)
+            {
+                throw new ArgumentNullException(nameof(writer));
+            }
+
+            if (encoder == null)
+            {
+                throw new ArgumentNullException(nameof(encoder));
+            }
+
             _preElement?.WriteTo(writer, encoder);
 
             var isTagNameNullOrWhitespace = string.IsNullOrWhiteSpace(TagName);
