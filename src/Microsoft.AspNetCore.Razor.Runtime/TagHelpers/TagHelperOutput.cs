@@ -338,7 +338,6 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 destination.AppendHtml(TagName);
                 
                 CopyAttributesTo(destination);
-                _attributes?.Clear();
 
                 if (TagMode == TagMode.SelfClosing)
                 {
@@ -363,6 +362,12 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             }
 
             _postElement?.MoveTo(destination);
+
+            // Depending on the code path we took, these might need to be cleared.
+            _preContent?.Clear();
+            _content?.Clear();
+            _postContent?.Clear();
+            _attributes?.Clear();
         }
 
         public void WriteTo(TextWriter writer, HtmlEncoder encoder)
