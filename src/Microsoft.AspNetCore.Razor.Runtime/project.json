@@ -1,5 +1,10 @@
 {
-  "description": "Runtime components for rendering Razor pages.",
+  "description": "Runtime components for rendering Razor pages and implementing tag helpers.\r\nCommonly used types:\r\nMicrosoft.AspNetCore.Razor.TagHelpers.HtmlAttributeNameAttribute\r\nMicrosoft.AspNetCore.Razor.TagHelpers.HtmlTargetElementAttribute\r\nMicrosoft.AspNetCore.Razor.TagHelpers.ITagHelper\r\nMicrosoft.AspNetCore.Razor.TagHelpers.TagHelper",
+  "tags": [
+    "aspnetcore",
+    "cshtml",
+    "razor"
+  ],
   "version": "1.0.0-*",
   "compilationOptions": {
     "allowUnsafe": true,
