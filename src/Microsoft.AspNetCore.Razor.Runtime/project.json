@@ -1,6 +1,6 @@
 {
   "description": "Runtime components for rendering Razor pages and implementing tag helpers.\r\nCommonly used types:\r\nMicrosoft.AspNetCore.Razor.TagHelpers.HtmlAttributeNameAttribute\r\nMicrosoft.AspNetCore.Razor.TagHelpers.HtmlTargetElementAttribute\r\nMicrosoft.AspNetCore.Razor.TagHelpers.ITagHelper",
-  "version": "1.0.0-*",
+  "version": "1.0.0-rc2-final",
   "buildOptions": {
     "allowUnsafe": true,
     "keyFile": "../../tools/Key.snk",
@@ -24,8 +24,8 @@
     ]
   },
   "dependencies": {
-    "Microsoft.AspNetCore.Html.Abstractions": "1.0.0-*",
-    "Microsoft.AspNetCore.Razor": "1.0.0-*",
+    "Microsoft.AspNetCore.Html.Abstractions": "1.0.0-rc2-final",
+    "Microsoft.AspNetCore.Razor": "1.0.0-rc2-final",
     "Microsoft.Extensions.ClosedGenericMatcher.Sources": {
       "type": "build",
       "version": "1.0.0-*"
@@ -54,12 +54,12 @@
     },
     "netstandard1.5": {
       "dependencies": {
-        "System.Collections.Concurrent": "4.0.12-*",
-        "System.Reflection": "4.1.0-*",
-        "System.Reflection.Extensions": "4.0.1-*",
-        "System.Reflection.TypeExtensions": "4.1.0-*",
-        "System.Text.RegularExpressions": "4.0.12-*",
-        "System.Xml.XDocument": "4.0.11-*"
+        "System.Collections.Concurrent": "4.0.12-rc2-24027",
+        "System.Reflection": "4.1.0-rc2-24027",
+        "System.Reflection.Extensions": "4.0.1-rc2-24027",
+        "System.Reflection.TypeExtensions": "4.1.0-rc2-24027",
+        "System.Text.RegularExpressions": "4.0.12-rc2-24027",
+        "System.Xml.XDocument": "4.0.11-rc2-24027"
       }
     }
   }
