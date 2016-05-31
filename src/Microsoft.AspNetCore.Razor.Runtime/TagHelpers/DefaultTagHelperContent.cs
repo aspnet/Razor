@@ -344,10 +344,13 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             public bool IsEmptyOrWhiteSpace { get; private set; } = true;
 
 #if NETSTANDARD1_5
-            // This is an abstract method in .NET Core but NullHtmlEncoder doesn't need it.
+            // This is an abstract method in .NET Core.
             public override void Write(char value)
             {
-                throw new NotImplementedException();
+                if (IsEmptyOrWhiteSpace && !char.IsWhiteSpace(value))
+                {
+                    IsEmptyOrWhiteSpace = false;
+                }
             }
 #endif
 

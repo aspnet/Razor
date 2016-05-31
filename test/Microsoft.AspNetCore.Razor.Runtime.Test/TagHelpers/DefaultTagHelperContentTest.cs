@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Html;
 using Microsoft.Extensions.WebEncoders.Testing;
 using Xunit;
@@ -569,6 +570,35 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         }
 
         [Fact]
+        public void IsEmptyOrWhiteSpace_TrueAfterAppendTagHelperContent_WithCharByCharWriteTo()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var copiedTagHelperContent = new CharByCharWhiteSpaceHtmlContent();
+
+            // Act
+            tagHelperContent.AppendHtml(copiedTagHelperContent);
+
+            // Assert
+            Assert.True(tagHelperContent.IsEmptyOrWhiteSpace);
+        }
+
+        [Fact]
+        public void IsEmptyOrWhiteSpace_TrueAfterAppendTagHelperContentTwice_WithCharByCharWriteTo()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var copiedTagHelperContent = new CharByCharWhiteSpaceHtmlContent();
+
+            // Act
+            tagHelperContent.AppendHtml(copiedTagHelperContent);
+            tagHelperContent.AppendHtml(copiedTagHelperContent);
+
+            // Assert
+            Assert.True(tagHelperContent.IsEmptyOrWhiteSpace);
+        }
+
+        [Fact]
         public void IsEmptyOrWhiteSpace_TrueAfterClear()
         {
             // Arrange
@@ -758,6 +788,20 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
 
             // Assert
             Assert.Equal("Hi", writer.ToString());
+        }
+
+        private class CharByCharWhiteSpaceHtmlContent : IHtmlContent
+        {
+            public void WriteTo(TextWriter writer, HtmlEncoder encoder)
+            {
+                writer.Write(' ');
+                writer.Write('\n');
+                writer.Write('\t');
+                writer.Write('\r');
+                writer.Write('\u2000');
+                writer.Write('\u205f');
+                writer.Write('\u3000');
+            }
         }
     }
 }
