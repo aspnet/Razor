@@ -343,8 +343,6 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
 
             public bool IsEmptyOrWhiteSpace { get; private set; } = true;
 
-#if NETSTANDARD1_5
-            // This is an abstract method in .NET Core.
             public override void Write(char value)
             {
                 if (IsEmptyOrWhiteSpace && !char.IsWhiteSpace(value))
@@ -352,7 +350,6 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                     IsEmptyOrWhiteSpace = false;
                 }
             }
-#endif
 
             public override void Write(string value)
             {

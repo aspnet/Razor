@@ -599,6 +599,21 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         }
 
         [Fact]
+        public void IsEmptyOrWhiteSpace_FalseAfterAppendTagHelperContentTwice_WithCharByCharWriteTo()
+        {
+            // Arrange
+            var tagHelperContent = new DefaultTagHelperContent();
+            var copiedTagHelperContent = new CharByCharNonWhiteSpaceHtmlContent();
+
+            // Act
+            tagHelperContent.AppendHtml(copiedTagHelperContent);
+            tagHelperContent.AppendHtml(copiedTagHelperContent);
+
+            // Assert
+            Assert.False(tagHelperContent.IsEmptyOrWhiteSpace);
+        }
+
+        [Fact]
         public void IsEmptyOrWhiteSpace_TrueAfterClear()
         {
             // Arrange
@@ -800,6 +815,25 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
                 writer.Write('\r');
                 writer.Write('\u2000');
                 writer.Write('\u205f');
+                writer.Write('\u3000');
+            }
+        }
+
+        private class CharByCharNonWhiteSpaceHtmlContent : IHtmlContent
+        {
+            public void WriteTo(TextWriter writer, HtmlEncoder encoder)
+            {
+                writer.Write('\u2000');
+                writer.Write('h');
+                writer.Write('e');
+                writer.Write('l');
+                writer.Write('l');
+                writer.Write('o');
+                writer.Write('\u200a');
+                writer.Write('É');
+                writer.Write('r');
+                writer.Write('i');
+                writer.Write('c');
                 writer.Write('\u3000');
             }
         }
