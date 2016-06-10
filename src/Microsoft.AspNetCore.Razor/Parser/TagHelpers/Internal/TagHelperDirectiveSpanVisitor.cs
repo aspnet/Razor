@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Razor.Chunks.Generators;
 using Microsoft.AspNetCore.Razor.Compilation.TagHelpers;
 using Microsoft.AspNetCore.Razor.Parser.SyntaxTree;
 
-namespace Microsoft.AspNetCore.Razor.Parser.TagHelpers
+namespace Microsoft.AspNetCore.Razor.Parser.TagHelpers.Internal
 {
     /// <summary>
     /// A <see cref="ParserVisitor"/> that generates <see cref="TagHelperDescriptor"/>s from
