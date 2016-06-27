@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0-rtm-21431",
   "shared": "*.cs",
   "dependencies": {
-    "xunit.assert": "2.1.0-*"
+    "xunit.assert": "2.0.0-aspnet-beta1"
   },
   "frameworks": {
     "net451": {},
