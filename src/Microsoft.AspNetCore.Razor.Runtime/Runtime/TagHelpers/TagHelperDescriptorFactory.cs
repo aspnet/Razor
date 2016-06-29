@@ -191,17 +191,9 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             foreach (var name in allowedChildren)
             {
                 var valid = TryValidateName(
-                    name,
-                    whitespaceError:
-                        Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeNameNullWhitespace(
-                            nameof(RestrictChildrenAttribute),
-                            tagHelperName),
-                    characterErrorBuilder: (invalidCharacter) =>
-                        Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeName(
-                            nameof(RestrictChildrenAttribute),
-                            name,
-                            tagHelperName,
-                            invalidCharacter),
+                    name: name,
+                    tagHelperName: tagHelperName,
+                    restrictChildrenAttribute: true,
                     errorSink: errorSink);
 
                 if (valid)
@@ -284,13 +276,7 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             return parentTag == null ||
                 TryValidateName(
                     parentTag,
-                    Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(
-                        Resources.TagHelperDescriptorFactory_ParentTag),
-                    characterErrorBuilder: (invalidCharacter) =>
-                        Resources.FormatHtmlTargetElementAttribute_InvalidName(
-                            Resources.TagHelperDescriptorFactory_ParentTag.ToLower(),
-                            parentTag,
-                            invalidCharacter),
+                    Resources.TagHelperDescriptorFactory_ParentTag,
                     errorSink: errorSink);
         }
 
@@ -322,12 +308,7 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
 
             var validName = TryValidateName(
                 name,
-                whitespaceError: Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(targetName),
-                characterErrorBuilder: (invalidCharacter) =>
-                    Resources.FormatHtmlTargetElementAttribute_InvalidName(
-                        targetName.ToLower(),
-                        name,
-                        invalidCharacter),
+                targetName,
                 errorSink: errorSink);
 
             return validName;
@@ -335,14 +316,32 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
 
         private static bool TryValidateName(
             string name,
-            string whitespaceError,
-            Func<char, string> characterErrorBuilder,
+            string tagHelperName,
+            ErrorSink errorSink)
+        {
+            return TryValidateName(
+                name,
+                tagHelperName,
+                false,
+                errorSink);
+            
+        }
+
+        private static bool TryValidateName(
+            string name,
+            string tagHelperName,
+            bool restrictChildrenAttribute,
             ErrorSink errorSink)
         {
             var validName = true;
 
             if (string.IsNullOrWhiteSpace(name))
             {
+                var whitespaceError = restrictChildrenAttribute ? 
+                    Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeNameNullWhitespace(
+                        nameof(RestrictChildrenAttribute), 
+                        tagHelperName) : 
+                    Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(tagHelperName);
                 errorSink.OnError(SourceLocation.Zero, whitespaceError, length: 0);
 
                 validName = false;
@@ -354,6 +353,10 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
                     if (char.IsWhiteSpace(character) ||
                         InvalidNonWhitespaceNameCharacters.Contains(character))
                     {
+                        var characterErrorBuilder = GetCharacterErrorBuilder(
+                            name, 
+                            tagHelperName, 
+                            restrictChildrenAttribute);
                         var error = characterErrorBuilder(character);
                         errorSink.OnError(SourceLocation.Zero, error, length: 0);
 
@@ -363,6 +366,30 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             }
 
             return validName;
+        }
+
+        private static Func<char, string> GetCharacterErrorBuilder(
+            string name, 
+            string tagHelperName, 
+            bool restrictChildrenAttribute)
+        {
+            if (restrictChildrenAttribute)
+            {
+                return (invalidCharacter) =>
+                        Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeName(
+                            nameof(RestrictChildrenAttribute),
+                            name,
+                            tagHelperName,
+                            invalidCharacter);
+            }
+            else
+            {
+                return (invalidCharacter) =>
+                        Resources.FormatHtmlTargetElementAttribute_InvalidName(
+                            tagHelperName.ToLower(), 
+                            name, 
+                            invalidCharacter);
+            }
         }
 
         private IEnumerable<TagHelperAttributeDescriptor> GetAttributeDescriptors(Type type, ErrorSink errorSink)
