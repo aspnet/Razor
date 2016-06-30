@@ -190,10 +190,9 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
 
             foreach (var name in allowedChildren)
             {
-                var valid = TryValidateName(
-                    name: name,
-                    tagHelperName: tagHelperName,
-                    restrictChildrenAttribute: true,
+                var valid = TryValidateRestrictedChildrenAttributeName(
+                    name,
+                    tagHelperName,
                     errorSink: errorSink);
 
                 if (valid)
@@ -274,7 +273,7 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
         internal static bool ValidateParentTagName(string parentTag, ErrorSink errorSink)
         {
             return parentTag == null ||
-                TryValidateName(
+                TryValidateAttributeName(
                     parentTag,
                     Resources.TagHelperDescriptorFactory_ParentTag,
                     errorSink: errorSink);
@@ -306,7 +305,8 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
                 Resources.TagHelperDescriptorFactory_Attribute :
                 Resources.TagHelperDescriptorFactory_Tag;
 
-            var validName = TryValidateName(
+
+            var validName = TryValidateAttributeName(
                 name,
                 targetName,
                 errorSink: errorSink);
@@ -314,34 +314,17 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             return validName;
         }
 
-        private static bool TryValidateName(
-            string name,
-            string tagHelperName,
-            ErrorSink errorSink)
-        {
-            return TryValidateName(
-                name,
-                tagHelperName,
-                false,
-                errorSink);
-            
-        }
-
-        private static bool TryValidateName(
-            string name,
-            string tagHelperName,
-            bool restrictChildrenAttribute,
+        private static bool TryValidateAttributeName(
+            string name, 
+            string targetName,
             ErrorSink errorSink)
         {
             var validName = true;
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                var whitespaceError = restrictChildrenAttribute ? 
-                    Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeNameNullWhitespace(
-                        nameof(RestrictChildrenAttribute), 
-                        tagHelperName) : 
-                    Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(tagHelperName);
+                var whitespaceError = Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(
+                    targetName);
                 errorSink.OnError(SourceLocation.Zero, whitespaceError, length: 0);
 
                 validName = false;
@@ -353,11 +336,10 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
                     if (char.IsWhiteSpace(character) ||
                         InvalidNonWhitespaceNameCharacters.Contains(character))
                     {
-                        var characterErrorBuilder = GetCharacterErrorBuilder(
-                            name, 
-                            tagHelperName, 
-                            restrictChildrenAttribute);
-                        var error = characterErrorBuilder(character);
+                        var error = Resources.FormatHtmlTargetElementAttribute_InvalidName(
+                            targetName.ToLower(),
+                            name,
+                            character);
                         errorSink.OnError(SourceLocation.Zero, error, length: 0);
 
                         validName = false;
@@ -368,28 +350,42 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             return validName;
         }
 
-        private static Func<char, string> GetCharacterErrorBuilder(
-            string name, 
-            string tagHelperName, 
-            bool restrictChildrenAttribute)
+        private static bool TryValidateRestrictedChildrenAttributeName(
+            string name,
+            string tagHelperName,
+            ErrorSink errorSink)
         {
-            if (restrictChildrenAttribute)
+            var validName = true;
+
+            if (string.IsNullOrWhiteSpace(name))
             {
-                return (invalidCharacter) =>
-                        Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeName(
-                            nameof(RestrictChildrenAttribute),
-                            name,
-                            tagHelperName,
-                            invalidCharacter);
+                var whitespaceError = Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeNameNullWhitespace(
+                        nameof(RestrictChildrenAttribute),
+                        tagHelperName);
+                errorSink.OnError(SourceLocation.Zero, whitespaceError, length: 0);
+
+                validName = false;
             }
             else
             {
-                return (invalidCharacter) =>
-                        Resources.FormatHtmlTargetElementAttribute_InvalidName(
-                            tagHelperName.ToLower(), 
-                            name, 
-                            invalidCharacter);
+                foreach (var character in name)
+                {
+                    if (char.IsWhiteSpace(character) ||
+                        InvalidNonWhitespaceNameCharacters.Contains(character))
+                    {
+                        var error = Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeName(
+                            nameof(RestrictChildrenAttribute),
+                            name,
+                            tagHelperName,
+                            character);
+                        errorSink.OnError(SourceLocation.Zero, error, length: 0);
+
+                        validName = false;
+                    }
+                }
             }
+
+            return validName;
         }
 
         private IEnumerable<TagHelperAttributeDescriptor> GetAttributeDescriptors(Type type, ErrorSink errorSink)
