@@ -281,34 +281,11 @@ namespace Microsoft.AspNetCore.Razor
                 throw new ArgumentNullException(nameof(inputStream));
             }
 
-            MemoryStream memoryStream = null;
-            string checksum = null;
-            try
+            var checksumResult = CalculateChecksum(inputStream);
+            using (checksumResult.CopiedStream)
             {
-                if (!Host.DesignTimeMode)
-                {
-                    // We don't need to calculate the checksum in design time.
-                    if (!inputStream.CanSeek)
-                    {
-                        memoryStream = new MemoryStream();
-                        inputStream.CopyTo(memoryStream);
-
-                        // We don't have to dispose the input stream since it is owned externally.
-                        inputStream = memoryStream;
-                    }
-
-                    inputStream.Position = 0;
-                    checksum = ComputeChecksum(inputStream);
-                    inputStream.Position = 0;
-                }
-
-                using (var reader =
-                    new StreamReader(
-                        inputStream,
-                        Encoding.UTF8,
-                        detectEncodingFromByteOrderMarks: true,
-                        bufferSize: BufferSize,
-                        leaveOpen: true))
+                inputStream = checksumResult.CopiedStream ?? inputStream;
+                using (var reader = CreateNonDisposingStreamReader(inputStream))
                 {
                     var seekableStream = new SeekableTextReader(reader);
                     return GenerateCodeCore(
@@ -316,17 +293,59 @@ namespace Microsoft.AspNetCore.Razor
                         className,
                         rootNamespace,
                         sourceFileName,
-                        checksum,
+                        checksumResult.Checksum,
                         cancelToken: null);
                 }
             }
-            finally
+        }
+
+        public GeneratorResults GenerateCode(TemplateEngineContext context)
+        {
+            if (context == null)
             {
-                if (memoryStream != null)
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            if (context.InputStream == null)
+            {
+                throw new ArgumentNullException(nameof(context.InputStream));
+            }
+
+            var checksumResult = CalculateChecksum(context.InputStream);
+            using (checksumResult.CopiedStream)
+            {
+                var inputStream = checksumResult.CopiedStream ?? context.InputStream;
+                using (var reader = CreateNonDisposingStreamReader(inputStream))
                 {
-                    memoryStream.Dispose();
+                    var seekableReader = new SeekableTextReader(reader);
+                    return GenerateCodeCore(seekableReader, context, checksumResult.Checksum);
                 }
             }
+        }
+
+        private ChecksumResult CalculateChecksum(Stream inputStream)
+        {
+            if (Host.DesignTimeMode)
+            {
+                // We don't need to calculate the checksum in design time.
+                return new ChecksumResult();
+            }
+
+            MemoryStream memoryStream = null;
+            if (!inputStream.CanSeek)
+            {
+                memoryStream = new MemoryStream();
+                inputStream.CopyTo(memoryStream);
+
+                // We don't have to dispose the input stream since it is owned externally.
+                inputStream = memoryStream;
+            }
+
+            inputStream.Position = 0;
+            var checksum = ComputeChecksum(inputStream);
+            inputStream.Position = 0;
+
+            return new ChecksumResult(checksum, memoryStream);
         }
 
         public GeneratorResults GenerateCode(
@@ -371,8 +390,54 @@ namespace Microsoft.AspNetCore.Razor
             Debug.Assert(parser != null);
             var results = parser.Parse(input);
 
+            return GenerateCodeCore(
+                className,
+                rootNamespace,
+                sourceFileName,
+                checksum,
+                results);
+        }
+
+        protected GeneratorResults GenerateCodeCore(
+            ITextDocument input,
+            TemplateEngineContext context,
+            string checksum)
+        {
+            if (input == null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            var className = (context.ClassName ?? Host.DefaultClassName) ?? DefaultClassName;
+            var rootNamespace = (context.RootNamespace ?? Host.DefaultNamespace) ?? DefaultNamespace;
+
+            // Run the parser
+            var parser = CreateParser(context);
+            Debug.Assert(parser != null);
+            var parserResults = parser.Parse(input);
+
+            return GenerateCodeCore(
+                className,
+                rootNamespace,
+                context.FilePath,
+                checksum,
+                parserResults);
+        }
+
+        private GeneratorResults GenerateCodeCore(
+            string className,
+            string rootNamespace,
+            string filePath,
+            string checksum,
+            ParserResults results)
+        {
             // Generate code
-            var chunkGenerator = CreateChunkGenerator(className, rootNamespace, sourceFileName);
+            var chunkGenerator = CreateChunkGenerator(className, rootNamespace, filePath);
             chunkGenerator.DesignTimeMode = Host.DesignTimeMode;
             chunkGenerator.Visit(results);
 
@@ -410,6 +475,22 @@ namespace Microsoft.AspNetCore.Razor
             return Host.DecorateRazorParser(parser, sourceFileName);
         }
 
+        private RazorParser CreateParser(TemplateEngineContext context)
+        {
+            var codeParser = Host.CodeLanguage.CreateCodeParser();
+            var markupParser = Host.CreateMarkupParser();
+
+            var parser = new RazorParser(
+                Host.DecorateCodeParser(codeParser),
+                Host.DecorateMarkupParser(markupParser),
+                Host.TagHelperDescriptorResolver)
+            {
+                DesignTimeMode = Host.DesignTimeMode
+            };
+
+            return Host.DecorateRazorParser(parser, context);
+        }
+
         protected internal virtual CodeGenerator CreateCodeGenerator(CodeGeneratorContext context)
         {
             return Host.DecorateCodeGenerator(Host.CodeLanguage.CreateCodeGenerator(context), context);
@@ -429,6 +510,29 @@ namespace Microsoft.AspNetCore.Razor
                 fileHashBuilder.Append(value.ToString("x2"));
             }
             return fileHashBuilder.ToString();
+        }
+
+        private static StreamReader CreateNonDisposingStreamReader(Stream inputStream)
+        {
+            return new StreamReader(
+                inputStream,
+                Encoding.UTF8,
+                detectEncodingFromByteOrderMarks: true,
+                bufferSize: BufferSize,
+                leaveOpen: true);
+        }
+
+        private struct ChecksumResult
+        {
+            public ChecksumResult(string checksum, MemoryStream copiedStream)
+            {
+                Checksum = checksum;
+                CopiedStream = copiedStream;
+            }
+
+            public string Checksum { get; }
+
+            public Stream CopiedStream { get; }
         }
     }
 }
