@@ -63,7 +63,10 @@ namespace Microsoft.AspNetCore.Razor.Compilation.TagHelpers
                     descriptorY.AllowedChildren.OrderBy(child => child, StringComparer.OrdinalIgnoreCase),
                     StringComparer.OrdinalIgnoreCase))) &&
                 descriptorX.TagStructure == descriptorY.TagStructure &&
-                descriptorX.PropertyBag.OrderBy(x => x.Key).SequenceEqual(descriptorY.PropertyBag.OrderBy(y => y.Key));
+                Enumerable.SequenceEqual(
+                    descriptorX.PropertyBag.OrderBy(propertyX => propertyX.Key, StringComparer.OrdinalIgnoreCase),
+                    descriptorY.PropertyBag.OrderBy(propertyY => propertyY.Key, StringComparer.OrdinalIgnoreCase)
+                    );
         }
 
         /// <inheritdoc />
