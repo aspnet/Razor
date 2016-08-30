@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Razor.Chunks.Generators;
 using Microsoft.AspNetCore.Razor.Compilation.TagHelpers;
 using Microsoft.AspNetCore.Razor.Editor;
@@ -207,15 +208,23 @@ namespace Microsoft.AspNetCore.Razor.Parser.TagHelpers.Internal
                     // We're now at: " |asp-for='...'" or " |asp-for=..."
                     // The goal here is to capture the attribute name.
 
-                    var symbolContents = htmlSymbols
-                        .Skip(i) // Skip prefix
-                        .TakeWhile(nameSymbol => HtmlMarkupParser.IsValidAttributeNameSymbol(nameSymbol))
-                        .Select(nameSymbol => nameSymbol.Content);
+                    var nameSymbols = htmlSymbols.Skip(i); // Skip prefix
+                    var nameBuilder = new StringBuilder();
+                    foreach (var nameSymbol in nameSymbols)
+                    {
+                        if (!HtmlMarkupParser.IsValidAttributeNameSymbol(nameSymbol))
+                        {
+                            break;
+                        }
+
+                        nameBuilder.Append(nameSymbol.Content);
+                        i++;
+                    }
 
                     // Move the indexer past the attribute name symbols.
-                    i += symbolContents.Count() - 1;
+                    i--;
 
-                    name = string.Concat(symbolContents);
+                    name = nameBuilder.ToString();
                     attributeValueStartLocation = SourceLocation.Advance(attributeValueStartLocation, name);
                 }
                 else if (symbol.Type == HtmlSymbolType.Equals)

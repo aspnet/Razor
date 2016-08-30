@@ -661,8 +661,8 @@ namespace Microsoft.AspNetCore.Razor.Parser.TagHelpers.Internal
 
         private bool IsPotentialTagHelper(string tagName, Block childBlock)
         {
-            var child = childBlock.Children.FirstOrDefault();
-            Debug.Assert(child != null);
+            Debug.Assert(childBlock.Children.Count > 0);
+            var child = childBlock.Children[0];
 
             var childSpan = (Span)child;
 
@@ -752,7 +752,18 @@ namespace Microsoft.AspNetCore.Razor.Parser.TagHelpers.Internal
             }
 
             var childSpan = (Span)child;
-            var textSymbol = childSpan.Symbols.FirstHtmlSymbolAs(HtmlSymbolType.WhiteSpace | HtmlSymbolType.Text);
+            HtmlSymbol textSymbol = null;
+            for (var i = 0; i < childSpan.Symbols.Count; i++)
+            {
+                var symbol = childSpan.Symbols[i] as HtmlSymbol;
+
+                if (symbol != null &&
+                    (symbol.Type & (HtmlSymbolType.WhiteSpace | HtmlSymbolType.Text)) == symbol.Type)
+                {
+                    textSymbol = symbol;
+                    break;
+                }
+            }
 
             if (textSymbol == null)
             {
