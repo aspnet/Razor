@@ -281,25 +281,26 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
         /// </summary>
         internal static bool ValidateParentTagName(string parentTag, ErrorSink errorSink)
         {
-            if (parentTag != null)
+            if (parentTag == null)
             {
-                if (string.IsNullOrWhiteSpace(parentTag))
-                {
-                    var error = Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(
-                        Resources.TagHelperDescriptorFactory_ParentTag);
-                    errorSink.OnError(SourceLocation.Zero, error, length: 0);
-                    return false;
-                }
-                else if (!TryValidateName(
+                return true;
+            }
+            else if (string.IsNullOrWhiteSpace(parentTag))
+            {
+                var error = Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(
+                    Resources.TagHelperDescriptorFactory_ParentTag);
+                errorSink.OnError(SourceLocation.Zero, error, length: 0);
+                return false;
+            }
+            else if (!TryValidateName(
+                parentTag,
+                invalidCharacter => Resources.FormatHtmlTargetElementAttribute_InvalidName(
+                    Resources.TagHelperDescriptorFactory_ParentTag.ToLower(),
                     parentTag,
-                    invalidCharacter => Resources.FormatHtmlTargetElementAttribute_InvalidName(
-                        Resources.TagHelperDescriptorFactory_ParentTag.ToLower(),
-                        parentTag,
-                        invalidCharacter),
-                    errorSink))
-                {
-                    return false;
-                }
+                    invalidCharacter),
+                errorSink))
+            {
+                return false;
             }
 
             return true;
@@ -337,14 +338,13 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
                 errorSink.OnError(SourceLocation.Zero, error, length: 0);
                 return false;
             }
-            else if (!
-                TryValidateName(
+            else if (!TryValidateName(
+                name,
+                invalidCharacter => Resources.FormatHtmlTargetElementAttribute_InvalidName(
+                    targetName.ToLower(),
                     name,
-                    invalidCharacter => Resources.FormatHtmlTargetElementAttribute_InvalidName(
-                        targetName.ToLower(),
-                        name,
-                        invalidCharacter),
-                    errorSink))
+                    invalidCharacter),
+                errorSink))
             {
                 return false;
             }
