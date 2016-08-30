@@ -705,7 +705,7 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             return property.GetIndexParameters().Length == 0 &&
                 property.GetMethod != null &&
                 property.GetMethod.IsPublic &&
-                property.GetCustomAttribute<HtmlAttributeNotBoundAttribute>(inherit: false) == null;
+                !property.IsDefined(typeof(HtmlAttributeNotBoundAttribute), inherit: false);
         }
 
         /// <summary>
