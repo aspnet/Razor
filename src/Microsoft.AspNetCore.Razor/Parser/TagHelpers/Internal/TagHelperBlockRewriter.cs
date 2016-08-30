@@ -208,10 +208,11 @@ namespace Microsoft.AspNetCore.Razor.Parser.TagHelpers.Internal
                     // We're now at: " |asp-for='...'" or " |asp-for=..."
                     // The goal here is to capture the attribute name.
 
-                    var nameSymbols = htmlSymbols.Skip(i); // Skip prefix
                     var nameBuilder = new StringBuilder();
-                    foreach (var nameSymbol in nameSymbols)
+                    // Move the indexer past the attribute name symbols.
+                    for (var j = i; j < htmlSymbols.Length; j++)
                     {
+                        var nameSymbol = htmlSymbols[j];
                         if (!HtmlMarkupParser.IsValidAttributeNameSymbol(nameSymbol))
                         {
                             break;
@@ -221,7 +222,6 @@ namespace Microsoft.AspNetCore.Razor.Parser.TagHelpers.Internal
                         i++;
                     }
 
-                    // Move the indexer past the attribute name symbols.
                     i--;
 
                     name = nameBuilder.ToString();
