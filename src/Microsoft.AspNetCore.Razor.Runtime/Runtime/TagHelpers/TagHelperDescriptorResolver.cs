@@ -143,6 +143,30 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             return descriptors;
         }
 
+        public static TagHelperDescriptor CloneDescriptor(TagHelperDescriptor descriptor)
+        {
+            var cloneDescriptor = new TagHelperDescriptor
+            {
+                Prefix = descriptor.Prefix,
+                TagName = descriptor.TagName,
+                TypeName = descriptor.TypeName,
+                AssemblyName = descriptor.AssemblyName,
+                Attributes = descriptor.Attributes,
+                RequiredAttributes = descriptor.RequiredAttributes,
+                AllowedChildren = descriptor.AllowedChildren,
+                RequiredParent = descriptor.RequiredParent,
+                TagStructure = descriptor.TagStructure,
+                DesignTimeDescriptor = descriptor.DesignTimeDescriptor
+            };
+
+            foreach (var property in descriptor.PropertyBag)
+            {
+                cloneDescriptor.PropertyBag[property.Key] = property.Value;
+            }
+
+            return cloneDescriptor;
+        }
+
         private static IEnumerable<TagHelperDescriptor> PrefixDescriptors(
             TagHelperDescriptorResolutionContext context,
             IEnumerable<TagHelperDescriptor> descriptors)
