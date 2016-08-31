@@ -143,6 +143,11 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             return descriptors;
         }
 
+        /// <summary>
+        /// This method returns a deep copy of a given <see cref="TagHelperDescriptor"/>.
+        /// </summary>
+        /// <param name="descriptor">The <see cref="TagHelperDescriptor"/> to clone.</param>
+        /// <returns></returns>
         public static TagHelperDescriptor CloneDescriptor(TagHelperDescriptor descriptor)
         {
             var cloneDescriptor = new TagHelperDescriptor
