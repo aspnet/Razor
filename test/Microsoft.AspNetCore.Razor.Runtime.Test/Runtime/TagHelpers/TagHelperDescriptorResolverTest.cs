@@ -1317,7 +1317,6 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             };
         }
 
-
         private static TagHelperDescriptor CreatePrefixedValidPlainDescriptor(string prefix)
         {
             return CreateDescriptor(
