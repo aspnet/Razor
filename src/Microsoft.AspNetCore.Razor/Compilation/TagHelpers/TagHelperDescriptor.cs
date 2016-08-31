@@ -32,7 +32,7 @@ namespace Microsoft.AspNetCore.Razor.Compilation.TagHelpers
         }
 
         /// <summary>
-        /// Creates a copy of the given <see cref="TagHelperDescriptor"/>. Note: this is not a deep copy.
+        /// Creates a shallow copy of the given <see cref="TagHelperDescriptor"/>.
         /// </summary>
         /// <param name="descriptor">The <see cref="TagHelperDescriptor"/> to copy.</param>
         public TagHelperDescriptor (TagHelperDescriptor descriptor)
