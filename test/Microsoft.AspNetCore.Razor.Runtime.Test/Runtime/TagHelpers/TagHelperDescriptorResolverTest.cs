@@ -398,48 +398,6 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             }
         }
 
-        [Fact]
-        public void CloneDescriptor_CorrectlyClonesDescriptor()
-        {
-            // Arrange
-            var descriptor = CreateFullDescriptor();
-
-            // Act
-            var cloneDescriptor = TagHelperDescriptorResolver.CloneDescriptor(descriptor);
-
-            // Assert
-            Assert.Equal(descriptor, cloneDescriptor, TagHelperDescriptorComparer.Default);
-        }
-
-        [Fact]
-        public void CloneDescriptor_MakesDeepCopy()
-        {
-            // Arrange, Act
-            var descriptor = CreateFullDescriptor();
-            var cloneDescriptor = TagHelperDescriptorResolver.CloneDescriptor(descriptor);
-
-            cloneDescriptor.Prefix = "mod-prefix";
-            cloneDescriptor.TagName = "mod-tag-name";
-            cloneDescriptor.TypeName = "ModTypeName";
-            cloneDescriptor.AssemblyName = "ModAssemblyName";
-            cloneDescriptor.Attributes = new List<TagHelperAttributeDescriptor>();
-            cloneDescriptor.RequiredAttributes = new List<TagHelperRequiredAttributeDescriptor>();
-            cloneDescriptor.AllowedChildren = new string[0];
-            cloneDescriptor.RequiredParent = string.Empty;
-            cloneDescriptor.TagStructure = TagStructure.Unspecified;
-            cloneDescriptor.DesignTimeDescriptor = new TagHelperDesignTimeDescriptor()
-            {
-                Summary = "summary"
-            };
-
-            cloneDescriptor.PropertyBag.Add("baz", "bay");
-            var expectedDescriptor = CreateFullDescriptor();
-
-            // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.Default);
-            Assert.NotEqual(expectedDescriptor, cloneDescriptor, TagHelperDescriptorComparer.Default);
-        }
-
         [Theory]
         [MemberData(nameof(ResolveDirectiveDescriptorsInvalidTagHelperPrefixData))]
         public void Resolve_CreatesExpectedErrorsForTagHelperPrefixDirectives(
@@ -1359,40 +1317,6 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             };
         }
 
-        private static TagHelperDescriptor CreateFullDescriptor()
-        {
-            var descriptor = new TagHelperDescriptor
-            {
-                Prefix = "prefix",
-                TagName = "tag-name",
-                TypeName = "TypeName",
-                AssemblyName = "AsssemblyName",
-                Attributes = new List<TagHelperAttributeDescriptor>
-                {
-                    new TagHelperAttributeDescriptor
-                    {
-                        Name = "test-attribute",
-                        PropertyName = "TestAttribute",
-                        TypeName = "string"
-                    }
-                },
-                RequiredAttributes = new List<TagHelperRequiredAttributeDescriptor>
-                {
-                    new TagHelperRequiredAttributeDescriptor
-                    {
-                        Name = "test-required-attribute"
-                    }
-                },
-                AllowedChildren = new[] { "child" },
-                RequiredParent = "required parent",
-                TagStructure = TagStructure.NormalOrSelfClosing,
-                DesignTimeDescriptor = new TagHelperDesignTimeDescriptor()
-            };
-
-            descriptor.PropertyBag.Add("foo", "bar");
-
-            return descriptor;
-        }
 
         private static TagHelperDescriptor CreatePrefixedValidPlainDescriptor(string prefix)
         {
