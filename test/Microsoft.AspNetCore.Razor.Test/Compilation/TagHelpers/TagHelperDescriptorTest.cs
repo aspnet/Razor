@@ -50,7 +50,7 @@ namespace Microsoft.AspNetCore.Razor.Compilation.TagHelpers
             var copyDescriptor = new TagHelperDescriptor(descriptor);
 
             // Assert
-            Assert.Equal(descriptor, copyDescriptor, TagHelperDescriptorComparer.Default);
+            Assert.Equal(descriptor, copyDescriptor, CaseSensitiveTagHelperDescriptorComparer.Default);
             Assert.Same(descriptor.Attributes, copyDescriptor.Attributes);
             Assert.Same(descriptor.RequiredAttributes, copyDescriptor.RequiredAttributes);
         }
