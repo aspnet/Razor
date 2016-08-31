@@ -28,7 +28,6 @@ namespace Microsoft.AspNetCore.Razor.Compilation.TagHelpers
         /// </summary>
         public TagHelperDescriptor()
         {
-
         }
 
         /// <summary>

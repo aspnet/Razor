@@ -51,6 +51,8 @@ namespace Microsoft.AspNetCore.Razor.Compilation.TagHelpers
 
             // Assert
             Assert.Equal(descriptor, copyDescriptor, TagHelperDescriptorComparer.Default);
+            Assert.Same(descriptor.Attributes, copyDescriptor.Attributes);
+            Assert.Same(descriptor.RequiredAttributes, copyDescriptor.RequiredAttributes);
         }
 
         [Fact]
