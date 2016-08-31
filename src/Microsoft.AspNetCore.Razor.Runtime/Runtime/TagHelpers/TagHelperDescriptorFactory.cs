@@ -190,18 +190,9 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
 
             foreach (var name in allowedChildren)
             {
-                var valid = TryValidateName(
+                var valid = TryValidateRestrictedChildrenAttributeName(
                     name,
-                    whitespaceError:
-                        Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeNameNullWhitespace(
-                            nameof(RestrictChildrenAttribute),
-                            tagHelperName),
-                    characterErrorBuilder: (invalidCharacter) =>
-                        Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeName(
-                            nameof(RestrictChildrenAttribute),
-                            name,
-                            tagHelperName,
-                            invalidCharacter),
+                    tagHelperName,
                     errorSink: errorSink);
 
                 if (valid)
@@ -282,15 +273,9 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
         internal static bool ValidateParentTagName(string parentTag, ErrorSink errorSink)
         {
             return parentTag == null ||
-                TryValidateName(
+                TryValidateAttributeName(
                     parentTag,
-                    Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(
-                        Resources.TagHelperDescriptorFactory_ParentTag),
-                    characterErrorBuilder: (invalidCharacter) =>
-                        Resources.FormatHtmlTargetElementAttribute_InvalidName(
-                            Resources.TagHelperDescriptorFactory_ParentTag.ToLower(),
-                            parentTag,
-                            invalidCharacter),
+                    Resources.TagHelperDescriptorFactory_ParentTag,
                     errorSink: errorSink);
         }
 
@@ -320,29 +305,26 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
                 Resources.TagHelperDescriptorFactory_Attribute :
                 Resources.TagHelperDescriptorFactory_Tag;
 
-            var validName = TryValidateName(
+
+            var validName = TryValidateAttributeName(
                 name,
-                whitespaceError: Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(targetName),
-                characterErrorBuilder: (invalidCharacter) =>
-                    Resources.FormatHtmlTargetElementAttribute_InvalidName(
-                        targetName.ToLower(),
-                        name,
-                        invalidCharacter),
+                targetName,
                 errorSink: errorSink);
 
             return validName;
         }
 
-        private static bool TryValidateName(
-            string name,
-            string whitespaceError,
-            Func<char, string> characterErrorBuilder,
+        private static bool TryValidateAttributeName(
+            string name, 
+            string targetName,
             ErrorSink errorSink)
         {
             var validName = true;
 
             if (string.IsNullOrWhiteSpace(name))
             {
+                var whitespaceError = Resources.FormatHtmlTargetElementAttribute_NameCannotBeNullOrWhitespace(
+                    targetName);
                 errorSink.OnError(SourceLocation.Zero, whitespaceError, length: 0);
 
                 validName = false;
@@ -354,7 +336,48 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
                     if (char.IsWhiteSpace(character) ||
                         InvalidNonWhitespaceNameCharacters.Contains(character))
                     {
-                        var error = characterErrorBuilder(character);
+                        var error = Resources.FormatHtmlTargetElementAttribute_InvalidName(
+                            targetName.ToLower(),
+                            name,
+                            character);
+                        errorSink.OnError(SourceLocation.Zero, error, length: 0);
+
+                        validName = false;
+                    }
+                }
+            }
+
+            return validName;
+        }
+
+        private static bool TryValidateRestrictedChildrenAttributeName(
+            string name,
+            string tagHelperName,
+            ErrorSink errorSink)
+        {
+            var validName = true;
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                var whitespaceError = Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeNameNullWhitespace(
+                        nameof(RestrictChildrenAttribute),
+                        tagHelperName);
+                errorSink.OnError(SourceLocation.Zero, whitespaceError, length: 0);
+
+                validName = false;
+            }
+            else
+            {
+                foreach (var character in name)
+                {
+                    if (char.IsWhiteSpace(character) ||
+                        InvalidNonWhitespaceNameCharacters.Contains(character))
+                    {
+                        var error = Resources.FormatTagHelperDescriptorFactory_InvalidRestrictChildrenAttributeName(
+                            nameof(RestrictChildrenAttribute),
+                            name,
+                            tagHelperName,
+                            character);
                         errorSink.OnError(SourceLocation.Zero, error, length: 0);
 
                         validName = false;
