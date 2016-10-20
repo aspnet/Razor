@@ -3,7 +3,7 @@
 
 using Xunit;
 
-namespace Microsoft.AspNetCore.Razor.Evolution.Test
+namespace Microsoft.AspNetCore.Razor.Evolution
 {
     public class IntegrationTest
     {
