@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Microsoft.AspNetCore.Razor.Test.Internal
 {
-    public class CaseSensitiveTagHelperAttributeComparer : IEqualityComparer<TagHelperAttribute>
+    internal class CaseSensitiveTagHelperAttributeComparer : IEqualityComparer<TagHelperAttribute>
     {
-        internal readonly static CaseSensitiveTagHelperAttributeComparer Default =
+        public readonly static CaseSensitiveTagHelperAttributeComparer Default =
             new CaseSensitiveTagHelperAttributeComparer();
 
         private CaseSensitiveTagHelperAttributeComparer()
