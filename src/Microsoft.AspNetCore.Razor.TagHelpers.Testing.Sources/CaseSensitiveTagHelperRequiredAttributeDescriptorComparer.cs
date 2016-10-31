@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Razor.Compilation.TagHelpers;
 using Microsoft.Extensions.Internal;
 using Xunit;
 
-namespace Microsoft.AspNetCore.Razor.TagHelpers.Test
+namespace Microsoft.AspNetCore.Razor.TagHelpers.Testing
 {
     internal class CaseSensitiveTagHelperRequiredAttributeDescriptorComparer : TagHelperRequiredAttributeDescriptorComparer
     {
