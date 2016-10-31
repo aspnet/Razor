@@ -7,7 +7,7 @@ using System.IO;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace Microsoft.AspNetCore.Razor.Test.Internal
+namespace Microsoft.AspNetCore.Razor.TagHelpers.Test
 {
     internal class CaseSensitiveTagHelperAttributeComparer : IEqualityComparer<TagHelperAttribute>
     {
