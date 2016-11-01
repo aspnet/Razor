@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Html;
+using Microsoft.DotNet.InternalAbstractions;
 
 namespace Microsoft.AspNetCore.Razor.TagHelpers.Testing
 {
@@ -34,15 +35,11 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers.Testing
 
         public int GetHashCode(TagHelperAttribute attribute)
         {
-            // Manually combine hash codes here. We can't reference HashCodeCombiner because we have internals visible
-            // from Mvc.Core and Mvc.TagHelpers; both of which reference HashCodeCombiner.
-            var baseHashCode = 0x1505L;
-            var attributeHashCode = attribute.GetHashCode();
-            var combinedHash = ((baseHashCode << 5) + baseHashCode) ^ attributeHashCode;
-            var nameHashCode = StringComparer.Ordinal.GetHashCode(attribute.Name);
-            combinedHash = ((combinedHash << 5) + combinedHash) ^ nameHashCode;
+            var hashCodeCombiner = HashCodeCombiner.Start();
+            hashCodeCombiner.Add(attribute.GetHashCode());
+            hashCodeCombiner.Add(attribute.Name, StringComparer.Ordinal);
 
-            return combinedHash.GetHashCode();
+            return hashCodeCombiner.CombinedHash;
         }
 
         private string GetString(object value)
