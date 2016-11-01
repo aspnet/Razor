@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Html;
-using Microsoft.DotNet.InternalAbstractions;
+using Microsoft.Extensions.Internal;
 
 namespace Microsoft.AspNetCore.Razor.TagHelpers.Testing
 {
