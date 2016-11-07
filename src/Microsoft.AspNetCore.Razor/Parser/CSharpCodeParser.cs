@@ -476,7 +476,6 @@ namespace Microsoft.AspNetCore.Razor.Parser
                         Accept(dot);
                     }
                 }
-                // If not white space nor new line
                 else if (!(At(CSharpSymbolType.WhiteSpace) || At(CSharpSymbolType.NewLine)))
                 {
                     PutCurrentBack();
