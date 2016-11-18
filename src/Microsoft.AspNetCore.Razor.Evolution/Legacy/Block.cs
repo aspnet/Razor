@@ -156,6 +156,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             return hashCodeCombiner.CombinedHash;
         }
 
+        public override void Accept(ParserVisitor visitor)
+        {
+            visitor.VisitBlock(this);
+        }
+
         private class EquivalenceComparer : IEqualityComparer<SyntaxTreeNode>
         {
             public static readonly EquivalenceComparer Default = new EquivalenceComparer();
