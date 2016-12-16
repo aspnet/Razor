@@ -33,10 +33,11 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
         // which is based on the DocumentedTagHelper type.
         public static readonly string TestRoot =
 #if NET451
-            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", ".."));
+            AppDomain.CurrentDomain.BaseDirectory;
 #else
-            Directory.GetCurrentDirectory();
+            AppContext.BaseDirectory;
 #endif
+            
         public static readonly string DocumentedAssemblyLocation =
             Path.Combine(TestRoot, "TestFiles", "NotLocalized", "TagHelperDocumentation.dll");
         public static readonly string LocalizedDocumentedAssemblyLocation =
