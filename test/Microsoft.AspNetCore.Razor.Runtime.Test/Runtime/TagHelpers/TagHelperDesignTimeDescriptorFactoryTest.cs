@@ -29,15 +29,17 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             "TagHelpers.DocumentedTagHelper.SummaryProperty\" /><see cref=\"P:Microsoft.AspNetCore.Razor" +
             ".TagHelpers.DocumentedTagHelper.RemarksProperty\" />";
 
-        // These test assemblies don't really exist. They are used to look up corresponding XML for a fake assembly
-        // which is based on the DocumentedTagHelper type.
-        public static readonly string TestRoot =
+        private static readonly string BaseDir =
 #if NET451
             AppDomain.CurrentDomain.BaseDirectory;
 #else
             AppContext.BaseDirectory;
 #endif
-            
+
+        // These test assemblies don't really exist. They are used to look up corresponding XML for a fake assembly
+        // which is based on the DocumentedTagHelper type.
+        public static readonly string TestRoot = Path.GetFullPath(Path.Combine(BaseDir, "..", "..", ".."));
+
         public static readonly string DocumentedAssemblyLocation =
             Path.Combine(TestRoot, "TestFiles", "NotLocalized", "TagHelperDocumentation.dll");
         public static readonly string LocalizedDocumentedAssemblyLocation =

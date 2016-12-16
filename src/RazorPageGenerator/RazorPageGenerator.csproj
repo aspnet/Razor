@@ -6,6 +6,7 @@
     <Description>Builds Razor pages for views in a project. For internal use only.</Description>
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <AssemblyName>dotnet-razorpagegenerator</AssemblyName>
+    <PackageId>RazorPageGenerator</PackageId>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 

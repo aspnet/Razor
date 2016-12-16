@@ -7,10 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="**\*.cs" />
+    <Compile Include="**\*.cs" Exclude="TestFiles\**\*" />
     <Compile Include="..\..\shared\Microsoft.AspNetCore.Razor.TagHelpers.Testing.Sources\**\*.cs" />
-    <Content Include="TestFiles\**\*" CopyToOutputDirectory="Always" />
-    <EmbeddedResource Include="TestFiles\**\*" />
     <EmbeddedResource Include="**\*.resx" />
   </ItemGroup>
 
@@ -53,8 +51,4 @@
     <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0-*" />
   </ItemGroup>
 
-  <Target Name="CleanTestProjects" BeforeTargets="CoreCompile" AfterTargets="Clean">
-    <RemoveDir Directories="$(TargetDir)TestFiles" Condition="Exists('$(TargetDir)TestFiles')" />
-  </Target>
-  
 </Project>
