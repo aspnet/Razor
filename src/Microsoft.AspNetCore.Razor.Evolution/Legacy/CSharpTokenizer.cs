@@ -168,9 +168,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             }
         }
 
-        protected override CSharpSymbol CreateSymbol(SourceLocation start, string content, CSharpSymbolType type, IReadOnlyList<RazorError> errors)
+        protected override CSharpSymbol CreateSymbol(string content, CSharpSymbolType type, IReadOnlyList<RazorError> errors)
         {
-            return new CSharpSymbol(start, content, type, errors);
+            return new CSharpSymbol(content, type, errors);
         }
 
         private StateResult Data()
@@ -548,12 +548,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                     type = CSharpSymbolType.Keyword;
                 }
 
-                symbol = new CSharpSymbol(CurrentStart, Buffer.ToString(), type)
-                {
-                    Keyword = type == CSharpSymbolType.Keyword ? (CSharpKeyword?)keyword : null,
-                };
+                symbol = EndSymbol(type);
+                symbol.Keyword = type == CSharpSymbolType.Keyword ? (CSharpKeyword?)keyword : null;
             }
-            StartSymbol();
+
             return Stay(symbol);
         }
 
