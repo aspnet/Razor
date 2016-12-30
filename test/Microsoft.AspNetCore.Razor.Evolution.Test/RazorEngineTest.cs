@@ -139,7 +139,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 feature => Assert.IsType<DefaultDirectiveSyntaxTreePass>(feature),
                 feature => Assert.IsType<HtmlNodeOptimizationPass>(feature),
                 feature => Assert.IsType<TagHelperBinderSyntaxTreePass>(feature),
-                feature => Assert.IsType<DefaultDirectiveIRPass>(feature));
+                feature => Assert.IsType<DefaultDirectiveIRPass>(feature),
+                feature => Assert.IsType<RazorPreallocatedTagHelperAttributeOptimizationPass>(feature));
         }
 
         private static void AssertDefaultRuntimePhases(IReadOnlyList<IRazorEnginePhase> phases)
