@@ -264,19 +264,15 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Intermediate
                 n => Assert.IsType<ClassDeclarationIRNode>(n));
             var @class = @namespace.Children[2];
             Children(@class,
+                n => DeclarePreallocatedTagHelperAttribute(n, "bound", "foo", HtmlAttributeValueStyle.SingleQuotes),
                 n => TagHelperFieldDeclaration(n, "InputTagHelper"),
                 n => Assert.IsType<RazorMethodDeclarationIRNode>(n));
-            var method = @class.Children[1];
+            var method = @class.Children[2];
             var tagHelperNode = SingleChild<TagHelperIRNode>(method);
             Children(tagHelperNode,
                 n => TagHelperStructure("input", TagMode.SelfClosing, n),
                 n => Assert.IsType<CreateTagHelperIRNode>(n),
-                n => SetTagHelperProperty(
-                    "bound",
-                    "FooProp",
-                    HtmlAttributeValueStyle.SingleQuotes,
-                    n,
-                    v => Html("foo", v)),
+                n => SetPreallocatedTagHelperProperty(n, "bound", "FooProp"),
                 n => Assert.IsType<ExecuteTagHelpersIRNode>(n));
         }
 
