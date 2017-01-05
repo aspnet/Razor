@@ -11,9 +11,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Intermediate
     {
         public override IList<RazorIRNode> Children { get; } = new List<RazorIRNode>();
 
+        public string DocumentKind { get; set; }
+
         public override RazorIRNode Parent { get; set; }
 
-        internal override MappingLocation SourceRange { get; set; }
+        public override SourceSpan? Source { get; set; }
 
         public override void Accept(RazorIRNodeVisitor visitor)
         {

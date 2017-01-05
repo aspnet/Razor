@@ -18,7 +18,26 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
             var visitor = new Visitor(codeDocument, syntaxTree.Options);
 
+            var i = 0;
+            var builder = visitor.Builder;
+            foreach (var namespaceImport in syntaxTree.Options.NamespaceImports)
+            {
+                if (visitor.Namespaces.Add(namespaceImport))
+                {
+                    var @using = new UsingStatementIRNode()
+                    {
+                        Content = namespaceImport,
+                    };
+
+                    builder.Insert(i++, @using);
+                }
+            }
+
+            var checksum = ChecksumIRNode.Create(codeDocument.Source);
+            visitor.Builder.Insert(0, checksum);
+
             visitor.VisitBlock(syntaxTree.Root);
+
 
             var irDocument = (DocumentIRNode)visitor.Builder.Build();
             codeDocument.SetIRDocument(irDocument);
@@ -26,49 +45,24 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         private class Visitor : ParserVisitor
         {
-            private readonly Stack<RazorIRBuilder> _builders;
             private readonly RazorParserOptions _options;
             private readonly RazorCodeDocument _codeDocument;
+
+            private DeclareTagHelperFieldsIRNode _tagHelperFields;
 
             public Visitor(RazorCodeDocument codeDocument, RazorParserOptions options)
             {
                 _codeDocument = codeDocument;
                 _options = options;
-                _builders = new Stack<RazorIRBuilder>();
-                var document = RazorIRBuilder.Document();
-                _builders.Push(document);
 
-                var checksum = ChecksumIRNode.Create(codeDocument.Source);
-                Builder.Add(checksum);
+                Namespaces = new HashSet<string>();
 
-                Namespace = new NamespaceDeclarationIRNode();
-                Builder.Push(Namespace);
-
-                foreach (var namespaceImport in options.NamespaceImports)
-                {
-                    var @using = new UsingStatementIRNode()
-                    {
-                        Content = namespaceImport,
-                        Parent = Namespace,
-                    };
-
-                    Builder.Add(@using);
-                }
-
-                Class = new ClassDeclarationIRNode();
-                Builder.Push(Class);
-
-                Method = new RazorMethodDeclarationIRNode();
-                Builder.Push(Method);
+                Builder = RazorIRBuilder.Document();
             }
 
-            public RazorIRBuilder Builder => _builders.Peek();
+            public RazorIRBuilder Builder { get; }
 
-            public NamespaceDeclarationIRNode Namespace { get; }
-
-            public ClassDeclarationIRNode Class { get; }
-
-            public RazorMethodDeclarationIRNode Method { get; }
+            public HashSet<string> Namespaces { get; }
 
             // Example
             // <input` checked="hello-world @false"`/>
@@ -82,7 +76,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     Name = chunkGenerator.Name,
                     Prefix = chunkGenerator.Prefix,
                     Suffix = chunkGenerator.Suffix,
-                    SourceRange = BuildSourceRangeFromNode(block),
+                    Source = BuildSourceRangeFromNode(block),
                 });
             }
 
@@ -100,7 +94,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 Builder.Push(new CSharpAttributeValueIRNode()
                 {
                     Prefix = chunkGenerator.Prefix,
-                    SourceRange = BuildSourceRangeFromNode(block),
+                    Source = BuildSourceRangeFromNode(block),
                 });
             }
 
@@ -115,7 +109,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 {
                     Prefix = chunkGenerator.Prefix,
                     Content = chunkGenerator.Value,
-                    SourceRange = BuildSourceRangeFromNode(span),
+                    Source = BuildSourceRangeFromNode(span),
                 });
             }
 
@@ -131,19 +125,19 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 {
                     var sourceRangeStart = templateNode
                         .Children
-                        .FirstOrDefault(child => child.SourceRange != null)
-                        ?.SourceRange;
+                        .FirstOrDefault(child => child.Source != null)
+                        ?.Source;
 
                     if (sourceRangeStart != null)
                     {
-                        var contentLength = templateNode.Children.Sum(child => child.SourceRange?.ContentLength ?? 0);
+                        var contentLength = templateNode.Children.Sum(child => child.Source?.Length ?? 0);
 
-                        templateNode.SourceRange = new MappingLocation(
-                            sourceRangeStart.AbsoluteIndex,
-                            sourceRangeStart.LineIndex,
-                            sourceRangeStart.CharacterIndex,
-                            contentLength,
-                            sourceRangeStart.FilePath ?? _codeDocument.Source.Filename);
+                        templateNode.Source = new SourceSpan(
+                            sourceRangeStart.Value.FilePath ?? _codeDocument.Source.Filename,
+                            sourceRangeStart.Value.AbsoluteIndex,
+                            sourceRangeStart.Value.LineIndex,
+                            sourceRangeStart.Value.CharacterIndex,
+                            contentLength);
                     }
                 }
             }
@@ -167,19 +161,19 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 {
                     var sourceRangeStart = expressionNode
                         .Children
-                        .FirstOrDefault(child => child.SourceRange != null)
-                        ?.SourceRange;
+                        .FirstOrDefault(child => child.Source != null)
+                        ?.Source;
 
                     if (sourceRangeStart != null)
                     {
-                        var contentLength = expressionNode.Children.Sum(child => child.SourceRange?.ContentLength ?? 0);
+                        var contentLength = expressionNode.Children.Sum(child => child.Source?.Length ?? 0);
 
-                        expressionNode.SourceRange = new MappingLocation(
-                            sourceRangeStart.AbsoluteIndex,
-                            sourceRangeStart.LineIndex,
-                            sourceRangeStart.CharacterIndex,
-                            contentLength,
-                            sourceRangeStart.FilePath ?? _codeDocument.Source.Filename);
+                        expressionNode.Source = new SourceSpan(
+                            sourceRangeStart.Value.FilePath ?? _codeDocument.Source.Filename,
+                            sourceRangeStart.Value.AbsoluteIndex,
+                            sourceRangeStart.Value.LineIndex,
+                            sourceRangeStart.Value.CharacterIndex,
+                            contentLength);
                     }
                 }
             }
@@ -201,7 +195,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 Builder.Add(new CSharpTokenIRNode()
                 {
                     Content = span.Content,
-                    SourceRange = BuildSourceRangeFromNode(span),
+                    Source = BuildSourceRangeFromNode(span),
                 });
             }
 
@@ -210,7 +204,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 Builder.Add(new CSharpStatementIRNode()
                 {
                     Content = span.Content,
-                    SourceRange = BuildSourceRangeFromNode(span),
+                    Source = BuildSourceRangeFromNode(span),
                 });
             }
 
@@ -233,19 +227,25 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 {
                     var existingHtmlContent = (HtmlContentIRNode)currentChildren[currentChildren.Count - 1];
                     existingHtmlContent.Content = string.Concat(existingHtmlContent.Content, span.Content);
-                    existingHtmlContent.SourceRange = new MappingLocation(
-                        existingHtmlContent.SourceRange.AbsoluteIndex,
-                        existingHtmlContent.SourceRange.LineIndex,
-                        existingHtmlContent.SourceRange.CharacterIndex,
-                        existingHtmlContent.SourceRange.ContentLength + span.Content.Length,
-                        existingHtmlContent.SourceRange.FilePath);
+
+                    if (existingHtmlContent.Source != null)
+                    {
+                        var contentLength = existingHtmlContent.Source.Value.Length + span.Content.Length;
+
+                        existingHtmlContent.Source = new SourceSpan(
+                            existingHtmlContent.Source.Value.FilePath ?? _codeDocument.Source.Filename,
+                            existingHtmlContent.Source.Value.AbsoluteIndex,
+                            existingHtmlContent.Source.Value.LineIndex,
+                            existingHtmlContent.Source.Value.CharacterIndex,
+                            contentLength);
+                    }
                 }
                 else
                 {
                     Builder.Add(new HtmlContentIRNode()
                     {
                         Content = span.Content,
-                        SourceRange = BuildSourceRangeFromNode(span),
+                        Source = BuildSourceRangeFromNode(span),
                     });
                 }
             }
@@ -254,31 +254,15 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             {
                 var namespaceImport = chunkGenerator.Namespace.Trim();
 
-                if (_options.NamespaceImports.Contains(namespaceImport, StringComparer.Ordinal))
+                // Track seen namespaces so we don't add duplicates from options.
+                if (Namespaces.Add(namespaceImport)) 
                 {
-                    // Already added by default
-
-                    return;
-                }
-
-                // For prettiness, let's insert the usings before the class declaration.
-                var i = 0;
-                for (; i < Namespace.Children.Count; i++)
-                {
-                    if (Namespace.Children[i] is ClassDeclarationIRNode)
+                    Builder.Add(new UsingStatementIRNode()
                     {
-                        break;
-                    }
+                        Content = namespaceImport,
+                        Source = BuildSourceRangeFromNode(span),
+                    });
                 }
-
-                var @using = new UsingStatementIRNode()
-                {
-                    Content = namespaceImport,
-                    Parent = Namespace,
-                    SourceRange = BuildSourceRangeFromNode(span),
-                };
-
-                Namespace.Children.Insert(i, @using);
             }
 
             public override void VisitDirectiveToken(DirectiveTokenChunkGenerator chunkGenerator, Span span)
@@ -287,7 +271,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 {
                     Content = span.Content,
                     Descriptor = chunkGenerator.Descriptor,
-                    SourceRange = BuildSourceRangeFromNode(span),
+                    Source = BuildSourceRangeFromNode(span),
                 });
             }
 
@@ -355,19 +339,15 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
             private void DeclareTagHelperFields(TagHelperBlock block)
             {
-                var declareFieldsNode = Class.Children.OfType<DeclareTagHelperFieldsIRNode>().SingleOrDefault();
-                if (declareFieldsNode == null)
+                if (_tagHelperFields == null)
                 {
-                    declareFieldsNode = new DeclareTagHelperFieldsIRNode();
-                    declareFieldsNode.Parent = Class;
-
-                    var methodIndex = Class.Children.IndexOf(Method);
-                    Class.Children.Insert(methodIndex, declareFieldsNode);
+                    _tagHelperFields = new DeclareTagHelperFieldsIRNode();
+                    Builder.Add(_tagHelperFields);
                 }
 
                 foreach (var descriptor in block.Descriptors)
                 {
-                    declareFieldsNode.UsedTagHelperTypeNames.Add(descriptor.TypeName);
+                    _tagHelperFields.UsedTagHelperTypeNames.Add(descriptor.TypeName);
                 }
             }
 
@@ -414,7 +394,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                                 TagHelperTypeName = associatedDescriptor.TypeName,
                                 Descriptor = associatedAttributeDescriptor,
                                 ValueStyle = attribute.ValueStyle,
-                                SourceRange = BuildSourceRangeFromNode(attributeValueNode)
+                                Source = BuildSourceRangeFromNode(attributeValueNode)
                             };
 
                             Builder.Push(setTagHelperProperty);
@@ -445,16 +425,15 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 Builder.Add(new ExecuteTagHelpersIRNode());
             }
 
-            private MappingLocation BuildSourceRangeFromNode(SyntaxTreeNode node)
+            private SourceSpan BuildSourceRangeFromNode(SyntaxTreeNode node)
             {
                 var location = node.Start;
-                var sourceRange = new MappingLocation(
-                    location.AbsoluteIndex,
-                    location.LineIndex,
-                    location.CharacterIndex,
-                    node.Length,
-                    location.FilePath ?? _codeDocument.Source.Filename);
-
+                var sourceRange = new SourceSpan(
+                    node.Start.FilePath ?? _codeDocument.Source.Filename, 
+                    node.Start.AbsoluteIndex,
+                    node.Start.LineIndex,
+                    node.Start.CharacterIndex,
+                    node.Length);
                 return sourceRange;
             }
         }

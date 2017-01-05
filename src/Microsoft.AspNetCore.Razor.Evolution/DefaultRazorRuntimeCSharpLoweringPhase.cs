@@ -109,10 +109,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             public override void VisitCSharpExpression(CSharpExpressionIRNode node)
             {
                 IDisposable linePragmaScope = null;
-                if (node.SourceRange != null)
+                if (node.Source != null)
                 {
-                    linePragmaScope = new LinePragmaWriter(Context.Writer, node.SourceRange);
-                    var padding = BuildOffsetPadding(Context.RenderingConventions.StartWriteMethod.Length, node.SourceRange, Context);
+                    linePragmaScope = new LinePragmaWriter(Context.Writer, node.Source.Value);
+                    var padding = BuildOffsetPadding(Context.RenderingConventions.StartWriteMethod.Length, node.Source.Value, Context);
                     Context.Writer.Write(padding);
                 }
 
@@ -135,8 +135,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 var valuePieceCount = node
                     .Children
                     .Count(child => child is HtmlAttributeValueIRNode || child is CSharpAttributeValueIRNode);
-                var prefixLocation = node.SourceRange.AbsoluteIndex;
-                var suffixLocation = node.SourceRange.AbsoluteIndex + node.SourceRange.ContentLength - node.Suffix.Length;
+                var prefixLocation = node.Source.Value.AbsoluteIndex;
+                var suffixLocation = node.Source.Value.AbsoluteIndex + node.Source.Value.Length - node.Suffix.Length;
                 Context.Writer
                     .Write(Context.RenderingConventions.StartBeginWriteAttributeMethod)
                     .WriteStringLiteral(node.Name)
@@ -161,9 +161,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
             public override void VisitHtmlAttributeValue(HtmlAttributeValueIRNode node)
             {
-                var prefixLocation = node.SourceRange.AbsoluteIndex;
-                var valueLocation = node.SourceRange.AbsoluteIndex + node.Prefix.Length;
-                var valueLength = node.SourceRange.ContentLength;
+                var prefixLocation = node.Source.Value.AbsoluteIndex;
+                var valueLocation = node.Source.Value.AbsoluteIndex + node.Prefix.Length;
+                var valueLength = node.Source.Value.Length;
                 Context.Writer
                     .Write(Context.RenderingConventions.StartWriteAttributeValueMethod)
                     .WriteStringLiteral(node.Prefix)
@@ -185,10 +185,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 const string ValueWriterName = "__razor_attribute_value_writer";
 
                 var expressionValue = node.Children.FirstOrDefault() as CSharpExpressionIRNode;
-                var linePragma = expressionValue != null ? new LinePragmaWriter(Context.Writer, node.SourceRange) : null;
-                var prefixLocation = node.SourceRange.AbsoluteIndex;
-                var valueLocation = node.SourceRange.AbsoluteIndex + node.Prefix.Length;
-                var valueLength = node.SourceRange.ContentLength - node.Prefix.Length;
+                var linePragma = expressionValue != null ? new LinePragmaWriter(Context.Writer, node.Source.Value) : null;
+                var prefixLocation = node.Source.Value.AbsoluteIndex;
+                var valueLocation = node.Source.Value.AbsoluteIndex + node.Prefix.Length;
+                var valueLength = node.Source.Value.Length - node.Prefix.Length;
                 Context.Writer
                     .Write(Context.RenderingConventions.StartWriteAttributeValueMethod)
                     .WriteStringLiteral(node.Prefix)
@@ -237,11 +237,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     return;
                 }
 
-                if (node.SourceRange != null)
+                if (node.Source != null)
                 {
-                    using (new LinePragmaWriter(Context.Writer, node.SourceRange))
+                    using (new LinePragmaWriter(Context.Writer, node.Source.Value))
                     {
-                        var padding = BuildOffsetPadding(0, node.SourceRange, Context);
+                        var padding = BuildOffsetPadding(0, node.Source.Value, Context);
                         Context.Writer
                             .Write(padding)
                             .WriteLine(node.Content);
@@ -332,6 +332,16 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     tagHelperVariableName);
             }
 
+            internal override void VisitAddPreallocatedTagHelperHtmlAttribute(AddPreallocatedTagHelperHtmlAttributeIRNode node)
+            {
+                Context.Writer
+                    .WriteStartInstanceMethodInvocation(
+                        "__tagHelperExecutionContext" /* ORIGINAL: ExecutionContextVariableName */,
+                        "AddHtmlAttribute" /* ORIGINAL: ExecutionContextAddHtmlAttributeMethodName */)
+                    .Write(node.VariableName)
+                    .WriteEndMethodInvocation();
+            }
+
             internal override void VisitAddTagHelperHtmlAttribute(AddTagHelperHtmlAttributeIRNode node)
             {
                 var attributeValueStyleParameter = $"global::{typeof(HtmlAttributeValueStyle).FullName}.{node.ValueStyle}";
@@ -403,6 +413,23 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 }
             }
 
+            internal override void VisitSetPreallocatedTagHelperProperty(SetPreallocatedTagHelperPropertyIRNode node)
+            {
+                var tagHelperVariableName = GetTagHelperVariableName(node.TagHelperTypeName);
+                var propertyValueAccessor = GetTagHelperPropertyAccessor(tagHelperVariableName, node.AttributeName, node.Descriptor);
+                var attributeValueAccessor = $"{node.VariableName}.Value" /* ORIGINAL: TagHelperAttributeValuePropertyName */;
+                Context.Writer
+                    .WriteStartAssignment(propertyValueAccessor)
+                    .Write("(string)")
+                    .Write(attributeValueAccessor)
+                    .WriteLine(";")
+                    .WriteStartInstanceMethodInvocation(
+                        "__tagHelperExecutionContext" /* ORIGINAL: ExecutionContextVariableName */,
+                        "AddTagHelperAttribute" /* ORIGINAL: ExecutionContextAddTagHelperAttributeMethodName */)
+                    .Write(node.VariableName)
+                    .WriteEndMethodInvocation();
+            }
+
             internal override void VisitSetTagHelperProperty(SetTagHelperPropertyIRNode node)
             {
                 var tagHelperVariableName = GetTagHelperVariableName(node.TagHelperTypeName);
@@ -472,7 +499,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 }
                 else
                 {
-                    using (new LinePragmaWriter(Context.Writer, node.SourceRange))
+                    using (new LinePragmaWriter(Context.Writer, node.Source.Value))
                     {
                         Context.Writer.WriteStartAssignment(propertyValueAccessor);
 
@@ -486,7 +513,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                                 .Write(".");
                         }
 
-                        RenderTagHelperAttributeInline(node, node.SourceRange);
+                        RenderTagHelperAttributeInline(node, node.Source.Value);
 
                         Context.Writer.WriteLine(";");
                     }
@@ -543,6 +570,51 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     .WriteInstanceMethodInvocation(
                         "__tagHelperScopeManager" /* ORIGINAL: ScopeManagerVariableName */,
                         "End" /* ORIGINAL: ScopeManagerEndMethodName */);
+            }
+
+            internal override void VisitDeclarePreallocatedTagHelperHtmlAttribute(DeclarePreallocatedTagHelperHtmlAttributeIRNode node)
+            {
+                Context.Writer
+                    .Write("private static readonly global::")
+                    .Write("Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute" /* ORIGINAL: TagHelperAttributeTypeName */)
+                    .Write(" ")
+                    .Write(node.VariableName)
+                    .Write(" = ")
+                    .WriteStartNewObject("global::" + "Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute" /* ORIGINAL: TagHelperAttributeTypeName */)
+                    .WriteStringLiteral(node.Name);
+
+                if (node.ValueStyle == HtmlAttributeValueStyle.Minimized)
+                {
+                    Context.Writer.WriteEndMethodInvocation();
+                }
+                else
+                {
+                    Context.Writer
+                        .WriteParameterSeparator()
+                        .WriteStartNewObject("global::" + "Microsoft.AspNetCore.Html.HtmlString" /* ORIGINAL: EncodedHtmlStringTypeName */)
+                        .WriteStringLiteral(node.Value)
+                        .WriteEndMethodInvocation(endLine: false)
+                        .WriteParameterSeparator()
+                        .Write($"global::{typeof(HtmlAttributeValueStyle).FullName}.{node.ValueStyle}")
+                        .WriteEndMethodInvocation();
+                }
+            }
+
+            internal override void VisitDeclarePreallocatedTagHelperAttribute(DeclarePreallocatedTagHelperAttributeIRNode node)
+            {
+                Context.Writer
+                    .Write("private static readonly global::")
+                    .Write("Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute" /* ORIGINAL: TagHelperAttributeTypeName */)
+                    .Write(" ")
+                    .Write(node.VariableName)
+                    .Write(" = ")
+                    .WriteStartNewObject("global::" + "Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute" /* ORIGINAL: TagHelperAttributeTypeName */)
+                    .WriteStringLiteral(node.Name)
+                    .WriteParameterSeparator()
+                    .WriteStringLiteral(node.Value)
+                    .WriteParameterSeparator()
+                    .Write($"global::{typeof(HtmlAttributeValueStyle).FullName}.{node.ValueStyle}")
+                    .WriteEndMethodInvocation();
             }
 
             internal override void VisitDeclareTagHelperFields(DeclareTagHelperFieldsIRNode node)
@@ -626,7 +698,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
             private void RenderTagHelperAttributeInline(
                 RazorIRNode node,
-                MappingLocation documentLocation)
+                SourceSpan documentLocation)
             {
                 if (node is SetTagHelperPropertyIRNode || node is CSharpExpressionIRNode)
                 {
@@ -646,17 +718,17 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 else if (node is CSharpStatementIRNode)
                 {
                     Context.ErrorSink.OnError(
-                        new SourceLocation(documentLocation.AbsoluteIndex, documentLocation.CharacterIndex, documentLocation.ContentLength),
+                        new SourceLocation(documentLocation.AbsoluteIndex, documentLocation.CharacterIndex, documentLocation.Length),
                         LegacyResources.TagHelpers_CodeBlocks_NotSupported_InAttributes,
-                        documentLocation.ContentLength);
+                        documentLocation.Length);
                 }
                 else if (node is TemplateIRNode)
                 {
                     var attributeValueNode = (SetTagHelperPropertyIRNode)node.Parent;
                     Context.ErrorSink.OnError(
-                        new SourceLocation(documentLocation.AbsoluteIndex, documentLocation.CharacterIndex, documentLocation.ContentLength),
+                        new SourceLocation(documentLocation.AbsoluteIndex, documentLocation.CharacterIndex, documentLocation.Length),
                         LegacyResources.FormatTagHelpers_InlineMarkupBlocks_NotSupported_InAttributes(attributeValueNode.Descriptor.TypeName),
-                        documentLocation.ContentLength);
+                        documentLocation.Length);
                 }
             }
         }

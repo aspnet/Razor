@@ -59,12 +59,15 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             builder.Features.Add(new TagHelperBinderSyntaxTreePass());
 
             // IR Passes
+            builder.Features.Add(new DefaultDocumentClassifier());
             builder.Features.Add(new DefaultDirectiveIRPass());
         }
 
         internal static void AddRuntimeDefaults(IRazorEngineBuilder builder)
         {
             builder.Phases.Add(new DefaultRazorRuntimeCSharpLoweringPhase());
+
+            builder.Features.Add(new RazorPreallocatedTagHelperAttributeOptimizationPass());
         }
 
         internal static void AddDesignTimeDefaults(IRazorEngineBuilder builder)
