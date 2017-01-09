@@ -11,6 +11,22 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             = new ResourceManager("Microsoft.AspNetCore.Razor.Evolution.Resources", typeof(Resources).GetTypeInfo().Assembly);
 
         /// <summary>
+        /// Value cannot be null or an empty string.
+        /// </summary>
+        internal static string Argument_Cannot_Be_Null_Or_Empty
+        {
+            get { return GetString("Argument_Cannot_Be_Null_Or_Empty"); }
+        }
+
+        /// <summary>
+        /// Value cannot be null or an empty string.
+        /// </summary>
+        internal static string FormatArgument_Cannot_Be_Null_Or_Empty()
+        {
+            return GetString("Argument_Cannot_Be_Null_Or_Empty");
+        }
+
+        /// <summary>
         /// The '{0}' feature requires a '{1}' provided by the '{2}'.
         /// </summary>
         internal static string FeatureDependencyMissing
