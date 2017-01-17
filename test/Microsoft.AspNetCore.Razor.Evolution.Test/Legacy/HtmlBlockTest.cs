@@ -8,6 +8,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public class HtmlBlockTest : CsHtmlMarkupParserTestBase
     {
+        private CSharpLanguageCharacteristics _language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         [Fact]
         public void ParseBlockHandlesOpenAngleAtEof()
         {
@@ -111,7 +113,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                     Factory.MarkupTransition(),
                     Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                     Factory.Markup("<li>Foo Bar Baz" + Environment.NewLine)
-                           .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                           .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                 ));
         }
 
@@ -123,7 +125,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                     Factory.MarkupTransition(),
                     Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                     Factory.Markup(@"foo bar")
-                           .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString))
+                           .With(new SpanEditHandler(_language.TokenizeString))
                     ));
         }
 

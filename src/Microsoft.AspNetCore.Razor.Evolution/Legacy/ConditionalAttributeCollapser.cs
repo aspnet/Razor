@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     internal class ConditionalAttributeCollapser : MarkupRewriter
     {
+        public ConditionalAttributeCollapser(HtmlLanguageCharacteristics htmlLanguage)
+            : base(htmlLanguage)
+        {
+        }
+
         protected override bool CanRewrite(Block block)
         {
             var generator = block.ChunkGenerator as AttributeBlockChunkGenerator;
@@ -41,7 +46,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             // Create a new span containing this content
             var span = new SpanBuilder(block.Children[0].Start);
 
-            span.EditHandler = SpanEditHandler.CreateDefault(HtmlLanguageCharacteristics.Instance.TokenizeString);
+            span.EditHandler = SpanEditHandler.CreateDefault(HtmlLanguage.TokenizeString);
             Debug.Assert(block.Children.Count > 0);
             var start = ((Span)block.Children[0]).Start;
             FillSpan(span, start, builder.ToString());

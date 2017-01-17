@@ -52,12 +52,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         [Fact]
         public void ParseBlockMethodOutputsOpenCurlyAsCodeSpanIfEofFoundAfterOpenCurlyBrace()
         {
+            var language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
             ParseBlockTest("{",
                            new StatementBlock(
                                Factory.MetaCode("{").Accepts(AcceptedCharacters.None),
                                Factory.EmptyCSharp()
                                    .AsStatement()
-                                   .With(new AutoCompleteEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString) { AutoCompleteString = "}" })
+                                   .With(new AutoCompleteEditHandler(language.TokenizeString) { AutoCompleteString = "}" })
                                ),
                            new RazorError(
                                LegacyResources.FormatParseError_Expected_EndOfBlock_Before_EOF(LegacyResources.BlockName_Code, "}", "{"),

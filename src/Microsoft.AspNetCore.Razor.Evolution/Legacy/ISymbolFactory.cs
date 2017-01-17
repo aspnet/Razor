@@ -5,8 +5,8 @@ using System.Collections.Generic;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal abstract class HtmlSymbol : SymbolBase<HtmlSymbolType>
+    internal interface ISymbolFactory<TSymbol, TSymbolType>
     {
-        public override IReadOnlyList<RazorError> Errors => RazorError.EmptyArray;
+        TSymbol Create(string content, TSymbolType type, IReadOnlyList<RazorError> errors);
     }
 }

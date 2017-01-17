@@ -8,14 +8,15 @@ using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal abstract partial class TokenizerBackedParser<TTokenizer, TSymbol, TSymbolType> : ParserBase
+    internal abstract partial class TokenizerBackedParser<TTokenizer, TSymbol, TSymbolType, TSymbolFactory> : ParserBase
         where TSymbolType : struct
         where TTokenizer : Tokenizer<TSymbol, TSymbolType>
         where TSymbol : SymbolBase<TSymbolType>
+        where TSymbolFactory : ISymbolFactory<TSymbol, TSymbolType>
     {
         private readonly TokenizerView<TTokenizer, TSymbol, TSymbolType> _tokenizer;
 
-        protected TokenizerBackedParser(LanguageCharacteristics<TTokenizer, TSymbol, TSymbolType> language, ParserContext context)
+        protected TokenizerBackedParser(LanguageCharacteristics<TTokenizer, TSymbol, TSymbolType, TSymbolFactory> language, ParserContext context)
             : base(context)
         {
             Language = language;
@@ -45,7 +46,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             get { return _tokenizer.EndOfFile; }
         }
 
-        protected LanguageCharacteristics<TTokenizer, TSymbol, TSymbolType> Language { get; }
+        protected LanguageCharacteristics<TTokenizer, TSymbol, TSymbolType, TSymbolFactory> Language { get; }
 
         protected virtual void HandleEmbeddedTransition()
         {

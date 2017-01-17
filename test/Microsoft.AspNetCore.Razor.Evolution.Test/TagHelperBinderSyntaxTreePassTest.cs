@@ -148,6 +148,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var erroredOriginalTree = RazorSyntaxTree.Create(
                 originalTree.Root,
                 originalTree.Source,
+                originalTree.HtmlLanguage,
+                originalTree.CSharpLanguage,
                 new[] { initialError },
                 originalTree.Options);
 
@@ -198,7 +200,12 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 LegacyResources.FormatTagHelpersParseTreeRewriter_FoundMalformedTagHelper("form"),
                 new SourceLocation(Environment.NewLine.Length * 2 + 30, 2, 1),
                 length: 4);
-            var erroredOriginalTree = RazorSyntaxTree.Create(originalTree.Root, originalTree.Source, new[] { initialError }, originalTree.Options);
+            var erroredOriginalTree = RazorSyntaxTree.Create(originalTree.Root,
+                originalTree.Source,
+                originalTree.HtmlLanguage,
+                originalTree.CSharpLanguage,
+                new[] { initialError },
+                originalTree.Options);
 
             // Act
             var outputTree = pass.Execute(codeDocument, erroredOriginalTree);

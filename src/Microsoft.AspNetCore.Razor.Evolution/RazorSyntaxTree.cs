@@ -12,6 +12,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         internal static RazorSyntaxTree Create(
             Block root,
             RazorSourceDocument source,
+            HtmlLanguageCharacteristics htmlLanguage,
+            CSharpLanguageCharacteristics cSharpLanguage,
             IEnumerable<RazorError> diagnostics,
             RazorParserOptions options)
         {
@@ -35,7 +37,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return new DefaultRazorSyntaxTree(root, source, new List<RazorError>(diagnostics), options);
+            return new DefaultRazorSyntaxTree(root, source, htmlLanguage, cSharpLanguage, new List<RazorError>(diagnostics), options);
         }
 
         public static RazorSyntaxTree Parse(RazorSourceDocument source)
@@ -66,5 +68,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         internal abstract Block Root { get; }
 
         public abstract RazorSourceDocument Source { get; }
+
+        internal abstract HtmlLanguageCharacteristics HtmlLanguage { get; }
+
+        internal abstract CSharpLanguageCharacteristics CSharpLanguage { get; }
     }
 }

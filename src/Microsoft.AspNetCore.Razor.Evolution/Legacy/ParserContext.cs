@@ -9,7 +9,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     internal partial class ParserContext
     {
-        public ParserContext(ITextDocument source, bool designTime)
+        public ParserContext(ITextDocument source, bool designTime, HtmlLanguageCharacteristics htmlLanguage, CSharpLanguageCharacteristics cSharpLanguage)
         {
             if (source == null)
             {
@@ -18,6 +18,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
             Source = source;
             DesignTimeMode = designTime;
+            HtmlLanguage = htmlLanguage;
+            CSharpLanguage = cSharpLanguage;
             Builder = new SyntaxTreeBuilder();
             ErrorSink = new ErrorSink();
         }
@@ -27,6 +29,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         public ErrorSink ErrorSink { get; }
 
         public ITextDocument Source { get; }
+
+        public HtmlLanguageCharacteristics HtmlLanguage { get; }
+
+        public CSharpLanguageCharacteristics CSharpLanguage { get; }
 
         public bool DesignTimeMode { get; }
 

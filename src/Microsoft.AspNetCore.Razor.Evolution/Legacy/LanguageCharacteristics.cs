@@ -7,11 +7,19 @@ using System.IO;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal abstract class LanguageCharacteristics<TTokenizer, TSymbol, TSymbolType>
+    internal abstract class LanguageCharacteristics<TTokenizer, TSymbol, TSymbolType, TSymbolFactory>
         where TSymbolType : struct
         where TTokenizer : Tokenizer<TSymbol, TSymbolType>
         where TSymbol : SymbolBase<TSymbolType>
+        where TSymbolFactory : ISymbolFactory<TSymbol, TSymbolType>
     {
+        protected LanguageCharacteristics(TSymbolFactory symbolFactory)
+        {
+            SymbolFactory = symbolFactory;
+        }
+
+        protected TSymbolFactory SymbolFactory { get; }
+
         public abstract string GetSample(TSymbolType type);
         public abstract TTokenizer CreateTokenizer(ITextDocument source);
         public abstract TSymbolType FlipBracket(TSymbolType bracket);
@@ -87,7 +95,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
         public virtual Tuple<TSymbol, TSymbol> SplitSymbol(TSymbol symbol, int splitAt, TSymbolType leftType)
         {
-            var left = CreateSymbol(symbol.Content.Substring(0, splitAt), leftType, RazorError.EmptyArray);
+            var left = CreateSymbol(symbol.Content.Substring(0, splitAt), leftType);
 
             TSymbol right = null;
             if (splitAt < symbol.Content.Length)
@@ -105,6 +113,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             return type == KnownSymbolType.Unknown || !Equals(GetKnownSymbolType(type), GetKnownSymbolType(KnownSymbolType.Unknown));
         }
 
-        protected abstract TSymbol CreateSymbol(string content, TSymbolType type, IReadOnlyList<RazorError> errors);
+        public TSymbol CreateSymbol(string content, TSymbolType type, IReadOnlyList<RazorError> errors = null)
+        {
+            return SymbolFactory.Create(content, type, errors ?? RazorError.EmptyArray);
+        }
     }
 }

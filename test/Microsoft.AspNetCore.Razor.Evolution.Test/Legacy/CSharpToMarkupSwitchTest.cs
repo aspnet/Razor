@@ -8,6 +8,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public class CSharpToMarkupSwitchTest : CsHtmlCodeParserTestBase
     {
+        private CSharpLanguageCharacteristics _language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         [Fact]
         public void SingleAngleBracketDoesNotCauseSwitchIfOuterBlockIsTerminated()
         {
@@ -57,7 +59,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                        Factory.MarkupTransition(),
                                        Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                        Factory.Markup("<p>Foo</p>    " + Environment.NewLine)
-                                           .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                           .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                        )
                                    ),
                                Factory.Code(")")
@@ -132,7 +134,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                    Factory.Markup("<p>Foo</p>    " + Environment.NewLine)
-                                       .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                       .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                Factory.EmptyCSharp().AsStatement(),
                                Factory.MetaCode("}").Accepts(AcceptedCharacters.None)
@@ -153,7 +155,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                        Factory.MarkupTransition(),
                                        Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                        Factory.Markup(" ")
-                                           .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString)),
+                                           .With(new SpanEditHandler(_language.TokenizeString)),
                                        new StatementBlock(
                                            Factory.CodeTransition(),
                                            Factory.MetaCode("{").Accepts(AcceptedCharacters.None),
@@ -189,7 +191,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                    Factory.Markup("Baz" + Environment.NewLine)
-                                       .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                       .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                new MarkupBlock(
                                    new MarkupTagBlock(
@@ -207,7 +209,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                    Factory.Markup("Bar" + Environment.NewLine)
-                                       .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                       .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                Factory.Code("}").AsStatement().Accepts(AcceptedCharacters.None)
                                ));
@@ -248,7 +250,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.Markup("    "),
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
-                                   Factory.Markup("Hello!" + Environment.NewLine).With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                   Factory.Markup("Hello!" + Environment.NewLine).With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                Factory.Code($"    var biz = boz;{Environment.NewLine}}}").AsStatement()));
         }
@@ -541,7 +543,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                    Factory.Markup("Bar" + Environment.NewLine)
-                                    .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                    .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                Factory.Code("}").AsStatement()));
         }
@@ -559,7 +561,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                    Factory.Markup(":Sometext" + Environment.NewLine)
-                                    .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                    .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                Factory.Code("}").AsStatement()));
         }
@@ -578,7 +580,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                    Factory.Markup("::Sometext" + Environment.NewLine)
-                                    .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                    .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                Factory.Code("}").AsStatement()));
         }
@@ -599,7 +601,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                    Factory.Markup("Bar" + Environment.NewLine).Accepts(AcceptedCharacters.None)
-                                       .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                       .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                Factory.Code("} ").AsStatement(),
                                Factory.MetaCode("}").Accepts(AcceptedCharacters.None)));
@@ -663,7 +665,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    Factory.MarkupTransition(),
                                    Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                    Factory.Markup("Single Line Markup" + Environment.NewLine)
-                                    .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString, AcceptedCharacters.None))
+                                    .With(new SpanEditHandler(_language.TokenizeString, AcceptedCharacters.None))
                                    ),
                                Factory.Code($"    }}{Environment.NewLine}    foreach (var p in Enumerable.Range(1, 10)) {{{Environment.NewLine}").AsStatement(),
                                new MarkupBlock(

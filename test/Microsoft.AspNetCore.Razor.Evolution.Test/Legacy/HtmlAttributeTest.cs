@@ -469,7 +469,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             // Act
             var results = ParseDocument("<span foo='@@' />");
-            var attributeCollapser = new ConditionalAttributeCollapser();
+            var attributeCollapser = new ConditionalAttributeCollapser(results.HtmlLanguage);
             var rewritten = attributeCollapser.Rewrite(results.Root);
 
             // Assert
@@ -552,7 +552,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
             // Act
             var results = ParseDocument(code);
-            var attributeCollapser = new ConditionalAttributeCollapser();
+            var attributeCollapser = new ConditionalAttributeCollapser(results.HtmlLanguage);
             var rewritten = attributeCollapser.Rewrite(results.Root);
 
             // Assert

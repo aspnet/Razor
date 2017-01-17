@@ -9,12 +9,16 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     internal static class SpanFactoryExtensions
     {
+        private static HtmlLanguageCharacteristics _htmlLanguage = new HtmlLanguageCharacteristics(new DefaultHtmlSymbolFactory());
+
+        private static CSharpLanguageCharacteristics _cSharpLanguage = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         public static UnclassifiedCodeSpanConstructor EmptyCSharp(this SpanFactory self)
         {
             return new UnclassifiedCodeSpanConstructor(
                 self.Span(
                     SpanKind.Code,
-                    new CSharpSymbol(string.Empty, CSharpSymbolType.Unknown)));
+                    _cSharpLanguage.CreateSymbol(string.Empty, CSharpSymbolType.Unknown)));
         }
 
         public static SpanConstructor EmptyHtml(this SpanFactory self)
@@ -22,7 +26,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             return self
                 .Span(
                     SpanKind.Markup,
-                    new HtmlSymbol(string.Empty, HtmlSymbolType.Unknown))
+                    _htmlLanguage.CreateSymbol(string.Empty, HtmlSymbolType.Unknown))
                 .With(new MarkupChunkGenerator());
         }
 
@@ -163,12 +167,16 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
     internal class SpanFactory
     {
+        public HtmlLanguageCharacteristics HtmlLanguage = new HtmlLanguageCharacteristics(new DefaultHtmlSymbolFactory());
+
+        public CSharpLanguageCharacteristics CSharpLanguage = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         public SpanFactory()
         {
             LocationTracker = new SourceLocationTracker();
 
-            MarkupTokenizerFactory = doc => new HtmlTokenizer(doc);
-            CodeTokenizerFactory = doc => new CSharpTokenizer(doc);
+            MarkupTokenizerFactory = doc => HtmlLanguage.CreateTokenizer(doc);
+            CodeTokenizerFactory = doc => CSharpLanguage.CreateTokenizer(doc);
         }
 
         public Func<ITextDocument, HtmlTokenizer> MarkupTokenizerFactory { get; }
@@ -178,12 +186,12 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
         public SpanConstructor Span(SpanKind kind, string content, CSharpSymbolType type)
         {
-            return CreateSymbolSpan(kind, content, () => new CSharpSymbol(content, type));
+            return CreateSymbolSpan(kind, content, () => CSharpLanguage.CreateSymbol(content, type));
         }
 
         public SpanConstructor Span(SpanKind kind, string content, HtmlSymbolType type)
         {
-            return CreateSymbolSpan(kind, content, () => new HtmlSymbol(content, type));
+            return CreateSymbolSpan(kind, content, () => HtmlLanguage.CreateSymbol(content, type));
         }
 
         public SpanConstructor Span(SpanKind kind, string content, bool markup)

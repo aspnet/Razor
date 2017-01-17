@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                     factory.CodeTransition(SyntaxConstants.TransitionString),
                     factory.Code("foo").AsExpression()),
                 factory.Markup("test"));
-            var rewriter = new WhiteSpaceRewriter();
+            var rewriter = new WhiteSpaceRewriter(factory.HtmlLanguage);
 
             // Act
             var rewritten = rewriter.Rewrite(start);

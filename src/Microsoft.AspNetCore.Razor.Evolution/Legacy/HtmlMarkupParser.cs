@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal class HtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer, HtmlSymbol, HtmlSymbolType>
+    internal class HtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer, HtmlSymbol, HtmlSymbolType, IHtmlSymbolFactory>
     {
         private const string ScriptTagName = "script";
 
@@ -38,7 +38,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         };
 
         public HtmlMarkupParser(ParserContext context)
-            : base(HtmlLanguageCharacteristics.Instance, context)
+            : base(context.HtmlLanguage, context)
         {
         }
 
@@ -1045,11 +1045,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
             if (potentialTagNameSymbol == null || potentialTagNameSymbol.Type != HtmlSymbolType.Text)
             {
-                tagName = new HtmlSymbol(string.Empty, HtmlSymbolType.Unknown);
+                tagName = Context.HtmlLanguage.CreateSymbol(string.Empty, HtmlSymbolType.Unknown);
             }
             else if (bangSymbol != null)
             {
-                tagName = new HtmlSymbol("!" + potentialTagNameSymbol.Content, HtmlSymbolType.Text);
+                tagName = Context.HtmlLanguage.CreateSymbol("!" + potentialTagNameSymbol.Content, HtmlSymbolType.Text);
             }
             else
             {

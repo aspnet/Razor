@@ -9,6 +9,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public class HtmlToCodeSwitchTest : CsHtmlMarkupParserTestBase
     {
+        private CSharpLanguageCharacteristics _language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         [Fact]
         public void ParseBlockSwitchesWhenCharacterBeforeSwapIsNonAlphanumeric()
         {
@@ -94,7 +96,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 new MarkupBlock(
                     Factory.MarkupTransition(),
                     Factory.MetaMarkup(":", HtmlSymbolType.Colon),
-                    Factory.Markup("<li>Foo ").With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString)),
+                    Factory.Markup("<li>Foo ").With(new SpanEditHandler(_language.TokenizeString)),
                     new ExpressionBlock(
                         Factory.CodeTransition(),
                         Factory.Code("Bar")

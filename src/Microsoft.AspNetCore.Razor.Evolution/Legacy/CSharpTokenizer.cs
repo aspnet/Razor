@@ -12,6 +12,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
     {
         private Dictionary<char, Func<CSharpSymbolType>> _operatorHandlers;
 
+        private readonly ICSharpSymbolFactory _symbolFactory;
+
         private static readonly Dictionary<string, CSharpKeyword> _keywords = new Dictionary<string, CSharpKeyword>(StringComparer.Ordinal)
         {
             { "await", CSharpKeyword.Await },
@@ -95,9 +97,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             { "when", CSharpKeyword.When }
         };
 
-        public CSharpTokenizer(ITextDocument source)
+        public CSharpTokenizer(ITextDocument source, ICSharpSymbolFactory symbolFactory)
             : base(source)
         {
+            _symbolFactory = symbolFactory;
+
             base.CurrentState = StartState;
 
             _operatorHandlers = new Dictionary<char, Func<CSharpSymbolType>>()
@@ -345,7 +349,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
         protected override CSharpSymbol CreateSymbol(string content, CSharpSymbolType type, IReadOnlyList<RazorError> errors)
         {
-            return new CSharpSymbol(content, type, errors);
+            return _symbolFactory.Create(content, type, errors);
         }
 
         private StateResult Data()
@@ -723,11 +727,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 {
                     type = CSharpSymbolType.Keyword;
                 }
-                
-                symbol = new CSharpSymbol(symbolContent, type)
-                {
-                    Keyword = type == CSharpSymbolType.Keyword ? (CSharpKeyword?)keyword : null,
-                };
+
+                symbol = _symbolFactory.Create(symbolContent, type, RazorError.EmptyArray);
+                symbol.Keyword = type == CSharpSymbolType.Keyword ? (CSharpKeyword?)keyword : null;
                 
                 Buffer.Clear();
                 CurrentErrors.Clear();

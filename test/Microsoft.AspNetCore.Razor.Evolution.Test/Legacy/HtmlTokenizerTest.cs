@@ -7,6 +7,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public class HtmlTokenizerTest : HtmlTokenizerTestBase
     {
+        private new HtmlLanguageCharacteristics Language => (HtmlLanguageCharacteristics)base.Language;
+
         [Fact]
         public void Next_Returns_Null_When_EOF_Reached()
         {
@@ -17,23 +19,23 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         public void Text_Is_Recognized()
         {
             TestTokenizer("foo-9309&smlkmb;::-3029022,.sdkq92384",
-                          new HtmlSymbol("foo-9309&smlkmb;::-3029022,.sdkq92384", HtmlSymbolType.Text));
+                          Language.CreateSymbol("foo-9309&smlkmb;::-3029022,.sdkq92384", HtmlSymbolType.Text));
         }
 
         [Fact]
         public void Whitespace_Is_Recognized()
         {
             TestTokenizer(" \t\f ",
-                          new HtmlSymbol(" \t\f ", HtmlSymbolType.WhiteSpace));
+                          Language.CreateSymbol(" \t\f ", HtmlSymbolType.WhiteSpace));
         }
 
         [Fact]
         public void Newline_Is_Recognized()
         {
             TestTokenizer("\n\r\r\n",
-                          new HtmlSymbol("\n", HtmlSymbolType.NewLine),
-                          new HtmlSymbol("\r", HtmlSymbolType.NewLine),
-                          new HtmlSymbol("\r\n", HtmlSymbolType.NewLine));
+                          Language.CreateSymbol("\n", HtmlSymbolType.NewLine),
+                          Language.CreateSymbol("\r", HtmlSymbolType.NewLine),
+                          Language.CreateSymbol("\r\n", HtmlSymbolType.NewLine));
         }
 
         [Fact]
@@ -131,9 +133,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             TestTokenizer(
                 "@* Foo * Bar * Baz *",
-                new HtmlSymbol("@", HtmlSymbolType.RazorCommentTransition),
-                new HtmlSymbol("*", HtmlSymbolType.RazorCommentStar),
-                new HtmlSymbol(" Foo * Bar * Baz *", HtmlSymbolType.RazorComment));
+                Language.CreateSymbol("@", HtmlSymbolType.RazorCommentTransition),
+                Language.CreateSymbol("*", HtmlSymbolType.RazorCommentStar),
+                Language.CreateSymbol(" Foo * Bar * Baz *", HtmlSymbolType.RazorComment));
         }
 
         [Fact]
@@ -141,11 +143,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             TestTokenizer(
                 "@* Foo * Bar * Baz *@",
-                new HtmlSymbol("@", HtmlSymbolType.RazorCommentTransition),
-                new HtmlSymbol("*", HtmlSymbolType.RazorCommentStar),
-                new HtmlSymbol(" Foo * Bar * Baz ", HtmlSymbolType.RazorComment),
-                new HtmlSymbol("*", HtmlSymbolType.RazorCommentStar),
-                new HtmlSymbol("@", HtmlSymbolType.RazorCommentTransition));
+                Language.CreateSymbol("@", HtmlSymbolType.RazorCommentTransition),
+                Language.CreateSymbol("*", HtmlSymbolType.RazorCommentStar),
+                Language.CreateSymbol(" Foo * Bar * Baz ", HtmlSymbolType.RazorComment),
+                Language.CreateSymbol("*", HtmlSymbolType.RazorCommentStar),
+                Language.CreateSymbol("@", HtmlSymbolType.RazorCommentTransition));
         }
 
         [Fact]
@@ -153,11 +155,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             TestTokenizer(
                 "@* Foo Bar Baz *@",
-                new HtmlSymbol("@", HtmlSymbolType.RazorCommentTransition),
-                new HtmlSymbol("*", HtmlSymbolType.RazorCommentStar),
-                new HtmlSymbol(" Foo Bar Baz ", HtmlSymbolType.RazorComment),
-                new HtmlSymbol("*", HtmlSymbolType.RazorCommentStar),
-                new HtmlSymbol("@", HtmlSymbolType.RazorCommentTransition));
+                Language.CreateSymbol("@", HtmlSymbolType.RazorCommentTransition),
+                Language.CreateSymbol("*", HtmlSymbolType.RazorCommentStar),
+                Language.CreateSymbol(" Foo Bar Baz ", HtmlSymbolType.RazorComment),
+                Language.CreateSymbol("*", HtmlSymbolType.RazorCommentStar),
+                Language.CreateSymbol("@", HtmlSymbolType.RazorCommentTransition));
         }
     }
 }

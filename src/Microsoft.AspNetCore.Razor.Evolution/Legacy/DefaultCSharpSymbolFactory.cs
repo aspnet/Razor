@@ -5,8 +5,11 @@ using System.Collections.Generic;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal abstract class HtmlSymbol : SymbolBase<HtmlSymbolType>
+    internal class DefaultCSharpSymbolFactory : ICSharpSymbolFactory
     {
-        public override IReadOnlyList<RazorError> Errors => RazorError.EmptyArray;
+        public CSharpSymbol Create(string content, CSharpSymbolType type, IReadOnlyList<RazorError> errors)
+        {
+            return new CSharpSymbol(content, type, errors);
+        }
     }
 }

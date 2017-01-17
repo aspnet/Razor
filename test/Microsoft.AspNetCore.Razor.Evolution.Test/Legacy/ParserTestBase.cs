@@ -55,7 +55,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
             using (var reader = new SeekableTextReader(document))
             {
-                var context = new ParserContext(reader, designTime);
+                var context = new ParserContext(reader,
+                    designTime,
+                    new HtmlLanguageCharacteristics(new DefaultHtmlSymbolFactory()),
+                    new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory()));
 
                 var parser = new HtmlMarkupParser(context);
                 parser.CodeParser = new CSharpCodeParser(context)
@@ -70,7 +73,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 var options = RazorParserOptions.CreateDefaultOptions();
                 options.DesignTimeMode = designTime;
 
-                return RazorSyntaxTree.Create(root, source, diagnostics, options);
+                return RazorSyntaxTree.Create(root, source, context.HtmlLanguage, context.CSharpLanguage, diagnostics, options);
             }
         }
 
@@ -88,7 +91,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
             using (var reader = new SeekableTextReader(document))
             {
-                var context = new ParserContext(reader, designTime);
+                var context = new ParserContext(reader,
+                    designTime,
+                    new HtmlLanguageCharacteristics(new DefaultHtmlSymbolFactory()),
+                    new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory()));
 
                 var parser = new CSharpCodeParser(descriptors, context);
                 parser.HtmlParser = new HtmlMarkupParser(context)
@@ -110,7 +116,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                     options.Directives.Add(directive);
                 }
 
-                return RazorSyntaxTree.Create(root, source, diagnostics, options);
+                return RazorSyntaxTree.Create(root, source, context.HtmlLanguage, context.CSharpLanguage, diagnostics, options);
             }
         }
 

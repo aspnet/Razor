@@ -109,6 +109,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var erroredOriginalTree = RazorSyntaxTree.Create(
                 originalTree.Root, 
                 originalTree.Source, 
+                originalTree.HtmlLanguage,
+                originalTree.CSharpLanguage,
                 new[] { expectedErrors[0] }, 
                 originalTree.Options);
 

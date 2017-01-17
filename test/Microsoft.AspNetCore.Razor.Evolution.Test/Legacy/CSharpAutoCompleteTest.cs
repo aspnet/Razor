@@ -9,6 +9,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public class CSharpAutoCompleteTest : CsHtmlCodeParserTestBase
     {
+        private CSharpLanguageCharacteristics _language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         [Fact]
         public void FunctionsDirectiveAutoCompleteAtEOF()
         {
@@ -54,7 +56,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                Factory.MetaCode("{").Accepts(AcceptedCharacters.None),
                                Factory.EmptyCSharp()
                                    .AsStatement()
-                                   .With(new AutoCompleteEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString) { AutoCompleteString = "}" })
+                                   .With(new AutoCompleteEditHandler(_language.TokenizeString) { AutoCompleteString = "}" })
                                ),
                            new RazorError(
                                LegacyResources.FormatParseError_Expected_EndOfBlock_Before_EOF(
@@ -115,13 +117,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                Factory.MetaCode("{").Accepts(AcceptedCharacters.None),
                                Factory.Code(Environment.NewLine)
                                    .AsStatement()
-                                   .With(new AutoCompleteEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString) { AutoCompleteString = "}" }),
+                                   .With(new AutoCompleteEditHandler(_language.TokenizeString) { AutoCompleteString = "}" }),
                                new MarkupBlock(
                                     new MarkupTagBlock(
                                         Factory.Markup("<p>").Accepts(AcceptedCharacters.None)),
                                     new MarkupTagBlock(
                                         Factory.Markup("</p>").Accepts(AcceptedCharacters.None))),
-                               Factory.Span(SpanKind.Code, new CSharpSymbol(string.Empty, CSharpSymbolType.Unknown))
+                               Factory.Span(SpanKind.Code, _language.CreateSymbol(string.Empty, CSharpSymbolType.Unknown))
                                    .With(new StatementChunkGenerator())
                                ),
                            new RazorError(

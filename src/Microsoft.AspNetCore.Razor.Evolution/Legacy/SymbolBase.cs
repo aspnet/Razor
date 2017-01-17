@@ -10,28 +10,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     internal abstract class SymbolBase<TType> : ISymbol where TType : struct
     {
-        protected SymbolBase(
-            string content,
-            TType type,
-            IReadOnlyList<RazorError> errors)
-        {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-
-            Content = content;
-            Type = type;
-            Errors = errors;
-        }
-
         public Span Parent { get; set; }
 
-        public IReadOnlyList<RazorError> Errors { get; }
+        public abstract IReadOnlyList<RazorError> Errors { get; }
 
-        public string Content { get; }
+        public abstract string Content { get; }
 
-        public TType Type { get; }
+        public abstract TType Type { get; }
 
         public SourceLocation Start
         {
