@@ -11,11 +11,15 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         public DefaultRazorSyntaxTree(
             Block root,
             RazorSourceDocument source,
+            HtmlLanguageCharacteristics htmlLanguage,
+            CSharpLanguageCharacteristics cSharpLanguage,
             IReadOnlyList<RazorError> diagnostics,
             RazorParserOptions options)
         {
             Root = root;
             Source = source;
+            HtmlLanguage = htmlLanguage;
+            CSharpLanguage = cSharpLanguage;
             Diagnostics = diagnostics;
             Options = options;
         }
@@ -27,5 +31,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         internal override Block Root { get; }
 
         public override RazorSourceDocument Source { get; }
+
+        internal override HtmlLanguageCharacteristics HtmlLanguage { get; }
+
+        internal override CSharpLanguageCharacteristics CSharpLanguage { get; }
     }
 }

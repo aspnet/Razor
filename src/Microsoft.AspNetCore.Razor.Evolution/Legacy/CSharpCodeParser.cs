@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer, CSharpSymbol, CSharpSymbolType>
+    internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer, CSharpSymbol, CSharpSymbolType, ICSharpSymbolFactory>
     {
         internal static readonly int UsingKeywordLength = 5; // using
         private static readonly Func<CSharpSymbol, bool> IsValidStatementSpacingSymbol =
@@ -70,7 +70,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         }
 
         public CSharpCodeParser(IEnumerable<DirectiveDescriptor> directiveDescriptors, ParserContext context)
-            : base(CSharpLanguageCharacteristics.Instance, context)
+            : base(context.CSharpLanguage, context)
         {
             Keywords = new HashSet<string>();
             SetUpKeywords();
@@ -600,7 +600,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 // If necessary, put an empty-content marker symbol here
                 if (Span.Symbols.Count == 0)
                 {
-                    Accept(new CSharpSymbol(string.Empty, CSharpSymbolType.Unknown));
+                    Accept(Context.CSharpLanguage.CreateSymbol(string.Empty, CSharpSymbolType.Unknown));
                 }
 
                 // Output the content span and then capture the ")"

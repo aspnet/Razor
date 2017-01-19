@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     internal class WhiteSpaceRewriter : MarkupRewriter
     {
+        public WhiteSpaceRewriter(HtmlLanguageCharacteristics htmlLanguage)
+            : base(htmlLanguage)
+        {
+        }
+
         protected override bool CanRewrite(Block block)
         {
             return block.Type == BlockType.Expression && Parent != null;

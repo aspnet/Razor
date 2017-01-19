@@ -36,7 +36,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
             var reader = new SeekableTextReader(chars);
 
-            var context = new ParserContext(reader, Options.DesignTimeMode);
+            var context = new ParserContext(reader,
+                Options.DesignTimeMode,
+                new HtmlLanguageCharacteristics(new DefaultHtmlSymbolFactory()),
+                new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory()));
 
             var codeParser = new CSharpCodeParser(Options.Directives, context);
             var markupParser = new HtmlMarkupParser(context);
@@ -48,7 +51,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             
             var root = context.Builder.Build();
             var diagnostics = context.ErrorSink.Errors;
-            return RazorSyntaxTree.Create(root, source, diagnostics, Options);
+            return RazorSyntaxTree.Create(root, source, context.HtmlLanguage, context.CSharpLanguage, diagnostics, Options);
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
     {
         private new CSharpSymbol IgnoreRemaining => (CSharpSymbol)base.IgnoreRemaining;
 
+        private new CSharpLanguageCharacteristics Language => (CSharpLanguageCharacteristics)base.Language;
+
         [Fact]
         public void Next_Returns_Null_When_EOF_Reached()
         {
@@ -20,8 +22,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             TestTokenizer(
                 "\r\ra",
-                new CSharpSymbol("\r", CSharpSymbolType.NewLine),
-                new CSharpSymbol("\r", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\r", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\r", CSharpSymbolType.NewLine),
                 IgnoreRemaining);
         }
 
@@ -30,8 +32,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             TestTokenizer(
                 "\n\na",
-                new CSharpSymbol("\n", CSharpSymbolType.NewLine),
-                new CSharpSymbol("\n", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\n", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\n", CSharpSymbolType.NewLine),
                 IgnoreRemaining);
         }
 
@@ -41,8 +43,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             // NEL: Unicode "Next Line" U+0085
             TestTokenizer(
                 "\u0085\u0085a",
-                new CSharpSymbol("\u0085", CSharpSymbolType.NewLine),
-                new CSharpSymbol("\u0085", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\u0085", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\u0085", CSharpSymbolType.NewLine),
                 IgnoreRemaining);
         }
 
@@ -52,8 +54,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             // Unicode "Line Separator" U+2028
             TestTokenizer(
                 "\u2028\u2028a",
-                new CSharpSymbol("\u2028", CSharpSymbolType.NewLine),
-                new CSharpSymbol("\u2028", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\u2028", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\u2028", CSharpSymbolType.NewLine),
                 IgnoreRemaining);
         }
 
@@ -63,8 +65,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             // Unicode "Paragraph Separator" U+2029
             TestTokenizer(
                 "\u2029\u2029a",
-                new CSharpSymbol("\u2029", CSharpSymbolType.NewLine),
-                new CSharpSymbol("\u2029", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\u2029", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\u2029", CSharpSymbolType.NewLine),
                 IgnoreRemaining);
         }
 
@@ -73,8 +75,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             TestTokenizer(
                 "\r\n\r\na",
-                new CSharpSymbol("\r\n", CSharpSymbolType.NewLine),
-                new CSharpSymbol("\r\n", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\r\n", CSharpSymbolType.NewLine),
+                Language.CreateSymbol("\r\n", CSharpSymbolType.NewLine),
                 IgnoreRemaining);
         }
 
@@ -83,9 +85,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             TestTokenizer(
                 " \f\t\u000B \n ",
-                new CSharpSymbol(" \f\t\u000B ", CSharpSymbolType.WhiteSpace),
-                new CSharpSymbol("\n", CSharpSymbolType.NewLine),
-                new CSharpSymbol(" ", CSharpSymbolType.WhiteSpace));
+                Language.CreateSymbol(" \f\t\u000B ", CSharpSymbolType.WhiteSpace),
+                Language.CreateSymbol("\n", CSharpSymbolType.NewLine),
+                Language.CreateSymbol(" ", CSharpSymbolType.WhiteSpace));
         }
 
         [Fact]
@@ -99,8 +101,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             TestTokenizer(
                 "@(",
-                new CSharpSymbol("@", CSharpSymbolType.Transition),
-                new CSharpSymbol("(", CSharpSymbolType.LeftParenthesis));
+                Language.CreateSymbol("@", CSharpSymbolType.Transition),
+                Language.CreateSymbol("(", CSharpSymbolType.LeftParenthesis));
         }
     }
 }

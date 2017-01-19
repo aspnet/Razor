@@ -5,21 +5,34 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public abstract class CSharpTokenizerTestBase : TokenizerTestBase
     {
-        private static CSharpSymbol _ignoreRemaining = new CSharpSymbol(string.Empty, CSharpSymbolType.Unknown);
+        private readonly CSharpLanguageCharacteristics _language;
+
+        private readonly CSharpSymbol _ignoreRemaining;
+
+        protected CSharpTokenizerTestBase()
+        {
+            _language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+            _ignoreRemaining = _language.CreateSymbol(string.Empty, CSharpSymbolType.Unknown);
+        }
 
         internal override object IgnoreRemaining
         {
             get { return _ignoreRemaining; }
         }
 
+        internal override object Language
+        {
+            get { return _language; }
+        }
+
         internal override object CreateTokenizer(ITextDocument source)
         {
-            return new CSharpTokenizer(source);
+            return _language.CreateTokenizer(source);
         }
 
         internal void TestSingleToken(string text, CSharpSymbolType expectedSymbolType)
         {
-            TestTokenizer(text, new CSharpSymbol(text, expectedSymbolType));
+            TestTokenizer(text, _language.CreateSymbol(text, expectedSymbolType, RazorError.EmptyArray));
         }
 
         internal void TestTokenizer(string input, params CSharpSymbol[] expectedSymbols)

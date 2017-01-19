@@ -5,21 +5,34 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public abstract class HtmlTokenizerTestBase : TokenizerTestBase
     {
-        private static HtmlSymbol _ignoreRemaining = new HtmlSymbol(string.Empty, HtmlSymbolType.Unknown);
+        private readonly HtmlLanguageCharacteristics _language;
+
+        private readonly HtmlSymbol _ignoreRemaining;
+
+        protected HtmlTokenizerTestBase()
+        {
+            _language = new HtmlLanguageCharacteristics(new DefaultHtmlSymbolFactory());
+            _ignoreRemaining = _language.CreateSymbol(string.Empty, HtmlSymbolType.Unknown);
+        }
 
         internal override object IgnoreRemaining
         {
             get { return _ignoreRemaining; }
         }
 
+        internal override object Language
+        {
+            get { return _language; }
+        }
+
         internal override object CreateTokenizer(ITextDocument source)
         {
-            return new HtmlTokenizer(source);
+            return _language.CreateTokenizer(source);
         }
 
         internal void TestSingleToken(string text, HtmlSymbolType expectedSymbolType)
         {
-            TestTokenizer(text, new HtmlSymbol(text, expectedSymbolType));
+            TestTokenizer(text, _language.CreateSymbol(text, expectedSymbolType));
         }
 
         internal void TestTokenizer(string input, params HtmlSymbol[] expectedSymbols)

@@ -6,17 +6,11 @@ using System.Diagnostics;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal class HtmlLanguageCharacteristics : LanguageCharacteristics<HtmlTokenizer, HtmlSymbol, HtmlSymbolType>
+    internal class HtmlLanguageCharacteristics : LanguageCharacteristics<HtmlTokenizer, HtmlSymbol, HtmlSymbolType, IHtmlSymbolFactory>
     {
-        private static readonly HtmlLanguageCharacteristics _instance = new HtmlLanguageCharacteristics();
-
-        private HtmlLanguageCharacteristics()
+        public HtmlLanguageCharacteristics(IHtmlSymbolFactory symbolFactory)
+            : base(symbolFactory)
         {
-        }
-
-        public static HtmlLanguageCharacteristics Instance
-        {
-            get { return _instance; }
         }
 
         public override string GetSample(HtmlSymbolType type)
@@ -68,7 +62,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
         public override HtmlTokenizer CreateTokenizer(ITextDocument source)
         {
-            return new HtmlTokenizer(source);
+            return new HtmlTokenizer(source, SymbolFactory);
         }
 
         public override HtmlSymbolType FlipBracket(HtmlSymbolType bracket)
@@ -97,7 +91,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
         public override HtmlSymbol CreateMarkerSymbol()
         {
-            return new HtmlSymbol(string.Empty, HtmlSymbolType.Unknown);
+            return CreateSymbol(string.Empty, HtmlSymbolType.Unknown);
         }
 
         public override HtmlSymbolType GetKnownSymbolType(KnownSymbolType type)
@@ -123,11 +117,6 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 default:
                     return HtmlSymbolType.Unknown;
             }
-        }
-
-        protected override HtmlSymbol CreateSymbol(string content, HtmlSymbolType type, IReadOnlyList<RazorError> errors)
-        {
-            return new HtmlSymbol(content, type, errors);
         }
     }
 }

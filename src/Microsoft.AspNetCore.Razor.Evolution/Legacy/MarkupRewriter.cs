@@ -10,9 +10,12 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
     {
         private Stack<BlockBuilder> _blocks;
 
-        protected MarkupRewriter()
+        protected HtmlLanguageCharacteristics HtmlLanguage { get; }
+
+        protected MarkupRewriter(HtmlLanguageCharacteristics htmlLanguage)
         {
             _blocks = new Stack<BlockBuilder>();
+            HtmlLanguage = htmlLanguage;
         }
 
         protected BlockBuilder Parent => _blocks.Count > 0 ? _blocks.Peek() : null;
@@ -67,7 +70,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             builder.Kind = SpanKind.Markup;
             builder.ChunkGenerator = new MarkupChunkGenerator();
 
-            foreach (ISymbol sym in HtmlLanguageCharacteristics.Instance.TokenizeString(start, content))
+            foreach (ISymbol sym in HtmlLanguage.TokenizeString(start, content))
             {
                 builder.Accept(sym);
             }

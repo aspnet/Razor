@@ -7,6 +7,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public class CSharpTokenizerOperatorsTest : CSharpTokenizerTestBase
     {
+        private new CSharpLanguageCharacteristics Language => (CSharpLanguageCharacteristics)base.Language;
+
         [Fact]
         public void LeftBrace_Is_Recognized()
         {
@@ -125,8 +127,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         public void LeftShift_Is_Not_Specially_Recognized()
         {
             TestTokenizer("<<",
-                new CSharpSymbol("<", CSharpSymbolType.LessThan),
-                new CSharpSymbol("<", CSharpSymbolType.LessThan));
+                Language.CreateSymbol("<", CSharpSymbolType.LessThan),
+                Language.CreateSymbol("<", CSharpSymbolType.LessThan));
         }
 
         [Fact]
@@ -283,8 +285,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         public void RightShift_Is_Not_Specially_Recognized()
         {
             TestTokenizer(">>",
-                new CSharpSymbol(">", CSharpSymbolType.GreaterThan),
-                new CSharpSymbol(">", CSharpSymbolType.GreaterThan));
+                Language.CreateSymbol(">", CSharpSymbolType.GreaterThan),
+                Language.CreateSymbol(">", CSharpSymbolType.GreaterThan));
         }
 
         [Fact]

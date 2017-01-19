@@ -11,6 +11,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
     {
         private static readonly TestFile Nested1000 = TestFile.Create("TestFiles/nested-1000.html");
 
+        private CSharpLanguageCharacteristics _language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         [Fact]
         public void ParseDocument_NestedCodeBlockWithMarkupSetsDotAsMarkup()
         {
@@ -363,7 +365,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                             Factory.MarkupTransition(),
                             Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                             Factory.Markup(" Bleh\r\n")
-                                .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString))
+                                .With(new SpanEditHandler(_language.TokenizeString))
                                 .Accepts(AcceptedCharacters.None)),
                         Factory.EmptyCSharp().AsStatement(),
                         Factory.MetaCode("}").Accepts(AcceptedCharacters.None)),

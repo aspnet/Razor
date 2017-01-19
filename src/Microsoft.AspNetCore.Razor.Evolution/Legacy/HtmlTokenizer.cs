@@ -11,9 +11,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
     {
         private const char TransitionChar = '@';
 
-        public HtmlTokenizer(ITextDocument source)
+        private readonly IHtmlSymbolFactory _symbolFactory;
+
+        public HtmlTokenizer(ITextDocument source, IHtmlSymbolFactory symbolFactory)
             : base(source)
         {
+            _symbolFactory = symbolFactory;
+
             base.CurrentState = StartState;
         }
 
@@ -38,7 +42,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
         protected override HtmlSymbol CreateSymbol(string content, HtmlSymbolType type, IReadOnlyList<RazorError> errors)
         {
-            return new HtmlSymbol(content, type, errors);
+            return _symbolFactory.Create(content, type, errors);
         }
 
         protected override StateResult Dispatch()

@@ -6,10 +6,8 @@ using System.Diagnostics;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal class CSharpLanguageCharacteristics : LanguageCharacteristics<CSharpTokenizer, CSharpSymbol, CSharpSymbolType>
+    internal class CSharpLanguageCharacteristics : LanguageCharacteristics<CSharpTokenizer, CSharpSymbol, CSharpSymbolType, ICSharpSymbolFactory>
     {
-        private static readonly CSharpLanguageCharacteristics _instance = new CSharpLanguageCharacteristics();
-
         private static Dictionary<CSharpSymbolType, string> _symbolSamples = new Dictionary<CSharpSymbolType, string>()
         {
             { CSharpSymbolType.Arrow, "->" },
@@ -63,20 +61,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             { CSharpSymbolType.Transition, "@" },
         };
 
-        private CSharpLanguageCharacteristics()
+        public CSharpLanguageCharacteristics(ICSharpSymbolFactory symbolFactory)
+            : base(symbolFactory)
         {
         }
-
-        public static CSharpLanguageCharacteristics Instance => _instance;
 
         public override CSharpTokenizer CreateTokenizer(ITextDocument source)
         {
-            return new CSharpTokenizer(source);
-        }
-
-        protected override CSharpSymbol CreateSymbol(string content, CSharpSymbolType type, IReadOnlyList<RazorError> errors)
-        {
-            return new CSharpSymbol(content, type, errors);
+            return new CSharpTokenizer(source, SymbolFactory);
         }
 
         public override string GetSample(CSharpSymbolType type)
@@ -113,7 +105,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
         public override CSharpSymbol CreateMarkerSymbol()
         {
-            return new CSharpSymbol(string.Empty, CSharpSymbolType.Unknown);
+            return CreateSymbol(string.Empty, CSharpSymbolType.Unknown);
         }
 
         public override CSharpSymbolType GetKnownSymbolType(KnownSymbolType type)

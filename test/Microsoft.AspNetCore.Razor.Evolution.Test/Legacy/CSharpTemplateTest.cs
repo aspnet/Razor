@@ -10,6 +10,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
     {
         private const string TestTemplateCode = " @<p>Foo #@item</p>";
 
+        private CSharpLanguageCharacteristics _language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         private TemplateBlock TestTemplate()
         {
             return new TemplateBlock(
@@ -85,7 +87,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                        Factory.MarkupTransition(),
                                        Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                        Factory.Markup(" bar" + Environment.NewLine)
-                                           .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString))
+                                           .With(new SpanEditHandler(_language.TokenizeString))
                                            .Accepts(AcceptedCharacters.None)
                                        )
                                    ),
@@ -109,7 +111,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                        Factory.MarkupTransition(),
                                        Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                        Factory.Markup(" bar" + Environment.NewLine)
-                                           .With(new SpanEditHandler(CSharpLanguageCharacteristics.Instance.TokenizeString))
+                                           .With(new SpanEditHandler(_language.TokenizeString))
                                            .Accepts(AcceptedCharacters.None)
                                        )
                                    ),

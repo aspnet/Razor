@@ -11,6 +11,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
     public abstract class TokenizerTestBase
     {
         internal abstract object IgnoreRemaining { get; }
+
+        internal abstract object Language { get; }
+
         internal abstract object CreateTokenizer(ITextDocument source);
 
         internal void TestTokenizer<TSymbol, TSymbolType>(string input, params TSymbol[] expectedSymbols)

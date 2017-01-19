@@ -8,6 +8,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public class CSharpWhitespaceHandlingTest : CsHtmlMarkupParserTestBase
     {
+        private CSharpLanguageCharacteristics _language = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         [Fact]
         public void StatementBlockDoesNotAcceptTrailingNewlineIfNewlinesAreSignificantToAncestor()
         {
@@ -19,7 +21,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                Factory.MetaMarkup(":", HtmlSymbolType.Colon),
                                Factory.Markup(" ")
                                    .With(new SpanEditHandler(
-                                       CSharpLanguageCharacteristics.Instance.TokenizeString,
+                                       _language.TokenizeString,
                                        AcceptedCharacters.Any)),
                                new StatementBlock(
                                    Factory.CodeTransition()

@@ -8,28 +8,26 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     internal class CSharpSymbol : SymbolBase<CSharpSymbolType>
     {
-        public CSharpSymbol(
-            string content,
-            CSharpSymbolType type)
-            : base(content, type, RazorError.EmptyArray)
-        {
-            if (content == null)
-            {
-                throw new ArgumentNullException(nameof(content));
-            }
-        }
-
-        public CSharpSymbol(
+        internal CSharpSymbol(
             string content,
             CSharpSymbolType type,
             IReadOnlyList<RazorError> errors)
-            : base(content, type, errors)
         {
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
+
+            Content = content;
+            Type = type;
+            Errors = errors;
         }
+
+        public override IReadOnlyList<RazorError> Errors { get; }
+
+        public override string Content { get; }
+
+        public override CSharpSymbolType Type { get; }
 
         public CSharpKeyword? Keyword { get; set; }
 

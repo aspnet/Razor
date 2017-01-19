@@ -13,13 +13,18 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public RazorSyntaxTree Execute(RazorCodeDocument codeDocument, RazorSyntaxTree syntaxTree)
         {
-            var conditionalAttributeCollapser = new ConditionalAttributeCollapser();
+            var conditionalAttributeCollapser = new ConditionalAttributeCollapser(syntaxTree.HtmlLanguage);
             var rewritten = conditionalAttributeCollapser.Rewrite(syntaxTree.Root);
 
-            var whitespaceRewriter = new WhiteSpaceRewriter();
+            var whitespaceRewriter = new WhiteSpaceRewriter(syntaxTree.HtmlLanguage);
             rewritten = whitespaceRewriter.Rewrite(rewritten);
 
-            var rewrittenSyntaxTree = RazorSyntaxTree.Create(rewritten, syntaxTree.Source, syntaxTree.Diagnostics, syntaxTree.Options);
+            var rewrittenSyntaxTree = RazorSyntaxTree.Create(rewritten,
+                syntaxTree.Source,
+                syntaxTree.HtmlLanguage,
+                syntaxTree.CSharpLanguage,
+                syntaxTree.Diagnostics,
+                syntaxTree.Options);
             return rewrittenSyntaxTree;
         }
     }

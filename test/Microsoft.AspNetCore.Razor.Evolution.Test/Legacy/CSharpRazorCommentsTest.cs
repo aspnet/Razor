@@ -8,6 +8,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     public class CSharpRazorCommentsTest : CsHtmlMarkupParserTestBase
     {
+        private HtmlLanguageCharacteristics _htmlLanguage = new HtmlLanguageCharacteristics(new DefaultHtmlSymbolFactory());
+
+        private CSharpLanguageCharacteristics _cSharpLanguage = new CSharpLanguageCharacteristics(new DefaultCSharpSymbolFactory());
+
         [Fact]
         public void UnterminatedRazorComment()
         {
@@ -20,8 +24,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
                         Factory.Span(
-                            SpanKind.Comment, 
-                            new HtmlSymbol(
+                            SpanKind.Comment,
+                            _htmlLanguage.CreateSymbol(
                                 string.Empty,
                                 HtmlSymbolType.Unknown))
                                .Accepts(AcceptedCharacters.Any))),
@@ -42,7 +46,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             string.Empty,
                             HtmlSymbolType.Unknown))
                                .Accepts(AcceptedCharacters.Any),
@@ -69,7 +73,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    .Accepts(AcceptedCharacters.None),
                             Factory.MetaCode("*", CSharpSymbolType.RazorCommentStar)
                                    .Accepts(AcceptedCharacters.None),
-                            Factory.Span(SpanKind.Comment, new CSharpSymbol(
+                            Factory.Span(SpanKind.Comment, _cSharpLanguage.CreateSymbol(
                                 string.Empty,
                                 CSharpSymbolType.Unknown))
                                    .Accepts(AcceptedCharacters.Any),
@@ -100,7 +104,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    .Accepts(AcceptedCharacters.None),
                             Factory.MetaCode("*", CSharpSymbolType.RazorCommentStar)
                                    .Accepts(AcceptedCharacters.None),
-                            Factory.Span(SpanKind.Comment, new CSharpSymbol(
+                            Factory.Span(SpanKind.Comment, _cSharpLanguage.CreateSymbol(
                                 string.Empty,
                                 CSharpSymbolType.Unknown))
                                     .Accepts(AcceptedCharacters.Any)))),
@@ -139,7 +143,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                        .Accepts(AcceptedCharacters.None),
                                 Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                        .Accepts(AcceptedCharacters.None),
-                                Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                                Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                                     string.Empty,
                                     HtmlSymbolType.Unknown))
                                        .Accepts(AcceptedCharacters.Any),
@@ -180,7 +184,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                    .Accepts(AcceptedCharacters.None),
                             Factory.MetaCode("*", CSharpSymbolType.RazorCommentStar)
                                    .Accepts(AcceptedCharacters.None),
-                            Factory.Span(SpanKind.Comment, new CSharpSymbol(string.Empty, CSharpSymbolType.Unknown))
+                            Factory.Span(SpanKind.Comment, _cSharpLanguage.CreateSymbol(string.Empty, CSharpSymbolType.Unknown))
                                    .Accepts(AcceptedCharacters.Any)))),
                 new RazorError(
                     LegacyResources.ParseError_RazorComment_Not_Terminated,
@@ -209,7 +213,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             string.Empty,
                             HtmlSymbolType.Unknown))
                                .Accepts(AcceptedCharacters.Any),
@@ -241,7 +245,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             string.Empty,
                             HtmlSymbolType.Unknown))
                                .Accepts(AcceptedCharacters.Any),
@@ -255,7 +259,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             string.Empty,
                             HtmlSymbolType.Unknown))
                                .Accepts(AcceptedCharacters.Any),
@@ -285,7 +289,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             string.Empty,
                             HtmlSymbolType.Unknown))
                                .Accepts(AcceptedCharacters.Any),
@@ -300,7 +304,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             string.Empty,
                             HtmlSymbolType.Unknown))
                                .Accepts(AcceptedCharacters.Any),
@@ -330,7 +334,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             " hello ",
                             HtmlSymbolType.RazorComment))
                                .Accepts(AcceptedCharacters.Any),
@@ -344,7 +348,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             " world ",
                             HtmlSymbolType.RazorComment))
                                .Accepts(AcceptedCharacters.Any),
@@ -377,7 +381,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             " content ",
                             HtmlSymbolType.RazorComment))
                                .Accepts(AcceptedCharacters.Any),
@@ -391,7 +395,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                                .Accepts(AcceptedCharacters.None),
                         Factory.MetaMarkup("*", HtmlSymbolType.RazorCommentStar)
                                .Accepts(AcceptedCharacters.None),
-                        Factory.Span(SpanKind.Comment, new HtmlSymbol(
+                        Factory.Span(SpanKind.Comment, _htmlLanguage.CreateSymbol(
                             Environment.NewLine + "content" + Environment.NewLine,
                             HtmlSymbolType.RazorComment))
                                .Accepts(AcceptedCharacters.Any),
