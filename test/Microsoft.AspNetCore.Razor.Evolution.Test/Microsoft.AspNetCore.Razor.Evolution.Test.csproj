@@ -3,10 +3,12 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp1.1;net451</TargetFrameworks>
     <DefineConstants>$(DefineConstants);__RemoveThisBitTo__GENERATE_BASELINES</DefineConstants>
+    <DefaultItemExcludes>$(DefaultItemExcludes);TestFiles\**\*</DefaultItemExcludes>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="**\*.cs" Exclude="TestFiles\**\*" />
-    <EmbeddedResource Include="**\*.resx" />
+    <Compile Include="**\*.cs" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <EmbeddedResource Include="**\*.resx" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <EmbeddedResource Include="TestFiles\**\*" />
   </ItemGroup>
   <ItemGroup>
