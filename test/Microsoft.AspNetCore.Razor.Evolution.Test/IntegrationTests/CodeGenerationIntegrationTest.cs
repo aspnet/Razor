@@ -561,6 +561,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution.IntegrationTests
         }
 
         [Fact]
+        public void TagHelpersWithPrefix_Runtime()
+        {
+            // Arrange, Act & Assert
+            RunRuntimeTagHelpersTest(TestTagHelperDescriptors.SimpleTagHelperDescriptors);
+        }
+
+        [Fact]
         public void NestedTagHelpers_Runtime()
         {
 
@@ -1244,6 +1251,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution.IntegrationTests
 
         [Fact]
         public void SimpleTagHelpers_DesignTime()
+        {
+            // Arrange, Act & Assert
+            RunDesignTimeTagHelpersTest(TestTagHelperDescriptors.SimpleTagHelperDescriptors);
+        }
+
+        [Fact]
+        public void TagHelpersWithPrefix_DesignTime()
         {
             // Arrange, Act & Assert
             RunDesignTimeTagHelpersTest(TestTagHelperDescriptors.SimpleTagHelperDescriptors);
