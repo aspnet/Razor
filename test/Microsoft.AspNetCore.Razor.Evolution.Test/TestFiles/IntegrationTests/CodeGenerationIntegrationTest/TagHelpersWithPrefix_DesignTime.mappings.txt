@@ -1,0 +1,5 @@
+Source Location: (86:3,23 [5] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/TagHelpersWithPrefix.cshtml)
+|Hello|
+Generated Location: (832:18,26 [5] )
+|Hello|
+
