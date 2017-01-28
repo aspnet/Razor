@@ -413,8 +413,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
                 _builder.Pop(); // Pop InitializeTagHelperStructureIRNode
 
-                AddTagHelperCreation(tagHelperBlock.Descriptors);
-                AddTagHelperAttributes(tagHelperBlock.Attributes, tagHelperBlock.Descriptors);
+                // Remove any duplicate TagHelperDescriptors that reference the same type name. Duplicates can occur when
+                // multiple HtmlTargetElement attributes are on a TagHelper type and matches overlap for an HTML element.
+                // Having more than one descriptor with the same TagHelper type results in generated code that runs
+                // the same TagHelper X many times (instead of once) over a single HTML element.
+                var descriptors = tagHelperBlock.Descriptors.Distinct(TypeBasedTagHelperDescriptorComparer.Default);
+
+                AddTagHelperCreation(descriptors);
+                AddTagHelperAttributes(tagHelperBlock.Attributes, descriptors);
                 AddExecuteTagHelpers();
 
                 _builder.Pop(); // Pop TagHelperIRNode
