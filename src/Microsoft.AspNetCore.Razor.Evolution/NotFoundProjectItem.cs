@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
     public class NotFoundProjectItem : RazorProjectItem
     {
         /// <summary>
-        /// Initializes a new instanceo f <see cref="NotFoundProjectItem"/>.
+        /// Initializes a new instance of <see cref="NotFoundProjectItem"/>.
         /// </summary>
         /// <param name="basePath">The base path.</param>
         /// <param name="path">The path.</param>

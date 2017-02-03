@@ -32,21 +32,20 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         /// </summary>
         /// <param name="path">The path of a project item.</param>
         /// <param name="fileName">The file name to seek.</param>
-        /// <returns>A sequence of applicable <see cref="RazorProjectItem"/>.</returns>
+        /// <returns>A sequence of applicable <see cref="RazorProjectItem"/> instances.</returns>
         /// <remarks>
         /// This method returns paths starting from the directory of <paramref name="path"/> and
-        /// moves traverses to the project root.
+        /// traverses to the project root.
         /// e.g.
         /// /Views/Home/View.cshtml -> [ /Views/Home/FileName.cshtml, /Views/FileName.cshtml, /FileName.cshtml ]
         /// </remarks>
-        public virtual IEnumerable<RazorProjectItem> EnumerateHierarchicalItems(string path, string fileName)
+        public virtual IEnumerable<RazorProjectItem> FindHierarchicalItems(string path, string fileName)
         {
             EnsureValidPath(path);
             if (string.IsNullOrEmpty(fileName))
             {
                 throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(fileName));
             }
-
 
             Debug.Assert(!string.IsNullOrEmpty(path));
             if (path.Length == 1)
@@ -87,14 +86,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         /// <param name="path">The path to validate.</param>
         protected virtual void EnsureValidPath(string path)
         {
-            if (path == null)
+            if (string.IsNullOrEmpty(path))
             {
-                throw new ArgumentNullException(nameof(path));
+                throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(path));
             }
 
-            if (path.Length == 0 || path[0] != '/')
+            if (path[0] != '/')
             {
-                throw new ArgumentException(Resources.RazorProject_PathMustStartWithForwardSlash);
+                throw new ArgumentException(Resources.RazorProject_PathMustStartWithForwardSlash, nameof(path));
             }
         }
     }

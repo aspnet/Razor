@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Testing;
 using Moq;
 using Xunit;
 
@@ -10,14 +11,42 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 {
     public class RazorProjectTest
     {
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public void EnsureValidPath_ThrowsIfPathIsNullOrEmpty(string path)
+        {
+            // Arrange
+            var project = new TestRazorProject(new Dictionary<string, RazorProjectItem>());
+
+            // Act and Assert
+            ExceptionAssert.ThrowsArgumentNullOrEmptyString(() => project.EnsureValidPath(path), "path");
+        }
+
+        [Theory]
+        [InlineData("foo")]
+        [InlineData("~/foo")]
+        [InlineData("\\foo")]
+        public void EnsureValidPath_ThrowsIfPathDoesNotStartWithForwardSlash(string path)
+        {
+            // Arrange
+            var project = new TestRazorProject(new Dictionary<string, RazorProjectItem>());
+
+            // Act and Assert
+            ExceptionAssert.ThrowsArgument(
+                () => project.EnsureValidPath(path),
+                "path",
+                "Path must begin with a forward slash '/'.");
+        }
+
         [Fact]
-        public void EnumerateHierarchicalItems_ReturnsEmptySequenceIfPathIsAtRoot()
+        public void FindHierarchicalItems_ReturnsEmptySequenceIfPathIsAtRoot()
         {
             // Arrange
             var project = new TestRazorProject(new Dictionary<string, RazorProjectItem>());
 
             // Act
-            var result = project.EnumerateHierarchicalItems("/", "File.cshtml");
+            var result = project.FindHierarchicalItems("/", "File.cshtml");
 
             // Assert
             Assert.Empty(result);
@@ -26,7 +55,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         [Theory]
         [InlineData("_ViewStart.cshtml")]
         [InlineData("_ViewImports.cshtml")]
-        public void EnumerateHierarchicalItems_ReturnsItemsForPath(string fileName)
+        public void FindHierarchicalItems_ReturnsItemsForPath(string fileName)
         {
             // Arrange
             var path = "/Views/Home/Index.cshtml";
@@ -39,7 +68,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var project = new TestRazorProject(items);
 
             // Act
-            var result = project.EnumerateHierarchicalItems(path, $"{fileName}");
+            var result = project.FindHierarchicalItems(path, $"{fileName}");
 
             // Assert
             Assert.Collection(
@@ -50,7 +79,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         }
 
         [Fact]
-        public void EnumerateHierarchicalItems_ReturnsItemsForPathAtRoot()
+        public void FindHierarchicalItems_ReturnsItemsForPathAtRoot()
         {
             // Arrange
             var path = "/Index.cshtml";
@@ -61,7 +90,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var project = new TestRazorProject(items);
 
             // Act
-            var result = project.EnumerateHierarchicalItems(path, "File.cshtml");
+            var result = project.FindHierarchicalItems(path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -70,7 +99,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         }
 
         [Fact]
-        public void EnumerateHierarchicalItems_DoesNotIncludePassedInItem()
+        public void FindHierarchicalItems_DoesNotIncludePassedInItem()
         {
             // Arrange
             var path = "/Areas/MyArea/Views/Home/File.cshtml";
@@ -85,7 +114,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var project = new TestRazorProject(items);
 
             // Act
-            var result = project.EnumerateHierarchicalItems(path, "File.cshtml");
+            var result = project.FindHierarchicalItems(path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -97,7 +126,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         }
 
         [Fact]
-        public void EnumerateHierarchicalItems_ReturnsEmptySequenceIfPassedInItemWithFileNameIsAtRoot()
+        public void FindHierarchicalItems_ReturnsEmptySequenceIfPassedInItemWithFileNameIsAtRoot()
         {
             // Arrange
             var path = "/File.cshtml";
@@ -108,14 +137,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var project = new TestRazorProject(items);
 
             // Act
-            var result = project.EnumerateHierarchicalItems(path, "File.cshtml");
+            var result = project.FindHierarchicalItems(path, "File.cshtml");
 
             // Assert
             Assert.Empty(result);
         }
 
         [Fact]
-        public void EnumerateHierarchicalItems_IncludesNonExistentFiles()
+        public void FindHierarchicalItems_IncludesNonExistentFiles()
         {
             // Arrange
             var path = "/Areas/MyArea/Views/Home/Test.cshtml";
@@ -127,7 +156,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var project = new TestRazorProject(items);
 
             // Act
-            var result = project.EnumerateHierarchicalItems(path, "File.cshtml");
+            var result = project.FindHierarchicalItems(path, "File.cshtml");
 
             // Assert
             Assert.Collection(
@@ -187,6 +216,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
                 return item;
             }
+
+            public new void EnsureValidPath(string path) => base.EnsureValidPath(path);
         }
     }
 }

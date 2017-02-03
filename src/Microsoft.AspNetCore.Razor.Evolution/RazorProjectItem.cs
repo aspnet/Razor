@@ -34,7 +34,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         public abstract Stream Read();
 
         /// <summary>
-        /// Gets a value that determines if the project item exists.
+        /// Gets a value that determines if the file exists.
         /// </summary>
         public abstract bool Exists { get; }
 
