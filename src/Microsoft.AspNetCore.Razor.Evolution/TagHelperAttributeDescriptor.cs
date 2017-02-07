@@ -13,7 +13,6 @@ namespace Microsoft.AspNetCore.Razor.Evolution
     {
         private string _typeName;
         private string _name;
-        private string _propertyName;
 
         /// <summary>
         /// Instantiates a new instance of the <see cref="TagHelperAttributeDescriptor"/> class.
@@ -22,11 +21,19 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         {
         }
 
+        public TagHelperAttributeDescriptor(TagHelperAttributeDescriptor descriptor)
+        {
+            Name = descriptor.Name;
+            TypeName = descriptor.TypeName;
+            IsEnum = descriptor.IsEnum;
+            IsDictionary = descriptor.IsDictionary;
+            Summary = descriptor.Summary;
+        }
+
         // Internal for testing i.e. for easy TagHelperAttributeDescriptor creation when PropertyInfo is available.
         internal TagHelperAttributeDescriptor(string name, PropertyInfo propertyInfo)
         {
             Name = name;
-            PropertyName = propertyInfo.Name;
             TypeName = propertyInfo.PropertyType.FullName;
             IsEnum = propertyInfo.PropertyType.GetTypeInfo().IsEnum;
         }
@@ -42,9 +49,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         /// HTML attribute that has the exact <see cref="Name"/>.
         /// </value>
         /// <remarks>
-        /// HTML attribute names are matched case-insensitively, regardless of <see cref="IsIndexer"/>.
+        /// HTML attribute names are matched case-insensitively, regardless of <see cref="IsDictionary"/>.
         /// </remarks>
-        public bool IsIndexer { get; set; }
+        public bool IsDictionary { get; set; }
 
         /// <summary>
         /// Gets or sets an indication whether this property is an <see cref="Enum"/>.
@@ -53,7 +60,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         /// <summary>
         /// Gets or sets an indication whether this property is of type <see cref="string"/> or, if
-        /// <see cref="IsIndexer"/> is <c>true</c>, whether the indexer's value is of type <see cref="string"/>.
+        /// <see cref="IsDictionary"/> is <c>true</c>, whether the indexer's value is of type <see cref="string"/>.
         /// </summary>
         /// <value>
         /// If <c>true</c> the <see cref="TypeName"/> is for <see cref="string"/>. This causes the Razor parser
@@ -63,7 +70,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         public bool IsStringProperty { get; set; }
 
         /// <summary>
-        /// The HTML attribute name or, if <see cref="IsIndexer"/> is <c>true</c>, the prefix for matching attribute
+        /// The HTML attribute name or, if <see cref="IsDictionary"/> is <c>true</c>, the prefix for matching attribute
         /// names.
         /// </summary>
         public string Name
@@ -83,30 +90,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
-
-        /// <summary>
-        /// The name of the CLR property that corresponds to the HTML attribute.
-        /// </summary>
-        public string PropertyName
-        {
-            get
-            {
-                return _propertyName;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                _propertyName = value;
-            }
-        }
-
         /// <summary>
         /// The full name of the named (see <see name="PropertyName"/>) property's <see cref="Type"/> or, if
-        /// <see cref="IsIndexer"/> is <c>true</c>, the full name of the indexer's value <see cref="Type"/>.
+        /// <see cref="IsDictionary"/> is <c>true</c>, the full name of the indexer's value <see cref="Type"/>.
         /// </summary>
         public string TypeName
         {
@@ -127,30 +113,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         }
 
         /// <summary>
-        /// The <see cref="TagHelperAttributeDesignTimeDescriptor"/> that contains design time information about
-        /// this attribute.
+        /// A summary of how to use a tag helper.
         /// </summary>
-        public TagHelperAttributeDesignTimeDescriptor DesignTimeDescriptor { get; set; }
-
-        /// <summary>
-        /// Determines whether HTML attribute <paramref name="name"/> matches this
-        /// <see cref="TagHelperAttributeDescriptor"/>.
-        /// </summary>
-        /// <param name="name">Name of the HTML attribute to check.</param>
-        /// <returns>
-        /// <c>true</c> if this <see cref="TagHelperAttributeDescriptor"/> matches <paramref name="name"/>.
-        /// <c>false</c> otherwise.
-        /// </returns>
-        public bool IsNameMatch(string name)
-        {
-            if (IsIndexer)
-            {
-                return name.StartsWith(Name, StringComparison.OrdinalIgnoreCase);
-            }
-            else
-            {
-                return string.Equals(name, Name, StringComparison.OrdinalIgnoreCase);
-            }
-        }
+        public string Summary { get; set; }
     }
 }
