@@ -1553,7 +1553,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                         outputKind = SpanKind.Code;
                         break;
                     case DirectiveTokenKind.String:
-                        AcceptAndMoveNext();
+                        if (!AcceptAndMoveNext())
+                        {
+                            Context.ErrorSink.OnError(
+                                CurrentStart,
+                                LegacyResources.FormatDirectiveExpectsIdentifier(descriptor.Name),
+                                CurrentSymbol.Content.Length);
+                        }
                         break;
                 }
 
