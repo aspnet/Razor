@@ -83,7 +83,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         private Dictionary<CSharpKeyword, Action<bool>> _keywordParsers = new Dictionary<CSharpKeyword, Action<bool>>();
 
         public CSharpCodeParser(ParserContext context)
-            : this (directiveDescriptors: Enumerable.Empty<DirectiveDescriptor>(), context: context)
+            : this(directiveDescriptors: Enumerable.Empty<DirectiveDescriptor>(), context: context)
         {
         }
 
@@ -223,7 +223,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                         // No "@" => Jump straight to AfterTransition
                         AfterTransition();
                     }
-                    
+
                     Output(SpanKind.Code);
                 }
             }
@@ -1507,7 +1507,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                     Output(SpanKind.Markup, AcceptedCharacters.WhiteSpace);
                 }
 
-                if (EndOfFile)
+                if (tokenDescriptor.Optional && (EndOfFile || At(CSharpSymbolType.NewLine)))
+                {
+                    break;
+                }
+                else if (EndOfFile)
                 {
                     Context.ErrorSink.OnError(
                         CurrentStart,
@@ -1549,7 +1553,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                         outputKind = SpanKind.Code;
                         break;
                     case DirectiveTokenKind.String:
-                        AcceptAndMoveNext();
+                        if (!AcceptAndMoveNext())
+                        {
+                            Context.ErrorSink.OnError(
+                                CurrentStart,
+                                LegacyResources.FormatDirectiveExpectsIdentifier(descriptor.Name),
+                                CurrentSymbol.Content.Length);
+                        }
                         break;
                 }
 
