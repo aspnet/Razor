@@ -1,7 +1,6 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,107 +9,43 @@ namespace Microsoft.AspNetCore.Razor.Evolution
     /// <summary>
     /// A metadata class describing a tag helper.
     /// </summary>
-    public class TagHelperDescriptor
+    public abstract class TagHelperDescriptor
     {
-        private string _assemblyName;
-        private IDictionary<string, string> _propertyBag;
-        private IEnumerable<CorrelationRequirement> _requirements;
-        private IEnumerable<TagHelperAttributeDescriptor> _attributes =
-            Enumerable.Empty<TagHelperAttributeDescriptor>();
+        private IEnumerable<RazorDiagnostic> _allDiagnostics;
 
-        /// <summary>
-        /// Creates a new <see cref="TagHelperDescriptor"/>.
-        /// </summary>
-        public TagHelperDescriptor()
+        protected TagHelperDescriptor(string kind)
         {
+            Kind = kind;
         }
 
-        /// <summary>
-        /// Creates a shallow copy of the given <see cref="TagHelperDescriptor"/>.
-        /// </summary>
-        /// <param name="descriptor">The <see cref="TagHelperDescriptor"/> to copy.</param>
-        public TagHelperDescriptor(TagHelperDescriptor descriptor)
-        {
-            CorrelationRequirements = descriptor.CorrelationRequirements;
-            AssemblyName = descriptor.AssemblyName;
-            Attributes = descriptor.Attributes;
-            AllowedChildren = descriptor.AllowedChildren;
-            Summary = descriptor.Summary;
-            OutputElementHint = descriptor.OutputElementHint;
+        public string Kind { get; }
 
-            foreach (var property in descriptor.PropertyBag)
-            {
-                PropertyBag.Add(property.Key, property.Value);
-            }
-        }
-
-        public IEnumerable<CorrelationRequirement> CorrelationRequirements
-        {
-            get
-            {
-                return _requirements;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                _requirements = value;
-            }
-        }
+        public IEnumerable<CorrelationRule> CorrelationRules { get; protected set; }
 
         /// <summary>
         /// The name of the assembly containing the tag helper class.
         /// </summary>
-        public string AssemblyName
-        {
-            get
-            {
-                return _assemblyName;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                _assemblyName = value;
-            }
-        }
+        public string AssemblyName { get; protected set; }
 
         /// <summary>
         /// The list of attributes the tag helper expects.
         /// </summary>
-        public IEnumerable<TagHelperAttributeDescriptor> Attributes
-        {
-            get
-            {
-                return _attributes;
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
-
-                _attributes = value;
-            }
-        }
+        public IEnumerable<TagHelperAttributeDescriptor> Attributes { get; protected set; }
 
         /// <summary>
         /// Get the names of elements allowed as children.
         /// </summary>
         /// <remarks><c>null</c> indicates all children are allowed.</remarks>
-        public IEnumerable<string> AllowedChildren { get; set; }
+        public IEnumerable<string> AllowedChildren { get; protected set; }
 
         /// <summary>
-        /// A summary of how to use a tag helper.
+        /// A dictionary containing additional information about the <see cref="TagHelperDescriptor"/>.
         /// </summary>
-        public string Summary { get; set; }
+        public IReadOnlyDictionary<string, string> PropertyBag { get; protected set; }
+
+        public string DisplayName { get; protected set; }
+
+        public string Documentation { get; protected set; }
 
         /// <summary>
         /// The HTML element a tag helper may output.
@@ -118,22 +53,32 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         /// <remarks>
         /// In IDEs supporting IntelliSense, may override the HTML information provided at design time.
         /// </remarks>
-        public string OutputElementHint { get; set; }
+        public string OutputElementHint { get; protected set; }
 
-        /// <summary>
-        /// A dictionary containing additional information about the <see cref="TagHelperDescriptor"/>.
-        /// </summary>
-        public IDictionary<string, string> PropertyBag
+        public IEnumerable<RazorDiagnostic> Diagnostics { get; protected set; }
+
+        public bool HasAnyErrors
         {
             get
             {
-                if (_propertyBag == null)
-                {
-                    _propertyBag = new Dictionary<string, string>();
-                }
+                var allDiagnostics = GetAllDiagnostics();
+                var anyErrors = allDiagnostics.Any(diagnostic => diagnostic.Severity == RazorDiagnosticSeverity.Error);
 
-                return _propertyBag;
+                return anyErrors;
             }
+        }
+
+        public IEnumerable<RazorDiagnostic> GetAllDiagnostics()
+        {
+            if (_allDiagnostics == null)
+            {
+                var attributeErrors = Attributes.SelectMany(attribute => attribute.Diagnostics);
+                var ruleErrors = CorrelationRules.SelectMany(rule => rule.GetAllDiagnostics());
+                var combinedDiagnostics = attributeErrors.Concat(ruleErrors);
+                _allDiagnostics = combinedDiagnostics.ToArray();
+            }
+
+            return _allDiagnostics;
         }
     }
 }
