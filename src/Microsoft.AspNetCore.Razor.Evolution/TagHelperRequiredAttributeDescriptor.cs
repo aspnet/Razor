@@ -8,29 +8,14 @@ using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Evolution
 {
-    /// <summary>
-    /// A metadata class describing a required tag helper attribute.
-    /// </summary>
     public abstract class TagHelperRequiredAttributeDescriptor
     {
-        /// <summary>
-        /// The HTML attribute name.
-        /// </summary>
         public string Name { get; protected set; }
 
-        /// <summary>
-        /// The comparison method to use for <see cref="Name"/> when determining if an HTML attribute name matches.
-        /// </summary>
         public TagHelperRequiredAttributeNameComparison NameComparison { get; protected set; }
 
-        /// <summary>
-        /// The HTML attribute value.
-        /// </summary>
         public string Value { get; protected set; }
 
-        /// <summary>
-        /// The comparison method to use for <see cref="Value"/> when determining if an HTML attribute value matches.
-        /// </summary>
         public TagHelperRequiredAttributeValueComparison ValueComparison { get; protected set; }
 
         public IEnumerable<RazorDiagnostic> Diagnostics { get; protected set; }
