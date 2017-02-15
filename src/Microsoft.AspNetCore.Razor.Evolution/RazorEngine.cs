@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Evolution.CodeGeneration;
 
 namespace Microsoft.AspNetCore.Razor.Evolution
@@ -14,14 +15,25 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             return Create(configure: null);
         }
 
+        public static RazorEngine Create(bool icanhasDefaults)
+        {
+            return Create(configure: null, icanhasDefaults: true);
+        }
+
         public static RazorEngine Create(Action<IRazorEngineBuilder> configure)
         {
+            return Create(configure, icanhasDefaults: false);
+        }
+
+        public static RazorEngine Create(Action<IRazorEngineBuilder> configure, bool icanhasDefaults)
+        {
             var builder = new DefaultRazorEngineBuilder();
-            AddDefaults(builder);
+            AddDefaults(builder, icanhasDefaults: true);
             AddRuntimeDefaults(builder);
             configure?.Invoke(builder);
             return builder.Build();
         }
+
 
         public static RazorEngine CreateDesignTime()
         {
@@ -34,7 +46,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             {
                 DesignTime = true,
             };
-            AddDefaults(builder);
+            AddDefaults(builder, icanhasDefaults: true);
             AddDesignTimeDefaults(builder);
             configure?.Invoke(builder);
             return builder.Build();
@@ -47,7 +59,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             return builder.Build();
         }
 
-        internal static void AddDefaults(IRazorEngineBuilder builder)
+        internal static void AddDefaults(IRazorEngineBuilder builder, bool icanhasDefaults)
         {
             builder.Phases.Add(new DefaultRazorParsingPhase());
             builder.Phases.Add(new DefaultRazorSyntaxTreePhase());
@@ -73,6 +85,32 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
             // Default Runtime Targets
             builder.AddTargetExtension(new TemplateTargetExtension());
+
+            if (icanhasDefaults)
+            {
+                // Default configuration
+                var configurationFeature = new DefaultDocumentClassifierPassFeature();
+                configurationFeature.ConfigureClass.Add((document, @class) =>
+                {
+                    @class.Name = "Template";
+                    @class.AccessModifier = "public";
+                });
+
+                configurationFeature.ConfigureNamespace.Add((document, @namespace) =>
+                {
+                    @namespace.Content = "Razor";
+                });
+
+                configurationFeature.ConfigureMethod.Add((document, @method) =>
+                {
+                    @method.Name = "ExecuteAsync";
+                    @method.ReturnType = $"global::{typeof(Task).FullName}";
+                    @method.AccessModifier = "public";
+                    method.Modifiers = new[] { "async", "override" };
+                });
+
+                builder.Features.Add(configurationFeature);
+            }
         }
 
         internal static void AddRuntimeDefaults(IRazorEngineBuilder builder)
