@@ -17,7 +17,7 @@ namespace TestOutput
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
 #line 3 "OpenedIf.cshtml"
 if (true) { 

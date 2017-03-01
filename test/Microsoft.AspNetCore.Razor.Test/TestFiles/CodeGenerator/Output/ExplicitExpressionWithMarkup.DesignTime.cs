@@ -1,4 +1,4 @@
-﻿namespace TestOutput
+namespace TestOutput
 {
     using System;
     using System.Threading.Tasks;
@@ -17,7 +17,7 @@
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
 #line 1 "ExplicitExpressionWithMarkup.cshtml"
 item => new Template(async(__razor_template_writer) => {

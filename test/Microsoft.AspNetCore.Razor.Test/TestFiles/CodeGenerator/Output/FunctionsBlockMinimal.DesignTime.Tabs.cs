@@ -25,7 +25,7 @@ string foo(string input) {
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
         }
         #pragma warning restore 1998

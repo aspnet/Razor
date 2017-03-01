@@ -26,7 +26,7 @@ namespace TestOutput
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
 #line 10 "Await.cshtml"
 								 __o = await Foo();

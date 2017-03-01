@@ -91,7 +91,7 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     BuildLineMapping(
                         documentAbsoluteIndex: 2,
                         documentLineIndex: 0,
-                        generatedAbsoluteIndex: 522,
+                        generatedAbsoluteIndex: 545,
                         generatedLineIndex: 22,
                         characterOffsetIndex: 2,
                         contentLength: 6),
@@ -99,28 +99,28 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                         documentAbsoluteIndex: 9,
                         documentLineIndex: 1,
                         documentCharacterOffsetIndex: 5,
-                        generatedAbsoluteIndex: 598,
+                        generatedAbsoluteIndex: 621,
                         generatedLineIndex: 29,
                         generatedCharacterOffsetIndex: 4,
                         contentLength: 53),
                     BuildLineMapping(
                         documentAbsoluteIndex: 82,
                         documentLineIndex: 4,
-                        generatedAbsoluteIndex: 730,
+                        generatedAbsoluteIndex: 753,
                         generatedLineIndex: 37,
                         characterOffsetIndex: 13,
                         contentLength: 16),
                     BuildLineMapping(
                         documentAbsoluteIndex: 115,
                         documentLineIndex: 5,
-                        generatedAbsoluteIndex: 825,
+                        generatedAbsoluteIndex: 848,
                         generatedLineIndex: 42,
                         characterOffsetIndex: 14,
                         contentLength: 7),
                     BuildLineMapping(
                         documentAbsoluteIndex: 122,
                         documentLineIndex: 6,
-                        generatedAbsoluteIndex: 903,
+                        generatedAbsoluteIndex: 926,
                         generatedLineIndex: 49,
                         characterOffsetIndex: 5,
                         contentLength: 2),
@@ -136,19 +136,105 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     tabTest: TabTest.NoTabs,
                     expectedDesignTimePragmas: new List<LineMapping>()
                     {
-                        BuildLineMapping(2, 0, 564, 22, 2, 6),
-                        BuildLineMapping(9, 1, 5, 656, 29, 6, 13),
-                        BuildLineMapping(22, 1, 766, 34, 18, 6),
-                        BuildLineMapping(29, 2, 5, 858, 41, 6, 22),
-                        BuildLineMapping(51, 2, 986, 46, 27, 6),
-                        BuildLineMapping(58, 3, 5, 1078, 53, 6, 26),
-                        BuildLineMapping(84, 3, 1214, 58, 31, 6),
-                        BuildLineMapping(91, 4, 5, 1306, 65, 6, 41),
-                        BuildLineMapping(132, 4, 1472, 70, 46, 2),
-                        BuildLineMapping(140, 7, 1, 1558, 76, 6, 13),
-                        BuildLineMapping(156, 8, 1, 1656, 81, 6, 22),
-                        BuildLineMapping(181, 9, 1, 1764, 86, 6, 26),
-                        BuildLineMapping(210, 10, 1, 1876, 91, 6, 41)
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 2,
+                            documentLineIndex: 0,
+                            generatedAbsoluteIndex: 587,
+                            generatedLineIndex: 22,
+                            characterOffsetIndex: 2,
+                            contentLength: 6),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 9,
+                            documentLineIndex: 1,
+                            documentCharacterOffsetIndex: 5,
+                            generatedAbsoluteIndex: 679,
+                            generatedLineIndex: 29,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 13),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 22,
+                            documentLineIndex: 1,
+                            generatedAbsoluteIndex: 789,
+                            generatedLineIndex: 34,
+                            characterOffsetIndex: 18,
+                            contentLength: 6),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 29,
+                            documentLineIndex: 2,
+                            documentCharacterOffsetIndex: 5,
+                            generatedAbsoluteIndex: 881,
+                            generatedLineIndex: 41,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 22),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 51,
+                            documentLineIndex: 2,
+                            generatedAbsoluteIndex: 1009,
+                            generatedLineIndex: 46,
+                            characterOffsetIndex: 27,
+                            contentLength: 6),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 58,
+                            documentLineIndex: 3,
+                            documentCharacterOffsetIndex: 5,
+                            generatedAbsoluteIndex: 1101,
+                            generatedLineIndex: 53,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 26),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 84,
+                            documentLineIndex: 3,
+                            generatedAbsoluteIndex: 1237,
+                            generatedLineIndex: 58,
+                            characterOffsetIndex: 31,
+                            contentLength: 6),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 91,
+                            documentLineIndex: 4,
+                            documentCharacterOffsetIndex: 5,
+                            generatedAbsoluteIndex: 1329,
+                            generatedLineIndex: 65,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 41),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 132,
+                            documentLineIndex: 4,
+                            generatedAbsoluteIndex: 1495,
+                            generatedLineIndex: 70,
+                            characterOffsetIndex: 46,
+                            contentLength: 2),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 140,
+                            documentLineIndex: 7,
+                            documentCharacterOffsetIndex: 1,
+                            generatedAbsoluteIndex: 1581,
+                            generatedLineIndex: 76,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 13),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 156,
+                            documentLineIndex: 8,
+                            documentCharacterOffsetIndex: 1,
+                            generatedAbsoluteIndex: 1679,
+                            generatedLineIndex: 81,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 22),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 181,
+                            documentLineIndex: 9,
+                            documentCharacterOffsetIndex: 1,
+                            generatedAbsoluteIndex: 1787,
+                            generatedLineIndex: 86,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 26),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 210,
+                            documentLineIndex: 10,
+                            documentCharacterOffsetIndex: 1,
+                            generatedAbsoluteIndex: 1899,
+                            generatedLineIndex: 91,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 41),
                     });
         }
 
@@ -161,23 +247,142 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     tabTest: TabTest.Tabs,
                     expectedDesignTimePragmas: new List<LineMapping>()
                     {
-                        BuildLineMapping(12, 0, 12, 173, 9, 0, 76),
-                        BuildLineMapping(192, 9, 39, 646, 31, 15, 11),
-                        BuildLineMapping(247, 10, 38, 730, 36, 14, 11),
-                        BuildLineMapping(304, 11, 39, 812, 41, 12, 14),
-                        BuildLineMapping(371, 12, 46, 899, 47, 13, 1),
-                        BuildLineMapping(376, 12, 51, 978, 53, 18, 11),
-                        BuildLineMapping(391, 12, 66, 1066, 58, 18, 1),
-                        BuildLineMapping(448, 13, 49, 1146, 64, 19, 5),
-                        BuildLineMapping(578, 18, 42, 1225, 69, 15, 15),
-                        BuildLineMapping(650, 19, 51, 1317, 74, 18, 19),
-                        BuildLineMapping(716, 20, 41, 1412, 79, 17, 22),
-                        BuildLineMapping(787, 21, 42, 1505, 84, 12, 39),
-                        BuildLineMapping(884, 22, 51, 1619, 90, 15, 21),
-                        BuildLineMapping(961, 23, 49, 1713, 96, 13, 1),
-                        BuildLineMapping(966, 23, 54, 1792, 102, 18, 27),
-                        BuildLineMapping(997, 23, 85, 1900, 107, 22, 1),
-                        BuildLineMapping(1057, 24, 52, 1980, 113, 19, 19)
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 12,
+                            documentLineIndex: 0,
+                            documentCharacterOffsetIndex: 12,
+                            generatedAbsoluteIndex: 173,
+                            generatedLineIndex: 9,
+                            generatedCharacterOffsetIndex: 0,
+                            contentLength: 76),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 192,
+                            documentLineIndex: 9,
+                            documentCharacterOffsetIndex: 39,
+                            generatedAbsoluteIndex: 669,
+                            generatedLineIndex: 31,
+                            generatedCharacterOffsetIndex: 15,
+                            contentLength: 11),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 247,
+                            documentLineIndex: 10,
+                            documentCharacterOffsetIndex: 38,
+                            generatedAbsoluteIndex: 753,
+                            generatedLineIndex: 36,
+                            generatedCharacterOffsetIndex: 14,
+                            contentLength: 11),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 304,
+                            documentLineIndex: 11,
+                            documentCharacterOffsetIndex: 39,
+                            generatedAbsoluteIndex: 835,
+                            generatedLineIndex: 41,
+                            generatedCharacterOffsetIndex: 12,
+                            contentLength: 14),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 371,
+                            documentLineIndex: 12,
+                            documentCharacterOffsetIndex: 46,
+                            generatedAbsoluteIndex: 922,
+                            generatedLineIndex: 47,
+                            generatedCharacterOffsetIndex: 13,
+                            contentLength: 1),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 376,
+                            documentLineIndex: 12,
+                            documentCharacterOffsetIndex: 51,
+                            generatedAbsoluteIndex: 1001,
+                            generatedLineIndex: 53,
+                            generatedCharacterOffsetIndex: 18,
+                            contentLength: 11),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 391,
+                            documentLineIndex: 12,
+                            documentCharacterOffsetIndex: 66,
+                            generatedAbsoluteIndex: 1089,
+                            generatedLineIndex: 58,
+                            generatedCharacterOffsetIndex: 18,
+                            contentLength: 1),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 448,
+                            documentLineIndex: 13,
+                            documentCharacterOffsetIndex: 49,
+                            generatedAbsoluteIndex: 1169,
+                            generatedLineIndex: 64,
+                            generatedCharacterOffsetIndex: 19,
+                            contentLength: 5),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 578,
+                            documentLineIndex: 18,
+                            documentCharacterOffsetIndex: 42,
+                            generatedAbsoluteIndex: 1248,
+                            generatedLineIndex: 69,
+                            generatedCharacterOffsetIndex: 15,
+                            contentLength: 15),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 650,
+                            documentLineIndex: 19,
+                            documentCharacterOffsetIndex: 51,
+                            generatedAbsoluteIndex: 1340,
+                            generatedLineIndex: 74,
+                            generatedCharacterOffsetIndex: 18,
+                            contentLength: 19),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 716,
+                            documentLineIndex: 20,
+                            documentCharacterOffsetIndex: 41,
+                            generatedAbsoluteIndex: 1435,
+                            generatedLineIndex: 79,
+                            generatedCharacterOffsetIndex: 17,
+                            contentLength: 22),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 787,
+                            documentLineIndex: 21,
+                            documentCharacterOffsetIndex: 42,
+                            generatedAbsoluteIndex: 1528,
+                            generatedLineIndex: 84,
+                            generatedCharacterOffsetIndex: 12,
+                            contentLength: 39),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 884,
+                            documentLineIndex: 22,
+                            documentCharacterOffsetIndex: 51,
+                            generatedAbsoluteIndex: 1642,
+                            generatedLineIndex: 90,
+                            generatedCharacterOffsetIndex: 15,
+                            contentLength: 21),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 961,
+                            documentLineIndex: 23,
+                            documentCharacterOffsetIndex: 49,
+                            generatedAbsoluteIndex: 1736,
+                            generatedLineIndex: 96,
+                            generatedCharacterOffsetIndex: 13,
+                            contentLength: 1),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 966,
+                            documentLineIndex: 23,
+                            documentCharacterOffsetIndex: 54,
+                            generatedAbsoluteIndex: 1815,
+                            generatedLineIndex: 102,
+                            generatedCharacterOffsetIndex: 18,
+                            contentLength: 27),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 997,
+                            documentLineIndex: 23,
+                            documentCharacterOffsetIndex: 85,
+                            generatedAbsoluteIndex: 1923,
+                            generatedLineIndex: 107,
+                            generatedCharacterOffsetIndex: 22,
+                            contentLength: 1),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 1057,
+                            documentLineIndex: 24,
+                            documentCharacterOffsetIndex: 52,
+                            generatedAbsoluteIndex: 2003,
+                            generatedLineIndex: 113,
+                            generatedCharacterOffsetIndex: 19,
+                            contentLength: 19),
                     });
         }
 
@@ -190,8 +395,22 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     tabTest: TabTest.Tabs,
                     expectedDesignTimePragmas: new List<LineMapping>()
                     {
-                        BuildLineMapping(1, 0, 1, 532, 22, 0, 15),
-                        BuildLineMapping(27, 2, 12, 623, 30, 6, 3)
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 1,
+                            documentLineIndex: 0,
+                            documentCharacterOffsetIndex: 1,
+                            generatedAbsoluteIndex: 555,
+                            generatedLineIndex: 22,
+                            generatedCharacterOffsetIndex: 0,
+                            contentLength: 15),
+                        BuildLineMapping(
+                            documentAbsoluteIndex: 27,
+                            documentLineIndex: 2,
+                            documentCharacterOffsetIndex: 12,
+                            generatedAbsoluteIndex: 646,
+                            generatedLineIndex: 30,
+                            generatedCharacterOffsetIndex: 6,
+                            contentLength: 3),
                     });
         }
 
@@ -201,12 +420,51 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
             RunTest("RazorComments", "RazorComments.DesignTime", designTimeMode: true, tabTest: TabTest.NoTabs,
                 expectedDesignTimePragmas: new List<LineMapping>()
                 {
-                    BuildLineMapping(81, 3, 525, 22, 2, 6),
-                    BuildLineMapping(122, 4, 39, 636, 29, 38, 22),
-                    BuildLineMapping(173, 5, 49, 773, 36, 48, 58),
-                    BuildLineMapping(238, 11, 899, 45, 2, 24),
-                    BuildLineMapping(310, 12, 1036, 51, 45, 3),
-                    BuildLineMapping(323, 14, 2, 1112, 56, 6, 1),
+                    BuildLineMapping(
+                        documentAbsoluteIndex: 81,
+                        documentLineIndex: 3,
+                        generatedAbsoluteIndex: 548,
+                        generatedLineIndex: 22,
+                        characterOffsetIndex: 2,
+                        contentLength: 6),
+                    BuildLineMapping(
+                        documentAbsoluteIndex: 122,
+                        documentLineIndex: 4,
+                        documentCharacterOffsetIndex: 39,
+                        generatedAbsoluteIndex: 659,
+                        generatedLineIndex: 29,
+                        generatedCharacterOffsetIndex: 38,
+                        contentLength: 22),
+                    BuildLineMapping(
+                        documentAbsoluteIndex: 173,
+                        documentLineIndex: 5,
+                        documentCharacterOffsetIndex: 49,
+                        generatedAbsoluteIndex: 796,
+                        generatedLineIndex: 36,
+                        generatedCharacterOffsetIndex: 48,
+                        contentLength: 58),
+                    BuildLineMapping(
+                        documentAbsoluteIndex: 238,
+                        documentLineIndex: 11,
+                        generatedAbsoluteIndex: 922,
+                        generatedLineIndex: 45,
+                        characterOffsetIndex: 2,
+                        contentLength: 24),
+                    BuildLineMapping(
+                        documentAbsoluteIndex: 310,
+                        documentLineIndex: 12,
+                        generatedAbsoluteIndex: 1059,
+                        generatedLineIndex: 51,
+                        characterOffsetIndex: 45,
+                        contentLength: 3),
+                    BuildLineMapping(
+                        documentAbsoluteIndex: 323,
+                        documentLineIndex: 14,
+                        documentCharacterOffsetIndex: 2,
+                        generatedAbsoluteIndex: 1135,
+                        generatedLineIndex: 56,
+                        generatedCharacterOffsetIndex: 6,
+                        contentLength: 1),
             });
         }
 
@@ -227,14 +485,68 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("Imports", "Imports.DesignTime", designTimeMode: true, tabTest: TabTest.NoTabs, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(1, 0, 1, 51, 3, 0, 15),
-                BuildLineMapping(19, 1, 1, 132, 9, 0, 32),
-                BuildLineMapping(54, 2, 1, 230, 15, 0, 12),
-                BuildLineMapping(71, 4, 1, 308, 21, 0, 19),
-                BuildLineMapping(93, 5, 1, 393, 27, 0, 27),
-                BuildLineMapping(123, 6, 1, 486, 33, 0, 41),
-                BuildLineMapping(197, 8, 1057, 57, 29, 21),
-                BuildLineMapping(259, 9, 1174, 62, 35, 20)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 1,
+                    documentLineIndex: 0,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 51,
+                    generatedLineIndex: 3,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 15),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 19,
+                    documentLineIndex: 1,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 132,
+                    generatedLineIndex: 9,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 32),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 54,
+                    documentLineIndex: 2,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 230,
+                    generatedLineIndex: 15,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 12),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 71,
+                    documentLineIndex: 4,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 308,
+                    generatedLineIndex: 21,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 19),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 93,
+                    documentLineIndex: 5,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 393,
+                    generatedLineIndex: 27,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 27),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 123,
+                    documentLineIndex: 6,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 486,
+                    generatedLineIndex: 33,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 41),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 197,
+                    documentLineIndex: 8,
+                    generatedAbsoluteIndex: 1080,
+                    generatedLineIndex: 57,
+                    characterOffsetIndex: 29,
+                    contentLength: 21),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 259,
+                    documentLineIndex: 9,
+                    generatedAbsoluteIndex: 1197,
+                    generatedLineIndex: 62,
+                    characterOffsetIndex: 35,
+                    contentLength: 20),
             });
         }
 
@@ -247,9 +559,29 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     tabTest: TabTest.NoTabs,
                     expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(12, 0, 12, 191, 9, 0, 4),
-                BuildLineMapping(33, 4, 12, 259, 15, 0, 104),
-                BuildLineMapping(167, 11, 788, 37, 25, 11)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 12,
+                    documentLineIndex: 0,
+                    documentCharacterOffsetIndex: 12,
+                    generatedAbsoluteIndex: 191,
+                    generatedLineIndex: 9,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 4),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 33,
+                    documentLineIndex: 4,
+                    documentCharacterOffsetIndex: 12,
+                    generatedAbsoluteIndex: 259,
+                    generatedLineIndex: 15,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 104),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 167,
+                    documentLineIndex: 11,
+                    generatedAbsoluteIndex: 811,
+                    generatedLineIndex: 37,
+                    characterOffsetIndex: 25,
+                    contentLength: 11),
             });
         }
 
@@ -262,9 +594,30 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     tabTest: TabTest.Tabs,
                     expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(12, 0, 12, 191, 9, 0, 4),
-                BuildLineMapping(33, 4, 12, 259, 15, 0, 104),
-                BuildLineMapping(167, 11, 25, 776, 37, 13, 11)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 12,
+                    documentLineIndex: 0,
+                    documentCharacterOffsetIndex: 12,
+                    generatedAbsoluteIndex: 191,
+                    generatedLineIndex: 9,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 4),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 33,
+                    documentLineIndex: 4,
+                    documentCharacterOffsetIndex: 12,
+                    generatedAbsoluteIndex: 259,
+                    generatedLineIndex: 15,
+                    generatedCharacterOffsetIndex: 0,
+                    contentLength: 104),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 167,
+                    documentLineIndex: 11,
+                    documentCharacterOffsetIndex: 25,
+                    generatedAbsoluteIndex: 799,
+                    generatedLineIndex: 37,
+                    generatedCharacterOffsetIndex: 13,
+                    contentLength: 11),
             });
         }
 
@@ -286,8 +639,20 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("HiddenSpansInCode", designTimeMode: true, tabTest: TabTest.NoTabs, expectedDesignTimePragmas: new List<LineMapping>
             {
-                BuildLineMapping(2, 0, 537, 22, 2, 6),
-                BuildLineMapping(9, 1, 619, 29, 5, 5)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 2,
+                    documentLineIndex: 0,
+                    generatedAbsoluteIndex: 560,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 9,
+                    documentLineIndex: 1,
+                    generatedAbsoluteIndex: 642,
+                    generatedLineIndex: 29,
+                    characterOffsetIndex: 5,
+                    contentLength: 5),
             });
         }
 
@@ -296,7 +661,13 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("ParserError", designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(2, 0, 519, 22, 2, 31)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 2,
+                    documentLineIndex: 0,
+                    generatedAbsoluteIndex: 542,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 31),
             });
         }
 
@@ -311,8 +682,21 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("Inherits", baselineName: "Inherits.Designtime", designTimeMode: true, tabTest: TabTest.NoTabs, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(20, 2, 321, 12, 10, 25),
-                BuildLineMapping(1, 0, 1, 662, 27, 6, 5)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 20,
+                    documentLineIndex: 2,
+                    generatedAbsoluteIndex: 321,
+                    generatedLineIndex: 12,
+                    characterOffsetIndex: 10,
+                    contentLength: 25),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 1,
+                    documentLineIndex: 0,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 685,
+                    generatedLineIndex: 27,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 5),
             });
         }
 
@@ -321,9 +705,28 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("UnfinishedExpressionInCode", tabTest: TabTest.NoTabs, designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(2, 0, 564, 22, 2, 2),
-                BuildLineMapping(5, 1, 1, 650, 28, 6, 9),
-                BuildLineMapping(14, 1, 748, 33, 10, 2)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 2,
+                    documentLineIndex: 0,
+                    generatedAbsoluteIndex: 587,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 2),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 5,
+                    documentLineIndex: 1,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 673,
+                    generatedLineIndex: 28,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 9),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 14,
+                    documentLineIndex: 1,
+                    generatedAbsoluteIndex: 771,
+                    generatedLineIndex: 33,
+                    characterOffsetIndex: 10,
+                    contentLength: 2),
             });
         }
 
@@ -335,9 +738,29 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     tabTest: TabTest.Tabs,
                     designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(2, 0, 564, 22, 2, 2),
-                BuildLineMapping(5, 1, 1, 650, 28, 6, 9),
-                BuildLineMapping(14, 1, 10, 742, 33, 4, 2)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 2,
+                    documentLineIndex: 0,
+                    generatedAbsoluteIndex: 587,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 2),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 5,
+                    documentLineIndex: 1,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 673,
+                    generatedLineIndex: 28,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 9),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 14,
+                    documentLineIndex: 1,
+                    documentCharacterOffsetIndex: 10,
+                    generatedAbsoluteIndex: 765,
+                    generatedLineIndex: 33,
+                    generatedCharacterOffsetIndex: 4,
+                    contentLength: 2),
             });
         }
 
@@ -353,21 +776,21 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     documentAbsoluteIndex: 20,
                     documentLineIndex: 1,
                     documentCharacterOffsetIndex: 13,
-                    generatedAbsoluteIndex: 526,
+                    generatedAbsoluteIndex: 549,
                     generatedLineIndex: 22,
                     generatedCharacterOffsetIndex: 12,
                     contentLength: 36),
                 BuildLineMapping(
                     documentAbsoluteIndex: 74,
                     documentLineIndex: 2,
-                    generatedAbsoluteIndex: 648,
+                    generatedAbsoluteIndex: 671,
                     generatedLineIndex: 29,
                     characterOffsetIndex: 22,
                     contentLength: 1),
                 BuildLineMapping(
                     documentAbsoluteIndex: 79,
                     documentLineIndex: 2,
-                    generatedAbsoluteIndex: 739,
+                    generatedAbsoluteIndex: 762,
                     generatedLineIndex: 34,
                     characterOffsetIndex: 27,
                     contentLength: 15),
@@ -375,7 +798,7 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     documentAbsoluteIndex: 113,
                     documentLineIndex: 7,
                     documentCharacterOffsetIndex: 2,
-                    generatedAbsoluteIndex: 824,
+                    generatedAbsoluteIndex: 847,
                     generatedLineIndex: 41,
                     generatedCharacterOffsetIndex: 6,
                     contentLength: 12),
@@ -383,14 +806,14 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     documentAbsoluteIndex: 129,
                     documentLineIndex: 8,
                     documentCharacterOffsetIndex: 1,
-                    generatedAbsoluteIndex: 905,
+                    generatedAbsoluteIndex: 928,
                     generatedLineIndex: 46,
                     generatedCharacterOffsetIndex: 6,
                     contentLength: 4),
                 BuildLineMapping(
                     documentAbsoluteIndex: 142,
                     documentLineIndex: 8,
-                    generatedAbsoluteIndex: 1010,
+                    generatedAbsoluteIndex: 1033,
                     generatedLineIndex: 48,
                     characterOffsetIndex: 14,
                     contentLength: 3),
@@ -398,7 +821,7 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     documentAbsoluteIndex: 204,
                     documentLineIndex: 13,
                     documentCharacterOffsetIndex: 5,
-                    generatedAbsoluteIndex: 1196,
+                    generatedAbsoluteIndex: 1219,
                     generatedLineIndex: 60,
                     generatedCharacterOffsetIndex: 6,
                     contentLength: 3),
@@ -420,7 +843,14 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("ImplicitExpressionAtEOF", designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(19, 2, 1, 559, 22, 6, 0)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 19,
+                    documentLineIndex: 2,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 582,
+                    generatedLineIndex: 22,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 0),
             });
         }
 
@@ -429,7 +859,14 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("ExplicitExpressionAtEOF", designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(20, 2, 2, 559, 22, 6, 0)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 20,
+                    documentLineIndex: 2,
+                    documentCharacterOffsetIndex: 2,
+                    generatedAbsoluteIndex: 582,
+                    generatedLineIndex: 22,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 0),
             });
         }
 
@@ -438,7 +875,13 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("CodeBlockAtEOF", designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(2, 0, 528, 22, 2, 0)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 2,
+                    documentLineIndex: 0,
+                    generatedAbsoluteIndex: 551,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 0),
             });
         }
 
@@ -447,7 +890,14 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("EmptyImplicitExpression", designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(19, 2, 1, 559, 22, 6, 0)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 19,
+                    documentLineIndex: 2,
+                    documentCharacterOffsetIndex: 1,
+                    generatedAbsoluteIndex: 582,
+                    generatedLineIndex: 22,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 0),
             });
         }
 
@@ -456,9 +906,28 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("EmptyImplicitExpressionInCode", tabTest: TabTest.NoTabs, designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(2, 0, 573, 22, 2, 6),
-                BuildLineMapping(9, 1, 5, 668, 29, 6, 0),
-                BuildLineMapping(9, 1, 755, 34, 5, 2)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 2,
+                    documentLineIndex: 0,
+                    generatedAbsoluteIndex: 596,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 9,
+                    documentLineIndex: 1,
+                    documentCharacterOffsetIndex: 5,
+                    generatedAbsoluteIndex: 691,
+                    generatedLineIndex: 29,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 0),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 9,
+                    documentLineIndex: 1,
+                    generatedAbsoluteIndex: 778,
+                    generatedLineIndex: 34,
+                    characterOffsetIndex: 5,
+                    contentLength: 2),
             });
         }
 
@@ -470,9 +939,29 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
                     tabTest: TabTest.Tabs,
                     designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(2, 0, 573, 22, 2, 6),
-                BuildLineMapping(9, 1, 5, 668, 29, 6, 0),
-                BuildLineMapping(9, 1, 5, 752, 34, 2, 2)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 2,
+                    documentLineIndex: 0,
+                    generatedAbsoluteIndex: 596,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 9,
+                    documentLineIndex: 1,
+                    documentCharacterOffsetIndex: 5,
+                    generatedAbsoluteIndex: 691,
+                    generatedLineIndex: 29,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 0),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 9,
+                    documentLineIndex: 1,
+                    documentCharacterOffsetIndex: 5,
+                    generatedAbsoluteIndex: 775,
+                    generatedLineIndex: 34,
+                    generatedCharacterOffsetIndex: 2,
+                    contentLength: 2),
             });
         }
 
@@ -481,7 +970,14 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("EmptyExplicitExpression", designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(20, 2, 2, 559, 22, 6, 0)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 20,
+                    documentLineIndex: 2,
+                    documentCharacterOffsetIndex: 2,
+                    generatedAbsoluteIndex: 582,
+                    generatedLineIndex: 22,
+                    generatedCharacterOffsetIndex: 6,
+                    contentLength: 0),
             });
         }
 
@@ -490,7 +986,13 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             RunTest("EmptyCodeBlock", designTimeMode: true, expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(20, 2, 528, 22, 2, 0)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 20,
+                    documentLineIndex: 2,
+                    generatedAbsoluteIndex: 551,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 0),
             });
         }
 
@@ -526,28 +1028,161 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
         {
             var expectedDesignTimePragmas = new[]
             {
-                BuildLineMapping(2, 0, 549, 22, 2, 48),
-                BuildLineMapping(66, 3, 692, 31, 20, 6),
-                BuildLineMapping(83, 4, 788, 38, 15, 3),
-                BuildLineMapping(90, 4, 887, 43, 22, 6),
-                BuildLineMapping(111, 5, 987, 50, 19, 3),
-                BuildLineMapping(118, 5, 1090, 55, 26, 6),
-                BuildLineMapping(135, 6, 1186, 62, 15, 3),
-                BuildLineMapping(146, 6, 1289, 67, 26, 6),
-                BuildLineMapping(185, 7, 1407, 74, 37, 2),
-                BuildLineMapping(191, 7, 1526, 79, 43, 6),
-                BuildLineMapping(234, 8, 1648, 86, 41, 2),
-                BuildLineMapping(240, 8, 1771, 91, 47, 6),
-                BuildLineMapping(257, 9, 15, 1867, 98, 14, 18),
-                BuildLineMapping(276, 9, 1995, 104, 34, 3),
-                BuildLineMapping(279, 9, 2110, 109, 37, 2),
-                BuildLineMapping(285, 9, 2231, 115, 43, 6),
-                BuildLineMapping(309, 10, 2335, 122, 22, 6),
-                BuildLineMapping(329, 11, 2435, 129, 18, 44),
-                BuildLineMapping(407, 11, 2650, 134, 96, 6),
-                BuildLineMapping(427, 12, 2750, 141, 18, 60),
-                BuildLineMapping(521, 12, 2997, 146, 112, 6),
-                BuildLineMapping(638, 13, 3194, 153, 115, 2)
+                BuildLineMapping(
+                    documentAbsoluteIndex: 2,
+                    documentLineIndex: 0,
+                    generatedAbsoluteIndex: 572,
+                    generatedLineIndex: 22,
+                    characterOffsetIndex: 2,
+                    contentLength: 48),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 66,
+                    documentLineIndex: 3,
+                    generatedAbsoluteIndex: 715,
+                    generatedLineIndex: 31,
+                    characterOffsetIndex: 20,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 83,
+                    documentLineIndex: 4,
+                    generatedAbsoluteIndex: 811,
+                    generatedLineIndex: 38,
+                    characterOffsetIndex: 15,
+                    contentLength: 3),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 90,
+                    documentLineIndex: 4,
+                    generatedAbsoluteIndex: 910,
+                    generatedLineIndex: 43,
+                    characterOffsetIndex: 22,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 111,
+                    documentLineIndex: 5,
+                    generatedAbsoluteIndex: 1010,
+                    generatedLineIndex: 50,
+                    characterOffsetIndex: 19,
+                    contentLength: 3),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 118,
+                    documentLineIndex: 5,
+                    generatedAbsoluteIndex: 1113,
+                    generatedLineIndex: 55,
+                    characterOffsetIndex: 26,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 135,
+                    documentLineIndex: 6,
+                    generatedAbsoluteIndex: 1209,
+                    generatedLineIndex: 62,
+                    characterOffsetIndex: 15,
+                    contentLength: 3),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 146,
+                    documentLineIndex: 6,
+                    generatedAbsoluteIndex: 1312,
+                    generatedLineIndex: 67,
+                    characterOffsetIndex: 26,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 185,
+                    documentLineIndex: 7,
+                    generatedAbsoluteIndex: 1430,
+                    generatedLineIndex: 74,
+                    characterOffsetIndex: 37,
+                    contentLength: 2),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 191,
+                    documentLineIndex: 7,
+                    generatedAbsoluteIndex: 1549,
+                    generatedLineIndex: 79,
+                    characterOffsetIndex: 43,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 234,
+                    documentLineIndex: 8,
+                    generatedAbsoluteIndex: 1671,
+                    generatedLineIndex: 86,
+                    characterOffsetIndex: 41,
+                    contentLength: 2),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 240,
+                    documentLineIndex: 8,
+                    generatedAbsoluteIndex: 1794,
+                    generatedLineIndex: 91,
+                    characterOffsetIndex: 47,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 257,
+                    documentLineIndex: 9,
+                    documentCharacterOffsetIndex: 15,
+                    generatedAbsoluteIndex: 1890,
+                    generatedLineIndex: 98,
+                    generatedCharacterOffsetIndex: 14,
+                    contentLength: 18),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 276,
+                    documentLineIndex: 9,
+                    generatedAbsoluteIndex: 2018,
+                    generatedLineIndex: 104,
+                    characterOffsetIndex: 34,
+                    contentLength: 3),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 279,
+                    documentLineIndex: 9,
+                    generatedAbsoluteIndex: 2133,
+                    generatedLineIndex: 109,
+                    characterOffsetIndex: 37,
+                    contentLength: 2),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 285,
+                    documentLineIndex: 9,
+                    generatedAbsoluteIndex: 2254,
+                    generatedLineIndex: 115,
+                    characterOffsetIndex: 43,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 309,
+                    documentLineIndex: 10,
+                    generatedAbsoluteIndex: 2358,
+                    generatedLineIndex: 122,
+                    characterOffsetIndex: 22,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 329,
+                    documentLineIndex: 11,
+                    generatedAbsoluteIndex: 2458,
+                    generatedLineIndex: 129,
+                    characterOffsetIndex: 18,
+                    contentLength: 44),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 407,
+                    documentLineIndex: 11,
+                    generatedAbsoluteIndex: 2673,
+                    generatedLineIndex: 134,
+                    characterOffsetIndex: 96,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 427,
+                    documentLineIndex: 12,
+                    generatedAbsoluteIndex: 2773,
+                    generatedLineIndex: 141,
+                    characterOffsetIndex: 18,
+                    contentLength: 60),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 521,
+                    documentLineIndex: 12,
+                    generatedAbsoluteIndex: 3020,
+                    generatedLineIndex: 146,
+                    characterOffsetIndex: 112,
+                    contentLength: 6),
+                BuildLineMapping(
+                    documentAbsoluteIndex: 638,
+                    documentLineIndex: 13,
+                    generatedAbsoluteIndex: 3217,
+                    generatedLineIndex: 153,
+                    characterOffsetIndex: 115,
+                    contentLength: 2),
             };
 
             RunTest("ConditionalAttributes",
@@ -588,10 +1223,10 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
             },
             expectedDesignTimePragmas: new List<LineMapping>()
             {
-                BuildLineMapping(17, 2, 1, 508, 22, 0, 14),
-                BuildLineMapping(38, 3, 7, 582 + tabOffsetForMapping, 28, tabOffsetForMapping, 2),
+                BuildLineMapping(17, 2, 1, 531, 22, 0, 14),
+                BuildLineMapping(38, 3, 7, 605 + tabOffsetForMapping, 28, tabOffsetForMapping, 2),
                 // Multiply the tab offset absolute index by 2 to account for the first mapping
-                BuildLineMapping(47, 4, 7, 644 + tabOffsetForMapping * 2, 34, tabOffsetForMapping, 0)
+                BuildLineMapping(47, 4, 7, 667 + tabOffsetForMapping * 2, 34, tabOffsetForMapping, 0)
             });
         }
 
