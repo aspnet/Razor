@@ -43,7 +43,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             get
             {
                 var chunkIndex = position / _chunkMaxLength;
-                var insideChunkPosition = position - chunkIndex * _chunkMaxLength;
+                var insideChunkPosition = position % _chunkMaxLength;
 
                 return _chunks[chunkIndex][insideChunkPosition];
             }
@@ -85,7 +85,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
 
             var chunkIndex = sourceIndex / _chunkMaxLength;
-            var insideChunkPosition = sourceIndex - chunkIndex * _chunkMaxLength;
+            var insideChunkPosition = sourceIndex % _chunkMaxLength;
             var remaining = count;
             var currentDestIndex = destinationIndex;
 
@@ -106,31 +106,20 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             length = 0;
             chunks = new List<char[]>();
 
-            for (;;)
+            int read;
+            do
             {
                 var chunk = new char[chunkMaxLength];
-                var remaining = chunkMaxLength;
-                var index = 0;
+                read = reader.ReadBlock(chunk, 0, chunkMaxLength);
 
-                while (remaining > 0)
+                length += read;
+
+                if (read > 0)
                 {
-                    var charsRead = reader.ReadBlock(chunk, index, remaining);
-                    if (charsRead == 0)
-                    {
-                        if (remaining != chunkMaxLength)
-                        {
-                            chunks.Add(chunk);
-                        }
-                        return;
-                    }
-
-                    length += charsRead;
-                    remaining -= charsRead;
-                    index += charsRead;
+                    chunks.Add(chunk);
                 }
-
-                chunks.Add(chunk);
             }
+            while (read == chunkMaxLength);
         }
     }
 }
