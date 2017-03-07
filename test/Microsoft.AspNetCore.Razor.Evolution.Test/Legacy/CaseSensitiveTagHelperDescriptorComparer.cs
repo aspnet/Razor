@@ -29,27 +29,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
             // Normal comparer doesn't care about the case, required attribute order, allowed children order,
             // attributes or prefixes. In tests we do.
-            Assert.Equal(descriptorX.TagName, descriptorY.TagName, StringComparer.Ordinal);
-            Assert.Equal(descriptorX.Prefix, descriptorY.Prefix, StringComparer.Ordinal);
-            Assert.Equal(
-                descriptorX.RequiredAttributes,
-                descriptorY.RequiredAttributes,
-                CaseSensitiveTagHelperRequiredAttributeDescriptorComparer.Default);
-            Assert.Equal(descriptorX.RequiredParent, descriptorY.RequiredParent, StringComparer.Ordinal);
+            Assert.Equal(descriptorX.TagOutputHint, descriptorY.TagOutputHint);
+            Assert.Equal(descriptorX.BoundAttributes, descriptorY.BoundAttributes, CaseSensitiveBoundAttributeDescriptorComparer.Default);
+            Assert.Equal(descriptorX.TagMatchingRules, descriptorY.TagMatchingRules, CaseSensitiveTagMatchingRuleComparer.Default);
 
-            if (descriptorX.AllowedChildren != descriptorY.AllowedChildren)
+            if (descriptorX.AllowedChildTags != descriptorY.AllowedChildTags)
             {
-                Assert.Equal(descriptorX.AllowedChildren, descriptorY.AllowedChildren, StringComparer.Ordinal);
+                Assert.Equal(descriptorX.AllowedChildTags, descriptorY.AllowedChildTags, StringComparer.Ordinal);
             }
-
-            Assert.Equal(
-                descriptorX.Attributes,
-                descriptorY.Attributes,
-                TagHelperAttributeDescriptorComparer.Default);
-            Assert.Equal(
-                descriptorX.DesignTimeDescriptor,
-                descriptorY.DesignTimeDescriptor,
-                TagHelperDesignTimeDescriptorComparer.Default);
 
             return true;
         }
@@ -58,35 +45,27 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         {
             var hashCodeCombiner = HashCodeCombiner.Start();
             hashCodeCombiner.Add(base.GetHashCode(descriptor));
-            hashCodeCombiner.Add(descriptor.TagName, StringComparer.Ordinal);
-            hashCodeCombiner.Add(descriptor.Prefix, StringComparer.Ordinal);
+            hashCodeCombiner.Add(descriptor.TagOutputHint, StringComparer.Ordinal);
 
-            if (descriptor.DesignTimeDescriptor != null)
-            {
-                hashCodeCombiner.Add(
-                    TagHelperDesignTimeDescriptorComparer.Default.GetHashCode(descriptor.DesignTimeDescriptor));
-            }
-
-            foreach (var requiredAttribute in descriptor.RequiredAttributes.OrderBy(attribute => attribute.Name))
-            {
-                hashCodeCombiner.Add(
-                    CaseSensitiveTagHelperRequiredAttributeDescriptorComparer.Default.GetHashCode(requiredAttribute));
-            }
-
-            if (descriptor.AllowedChildren != null)
-            {
-                foreach (var child in descriptor.AllowedChildren.OrderBy(child => child))
-                {
-                    hashCodeCombiner.Add(child, StringComparer.Ordinal);
-                }
-            }
-
-            var orderedAttributeHashCodes = descriptor.Attributes
-                .Select(attribute => TagHelperAttributeDescriptorComparer.Default.GetHashCode(attribute))
+            var orderedAttributeHashCodes = descriptor.BoundAttributes
+                .Select(attribute => CaseSensitiveBoundAttributeDescriptorComparer.Default.GetHashCode(attribute))
                 .OrderBy(hashcode => hashcode);
             foreach (var attributeHashCode in orderedAttributeHashCodes)
             {
                 hashCodeCombiner.Add(attributeHashCode);
+            }
+
+            foreach (var rule in descriptor.TagMatchingRules)
+            {
+                hashCodeCombiner.Add(CaseSensitiveTagMatchingRuleComparer.Default.GetHashCode(rule));
+            }
+
+            if (descriptor.AllowedChildTags != null)
+            {
+                foreach (var child in descriptor.AllowedChildTags.OrderBy(child => child))
+                {
+                    hashCodeCombiner.Add(child, StringComparer.Ordinal);
+                }
             }
 
             return hashCodeCombiner.CombinedHash;

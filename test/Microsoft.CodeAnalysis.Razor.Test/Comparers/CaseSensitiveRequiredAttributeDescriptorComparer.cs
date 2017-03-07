@@ -9,30 +9,30 @@ using Xunit;
 
 namespace Microsoft.CodeAnalysis.Razor.Workspaces.Test.Comparers
 {
-    internal class CaseSensitiveTagHelperRequiredAttributeDescriptorComparer : TagHelperRequiredAttributeDescriptorComparer
+    internal class CaseSensitiveRequiredAttributeDescriptorComparer : RequiredAttributeDescriptorComparer
     {
-        public new static readonly CaseSensitiveTagHelperRequiredAttributeDescriptorComparer Default =
-            new CaseSensitiveTagHelperRequiredAttributeDescriptorComparer();
+        public new static readonly CaseSensitiveRequiredAttributeDescriptorComparer Default =
+            new CaseSensitiveRequiredAttributeDescriptorComparer();
 
-        private CaseSensitiveTagHelperRequiredAttributeDescriptorComparer()
+        private CaseSensitiveRequiredAttributeDescriptorComparer()
             : base()
         {
         }
 
-        public override bool Equals(TagHelperRequiredAttributeDescriptor descriptorX, TagHelperRequiredAttributeDescriptor descriptorY)
+        public override bool Equals(RequiredAttributeDescriptor descriptorX, RequiredAttributeDescriptor descriptorY)
         {
             if (descriptorX == descriptorY)
             {
                 return true;
             }
 
-            Assert.True(base.Equals(descriptorX, descriptorY));
             Assert.Equal(descriptorX.Name, descriptorY.Name, StringComparer.Ordinal);
+            Assert.True(base.Equals(descriptorX, descriptorY));
 
             return true;
         }
 
-        public override int GetHashCode(TagHelperRequiredAttributeDescriptor descriptor)
+        public override int GetHashCode(RequiredAttributeDescriptor descriptor)
         {
             var hashCodeCombiner = HashCodeCombiner.Start();
             hashCodeCombiner.Add(base.GetHashCode(descriptor));
