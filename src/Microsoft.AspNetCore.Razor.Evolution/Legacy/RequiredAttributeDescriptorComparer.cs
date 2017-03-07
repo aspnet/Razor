@@ -3,33 +3,34 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Internal;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     /// <summary>
     /// An <see cref="IEqualityComparer{TagHelperRequiredAttributeDescriptor}"/> used to check equality between
-    /// two <see cref="TagHelperRequiredAttributeDescriptor"/>s.
+    /// two <see cref="RequiredAttributeDescriptor"/>s.
     /// </summary>
-    internal class TagHelperRequiredAttributeDescriptorComparer : IEqualityComparer<TagHelperRequiredAttributeDescriptor>
+    internal class RequiredAttributeDescriptorComparer : IEqualityComparer<RequiredAttributeDescriptor>
     {
         /// <summary>
-        /// A default instance of the <see cref="TagHelperRequiredAttributeDescriptor"/>.
+        /// A default instance of the <see cref="RequiredAttributeDescriptor"/>.
         /// </summary>
-        public static readonly TagHelperRequiredAttributeDescriptorComparer Default =
-            new TagHelperRequiredAttributeDescriptorComparer();
+        public static readonly RequiredAttributeDescriptorComparer Default =
+            new RequiredAttributeDescriptorComparer();
 
         /// <summary>
-        /// Initializes a new <see cref="TagHelperRequiredAttributeDescriptor"/> instance.
+        /// Initializes a new <see cref="RequiredAttributeDescriptor"/> instance.
         /// </summary>
-        protected TagHelperRequiredAttributeDescriptorComparer()
+        protected RequiredAttributeDescriptorComparer()
         {
         }
 
         /// <inheritdoc />
         public virtual bool Equals(
-            TagHelperRequiredAttributeDescriptor descriptorX,
-            TagHelperRequiredAttributeDescriptor descriptorY)
+            RequiredAttributeDescriptor descriptorX,
+            RequiredAttributeDescriptor descriptorY)
         {
             if (descriptorX == descriptorY)
             {
@@ -40,11 +41,12 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 descriptorX.NameComparison == descriptorY.NameComparison &&
                 descriptorX.ValueComparison == descriptorY.ValueComparison &&
                 string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(descriptorX.Value, descriptorY.Value, StringComparison.Ordinal);
+                string.Equals(descriptorX.Value, descriptorY.Value, StringComparison.Ordinal) &&
+                Enumerable.SequenceEqual(descriptorX.Diagnostics, descriptorY.Diagnostics);
         }
 
         /// <inheritdoc />
-        public virtual int GetHashCode(TagHelperRequiredAttributeDescriptor descriptor)
+        public virtual int GetHashCode(RequiredAttributeDescriptor descriptor)
         {
             var hashCodeCombiner = HashCodeCombiner.Start();
             hashCodeCombiner.Add(descriptor.NameComparison);
