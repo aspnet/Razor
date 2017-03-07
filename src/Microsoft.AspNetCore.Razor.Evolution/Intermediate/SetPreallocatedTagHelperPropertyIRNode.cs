@@ -21,7 +21,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Intermediate
 
         public string PropertyName { get; set; }
 
-        public TagHelperAttributeDescriptor Descriptor { get; set; }
+        public BoundAttributeDescriptor Descriptor { get; set; }
+
+        public bool IsIndexerNameMatch { get; set; }
 
         public override void Accept(RazorIRNodeVisitor visitor)
         {

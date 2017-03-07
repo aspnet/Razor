@@ -88,7 +88,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
             public override void VisitSetTagHelperProperty(SetTagHelperPropertyIRNode node)
             {
-                if (!node.Descriptor.IsStringProperty ||
+                if (!(node.Descriptor.IsStringProperty || (node.IsIndexerNameMatch && node.Descriptor.IsIndexerStringProperty)) ||
                     node.Children.Count != 1 ||
                     !(node.Children.First() is HtmlContentIRNode))
                 {
@@ -139,7 +139,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     TagHelperTypeName = node.TagHelperTypeName,
                     PropertyName = node.PropertyName,
                     Descriptor = node.Descriptor,
-                    Parent = node.Parent
+                    Parent = node.Parent,
+                    IsIndexerNameMatch = node.IsIndexerNameMatch,
                 };
 
                 var nodeIndex = node.Parent.Children.IndexOf(node);
