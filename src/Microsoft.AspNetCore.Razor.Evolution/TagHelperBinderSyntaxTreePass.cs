@@ -79,7 +79,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             return newSyntaxTree;
         }
 
-        private string ProcessTagHelperPrefix(List<TagHelperDirectiveDescriptor> directives, RazorCodeDocument codeDocument, ErrorSink errorSink)
+        // Internal for testing
+        internal string ProcessTagHelperPrefix(List<TagHelperDirectiveDescriptor> directives, RazorCodeDocument codeDocument, ErrorSink errorSink)
         {
             // We only support a single prefix directive.
             TagHelperDirectiveDescriptor prefixDirective = null;
