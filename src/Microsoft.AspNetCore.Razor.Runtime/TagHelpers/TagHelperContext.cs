@@ -16,6 +16,28 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// <summary>
         /// Instantiates a new <see cref="TagHelperContext"/>.
         /// </summary>
+        /// <param name="tagName">The HTML element's tag name.</param>
+        /// <param name="allAttributes">Every attribute associated with the current HTML element.</param>
+        /// <param name="items">Collection of items used to communicate with other <see cref="ITagHelper"/>s.</param>
+        /// <param name="uniqueId">The unique identifier for the source element this <see cref="TagHelperContext" />
+        /// applies to.</param>
+        public TagHelperContext(
+            string tagName,
+            TagHelperAttributeList allAttributes,
+            IDictionary<object, object> items,
+            string uniqueId) : this(allAttributes, items, uniqueId)
+        {
+            if (tagName == null)
+            {
+                throw new ArgumentNullException(nameof(tagName));
+            }
+
+            TagName = tagName;
+        }
+
+        /// <summary>
+        /// Instantiates a new <see cref="TagHelperContext"/>.
+        /// </summary>
         /// <param name="allAttributes">Every attribute associated with the current HTML element.</param>
         /// <param name="items">Collection of items used to communicate with other <see cref="ITagHelper"/>s.</param>
         /// <param name="uniqueId">The unique identifier for the source element this <see cref="TagHelperContext" />
@@ -44,6 +66,14 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             Items = items;
             UniqueId = uniqueId;
         }
+
+        /// <summary>
+        /// The HTML element's tag name.
+        /// </summary>
+        /// <remarks>
+        /// A whitespace or <c>null</c> value results in no start or end tag being rendered.
+        /// </remarks>
+        public string TagName { get; set; }
 
         /// <summary>
         /// Every attribute associated with the current HTML element.

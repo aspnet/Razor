@@ -49,11 +49,13 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
 
             // Act
             var context = new TagHelperContext(
+                tagName: "test",
                 allAttributes: new TagHelperAttributeList(),
                 items: expectedItems,
                 uniqueId: string.Empty);
 
             // Assert
+            Assert.Equal("test", context.TagName);
             Assert.NotNull(context.Items);
             Assert.Same(expectedItems, context.Items);
             var item = Assert.Single(context.Items);
