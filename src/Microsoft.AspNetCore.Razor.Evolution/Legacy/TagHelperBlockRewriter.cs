@@ -655,8 +655,16 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         private static string GetPropertyType(string name, IEnumerable<TagHelperDescriptor> descriptors)
         {
             var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors);
+            var isBoundToIndexer = firstBoundAttribute.IsIndexerNameMatch(name);
 
-            return firstBoundAttribute?.TypeName;
+            if (isBoundToIndexer)
+            {
+                return firstBoundAttribute?.IndexerTypeName;
+            }
+            else
+            {
+                return firstBoundAttribute?.TypeName;
+            }
         }
 
         // Create a TryParseResult for given name, filling in binding details.

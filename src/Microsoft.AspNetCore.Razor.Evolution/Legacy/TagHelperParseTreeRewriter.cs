@@ -577,6 +577,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                         }
 
                         baseDescriptor = descriptor;
+                        baseStructure = rule.TagStructure;
                     }
                 }
             }
