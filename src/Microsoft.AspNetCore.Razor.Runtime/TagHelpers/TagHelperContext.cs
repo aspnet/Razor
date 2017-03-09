@@ -16,7 +16,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// <summary>
         /// Instantiates a new <see cref="TagHelperContext"/>.
         /// </summary>
-        /// <param name="tagName">The HTML element's tag name.</param>
+        /// <param name="tagName">The parsed HTML tag name of the element.</param>
         /// <param name="allAttributes">Every attribute associated with the current HTML element.</param>
         /// <param name="items">Collection of items used to communicate with other <see cref="ITagHelper"/>s.</param>
         /// <param name="uniqueId">The unique identifier for the source element this <see cref="TagHelperContext" />
@@ -68,11 +68,8 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         }
 
         /// <summary>
-        /// The HTML element's tag name.
+        /// The parsed HTML tag name of the element.
         /// </summary>
-        /// <remarks>
-        /// A whitespace or <c>null</c> value results in no start or end tag being rendered.
-        /// </remarks>
         public string TagName { get; set; }
 
         /// <summary>
