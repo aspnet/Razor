@@ -70,7 +70,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// <summary>
         /// The parsed HTML tag name of the element.
         /// </summary>
-        public string TagName { get; set; }
+        public string TagName { get; }
 
         /// <summary>
         /// Every attribute associated with the current HTML element.
