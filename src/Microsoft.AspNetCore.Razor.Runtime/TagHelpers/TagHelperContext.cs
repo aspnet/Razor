@@ -70,7 +70,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// <summary>
         /// The parsed HTML tag name of the element.
         /// </summary>
-        public string TagName { get; }
+        public string TagName { get; private set; }
 
         /// <summary>
         /// Every attribute associated with the current HTML element.
@@ -90,6 +90,18 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// An identifier unique to the HTML element this context is for.
         /// </summary>
         public string UniqueId { get; private set; }
+
+        /// <summary>
+        /// Clears the <see cref="TagHelperContext"/> and updates its state with the provided values.
+        /// </summary>
+        /// <param name="tagName">The HTML tag name to use.</param>
+        /// <param name="items">The <see cref="IDictionary{Object, Object}"/> to use.</param>
+        /// <param name="uniqueId">The unique id to use.</param>
+        public void Reinitialize(string tagName, IDictionary<object, object> items, string uniqueId)
+        {
+            TagName = tagName;
+            Reinitialize(items, uniqueId);
+        }
 
         /// <summary>
         /// Clears the <see cref="TagHelperContext"/> and updates its state with the provided values.

@@ -242,7 +242,7 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
             _perEncoderChildContent?.Clear();
             _childContent = null;
 
-            Context.Reinitialize(Items, uniqueId);
+            Context.Reinitialize(tagName, Items, uniqueId);
             Output.Reinitialize(tagName, tagMode);
         }
 
