@@ -11,18 +11,32 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
             = new ResourceManager("Microsoft.VisualStudio.LanguageServices.Razor.Resources", typeof(Resources).GetTypeInfo().Assembly);
 
         /// <summary>
-        /// Deserialization of RazorDiagnostic type '{0}' is not supported.
+        /// Deserialization of {0} type '{1}' is not supported.
         /// </summary>
-        internal static string TagHelperDescriptorJsonConverter_UnsupportedRazorDiagnosticType
+        internal static string RazorDiagnosticJsonConverter_UnsupportedRazorDiagnosticType
         {
-            get => GetString("TagHelperDescriptorJsonConverter_UnsupportedRazorDiagnosticType");
+            get => GetString("RazorDiagnosticJsonConverter_UnsupportedRazorDiagnosticType");
         }
 
         /// <summary>
-        /// Deserialization of RazorDiagnostic type '{0}' is not supported.
+        /// Deserialization of {0} type '{1}' is not supported.
         /// </summary>
-        internal static string FormatTagHelperDescriptorJsonConverter_UnsupportedRazorDiagnosticType(object p0)
-            => string.Format(CultureInfo.CurrentCulture, GetString("TagHelperDescriptorJsonConverter_UnsupportedRazorDiagnosticType"), p0);
+        internal static string FormatRazorDiagnosticJsonConverter_UnsupportedRazorDiagnosticType(object p0, object p1)
+            => string.Format(CultureInfo.CurrentCulture, GetString("RazorDiagnosticJsonConverter_UnsupportedRazorDiagnosticType"), p0, p1);
+
+        /// <summary>
+        /// Deserialization of {0} kind '{1}' is not supported.
+        /// </summary>
+        internal static string TagHelperDescriptorJsonConverter_UnsupportedTagHelperDescriptorKind
+        {
+            get => GetString("TagHelperDescriptorJsonConverter_UnsupportedTagHelperDescriptorKind");
+        }
+
+        /// <summary>
+        /// Deserialization of {0} kind '{1}' is not supported.
+        /// </summary>
+        internal static string FormatTagHelperDescriptorJsonConverter_UnsupportedTagHelperDescriptorKind(object p0, object p1)
+            => string.Format(CultureInfo.CurrentCulture, GetString("TagHelperDescriptorJsonConverter_UnsupportedTagHelperDescriptorKind"), p0, p1);
 
         /// <summary>
         /// An unexpected exception occurred when invoking '{0}.{1}' on the Razor language service.

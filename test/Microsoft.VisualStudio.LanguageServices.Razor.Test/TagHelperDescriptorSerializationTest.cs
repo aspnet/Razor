@@ -17,7 +17,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
         {
             // Arrange
             var expectedDescriptor = CreateTagHelperDescriptor(
-                tagName: "tag name",
+                tagName: "tag-name",
                 typeName: "type name",
                 assemblyName: "assembly name",
                 attributes: new Action<ITagHelperBoundAttributeDescriptorBuilder>[]
@@ -31,25 +31,25 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
                 {
                     builder => builder
                         .RequireAttribute(attribute => attribute
-                            .Name("required attribute one")
+                            .Name("required-attribute-one")
                             .NameComparisonMode(RequiredAttributeDescriptor.NameComparisonMode.PrefixMatch))
                         .RequireAttribute(attribute => attribute
-                            .Name("required attribute two")
+                            .Name("required-attribute-two")
                             .NameComparisonMode(RequiredAttributeDescriptor.NameComparisonMode.FullMatch)
                             .Value("something")
                             .ValueComparisonMode(RequiredAttributeDescriptor.ValueComparisonMode.PrefixMatch))
-                        .RequireParentTag("parent name")
+                        .RequireParentTag("parent-name")
                         .RequireTagStructure(TagStructure.WithoutEndTag),
                 },
                 configureAction: builder =>
                 {
-                    builder.AllowChildTag("allowed child one");
+                    builder.AllowChildTag("allowed-child-one");
                     builder.AddMetadata("foo", "bar");
                 });
 
             // Act
-            var serializedDescriptor = JsonConvert.SerializeObject(expectedDescriptor, TagHelperDescriptorJsonConverter.Instance);
-            var descriptor = JsonConvert.DeserializeObject<TagHelperDescriptor>(serializedDescriptor, TagHelperDescriptorJsonConverter.Instance);
+            var serializedDescriptor = JsonConvert.SerializeObject(expectedDescriptor, TagHelperDescriptorJsonConverter.Instance, RazorDiagnosticJsonConverter.Instance);
+            var descriptor = JsonConvert.DeserializeObject<TagHelperDescriptor>(serializedDescriptor, TagHelperDescriptorJsonConverter.Instance, RazorDiagnosticJsonConverter.Instance);
 
             // Assert
             Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.Default);
@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
         {
             // Arrange
             var expectedDescriptor = CreateTagHelperDescriptor(
-                tagName: "tag name",
+                tagName: "tag-name",
                 typeName: "type name",
                 assemblyName: "assembly name",
                 attributes: new Action<ITagHelperBoundAttributeDescriptorBuilder>[]
@@ -74,18 +74,18 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
                 {
                     builder => builder
                         .RequireAttribute(attribute => attribute
-                            .Name("required attribute one")
+                            .Name("required-attribute-one")
                             .NameComparisonMode(RequiredAttributeDescriptor.NameComparisonMode.PrefixMatch))
                         .RequireAttribute(attribute => attribute
-                            .Name("required attribute two")
+                            .Name("required-attribute-two")
                             .NameComparisonMode(RequiredAttributeDescriptor.NameComparisonMode.FullMatch)
                             .Value("something")
                             .ValueComparisonMode(RequiredAttributeDescriptor.ValueComparisonMode.PrefixMatch))
-                        .RequireParentTag("parent name"),
+                        .RequireParentTag("parent-name"),
                 },
                 configureAction: builder =>
                 {
-                    builder.AllowChildTag("allowed child one")
+                    builder.AllowChildTag("allowed-child-one")
                         .AddMetadata("foo", "bar")
                         .AddDiagnostic(RazorDiagnostic.Create(
                             new RazorDiagnosticDescriptor("id", () => "Test Message 1", RazorDiagnosticSeverity.Error), new SourceSpan(null, 10, 20, 30, 40)))
@@ -93,8 +93,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
                 });
 
             // Act
-            var serializedDescriptor = JsonConvert.SerializeObject(expectedDescriptor, TagHelperDescriptorJsonConverter.Instance);
-            var descriptor = JsonConvert.DeserializeObject<TagHelperDescriptor>(serializedDescriptor, TagHelperDescriptorJsonConverter.Instance);
+            var serializedDescriptor = JsonConvert.SerializeObject(expectedDescriptor, TagHelperDescriptorJsonConverter.Instance, RazorDiagnosticJsonConverter.Instance);
+            var descriptor = JsonConvert.DeserializeObject<TagHelperDescriptor>(serializedDescriptor, TagHelperDescriptorJsonConverter.Instance, RazorDiagnosticJsonConverter.Instance);
 
             // Assert
             Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.Default);
@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
         {
             // Arrange
             var expectedDescriptor = CreateTagHelperDescriptor(
-                tagName: "tag name",
+                tagName: "tag-name",
                 typeName: "type name",
                 assemblyName: "assembly name",
                 attributes: new Action<ITagHelperBoundAttributeDescriptorBuilder>[]
@@ -126,20 +126,20 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
                 {
                     builder => builder
                         .RequireAttribute(attribute => attribute
-                            .Name("required attribute one")
+                            .Name("required-attribute-one")
                             .NameComparisonMode(RequiredAttributeDescriptor.NameComparisonMode.PrefixMatch))
                 },
                 configureAction: builder =>
                 {
                     builder
-                        .AllowChildTag("allowed child one")
+                        .AllowChildTag("allowed-child-one")
                         .AddMetadata("foo", "bar")
                         .TagOutputHint("Hint");
                 });
 
             // Act
-            var serializedDescriptor = JsonConvert.SerializeObject(expectedDescriptor, TagHelperDescriptorJsonConverter.Instance);
-            var descriptor = JsonConvert.DeserializeObject<TagHelperDescriptor>(serializedDescriptor, TagHelperDescriptorJsonConverter.Instance);
+            var serializedDescriptor = JsonConvert.SerializeObject(expectedDescriptor, TagHelperDescriptorJsonConverter.Instance, RazorDiagnosticJsonConverter.Instance);
+            var descriptor = JsonConvert.DeserializeObject<TagHelperDescriptor>(serializedDescriptor, TagHelperDescriptorJsonConverter.Instance, RazorDiagnosticJsonConverter.Instance);
 
             // Assert
             Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.Default);
