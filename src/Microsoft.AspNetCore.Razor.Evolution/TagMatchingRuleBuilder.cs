@@ -17,6 +17,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         private string _parentTag;
         private TagStructure _tagStructure;
         private HashSet<RequiredAttributeDescriptor> _requiredAttributeDescriptors;
+        private HashSet<RazorDiagnostic> _diagnostics;
 
         private TagMatchingRuleBuilder()
         {
@@ -77,9 +78,25 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             return RequireAttribute(requiredAttributeDescriptor);
         }
 
+        public TagMatchingRuleBuilder AddDiagnostic(RazorDiagnostic diagnostic)
+        {
+            EnsureDiagnostics();
+            _diagnostics.Add(diagnostic);
+
+            return this;
+        }
+
         public TagMatchingRule Build()
         {
-            var diagnostics = Validate();
+            var validationDiagnostics = Validate();
+
+            var diagnostics = new List<RazorDiagnostic>();
+            diagnostics.AddRange(validationDiagnostics);
+
+            if (_diagnostics != null)
+            {
+                diagnostics.AddRange(_diagnostics);
+            }
 
             var rule = new DefaultTagMatchingRule(
                 _tagName,
@@ -89,6 +106,15 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 diagnostics);
 
             return rule;
+        }
+
+        public void Reset()
+        {
+            _tagName = null;
+            _parentTag = null;
+            _tagStructure = default(TagStructure);
+            _requiredAttributeDescriptors?.Clear();
+            _diagnostics?.Clear();
         }
 
         private IEnumerable<RazorDiagnostic> Validate()
@@ -143,6 +169,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
+        private void EnsureDiagnostics()
+        {
+            if (_diagnostics == null)
+            {
+                _diagnostics = new HashSet<RazorDiagnostic>();
+            }
+        }
+
         private class DefaultTagMatchingRule : TagMatchingRule
         {
             public DefaultTagMatchingRule(
@@ -150,13 +184,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 string parentTag,
                 TagStructure tagStructure,
                 IEnumerable<RequiredAttributeDescriptor> requiredAttributeDescriptors,
-                IEnumerable<RazorDiagnostic> diagnostics)
+                IReadOnlyList<RazorDiagnostic> diagnostics)
             {
                 TagName = tagName;
                 ParentTag = parentTag;
                 TagStructure = tagStructure;
                 Attributes = new List<RequiredAttributeDescriptor>(requiredAttributeDescriptors);
-                Diagnostics = new List<RazorDiagnostic>(diagnostics);
+                Diagnostics = diagnostics;
             }
         }
     }

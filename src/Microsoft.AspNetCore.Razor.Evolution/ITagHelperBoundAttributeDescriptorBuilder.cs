@@ -43,6 +43,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         private string _indexerNamePrefix;
         private readonly string _containingTypeName;
         private readonly Dictionary<string, string> _metadata;
+        private HashSet<RazorDiagnostic> _diagnostics;
 
         private ITagHelperBoundAttributeDescriptorBuilder(string containingTypeName)
         {
@@ -105,9 +106,25 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             return this;
         }
 
+        public ITagHelperBoundAttributeDescriptorBuilder AddDiagnostic(RazorDiagnostic diagnostic)
+        {
+            EnsureDiagnostics();
+            _diagnostics.Add(diagnostic);
+
+            return this;
+        }
+
         public BoundAttributeDescriptor Build()
         {
-            var diagnostics = Validate();
+            var validationDiagnostics = Validate();
+
+            var diagnostics = new List<RazorDiagnostic>();
+            diagnostics.AddRange(validationDiagnostics);
+
+            if (_diagnostics != null)
+            {
+                diagnostics.AddRange(_diagnostics);
+            }
 
             if (!PrimitiveDisplayTypeNameLookups.TryGetValue(_typeName, out var simpleName))
             {
@@ -128,6 +145,18 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 diagnostics);
 
             return descriptor;
+        }
+
+        public void Reset()
+        {
+            _name = null;
+            _propertyName = null;
+            _typeName = null;
+            _documentation = null;
+            _isEnum = false;
+            _indexerNamePrefix = null;
+            _indexerValueTypeName = null;
+            _diagnostics?.Clear();
         }
 
         private IEnumerable<RazorDiagnostic> Validate()
@@ -212,6 +241,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
+        private void EnsureDiagnostics()
+        {
+            if (_diagnostics == null)
+            {
+                _diagnostics = new HashSet<RazorDiagnostic>();
+            }
+        }
+
         private class ITagHelperBoundAttributeDescriptor : BoundAttributeDescriptor
         {
             public ITagHelperBoundAttributeDescriptor(
@@ -224,7 +261,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 string documentation,
                 string displayName,
                 Dictionary<string, string> metadata,
-                IEnumerable<RazorDiagnostic> diagnostics) : base(DescriptorKind)
+                IReadOnlyList<RazorDiagnostic> diagnostics) : base(DescriptorKind)
             {
                 IsEnum = isEnum;
                 IsIndexerStringProperty = dictionaryValueTypeName == typeof(string).FullName || dictionaryValueTypeName == "string";
@@ -235,7 +272,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 IndexerTypeName = dictionaryValueTypeName;
                 Documentation = documentation;
                 DisplayName = displayName;
-                Diagnostics = new List<RazorDiagnostic>(diagnostics);
+                Diagnostics = diagnostics;
 
                 metadata[PropertyNameKey] = propertyName;
                 Metadata = new Dictionary<string, string>(metadata);

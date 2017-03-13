@@ -24,6 +24,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         private readonly string _assemblyName;
         private readonly string _typeName;
         private readonly Dictionary<string, string> _metadata;
+        private HashSet<RazorDiagnostic> _diagnostics;
 
         private ITagHelperDescriptorBuilder(string typeName, string assemblyName)
         {
@@ -124,9 +125,25 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             return this;
         }
 
+        public ITagHelperDescriptorBuilder AddDiagnostic(RazorDiagnostic diagnostic)
+        {
+            EnsureDiagnostics();
+            _diagnostics.Add(diagnostic);
+
+            return this;
+        }
+
         public TagHelperDescriptor Build()
         {
-            var diagnostics = Validate();
+            var validationDiagnostics = Validate();
+
+            var diagnostics = new List<RazorDiagnostic>();
+            diagnostics.AddRange(validationDiagnostics);
+
+            if (_diagnostics != null)
+            {
+                diagnostics.AddRange(_diagnostics);
+            }
 
             var descriptor = new ITagHelperDescriptor(
                 _typeName,
@@ -142,6 +159,17 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 diagnostics);
 
             return descriptor;
+        }
+
+        public void Reset()
+        {
+            _documentation = null;
+            _tagOutputHint = null;
+            _allowedChildTags?.Clear();
+            _attributeDescriptors?.Clear();
+            _tagMatchingRules?.Clear();
+            _metadata.Clear();
+            _diagnostics?.Clear();
         }
 
         private IEnumerable<RazorDiagnostic> Validate()
@@ -196,6 +224,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
+        private void EnsureDiagnostics()
+        {
+            if (_diagnostics == null)
+            {
+                _diagnostics = new HashSet<RazorDiagnostic>();
+            }
+        }
+
         private class ITagHelperDescriptor : TagHelperDescriptor
         {
             public ITagHelperDescriptor(
@@ -209,7 +245,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 IEnumerable<BoundAttributeDescriptor> attributeDescriptors,
                 IEnumerable<string> allowedChildTags,
                 Dictionary<string, string> metadata,
-                IEnumerable<RazorDiagnostic> diagnostics) : base(DescriptorKind)
+                IReadOnlyList<RazorDiagnostic> diagnostics) : base(DescriptorKind)
             {
                 Name = typeName;
                 AssemblyName = assemblyName;
@@ -219,7 +255,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 TagMatchingRules = new List<TagMatchingRule>(tagMatchingRules);
                 BoundAttributes = new List<BoundAttributeDescriptor>(attributeDescriptors);
                 AllowedChildTags = new List<string>(allowedChildTags);
-                Diagnostics = new List<RazorDiagnostic>(diagnostics);
+                Diagnostics = diagnostics;
 
                 metadata[TypeNameKey] = typeName;
                 Metadata = new Dictionary<string, string>(metadata);
