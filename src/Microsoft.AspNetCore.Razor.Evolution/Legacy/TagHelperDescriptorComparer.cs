@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             }
 
             return descriptorX != null &&
-                descriptorX.Kind == descriptorY.Kind &&
+                string.Equals(descriptorX.Kind, descriptorY.Kind, StringComparison.Ordinal) &&
                 string.Equals(descriptorX.AssemblyName, descriptorY.AssemblyName, StringComparison.Ordinal) &&
                 Enumerable.SequenceEqual(
                     descriptorX.BoundAttributes.OrderBy(attribute => attribute.Name, StringComparer.OrdinalIgnoreCase),

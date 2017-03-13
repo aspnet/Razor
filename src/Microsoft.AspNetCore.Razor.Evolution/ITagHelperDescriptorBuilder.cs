@@ -21,16 +21,15 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         private HashSet<string> _allowedChildTags;
         private HashSet<BoundAttributeDescriptor> _attributeDescriptors;
         private HashSet<TagMatchingRule> _tagMatchingRules;
-        private HashSet<RazorDiagnostic> _diagnostics;
         private readonly string _assemblyName;
         private readonly string _typeName;
-        private readonly Dictionary<string, string> _propertyBag;
+        private readonly Dictionary<string, string> _metadata;
 
         private ITagHelperDescriptorBuilder(string typeName, string assemblyName)
         {
             _typeName = typeName;
             _assemblyName = assemblyName;
-            _propertyBag = new Dictionary<string, string>(StringComparer.Ordinal);
+            _metadata = new Dictionary<string, string>(StringComparer.Ordinal);
         }
 
         public static ITagHelperDescriptorBuilder Create(string typeName, string assemblyName)
@@ -120,20 +119,32 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public ITagHelperDescriptorBuilder AddMetadata(string key, string value)
         {
-            _propertyBag[key] = value;
+            _metadata[key] = value;
 
             return this;
         }
 
-        public ITagHelperDescriptorBuilder AddDiagnostic(RazorDiagnostic diagnostic)
+        public TagHelperDescriptor Build()
         {
-            EnsureDiagnostics();
-            _diagnostics.Add(diagnostic);
+            var diagnostics = Validate();
 
-            return this;
+            var descriptor = new ITagHelperDescriptor(
+                _typeName,
+                _assemblyName,
+                _typeName /* Name */,
+                _typeName /* DisplayName */,
+                _documentation,
+                _tagOutputHint,
+                _tagMatchingRules ?? Enumerable.Empty<TagMatchingRule>(),
+                _attributeDescriptors ?? Enumerable.Empty<BoundAttributeDescriptor>(),
+                _allowedChildTags,
+                _metadata,
+                diagnostics);
+
+            return descriptor;
         }
 
-        public IEnumerable<RazorDiagnostic> Validate()
+        private IEnumerable<RazorDiagnostic> Validate()
         {
             if (_allowedChildTags != null)
             {
@@ -161,24 +172,6 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
-        public TagHelperDescriptor Build()
-        {
-            var descriptor = new ITagHelperDescriptor(
-                _typeName,
-                _assemblyName,
-                _typeName /* Name */,
-                _typeName /* DisplayName */,
-                _documentation,
-                _tagOutputHint,
-                _tagMatchingRules ?? Enumerable.Empty<TagMatchingRule>(),
-                _attributeDescriptors ?? Enumerable.Empty<BoundAttributeDescriptor>(),
-                _allowedChildTags,
-                _propertyBag,
-                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
-
-            return descriptor;
-        }
-
         private void EnsureAttributeDescriptors()
         {
             if (_attributeDescriptors == null)
@@ -203,14 +196,6 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
-        private void EnsureDiagnostics()
-        {
-            if (_diagnostics == null)
-            {
-                _diagnostics = new HashSet<RazorDiagnostic>();
-            }
-        }
-
         private class ITagHelperDescriptor : TagHelperDescriptor
         {
             public ITagHelperDescriptor(
@@ -223,7 +208,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 IEnumerable<TagMatchingRule> tagMatchingRules,
                 IEnumerable<BoundAttributeDescriptor> attributeDescriptors,
                 IEnumerable<string> allowedChildTags,
-                Dictionary<string, string> propertyBag,
+                Dictionary<string, string> metadata,
                 IEnumerable<RazorDiagnostic> diagnostics) : base(DescriptorKind)
             {
                 Name = typeName;
@@ -231,13 +216,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 DisplayName = displayName;
                 Documentation = documentation;
                 TagOutputHint = tagOutputHint;
-                TagMatchingRules = tagMatchingRules;
-                BoundAttributes = attributeDescriptors;
-                AllowedChildTags = allowedChildTags;
-                Diagnostics = diagnostics;
+                TagMatchingRules = new List<TagMatchingRule>(tagMatchingRules);
+                BoundAttributes = new List<BoundAttributeDescriptor>(attributeDescriptors);
+                AllowedChildTags = new List<string>(allowedChildTags);
+                Diagnostics = new List<RazorDiagnostic>(diagnostics);
 
-                propertyBag[TypeNameKey] = typeName;
-                Metadata = propertyBag;
+                metadata[TypeNameKey] = typeName;
+                Metadata = new Dictionary<string, string>(metadata);
             }
         }
     }

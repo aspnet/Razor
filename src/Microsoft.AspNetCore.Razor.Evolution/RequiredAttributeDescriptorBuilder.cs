@@ -16,7 +16,6 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         private RequiredAttributeDescriptor.NameComparisonMode _nameComparison;
         private string _value;
         private RequiredAttributeDescriptor.ValueComparisonMode _valueComparison;
-        private HashSet<RazorDiagnostic> _diagnostics;
 
         private RequiredAttributeDescriptorBuilder()
         {
@@ -55,15 +54,21 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             return this;
         }
 
-        public RequiredAttributeDescriptorBuilder AddDiagnostic(RazorDiagnostic diagnostic)
+        public RequiredAttributeDescriptor Build()
         {
-            EnsureDiagnostics();
-            _diagnostics.Add(diagnostic);
+            var diagnostics = Validate();
 
-            return this;
+            var rule = new DefaultTagHelperRequiredAttributeDescriptor(
+                _name,
+                _nameComparison,
+                _value,
+                _valueComparison,
+                diagnostics);
+
+            return rule;
         }
 
-        public IEnumerable<RazorDiagnostic> Validate()
+        private IEnumerable<RazorDiagnostic> Validate()
         {
             if (string.IsNullOrWhiteSpace(_name))
             {
@@ -85,26 +90,6 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
-        public RequiredAttributeDescriptor Build()
-        {
-            var rule = new DefaultTagHelperRequiredAttributeDescriptor(
-                _name,
-                _nameComparison,
-                _value,
-                _valueComparison,
-                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
-
-            return rule;
-        }
-
-        private void EnsureDiagnostics()
-        {
-            if (_diagnostics == null)
-            {
-                _diagnostics = new HashSet<RazorDiagnostic>();
-            }
-        }
-
         private class DefaultTagHelperRequiredAttributeDescriptor : RequiredAttributeDescriptor
         {
             public DefaultTagHelperRequiredAttributeDescriptor(
@@ -118,7 +103,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 NameComparison = nameComparison;
                 Value = value;
                 ValueComparison = valueComparison;
-                Diagnostics = diagnostics;
+                Diagnostics = new List<RazorDiagnostic>(diagnostics);
             }
         }
     }

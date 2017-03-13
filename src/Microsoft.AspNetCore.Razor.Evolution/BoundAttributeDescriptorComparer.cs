@@ -18,13 +18,18 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public virtual bool Equals(BoundAttributeDescriptor descriptorX, BoundAttributeDescriptor descriptorY)
         {
-            if (descriptorX == descriptorY)
+            if (object.ReferenceEquals(descriptorX, descriptorY))
             {
                 return true;
             }
 
+            if (descriptorX == null ^ descriptorY == null)
+            {
+                return false;
+            }
+
             return descriptorX != null &&
-                descriptorX.Kind == descriptorY.Kind &&
+                string.Equals(descriptorX.Kind, descriptorY.Kind, StringComparison.Ordinal) &&
                 descriptorX.IsIndexerStringProperty == descriptorY.IsIndexerStringProperty &&
                 descriptorX.IsEnum == descriptorY.IsEnum &&
                 string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.OrdinalIgnoreCase) &&

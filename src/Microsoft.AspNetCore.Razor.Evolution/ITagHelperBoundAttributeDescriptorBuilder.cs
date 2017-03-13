@@ -41,14 +41,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         private string _typeName;
         private string _documentation;
         private string _indexerNamePrefix;
-        private HashSet<RazorDiagnostic> _diagnostics;
         private readonly string _containingTypeName;
-        private readonly Dictionary<string, string> _propertyBag;
+        private readonly Dictionary<string, string> _metadata;
 
         private ITagHelperBoundAttributeDescriptorBuilder(string containingTypeName)
         {
             _containingTypeName = containingTypeName;
-            _propertyBag = new Dictionary<string, string>();
+            _metadata = new Dictionary<string, string>();
         }
 
         public static ITagHelperBoundAttributeDescriptorBuilder Create(string containingTypeName)
@@ -101,20 +100,37 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public ITagHelperBoundAttributeDescriptorBuilder AddMetadata(string key, string value)
         {
-            _propertyBag[key] = value;
+            _metadata[key] = value;
 
             return this;
         }
 
-        public ITagHelperBoundAttributeDescriptorBuilder AddDiagnostic(RazorDiagnostic diagnostic)
+        public BoundAttributeDescriptor Build()
         {
-            EnsureDiagnostics();
-            _diagnostics.Add(diagnostic);
+            var diagnostics = Validate();
 
-            return this;
+            if (!PrimitiveDisplayTypeNameLookups.TryGetValue(_typeName, out var simpleName))
+            {
+                simpleName = _typeName;
+            }
+
+            var displayName = $"{simpleName} {_containingTypeName}.{_propertyName}";
+            var descriptor = new ITagHelperBoundAttributeDescriptor(
+                _isEnum,
+                _name,
+                _propertyName,
+                _typeName,
+                _indexerNamePrefix,
+                _indexerValueTypeName,
+                _documentation,
+                displayName,
+                _metadata,
+                diagnostics);
+
+            return descriptor;
         }
 
-        public IEnumerable<RazorDiagnostic> Validate()
+        private IEnumerable<RazorDiagnostic> Validate()
         {
             // data-* attributes are explicitly not implemented by user agents and are not intended for use on
             // the server; therefore it's invalid for TagHelpers to bind to them.
@@ -196,37 +212,6 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
-        public BoundAttributeDescriptor Build()
-        {
-            if (!PrimitiveDisplayTypeNameLookups.TryGetValue(_typeName, out var simpleName))
-            {
-                simpleName = _typeName;
-            }
-
-            var displayName = $"{simpleName} {_containingTypeName}.{_propertyName}";
-            var descriptor = new ITagHelperBoundAttributeDescriptor(
-                _isEnum,
-                _name,
-                _propertyName,
-                _typeName,
-                _indexerNamePrefix,
-                _indexerValueTypeName,
-                _documentation,
-                displayName,
-                _propertyBag,
-                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
-
-            return descriptor;
-        }
-
-        private void EnsureDiagnostics()
-        {
-            if (_diagnostics == null)
-            {
-                _diagnostics = new HashSet<RazorDiagnostic>();
-            }
-        }
-
         private class ITagHelperBoundAttributeDescriptor : BoundAttributeDescriptor
         {
             public ITagHelperBoundAttributeDescriptor(
@@ -238,7 +223,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 string dictionaryValueTypeName,
                 string documentation,
                 string displayName,
-                Dictionary<string, string> propertyBag,
+                Dictionary<string, string> metadata,
                 IEnumerable<RazorDiagnostic> diagnostics) : base(DescriptorKind)
             {
                 IsEnum = isEnum;
@@ -250,10 +235,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 IndexerTypeName = dictionaryValueTypeName;
                 Documentation = documentation;
                 DisplayName = displayName;
-                Diagnostics = diagnostics;
+                Diagnostics = new List<RazorDiagnostic>(diagnostics);
 
-                propertyBag[PropertyNameKey] = propertyName;
-                Metadata = propertyBag;
+                metadata[PropertyNameKey] = propertyName;
+                Metadata = new Dictionary<string, string>(metadata);
             }
         }
     }

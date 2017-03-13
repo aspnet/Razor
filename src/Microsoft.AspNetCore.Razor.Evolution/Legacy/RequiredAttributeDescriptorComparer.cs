@@ -32,9 +32,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             RequiredAttributeDescriptor descriptorX,
             RequiredAttributeDescriptor descriptorY)
         {
-            if (descriptorX == descriptorY)
+            if (object.ReferenceEquals(descriptorX, descriptorY))
             {
                 return true;
+            }
+
+            if (descriptorX == null ^ descriptorY == null)
+            {
+                return false;
             }
 
             return descriptorX != null &&

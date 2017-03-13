@@ -19,9 +19,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public virtual bool Equals(TagMatchingRule ruleX, TagMatchingRule ruleY)
         {
-            if (ruleX == ruleY)
+            if (object.ReferenceEquals(ruleX, ruleY))
             {
                 return true;
+            }
+
+            if (ruleX == null ^ ruleY == null)
+            {
+                return false;
             }
 
             return ruleX != null &&

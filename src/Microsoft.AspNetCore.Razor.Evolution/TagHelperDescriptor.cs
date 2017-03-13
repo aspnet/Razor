@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public string TagOutputHint { get; protected set; }
 
-        public IEnumerable<RazorDiagnostic> Diagnostics { get; protected set; }
+        public IReadOnlyList<RazorDiagnostic> Diagnostics { get; protected set; }
 
         public IReadOnlyDictionary<string, string> Metadata { get; protected set; }
 

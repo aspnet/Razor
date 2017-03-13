@@ -18,7 +18,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public TagStructure TagStructure { get; protected set; }
 
-        public IEnumerable<RazorDiagnostic> Diagnostics { get; protected set; }
+        public IReadOnlyList<RazorDiagnostic> Diagnostics { get; protected set; }
 
         public bool HasAnyErrors
         {

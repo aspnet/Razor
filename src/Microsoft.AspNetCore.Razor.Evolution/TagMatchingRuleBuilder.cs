@@ -16,7 +16,6 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         private string _tagName;
         private string _parentTag;
         private TagStructure _tagStructure;
-        private HashSet<RazorDiagnostic> _diagnostics;
         private HashSet<RequiredAttributeDescriptor> _requiredAttributeDescriptors;
 
         private TagMatchingRuleBuilder()
@@ -78,15 +77,21 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             return RequireAttribute(requiredAttributeDescriptor);
         }
 
-        public TagMatchingRuleBuilder AddDiagnostic(RazorDiagnostic diagnostic)
+        public TagMatchingRule Build()
         {
-            EnsureDiagnostics();
-            _diagnostics.Add(diagnostic);
+            var diagnostics = Validate();
 
-            return this;
+            var rule = new DefaultTagMatchingRule(
+                _tagName,
+                _parentTag,
+                _tagStructure,
+                _requiredAttributeDescriptors ?? Enumerable.Empty<RequiredAttributeDescriptor>(),
+                diagnostics);
+
+            return rule;
         }
 
-        public IEnumerable<RazorDiagnostic> Validate()
+        private IEnumerable<RazorDiagnostic> Validate()
         {
             if (string.IsNullOrWhiteSpace(_tagName))
             {
@@ -130,31 +135,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
         }
 
-        public TagMatchingRule Build()
-        {
-            var rule = new DefaultTagMatchingRule(
-                _tagName,
-                _parentTag,
-                _tagStructure,
-                _requiredAttributeDescriptors ?? Enumerable.Empty<RequiredAttributeDescriptor>(),
-                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
-
-            return rule;
-        }
-
         private void EnsureRequiredAttributeDescriptors()
         {
             if (_requiredAttributeDescriptors == null)
             {
                 _requiredAttributeDescriptors = new HashSet<RequiredAttributeDescriptor>(RequiredAttributeDescriptorComparer.Default);
-            }
-        }
-
-        private void EnsureDiagnostics()
-        {
-            if (_diagnostics == null)
-            {
-                _diagnostics = new HashSet<RazorDiagnostic>();
             }
         }
 
@@ -170,8 +155,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 TagName = tagName;
                 ParentTag = parentTag;
                 TagStructure = tagStructure;
-                Attributes = requiredAttributeDescriptors;
-                Diagnostics = diagnostics;
+                Attributes = new List<RequiredAttributeDescriptor>(requiredAttributeDescriptors);
+                Diagnostics = new List<RazorDiagnostic>(diagnostics);
             }
         }
     }
