@@ -10,10 +10,38 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
     internal class TagHelperDescriptorComparer : IEqualityComparer<TagHelperDescriptor>
     {
+        /// <summary>
+        /// A default instance of the <see cref="TagHelperDescriptorComparer"/>.
+        /// </summary>
         public static readonly TagHelperDescriptorComparer Default = new TagHelperDescriptorComparer();
 
-        protected TagHelperDescriptorComparer()
+        /// <summary>
+        /// A default instance of the <see cref="TagHelperDescriptorComparer"/> that does case-sensitive comparison.
+        /// </summary>
+        internal static readonly TagHelperDescriptorComparer DefaultCaseSensitive =
+            new TagHelperDescriptorComparer(caseSensitive: true);
+
+        private readonly StringComparer _stringComparer;
+        private readonly StringComparison _stringComparison;
+        private readonly BoundAttributeDescriptorComparer _boundAttributeComparer;
+        private readonly TagMatchingRuleComparer _tagMatchingRuleComparer;
+
+        private TagHelperDescriptorComparer(bool caseSensitive = false)
         {
+            if (caseSensitive)
+            {
+                _stringComparer = StringComparer.Ordinal;
+                _stringComparison = StringComparison.Ordinal;
+                _boundAttributeComparer = BoundAttributeDescriptorComparer.DefaultCaseSensitive;
+                _tagMatchingRuleComparer = TagMatchingRuleComparer.DefaultCaseSensitive;
+            }
+            else
+            {
+                _stringComparer = StringComparer.OrdinalIgnoreCase;
+                _stringComparison = StringComparison.OrdinalIgnoreCase;
+                _boundAttributeComparer = BoundAttributeDescriptorComparer.Default;
+                _tagMatchingRuleComparer = TagMatchingRuleComparer.Default;
+            }
         }
 
         public virtual bool Equals(TagHelperDescriptor descriptorX, TagHelperDescriptor descriptorY)
@@ -27,23 +55,23 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 string.Equals(descriptorX.Kind, descriptorY.Kind, StringComparison.Ordinal) &&
                 string.Equals(descriptorX.AssemblyName, descriptorY.AssemblyName, StringComparison.Ordinal) &&
                 Enumerable.SequenceEqual(
-                    descriptorX.BoundAttributes.OrderBy(attribute => attribute.Name, StringComparer.OrdinalIgnoreCase),
-                    descriptorY.BoundAttributes.OrderBy(attribute => attribute.Name, StringComparer.OrdinalIgnoreCase),
-                    BoundAttributeDescriptorComparer.Default) &&
+                    descriptorX.BoundAttributes.OrderBy(attribute => attribute.Name, _stringComparer),
+                    descriptorY.BoundAttributes.OrderBy(attribute => attribute.Name, _stringComparer),
+                    _boundAttributeComparer) &&
                 Enumerable.SequenceEqual(
-                    descriptorX.TagMatchingRules.OrderBy(rule => rule.TagName, StringComparer.OrdinalIgnoreCase),
-                    descriptorY.TagMatchingRules.OrderBy(rule => rule.TagName, StringComparer.OrdinalIgnoreCase),
-                    TagMatchingRuleComparer.Default) &&
+                    descriptorX.TagMatchingRules.OrderBy(rule => rule.TagName, _stringComparer),
+                    descriptorY.TagMatchingRules.OrderBy(rule => rule.TagName, _stringComparer),
+                    _tagMatchingRuleComparer) &&
                 (descriptorX.AllowedChildTags == descriptorY.AllowedChildTags ||
                 (descriptorX.AllowedChildTags != null &&
                 descriptorY.AllowedChildTags != null &&
                 Enumerable.SequenceEqual(
-                    descriptorX.AllowedChildTags.OrderBy(child => child, StringComparer.OrdinalIgnoreCase),
-                    descriptorY.AllowedChildTags.OrderBy(child => child, StringComparer.OrdinalIgnoreCase),
-                    StringComparer.OrdinalIgnoreCase))) &&
+                    descriptorX.AllowedChildTags.OrderBy(child => child, _stringComparer),
+                    descriptorY.AllowedChildTags.OrderBy(child => child, _stringComparer),
+                    _stringComparer))) &&
                 string.Equals(descriptorX.Documentation, descriptorY.Documentation, StringComparison.Ordinal) &&
                 string.Equals(descriptorX.DisplayName, descriptorY.DisplayName, StringComparison.Ordinal) &&
-                string.Equals(descriptorX.TagOutputHint, descriptorY.TagOutputHint, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(descriptorX.TagOutputHint, descriptorY.TagOutputHint, _stringComparison) &&
                 Enumerable.SequenceEqual(descriptorX.Diagnostics, descriptorY.Diagnostics) &&
                 Enumerable.SequenceEqual(
                     descriptorX.Metadata.OrderBy(metadataX => metadataX.Key, StringComparer.Ordinal),
@@ -62,22 +90,28 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             hashCodeCombiner.Add(descriptor.Kind);
             hashCodeCombiner.Add(descriptor.AssemblyName, StringComparer.Ordinal);
 
-            var rules = descriptor.TagMatchingRules.OrderBy(rule => rule.TagName, StringComparer.OrdinalIgnoreCase);
+            var boundAttributes = descriptor.BoundAttributes.OrderBy(attribute => attribute.Name, _stringComparer);
+            foreach (var attribute in boundAttributes)
+            {
+                hashCodeCombiner.Add(_boundAttributeComparer.GetHashCode(attribute));
+            }
+
+            var rules = descriptor.TagMatchingRules.OrderBy(rule => rule.TagName, _stringComparer);
             foreach (var rule in rules)
             {
-                hashCodeCombiner.Add(TagMatchingRuleComparer.Default.GetHashCode(rule));
+                hashCodeCombiner.Add(_tagMatchingRuleComparer.GetHashCode(rule));
             }
 
             hashCodeCombiner.Add(descriptor.Documentation, StringComparer.Ordinal);
             hashCodeCombiner.Add(descriptor.DisplayName, StringComparer.Ordinal);
-            hashCodeCombiner.Add(descriptor.TagOutputHint, StringComparer.OrdinalIgnoreCase);
+            hashCodeCombiner.Add(descriptor.TagOutputHint, _stringComparer);
 
             if (descriptor.AllowedChildTags != null)
             {
-                var allowedChildren = descriptor.AllowedChildTags.OrderBy(child => child, StringComparer.OrdinalIgnoreCase);
+                var allowedChildren = descriptor.AllowedChildTags.OrderBy(child => child, _stringComparer);
                 foreach (var child in allowedChildren)
                 {
-                    hashCodeCombiner.Add(child, StringComparer.OrdinalIgnoreCase);
+                    hashCodeCombiner.Add(child, _stringComparer);
                 }
             }
 

@@ -471,7 +471,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 return false;
             }
 
-            return _currentTagHelperTracker.AllowedChildren != null;
+            return _currentTagHelperTracker.AllowedChildren != null && _currentTagHelperTracker.AllowedChildren.Count() > 0;
         }
 
         private void ValidateParentAllowsContent(Span child, ErrorSink errorSink)

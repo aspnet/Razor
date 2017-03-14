@@ -15,16 +15,32 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
     internal class RequiredAttributeDescriptorComparer : IEqualityComparer<RequiredAttributeDescriptor>
     {
         /// <summary>
-        /// A default instance of the <see cref="RequiredAttributeDescriptor"/>.
+        /// A default instance of the <see cref="RequiredAttributeDescriptorComparer"/>.
         /// </summary>
         public static readonly RequiredAttributeDescriptorComparer Default =
             new RequiredAttributeDescriptorComparer();
 
         /// <summary>
-        /// Initializes a new <see cref="RequiredAttributeDescriptor"/> instance.
+        /// A default instance of the <see cref="RequiredAttributeDescriptorComparer"/> that does case-sensitive comparison.
         /// </summary>
-        protected RequiredAttributeDescriptorComparer()
+        internal static readonly RequiredAttributeDescriptorComparer DefaultCaseSensitive =
+            new RequiredAttributeDescriptorComparer(caseSensitive: true);
+
+        private readonly StringComparer _stringComparer;
+        private readonly StringComparison _stringComparison;
+
+        private RequiredAttributeDescriptorComparer(bool caseSensitive = false)
         {
+            if (caseSensitive)
+            {
+                _stringComparer = StringComparer.Ordinal;
+                _stringComparison = StringComparison.Ordinal;
+            }
+            else
+            {
+                _stringComparer = StringComparer.OrdinalIgnoreCase;
+                _stringComparison = StringComparison.OrdinalIgnoreCase;
+            }
         }
 
         /// <inheritdoc />
@@ -45,7 +61,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             return descriptorX != null &&
                 descriptorX.NameComparison == descriptorY.NameComparison &&
                 descriptorX.ValueComparison == descriptorY.ValueComparison &&
-                string.Equals(descriptorX.Name, descriptorY.Name, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(descriptorX.Name, descriptorY.Name, _stringComparison) &&
                 string.Equals(descriptorX.Value, descriptorY.Value, StringComparison.Ordinal) &&
                 Enumerable.SequenceEqual(descriptorX.Diagnostics, descriptorY.Diagnostics);
         }
@@ -56,7 +72,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             var hashCodeCombiner = HashCodeCombiner.Start();
             hashCodeCombiner.Add(descriptor.NameComparison);
             hashCodeCombiner.Add(descriptor.ValueComparison);
-            hashCodeCombiner.Add(descriptor.Name, StringComparer.OrdinalIgnoreCase);
+            hashCodeCombiner.Add(descriptor.Name, _stringComparer);
             hashCodeCombiner.Add(descriptor.Value, StringComparer.Ordinal);
 
             return hashCodeCombiner.CombinedHash;

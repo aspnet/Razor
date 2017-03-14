@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.AspNetCore.Razor.Evolution;
-using Microsoft.CodeAnalysis.Razor.Workspaces.Test.Comparers;
 using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
+using Microsoft.AspNetCore.Razor.Evolution.Legacy;
 
 namespace Microsoft.CodeAnalysis.Razor.Workspaces
 {
@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(viewComponent);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, CaseSensitiveTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(viewComponent);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, CaseSensitiveTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(viewComponent);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, CaseSensitiveTagHelperDescriptorComparer.Default);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
         }
     }
 

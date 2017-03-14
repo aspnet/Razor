@@ -65,22 +65,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public RequiredAttributeDescriptor Build()
         {
-            var validationDiagnostics = Validate();
-
-            var diagnostics = new List<RazorDiagnostic>();
-            diagnostics.AddRange(validationDiagnostics);
-
-            if (_diagnostics != null)
-            {
-                diagnostics.AddRange(_diagnostics);
-            }
+            Validate();
 
             var rule = new DefaultTagHelperRequiredAttributeDescriptor(
                 _name,
                 _nameComparison,
                 _value,
                 _valueComparison,
-                diagnostics);
+                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
 
             return rule;
         }
@@ -94,13 +86,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             _diagnostics?.Clear();
         }
 
-        private IEnumerable<RazorDiagnostic> Validate()
+        private void Validate()
         {
             if (string.IsNullOrWhiteSpace(_name))
             {
                 var diagnostic = RazorDiagnosticFactory.CreateTagHelper_InvalidTargetedAttributeNameNullOrWhitespace();
 
-                yield return diagnostic;
+                AddDiagnostic(diagnostic);
             }
             else
             {
@@ -110,7 +102,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     {
                         var diagnostic = RazorDiagnosticFactory.CreateTagHelper_InvalidTargetedAttributeName(_name, character);
 
-                        yield return diagnostic;
+                        AddDiagnostic(diagnostic);
                     }
                 }
             }
@@ -131,13 +123,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 NameComparisonMode nameComparison,
                 string value,
                 ValueComparisonMode valueComparison,
-                IReadOnlyList<RazorDiagnostic> diagnostics)
+                IEnumerable<RazorDiagnostic> diagnostics)
             {
                 Name = name;
                 NameComparison = nameComparison;
                 Value = value;
                 ValueComparison = valueComparison;
-                Diagnostics = diagnostics;
+                Diagnostics = new List<RazorDiagnostic>(diagnostics);
             }
         }
     }

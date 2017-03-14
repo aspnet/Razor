@@ -734,7 +734,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             // Arrange
             var errorSink = new ErrorSink();
             var pass = new TagHelperBinderSyntaxTreePass();
-            var document = RazorCodeDocument.Create(new DefaultRazorSourceDocument("Test content", encoding: Encoding.UTF8, filename: "TestFile"));
+            var document = RazorCodeDocument.Create(new DefaultRazorSourceDocument("Test content", encoding: Encoding.UTF8, fileName: "TestFile"));
 
             // Act
             var prefix = pass.ProcessTagHelperPrefix(((IEnumerable<TagHelperDirectiveDescriptor>)directiveDescriptors).ToList(), document, errorSink);

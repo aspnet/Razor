@@ -116,15 +116,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public BoundAttributeDescriptor Build()
         {
-            var validationDiagnostics = Validate();
-
-            var diagnostics = new List<RazorDiagnostic>();
-            diagnostics.AddRange(validationDiagnostics);
-
-            if (_diagnostics != null)
-            {
-                diagnostics.AddRange(_diagnostics);
-            }
+            Validate();
 
             if (!PrimitiveDisplayTypeNameLookups.TryGetValue(_typeName, out var simpleName))
             {
@@ -142,7 +134,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 _documentation,
                 displayName,
                 _metadata,
-                diagnostics);
+                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
 
             return descriptor;
         }
@@ -159,7 +151,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             _diagnostics?.Clear();
         }
 
-        private IEnumerable<RazorDiagnostic> Validate()
+        private void Validate()
         {
             // data-* attributes are explicitly not implemented by user agents and are not intended for use on
             // the server; therefore it's invalid for TagHelpers to bind to them.
@@ -173,7 +165,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                         _containingTypeName,
                         _propertyName);
 
-                    yield return diagnostic;
+                    AddDiagnostic(diagnostic);
                 }
             }
             else
@@ -185,7 +177,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                         _propertyName,
                         _name);
 
-                    yield return diagnostic;
+                    AddDiagnostic(diagnostic);
                 }
 
                 foreach (var character in _name)
@@ -198,7 +190,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                             _name,
                             character);
 
-                        yield return diagnostic;
+                        AddDiagnostic(diagnostic);
                     }
                 }
             }
@@ -212,7 +204,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                         _propertyName,
                         _indexerNamePrefix);
 
-                    yield return diagnostic;
+                    AddDiagnostic(diagnostic);
                 }
                 else if (_indexerNamePrefix.Length > 0 && string.IsNullOrWhiteSpace(_indexerNamePrefix))
                 {
@@ -220,7 +212,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                         _containingTypeName,
                         _propertyName);
 
-                    yield return diagnostic;
+                    AddDiagnostic(diagnostic);
                 }
                 else
                 {
@@ -234,7 +226,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                                 _indexerNamePrefix,
                                 character);
 
-                            yield return diagnostic;
+                            AddDiagnostic(diagnostic);
                         }
                     }
                 }
@@ -261,7 +253,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 string documentation,
                 string displayName,
                 Dictionary<string, string> metadata,
-                IReadOnlyList<RazorDiagnostic> diagnostics) : base(DescriptorKind)
+                IEnumerable<RazorDiagnostic> diagnostics) : base(DescriptorKind)
             {
                 IsEnum = isEnum;
                 IsIndexerStringProperty = dictionaryValueTypeName == typeof(string).FullName || dictionaryValueTypeName == "string";
@@ -272,7 +264,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 IndexerTypeName = dictionaryValueTypeName;
                 Documentation = documentation;
                 DisplayName = displayName;
-                Diagnostics = diagnostics;
+                Diagnostics = new List<RazorDiagnostic>(diagnostics);
 
                 metadata[PropertyNameKey] = propertyName;
                 Metadata = new Dictionary<string, string>(metadata);

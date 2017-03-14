@@ -11,10 +11,35 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 {
     internal class TagMatchingRuleComparer : IEqualityComparer<TagMatchingRule>
     {
+        /// <summary>
+        /// A default instance of the <see cref="TagMatchingRuleComparer"/>.
+        /// </summary>
         public static readonly TagMatchingRuleComparer Default = new TagMatchingRuleComparer();
 
-        protected TagMatchingRuleComparer()
+        /// <summary>
+        /// A default instance of the <see cref="TagMatchingRuleComparer"/> that does case-sensitive comparison.
+        /// </summary>
+        internal static readonly TagMatchingRuleComparer DefaultCaseSensitive =
+            new TagMatchingRuleComparer(caseSensitive: true);
+
+        private readonly StringComparer _stringComparer;
+        private readonly StringComparison _stringComparison;
+        private readonly RequiredAttributeDescriptorComparer _requiredAttributeComparer;
+
+        private TagMatchingRuleComparer(bool caseSensitive = false)
         {
+            if (caseSensitive)
+            {
+                _stringComparer = StringComparer.Ordinal;
+                _stringComparison = StringComparison.Ordinal;
+                _requiredAttributeComparer = RequiredAttributeDescriptorComparer.DefaultCaseSensitive;
+            }
+            else
+            {
+                _stringComparer = StringComparer.OrdinalIgnoreCase;
+                _stringComparison = StringComparison.OrdinalIgnoreCase;
+                _requiredAttributeComparer = RequiredAttributeDescriptorComparer.Default;
+            }
         }
 
         public virtual bool Equals(TagMatchingRule ruleX, TagMatchingRule ruleY)
@@ -30,10 +55,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
 
             return ruleX != null &&
-                string.Equals(ruleX.TagName, ruleY.TagName, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(ruleX.ParentTag, ruleY.ParentTag, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(ruleX.TagName, ruleY.TagName, _stringComparison) &&
+                string.Equals(ruleX.ParentTag, ruleY.ParentTag, _stringComparison) &&
                 ruleX.TagStructure == ruleY.TagStructure &&
-                Enumerable.SequenceEqual(ruleX.Attributes, ruleY.Attributes, RequiredAttributeDescriptorComparer.Default) &&
+                Enumerable.SequenceEqual(ruleX.Attributes, ruleY.Attributes, _requiredAttributeComparer) &&
                 Enumerable.SequenceEqual(ruleX.Diagnostics, ruleY.Diagnostics);
         }
 
@@ -45,14 +70,14 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
 
             var hashCodeCombiner = HashCodeCombiner.Start();
-            hashCodeCombiner.Add(rule.TagName, StringComparer.OrdinalIgnoreCase);
-            hashCodeCombiner.Add(rule.ParentTag, StringComparer.OrdinalIgnoreCase);
+            hashCodeCombiner.Add(rule.TagName, _stringComparer);
+            hashCodeCombiner.Add(rule.ParentTag, _stringComparer);
             hashCodeCombiner.Add(rule.TagStructure);
 
-            var attributes = rule.Attributes.OrderBy(attribute => attribute.Name, StringComparer.OrdinalIgnoreCase);
+            var attributes = rule.Attributes.OrderBy(attribute => attribute.Name, _stringComparer);
             foreach (var attribute in attributes)
             {
-                hashCodeCombiner.Add(RequiredAttributeDescriptorComparer.Default.GetHashCode(attribute));
+                hashCodeCombiner.Add(_requiredAttributeComparer.GetHashCode(attribute));
             }
 
             return hashCodeCombiner.CombinedHash;
