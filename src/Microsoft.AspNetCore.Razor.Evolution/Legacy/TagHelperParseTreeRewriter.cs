@@ -174,7 +174,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 return false;
             }
 
-            TagBindingResult tagHelperBinding;
+            TagHelperBinding tagHelperBinding;
 
             if (!IsPotentialTagHelper(tagName, tagBlock))
             {
@@ -545,7 +545,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         }
 
         private static void ValidateBinding(
-            TagBindingResult bindingResult,
+            TagHelperBinding bindingResult,
             string tagName,
             Block tagBlock,
             ErrorSink errorSink)

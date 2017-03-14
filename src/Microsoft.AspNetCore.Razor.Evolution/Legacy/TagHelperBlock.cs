@@ -63,7 +63,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         /// <summary>
         /// <see cref="TagHelperDescriptor"/> bindings for the HTML element.
         /// </summary>
-        public TagBindingResult BindingResult { get; }
+        public TagHelperBinding BindingResult { get; }
 
         /// <summary>
         /// The HTML attributes.

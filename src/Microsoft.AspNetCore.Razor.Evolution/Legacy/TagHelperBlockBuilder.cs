@@ -37,7 +37,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             TagMode tagMode,
             SourceLocation start,
             IList<TagHelperAttributeNode> attributes,
-            TagBindingResult bindingResult)
+            TagHelperBinding bindingResult)
         {
             TagName = tagName;
             TagMode = tagMode;
@@ -88,7 +88,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         /// <summary>
         /// <see cref="TagHelperDescriptor"/>s for the HTML element.
         /// </summary>
-        public TagBindingResult BindingResult { get; }
+        public TagHelperBinding BindingResult { get; }
 
         /// <summary>
         /// The HTML attributes.

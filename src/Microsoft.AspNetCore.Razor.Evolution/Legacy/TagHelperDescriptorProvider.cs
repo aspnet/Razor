@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         /// <returns><see cref="TagHelperDescriptor"/>s that apply to the given <paramref name="tagName"/>.
         /// Will return an empty <see cref="Enumerable" /> if no <see cref="TagHelperDescriptor"/>s are
         /// found.</returns>
-        public TagBindingResult GetTagHelperBinding(
+        public TagHelperBinding GetTagHelperBinding(
             string tagName,
             IEnumerable<KeyValuePair<string, string>> attributes,
             string parentTagName)
@@ -97,7 +97,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 return null;
             }
 
-            var tagMappingResult = new TagBindingResult(applicableDescriptorMappings);
+            var tagMappingResult = new TagHelperBinding(applicableDescriptorMappings);
 
             return tagMappingResult;
         }

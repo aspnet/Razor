@@ -92,7 +92,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
 
                 if (tagHelper.Documentation != null)
                 {
-                    goto AddDocumentedTagHelper;
+                    documentedTagHelpers.Add(tagHelper);
+                    continue;
                 }
 
                 var typeName = tagHelper.Metadata[ITagHelperDescriptorBuilder.TypeNameKey];
@@ -129,8 +130,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
 
                     tagHelper = tagHelperBuilder.Build();
                 }
-
-                AddDocumentedTagHelper:
 
                 documentedTagHelpers.Add(tagHelper);
             }

@@ -13,16 +13,22 @@ namespace Microsoft.AspNetCore.Razor.Evolution
     */
     internal static class TagHelperDescriptorMatchingConventions
     {
-        public static bool CanMatchName(this BoundAttributeDescriptor descriptor, string name) =>
-            IsFullNameMatch(descriptor, name) || IsIndexerNameMatch(descriptor, name);
+        public static bool CanMatchName(this BoundAttributeDescriptor descriptor, string name)
+        {
+            return IsFullNameMatch(descriptor, name) || IsIndexerNameMatch(descriptor, name);
+        }
 
-        public static bool IsFullNameMatch(this BoundAttributeDescriptor descriptor, string name) =>
-            string.Equals(descriptor.Name, name, StringComparison.OrdinalIgnoreCase);
+        public static bool IsFullNameMatch(this BoundAttributeDescriptor descriptor, string name)
+        {
+            return string.Equals(descriptor.Name, name, StringComparison.OrdinalIgnoreCase);
+        }
 
-        public static bool IsIndexerNameMatch(this BoundAttributeDescriptor descriptor, string name) =>
-            descriptor.IndexerNamePrefix != null &&
-            !IsFullNameMatch(descriptor, name) &&
-            name.StartsWith(descriptor.IndexerNamePrefix, StringComparison.OrdinalIgnoreCase);
+        public static bool IsIndexerNameMatch(this BoundAttributeDescriptor descriptor, string name)
+        {
+            return descriptor.IndexerNamePrefix != null &&
+                !IsFullNameMatch(descriptor, name) &&
+                name.StartsWith(descriptor.IndexerNamePrefix, StringComparison.OrdinalIgnoreCase);
+        }
 
         public static bool IsMatch(this RequiredAttributeDescriptor descriptor, string attributeName, string attributeValue)
         {

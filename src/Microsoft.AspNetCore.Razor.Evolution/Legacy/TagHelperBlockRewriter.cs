@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             string tagName,
             bool validStructure,
             Block tag,
-            TagBindingResult bindingResult,
+            TagHelperBinding bindingResult,
             ErrorSink errorSink)
         {
             // There will always be at least one child for the '<'.
@@ -32,7 +32,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             string tagName,
             bool validStructure,
             Block tagBlock,
-            TagBindingResult bindingResult,
+            TagHelperBinding bindingResult,
             ErrorSink errorSink)
         {
             var attributes = new List<TagHelperAttributeNode>();
@@ -114,7 +114,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         private static TagMode GetTagMode(
             string tagName,
             Block beginTagBlock,
-            TagBindingResult bindingResult,
+            TagHelperBinding bindingResult,
             ErrorSink errorSink)
         {
             var childSpan = beginTagBlock.FindLastDescendentSpan();

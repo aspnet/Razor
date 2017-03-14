@@ -485,9 +485,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
                 _builder.Pop(); // Pop InitializeTagHelperStructureIRNode
 
-                var descriptors = tagHelperBlock.BindingResult.Descriptors;
-                AddTagHelperCreation(descriptors);
-                AddTagHelperAttributes(tagHelperBlock.Attributes, descriptors);
+                AddTagHelperCreation(tagHelperBlock.BindingResult);
+                AddTagHelperAttributes(tagHelperBlock.Attributes, tagHelperBlock.BindingResult);
                 AddExecuteTagHelpers();
 
                 _builder.Pop(); // Pop TagHelperIRNode
@@ -508,8 +507,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 }
             }
 
-            private void AddTagHelperCreation(IEnumerable<TagHelperDescriptor> descriptors)
+            private void AddTagHelperCreation(TagHelperBinding tagHelperBinding)
             {
+                var descriptors = tagHelperBinding.Descriptors;
                 foreach (var descriptor in descriptors)
                 {
                     var typeName = descriptor.Metadata[ITagHelperDescriptorBuilder.TypeNameKey];
@@ -523,8 +523,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 }
             }
 
-            private void AddTagHelperAttributes(IList<TagHelperAttributeNode> attributes, IEnumerable<TagHelperDescriptor> descriptors)
+            private void AddTagHelperAttributes(IList<TagHelperAttributeNode> attributes, TagHelperBinding tagHelperBinding)
             {
+                var descriptors = tagHelperBinding.Descriptors;
                 var renderedBoundAttributeNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var attribute in attributes)
                 {
@@ -554,6 +555,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                                 AttributeName = attribute.Name,
                                 TagHelperTypeName = tagHelperTypeName,
                                 Descriptor = associatedAttributeDescriptor,
+                                TagHelperBinding = tagHelperBinding,
                                 ValueStyle = attribute.ValueStyle,
                                 Source = BuildSourceSpanFromNode(attributeValueNode),
                                 IsIndexerNameMatch = associatedAttributeDescriptor.IsIndexerNameMatch(attribute.Name),
