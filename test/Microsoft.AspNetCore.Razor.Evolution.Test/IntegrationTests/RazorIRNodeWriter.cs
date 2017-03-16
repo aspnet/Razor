@@ -46,6 +46,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.IntegrationTests
             WriteContentNode(node, node.Kind.ToString(), node.Content);
         }
 
+        public override void VisitToken(RazorIRToken node)
+        {
+            WriteContentNode(node, node.Kind.ToString(), node.Content);
+        }
+
         public override void VisitDirective(DirectiveIRNode node)
         {
             WriteContentNode(node, node.Name);
