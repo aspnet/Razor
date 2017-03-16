@@ -5,21 +5,21 @@ using System.Collections.Generic;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 {
-    internal sealed class TagHelperBinding
+    public sealed class TagHelperBinding
     {
-        public IReadOnlyDictionary<TagHelperDescriptor, IEnumerable<TagMatchingRule>> _applicableDescriptorMappings;
+        public IReadOnlyDictionary<TagHelperDescriptor, IEnumerable<TagMatchingRule>> _mappings;
 
-        public TagHelperBinding(IReadOnlyDictionary<TagHelperDescriptor, IEnumerable<TagMatchingRule>> applicableDescriptorMappings)
+        internal TagHelperBinding(IReadOnlyDictionary<TagHelperDescriptor, IEnumerable<TagMatchingRule>> mappings)
         {
-            _applicableDescriptorMappings = applicableDescriptorMappings;
-            Descriptors = _applicableDescriptorMappings.Keys;
+            _mappings = mappings;
+            Descriptors = _mappings.Keys;
         }
 
         public IEnumerable<TagHelperDescriptor> Descriptors { get; }
 
         public IEnumerable<TagMatchingRule> GetBoundRules(TagHelperDescriptor descriptor)
         {
-            return _applicableDescriptorMappings[descriptor];
+            return _mappings[descriptor];
         }
     }
 }

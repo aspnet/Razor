@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         /// <summary>
         /// A default instance of the <see cref="TagMatchingRuleComparer"/> that does case-sensitive comparison.
         /// </summary>
-        internal static readonly TagMatchingRuleComparer DefaultCaseSensitive =
+        internal static readonly TagMatchingRuleComparer CaseSensitive =
             new TagMatchingRuleComparer(caseSensitive: true);
 
         private readonly StringComparer _stringComparer;
@@ -32,7 +32,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             {
                 _stringComparer = StringComparer.Ordinal;
                 _stringComparison = StringComparison.Ordinal;
-                _requiredAttributeComparer = RequiredAttributeDescriptorComparer.DefaultCaseSensitive;
+                _requiredAttributeComparer = RequiredAttributeDescriptorComparer.CaseSensitive;
             }
             else
             {

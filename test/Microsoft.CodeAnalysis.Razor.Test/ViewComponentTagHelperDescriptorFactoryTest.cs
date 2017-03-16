@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(viewComponent);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(viewComponent);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(viewComponent);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
     }
 

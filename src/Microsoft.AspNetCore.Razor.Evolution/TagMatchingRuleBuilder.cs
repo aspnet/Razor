@@ -88,14 +88,19 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public TagMatchingRule Build()
         {
-            Validate();
+            var validationDiagnostics = Validate();
+            var diagnostics = new HashSet<RazorDiagnostic>(validationDiagnostics);
+            if (_diagnostics != null)
+            {
+                diagnostics.UnionWith(_diagnostics);
+            }
 
             var rule = new DefaultTagMatchingRule(
                 _tagName,
                 _parentTag,
                 _tagStructure,
                 _requiredAttributeDescriptors ?? Enumerable.Empty<RequiredAttributeDescriptor>(),
-                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
+                diagnostics);
 
             return rule;
         }
@@ -109,13 +114,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             _diagnostics?.Clear();
         }
 
-        private void Validate()
+        private IEnumerable<RazorDiagnostic> Validate()
         {
             if (string.IsNullOrWhiteSpace(_tagName))
             {
                 var diagnostic = RazorDiagnosticFactory.CreateTagHelper_InvalidTargetedTagNameNullOrWhitespace();
 
-                AddDiagnostic(diagnostic);
+                yield return diagnostic;
             }
             else if (_tagName != TagHelperDescriptorProvider.ElementCatchAllTarget)
             {
@@ -125,7 +130,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     {
                         var diagnostic = RazorDiagnosticFactory.CreateTagHelper_InvalidTargetedTagName(_tagName, character);
 
-                        AddDiagnostic(diagnostic);
+                        yield return diagnostic;
                     }
                 }
             }

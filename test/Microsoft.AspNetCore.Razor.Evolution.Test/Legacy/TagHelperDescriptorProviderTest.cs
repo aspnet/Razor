@@ -83,7 +83,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 parentTagName: parentTagName);
 
             // Assert
-            Assert.Equal((IEnumerable<TagHelperDescriptor>)expectedDescriptors, bindingResult.Descriptors, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal((IEnumerable<TagHelperDescriptor>)expectedDescriptors, bindingResult.Descriptors, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData RequiredAttributeData
@@ -246,7 +246,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             var bindingResult = provider.GetTagHelperBinding(tagName, providedAttributes, parentTagName: "p");
 
             // Assert
-            Assert.Equal((IEnumerable<TagHelperDescriptor>)expectedDescriptors, bindingResult?.Descriptors, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal((IEnumerable<TagHelperDescriptor>)expectedDescriptors, bindingResult?.Descriptors, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]

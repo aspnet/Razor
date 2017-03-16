@@ -6,11 +6,6 @@ using System.Diagnostics;
 
 namespace Microsoft.AspNetCore.Razor.Evolution
 {
-    /*
-     * REVIEWERS: This needs to be public or IVT for tooling to consume until we flesh
-     * out a proper API to decouple tooling from Razors intrinsics. They use these to
-     * determine if their HTML elements match a descriptor or not to provide IntelliSense.
-    */
     internal static class TagHelperDescriptorMatchingConventions
     {
         public static bool CanMatchName(this BoundAttributeDescriptor descriptor, string name)

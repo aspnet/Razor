@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
 
             // Assert
             var descriptors = ruleBuilder.Build().Attributes;
-            Assert.Equal(expectedDescriptors, descriptors, RequiredAttributeDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptors, descriptors, RequiredAttributeDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData RequiredAttributeParserData
@@ -309,7 +309,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
 
             // Assert
             var descriptors = ruleBuilder.Build().Attributes;
-            Assert.Equal(expectedDescriptors, descriptors, RequiredAttributeDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptors, descriptors, RequiredAttributeDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData IsEnumData
@@ -372,7 +372,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData RequiredParentData
@@ -420,7 +420,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData RestrictChildrenData
@@ -473,7 +473,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData TagStructureData
@@ -530,7 +530,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData EditorBrowsableData
@@ -705,7 +705,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData AttributeTargetData
@@ -902,7 +902,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData HtmlCaseData
@@ -976,7 +976,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1010,7 +1010,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1044,7 +1044,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1069,7 +1069,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1095,7 +1095,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1122,7 +1122,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1149,7 +1149,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1174,7 +1174,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1205,7 +1205,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1231,7 +1231,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1255,7 +1255,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]
@@ -1274,7 +1274,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         // name, expectedErrorMessages
@@ -1722,7 +1722,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData TagHelperWithPrefixData
@@ -1913,7 +1913,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             Assert.Equal(
                 expectedAttributeDescriptors,
                 descriptor.BoundAttributes,
-                BoundAttributeDescriptorComparer.DefaultCaseSensitive);
+                BoundAttributeDescriptorComparer.CaseSensitive);
         }
 
         public static TheoryData HtmlConversionData
@@ -1998,7 +1998,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             var descriptor = factory.CreateDescriptor(typeSymbol);
 
             // Assert
-            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.DefaultCaseSensitive);
+            Assert.Equal(expectedDescriptor, descriptor, TagHelperDescriptorComparer.CaseSensitive);
         }
 
         [Fact]

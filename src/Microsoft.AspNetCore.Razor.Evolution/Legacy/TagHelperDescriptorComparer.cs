@@ -18,7 +18,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         /// <summary>
         /// A default instance of the <see cref="TagHelperDescriptorComparer"/> that does case-sensitive comparison.
         /// </summary>
-        internal static readonly TagHelperDescriptorComparer DefaultCaseSensitive =
+        internal static readonly TagHelperDescriptorComparer CaseSensitive =
             new TagHelperDescriptorComparer(caseSensitive: true);
 
         private readonly StringComparer _stringComparer;
@@ -32,8 +32,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             {
                 _stringComparer = StringComparer.Ordinal;
                 _stringComparison = StringComparison.Ordinal;
-                _boundAttributeComparer = BoundAttributeDescriptorComparer.DefaultCaseSensitive;
-                _tagMatchingRuleComparer = TagMatchingRuleComparer.DefaultCaseSensitive;
+                _boundAttributeComparer = BoundAttributeDescriptorComparer.CaseSensitive;
+                _tagMatchingRuleComparer = TagMatchingRuleComparer.CaseSensitive;
             }
             else
             {

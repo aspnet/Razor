@@ -485,8 +485,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
                 _builder.Pop(); // Pop InitializeTagHelperStructureIRNode
 
-                AddTagHelperCreation(tagHelperBlock.BindingResult);
-                AddTagHelperAttributes(tagHelperBlock.Attributes, tagHelperBlock.BindingResult);
+                AddTagHelperCreation(tagHelperBlock.Binding);
+                AddTagHelperAttributes(tagHelperBlock.Attributes, tagHelperBlock.Binding);
                 AddExecuteTagHelpers();
 
                 _builder.Pop(); // Pop TagHelperIRNode
@@ -500,7 +500,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     _document.Children.Add(_tagHelperFields);
                 }
 
-                foreach (var descriptor in block.BindingResult.Descriptors)
+                foreach (var descriptor in block.Binding.Descriptors)
                 {
                     var typeName = descriptor.Metadata[ITagHelperDescriptorBuilder.TypeNameKey];
                     _tagHelperFields.UsedTagHelperTypeNames.Add(typeName);
@@ -555,7 +555,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                                 AttributeName = attribute.Name,
                                 TagHelperTypeName = tagHelperTypeName,
                                 Descriptor = associatedAttributeDescriptor,
-                                TagHelperBinding = tagHelperBinding,
+                                Binding = tagHelperBinding,
                                 ValueStyle = attribute.ValueStyle,
                                 Source = BuildSourceSpanFromNode(attributeValueNode),
                                 IsIndexerNameMatch = associatedAttributeDescriptor.IsIndexerNameMatch(attribute.Name),

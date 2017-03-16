@@ -18,7 +18,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         /// <summary>
         /// A default instance of the <see cref="BoundAttributeDescriptorComparer"/> that does case-sensitive comparison.
         /// </summary>
-        internal static readonly BoundAttributeDescriptorComparer DefaultCaseSensitive =
+        internal static readonly BoundAttributeDescriptorComparer CaseSensitive =
             new BoundAttributeDescriptorComparer(caseSensitive: true);
 
         private readonly StringComparer _stringComparer;

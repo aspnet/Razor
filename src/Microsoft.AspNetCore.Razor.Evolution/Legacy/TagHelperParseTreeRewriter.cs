@@ -471,7 +471,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 return false;
             }
 
-            return _currentTagHelperTracker.AllowedChildren != null && _currentTagHelperTracker.AllowedChildren.Count() > 0;
+            return _currentTagHelperTracker.AllowedChildren != null && _currentTagHelperTracker.AllowedChildren.Count > 0;
         }
 
         private void ValidateParentAllowsContent(Span child, ErrorSink errorSink)
@@ -846,7 +846,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
         private class TagHelperBlockTracker : TagBlockTracker
         {
-            private IEnumerable<string> _prefixedAllowedChildren;
+            private IReadOnlyList<string> _prefixedAllowedChildren;
             private readonly string _tagHelperPrefix;
 
             public TagHelperBlockTracker(string tagHelperPrefix, TagHelperBlockBuilder builder)
@@ -860,7 +860,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                     AllowedChildren = Builder.BindingResult.Descriptors
                         .Where(descriptor => descriptor.AllowedChildTags != null)
                         .SelectMany(descriptor => descriptor.AllowedChildTags)
-                        .Distinct(StringComparer.OrdinalIgnoreCase);
+                        .Distinct(StringComparer.OrdinalIgnoreCase)
+                        .ToList();
                 }
             }
 
@@ -868,9 +869,9 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
 
             public uint OpenMatchingTags { get; set; }
 
-            public IEnumerable<string> AllowedChildren { get; }
+            public IReadOnlyList<string> AllowedChildren { get; }
 
-            public IEnumerable<string> PrefixedAllowedChildren
+            public IReadOnlyList<string> PrefixedAllowedChildren
             {
                 get
                 {
@@ -878,7 +879,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                     {
                         Debug.Assert(Builder.BindingResult.Descriptors.Count() >= 1);
 
-                        _prefixedAllowedChildren = AllowedChildren.Select(allowedChild => _tagHelperPrefix + allowedChild);
+                        _prefixedAllowedChildren = AllowedChildren.Select(allowedChild => _tagHelperPrefix + allowedChild).ToList();
                     }
 
                     return _prefixedAllowedChildren;

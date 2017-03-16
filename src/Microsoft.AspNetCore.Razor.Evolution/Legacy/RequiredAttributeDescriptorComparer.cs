@@ -23,7 +23,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
         /// <summary>
         /// A default instance of the <see cref="RequiredAttributeDescriptorComparer"/> that does case-sensitive comparison.
         /// </summary>
-        internal static readonly RequiredAttributeDescriptorComparer DefaultCaseSensitive =
+        internal static readonly RequiredAttributeDescriptorComparer CaseSensitive =
             new RequiredAttributeDescriptorComparer(caseSensitive: true);
 
         private readonly StringComparer _stringComparer;

@@ -73,6 +73,8 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             // Temporary code while we're still using legacy diagnostics in the SyntaxTree.
             errorList.AddRange(errorSink.Errors.Select(error => RazorDiagnostic.Create(error)));
 
+            errorList.AddRange(descriptors.SelectMany(d => d.GetAllDiagnostics()));
+
             var diagnostics = CombineErrors(syntaxTree.Diagnostics, errorList);
 
             var newSyntaxTree = RazorSyntaxTree.Create(root, syntaxTree.Source, diagnostics, syntaxTree.Options);

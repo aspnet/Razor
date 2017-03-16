@@ -102,7 +102,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
             var formTagHelper = Assert.IsType<TagHelperBlock>(rewrittenTree.Root.Children[2]);
             Assert.Equal("form", formTagHelper.TagName);
-            Assert.Equal(2, formTagHelper.BindingResult.GetBoundRules(descriptor).Count());
+            Assert.Equal(2, formTagHelper.Binding.GetBoundRules(descriptor).Count());
         }
 
         [Fact]
@@ -153,7 +153,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
             var formTagHelper = Assert.IsType<TagHelperBlock>(rewrittenTree.Root.Children[2]);
             Assert.Equal("form", formTagHelper.TagName);
-            Assert.Equal(2, formTagHelper.BindingResult.GetBoundRules(descriptor).Count());
+            Assert.Equal(2, formTagHelper.Binding.GetBoundRules(descriptor).Count());
         }
 
         [Fact]
@@ -269,7 +269,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var resolverError = RazorDiagnostic.Create(new RazorError("Test error", new SourceLocation(19, 1, 17), length: 12));
             var engine = RazorEngine.Create(builder =>
             {
-                var resolver = new ErrorLoggingTagHelperDescriptorResolver(resolverError);
+                var resolver = new ErrorLoggingTagHelperDescriptorResolver(resolverError, tagName: "test");
                 builder.Features.Add(Mock.Of<ITagHelperFeature>(f => f.Resolver == resolver));
             });
 
@@ -296,6 +296,36 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             Assert.Empty(originalTree.Diagnostics);
             Assert.NotSame(erroredOriginalTree, outputTree);
             Assert.Equal(new[] { initialError, resolverError }, outputTree.Diagnostics);
+        }
+
+        [Fact]
+        public void Execute_CombinesDiagnosticsFromTagHelperDescriptor()
+        {
+            // Arrange
+            var resolverError = RazorDiagnostic.Create(new RazorError("Test error", new SourceLocation(19, 1, 17), length: 12));
+            var engine = RazorEngine.Create(builder =>
+            {
+                var resolver = new ErrorLoggingTagHelperDescriptorResolver(resolverError, tagName: null);
+                builder.Features.Add(Mock.Of<ITagHelperFeature>(f => f.Resolver == resolver));
+            });
+
+            var descriptorError = RazorDiagnosticFactory.CreateTagHelper_InvalidTargetedTagNameNullOrWhitespace();
+
+            var pass = new TagHelperBinderSyntaxTreePass()
+            {
+                Engine = engine,
+            };
+
+            var sourceDocument = CreateTestSourceDocument();
+            var codeDocument = RazorCodeDocument.Create(sourceDocument);
+            var originalTree = RazorSyntaxTree.Parse(sourceDocument);
+
+            // Act
+            var outputTree = pass.Execute(codeDocument, originalTree);
+
+            // Assert
+            Assert.Empty(originalTree.Diagnostics);
+            Assert.Equal(new[] { resolverError, descriptorError }, outputTree.Diagnostics);
         }
 
         [Fact]
@@ -1320,10 +1350,12 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         private class ErrorLoggingTagHelperDescriptorResolver : ITagHelperDescriptorResolver
         {
             private readonly RazorDiagnostic _error;
+            private readonly string _tagName;
 
-            public ErrorLoggingTagHelperDescriptorResolver(RazorDiagnostic error)
+            public ErrorLoggingTagHelperDescriptorResolver(RazorDiagnostic error, string tagName = null)
             {
                 _error = error;
+                _tagName = tagName;
             }
 
             public IEnumerable<TagHelperDescriptor> Resolve(IList<RazorDiagnostic> errors)
@@ -1331,7 +1363,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 errors.Add(_error);
 
                 return new[] { CreateTagHelperDescriptor(
-                    tagName: null,
+                    tagName: _tagName,
                     typeName: null,
                     assemblyName: "TestAssembly") };
             }

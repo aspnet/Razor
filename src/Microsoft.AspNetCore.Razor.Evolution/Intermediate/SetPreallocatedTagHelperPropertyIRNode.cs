@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Intermediate
 
         public BoundAttributeDescriptor Descriptor { get; set; }
 
-        internal TagHelperBinding TagHelperBinding { get; set; }
+        public TagHelperBinding Binding { get; set; }
 
         public bool IsIndexerNameMatch { get; set; }
 

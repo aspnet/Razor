@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             : base(original)
         {
             TagName = original.TagName;
-            BindingResult = original.BindingResult;
+            BindingResult = original.Binding;
             Attributes = new List<TagHelperAttributeNode>(original.Attributes);
         }
 

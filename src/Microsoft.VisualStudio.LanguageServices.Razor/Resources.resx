@@ -120,9 +120,6 @@
   <data name="RazorDiagnosticJsonConverter_UnsupportedRazorDiagnosticType" xml:space="preserve">
     <value>Deserialization of {0} type '{1}' is not supported.</value>
   </data>
-  <data name="TagHelperDescriptorJsonConverter_UnsupportedTagHelperDescriptorKind" xml:space="preserve">
-    <value>Deserialization of {0} kind '{1}' is not supported.</value>
-  </data>
   <data name="UnexpectedException" xml:space="preserve">
     <value>An unexpected exception occurred when invoking '{0}.{1}' on the Razor language service.</value>
   </data>

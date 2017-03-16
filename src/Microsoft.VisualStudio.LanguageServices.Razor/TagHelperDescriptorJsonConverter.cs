@@ -29,13 +29,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
 
             var descriptor = JObject.Load(reader);
             var descriptorKind = descriptor[nameof(TagHelperDescriptor.Kind)].Value<string>();
-            if (descriptorKind != ITagHelperDescriptorBuilder.DescriptorKind)
-            {
-                throw new NotSupportedException(
-                    Resources.FormatTagHelperDescriptorJsonConverter_UnsupportedTagHelperDescriptorKind(
-                        typeof(TagHelperDescriptor).Name, descriptorKind));
-            }
-
             var typeName = descriptor[nameof(TagHelperDescriptor.Name)].Value<string>();
             var assemblyName = descriptor[nameof(TagHelperDescriptor.AssemblyName)].Value<string>();
             var tagMatchingRules = descriptor[nameof(TagHelperDescriptor.TagMatchingRules)].Value<JArray>();
@@ -89,6 +82,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
+            // We should never get here because CanWrite returns false.
+            // We want the default serializer to handle TagHelperDescriptor serialization.
             throw new NotImplementedException();
         }
 

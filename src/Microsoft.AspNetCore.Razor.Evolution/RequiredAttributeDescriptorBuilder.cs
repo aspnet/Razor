@@ -65,14 +65,19 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public RequiredAttributeDescriptor Build()
         {
-            Validate();
+            var validationDiagnostics = Validate();
+            var diagnostics = new HashSet<RazorDiagnostic>(validationDiagnostics);
+            if (_diagnostics != null)
+            {
+                diagnostics.UnionWith(_diagnostics);
+            }
 
             var rule = new DefaultTagHelperRequiredAttributeDescriptor(
                 _name,
                 _nameComparison,
                 _value,
                 _valueComparison,
-                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
+                diagnostics);
 
             return rule;
         }
@@ -86,13 +91,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             _diagnostics?.Clear();
         }
 
-        private void Validate()
+        private IEnumerable<RazorDiagnostic> Validate()
         {
             if (string.IsNullOrWhiteSpace(_name))
             {
                 var diagnostic = RazorDiagnosticFactory.CreateTagHelper_InvalidTargetedAttributeNameNullOrWhitespace();
 
-                AddDiagnostic(diagnostic);
+                yield return diagnostic;
             }
             else
             {
@@ -102,7 +107,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     {
                         var diagnostic = RazorDiagnosticFactory.CreateTagHelper_InvalidTargetedAttributeName(_name, character);
 
-                        AddDiagnostic(diagnostic);
+                        yield return diagnostic;
                     }
                 }
             }

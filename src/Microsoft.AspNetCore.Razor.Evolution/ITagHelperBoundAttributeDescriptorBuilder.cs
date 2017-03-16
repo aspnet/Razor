@@ -116,7 +116,12 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public BoundAttributeDescriptor Build()
         {
-            Validate();
+            var validationDiagnostics = Validate();
+            var diagnostics = new HashSet<RazorDiagnostic>(validationDiagnostics);
+            if (_diagnostics != null)
+            {
+                diagnostics.UnionWith(_diagnostics);
+            }
 
             if (!PrimitiveDisplayTypeNameLookups.TryGetValue(_typeName, out var simpleName))
             {
@@ -134,7 +139,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 _documentation,
                 displayName,
                 _metadata,
-                _diagnostics ?? Enumerable.Empty<RazorDiagnostic>());
+                diagnostics);
 
             return descriptor;
         }
@@ -148,10 +153,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             _isEnum = false;
             _indexerNamePrefix = null;
             _indexerValueTypeName = null;
+            _metadata.Clear();
             _diagnostics?.Clear();
         }
 
-        private void Validate()
+        private IEnumerable<RazorDiagnostic> Validate()
         {
             // data-* attributes are explicitly not implemented by user agents and are not intended for use on
             // the server; therefore it's invalid for TagHelpers to bind to them.
@@ -165,7 +171,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                         _containingTypeName,
                         _propertyName);
 
-                    AddDiagnostic(diagnostic);
+                    yield return diagnostic;
                 }
             }
             else
@@ -177,7 +183,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                         _propertyName,
                         _name);
 
-                    AddDiagnostic(diagnostic);
+                    yield return diagnostic;
                 }
 
                 foreach (var character in _name)
@@ -190,7 +196,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                             _name,
                             character);
 
-                        AddDiagnostic(diagnostic);
+                        yield return diagnostic;
                     }
                 }
             }
@@ -204,7 +210,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                         _propertyName,
                         _indexerNamePrefix);
 
-                    AddDiagnostic(diagnostic);
+                    yield return diagnostic;
                 }
                 else if (_indexerNamePrefix.Length > 0 && string.IsNullOrWhiteSpace(_indexerNamePrefix))
                 {
@@ -212,7 +218,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                         _containingTypeName,
                         _propertyName);
 
-                    AddDiagnostic(diagnostic);
+                    yield return diagnostic;
                 }
                 else
                 {
@@ -226,7 +232,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                                 _indexerNamePrefix,
                                 character);
 
-                            AddDiagnostic(diagnostic);
+                            yield return diagnostic;
                         }
                     }
                 }
@@ -265,9 +271,10 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                 Documentation = documentation;
                 DisplayName = displayName;
                 Diagnostics = new List<RazorDiagnostic>(diagnostics);
-
-                metadata[PropertyNameKey] = propertyName;
-                Metadata = new Dictionary<string, string>(metadata);
+                Metadata = new Dictionary<string, string>(metadata)
+                {
+                    [PropertyNameKey] = propertyName
+                };
             }
         }
     }
