@@ -2,35 +2,33 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Evolution
 {
-    /// <summary>
-    /// A metadata class describing a required tag helper attribute.
-    /// </summary>
-    public class TagHelperRequiredAttributeDescriptor
+    public abstract class TagHelperRequiredAttributeDescriptor
     {
-        /// <summary>
-        /// The HTML attribute name.
-        /// </summary>
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
-        /// <summary>
-        /// The comparison method to use for <see cref="Name"/> when determining if an HTML attribute name matches.
-        /// </summary>
-        public TagHelperRequiredAttributeNameComparison NameComparison { get; set; }
+        public TagHelperRequiredAttributeNameComparison NameComparison { get; protected set; }
 
-        /// <summary>
-        /// The HTML attribute value.
-        /// </summary>
-        public string Value { get; set; }
+        public string Value { get; protected set; }
 
-        /// <summary>
-        /// The comparison method to use for <see cref="Value"/> when determining if an HTML attribute value matches.
-        /// </summary>
-        public TagHelperRequiredAttributeValueComparison ValueComparison { get; set; }
+        public TagHelperRequiredAttributeValueComparison ValueComparison { get; protected set; }
+
+        public IEnumerable<RazorDiagnostic> Diagnostics { get; protected set; }
+
+        public bool HasAnyErrors
+        {
+            get
+            {
+                var anyErrors = Diagnostics.Any(diagnostic => diagnostic.Severity == RazorDiagnosticSeverity.Error);
+
+                return anyErrors;
+            }
+        }
 
         /// <summary>
         /// Determines if the current <see cref="TagHelperRequiredAttributeDescriptor"/> matches the given
