@@ -76,10 +76,12 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
                 descriptors = matchingDescriptors.Concat(descriptors);
             }
 
+            var tagNameWithoutPrefix = _tagHelperPrefix != null ? tagName.Substring(_tagHelperPrefix.Length) : tagName;
             Dictionary<TagHelperDescriptor, IEnumerable<TagMatchingRule>> applicableDescriptorMappings = null;
             foreach (var descriptor in descriptors)
             {
-                var applicableRules = descriptor.TagMatchingRules.Where(rule => MatchesRule(rule, attributes, parentTagName));
+                var applicableRules = descriptor.TagMatchingRules.Where(
+                    rule => MatchesRule(rule, attributes, tagNameWithoutPrefix, parentTagName));
 
                 if (applicableRules.Any())
                 {
@@ -102,8 +104,20 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             return tagMappingResult;
         }
 
-        private bool MatchesRule(TagMatchingRule rule, IEnumerable<KeyValuePair<string, string>> tagAttributes, string parentTagName)
+        private bool MatchesRule(
+            TagMatchingRule rule,
+            IEnumerable<KeyValuePair<string, string>> tagAttributes,
+            string tagNameWithoutPrefix,
+            string parentTagName)
         {
+            // Verify tag name
+            if (rule.TagName != ElementCatchAllTarget &&
+                rule.TagName != null &&
+                !string.Equals(tagNameWithoutPrefix, rule.TagName, StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
             // Verify parent tag
             if (rule.ParentTag != null && !string.Equals(parentTagName, rule.ParentTag, StringComparison.OrdinalIgnoreCase))
             {

@@ -420,5 +420,35 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Legacy
             var descriptor = Assert.Single(bindingResult.Descriptors);
             Assert.Same(divDescriptor, descriptor);
         }
+
+        [Fact]
+        public void GetTagHelperBinding_DescriptorWithMultipleRules_CorrectlySelectsMatchingRules()
+        {
+            // Arrange
+            var multiRuleDescriptor = ITagHelperDescriptorBuilder.Create("foo", "SomeAssembly")
+                .TagMatchingRule(rule => rule
+                    .RequireTagName(TagHelperDescriptorProvider.ElementCatchAllTarget)
+                    .RequireParentTag("body"))
+                .TagMatchingRule(rule => rule
+                    .RequireTagName("div"))
+                .TagMatchingRule(rule => rule
+                    .RequireTagName("span"))
+                .Build();
+            var descriptors = new TagHelperDescriptor[] { multiRuleDescriptor };
+            var provider = new TagHelperDescriptorProvider(null, descriptors);
+
+            // Act
+            var binding = provider.GetTagHelperBinding(
+                tagName: "div",
+                attributes: Enumerable.Empty<KeyValuePair<string, string>>(),
+                parentTagName: "p");
+
+            // Assert
+            var boundDescriptor = Assert.Single(binding.Descriptors);
+            Assert.Same(multiRuleDescriptor, boundDescriptor);
+            var boundRules = binding.GetBoundRules(boundDescriptor);
+            var boundRule = Assert.Single(boundRules);
+            Assert.Equal("div", boundRule.TagName);
+        }
     }
 }
