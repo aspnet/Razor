@@ -12,7 +12,7 @@ namespace TestOutput
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
             Instrumentation.BeginContext(1, 5, false);
 #line 1 "Inherits.cshtml"

@@ -12,7 +12,7 @@ namespace TestOutput
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
             Instrumentation.BeginContext(0, 45, true);
             WriteLiteral("<!-- \' -->\r\n<img src=\"~/images/submit.png\" />");

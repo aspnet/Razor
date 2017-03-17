@@ -12,7 +12,7 @@ namespace TestOutput
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
             Instrumentation.BeginContext(0, 34, true);
             WriteLiteral("\r\n<p>This should  be shown</p>\r\n\r\n");

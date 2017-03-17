@@ -76,7 +76,10 @@ namespace Microsoft.AspNetCore.Razor.CodeGenerators
 
                     using (writer.BuildDisableWarningScope(DisableAsyncWarning))
                     {
-                        using (writer.BuildMethodDeclaration("public override async", "Task", Host.GeneratedClassContext.ExecuteMethodName))
+                        using (writer.BuildMethodDeclaration(
+                            "public override async",
+                            "System.Threading.Tasks.Task",
+                            Host.GeneratedClassContext.ExecuteMethodName))
                         {
                             new CSharpTagHelperPropertyInitializationVisitor(writer, Context).Accept(Tree.Children);
                             csharpCodeVisitor.Accept(Tree.Children);

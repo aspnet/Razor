@@ -12,7 +12,7 @@ namespace TestOutput
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
             Instrumentation.BeginContext(70, 187, true);
             WriteLiteral("\r\n<div class=\"randomNonTagHelperAttribute\">\r\n    <p class=\"Hello World\">\r\n        <p></p>\r\n        <input type=\"text\" />\r\n        <input type=\"checkbox\" checked=\"true\"/>\r\n    </p>\r\n</div>");

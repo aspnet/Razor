@@ -21,7 +21,7 @@ namespace TestOutput
         }
 
         #pragma warning disable 1998
-        public override async Task ExecuteAsync()
+        public override async System.Threading.Tasks.Task ExecuteAsync()
         {
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
 #line 3 "SingleTagHelper.cshtml"
