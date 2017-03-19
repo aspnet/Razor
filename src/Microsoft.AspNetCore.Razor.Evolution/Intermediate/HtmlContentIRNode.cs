@@ -3,12 +3,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Microsoft.AspNetCore.Razor.Evolution.Intermediate
 {
     public sealed class HtmlContentIRNode : RazorIRNode
     {
-        public string Content { get; set; }
+        public StringBuilder Content { get; set; }
 
         public override IList<RazorIRNode> Children { get; } = EmptyArray;
 
