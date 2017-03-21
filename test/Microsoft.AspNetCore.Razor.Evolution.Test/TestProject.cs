@@ -13,12 +13,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
         public static string GetProjectDirectory()
         {
-
-#if NET452
-            var currentDirectory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
-#else
             var currentDirectory = new DirectoryInfo(AppContext.BaseDirectory);
-#endif
 
             while (currentDirectory != null &&
                 !string.Equals(currentDirectory.Name, ThisProjectName, StringComparison.Ordinal))
