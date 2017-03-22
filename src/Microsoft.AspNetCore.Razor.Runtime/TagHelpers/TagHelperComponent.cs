@@ -29,6 +29,7 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
         /// <inheritdoc />
         public virtual Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            Process(context, output);
             return TaskCache.CompletedTask;
         }
     }

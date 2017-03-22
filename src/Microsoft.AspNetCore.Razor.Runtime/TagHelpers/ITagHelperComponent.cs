@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 namespace Microsoft.AspNetCore.Razor.TagHelpers
 {
     /// <summary>
-    /// Contract used to enable the modification of an HTML element's representation. 
+    /// Contract used to modify an HTML element. 
     /// </summary>
     public interface ITagHelperComponent
     {
         /// <summary>
-        /// When a set of <see cref= "ITagHelperComponent" />s are executed, their <see cref="Init(TagHelperContext)"/>'s
+        /// When a set of <see cref= "ITagHelperComponent"/>s are executed, their <see cref="Init(TagHelperContext)"/>'s
         /// are first invoked in the specified <see cref="Order"/>; then their
         /// <see cref="ProcessAsync(TagHelperContext, TagHelperOutput)"/>'s are invoked in the specified
         /// <see cref="Order"/>. Lower values are executed first.
