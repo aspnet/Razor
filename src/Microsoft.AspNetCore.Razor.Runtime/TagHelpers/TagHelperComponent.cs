@@ -7,7 +7,10 @@ using Microsoft.Extensions.Internal;
 
 namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
 {
-    public class TagHelperComponent : ITagHelperComponent
+    /// <summary>
+    /// An abstract base class for <see cref="ITagHelperComponent"/>.
+    /// </summary>
+    public abstract class TagHelperComponent : ITagHelperComponent
     {
         /// <inheritdoc />
         /// <remarks>Default order is <c>0</c>.</remarks>
@@ -19,18 +22,14 @@ namespace Microsoft.AspNetCore.Razor.Runtime.TagHelpers
         }
 
         /// <inheritdoc />
+        public virtual void Process(TagHelperContext context, TagHelperOutput output)
+        {
+        }
+
+        /// <inheritdoc />
         public virtual Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             return TaskCache.CompletedTask;
-        }
-
-        /// <summary>
-        /// Returns <c>true</c> to indicate if <see cref="ITagHelperComponent"/> applies to the given <see cref="TagHelperContext"/>.
-        /// </summary>
-        /// <param name="context">Contains information associated with the current HTML tag.</param>
-        public virtual bool AppliesTo(TagHelperContext context)
-        {
-            return false;
         }
     }
 }

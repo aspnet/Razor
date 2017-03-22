@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 namespace Microsoft.AspNetCore.Razor.TagHelpers
 {
     /// <summary>
-    /// Contract used to filter matching HTML elements.
+    /// Contract used to enable the modification of an HTML element's representation. 
     /// </summary>
     public interface ITagHelperComponent
     {
         /// <summary>
-        /// When a set of<see cref= "ITagHelperComponent" />s are executed, their <see cref="Init(TagHelperContext)"/>'s
+        /// When a set of <see cref= "ITagHelperComponent" />s are executed, their <see cref="Init(TagHelperContext)"/>'s
         /// are first invoked in the specified <see cref="Order"/>; then their
         /// <see cref="ProcessAsync(TagHelperContext, TagHelperOutput)"/>'s are invoked in the specified
         /// <see cref="Order"/>. Lower values are executed first.
@@ -28,6 +28,14 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
         /// <see cref="M:TagHelperOutput.GetChildContentAsync"/> may be invoked prior to <see cref="ProcessAsync"/>.
         /// </remarks>
         void Init(TagHelperContext context);
+
+        /// <summary>
+        /// Synchronously executes the <see cref="ITagHelperComponent"/> with the given <paramref name="context"/> and
+        /// <paramref name="output"/>.
+        /// </summary>
+        /// <param name="context">Contains information associated with the current HTML tag.</param>
+        /// <param name="output">A stateful HTML element used to generate an HTML tag.</param>
+        void Process(TagHelperContext context, TagHelperOutput output);
 
         /// <summary>
         /// Asynchronously executes the <see cref="ITagHelperComponent"/> with the given <paramref name="context"/> and
