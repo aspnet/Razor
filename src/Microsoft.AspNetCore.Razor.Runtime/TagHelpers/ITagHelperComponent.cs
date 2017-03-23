@@ -11,7 +11,7 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
     public interface ITagHelperComponent
     {
         /// <summary>
-        /// When a set of <see cref= "ITagHelperComponent"/>s are executed, their <see cref="Init(TagHelperContext)"/>'s
+        /// When a set of <see cref="ITagHelperComponent"/>s are executed, their <see cref="Init(TagHelperContext)"/>'s
         /// are first invoked in the specified <see cref="Order"/>; then their
         /// <see cref="ProcessAsync(TagHelperContext, TagHelperOutput)"/>'s are invoked in the specified
         /// <see cref="Order"/>. Lower values are executed first.
