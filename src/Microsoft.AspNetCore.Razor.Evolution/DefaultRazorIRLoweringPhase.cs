@@ -440,7 +440,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             }
             private void Combine(HtmlContentIRNode node, Span span)
             {
-                node.Content.Append(span.Content);
+                node.Content.Append(span.Content); // Perf: using StringBuilder.Append() is far more performant than string '+' operator for large HTML sequences
                 if (node.Source != null)
                 {
                     Debug.Assert(node.Source.Value.FilePath != null);
