@@ -54,7 +54,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                         builder.Add(new RazorIRToken()
                         {
                             Kind = RazorIRToken.TokenKind.CSharp,
-                            Content = original.Content,
+                            Content = original.Content.ToString(),
                             Source = original.Source,
                         });
                     }
@@ -85,7 +85,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                                 builder.Add(new RazorIRToken()
                                 {
                                     Kind = RazorIRToken.TokenKind.CSharp,
-                                    Content = html.Content,
+                                    Content = html.Content.ToString(),
                                     Source = html.Source,
                                 });
                             }

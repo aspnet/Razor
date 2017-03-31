@@ -40,7 +40,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     return;
                 }
 
-                var plainTextValue = (node.Children.First() as HtmlContentIRNode).Content;
+                var plainTextValue = (node.Children.First() as HtmlContentIRNode).Content.ToString();
                 DeclarePreallocatedTagHelperHtmlAttributeIRNode declaration = null;
 
                 for (var i = 0; i < _classDeclaration.Children.Count; i++)
@@ -95,7 +95,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
                     return;
                 }
 
-                var plainTextValue = (node.Children.First() as HtmlContentIRNode).Content;
+                var plainTextValue = (node.Children.First() as HtmlContentIRNode).Content.ToString();
 
                 DeclarePreallocatedTagHelperAttributeIRNode declaration = null;
 

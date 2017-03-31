@@ -66,7 +66,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.Intermediate
             try
             {
                 var html = Assert.IsType<HtmlContentIRNode>(node);
-                Assert.Equal(expected, html.Content);
+                Assert.Equal(expected, html.Content.ToString());
             }
             catch (XunitException e)
             {

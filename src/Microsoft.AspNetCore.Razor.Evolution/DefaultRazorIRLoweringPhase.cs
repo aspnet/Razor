@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Razor.Evolution.Intermediate;
 using Microsoft.AspNetCore.Razor.Evolution.Legacy;
 
@@ -433,13 +434,13 @@ namespace Microsoft.AspNetCore.Razor.Evolution
 
                 _builder.Add(new HtmlContentIRNode()
                 {
-                    Content = span.Content,
+                    Content = new StringBuilder(span.Content),
                     Source = BuildSourceSpanFromNode(span),
                 });
             }
             private void Combine(HtmlContentIRNode node, Span span)
             {
-                node.Content = node.Content + span.Content;
+                node.Content.Append(span.Content); // Perf: using StringBuilder.Append() is far more performant than string '+' operator for large HTML sequences
                 if (node.Source != null)
                 {
                     Debug.Assert(node.Source.Value.FilePath != null);

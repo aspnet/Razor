@@ -234,7 +234,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.CodeGeneration
                     var htmlNode = node.Children.First() as HtmlContentIRNode;
                     if (htmlNode != null)
                     {
-                        Context.Writer.WriteStringLiteral(htmlNode.Content);
+                        Context.Writer.WriteStringLiteral(htmlNode.Content.ToString());
                     }
                 }
                 else
@@ -321,7 +321,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.CodeGeneration
                     Context.AddLineMappingFor(node);
                 }
 
-                Context.Writer.Write(((HtmlContentIRNode)node).Content);
+                Context.Writer.Write(((HtmlContentIRNode)node).Content.ToString());
             }
             else if (node is RazorIRToken token && token.IsCSharp)
             {

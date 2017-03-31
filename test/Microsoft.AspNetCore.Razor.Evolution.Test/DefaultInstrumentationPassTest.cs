@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Text;
 using Microsoft.AspNetCore.Razor.Evolution.Intermediate;
 using Xunit;
 using static Microsoft.AspNetCore.Razor.Evolution.Intermediate.RazorIRAssert;
@@ -16,7 +17,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var builder = RazorIRBuilder.Document();
             builder.Add(new HtmlContentIRNode()
             {
-                Content = "Hi",
+                Content = new StringBuilder("Hi"),
                 Source = CreateSource(1),
             });
 
@@ -42,7 +43,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
             var builder = RazorIRBuilder.Document();
             builder.Add(new HtmlContentIRNode()
             {
-                Content = "Hi",
+                Content = new StringBuilder("Hi"),
             });
 
             var irDocument = (DocumentIRNode)builder.Build();

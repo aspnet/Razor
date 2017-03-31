@@ -44,12 +44,12 @@ namespace Microsoft.AspNetCore.Razor.Evolution.CodeGeneration
                 string textToRender;
                 if (node.Content.Length <= MaxStringLiteralLength)
                 {
-                    textToRender = node.Content;
+                    textToRender = node.Content.ToString();
                 }
                 else
                 {
                     var charactersToSubstring = Math.Min(MaxStringLiteralLength, node.Content.Length - charactersConsumed);
-                    textToRender = node.Content.Substring(charactersConsumed, charactersToSubstring);
+                    textToRender = node.Content.ToString(charactersConsumed, charactersToSubstring);
                 }
 
                 Context.Writer
@@ -667,7 +667,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.CodeGeneration
             }
             else if (node is HtmlContentIRNode)
             {
-                Context.Writer.Write(((HtmlContentIRNode)node).Content);
+                Context.Writer.Write(((HtmlContentIRNode)node).Content.ToString());
             }
             else if (node is RazorIRToken token && token.IsCSharp)
             {

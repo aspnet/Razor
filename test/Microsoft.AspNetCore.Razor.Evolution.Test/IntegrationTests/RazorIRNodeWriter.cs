@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.IntegrationTests
 
         public override void VisitHtml(HtmlContentIRNode node)
         {
-            WriteContentNode(node, node.Content);
+            WriteContentNode(node, node.Content.ToString());
         }
 
         public override void VisitHtmlAttribute(HtmlAttributeIRNode node)

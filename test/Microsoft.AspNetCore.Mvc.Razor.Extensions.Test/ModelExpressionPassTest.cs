@@ -50,7 +50,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             var setProperty = tagHelper.Children.OfType<SetTagHelperPropertyIRNode>().Single();
 
             var child = Assert.IsType<HtmlContentIRNode>(Assert.Single(setProperty.Children));
-            Assert.Equal("17", child.Content);
+            Assert.Equal("17", child.Content.ToString());
         }
 
         [Fact]
