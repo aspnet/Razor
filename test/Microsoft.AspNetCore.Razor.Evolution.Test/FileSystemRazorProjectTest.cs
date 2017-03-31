@@ -68,7 +68,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         public void EnumerateItems_DiscoversAllCshtmlFiles()
         {
             // Arrange
-            var fileSystemProject = RazorProject.Create(TestFolder);
+            var fileSystemProject = new FileSystemRazorProject(TestFolder);
 
             // Act
             var files = fileSystemProject.EnumerateItems("/");
@@ -96,7 +96,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         public void EnumerateItems_DiscoversAllCshtmlFiles_UnderSpecifiedBasePath()
         {
             // Arrange
-            var fileSystemProject = RazorProject.Create(TestFolder);
+            var fileSystemProject = new FileSystemRazorProject(TestFolder);
 
             // Act
             var files = fileSystemProject.EnumerateItems("/Views");
@@ -119,7 +119,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         public void EnumerateItems_ReturnsEmptySequence_WhenBasePathDoesNotExist()
         {
             // Arrange
-            var fileSystemProject = RazorProject.Create(TestFolder);
+            var fileSystemProject = new FileSystemRazorProject(TestFolder);
 
             // Act
             var files = fileSystemProject.EnumerateItems("/Does-Not-Exist");
@@ -133,7 +133,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         {
             // Arrange
             var path = "/Views/About/About.cshtml";
-            var fileSystemProject = RazorProject.Create(TestFolder);
+            var fileSystemProject = new FileSystemRazorProject(TestFolder);
 
             // Act
             var file = fileSystemProject.GetItem(path);
@@ -148,7 +148,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution
         {
             // Arrange
             var path = "/NotFound.cshtml";
-            var fileSystemProject = RazorProject.Create(TestFolder);
+            var fileSystemProject = new FileSystemRazorProject(TestFolder);
 
             // Act
             var file = fileSystemProject.GetItem(path);
