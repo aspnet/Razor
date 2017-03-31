@@ -55,7 +55,7 @@ namespace RazorPageGenerator
             });
 
             var viewDirectories = Directory.EnumerateDirectories(targetProjectDirectory, "Views", SearchOption.AllDirectories);
-            var razorProject = new FileSystemRazorProject(targetProjectDirectory);
+            var razorProject = RazorProject.Create(targetProjectDirectory);
             var templateEngine = new RazorTemplateEngine(razorEngine, razorProject);
 
             var fileCount = 0;
