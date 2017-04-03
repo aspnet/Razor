@@ -4,12 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-#if NET452
+#if NET46
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Messaging;
-#else
+#elif NETCOREAPP2_0
 using System.Threading;
+#else
+#error Target framework needs to be updated
 #endif
 using Microsoft.AspNetCore.Razor.Evolution.Intermediate;
 using Xunit;
@@ -26,8 +27,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.IntegrationTests
         private static readonly bool GenerateBaselines = false;
 #endif
 
-#if !NET452
+#if NETCOREAPP2_0
         private static readonly AsyncLocal<string> _filename = new AsyncLocal<string>();
+#elif NET46
+#else
+#error Target framework needs to be updated
 #endif
 
         protected static string TestProjectRoot { get; } = TestProject.GetProjectDirectory();
@@ -35,7 +39,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.IntegrationTests
         // Used by the test framework to set the 'base' name for test files.
         public static string Filename
         {
-#if NET452
+#if NET46
             get
             {
                 var handle = (ObjectHandle)CallContext.LogicalGetData("IntegrationTestBase_Filename");
@@ -45,9 +49,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.IntegrationTests
             {
                 CallContext.LogicalSetData("IntegrationTestBase_Filename", new ObjectHandle(value));
             }
-#else
+#elif NETCOREAPP2_0
             get { return _filename.Value; }
             set { _filename.Value = value; }
+#else
+#error Target framework needs to be updated
 #endif
         }
 
