@@ -205,7 +205,11 @@ namespace Microsoft.AspNetCore.Razor.Evolution.CodeGeneration
                         break;
 
                     case DirectiveTokenKind.String:
+
+                        // global::System.Object __typeHelper = "{node.Content}";
+
                         Context.Writer
+                            .Write("global::")
                             .Write(typeof(object).FullName)
                             .Write(" ")
                             .WriteStartAssignment(TypeHelper);
