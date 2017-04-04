@@ -773,6 +773,7 @@ namespace Microsoft.AspNetCore.Razor.Evolution.IntegrationTests
             // Arrange, Act & Assert
             RunRuntimeTagHelpersTest(TestTagHelperDescriptors.TagHelpersInSectionDescriptors);
         }
+
         #endregion
 
         #region DesignTime
