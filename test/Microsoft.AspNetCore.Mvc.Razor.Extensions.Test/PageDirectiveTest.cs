@@ -24,6 +24,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
 
             // Assert
             Assert.False(result);
+            Assert.Null(pageDirective);
         }
 
         [Fact(Skip = "https://github.com/aspnet/Razor/issues/1201")]
@@ -41,6 +42,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
 
             // Assert
             Assert.False(result);
+            Assert.Null(pageDirective);
         }
 
         [Fact]
