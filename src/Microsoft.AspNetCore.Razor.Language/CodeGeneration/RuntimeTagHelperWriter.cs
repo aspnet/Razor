@@ -5,6 +5,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using Microsoft.AspNetCore.Razor.Language.Legacy;
 
 namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
@@ -23,6 +24,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         public string ExecutionContextSetOutputContentAsyncMethodName { get; set; } = "SetOutputContentAsync";
 
         public string ExecutionContextAddHtmlAttributeMethodName { get; set; } = "AddHtmlAttribute";
+
+        public string ExecutionContextAddTagHelperAttributeMethodName { get; set; } = "AddTagHelperAttribute";
 
         public string RunnerTypeName { get; set; } = "global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperRunner";
 
@@ -57,6 +60,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         public string EndWriteTagHelperAttributeMethodName { get; set; } = "EndWriteTagHelperAttribute";
 
         public string MarkAsHtmlEncodedMethodName { get; set; } = "Html.Raw";
+
+        public string FormatInvalidIndexerAssignmentMethodName { get; set; } = "InvalidTagHelperIndexerAssignment";
 
         public string WriteTagHelperOutputMethod { get; set; } = "Write";
 
@@ -315,9 +320,165 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public override void WriteSetTagHelperProperty(CSharpRenderingContext context, SetTagHelperPropertyIRNode node)
         {
-            throw new NotImplementedException();
+            var tagHelperVariableName = GetTagHelperVariableName(node.TagHelperTypeName);
+            var tagHelperRenderingContext = context.TagHelperRenderingContext;
+            var propertyName = node.Descriptor.Metadata[ITagHelperBoundAttributeDescriptorBuilder.PropertyNameKey];
+
+            // Ensure that the property we're trying to set has initialized its dictionary bound properties.
+            if (node.IsIndexerNameMatch &&
+                tagHelperRenderingContext.VerifiedPropertyDictionaries.Add(propertyName))
+            {
+                // Throw a reasonable Exception at runtime if the dictionary property is null.
+                context.Writer
+                    .Write("if (")
+                    .Write(tagHelperVariableName)
+                    .Write(".")
+                    .Write(propertyName)
+                    .WriteLine(" == null)");
+                using (context.Writer.BuildScope())
+                {
+                    // System is in Host.NamespaceImports for all MVC scenarios. No need to generate FullName
+                    // of InvalidOperationException type.
+                    context.Writer
+                        .Write("throw ")
+                        .WriteStartNewObject(nameof(InvalidOperationException))
+                        .WriteStartMethodInvocation(FormatInvalidIndexerAssignmentMethodName)
+                        .WriteStringLiteral(node.AttributeName)
+                        .WriteParameterSeparator()
+                        .WriteStringLiteral(node.TagHelperTypeName)
+                        .WriteParameterSeparator()
+                        .WriteStringLiteral(propertyName)
+                        .WriteEndMethodInvocation(endLine: false)   // End of method call
+                        .WriteEndMethodInvocation();   // End of new expression / throw statement
+                }
+            }
+
+            var propertyValueAccessor = GetTagHelperPropertyAccessor(node.IsIndexerNameMatch, tagHelperVariableName, node.AttributeName, node.Descriptor);
+
+            if (tagHelperRenderingContext.RenderedBoundAttributes.TryGetValue(node.AttributeName, out var previousValueAccessor))
+            {
+                context.Writer
+                    .WriteStartAssignment(propertyValueAccessor)
+                    .Write(previousValueAccessor)
+                    .WriteLine(";");
+
+                return;
+            }
+            else
+            {
+                tagHelperRenderingContext.RenderedBoundAttributes[node.AttributeName] = propertyValueAccessor;
+            }
+
+            if (node.Descriptor.IsStringProperty || (node.IsIndexerNameMatch && node.Descriptor.IsIndexerStringProperty))
+            {
+                context.Writer.WriteMethodInvocation(BeginWriteTagHelperAttributeMethodName);
+
+                // This can be removed once all the tag helper nodes are moved out of the renderers.
+                var initialRenderingConventions = context.RenderingConventions;
+                context.RenderingConventions = new CSharpLiteralCodeConventions(context.Writer);
+                using (context.Push(new LiteralRuntimeBasicWriter()))
+                {
+                    context.RenderChildren(node);
+                }
+                context.RenderingConventions = initialRenderingConventions;
+
+                context.Writer
+                    .WriteStartAssignment(StringValueBufferVariableName)
+                    .WriteMethodInvocation(EndWriteTagHelperAttributeMethodName)
+                    .WriteStartAssignment(propertyValueAccessor)
+                    .Write(StringValueBufferVariableName)
+                    .WriteLine(";");
+            }
+            else
+            {
+                using (context.Writer.BuildLinePragma(node.Source.Value))
+                {
+                    context.Writer.WriteStartAssignment(propertyValueAccessor);
+
+                    if (node.Descriptor.IsEnum &&
+                        node.Children.Count == 1 &&
+                        node.Children.First() is HtmlContentIRNode)
+                    {
+                        context.Writer
+                            .Write("global::")
+                            .Write(node.Descriptor.TypeName)
+                            .Write(".");
+                    }
+
+                    RenderTagHelperAttributeInline(context, node, node.Source.Value);
+
+                    context.Writer.WriteLine(";");
+                }
+            }
+
+            // We need to inform the context of the attribute value.
+            context.Writer
+                .WriteStartInstanceMethodInvocation(
+                    ExecutionContextVariableName,
+                    ExecutionContextAddTagHelperAttributeMethodName)
+                .WriteStringLiteral(node.AttributeName)
+                .WriteParameterSeparator()
+                .Write(propertyValueAccessor)
+                .WriteParameterSeparator()
+                .Write($"global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.{node.ValueStyle}")
+                .WriteEndMethodInvocation();
+        }
+
+        private void RenderTagHelperAttributeInline(
+            CSharpRenderingContext context,
+            RazorIRNode node,
+            SourceSpan documentLocation)
+        {
+            if (node is SetTagHelperPropertyIRNode || node is CSharpExpressionIRNode || node is HtmlContentIRNode)
+            {
+                for (var i = 0; i < node.Children.Count; i++)
+                {
+                    RenderTagHelperAttributeInline(context, node.Children[i], documentLocation);
+                }
+            }
+            else if (node is RazorIRToken token)
+            {
+                context.Writer.Write(token.Content);
+            }
+            else if (node is CSharpStatementIRNode)
+            {
+                var error = new RazorError(
+                    LegacyResources.TagHelpers_CodeBlocks_NotSupported_InAttributes,
+                    new SourceLocation(documentLocation.AbsoluteIndex, documentLocation.CharacterIndex, documentLocation.Length),
+                    documentLocation.Length);
+                context.Diagnostics.Add(RazorDiagnostic.Create(error));
+            }
+            else if (node is TemplateIRNode)
+            {
+                var attributeValueNode = (SetTagHelperPropertyIRNode)node.Parent;
+                var expectedTypeName = attributeValueNode.IsIndexerNameMatch ?
+                    attributeValueNode.Descriptor.IndexerTypeName :
+                    attributeValueNode.Descriptor.TypeName;
+                var error = new RazorError(
+                    LegacyResources.FormatTagHelpers_InlineMarkupBlocks_NotSupported_InAttributes(expectedTypeName),
+                    new SourceLocation(documentLocation.AbsoluteIndex, documentLocation.CharacterIndex, documentLocation.Length),
+                    documentLocation.Length);
+                context.Diagnostics.Add(RazorDiagnostic.Create(error));
+            }
         }
 
         private static string GetTagHelperVariableName(string tagHelperTypeName) => "__" + tagHelperTypeName.Replace('.', '_');
+
+        protected static string GetTagHelperPropertyAccessor(
+            bool isIndexerNameMatch,
+            string tagHelperVariableName,
+            string attributeName,
+            BoundAttributeDescriptor descriptor)
+        {
+            var propertyAccessor = $"{tagHelperVariableName}.{descriptor.Metadata[ITagHelperBoundAttributeDescriptorBuilder.PropertyNameKey]}";
+
+            if (isIndexerNameMatch)
+            {
+                var dictionaryKey = attributeName.Substring(descriptor.IndexerNamePrefix.Length);
+                propertyAccessor += $"[\"{dictionaryKey}\"]";
+            }
+
+            return propertyAccessor;
+        }
     }
 }

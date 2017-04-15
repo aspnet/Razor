@@ -101,6 +101,18 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             return scope;
         }
 
+        public TagHelperRenderingContextScope Push(TagHelperRenderingContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            var scope = new TagHelperRenderingContextScope(this, TagHelperRenderingContext);
+            TagHelperRenderingContext = context;
+            return scope;
+        }
+
         public struct BasicWriterScope : IDisposable
         {
             private readonly CSharpRenderingContext _context;
@@ -152,6 +164,28 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             public void Dispose()
             {
                 _context.TagHelperWriter = _writer;
+            }
+        }
+
+        public struct TagHelperRenderingContextScope : IDisposable
+        {
+            private readonly CSharpRenderingContext _context;
+            private readonly TagHelperRenderingContext _renderingContext;
+
+            public TagHelperRenderingContextScope(CSharpRenderingContext context, TagHelperRenderingContext renderingContext)
+            {
+                if (context == null)
+                {
+                    throw new ArgumentNullException(nameof(context));
+                }
+
+                _context = context;
+                _renderingContext = renderingContext;
+            }
+
+            public void Dispose()
+            {
+                _context.TagHelperRenderingContext = _renderingContext;
             }
         }
     }
