@@ -18,21 +18,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         {
         }
 
-        public override void VisitChecksum(ChecksumIRNode node)
-        {
-            if (!string.IsNullOrEmpty(node.Bytes))
-            {
-                Context.Writer
-                .Write("#pragma checksum \"")
-                .Write(node.FileName)
-                .Write("\" \"")
-                .Write(node.Guid)
-                .Write("\" \"")
-                .Write(node.Bytes)
-                .WriteLine("\"");
-            }
-        }
-
         public override void VisitHtml(HtmlContentIRNode node)
         {
             // We can't remove this yet, because it's still used recursively in a few places.
@@ -103,21 +88,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             Context.Writer.WriteEndMethodInvocation();
 
             linePragmaScope?.Dispose();
-        }
-
-        public override void VisitUsingStatement(UsingStatementIRNode node)
-        {
-            if (node.Source.HasValue)
-            {
-                using (Context.Writer.BuildLinePragma(node.Source.Value))
-                {
-                    Context.Writer.WriteUsing(node.Content);
-                }
-            }
-            else
-            {
-                Context.Writer.WriteUsing(node.Content);
-            }
         }
 
         public override void VisitHtmlAttribute(HtmlAttributeIRNode node)

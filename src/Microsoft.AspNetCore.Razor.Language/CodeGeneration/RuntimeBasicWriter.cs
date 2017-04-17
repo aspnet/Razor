@@ -15,6 +15,36 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public string WriteAttributeValueMethod { get; set; } = "WriteAttributeValue";
 
+        public override void WriteChecksum(CSharpRenderingContext context, ChecksumIRNode node)
+        {
+            if (!string.IsNullOrEmpty(node.Bytes))
+            {
+                context.Writer
+                .Write("#pragma checksum \"")
+                .Write(node.FileName)
+                .Write("\" \"")
+                .Write(node.Guid)
+                .Write("\" \"")
+                .Write(node.Bytes)
+                .WriteLine("\"");
+            }
+        }
+
+        public override void WriteUsingStatement(CSharpRenderingContext context, UsingStatementIRNode node)
+        {
+            if (node.Source.HasValue)
+            {
+                using (context.Writer.BuildLinePragma(node.Source.Value))
+                {
+                    context.Writer.WriteUsing(node.Content);
+                }
+            }
+            else
+            {
+                context.Writer.WriteUsing(node.Content);
+            }
+        }
+
         public override void WriteCSharpExpression(CSharpRenderingContext context, CSharpExpressionIRNode node)
         {
             if (context == null)

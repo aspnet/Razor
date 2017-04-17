@@ -61,22 +61,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             }
         }
 
-        public override void VisitUsingStatement(UsingStatementIRNode node)
-        {
-            if (node.Source.HasValue)
-            {
-                using (Context.Writer.BuildLinePragma(node.Source.Value))
-                {
-                    Context.AddLineMappingFor(node);
-                    Context.Writer.WriteUsing(node.Content);
-                }
-            }
-            else
-            {
-                Context.Writer.WriteUsing(node.Content);
-            }
-        }
-
         public override void VisitCSharpStatement(CSharpStatementIRNode node)
         {
             // We can't remove this yet, because it's still used recursively in a few places.

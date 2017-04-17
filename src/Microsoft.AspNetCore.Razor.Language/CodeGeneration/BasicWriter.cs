@@ -7,6 +7,10 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
     public abstract class BasicWriter
     {
+        public abstract void WriteChecksum(CSharpRenderingContext context, ChecksumIRNode node);
+
+        public abstract void WriteUsingStatement(CSharpRenderingContext context, UsingStatementIRNode node);
+
         public abstract void WriteCSharpExpression(CSharpRenderingContext context, CSharpExpressionIRNode node);
 
         public abstract void WriteCSharpStatement(CSharpRenderingContext context, CSharpStatementIRNode node);

@@ -81,6 +81,16 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 RenderChildren(node);
             }
 
+            public override void VisitChecksum(ChecksumIRNode node)
+            {
+                Context.BasicWriter.WriteChecksum(Context, node);
+            }
+
+            public override void VisitUsingStatement(UsingStatementIRNode node)
+            {
+                Context.BasicWriter.WriteUsingStatement(Context, node);
+            }
+
             public override void VisitNamespace(NamespaceDeclarationIRNode node)
             {
                 Context.Writer

@@ -11,6 +11,119 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
     public class RuntimeBasicWriterTest
     {
         [Fact]
+        public void WriteChecksum_WritesPragmaChecksum()
+        {
+            // Arrange
+            var writer = new RuntimeBasicWriter();
+            var context = new CSharpRenderingContext()
+            {
+                Writer = new Legacy.CSharpCodeWriter()
+            };
+
+            var node = new ChecksumIRNode()
+            {
+                FileName = "test.cshtml",
+                Guid = "SomeGuid",
+                Bytes = "SomeFileHash"
+            };
+
+            // Act
+            writer.WriteChecksum(context, node);
+
+            // Assert
+            var csharp = context.Writer.Builder.ToString();
+            Assert.Equal(
+@"#pragma checksum ""test.cshtml"" ""SomeGuid"" ""SomeFileHash""
+",
+                csharp,
+                ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void WriteChecksum_EmptyBytes_WritesNothing()
+        {
+            // Arrange
+            var writer = new RuntimeBasicWriter();
+            var context = new CSharpRenderingContext()
+            {
+                Writer = new Legacy.CSharpCodeWriter()
+            };
+
+            var node = new ChecksumIRNode()
+            {
+                FileName = "test.cshtml",
+                Guid = "SomeGuid",
+                Bytes = string.Empty
+            };
+
+            // Act
+            writer.WriteChecksum(context, node);
+
+            // Assert
+            var csharp = context.Writer.Builder.ToString();
+            Assert.Empty(csharp);
+        }
+
+        [Fact]
+        public void WriteUsingStatement_NoSource_WritesContent()
+        {
+            // Arrange
+            var writer = new RuntimeBasicWriter();
+            var context = new CSharpRenderingContext()
+            {
+                Writer = new Legacy.CSharpCodeWriter()
+            };
+
+            var node = new UsingStatementIRNode()
+            {
+                Content = "System",
+            };
+
+            // Act
+            writer.WriteUsingStatement(context, node);
+
+            // Assert
+            var csharp = context.Writer.Builder.ToString();
+            Assert.Equal(
+@"using System;
+",
+                csharp,
+                ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
+        public void WriteUsingStatement_WithSource_WritesContentWithLinePragma()
+        {
+            // Arrange
+            var writer = new RuntimeBasicWriter();
+            var context = new CSharpRenderingContext()
+            {
+                Writer = new Legacy.CSharpCodeWriter()
+            };
+
+            var node = new UsingStatementIRNode()
+            {
+                Content = "System",
+                Source = new SourceSpan("test.cshtml", 0, 0, 0, 3),
+            };
+
+            // Act
+            writer.WriteUsingStatement(context, node);
+
+            // Assert
+            var csharp = context.Writer.Builder.ToString();
+            Assert.Equal(
+@"#line 1 ""test.cshtml""
+using System;
+
+#line default
+#line hidden
+",
+                csharp,
+                ignoreLineEndingDifferences: true);
+        }
+
+        [Fact]
         public void WriteCSharpExpression_SkipsLinePragma_WithoutSource()
         {
             // Arrange
