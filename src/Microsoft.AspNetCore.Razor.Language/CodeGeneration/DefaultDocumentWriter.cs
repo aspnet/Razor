@@ -47,7 +47,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             _context.BasicWriter = _context.Options.DesignTimeMode ? (BasicWriter)new DesignTimeBasicWriter() : new RuntimeBasicWriter();
             _context.TagHelperWriter = _context.Options.DesignTimeMode ? (TagHelperWriter)new DesignTimeTagHelperWriter() : new RuntimeTagHelperWriter();
-            _context.HtmlAttributeWriter = _context.Options.DesignTimeMode ? (HtmlAttributeWriter)new DesignTimeHtmlAttributeWriter() : new RuntimeHtmlAttributeWriter();
 
             visitor.VisitDocument(node);
             _context.RenderChildren = null;
@@ -206,12 +205,12 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             public override void VisitHtmlAttributeValue(HtmlAttributeValueIRNode node)
             {
-                Context.HtmlAttributeWriter.WriteHtmlAttributeValue(Context, node);
+                Context.BasicWriter.WriteHtmlAttributeValue(Context, node);
             }
 
             public override void VisitCSharpAttributeValue(CSharpAttributeValueIRNode node)
             {
-                Context.HtmlAttributeWriter.WriteCSharpAttributeValue(Context, node);
+                Context.BasicWriter.WriteCSharpAttributeValue(Context, node);
             }
 
             public override void VisitHtml(HtmlContentIRNode node)

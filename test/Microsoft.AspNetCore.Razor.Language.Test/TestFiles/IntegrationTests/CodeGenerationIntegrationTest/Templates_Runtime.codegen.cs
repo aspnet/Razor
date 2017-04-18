@@ -48,7 +48,7 @@ Write(foo(""));
                 WriteLiteralTo(__razor_template_writer, "<p");
                 BeginWriteAttributeTo(__razor_template_writer, "class", " class=\"", 411, "\"", 424, 1);
 #line 17 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Templates.cshtml"
-WriteAttributeValueTo("", 419, item, 419, 5, false);
+WriteAttributeValueTo(__razor_template_writer, "", 419, item, 419, 5, false);
 
 #line default
 #line hidden

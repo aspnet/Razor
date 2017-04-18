@@ -11,6 +11,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
     public class RuntimeTagHelperWriter : TagHelperWriter
     {
+        public virtual string WriteTagHelperOutputMethod { get; set; } = "Write";
+
         public string StringValueBufferVariableName { get; set; } = "__tagHelperStringValueBuffer";
 
         public string ExecutionContextTypeName { get; set; } = "global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperExecutionContext";
@@ -62,8 +64,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         public string MarkAsHtmlEncodedMethodName { get; set; } = "Html.Raw";
 
         public string FormatInvalidIndexerAssignmentMethodName { get; set; } = "InvalidTagHelperIndexerAssignment";
-
-        public string WriteTagHelperOutputMethod { get; set; } = "Write";
 
         public override void WriteDeclareTagHelperFields(CSharpRenderingContext context, DeclareTagHelperFieldsIRNode node)
         {
@@ -171,7 +171,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                     .Write(attributeValueStyleParameter)
                     .WriteEndMethodInvocation();
 
-                using (context.Push(new TagHelperRuntimeHtmlAttributeWriter()))
+                using (context.Push(new TagHelperHtmlAttributeRuntimeBasicWriter()))
                 {
                     context.RenderChildren(node);
                 }
