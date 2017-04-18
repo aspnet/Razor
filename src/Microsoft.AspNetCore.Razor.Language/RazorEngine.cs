@@ -75,6 +75,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             // Default Runtime Targets
             builder.AddTargetExtension(new TemplateTargetExtension());
+            builder.AddTargetExtension(new PreallocatedAttributeTargetExtension());
 
             // Default configuration
             var configurationFeature = new DefaultDocumentClassifierPassFeature();

@@ -79,24 +79,5 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 return new string(' ', resolvedPadding);
             }
         }
-
-        protected static string GetTagHelperVariableName(string tagHelperTypeName) => "__" + tagHelperTypeName.Replace('.', '_');
-
-        protected static string GetTagHelperPropertyAccessor(
-            bool isIndexerNameMatch,
-            string tagHelperVariableName,
-            string attributeName,
-            BoundAttributeDescriptor descriptor)
-        {
-            var propertyAccessor = $"{tagHelperVariableName}.{descriptor.Metadata[ITagHelperBoundAttributeDescriptorBuilder.PropertyNameKey]}";
-
-            if (isIndexerNameMatch)
-            {
-                var dictionaryKey = attributeName.Substring(descriptor.IndexerNamePrefix.Length);
-                propertyAccessor += $"[\"{dictionaryKey}\"]";
-            }
-
-            return propertyAccessor;
-        }
     }
 }

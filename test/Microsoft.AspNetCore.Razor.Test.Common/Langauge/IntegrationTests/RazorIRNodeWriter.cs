@@ -121,6 +121,28 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             WriteContentNode(node, node.VariableName);
         }
 
+        public override void VisitExtension(ExtensionIRNode node)
+        {
+            switch (node)
+            {
+                case DeclarePreallocatedTagHelperHtmlAttributeIRNode n:
+                    VisitDeclarePreallocatedTagHelperHtmlAttribute(n);
+                    break;
+                case AddPreallocatedTagHelperHtmlAttributeIRNode n:
+                    VisitAddPreallocatedTagHelperHtmlAttribute(n);
+                    break;
+                case DeclarePreallocatedTagHelperAttributeIRNode n:
+                    VisitDeclarePreallocatedTagHelperAttribute(n);
+                    break;
+                case SetPreallocatedTagHelperPropertyIRNode n:
+                    VisitSetPreallocatedTagHelperProperty(n);
+                    break;
+                default:
+                    base.VisitExtension(node);
+                    break;
+            }
+        }
+
         protected void WriteBasicNode(RazorIRNode node)
         {
             WriteIndent();
