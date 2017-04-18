@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
@@ -96,6 +97,12 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             public override void VisitClass(ClassDeclarationIRNode node)
             {
+                // Mark generated classes with compiler generated attributes so IDEs don't show generaetd classes when unnecessary.
+                Context.Writer
+                    .Write("[global::")
+                    .Write(typeof(CompilerGeneratedAttribute).FullName)
+                    .WriteLine("()]");
+
                 Context.Writer
                     .Write(node.AccessModifier)
                     .Write(" class ")

@@ -3,7 +3,7 @@ Source Location: (2:0,2 [51] TestFiles/IntegrationTests/CodeGenerationIntegratio
     object foo = null;
     string bar = "Foo";
 |
-Generated Location: (661:16,2 [51] )
+Generated Location: (737:17,2 [51] )
 |
     object foo = null;
     string bar = "Foo";
@@ -12,20 +12,20 @@ Generated Location: (661:16,2 [51] )
 Source Location: (59:5,1 [23] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml)
 |if(foo != null) {
     |
-Generated Location: (837:23,1 [23] )
+Generated Location: (913:24,1 [23] )
 |if(foo != null) {
     |
 
 Source Location: (83:6,5 [3] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml)
 |foo|
-Generated Location: (992:29,6 [3] )
+Generated Location: (1068:30,6 [3] )
 |foo|
 
 Source Location: (86:6,8 [16] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml)
 |
 } else {
     |
-Generated Location: (1130:34,8 [16] )
+Generated Location: (1206:35,8 [16] )
 |
 } else {
     |
@@ -33,26 +33,26 @@ Generated Location: (1130:34,8 [16] )
 Source Location: (121:8,23 [3] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml)
 |
 }|
-Generated Location: (1295:41,23 [3] )
+Generated Location: (1371:42,23 [3] )
 |
 }|
 
 Source Location: (134:12,1 [38] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml)
 |if(!String.IsNullOrEmpty(bar)) {
     |
-Generated Location: (1426:47,1 [38] )
+Generated Location: (1502:48,1 [38] )
 |if(!String.IsNullOrEmpty(bar)) {
     |
 
 Source Location: (174:13,6 [21] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml)
 |bar.Replace("F", "B")|
-Generated Location: (1597:53,6 [21] )
+Generated Location: (1673:54,6 [21] )
 |bar.Replace("F", "B")|
 
 Source Location: (196:13,28 [3] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml)
 |
 }|
-Generated Location: (1774:58,28 [3] )
+Generated Location: (1850:59,28 [3] )
 |
 }|
 

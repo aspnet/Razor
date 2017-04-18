@@ -9,6 +9,7 @@ namespace Test.Namespace
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class PageWithNamespace_Page : global::Microsoft.AspNetCore.Mvc.RazorPages.Page
     {
         #pragma warning disable 1998

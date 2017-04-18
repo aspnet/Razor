@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 #line default
 #line hidden
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class TestFiles_IntegrationTests_CodeGenerationIntegrationTest_RazorPages_cshtml : global::Microsoft.AspNetCore.Mvc.RazorPages.Page
     {
         #pragma warning disable 219

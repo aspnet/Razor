@@ -32,6 +32,7 @@ using static global::System.Text.Encoding;
 
 #line default
 #line hidden
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class TestFiles_IntegrationTests_CodeGenerationIntegrationTest_Usings_DesignTime
     {
         #pragma warning disable 219

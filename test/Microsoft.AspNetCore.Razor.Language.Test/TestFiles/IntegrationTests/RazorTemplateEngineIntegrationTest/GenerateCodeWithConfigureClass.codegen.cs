@@ -4,6 +4,7 @@ namespace Razor
     #line hidden
     using System;
     using System.Threading.Tasks;
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     protected internal class MyClass : CustomBaseType, global::System.IDisposable
     {
         #pragma warning disable 1998

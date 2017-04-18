@@ -4,6 +4,7 @@ namespace MyApp.Razor.Views
     #line hidden
     using System;
     using System.Threading.Tasks;
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Template
     {
         #pragma warning disable 1998

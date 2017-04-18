@@ -4,6 +4,7 @@ namespace Razor
     #line hidden
     using System;
     using System.Threading.Tasks;
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Template : MyBaseType
     {
         #pragma warning disable 1998
