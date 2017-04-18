@@ -2,10 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
-using System.Text;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
-using Microsoft.AspNetCore.Razor.Language.Legacy;
 
 namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
@@ -14,51 +11,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         public DesignTimeCSharpRenderer(RuntimeTarget target, CSharpRenderingContext context)
             : base(target, context)
         {
-        }
-
-        public override void VisitCSharpExpression(CSharpExpressionIRNode node)
-        {
-            // We can't remove this yet, because it's still used recursively in a few places.
-            if (node.Children.Count == 0)
-            {
-                return;
-            }
-
-            if (node.Source != null)
-            {
-                using (Context.Writer.BuildLinePragma(node.Source.Value))
-                {
-                    var offset = RazorDesignTimeIRPass.DesignTimeVariable.Length + " = ".Length;
-                    var padding = BuildOffsetPadding(offset, node.Source.Value, Context);
-
-                    Context.Writer
-                        .Write(padding)
-                        .WriteStartAssignment(RazorDesignTimeIRPass.DesignTimeVariable);
-
-                    for (var i = 0; i < node.Children.Count; i++)
-                    {
-                        var token = node.Children[i] as RazorIRToken;
-                        if (token != null && token.IsCSharp)
-                        {
-                            Context.AddLineMappingFor(token);
-                            Context.Writer.Write(token.Content);
-                        }
-                        else
-                        {
-                            // There may be something else inside the expression like a Template or another extension node.
-                            Visit(node.Children[i]);
-                        }
-                    }
-
-                    Context.Writer.WriteLine(";");
-                }
-            }
-            else
-            {
-                Context.Writer.WriteStartAssignment(RazorDesignTimeIRPass.DesignTimeVariable);
-                VisitDefault(node);
-                Context.Writer.WriteLine(";");
-            }
         }
 
         public override void VisitCSharpStatement(CSharpStatementIRNode node)

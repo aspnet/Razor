@@ -10,8 +10,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
     public class CSharpRenderingContext
     {
-        private CSharpRenderingConventions _renderingConventions;
-
         internal ICollection<DirectiveDescriptor> Directives { get; set; }
 
         internal Func<string> IdGenerator { get; set; } = () => Guid.NewGuid().ToString("N");
@@ -19,23 +17,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         internal List<LineMapping> LineMappings { get; } = new List<LineMapping>();
 
         public CSharpCodeWriter Writer { get; set; }
-
-        internal CSharpRenderingConventions RenderingConventions
-        {
-            get
-            {
-                if (_renderingConventions == null)
-                {
-                    _renderingConventions = new CSharpRenderingConventions(Writer);
-                }
-
-                return _renderingConventions;
-            }
-            set
-            {
-                _renderingConventions = value;
-            }
-        }
 
         internal IList<RazorDiagnostic> Diagnostics { get; } = new List<RazorDiagnostic>();
 

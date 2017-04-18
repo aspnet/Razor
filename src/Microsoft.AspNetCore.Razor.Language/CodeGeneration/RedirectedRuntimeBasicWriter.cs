@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
@@ -19,6 +21,10 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         public new string WriteCSharpExpressionMethod { get; set; } = "WriteTo";
 
         public new string WriteHtmlContentMethod { get; set; } = "WriteLiteralTo";
+
+        public new string BeginWriteAttributeMethod { get; set; } = "BeginWriteAttributeTo";
+
+        public new string EndWriteAttributeMethod { get; set; } = "EndWriteAttributeTo";
 
         public override void WriteCSharpExpression(CSharpRenderingContext context, CSharpExpressionIRNode node)
         {
@@ -92,7 +98,39 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                     .WriteEndMethodInvocation();
 
                     charactersConsumed += textToRender.Length;
-                }
             }
+        }
+
+        public override void WriteHtmlAttribute(CSharpRenderingContext context, HtmlAttributeIRNode node)
+        {
+            var valuePieceCount = node
+                .Children
+                .Count(child => child is HtmlAttributeValueIRNode || child is CSharpAttributeValueIRNode);
+            var prefixLocation = node.Source.Value.AbsoluteIndex;
+            var suffixLocation = node.Source.Value.AbsoluteIndex + node.Source.Value.Length - node.Suffix.Length;
+            context.Writer
+                .WriteStartMethodInvocation(BeginWriteAttributeMethod)
+                .Write(_textWriter)
+                .WriteParameterSeparator()
+                .WriteStringLiteral(node.Name)
+                .WriteParameterSeparator()
+                .WriteStringLiteral(node.Prefix)
+                .WriteParameterSeparator()
+                .Write(prefixLocation.ToString(CultureInfo.InvariantCulture))
+                .WriteParameterSeparator()
+                .WriteStringLiteral(node.Suffix)
+                .WriteParameterSeparator()
+                .Write(suffixLocation.ToString(CultureInfo.InvariantCulture))
+                .WriteParameterSeparator()
+                .Write(valuePieceCount.ToString(CultureInfo.InvariantCulture))
+                .WriteEndMethodInvocation();
+
+            context.RenderChildren(node);
+
+            context.Writer
+                .WriteStartMethodInvocation(EndWriteAttributeMethod)
+                .Write(_textWriter)
+                .WriteEndMethodInvocation();
+        }
     }
 }

@@ -21,15 +21,14 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 .Write(ItemParameterName).Write(" => ")
                 .WriteStartNewObject(TemplateTypeName);
 
-            var initialRenderingConventions = context.RenderingConventions;
-            context.RenderingConventions = new CSharpRedirectRenderingConventions(TemplateWriterName, context.Writer);
-
             IDisposable basicWriterScope = null;
             IDisposable tagHelperWriterScope = null;
+            IDisposable htmlAttributeWriterScope = null;
             if (!context.Options.DesignTimeMode)
             {
                 basicWriterScope = context.Push(new RedirectedRuntimeBasicWriter(TemplateWriterName));
                 tagHelperWriterScope = context.Push(new RedirectedRuntimeTagHelperWriter(TemplateWriterName));
+                htmlAttributeWriterScope = context.Push(new RedirectedRuntimeHtmlAttributeWriter(TemplateWriterName));
             }
 
             using (context.Writer.BuildAsyncLambda(endLine: false, parameterNames: TemplateWriterName))
@@ -39,8 +38,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             basicWriterScope?.Dispose();
             tagHelperWriterScope?.Dispose();
-
-            context.RenderingConventions = initialRenderingConventions;
+            htmlAttributeWriterScope?.Dispose();
 
             context.Writer.WriteEndMethodInvocation(endLine: false);
         }
