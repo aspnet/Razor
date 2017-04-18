@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
@@ -13,7 +15,9 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public string WriteHtmlContentMethod { get; set; } = "WriteLiteral";
 
-        public string WriteAttributeValueMethod { get; set; } = "WriteAttributeValue";
+        public string BeginWriteAttributeMethod { get; set; } = "BeginWriteAttribute";
+
+        public string EndWriteAttributeMethod { get; set; } = "EndWriteAttribute";
 
         public override void WriteChecksum(CSharpRenderingContext context, ChecksumIRNode node)
         {
@@ -132,7 +136,31 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public override void WriteHtmlAttribute(CSharpRenderingContext context, HtmlAttributeIRNode node)
         {
-            throw new NotImplementedException();
+            var valuePieceCount = node
+                .Children
+                .Count(child => child is HtmlAttributeValueIRNode || child is CSharpAttributeValueIRNode);
+            var prefixLocation = node.Source.Value.AbsoluteIndex;
+            var suffixLocation = node.Source.Value.AbsoluteIndex + node.Source.Value.Length - node.Suffix.Length;
+            context.Writer
+                .WriteStartMethodInvocation(BeginWriteAttributeMethod)
+                .WriteStringLiteral(node.Name)
+                .WriteParameterSeparator()
+                .WriteStringLiteral(node.Prefix)
+                .WriteParameterSeparator()
+                .Write(prefixLocation.ToString(CultureInfo.InvariantCulture))
+                .WriteParameterSeparator()
+                .WriteStringLiteral(node.Suffix)
+                .WriteParameterSeparator()
+                .Write(suffixLocation.ToString(CultureInfo.InvariantCulture))
+                .WriteParameterSeparator()
+                .Write(valuePieceCount.ToString(CultureInfo.InvariantCulture))
+                .WriteEndMethodInvocation();
+
+            context.RenderChildren(node);
+
+            context.Writer
+                .WriteStartMethodInvocation(EndWriteAttributeMethod)
+                .WriteEndMethodInvocation();
         }
 
         public override void WriteHtmlContent(CSharpRenderingContext context, HtmlContentIRNode node)

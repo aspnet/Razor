@@ -174,7 +174,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 // This can be removed once all the tag helper nodes are moved out of the renderers.
                 var initialRenderingConventions = context.RenderingConventions;
                 context.RenderingConventions = new TagHelperHtmlAttributeRenderingConventions(context.Writer);
-                using (context.Push(new TagHelperHtmlAttributeRuntimeBasicWriter()))
+                using (context.Push(new TagHelperRuntimeHtmlAttributeWriter()))
                 {
                     context.RenderChildren(node);
                 }

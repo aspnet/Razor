@@ -55,6 +55,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public TagHelperWriter TagHelperWriter { get; set; }
 
+        internal HtmlAttributeWriter HtmlAttributeWriter { get; set; }
+
         public void AddLineMappingFor(RazorIRNode node)
         {
             if (node.Source == null)
@@ -98,6 +100,18 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             var scope = new TagHelperWriterScope(this, TagHelperWriter);
             TagHelperWriter = writer;
+            return scope;
+        }
+
+        internal HtmlAttributeWriterScope Push(HtmlAttributeWriter writer)
+        {
+            if (writer == null)
+            {
+                throw new ArgumentNullException(nameof(writer));
+            }
+
+            var scope = new HtmlAttributeWriterScope(this, writer);
+            HtmlAttributeWriter = writer;
             return scope;
         }
 
@@ -164,6 +178,33 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             public void Dispose()
             {
                 _context.TagHelperWriter = _writer;
+            }
+        }
+
+        internal struct HtmlAttributeWriterScope : IDisposable
+        {
+            private readonly CSharpRenderingContext _context;
+            private readonly HtmlAttributeWriter _writer;
+
+            public HtmlAttributeWriterScope(CSharpRenderingContext context, HtmlAttributeWriter writer)
+            {
+                if (context == null)
+                {
+                    throw new ArgumentNullException(nameof(context));
+                }
+
+                if (writer == null)
+                {
+                    throw new ArgumentNullException(nameof(writer));
+                }
+
+                _context = context;
+                _writer = writer;
+            }
+
+            public void Dispose()
+            {
+                _context.HtmlAttributeWriter = _writer;
             }
         }
 

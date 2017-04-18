@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
-    public class RedirectedBasicWriterTest
+    public class RedirectedRuntimeBasicWriterTest
     {
         [Fact]
         public void WriteCSharpExpression_Runtime_SkipsLinePragma_WithoutSource()

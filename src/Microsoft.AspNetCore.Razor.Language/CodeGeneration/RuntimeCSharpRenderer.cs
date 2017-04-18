@@ -2,9 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
@@ -88,106 +85,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             Context.Writer.WriteEndMethodInvocation();
 
             linePragmaScope?.Dispose();
-        }
-
-        public override void VisitHtmlAttribute(HtmlAttributeIRNode node)
-        {
-            var valuePieceCount = node
-                .Children
-                .Count(child => child is HtmlAttributeValueIRNode || child is CSharpAttributeValueIRNode);
-            var prefixLocation = node.Source.Value.AbsoluteIndex;
-            var suffixLocation = node.Source.Value.AbsoluteIndex + node.Source.Value.Length - node.Suffix.Length;
-            Context.Writer
-                .Write(Context.RenderingConventions.StartBeginWriteAttributeMethod)
-                .WriteStringLiteral(node.Name)
-                .WriteParameterSeparator()
-                .WriteStringLiteral(node.Prefix)
-                .WriteParameterSeparator()
-                .Write(prefixLocation.ToString(CultureInfo.InvariantCulture))
-                .WriteParameterSeparator()
-                .WriteStringLiteral(node.Suffix)
-                .WriteParameterSeparator()
-                .Write(suffixLocation.ToString(CultureInfo.InvariantCulture))
-                .WriteParameterSeparator()
-                .Write(valuePieceCount.ToString(CultureInfo.InvariantCulture))
-                .WriteEndMethodInvocation();
-
-            VisitDefault(node);
-
-            Context.Writer
-                .Write(Context.RenderingConventions.StartEndWriteAttributeMethod)
-                .WriteEndMethodInvocation();
-        }
-
-        public override void VisitHtmlAttributeValue(HtmlAttributeValueIRNode node)
-        {
-            var prefixLocation = node.Source.Value.AbsoluteIndex;
-            var valueLocation = node.Source.Value.AbsoluteIndex + node.Prefix.Length;
-            var valueLength = node.Source.Value.Length;
-            Context.Writer
-                .Write(Context.RenderingConventions.StartWriteAttributeValueMethod)
-                .WriteStringLiteral(node.Prefix)
-                .WriteParameterSeparator()
-                .Write(prefixLocation.ToString(CultureInfo.InvariantCulture))
-                .WriteParameterSeparator()
-                .WriteStringLiteral(node.Content)
-                .WriteParameterSeparator()
-                .Write(valueLocation.ToString(CultureInfo.InvariantCulture))
-                .WriteParameterSeparator()
-                .Write(valueLength.ToString(CultureInfo.InvariantCulture))
-                .WriteParameterSeparator()
-                .WriteBooleanLiteral(true)
-                .WriteEndMethodInvocation();
-        }
-
-        public override void VisitCSharpAttributeValue(CSharpAttributeValueIRNode node)
-        {
-            const string ValueWriterName = "__razor_attribute_value_writer";
-
-            var expressionValue = node.Children.FirstOrDefault() as CSharpExpressionIRNode;
-            var linePragma = expressionValue != null ? Context.Writer.BuildLinePragma(node.Source.Value) : null;
-            var prefixLocation = node.Source.Value.AbsoluteIndex;
-            var valueLocation = node.Source.Value.AbsoluteIndex + node.Prefix.Length;
-            var valueLength = node.Source.Value.Length - node.Prefix.Length;
-            Context.Writer
-                .Write(Context.RenderingConventions.StartWriteAttributeValueMethod)
-                .WriteStringLiteral(node.Prefix)
-                .WriteParameterSeparator()
-                .Write(prefixLocation.ToString(CultureInfo.InvariantCulture))
-                .WriteParameterSeparator();
-
-            if (expressionValue != null)
-            {
-                Debug.Assert(node.Children.Count == 1);
-
-                RenderExpressionInline(expressionValue, Context);
-            }
-            else
-            {
-                // Not an expression; need to buffer the result.
-                Context.Writer.WriteStartNewObject("Microsoft.AspNetCore.Mvc.Razor.HelperResult" /* ORIGINAL: TemplateTypeName */);
-
-                var initialRenderingConventions = Context.RenderingConventions;
-                Context.RenderingConventions = new CSharpRedirectRenderingConventions(ValueWriterName, Context.Writer);
-                using (Context.Writer.BuildAsyncLambda(endLine: false, parameterNames: ValueWriterName))
-                {
-                    VisitDefault(node);
-                }
-                Context.RenderingConventions = initialRenderingConventions;
-
-                Context.Writer.WriteEndMethodInvocation(false);
-            }
-
-            Context.Writer
-                .WriteParameterSeparator()
-                .Write(valueLocation.ToString(CultureInfo.InvariantCulture))
-                .WriteParameterSeparator()
-                .Write(valueLength.ToString(CultureInfo.InvariantCulture))
-                .WriteParameterSeparator()
-                .WriteBooleanLiteral(false)
-                .WriteEndMethodInvocation();
-
-            linePragma?.Dispose();
         }
 
         public override void VisitCSharpStatement(CSharpStatementIRNode node)
