@@ -198,6 +198,21 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 Context.BasicWriter.WriteCSharpStatement(Context, node);
             }
 
+            public override void VisitHtmlAttribute(HtmlAttributeIRNode node)
+            {
+                Context.BasicWriter.WriteHtmlAttribute(Context, node);
+            }
+
+            public override void VisitHtmlAttributeValue(HtmlAttributeValueIRNode node)
+            {
+                Context.BasicWriter.WriteHtmlAttributeValue(Context, node);
+            }
+
+            public override void VisitCSharpAttributeValue(CSharpAttributeValueIRNode node)
+            {
+                Context.BasicWriter.WriteCSharpAttributeValue(Context, node);
+            }
+
             public override void VisitHtml(HtmlContentIRNode node)
             {
                 Context.BasicWriter.WriteHtmlContent(Context, node);

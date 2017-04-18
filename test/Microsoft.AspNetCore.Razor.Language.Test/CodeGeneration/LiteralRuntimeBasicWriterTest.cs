@@ -6,16 +6,13 @@ using Xunit;
 
 namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
-    public class RedirectedRuntimeTagHelperWriterTest
+    public class LiteralRuntimeBasicWriterTest
     {
         [Fact]
-        public void WriteExecuteTagHelpers_Runtime_RendersWithRedirectWriter()
+        public void WriteCSharpExpression_UsesWriteLiteral_WritesLinePragma_WithSource()
         {
             // Arrange
-            var writer = new RedirectedRuntimeTagHelperWriter("test_writer")
-            {
-                WriteTagHelperOutputMethod = "Test",
-            };
+            var writer = new LiteralRuntimeBasicWriter();
 
             var context = new CSharpRenderingContext()
             {
@@ -23,21 +20,28 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 Writer = new Legacy.CSharpCodeWriter(),
             };
 
-            var node = new ExecuteTagHelpersIRNode();
+            var node = new CSharpExpressionIRNode()
+            {
+                Source = new SourceSpan("test.cshtml", 0, 0, 0, 3),
+            };
+            var builder = RazorIRBuilder.Create(node);
+            builder.Add(new RazorIRToken()
+            {
+                Content = "i++",
+                Kind = RazorIRToken.TokenKind.CSharp,
+            });
 
             // Act
-            writer.WriteExecuteTagHelpers(context, node);
+            writer.WriteCSharpExpression(context, node);
 
             // Assert
             var csharp = context.Writer.Builder.ToString();
             Assert.Equal(
-@"await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
-if (!__tagHelperExecutionContext.Output.IsContentModified)
-{
-    await __tagHelperExecutionContext.SetOutputContentAsync();
-}
-Test(test_writer, __tagHelperExecutionContext.Output);
-__tagHelperExecutionContext = __tagHelperScopeManager.End();
+@"#line 1 ""test.cshtml""
+WriteLiteral(i++);
+
+#line default
+#line hidden
 ",
                 csharp,
                 ignoreLineEndingDifferences: true);

@@ -11,6 +11,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
     public class RuntimeTagHelperWriter : TagHelperWriter
     {
+        public virtual string WriteTagHelperOutputMethod { get; set; } = "Write";
+
         public string StringValueBufferVariableName { get; set; } = "__tagHelperStringValueBuffer";
 
         public string ExecutionContextTypeName { get; set; } = "global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperExecutionContext";
@@ -62,8 +64,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         public string MarkAsHtmlEncodedMethodName { get; set; } = "Html.Raw";
 
         public string FormatInvalidIndexerAssignmentMethodName { get; set; } = "InvalidTagHelperIndexerAssignment";
-
-        public string WriteTagHelperOutputMethod { get; set; } = "Write";
 
         public override void WriteDeclareTagHelperFields(CSharpRenderingContext context, DeclareTagHelperFieldsIRNode node)
         {
@@ -171,14 +171,10 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                     .Write(attributeValueStyleParameter)
                     .WriteEndMethodInvocation();
 
-                // This can be removed once all the tag helper nodes are moved out of the renderers.
-                var initialRenderingConventions = context.RenderingConventions;
-                context.RenderingConventions = new TagHelperHtmlAttributeRenderingConventions(context.Writer);
                 using (context.Push(new TagHelperHtmlAttributeRuntimeBasicWriter()))
                 {
                     context.RenderChildren(node);
                 }
-                context.RenderingConventions = initialRenderingConventions;
 
                 context.Writer
                     .WriteMethodInvocation(
@@ -197,15 +193,11 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 // We're building a writing scope around the provided chunks which captures everything written from the
                 // page. Therefore, we do not want to write to any other buffer since we're using the pages buffer to
                 // ensure we capture all content that's written, directly or indirectly.
-                // This can be removed once all the tag helper nodes are moved out of the renderers.
-                var initialRenderingConventions = context.RenderingConventions;
-                context.RenderingConventions = new CSharpRenderingConventions(context.Writer);
                 using (context.Push(new RuntimeBasicWriter()))
                 using (context.Push(new RuntimeTagHelperWriter()))
                 {
                     context.RenderChildren(node);
                 }
-                context.RenderingConventions = initialRenderingConventions;
 
                 context.Writer
                     .WriteStartAssignment(StringValueBufferVariableName)
@@ -301,10 +293,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 .WriteParameterSeparator();
 
             // We remove and redirect writers so TagHelper authors can retrieve content.
-            // This can be removed once all the tag helper nodes are moved out of the renderers.
-            var initialRenderingConventions = context.RenderingConventions;
-            context.RenderingConventions = new CSharpRenderingConventions(context.Writer);
-
             using (context.Push(new RuntimeBasicWriter()))
             using (context.Push(new RuntimeTagHelperWriter()))
             {
@@ -313,7 +301,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                     context.RenderChildren(node);
                 }
             }
-            context.RenderingConventions = initialRenderingConventions;
 
             context.Writer.WriteEndMethodInvocation();
         }
@@ -373,14 +360,10 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             {
                 context.Writer.WriteMethodInvocation(BeginWriteTagHelperAttributeMethodName);
 
-                // This can be removed once all the tag helper nodes are moved out of the renderers.
-                var initialRenderingConventions = context.RenderingConventions;
-                context.RenderingConventions = new CSharpLiteralCodeConventions(context.Writer);
                 using (context.Push(new LiteralRuntimeBasicWriter()))
                 {
                     context.RenderChildren(node);
                 }
-                context.RenderingConventions = initialRenderingConventions;
 
                 context.Writer
                     .WriteStartAssignment(StringValueBufferVariableName)

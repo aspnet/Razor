@@ -145,7 +145,17 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public override void WriteHtmlAttribute(CSharpRenderingContext context, HtmlAttributeIRNode node)
         {
-            throw new NotImplementedException();
+            context.RenderChildren(node);
+        }
+
+        public override void WriteHtmlAttributeValue(CSharpRenderingContext context, HtmlAttributeValueIRNode node)
+        {
+            context.RenderChildren(node);
+        }
+
+        public override void WriteCSharpAttributeValue(CSharpRenderingContext context, CSharpAttributeValueIRNode node)
+        {
+            context.RenderChildren(node);
         }
 
         public override void WriteHtmlContent(CSharpRenderingContext context, HtmlContentIRNode node)
