@@ -188,7 +188,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         private static string GetTagHelperVariableName(string tagHelperTypeName) => "__" + tagHelperTypeName.Replace('.', '_');
 
-        protected static string GetTagHelperPropertyAccessor(
+        private static string GetTagHelperPropertyAccessor(
             bool isIndexerNameMatch,
             string tagHelperVariableName,
             string attributeName,

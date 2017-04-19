@@ -445,8 +445,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             }
         }
 
-        private static string GetTagHelperVariableName(string tagHelperTypeName) => "__" + tagHelperTypeName.Replace('.', '_');
-
         protected static string GetTagHelperPropertyAccessor(
             bool isIndexerNameMatch,
             string tagHelperVariableName,
@@ -463,5 +461,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             return propertyAccessor;
         }
+
+        private static string GetTagHelperVariableName(string tagHelperTypeName) => "__" + tagHelperTypeName.Replace('.', '_');
     }
 }
