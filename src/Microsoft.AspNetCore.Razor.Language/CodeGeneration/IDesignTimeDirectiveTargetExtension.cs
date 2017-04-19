@@ -1,13 +1,12 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
+
 namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
-    internal class RuntimeCSharpRenderer : PageStructureCSharpRenderer
+    internal interface IDesignTimeDirectiveTargetExtension : IRuntimeTargetExtension
     {
-        public RuntimeCSharpRenderer(RuntimeTarget target, CSharpRenderingContext context)
-            : base(target, context)
-        {
-        }
+        void WriteDesignTimeDirective(CSharpRenderingContext context, DesignTimeDirectiveIRNode node);
     }
 }

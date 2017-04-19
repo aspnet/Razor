@@ -10,9 +10,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
     {
         private readonly CSharpRenderingContext _context;
         private readonly RuntimeTarget _target;
-        private readonly PageStructureCSharpRenderer _renderer;
 
-        public DefaultDocumentWriter(RuntimeTarget target, CSharpRenderingContext context, PageStructureCSharpRenderer renderer)
+        public DefaultDocumentWriter(RuntimeTarget target, CSharpRenderingContext context)
         {
             if (target == null)
             {
@@ -24,14 +23,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 throw new ArgumentNullException(nameof(context));
             }
 
-            if (renderer == null)
-            {
-                throw new ArgumentNullException(nameof(renderer));
-            }
-
             _target = target;
             _context = context;
-            _renderer = renderer;
         }
 
         public override void WriteDocument(DocumentIRNode node)
@@ -41,7 +34,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 throw new ArgumentNullException(nameof(node));
             }
 
-            var visitor = new Visitor(_target, _context, _renderer);
+            var visitor = new Visitor(_target, _context);
             _context.RenderChildren = visitor.RenderChildren;
             _context.RenderNode = visitor.Visit;
 
@@ -56,13 +49,11 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         {
             private readonly CSharpRenderingContext _context;
             private readonly RuntimeTarget _target;
-            private readonly PageStructureCSharpRenderer _renderer;
 
-            public Visitor(RuntimeTarget target, CSharpRenderingContext context, PageStructureCSharpRenderer renderer)
+            public Visitor(RuntimeTarget target, CSharpRenderingContext context)
             {
                 _target = target;
                 _context = context;
-                _renderer = renderer;
             }
 
             private CSharpRenderingContext Context => _context;
@@ -258,9 +249,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             public override void VisitDefault(RazorIRNode node)
             {
-                // This is a temporary bridge to the renderer, which allows us to move functionality piecemeal
-                // into this class. 
-                _renderer.Visit(node);
+                Context.RenderChildren(node);
             }
         }
     }
