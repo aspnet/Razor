@@ -3,6 +3,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
     #line hidden
     using System;
     using System.Threading.Tasks;
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class TestFiles_IntegrationTests_CodeGenerationIntegrationTest_InlineBlocks_DesignTime
     {
         #pragma warning disable 219

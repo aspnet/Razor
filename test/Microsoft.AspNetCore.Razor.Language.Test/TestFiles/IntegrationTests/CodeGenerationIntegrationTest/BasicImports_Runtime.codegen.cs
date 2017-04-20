@@ -19,6 +19,7 @@ using System.Text;
 
 #line default
 #line hidden
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class TestFiles_IntegrationTests_CodeGenerationIntegrationTest_BasicImports_Runtime : Hello
     {
         #pragma warning disable 1998

@@ -9,6 +9,7 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class TestFiles_IntegrationTests_CodeGenerationIntegrationTest_Model_cshtml : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<System.Collections.IEnumerable>
     {
         #pragma warning disable 1998

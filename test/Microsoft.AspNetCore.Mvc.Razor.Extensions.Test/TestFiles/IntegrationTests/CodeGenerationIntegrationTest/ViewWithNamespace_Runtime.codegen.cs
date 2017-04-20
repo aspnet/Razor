@@ -9,6 +9,7 @@ namespace Test.Namespace
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ViewWithNamespace_View : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         #pragma warning disable 1998
