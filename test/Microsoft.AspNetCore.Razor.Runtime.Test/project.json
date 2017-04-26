@@ -6,13 +6,13 @@
   },
   "dependencies": {
     "dotnet-test-xunit": "1.0.0-rc3-000000-01",
-    "Microsoft.AspNetCore.Razor.Runtime": "1.0.2",
+    "Microsoft.AspNetCore.Razor.Runtime": "1.0.3",
     "Microsoft.AspNetCore.Razor.Test.Sources": {
-      "version": "1.0.2",
+      "version": "1.0.3",
       "type": "build"
     },
     "Microsoft.AspNetCore.Testing": "1.0.1",
-    "Microsoft.Extensions.WebEncoders": "1.0.2",
+    "Microsoft.Extensions.WebEncoders": "1.0.3",
     "xunit": "2.1.0"
   },
   "testRunner": "xunit",
@@ -24,7 +24,7 @@
       ],
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.4",
+          "version": "1.0.5",
           "type": "platform"
         },
         "moq.netcore": "4.4.0-beta8",
