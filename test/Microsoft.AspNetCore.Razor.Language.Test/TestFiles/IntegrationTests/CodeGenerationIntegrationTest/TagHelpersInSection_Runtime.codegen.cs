@@ -29,20 +29,26 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/TagHelpersInSection.cshtml"
   
     var code = "some code";
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             DefineSection("MySection", async () => {
-            WriteLiteral("\r\n    <div>\r\n        ");
+            WriteLiteral(@"
+    <div>
+        ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("mytaghelper", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                WriteLiteral("\r\n            In None ContentBehavior.\r\n            ");
+                WriteLiteral(@"
+            In None ContentBehavior.
+            ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("nestedtaghelper", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                    WriteLiteral("Some buffered values with ");
+                    WriteLiteral(@"Some buffered values with ");
 #line 11 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/TagHelpersInSection.cshtml"
                                                   Write(code);
 
@@ -59,13 +65,14 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n        ");
+                WriteLiteral(@"
+        ");
             }
             );
             __TestNamespace_MyTagHelper = CreateTagHelper<global::TestNamespace.MyTagHelper>();
             __tagHelperExecutionContext.Add(__TestNamespace_MyTagHelper);
             BeginWriteTagHelperAttribute();
-            WriteLiteral("Current Time: ");
+            WriteLiteral(@"Current Time: ");
 #line 9 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/TagHelpersInSection.cshtml"
                                       WriteLiteral(DateTime.Now);
 
@@ -90,7 +97,9 @@ AddHtmlAttributeValue(" ", 201, DateTime.Now, 202, 13, false);
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n    </div>\r\n");
+            WriteLiteral(@"
+    </div>
+");
             });
         }
         #pragma warning restore 1998

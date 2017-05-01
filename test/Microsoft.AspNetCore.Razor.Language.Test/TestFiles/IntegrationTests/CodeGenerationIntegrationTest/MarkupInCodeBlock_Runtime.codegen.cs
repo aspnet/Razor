@@ -15,13 +15,14 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("        <p>Hello from C#, #");
+            WriteLiteral(@"        <p>Hello from C#, #");
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/MarkupInCodeBlock.cshtml"
                        Write(i.ToString());
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n");
+            WriteLiteral(@"</p>
+");
 #line 4 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/MarkupInCodeBlock.cshtml"
     }
 

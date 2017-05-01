@@ -454,7 +454,7 @@ if (true) { }
             // Assert
             var csharp = context.Writer.Builder.ToString();
             Assert.Equal(
-@"WriteLiteral(""SomeContent"");
+@"WriteLiteral(@""SomeContent"");
 ",
                 csharp,
                 ignoreLineEndingDifferences: true);

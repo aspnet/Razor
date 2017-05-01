@@ -15,7 +15,10 @@ namespace AspNetCore
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             BeginContext(6, 49, true);
-            WriteLiteral("\"foo\r\n\r\n<h1>About Us</h1>\r\n<p>We are awesome.</p>");
+            WriteLiteral(@"""foo
+
+<h1>About Us</h1>
+<p>We are awesome.</p>");
             EndContext();
         }
         #pragma warning restore 1998

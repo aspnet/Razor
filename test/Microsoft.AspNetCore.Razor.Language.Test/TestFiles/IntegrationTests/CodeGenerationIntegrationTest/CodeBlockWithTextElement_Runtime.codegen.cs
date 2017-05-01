@@ -15,14 +15,14 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("foo");
+            WriteLiteral(@"foo");
 #line 2 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/CodeBlockWithTextElement.cshtml"
                                 		
     var b = 1;
 
 #line default
 #line hidden
-            WriteLiteral("bar ");
+            WriteLiteral(@"bar ");
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/CodeBlockWithTextElement.cshtml"
                                 Write(a+b);
 

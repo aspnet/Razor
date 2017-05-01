@@ -15,7 +15,7 @@ namespace AspNetCore
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             BeginContext(0, 4, true);
-            WriteLiteral("<div");
+            WriteLiteral(@"<div");
             EndContext();
             BeginWriteAttribute("class", " class=\"", 4, "\"", 17, 1);
 #line 1 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Basic.cshtml"
@@ -25,7 +25,9 @@ WriteAttributeValue("", 12, logo, 12, 5, false);
 #line hidden
             EndWriteAttribute();
             BeginContext(18, 24, true);
-            WriteLiteral(">\r\n    Hello world\r\n    ");
+            WriteLiteral(@">
+    Hello world
+    ");
             EndContext();
             BeginContext(43, 21, false);
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Basic.cshtml"
@@ -35,7 +37,8 @@ Write(Html.Input("SomeKey"));
 #line hidden
             EndContext();
             BeginContext(64, 8, true);
-            WriteLiteral("\r\n</div>");
+            WriteLiteral(@"
+</div>");
             EndContext();
         }
         #pragma warning restore 1998

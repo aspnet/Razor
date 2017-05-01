@@ -15,114 +15,129 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 5 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
  while(i <= 10) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>Hello from C#, #");
+            WriteLiteral(@"    <p>Hello from C#, #");
 #line 6 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
                    Write(i);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n");
+            WriteLiteral(@"</p>
+");
 #line 7 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
     i += 1;
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 10 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
  if(i == 11) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>We wrote 10 lines!</p>\r\n");
+            WriteLiteral(@"    <p>We wrote 10 lines!</p>
+");
 #line 12 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 14 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
  switch(i) {
     case 11:
 
 #line default
 #line hidden
-            WriteLiteral("        <p>No really, we wrote 10 lines!</p>\r\n");
+            WriteLiteral(@"        <p>No really, we wrote 10 lines!</p>
+");
 #line 17 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
         break;
     default:
 
 #line default
 #line hidden
-            WriteLiteral("        <p>Actually, we didn\'t...</p>\r\n");
+            WriteLiteral(@"        <p>Actually, we didn't...</p>
+");
 #line 20 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
         break;
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 23 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
  for(int j = 1; j <= 10; j += 2) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>Hello again from C#, #");
+            WriteLiteral(@"    <p>Hello again from C#, #");
 #line 24 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
                          Write(j);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n");
+            WriteLiteral(@"</p>
+");
 #line 25 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 27 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
  try {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>That time, we wrote 5 lines!</p>\r\n");
+            WriteLiteral(@"    <p>That time, we wrote 5 lines!</p>
+");
 #line 29 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
 } catch(Exception ex) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>Oh no! An error occurred: ");
+            WriteLiteral(@"    <p>Oh no! An error occurred: ");
 #line 30 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
                              Write(ex.Message);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n");
+            WriteLiteral(@"</p>
+");
 #line 31 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
 }
 
 
 #line default
 #line hidden
-            WriteLiteral("<p>i is now ");
+            WriteLiteral(@"<p>i is now ");
 #line 34 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
        Write(i);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n\r\n");
+            WriteLiteral(@"</p>
+
+");
 #line 36 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
  lock(new object()) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>This block is locked, for your security!</p>\r\n");
+            WriteLiteral(@"    <p>This block is locked, for your security!</p>
+");
 #line 38 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NoLinePragmas.cshtml"
 }
 

@@ -9,8 +9,11 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n<p>This should ");
-            WriteLiteral(" be shown</p>\r\n\r\n");
+            WriteLiteral(@"
+<p>This should ");
+            WriteLiteral(@" be shown</p>
+
+");
 #line 5 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/RazorComments.cshtml"
                                        
     Exception foo = 
@@ -25,25 +28,29 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 12 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/RazorComments.cshtml"
    var bar = "@* bar *@"; 
 
 #line default
 #line hidden
-            WriteLiteral("<p>But this should show the comment syntax: ");
+            WriteLiteral(@"<p>But this should show the comment syntax: ");
 #line 13 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/RazorComments.cshtml"
                                        Write(bar);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n\r\n");
+            WriteLiteral(@"</p>
+
+");
 #line 15 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/RazorComments.cshtml"
 Write(ab);
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
         }
         #pragma warning restore 1998
     }

@@ -16,7 +16,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("    <a href=\"Foo\" />\r\n    <p");
+            WriteLiteral(@"    <a href=""Foo"" />
+    <p");
             BeginWriteAttribute("class", " class=\"", 74, "\"", 86, 1);
 #line 5 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ConditionalAttributes.cshtml"
 WriteAttributeValue("", 82, cls, 82, 4, false);
@@ -24,7 +25,8 @@ WriteAttributeValue("", 82, cls, 82, 4, false);
 #line default
 #line hidden
             EndWriteAttribute();
-            WriteLiteral(" />\r\n    <p");
+            WriteLiteral(@" />
+    <p");
             BeginWriteAttribute("class", " class=\"", 98, "\"", 114, 2);
             WriteAttributeValue("", 106, "foo", 106, 3, true);
 #line 6 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ConditionalAttributes.cshtml"
@@ -33,7 +35,8 @@ WriteAttributeValue(" ", 109, cls, 110, 4, false);
 #line default
 #line hidden
             EndWriteAttribute();
-            WriteLiteral(" />\r\n    <p");
+            WriteLiteral(@" />
+    <p");
             BeginWriteAttribute("class", " class=\"", 126, "\"", 142, 2);
 #line 7 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ConditionalAttributes.cshtml"
 WriteAttributeValue("", 134, cls, 134, 4, false);
@@ -42,7 +45,8 @@ WriteAttributeValue("", 134, cls, 134, 4, false);
 #line hidden
             WriteAttributeValue(" ", 138, "foo", 139, 4, true);
             EndWriteAttribute();
-            WriteLiteral(" />\r\n    <input type=\"checkbox\"");
+            WriteLiteral(@" />
+    <input type=""checkbox""");
             BeginWriteAttribute("checked", " checked=\"", 174, "\"", 187, 1);
 #line 8 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ConditionalAttributes.cshtml"
 WriteAttributeValue("", 184, ch, 184, 3, false);
@@ -50,7 +54,8 @@ WriteAttributeValue("", 184, ch, 184, 3, false);
 #line default
 #line hidden
             EndWriteAttribute();
-            WriteLiteral(" />\r\n    <input type=\"checkbox\"");
+            WriteLiteral(@" />
+    <input type=""checkbox""");
             BeginWriteAttribute("checked", " checked=\"", 219, "\"", 236, 2);
             WriteAttributeValue("", 229, "foo", 229, 3, true);
 #line 9 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ConditionalAttributes.cshtml"
@@ -59,7 +64,8 @@ WriteAttributeValue(" ", 232, ch, 233, 3, false);
 #line default
 #line hidden
             EndWriteAttribute();
-            WriteLiteral(" />\r\n    <p");
+            WriteLiteral(@" />
+    <p");
             BeginWriteAttribute("class", " class=\"", 248, "\"", 281, 1);
             WriteAttributeValue("", 256, new Microsoft.AspNetCore.Mvc.Razor.HelperResult(async(__razor_attribute_value_writer) => {
 #line 10 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ConditionalAttributes.cshtml"
@@ -80,7 +86,9 @@ WriteTo(__razor_attribute_value_writer, cls);
             }
             ), 256, 25, false);
             EndWriteAttribute();
-            WriteLiteral(" />\r\n    <a href=\"~/Foo\" />\r\n    <script");
+            WriteLiteral(@" />
+    <a href=""~/Foo"" />
+    <script");
             BeginWriteAttribute("src", " src=\"", 322, "\"", 373, 1);
 #line 12 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ConditionalAttributes.cshtml"
 WriteAttributeValue("", 328, Url.Content("~/Scripts/jquery-1.6.2.min.js"), 328, 45, false);
@@ -88,7 +96,8 @@ WriteAttributeValue("", 328, Url.Content("~/Scripts/jquery-1.6.2.min.js"), 328, 
 #line default
 #line hidden
             EndWriteAttribute();
-            WriteLiteral(" type=\"text/javascript\"></script>\r\n    <script");
+            WriteLiteral(@" type=""text/javascript""></script>
+    <script");
             BeginWriteAttribute("src", " src=\"", 420, "\"", 487, 1);
 #line 13 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ConditionalAttributes.cshtml"
 WriteAttributeValue("", 426, Url.Content("~/Scripts/modernizr-2.0.6-development-only.js"), 426, 61, false);
@@ -96,7 +105,9 @@ WriteAttributeValue("", 426, Url.Content("~/Scripts/modernizr-2.0.6-development-
 #line default
 #line hidden
             EndWriteAttribute();
-            WriteLiteral(" type=\"text/javascript\"></script>\r\n    <script src=\"http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/jquery-ui.min.js\" type=\"text/javascript\"></script>\r\n");
+            WriteLiteral(@" type=""text/javascript""></script>
+    <script src=""http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.16/jquery-ui.min.js"" type=""text/javascript""></script>
+");
         }
         #pragma warning restore 1998
     }

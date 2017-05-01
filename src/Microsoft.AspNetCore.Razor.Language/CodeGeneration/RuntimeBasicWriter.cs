@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using Microsoft.AspNetCore.Razor.Language.Legacy;
 
 namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 {
@@ -239,42 +240,60 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public override void WriteHtmlContent(CSharpRenderingContext context, HtmlContentIRNode node)
         {
+            // Render the string in pieces to avoid Roslyn OOM exceptions at compile time: https://github.com/aspnet/External/issues/54
             const int MaxStringLiteralLength = 1024;
 
-            var builder = new StringBuilder();
+            var insideWrite = false;
+            var writtenLength = 0;
+            CSharpCodeWriter.StringLiteralWriter stringLiteralWriter = default(CSharpCodeWriter.StringLiteralWriter);
+
             for (var i = 0; i < node.Children.Count; i++)
             {
                 if (node.Children[i] is RazorIRToken token && token.IsHtml)
                 {
-                    builder.Append(token.Content);
+                    var remainingLength = token.Content.Length;
+
+                    while (remainingLength > 0)
+                    {
+                        if (!insideWrite)
+                        {
+                            WriteHtmlContentStartMethodInvocation(context, WriteHtmlContentMethod);
+                            stringLiteralWriter = context.Writer.BuildStringLiteralWriter();
+                            insideWrite = true;
+                        }
+
+                        var lengthToWrite = Math.Min(remainingLength, MaxStringLiteralLength - writtenLength);
+                        stringLiteralWriter.Write(token.Content, token.Content.Length - remainingLength, lengthToWrite);
+
+                        remainingLength -= lengthToWrite;
+                        writtenLength += lengthToWrite;
+
+                        if (writtenLength >= MaxStringLiteralLength)
+                        {
+                            stringLiteralWriter.Dispose();
+                            WriteHtmlContentEndMethodInvocation(context);
+                            insideWrite = false;
+                            writtenLength = 0;
+                        }
+                    }
                 }
             }
 
-            var content = builder.ToString();
-
-            var charactersConsumed = 0;
-
-            // Render the string in pieces to avoid Roslyn OOM exceptions at compile time: https://github.com/aspnet/External/issues/54
-            while (charactersConsumed < content.Length)
+            if (insideWrite)
             {
-                string textToRender;
-                if (content.Length <= MaxStringLiteralLength)
-                {
-                    textToRender = content;
-                }
-                else
-                {
-                    var charactersToSubstring = Math.Min(MaxStringLiteralLength, content.Length - charactersConsumed);
-                    textToRender = content.Substring(charactersConsumed, charactersToSubstring);
-                }
-
-                context.Writer
-                    .WriteStartMethodInvocation(WriteHtmlContentMethod)
-                    .WriteStringLiteral(textToRender)
-                    .WriteEndMethodInvocation();
-
-                charactersConsumed += textToRender.Length;
+                stringLiteralWriter.Dispose();
+                WriteHtmlContentEndMethodInvocation(context);
             }
+        }
+
+        protected virtual void WriteHtmlContentStartMethodInvocation(CSharpRenderingContext context, string methodName)
+        {
+            context.Writer.WriteStartMethodInvocation(methodName);
+        }
+
+        protected virtual void WriteHtmlContentEndMethodInvocation(CSharpRenderingContext context)
+        {
+            context.Writer.WriteEndMethodInvocation();
         }
 
         protected static void RenderExpressionInline(CSharpRenderingContext context, RazorIRNode node)

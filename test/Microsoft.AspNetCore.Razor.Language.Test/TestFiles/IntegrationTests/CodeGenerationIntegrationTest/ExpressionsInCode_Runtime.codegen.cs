@@ -16,7 +16,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 6 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml"
  if(foo != null) {
     
@@ -34,13 +35,16 @@ Write(foo);
 
 #line default
 #line hidden
-            WriteLiteral("    <p>Foo is Null!</p>\r\n");
+            WriteLiteral(@"    <p>Foo is Null!</p>
+");
 #line 10 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml"
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n<p>\r\n");
+            WriteLiteral(@"
+<p>
+");
 #line 13 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ExpressionsInCode.cshtml"
  if(!String.IsNullOrEmpty(bar)) {
     
@@ -58,7 +62,7 @@ Write(bar.Replace("F", "B"));
 
 #line default
 #line hidden
-            WriteLiteral("</p>");
+            WriteLiteral(@"</p>");
         }
         #pragma warning restore 1998
     }

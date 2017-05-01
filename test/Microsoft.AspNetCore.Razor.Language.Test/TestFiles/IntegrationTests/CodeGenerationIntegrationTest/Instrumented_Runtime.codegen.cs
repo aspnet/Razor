@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 #line default
 #line hidden
             item => new Microsoft.AspNetCore.Mvc.Razor.HelperResult(async(__razor_template_writer) => {
-                WriteLiteralTo(__razor_template_writer, "<p>Bar</p>");
+                WriteLiteralTo(__razor_template_writer, @"<p>Bar</p>");
             }
             )
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
@@ -25,109 +25,125 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("    ");
-            WriteLiteral("Hello, World\r\n    <p>Hello, World</p>\r\n");
-            WriteLiteral("\r\n");
+            WriteLiteral(@"    ");
+            WriteLiteral(@"Hello, World
+    <p>Hello, World</p>
+");
+            WriteLiteral(@"
+");
 #line 8 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
  while(i <= 10) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>Hello from C#, #");
+            WriteLiteral(@"    <p>Hello from C#, #");
 #line 9 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
                    Write(i);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n");
+            WriteLiteral(@"</p>
+");
 #line 10 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
     i += 1;
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 13 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
  if(i == 11) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>We wrote 10 lines!</p>\r\n");
+            WriteLiteral(@"    <p>We wrote 10 lines!</p>
+");
 #line 15 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 17 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
  switch(i) {
     case 11:
 
 #line default
 #line hidden
-            WriteLiteral("        <p>No really, we wrote 10 lines!</p>\r\n");
+            WriteLiteral(@"        <p>No really, we wrote 10 lines!</p>
+");
 #line 20 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
         break;
     default:
 
 #line default
 #line hidden
-            WriteLiteral("        <p>Actually, we didn\'t...</p>\r\n");
+            WriteLiteral(@"        <p>Actually, we didn't...</p>
+");
 #line 23 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
         break;
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 26 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
  for(int j = 1; j <= 10; j += 2) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>Hello again from C#, #");
+            WriteLiteral(@"    <p>Hello again from C#, #");
 #line 27 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
                          Write(j);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n");
+            WriteLiteral(@"</p>
+");
 #line 28 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 30 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
  try {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>That time, we wrote 5 lines!</p>\r\n");
+            WriteLiteral(@"    <p>That time, we wrote 5 lines!</p>
+");
 #line 32 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
 } catch(Exception ex) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>Oh no! An error occurred: ");
+            WriteLiteral(@"    <p>Oh no! An error occurred: ");
 #line 33 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
                              Write(ex.Message);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n");
+            WriteLiteral(@"</p>
+");
 #line 34 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
 }
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 36 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
  lock(new object()) {
 
 #line default
 #line hidden
-            WriteLiteral("    <p>This block is locked, for your security!</p>\r\n");
+            WriteLiteral(@"    <p>This block is locked, for your security!</p>
+");
 #line 38 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Instrumented.cshtml"
 }
 

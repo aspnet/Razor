@@ -38,20 +38,23 @@ using static global::System.Text.Encoding;
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n");
-            WriteLiteral("\r\n<p>Path\'s full type name is ");
+            WriteLiteral(@"
+");
+            WriteLiteral(@"
+<p>Path's full type name is ");
 #line 9 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Usings.cshtml"
                        Write(typeof(Path).FullName);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n<p>Foo\'s actual full type name is ");
+            WriteLiteral(@"</p>
+<p>Foo's actual full type name is ");
 #line 10 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Usings.cshtml"
                              Write(typeof(Foo).FullName);
 
 #line default
 #line hidden
-            WriteLiteral("</p>");
+            WriteLiteral(@"</p>");
         }
         #pragma warning restore 1998
     }

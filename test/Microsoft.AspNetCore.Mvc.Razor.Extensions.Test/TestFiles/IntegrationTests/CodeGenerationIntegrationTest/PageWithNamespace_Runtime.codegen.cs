@@ -15,7 +15,8 @@ namespace Test.Namespace
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             BeginContext(34, 20, true);
-            WriteLiteral("<h1>Hi There!</h1>\r\n");
+            WriteLiteral(@"<h1>Hi There!</h1>
+");
             EndContext();
         }
         #pragma warning restore 1998

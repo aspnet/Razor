@@ -9,8 +9,10 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n");
-            WriteLiteral("\r\nHere\'s a random number: ");
+            WriteLiteral(@"
+");
+            WriteLiteral(@"
+Here's a random number: ");
 #line 12 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/FunctionsBlock.cshtml"
                    Write(RandomInt());
 

@@ -9,13 +9,16 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("<html>\r\n<body>\r\n");
+            WriteLiteral(@"<html>
+<body>
+");
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/OpenedIf.cshtml"
  if (true) { 
 
 #line default
 #line hidden
-            WriteLiteral("</body>\r\n</html>");
+            WriteLiteral(@"</body>
+</html>");
         }
         #pragma warning restore 1998
     }

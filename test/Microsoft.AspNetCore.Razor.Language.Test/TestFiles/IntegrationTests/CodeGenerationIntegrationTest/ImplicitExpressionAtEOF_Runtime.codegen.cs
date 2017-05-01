@@ -9,7 +9,9 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("This is markup\r\n\r\n");
+            WriteLiteral(@"This is markup
+
+");
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ImplicitExpressionAtEOF.cshtml"
 Write();
 

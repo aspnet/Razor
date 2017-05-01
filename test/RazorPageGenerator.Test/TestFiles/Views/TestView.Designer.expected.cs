@@ -8,13 +8,15 @@ namespace Microsoft.AspNetCore.TestGenerated
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("The time is ");
+            WriteLiteral(@"The time is ");
 #line 1 "TestView.cshtml"
        Write(DateTime.UtcNow);
 
 #line default
 #line hidden
-            WriteLiteral("\r\nwindow.alert(\"Hello world\");\r\nFooter goes here.");
+            WriteLiteral(@"
+window.alert(""Hello world"");
+Footer goes here.");
         }
         #pragma warning restore 1998
     }

@@ -191,6 +191,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return this;
         }
 
+        public StringLiteralWriter BuildStringLiteralWriter()
+        {
+            return new StringLiteralWriter(this);
+        }
+
         public CSharpCodeWriter WriteLineHiddenDirective()
         {
             return WriteLine("#line hidden");
@@ -649,6 +654,47 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             public void Dispose()
             {
+            }
+        }
+
+        public struct StringLiteralWriter : IDisposable
+        {
+            private readonly CSharpCodeWriter _writer;
+
+            internal StringLiteralWriter(CSharpCodeWriter writer)
+            {
+                _writer = writer;
+                _writer.Write("@\"");
+            }
+
+            public void Write(string literalPart)
+            {
+                Write(literalPart, 0, literalPart.Length);
+            }
+
+            public void Write(string literalPart, int startIndex, int length)
+            {
+                // We need to find the index of each '"' (double-quote) to escape it.
+                var start = startIndex;
+                int end;
+                while ((end = literalPart.IndexOf('\"', start, length - (start - startIndex))) > -1)
+                {
+                    _writer.Write(literalPart, start, end - start);
+
+                    _writer.Write("\"\"");
+
+                    start = end + 1;
+                }
+
+                Debug.Assert(end == -1); // We've hit all of the double-quotes.
+
+                // Write the remainder after the last double-quote.
+                _writer.Write(literalPart, start, startIndex + length - start);
+            }
+
+            public void Dispose()
+            {
+                _writer.Write("\"");
             }
         }
     }

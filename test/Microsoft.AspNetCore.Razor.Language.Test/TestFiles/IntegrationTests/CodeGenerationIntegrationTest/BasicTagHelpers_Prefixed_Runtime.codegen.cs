@@ -32,9 +32,14 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n<THSdiv class=\"randomNonTagHelperAttribute\">\r\n    ");
+            WriteLiteral(@"
+<THSdiv class=""randomNonTagHelperAttribute"">
+    ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                WriteLiteral("\r\n        <p></p>\r\n        <input type=\"text\">\r\n        ");
+                WriteLiteral(@"
+        <p></p>
+        <input type=""text"">
+        ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "test", async() => {
                 }
                 );
@@ -59,7 +64,8 @@ __TestNamespace_InputTagHelper2.Checked = true;
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n    ");
+                WriteLiteral(@"
+    ");
             }
             );
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
@@ -72,7 +78,8 @@ __TestNamespace_InputTagHelper2.Checked = true;
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n</THSdiv>");
+            WriteLiteral(@"
+</THSdiv>");
         }
         #pragma warning restore 1998
     }
