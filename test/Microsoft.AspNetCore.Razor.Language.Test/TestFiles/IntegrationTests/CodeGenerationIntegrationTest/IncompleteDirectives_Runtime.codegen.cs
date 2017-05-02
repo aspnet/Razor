@@ -9,21 +9,33 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n\r\n");
-            WriteLiteral("\r\n");
-            WriteLiteral("\r\n");
-            WriteLiteral("\r\n");
-            WriteLiteral("\r\n");
-            WriteLiteral("\r\n\r\n");
+            WriteLiteral(@"
+
+");
+            WriteLiteral(@"
+");
+            WriteLiteral(@"
+");
+            WriteLiteral(@"
+");
+            WriteLiteral(@"
+");
+            WriteLiteral(@"
+
+");
             DefineSection("", async () => {
             });
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             DefineSection("", async () => {
             });
-            WriteLiteral("\r\n\r\n");
+            WriteLiteral(@"
+
+");
             DefineSection("", async () => {
             });
-            WriteLiteral("{\r\n");
+            WriteLiteral(@"{
+");
         }
         #pragma warning restore 1998
     }
