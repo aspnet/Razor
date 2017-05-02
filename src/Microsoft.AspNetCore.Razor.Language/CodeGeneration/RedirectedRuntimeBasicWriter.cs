@@ -62,7 +62,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             linePragmaScope?.Dispose();
         }
 
-        protected override void WriteHtmlContentStartMethodInvocation(CSharpRenderingContext context, string methodName)
+        protected override void WriteHtmlContentStartMethodInvocation(CSharpRenderingContext context)
         {
             context.Writer
                 .WriteStartMethodInvocation(WriteHtmlContentMethod)

@@ -257,7 +257,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                     {
                         if (!insideWrite)
                         {
-                            WriteHtmlContentStartMethodInvocation(context, WriteHtmlContentMethod);
+                            WriteHtmlContentStartMethodInvocation(context);
                             stringLiteralWriter = context.Writer.BuildStringLiteralWriter();
                             insideWrite = true;
                         }
@@ -286,9 +286,9 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             }
         }
 
-        protected virtual void WriteHtmlContentStartMethodInvocation(CSharpRenderingContext context, string methodName)
+        protected virtual void WriteHtmlContentStartMethodInvocation(CSharpRenderingContext context)
         {
-            context.Writer.WriteStartMethodInvocation(methodName);
+            context.Writer.WriteStartMethodInvocation(WriteHtmlContentMethod);
         }
 
         protected virtual void WriteHtmlContentEndMethodInvocation(CSharpRenderingContext context)
