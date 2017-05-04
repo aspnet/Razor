@@ -9,7 +9,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
 {
     public class TagHelperTypeVisitorTest
     {
-        private static Compilation Compilation { get; } = TestCompilation.Create();
+        private static Compilation Compilation { get; } = TestCompilation.Create(typeof(TagHelperTypeVisitorTest));
 
         private static INamedTypeSymbol ITagHelperSymbol { get; } = Compilation.GetTypeByMetadataName(TagHelperTypes.ITagHelper);
 
