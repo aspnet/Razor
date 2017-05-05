@@ -1,20 +1,20 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.Extensions.DependencyModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Extensions.DependencyModel;
 using Xunit;
 
 namespace Microsoft.CodeAnalysis.Razor
 {
     public static class TestCompilation
     {
-        public static Compilation Create(SyntaxTree syntaxTree = null)
+        public static Compilation Create(Type type, SyntaxTree syntaxTree = null)
         {
             IEnumerable<SyntaxTree> syntaxTrees = null;
 
@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.Razor
                 syntaxTrees = new[] { syntaxTree };
             }
 
-            var currentAssembly = typeof(TestCompilation).GetTypeInfo().Assembly;
+            var currentAssembly = type.GetTypeInfo().Assembly;
             var dependencyContext = DependencyContext.Load(currentAssembly);
 
             var references = dependencyContext.CompileLibraries.SelectMany(l => l.ResolveReferencePaths())

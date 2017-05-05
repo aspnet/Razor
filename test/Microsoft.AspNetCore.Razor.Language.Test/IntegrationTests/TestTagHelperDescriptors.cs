@@ -4,11 +4,15 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Razor;
 
 namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
 {
     public class TestTagHelperDescriptors
     {
+        private static Compilation Compilation { get; } = TestCompilation.Create(typeof(TestTagHelperDescriptors));
+
         public static IEnumerable<TagHelperDescriptor> SimpleTagHelperDescriptors
         {
             get
@@ -158,7 +162,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
                                 .Name("catch-all")
                                 .PropertyName("CatchAll")
                                 .AsEnum()
-                                .TypeName(typeof(MyEnum).FullName),
+                                .TypeName(GetFullName(typeof(MyEnum))),
                         }),
                     CreateTagHelperDescriptor(
                         tagName: "input",
@@ -170,7 +174,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
                                 .Name("value")
                                 .PropertyName("Value")
                                 .AsEnum()
-                                .TypeName(typeof(MyEnum).FullName),
+                                .TypeName(GetFullName(typeof(MyEnum))),
                         }),
                 };
             }
@@ -510,12 +514,24 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             builder
                 .Name(name)
                 .PropertyName(propertyInfo.Name)
-                .TypeName(propertyInfo.PropertyType.FullName);
+                .TypeName(GetFullName(propertyInfo.PropertyType));
 
             if (propertyInfo.PropertyType.GetTypeInfo().IsEnum)
             {
                 builder.AsEnum();
             }
+        }
+
+        private static string GetFullName(Type type)
+        {
+            var typeSymbol = Compilation.GetTypeByMetadataName(type.FullName);
+            var fullName = typeSymbol.ToDisplayString(
+                SymbolDisplayFormat.FullyQualifiedFormat
+                    .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)
+                    .WithMiscellaneousOptions(
+                        SymbolDisplayFormat.FullyQualifiedFormat.MiscellaneousOptions & (~SymbolDisplayMiscellaneousOptions.UseSpecialTypes)));
+
+            return fullName;
         }
 
         private class TestType

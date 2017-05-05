@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
 
         protected static readonly string AssemblyName = TagHelperDescriptorFactoryTestAssembly.Name;
 
-        private static Compilation Compilation { get; } = TestCompilation.Create();
+        private static Compilation Compilation { get; } = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest));
 
         public static TheoryData RequiredAttributeParserErrorData
         {
@@ -1306,7 +1306,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
         {{
         }}";
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
-            var compilation = TestCompilation.Create(syntaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), syntaxTree);
             var tagHelperType = compilation.GetTypeByMetadataName("DynamicTestTagHelper");
             var attribute = tagHelperType.GetAttributes().Single();
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: false);
@@ -1487,7 +1487,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
                 public string SomeAttribute {{ get; set; }}
             }}";
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
-            var compilation = TestCompilation.Create(syntaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), syntaxTree);
             var tagHelperType = compilation.GetTypeByMetadataName("DynamicTestTagHelper");
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: false);
 
@@ -1527,7 +1527,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
                 public System.Collections.Generic.IDictionary<string, int> SomeAttribute {{ get; set; }}
             }}";
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
-            var compilation = TestCompilation.Create(syntaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), syntaxTree);
             var tagHelperType = compilation.GetTypeByMetadataName("DynamicTestTagHelper");
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: false);
 
@@ -1570,7 +1570,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
                 public string InvalidProperty {{ get; set; }}
             }}";
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
-            var compilation = TestCompilation.Create(syntaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), syntaxTree);
             var tagHelperType = compilation.GetTypeByMetadataName("DynamicTestTagHelper");
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: false);
 
@@ -1613,7 +1613,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
                 public System.Collections.Generic.IDictionary<string, int> InvalidProperty {{ get; set; }}
             }}";
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
-            var compilation = TestCompilation.Create(syntaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), syntaxTree);
             var tagHelperType = compilation.GetTypeByMetadataName("DynamicTestTagHelper");
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: false);
 
@@ -1655,7 +1655,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             {{
             }}";
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
-            var compilation = TestCompilation.Create(syntaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), syntaxTree);
             var tagHelperType = compilation.GetTypeByMetadataName("DynamicTestTagHelper");
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: false);
 
@@ -1696,7 +1696,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             {{
             }}";
             var syntaxTree = CSharpSyntaxTree.ParseText(text);
-            var compilation = TestCompilation.Create(syntaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), syntaxTree);
             var tagHelperType = compilation.GetTypeByMetadataName("DynamicTestTagHelper");
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: false);
 
@@ -2049,7 +2049,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
         public class DocumentedTagHelper : " + typeof(AspNetCore.Razor.TagHelpers.TagHelper).Name + @"
         {
         }");
-            var compilation = TestCompilation.Create(sytnaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), sytnaxTree);
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: true);
             var typeSymbol = compilation.GetTypeByMetadataName("DocumentedTagHelper");
             var expectedDocumentation =
@@ -2098,7 +2098,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
             /// </remarks>
             public List<bool> RemarksAndSummaryProperty { get; set; }
         }");
-            var compilation = TestCompilation.Create(sytnaxTree);
+            var compilation = TestCompilation.Create(typeof(DefaultTagHelperDescriptorFactoryTest), sytnaxTree);
             var factory = new DefaultTagHelperDescriptorFactory(compilation, designTime: true);
             var typeSymbol = compilation.GetTypeByMetadataName("DocumentedTagHelper");
             var expectedDocumentations = new[]

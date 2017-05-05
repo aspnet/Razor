@@ -15,7 +15,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
         public void CreateDescriptor_UnderstandsStringParameters()
         {
             // Arrange
-            var testCompilation = TestCompilation.Create();
+            var testCompilation = TestCompilation.Create(typeof(ViewComponentTagHelperDescriptorFactoryTest));
             var viewComponent = testCompilation.GetTypeByMetadataName(typeof(StringParameterViewComponent).FullName);
             var factory = new ViewComponentTagHelperDescriptorFactory(testCompilation);
             var expectedDescriptor = TagHelperDescriptorBuilder.Create(
@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
         public void CreateDescriptor_UnderstandsVariousParameterTypes()
         {
             // Arrange
-            var testCompilation = TestCompilation.Create();
+            var testCompilation = TestCompilation.Create(typeof(ViewComponentTagHelperDescriptorFactoryTest));
             var viewComponent = testCompilation.GetTypeByMetadataName(typeof(VariousParameterViewComponent).FullName);
             var factory = new ViewComponentTagHelperDescriptorFactory(testCompilation);
             var expectedDescriptor = TagHelperDescriptorBuilder.Create(
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces
         public void CreateDescriptor_UnderstandsGenericParameters()
         {
             // Arrange
-            var testCompilation = TestCompilation.Create();
+            var testCompilation = TestCompilation.Create(typeof(ViewComponentTagHelperDescriptorFactoryTest));
             var viewComponent = testCompilation.GetTypeByMetadataName(typeof(GenericParameterViewComponent).FullName);
             var factory = new ViewComponentTagHelperDescriptorFactory(testCompilation);
             var expectedDescriptor = TagHelperDescriptorBuilder.Create(

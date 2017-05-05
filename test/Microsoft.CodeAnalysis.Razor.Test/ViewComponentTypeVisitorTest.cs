@@ -9,7 +9,7 @@ namespace Microsoft.CodeAnalysis.Razor
 {
     public class ViewComponentTypeVisitorTest
     {
-        private static Compilation Compilation { get; } = TestCompilation.Create();
+        private static Compilation Compilation { get; } = TestCompilation.Create(typeof(ViewComponentTypeVisitorTest));
 
         // In practice MVC will provide a marker attribute for ViewComponents. To prevent a circular reference between MVC and Razor
         // we can use a test class as a marker.
