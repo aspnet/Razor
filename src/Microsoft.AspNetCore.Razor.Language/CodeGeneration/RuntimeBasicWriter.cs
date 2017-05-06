@@ -245,7 +245,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             var insideWrite = false;
             var writtenLength = 0;
-            CSharpCodeWriter.StringLiteralWriter stringLiteralWriter = default(CSharpCodeWriter.StringLiteralWriter);
 
             for (var i = 0; i < node.Children.Count; i++)
             {
@@ -258,19 +257,19 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                         if (!insideWrite)
                         {
                             WriteHtmlContentStartMethodInvocation(context);
-                            stringLiteralWriter = context.Writer.BuildStringLiteralWriter();
+                            context.Writer.Write("@\"");
                             insideWrite = true;
                         }
 
                         var lengthToWrite = Math.Min(remainingLength, MaxStringLiteralLength - writtenLength);
-                        stringLiteralWriter.Write(token.Content, token.Content.Length - remainingLength, lengthToWrite);
+                        WriteStringLiteralPiece(context.Writer, token.Content, token.Content.Length - remainingLength, lengthToWrite);
 
                         remainingLength -= lengthToWrite;
                         writtenLength += lengthToWrite;
 
                         if (writtenLength >= MaxStringLiteralLength)
                         {
-                            stringLiteralWriter.Dispose();
+                            context.Writer.Write("\"");
                             WriteHtmlContentEndMethodInvocation(context);
                             insideWrite = false;
                             writtenLength = 0;
@@ -281,9 +280,29 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             if (insideWrite)
             {
-                stringLiteralWriter.Dispose();
+                context.Writer.Write("\"");
                 WriteHtmlContentEndMethodInvocation(context);
             }
+        }
+
+        private void WriteStringLiteralPiece(CSharpCodeWriter writer, string literalPiece, int startIndex, int length)
+        {
+            // We need to find the index of each '"' (double-quote) to escape it.
+            var start = startIndex;
+            int end;
+            while ((end = literalPiece.IndexOf('\"', start, length - (start - startIndex))) > -1)
+            {
+                writer.Write(literalPiece, start, end - start);
+
+                writer.Write("\"\"");
+
+                start = end + 1;
+            }
+
+            Debug.Assert(end == -1); // We've hit all of the double-quotes.
+
+            // Write the remainder after the last double-quote.
+            writer.Write(literalPiece, start, startIndex + length - start);
         }
 
         protected virtual void WriteHtmlContentStartMethodInvocation(CSharpRenderingContext context)
