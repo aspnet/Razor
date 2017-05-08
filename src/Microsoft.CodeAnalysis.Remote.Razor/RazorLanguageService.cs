@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.Remote.Razor
             Rpc.JsonSerializer.Converters.Add(new RazorDiagnosticJsonConverter());
         }
 
-        public async Task<TagHelperResolutionResult> GetTagHelpersAsync(Guid projectIdBytes, string projectDebugName, IEnumerable<string> assemblyNameFilters, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<TagHelperResolutionResult> GetTagHelpersAsync(Guid projectIdBytes, string projectDebugName, CancellationToken cancellationToken = default(CancellationToken))
         {
             var projectId = ProjectId.CreateFromSerialized(projectIdBytes, projectDebugName);
 
@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Remote.Razor
             var project = solution.GetProject(projectId);
 
             var resolver = new DefaultTagHelperResolver(designTime: true);
-            var result = await resolver.GetTagHelpersAsync(project, assemblyNameFilters, cancellationToken).ConfigureAwait(false);
+            var result = await resolver.GetTagHelpersAsync(project, cancellationToken).ConfigureAwait(false);
 
             return result;
         }
