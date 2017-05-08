@@ -17,8 +17,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             var syntaxTree = codeDocument.GetSyntaxTree();
             ThrowForMissingDependency(syntaxTree);
 
+            // This might not have been set if there are no tag helpers.
             var tagHelperContext = codeDocument.GetTagHelperContext();
-            ThrowForMissingDependency(tagHelperContext);
 
             var builder = RazorIRBuilder.Document();
             var document = (DocumentIRNode)builder.Current;
@@ -49,7 +49,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 }
             }
 
-            var tagHelperPrefix = tagHelperContext.Prefix;
+            var tagHelperPrefix = tagHelperContext?.Prefix;
             var visitor = new MainSourceVisitor(document, builder, namespaces, tagHelperPrefix)
             {
                 FileName = syntaxTree.Source.FileName,
