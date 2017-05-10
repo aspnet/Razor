@@ -4,11 +4,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Razor;
 
 namespace Microsoft.VisualStudio.LanguageServices.Razor
 {
-    public interface ITagHelperResolver
+    public interface ITagHelperResolver : ILanguageService
     {
         Task<TagHelperResolutionResult> GetTagHelpersAsync(Project project, IEnumerable<string> assemblyNameFilters);
     }
