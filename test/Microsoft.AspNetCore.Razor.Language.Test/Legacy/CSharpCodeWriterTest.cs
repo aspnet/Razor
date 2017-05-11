@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Xunit;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
@@ -57,7 +58,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             // Assert
             var output = writer.GenerateCode();
-            Assert.Equal("private global::System.String _myString;", output);
+            Assert.Equal("private global::System.String _myString;" + Environment.NewLine, output);
         }
 
         [Fact]
@@ -71,7 +72,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             // Assert
             var output = writer.GenerateCode();
-            Assert.Equal("private readonly static global::System.String _myString;", output);
+            Assert.Equal("private readonly static global::System.String _myString;" + Environment.NewLine, output);
         }
 
         [Fact]
@@ -85,7 +86,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             // Assert
             var output = writer.GenerateCode();
-            Assert.Equal("public global::System.String MyString { get; set; }", output);
+            Assert.Equal("public global::System.String MyString { get; set; }" + Environment.NewLine, output);
         }
 
         [Fact]
@@ -95,11 +96,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var writer = new CSharpCodeWriter();
 
             // Act
-            writer.WriteField("public", new[] { "static" }, "global::System.String", "MyString");
+            writer.WriteAutoPropertyDeclaration("public", new[] { "static" }, "global::System.String", "MyString");
 
             // Assert
             var output = writer.GenerateCode();
-            Assert.Equal("public static global::System.String MyString { get; set; }", output);
+            Assert.Equal("public static global::System.String MyString { get; set; }" + Environment.NewLine, output);
         }
     }
 }
