@@ -141,6 +141,12 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public override void VisitDefault(RazorIRNode node)
             {
+                if (node is MemberDeclarationIRNode member)
+                {
+                    _class.Add(node);
+                    return;
+                }
+
                 _method.Add(node);
             }
         }
