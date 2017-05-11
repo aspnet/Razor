@@ -410,6 +410,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             Write(typeName);
+            Write(" ");
             Write(fieldName);
             Write(";");
             WriteLine();
@@ -446,7 +447,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 throw new ArgumentNullException(nameof(propertyName));
             }
 
-            return WriteAutoPropertyDeclaration(accessibility, typeName, propertyName);
+            return WriteAutoPropertyDeclaration(accessibility, Array.Empty<string>(), typeName, propertyName);
         }
 
         public CSharpCodeWriter WriteAutoPropertyDeclaration(string accessibility, IList<string> modifiers, string typeName, string propertyName)
@@ -481,6 +482,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             Write(typeName);
+            Write(" ");
             Write(propertyName);
             Write(" { get; set; }");
             WriteLine();
