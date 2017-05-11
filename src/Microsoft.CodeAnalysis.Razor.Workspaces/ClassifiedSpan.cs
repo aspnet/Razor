@@ -3,7 +3,7 @@
 
 using Microsoft.AspNetCore.Razor.Language;
 
-namespace Microsoft.VisualStudio.LanguageServices.Razor
+namespace Microsoft.CodeAnalysis.Razor
 {
     public struct ClassifiedSpan
     {
