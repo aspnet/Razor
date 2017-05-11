@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Razor;
 
-namespace Microsoft.VisualStudio.LanguageServices.Razor
+namespace Microsoft.CodeAnalysis.Razor
 {
     [ExportLanguageServiceFactory(typeof(RazorSyntaxFactsService), RazorLanguage.Name, ServiceLayer.Default)]
     internal class DefaultRazorSyntaxFactsServiceFactory : ILanguageServiceFactory
