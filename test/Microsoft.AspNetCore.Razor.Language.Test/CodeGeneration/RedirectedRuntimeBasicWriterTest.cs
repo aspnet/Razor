@@ -207,7 +207,7 @@ Test(test_writer, i++);
             // Assert
             var csharp = context.Writer.Builder.ToString();
             Assert.Equal(
-@"WriteLiteralTo(test_writer, ""SomeContent"");
+@"WriteLiteralTo(test_writer, @""SomeContent"");
 ",
                 csharp,
                 ignoreLineEndingDifferences: true);

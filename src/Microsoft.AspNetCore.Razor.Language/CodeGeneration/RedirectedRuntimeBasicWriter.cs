@@ -62,46 +62,12 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             linePragmaScope?.Dispose();
         }
 
-        public override void WriteHtmlContent(CSharpRenderingContext context, HtmlContentIRNode node)
+        protected override void WriteHtmlContentStartMethodInvocation(CSharpRenderingContext context)
         {
-            const int MaxStringLiteralLength = 1024;
-
-            var builder = new StringBuilder();
-            for (var i = 0; i < node.Children.Count; i++)
-            {
-                if (node.Children[i] is RazorIRToken token && token.IsHtml)
-                {
-                    builder.Append(token.Content);
-                }
-            }
-
-            var content = builder.ToString();
-
-            var charactersConsumed = 0;
-
-            // Render the string in pieces to avoid Roslyn OOM exceptions at compile time: https://github.com/aspnet/External/issues/54
-            while (charactersConsumed < content.Length)
-            {
-                string textToRender;
-                if (content.Length <= MaxStringLiteralLength)
-                {
-                    textToRender = content;
-                }
-                else
-                {
-                    var charactersToSubstring = Math.Min(MaxStringLiteralLength, content.Length - charactersConsumed);
-                    textToRender = content.Substring(charactersConsumed, charactersToSubstring);
-                }
-
-                context.Writer
-                    .WriteStartMethodInvocation(WriteHtmlContentMethod)
-                    .Write(_textWriter)
-                    .WriteParameterSeparator()
-                    .WriteStringLiteral(textToRender)
-                    .WriteEndMethodInvocation();
-
-                    charactersConsumed += textToRender.Length;
-            }
+            context.Writer
+                .WriteStartMethodInvocation(WriteHtmlContentMethod)
+                .Write(_textWriter)
+                .WriteParameterSeparator();
         }
 
         public override void WriteHtmlAttribute(CSharpRenderingContext context, HtmlAttributeIRNode node)

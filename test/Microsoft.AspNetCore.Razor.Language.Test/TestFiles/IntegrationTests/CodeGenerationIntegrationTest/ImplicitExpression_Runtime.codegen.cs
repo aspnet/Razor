@@ -14,13 +14,14 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("    <p>This is item #");
+            WriteLiteral(@"    <p>This is item #");
 #line 2 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ImplicitExpression.cshtml"
                 Write(i);
 
 #line default
 #line hidden
-            WriteLiteral("</p>\r\n");
+            WriteLiteral(@"</p>
+");
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ImplicitExpression.cshtml"
 }
 

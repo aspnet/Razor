@@ -29,18 +29,22 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n<");
-            WriteLiteral("div class=\"randomNonTagHelperAttribute\">\r\n    <");
-            WriteLiteral("p class=\"Hello World\" ");
+            WriteLiteral(@"
+<");
+            WriteLiteral(@"div class=""randomNonTagHelperAttribute"">
+    <");
+            WriteLiteral(@"p class=""Hello World"" ");
 #line 4 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EscapedTagHelpers.cshtml"
                        Write(DateTime.Now);
 
 #line default
 #line hidden
-            WriteLiteral(">\r\n        <");
-            WriteLiteral("input type=\"text\" />\r\n        <");
-            WriteLiteral("em>Not a TagHelper: </");
-            WriteLiteral("em> ");
+            WriteLiteral(@">
+        <");
+            WriteLiteral(@"input type=""text"" />
+        <");
+            WriteLiteral(@"em>Not a TagHelper: </");
+            WriteLiteral(@"em> ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
@@ -71,9 +75,11 @@ __TestNamespace_InputTagHelper2.Checked = true;
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n    </");
-            WriteLiteral("p>\r\n</");
-            WriteLiteral("div>");
+            WriteLiteral(@"
+    </");
+            WriteLiteral(@"p>
+</");
+            WriteLiteral(@"div>");
         }
         #pragma warning restore 1998
     }

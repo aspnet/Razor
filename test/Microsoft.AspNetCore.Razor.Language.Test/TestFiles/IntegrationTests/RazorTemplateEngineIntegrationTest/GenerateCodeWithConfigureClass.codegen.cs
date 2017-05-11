@@ -9,7 +9,7 @@ namespace Razor
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("<h1>Hello world!</h1>");
+            WriteLiteral(@"<h1>Hello world!</h1>");
         }
         #pragma warning restore 1998
     }

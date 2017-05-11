@@ -38,7 +38,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 3 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
  if (true)
 {
@@ -47,18 +48,21 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("    <div class=\"randomNonTagHelperAttribute\">\r\n        ");
+            WriteLiteral(@"    <div class=""randomNonTagHelperAttribute"">
+        ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                WriteLiteral("\r\n            <h1>Set Time:</h1>\r\n");
+                WriteLiteral(@"
+            <h1>Set Time:</h1>
+");
 #line 10 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
              if (false)
             {
 
 #line default
 #line hidden
-                WriteLiteral("                ");
+                WriteLiteral(@"                ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                    WriteLiteral("New Time: ");
+                    WriteLiteral(@"New Time: ");
                     __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
                     }
                     );
@@ -90,7 +94,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n");
+                WriteLiteral(@"
+");
 #line 13 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
             }
             else
@@ -98,9 +103,9 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-                WriteLiteral("                ");
+                WriteLiteral(@"                ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                    WriteLiteral("Current Time: ");
+                    WriteLiteral(@"Current Time: ");
                     __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
                     }
                     );
@@ -142,7 +147,8 @@ __TestNamespace_InputTagHelper2.Checked = true;
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n                ");
+                WriteLiteral(@"
+                ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
                 }
                 );
@@ -167,7 +173,8 @@ __TestNamespace_InputTagHelper2.Checked = true;
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n                ");
+                WriteLiteral(@"
+                ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "test", async() => {
                 }
                 );
@@ -181,13 +188,13 @@ __TestNamespace_InputTagHelper2.Checked = true;
 
 #line default
 #line hidden
-                WriteLiteral("checkbox");
+                WriteLiteral(@"checkbox");
 #line 18 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
                                                                } else {
 
 #line default
 #line hidden
-                WriteLiteral("anything");
+                WriteLiteral(@"anything");
 #line 18 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
                                                                                               }
 
@@ -204,13 +211,14 @@ __TestNamespace_InputTagHelper2.Checked = true;
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n");
+                WriteLiteral(@"
+");
 #line 19 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
             }
 
 #line default
 #line hidden
-                WriteLiteral("        ");
+                WriteLiteral(@"        ");
             }
             );
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
@@ -231,15 +239,17 @@ AddHtmlAttributeValue(" ", 161, DateTime.Now, 162, 13, false);
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n        ");
+            WriteLiteral(@"
+        ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                WriteLiteral("\r\n");
+                WriteLiteral(@"
+");
 #line 22 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
                var @object = false;
 
 #line default
 #line hidden
-                WriteLiteral("            ");
+                WriteLiteral(@"            ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "test", async() => {
                 }
                 );
@@ -260,7 +270,8 @@ __TestNamespace_InputTagHelper2.Checked = (@object);
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n        ");
+                WriteLiteral(@"
+        ");
             }
             );
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
@@ -280,9 +291,11 @@ __TestNamespace_PTagHelper.Age = DateTimeOffset.Now.Year - 1970;
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n        ");
+            WriteLiteral(@"
+        ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                WriteLiteral("\r\n            ");
+                WriteLiteral(@"
+            ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
                 }
                 );
@@ -305,7 +318,8 @@ __TestNamespace_InputTagHelper2.Checked = (DateTimeOffset.Now.Year > 2014);
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n        ");
+                WriteLiteral(@"
+        ");
             }
             );
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
@@ -323,9 +337,11 @@ __TestNamespace_PTagHelper.Age = -1970 + @DateTimeOffset.Now.Year;
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n        ");
+            WriteLiteral(@"
+        ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                WriteLiteral("\r\n            ");
+                WriteLiteral(@"
+            ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagOnly, "test", async() => {
                 }
                 );
@@ -346,7 +362,8 @@ __TestNamespace_InputTagHelper2.Checked = DateTimeOffset.Now.Year > 2014;
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n        ");
+                WriteLiteral(@"
+        ");
             }
             );
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
@@ -364,9 +381,11 @@ __TestNamespace_PTagHelper.Age = DateTimeOffset.Now.Year - 1970;
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n        ");
+            WriteLiteral(@"
+        ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
-                WriteLiteral("\r\n            ");
+                WriteLiteral(@"
+            ");
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
                 }
                 );
@@ -387,7 +406,8 @@ __TestNamespace_InputTagHelper2.Checked =    @(  DateTimeOffset.Now.Year  ) > 20
                 }
                 Write(__tagHelperExecutionContext.Output);
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
-                WriteLiteral("\r\n        ");
+                WriteLiteral(@"
+        ");
             }
             );
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
@@ -405,7 +425,8 @@ __TestNamespace_PTagHelper.Age = ("My age is this long.".Length);
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n        ");
+            WriteLiteral(@"
+        ");
 #line 34 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
    Write(someMethod(item => new Microsoft.AspNetCore.Mvc.Razor.HelperResult(async(__razor_template_writer) => {
     __tagHelperExecutionContext = __tagHelperScopeManager.Begin("p", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
@@ -452,7 +473,9 @@ __TestNamespace_PTagHelper.Age = 123;
 
 #line default
 #line hidden
-            WriteLiteral("\r\n    </div>\r\n");
+            WriteLiteral(@"
+    </div>
+");
 #line 36 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/ComplexTagHelpers.cshtml"
 }
 

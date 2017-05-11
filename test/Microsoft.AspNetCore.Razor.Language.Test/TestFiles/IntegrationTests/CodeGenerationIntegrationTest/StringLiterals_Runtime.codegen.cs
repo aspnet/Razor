@@ -220,7 +220,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 <p>This is line 41</p>
 <p>This is line 42</p>
 <p>This is line 43</p>hi!");
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             DefineSection("WriteLiteralsToInHereAlso", async () => {
             WriteLiteral(@"
     <p>This is line 1 nested</p>
@@ -255,7 +256,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
     <p>30</p>
 ");
             });
-            WriteLiteral("!");
+            WriteLiteral(@"!");
         }
         #pragma warning restore 1998
     }

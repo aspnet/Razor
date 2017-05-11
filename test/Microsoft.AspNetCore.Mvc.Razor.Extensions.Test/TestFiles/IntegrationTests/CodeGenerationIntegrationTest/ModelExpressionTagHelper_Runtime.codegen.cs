@@ -34,10 +34,12 @@ namespace AspNetCore
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             BeginContext(17, 2, true);
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             EndContext();
             BeginContext(143, 2, true);
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input-test", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
@@ -60,7 +62,8 @@ __Microsoft_AspNetCore_Mvc_Razor_Extensions_InputTestTagHelper.For = ModelExpres
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             EndContext();
             BeginContext(169, 2, true);
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input-test", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
@@ -83,7 +86,8 @@ __Microsoft_AspNetCore_Mvc_Razor_Extensions_InputTestTagHelper.For = ModelExpres
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             EndContext();
             BeginContext(198, 2, true);
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             EndContext();
         }
         #pragma warning restore 1998

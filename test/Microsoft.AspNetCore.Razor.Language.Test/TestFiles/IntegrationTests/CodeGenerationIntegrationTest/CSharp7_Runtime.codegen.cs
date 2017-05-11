@@ -9,7 +9,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("<body>\r\n");
+            WriteLiteral(@"<body>
+");
 #line 2 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/CSharp7.cshtml"
       
         var nameLookup = new Dictionary<string, (string FirstName, string LastName, object Extra)>()
@@ -32,7 +33,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 16 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/CSharp7.cshtml"
      if (nameLookup.TryGetValue("John Doe", out var entry))
     {
@@ -44,20 +46,28 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("    <p>\r\n        Here\'s a very unique number: ");
+            WriteLiteral(@"    <p>
+        Here's a very unique number: ");
 #line 24 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/CSharp7.cshtml"
                                  Write(1.618_033_988_749_894_848_204_586_834_365_638_117_720_309_179M);
 
 #line default
 #line hidden
-            WriteLiteral("\r\n    </p>\r\n\r\n    <div>\r\n        ");
+            WriteLiteral(@"
+    </p>
+
+    <div>
+        ");
 #line 28 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/CSharp7.cshtml"
     Write((First: "John", Last: "Doe").First);
 
 #line default
 #line hidden
-            WriteLiteral(" ");
-            WriteLiteral("\r\n    </div>\r\n\r\n");
+            WriteLiteral(@" ");
+            WriteLiteral(@"
+    </div>
+
+");
 #line 31 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/CSharp7.cshtml"
      switch (entry.Extra)
     {
@@ -74,7 +84,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("</body>");
+            WriteLiteral(@"</body>");
         }
         #pragma warning restore 1998
     }

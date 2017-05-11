@@ -9,7 +9,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("<!-- \' -->\r\n<img src=\"~/images/submit.png\" />");
+            WriteLiteral(@"<!-- ' -->
+<img src=""~/images/submit.png"" />");
         }
         #pragma warning restore 1998
     }

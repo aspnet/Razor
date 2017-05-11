@@ -14,7 +14,9 @@ Write(foo());
 
 #line default
 #line hidden
-            WriteLiteral("\r\n\r\n");
+            WriteLiteral(@"
+
+");
         }
         #pragma warning restore 1998
     }

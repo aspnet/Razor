@@ -43,13 +43,18 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             BeginContext(7, 2, true);
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             EndContext();
             BeginContext(103, 2, true);
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             EndContext();
             BeginContext(480, 76, true);
-            WriteLiteral("\r\n<h1>New Customer</h1>\r\n<form method=\"post\" class=\"form-horizontal\" >\r\n    ");
+            WriteLiteral(@"
+<h1>New Customer</h1>
+<form method=""post"" class=""form-horizontal"" >
+    ");
             EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
             }
@@ -67,11 +72,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             EndContext();
             BeginContext(587, 6, true);
-            WriteLiteral("\r\n    ");
+            WriteLiteral(@"
+    ");
             EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 BeginContext(617, 48, true);
-                WriteLiteral("\r\n        <label class=\"col-md-2 control-label\">");
+                WriteLiteral(@"
+        <label class=""col-md-2 control-label"">");
                 EndContext();
                 BeginContext(666, 4, false);
 #line 29 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/RazorPages.cshtml"
@@ -81,11 +88,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 #line hidden
                 EndContext();
                 BeginContext(670, 18, true);
-                WriteLiteral("</label>\r\n        ");
+                WriteLiteral(@"</label>
+        ");
                 EndContext();
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                     BeginContext(711, 101, true);
-                    WriteLiteral("\r\n            <input class=\"form-control\" />\r\n            <span class=\"text-danger\"></span>\r\n        ");
+                    WriteLiteral(@"
+            <input class=""form-control"" />
+            <span class=""text-danger""></span>
+        ");
                     EndContext();
                 }
                 );
@@ -102,7 +113,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 EndContext();
                 BeginContext(818, 6, true);
-                WriteLiteral("\r\n    ");
+                WriteLiteral(@"
+    ");
                 EndContext();
             }
             );
@@ -119,15 +131,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             EndContext();
             BeginContext(830, 6, true);
-            WriteLiteral("\r\n    ");
+            WriteLiteral(@"
+    ");
             EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 BeginContext(860, 10, true);
-                WriteLiteral("\r\n        ");
+                WriteLiteral(@"
+        ");
                 EndContext();
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("div", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                     BeginContext(909, 83, true);
-                    WriteLiteral("\r\n            <button type=\"submit\" class=\"btn btn-primary\">Save</button>\r\n        ");
+                    WriteLiteral(@"
+            <button type=""submit"" class=""btn btn-primary"">Save</button>
+        ");
                     EndContext();
                 }
                 );
@@ -144,7 +160,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 EndContext();
                 BeginContext(998, 6, true);
-                WriteLiteral("\r\n    ");
+                WriteLiteral(@"
+    ");
                 EndContext();
             }
             );
@@ -161,7 +178,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             EndContext();
             BeginContext(1010, 11, true);
-            WriteLiteral("\r\n</form>\r\n");
+            WriteLiteral(@"
+</form>
+");
             EndContext();
         }
         #pragma warning restore 1998

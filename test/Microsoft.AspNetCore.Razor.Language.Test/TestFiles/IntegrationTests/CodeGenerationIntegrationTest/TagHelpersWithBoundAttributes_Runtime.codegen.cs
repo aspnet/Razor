@@ -29,7 +29,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("<form>\r\n    ");
+            WriteLiteral(@"<form>
+    ");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
@@ -52,7 +53,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n</form>");
+            WriteLiteral(@"
+</form>");
         }
         #pragma warning restore 1998
     }

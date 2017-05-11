@@ -15,7 +15,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("\t<div></div>\r\n");
+            WriteLiteral(@"	<div></div>
+");
 #line 4 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/SimpleUnspacedIf.cshtml"
 }
 

@@ -24,7 +24,8 @@ using System.Text;
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("<p>Hi there!</p>\r\n");
+            WriteLiteral(@"<p>Hi there!</p>
+");
         }
         #pragma warning restore 1998
     }

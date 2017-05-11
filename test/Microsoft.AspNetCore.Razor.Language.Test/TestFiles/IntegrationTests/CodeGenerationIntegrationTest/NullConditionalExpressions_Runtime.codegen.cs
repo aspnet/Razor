@@ -29,25 +29,29 @@ Write(ViewBag?.Method(Value?[23]?.More)?["key"]);
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 8 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NullConditionalExpressions.cshtml"
 Write(ViewBag?.Data);
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 9 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NullConditionalExpressions.cshtml"
 Write(ViewBag.IntIndexer?[0]);
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 10 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NullConditionalExpressions.cshtml"
 Write(ViewBag.StrIndexer?["key"]);
 
 #line default
 #line hidden
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
 #line 11 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NullConditionalExpressions.cshtml"
 Write(ViewBag?.Method(Value?[23]?.More)?["key"]);
 

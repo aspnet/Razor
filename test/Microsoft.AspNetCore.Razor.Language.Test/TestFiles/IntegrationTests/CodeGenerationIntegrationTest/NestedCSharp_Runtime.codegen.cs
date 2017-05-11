@@ -15,13 +15,16 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            WriteLiteral("        <div>\r\n            ");
+            WriteLiteral(@"        <div>
+            ");
 #line 5 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NestedCSharp.cshtml"
        Write(result.SomeValue);
 
 #line default
 #line hidden
-            WriteLiteral(".\r\n        </div>\r\n");
+            WriteLiteral(@".
+        </div>
+");
 #line 7 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/NestedCSharp.cshtml"
     }
 

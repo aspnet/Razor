@@ -28,7 +28,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
@@ -49,7 +50,9 @@ AddHtmlAttributeValue(" ", 57, DateTime.Now, 58, 13, false);
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n\r\n");
+            WriteLiteral(@"
+
+");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
@@ -93,20 +96,22 @@ WriteTo(__razor_attribute_value_writer, string.Empty);
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n\r\n");
+            WriteLiteral(@"
+
+");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
             __TestNamespace_InputTagHelper = CreateTagHelper<global::TestNamespace.InputTagHelper>();
             __tagHelperExecutionContext.Add(__TestNamespace_InputTagHelper);
             BeginWriteTagHelperAttribute();
-            WriteLiteral("prefix ");
+            WriteLiteral(@"prefix ");
 #line 7 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/DynamicAttributeTagHelpers.cshtml"
          WriteLiteral(DateTime.Now);
 
 #line default
 #line hidden
-            WriteLiteral(" suffix");
+            WriteLiteral(@" suffix");
             __tagHelperStringValueBuffer = EndWriteTagHelperAttribute();
             __TestNamespace_InputTagHelper.Bound = __tagHelperStringValueBuffer;
             __tagHelperExecutionContext.AddTagHelperAttribute("bound", __TestNamespace_InputTagHelper.Bound, global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -126,7 +131,9 @@ AddHtmlAttributeValue(" ", 212, DateTime.Now, 213, 13, false);
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n\r\n");
+            WriteLiteral(@"
+
+");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
@@ -138,7 +145,7 @@ AddHtmlAttributeValue(" ", 212, DateTime.Now, 213, 13, false);
 
 #line default
 #line hidden
-            WriteLiteral(" ");
+            WriteLiteral(@" ");
 #line 9 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/DynamicAttributeTagHelpers.cshtml"
                               if (true) { 
 
@@ -164,7 +171,7 @@ AddHtmlAttributeValue(" ", 212, DateTime.Now, 213, 13, false);
 
 #line default
 #line hidden
-            WriteLiteral(" ");
+            WriteLiteral(@" ");
 #line 9 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/DynamicAttributeTagHelpers.cshtml"
                                                               WriteLiteral(int.MaxValue);
 
@@ -220,7 +227,9 @@ AddHtmlAttributeValue(" ", 406, int.MaxValue, 407, 13, false);
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n\r\n");
+            WriteLiteral(@"
+
+");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
@@ -252,7 +261,9 @@ AddHtmlAttributeValue(" ", 490, int.MaxValue, 491, 13, false);
             }
             Write(__tagHelperExecutionContext.Output);
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
-            WriteLiteral("\r\n\r\n");
+            WriteLiteral(@"
+
+");
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );

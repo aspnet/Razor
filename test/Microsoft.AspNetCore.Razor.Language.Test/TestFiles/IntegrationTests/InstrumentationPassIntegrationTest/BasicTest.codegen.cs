@@ -33,7 +33,8 @@ namespace Razor
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {
             BeginContext(31, 28, true);
-            WriteLiteral("<span someattr>Hola</span>\r\n");
+            WriteLiteral(@"<span someattr>Hola</span>
+");
             EndContext();
             BeginContext(61, 7, false);
 #line 3 "TestFiles/IntegrationTests/InstrumentationPassIntegrationTest/BasicTest.cshtml"
@@ -43,11 +44,13 @@ Write("Hello");
 #line hidden
             EndContext();
             BeginContext(69, 2, true);
-            WriteLiteral("\r\n");
+            WriteLiteral(@"
+");
             EndContext();
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "test", async() => {
                 BeginContext(91, 6, true);
-                WriteLiteral("\r\n    ");
+                WriteLiteral(@"
+    ");
                 EndContext();
                 __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
                 }
@@ -73,7 +76,8 @@ __InputTagHelper.BarProp = DateTime.Now;
                 __tagHelperExecutionContext = __tagHelperScopeManager.End();
                 EndContext();
                 BeginContext(149, 2, true);
-                WriteLiteral("\r\n");
+                WriteLiteral(@"
+");
                 EndContext();
             }
             );
@@ -90,16 +94,19 @@ __InputTagHelper.BarProp = DateTime.Now;
             __tagHelperExecutionContext = __tagHelperScopeManager.End();
             EndContext();
             BeginContext(158, 31, true);
-            WriteLiteral("\r\n\r\n<span>Here is some content ");
+            WriteLiteral(@"
+
+<span>Here is some content ");
             EndContext();
             BeginContext(207, 9, true);
-            WriteLiteral("</span>\r\n");
+            WriteLiteral(@"</span>
+");
             EndContext();
             BeginContext(217, 29, false);
 #line 9 "TestFiles/IntegrationTests/InstrumentationPassIntegrationTest/BasicTest.cshtml"
 Write(Foo(item => new Microsoft.AspNetCore.Mvc.Razor.HelperResult(async(__razor_template_writer) => {
     BeginContext(222, 24, true);
-    WriteLiteralTo(__razor_template_writer, "<span>Hello world</span>");
+    WriteLiteralTo(__razor_template_writer, @"<span>Hello world</span>");
     EndContext();
 }
 )));
