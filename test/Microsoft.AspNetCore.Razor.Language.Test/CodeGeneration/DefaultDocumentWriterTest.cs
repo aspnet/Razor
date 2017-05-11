@@ -200,7 +200,7 @@ internal virtual async string TestMethod()
             // Assert
             var csharp = context.Writer.Builder.ToString();
             Assert.Equal(
-@"internal readonly string Foo { get; set; }
+@"internal virtual string Foo { get; set; }
 ",
                 csharp,
                 ignoreLineEndingDifferences: true);
