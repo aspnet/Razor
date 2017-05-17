@@ -23,47 +23,34 @@ Document -
                             RazorIRToken - (92:3,26 [6] MinimizedTagHelpers.cshtml) - Html - \n    
                         TagHelper - (98:4,4 [59] MinimizedTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                            CreateTagHelper -  - TestNamespace.CatchAllTagHelper
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                             AddTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
-                            ExecuteTagHelpers - 
                         HtmlContent - (157:5,39 [6] MinimizedTagHelpers.cshtml)
                             RazorIRToken - (157:5,39 [6] MinimizedTagHelpers.cshtml) - Html - \n    
                         TagHelper - (163:6,4 [119] MinimizedTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.CatchAllTagHelper
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                             AddTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
                             AddTagHelperHtmlAttribute -  - input-unbound-required - HtmlAttributeValueStyle.Minimized
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_1 - input-bound-required-string - BoundRequiredString
-                            ExecuteTagHelpers - 
                         HtmlContent - (282:7,110 [6] MinimizedTagHelpers.cshtml)
                             RazorIRToken - (282:7,110 [6] MinimizedTagHelpers.cshtml) - Html - \n    
                         TagHelper - (288:8,4 [176] MinimizedTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.CatchAllTagHelper
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                             AddTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
                             AddTagHelperHtmlAttribute -  - input-unbound-required - HtmlAttributeValueStyle.Minimized
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_2 - catchall-bound-string - BoundRequiredString
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_3 - input-bound-required-string - BoundRequiredString
-                            ExecuteTagHelpers - 
                         HtmlContent - (464:11,103 [6] MinimizedTagHelpers.cshtml)
                             RazorIRToken - (464:11,103 [6] MinimizedTagHelpers.cshtml) - Html - \n    
                         TagHelper - (470:12,4 [206] MinimizedTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.CatchAllTagHelper
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_4
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5
                             AddTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_6 - input-bound-required-string - BoundRequiredString
-                            ExecuteTagHelpers - 
                         HtmlContent - (676:16,49 [2] MinimizedTagHelpers.cshtml)
                             RazorIRToken - (676:16,49 [2] MinimizedTagHelpers.cshtml) - Html - \n
-                    CreateTagHelper -  - TestNamespace.CatchAllTagHelper
                     AddTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
-                    ExecuteTagHelpers - 

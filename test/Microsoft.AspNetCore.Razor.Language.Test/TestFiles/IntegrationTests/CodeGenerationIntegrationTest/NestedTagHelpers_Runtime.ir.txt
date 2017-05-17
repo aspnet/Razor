@@ -11,9 +11,7 @@ Document -
                     InitializeTagHelperStructure -  - span - TagMode.StartTagAndEndTag
                         HtmlContent - (46:1,15 [4] NestedTagHelpers.cshtml)
                             RazorIRToken - (46:1,15 [4] NestedTagHelpers.cshtml) - Html - Hola
-                    CreateTagHelper -  - SpanTagHelper
                     AddTagHelperHtmlAttribute -  - someattr - HtmlAttributeValueStyle.Minimized
-                    ExecuteTagHelpers - 
                 HtmlContent - (57:1,26 [2] NestedTagHelpers.cshtml)
                     RazorIRToken - (57:1,26 [2] NestedTagHelpers.cshtml) - Html - \n
                 TagHelper - (59:2,0 [66] NestedTagHelpers.cshtml)
@@ -22,12 +20,8 @@ Document -
                             RazorIRToken - (78:2,19 [6] NestedTagHelpers.cshtml) - Html - \n    
                         TagHelper - (84:3,4 [33] NestedTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                            CreateTagHelper -  - InputTagHelper
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_0 - value - FooProp
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
-                            ExecuteTagHelpers - 
                         HtmlContent - (117:3,37 [2] NestedTagHelpers.cshtml)
                             RazorIRToken - (117:3,37 [2] NestedTagHelpers.cshtml) - Html - \n
-                    CreateTagHelper -  - DivTagHelper
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
-                    ExecuteTagHelpers - 

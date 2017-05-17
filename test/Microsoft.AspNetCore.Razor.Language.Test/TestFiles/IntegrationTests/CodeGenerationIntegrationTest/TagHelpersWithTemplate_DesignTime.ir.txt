@@ -29,23 +29,17 @@ Document -
                                         RazorIRToken - (431:15,44 [5] TagHelpersWithTemplate.cshtml) - Html - </h3>
                                     TagHelper - (436:15,49 [40] TagHelpersWithTemplate.cshtml)
                                         InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                                        CreateTagHelper -  - InputTagHelper
                                         AddTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.DoubleQuotes
                                             HtmlContent - (449:15,62 [8] TagHelpersWithTemplate.cshtml)
                                                 RazorIRToken - (449:15,62 [8] TagHelpersWithTemplate.cshtml) - Html - checkbox
                                         AddTagHelperHtmlAttribute -  - checked - HtmlAttributeValueStyle.DoubleQuotes
                                             HtmlContent - (468:15,81 [4] TagHelpersWithTemplate.cshtml)
                                                 RazorIRToken - (468:15,81 [4] TagHelpersWithTemplate.cshtml) - Html - true
-                                        ExecuteTagHelpers - 
-                                CreateTagHelper -  - DivTagHelper
                                 AddTagHelperHtmlAttribute -  - condition - HtmlAttributeValueStyle.DoubleQuotes
                                     HtmlContent - (416:15,29 [4] TagHelpersWithTemplate.cshtml)
                                         RazorIRToken - (416:15,29 [4] TagHelpersWithTemplate.cshtml) - Html - true
-                                ExecuteTagHelpers - 
                         CSharpStatement - (482:15,95 [8] TagHelpersWithTemplate.cshtml)
                             RazorIRToken - (482:15,95 [8] TagHelpersWithTemplate.cshtml) - CSharp - );\n    
-                    CreateTagHelper -  - DivTagHelper
-                    ExecuteTagHelpers - 
                 HtmlContent - (499:17,6 [4] TagHelpersWithTemplate.cshtml)
                     RazorIRToken - (499:17,6 [4] TagHelpersWithTemplate.cshtml) - Html - \n\n
             CSharpStatement - (47:2,12 [268] TagHelpersWithTemplate.cshtml)

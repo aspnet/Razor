@@ -14,10 +14,8 @@ Document -
                     InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
                         HtmlContent - (73:3,34 [11] SingleTagHelperWithNewlineBeforeAttributes.cshtml)
                             RazorIRToken - (73:3,34 [11] SingleTagHelperWithNewlineBeforeAttributes.cshtml) - Html - Body of Tag
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     AddTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (49:3,10 [11] SingleTagHelperWithNewlineBeforeAttributes.cshtml)
                             RazorIRToken - (49:3,10 [11] SingleTagHelperWithNewlineBeforeAttributes.cshtml) - Html - Hello World
                     SetTagHelperProperty - (67:3,28 [4] SingleTagHelperWithNewlineBeforeAttributes.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (67:3,28 [4] SingleTagHelperWithNewlineBeforeAttributes.cshtml) - CSharp - 1337
-                    ExecuteTagHelpers - 

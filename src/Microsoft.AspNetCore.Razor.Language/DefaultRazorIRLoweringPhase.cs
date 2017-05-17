@@ -467,16 +467,15 @@ namespace Microsoft.AspNetCore.Razor.Language
                 _builder.Push(new InitializeTagHelperStructureIRNode()
                 {
                     TagName = tagName,
-                    TagMode = tagHelperBlock.TagMode
+                    TagMode = tagHelperBlock.TagMode,
+                    TagHelperBinding = tagHelperBlock.Binding
                 });
 
                 VisitDefault(block);
 
                 _builder.Pop(); // Pop InitializeTagHelperStructureIRNode
 
-                AddTagHelperCreation(tagHelperBlock.Binding);
                 AddTagHelperAttributes(tagHelperBlock.Attributes, tagHelperBlock.Binding);
-                AddExecuteTagHelpers();
 
                 _builder.Pop(); // Pop TagHelperIRNode
             }
@@ -516,22 +515,6 @@ namespace Microsoft.AspNetCore.Razor.Language
                 {
                     var typeName = descriptor.Metadata[TagHelperDescriptorBuilder.TypeNameKey];
                     _tagHelperFields.UsedTagHelperTypeNames.Add(typeName);
-                }
-            }
-
-            private void AddTagHelperCreation(TagHelperBinding tagHelperBinding)
-            {
-                var descriptors = tagHelperBinding.Descriptors;
-                foreach (var descriptor in descriptors)
-                {
-                    var typeName = descriptor.Metadata[TagHelperDescriptorBuilder.TypeNameKey];
-                    var createTagHelper = new CreateTagHelperIRNode()
-                    {
-                        TagHelperTypeName = typeName,
-                        Descriptor = descriptor
-                    };
-
-                    _builder.Add(createTagHelper);
                 }
             }
 
@@ -594,11 +577,6 @@ namespace Microsoft.AspNetCore.Razor.Language
                         _builder.Pop();
                     }
                 }
-            }
-
-            private void AddExecuteTagHelpers()
-            {
-                _builder.Add(new ExecuteTagHelpersIRNode());
             }
         }
     }

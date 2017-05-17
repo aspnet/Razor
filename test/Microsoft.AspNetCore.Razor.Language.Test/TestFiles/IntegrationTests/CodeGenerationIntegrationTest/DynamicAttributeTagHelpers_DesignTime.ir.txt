@@ -12,18 +12,15 @@ Document -
                     RazorIRToken - (31:0,31 [4] DynamicAttributeTagHelpers.cshtml) - Html - \n\n
                 TagHelper - (35:2,0 [40] DynamicAttributeTagHelpers.cshtml)
                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                    CreateTagHelper -  - TestNamespace.InputTagHelper
                     AddTagHelperHtmlAttribute -  - unbound - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlAttributeValue - (51:2,16 [6] DynamicAttributeTagHelpers.cshtml) -  - prefix
                         CSharpAttributeValue - (57:2,22 [14] DynamicAttributeTagHelpers.cshtml) -  
                             CSharpExpression - (59:2,24 [12] DynamicAttributeTagHelpers.cshtml)
                                 RazorIRToken - (59:2,24 [12] DynamicAttributeTagHelpers.cshtml) - CSharp - DateTime.Now
-                    ExecuteTagHelpers - 
                 HtmlContent - (75:2,40 [4] DynamicAttributeTagHelpers.cshtml)
                     RazorIRToken - (75:2,40 [4] DynamicAttributeTagHelpers.cshtml) - Html - \n\n
                 TagHelper - (79:4,0 [71] DynamicAttributeTagHelpers.cshtml)
                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                    CreateTagHelper -  - TestNamespace.InputTagHelper
                     AddTagHelperHtmlAttribute -  - unbound - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpAttributeValue - (95:4,16 [44] DynamicAttributeTagHelpers.cshtml) - 
                             CSharpStatement - (96:4,17 [12] DynamicAttributeTagHelpers.cshtml)
@@ -37,12 +34,10 @@ Document -
                             CSharpStatement - (137:4,58 [2] DynamicAttributeTagHelpers.cshtml)
                                 RazorIRToken - (137:4,58 [2] DynamicAttributeTagHelpers.cshtml) - CSharp -  }
                         HtmlAttributeValue - (139:4,60 [7] DynamicAttributeTagHelpers.cshtml) -   - suffix
-                    ExecuteTagHelpers - 
                 HtmlContent - (150:4,71 [4] DynamicAttributeTagHelpers.cshtml)
                     RazorIRToken - (150:4,71 [4] DynamicAttributeTagHelpers.cshtml) - Html - \n\n
                 TagHelper - (154:6,0 [83] DynamicAttributeTagHelpers.cshtml)
                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                    CreateTagHelper -  - TestNamespace.InputTagHelper
                     SetTagHelperProperty - (168:6,14 [27] DynamicAttributeTagHelpers.cshtml) - bound - Bound - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (168:6,14 [7] DynamicAttributeTagHelpers.cshtml)
                             RazorIRToken - (168:6,14 [6] DynamicAttributeTagHelpers.cshtml) - Html - prefix
@@ -57,12 +52,10 @@ Document -
                             CSharpExpression - (214:6,60 [12] DynamicAttributeTagHelpers.cshtml)
                                 RazorIRToken - (214:6,60 [12] DynamicAttributeTagHelpers.cshtml) - CSharp - DateTime.Now
                         HtmlAttributeValue - (226:6,72 [7] DynamicAttributeTagHelpers.cshtml) -   - suffix
-                    ExecuteTagHelpers - 
                 HtmlContent - (237:6,83 [4] DynamicAttributeTagHelpers.cshtml)
                     RazorIRToken - (237:6,83 [4] DynamicAttributeTagHelpers.cshtml) - Html - \n\n
                 TagHelper - (241:8,0 [183] DynamicAttributeTagHelpers.cshtml)
                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                    CreateTagHelper -  - TestNamespace.InputTagHelper
                     SetTagHelperProperty - (255:8,14 [73] DynamicAttributeTagHelpers.cshtml) - bound - Bound - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (256:8,15 [13] DynamicAttributeTagHelpers.cshtml)
                             RazorIRToken - (256:8,15 [13] DynamicAttributeTagHelpers.cshtml) - CSharp - long.MinValue
@@ -100,12 +93,10 @@ Document -
                         CSharpAttributeValue - (406:9,75 [14] DynamicAttributeTagHelpers.cshtml) -  
                             CSharpExpression - (408:9,77 [12] DynamicAttributeTagHelpers.cshtml)
                                 RazorIRToken - (408:9,77 [12] DynamicAttributeTagHelpers.cshtml) - CSharp - int.MaxValue
-                    ExecuteTagHelpers - 
                 HtmlContent - (424:9,93 [4] DynamicAttributeTagHelpers.cshtml)
                     RazorIRToken - (424:9,93 [4] DynamicAttributeTagHelpers.cshtml) - Html - \n\n
                 TagHelper - (428:11,0 [80] DynamicAttributeTagHelpers.cshtml)
                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                    CreateTagHelper -  - TestNamespace.InputTagHelper
                     AddTagHelperHtmlAttribute -  - unbound - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpAttributeValue - (444:11,16 [14] DynamicAttributeTagHelpers.cshtml) - 
                             CSharpExpression - (445:11,17 [13] DynamicAttributeTagHelpers.cshtml)
@@ -118,12 +109,10 @@ Document -
                         CSharpAttributeValue - (490:11,62 [14] DynamicAttributeTagHelpers.cshtml) -  
                             CSharpExpression - (492:11,64 [12] DynamicAttributeTagHelpers.cshtml)
                                 RazorIRToken - (492:11,64 [12] DynamicAttributeTagHelpers.cshtml) - CSharp - int.MaxValue
-                    ExecuteTagHelpers - 
                 HtmlContent - (508:11,80 [4] DynamicAttributeTagHelpers.cshtml)
                     RazorIRToken - (508:11,80 [4] DynamicAttributeTagHelpers.cshtml) - Html - \n\n
                 TagHelper - (512:13,0 [64] DynamicAttributeTagHelpers.cshtml)
                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                    CreateTagHelper -  - TestNamespace.InputTagHelper
                     AddTagHelperHtmlAttribute -  - unbound - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpAttributeValue - (528:13,16 [44] DynamicAttributeTagHelpers.cshtml) - 
                             CSharpStatement - (529:13,17 [12] DynamicAttributeTagHelpers.cshtml)
@@ -136,4 +125,3 @@ Document -
                                 RazorIRToken - (565:13,53 [5] DynamicAttributeTagHelpers.cshtml) - CSharp - false
                             CSharpStatement - (570:13,58 [2] DynamicAttributeTagHelpers.cshtml)
                                 RazorIRToken - (570:13,58 [2] DynamicAttributeTagHelpers.cshtml) - CSharp -  }
-                    ExecuteTagHelpers - 

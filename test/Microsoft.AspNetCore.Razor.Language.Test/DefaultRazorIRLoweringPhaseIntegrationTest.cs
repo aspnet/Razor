@@ -190,14 +190,12 @@ namespace Microsoft.AspNetCore.Razor.Language
                     Children(
                         tagHelperNode,
                         c => TagHelperStructure("span", TagMode.StartTagAndEndTag, c),
-                        c => Assert.IsType<CreateTagHelperIRNode>(c),
                         c => TagHelperHtmlAttribute(
                             "val",
                             HtmlAttributeValueStyle.DoubleQuotes,
                             c,
                             v => CSharpAttributeValue(string.Empty, "Hello", v),
-                            v => LiteralAttributeValue(" ", "World", v)),
-                        c => Assert.IsType<ExecuteTagHelpersIRNode>(c));
+                            v => LiteralAttributeValue(" ", "World", v)));
                 });
         }
 
@@ -237,14 +235,12 @@ namespace Microsoft.AspNetCore.Razor.Language
                     Children(
                         tagHelperNode,
                         c => TagHelperStructure("span", TagMode.StartTagAndEndTag, c), // Note: this is span not cool:span
-                        c => Assert.IsType<CreateTagHelperIRNode>(c),
                         c => TagHelperHtmlAttribute(
                             "val",
                             HtmlAttributeValueStyle.DoubleQuotes,
                             c,
                             v => CSharpAttributeValue(string.Empty, "Hello", v),
-                            v => LiteralAttributeValue(" ", "World", v)),
-                        c => Assert.IsType<ExecuteTagHelpersIRNode>(c));
+                            v => LiteralAttributeValue(" ", "World", v)));
                 });
         }
 
@@ -286,14 +282,12 @@ namespace Microsoft.AspNetCore.Razor.Language
                         Children(
                             tagHelperNode,
                             c2 => TagHelperStructure("span", TagMode.StartTagAndEndTag, c2),
-                            c2 => Assert.IsType<CreateTagHelperIRNode>(c2),
                             c2 => TagHelperHtmlAttribute(
                                 "val",
                                 HtmlAttributeValueStyle.DoubleQuotes,
                                 c2,
                                 v => CSharpAttributeValue(string.Empty, "Hello", v),
-                                v => LiteralAttributeValue(" ", "World", v)),
-                            c2 => Assert.IsType<ExecuteTagHelpersIRNode>(c2));
+                                v => LiteralAttributeValue(" ", "World", v)));
                     },
                     c1 => Html(Environment.NewLine, c1)),
                 n => TagHelperFieldDeclaration(n, "SpanTagHelper"));
@@ -337,14 +331,12 @@ namespace Microsoft.AspNetCore.Razor.Language
                     var tagHelperNode = Assert.IsType<TagHelperIRNode>(n);
                     Children(tagHelperNode,
                     c => TagHelperStructure("input", TagMode.SelfClosing, c),
-                    c => Assert.IsType<CreateTagHelperIRNode>(c),
                     c => SetTagHelperProperty(
                         "bound",
                         "FooProp",
                         HtmlAttributeValueStyle.SingleQuotes,
                         c,
-                        v => Html("foo", v)),
-                    c => Assert.IsType<ExecuteTagHelpersIRNode>(c));
+                        v => Html("foo", v)));
                 });
         }
 

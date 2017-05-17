@@ -25,18 +25,13 @@ Document -
                             RazorIRToken - (181:6,27 [10] BasicTagHelpers_Prefixed.cshtml) - Html - \n        
                         TagHelper - (191:7,8 [41] BasicTagHelpers_Prefixed.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.StartTagOnly
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.InputTagHelper2
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_0 - type - Type
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_0 - type - Type
                             SetTagHelperProperty - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 RazorIRToken - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - CSharp - true
-                            ExecuteTagHelpers - 
                         HtmlContent - (232:7,49 [6] BasicTagHelpers_Prefixed.cshtml)
                             RazorIRToken - (232:7,49 [6] BasicTagHelpers_Prefixed.cshtml) - Html - \n    
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
-                    ExecuteTagHelpers - 
                 HtmlContent - (245:8,11 [11] BasicTagHelpers_Prefixed.cshtml)
                     RazorIRToken - (245:8,11 [2] BasicTagHelpers_Prefixed.cshtml) - Html - \n
                     RazorIRToken - (247:9,0 [9] BasicTagHelpers_Prefixed.cshtml) - Html - </THSdiv>

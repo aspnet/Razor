@@ -15,10 +15,8 @@ Document -
                     RazorIRToken - (50:2,6 [6] SimpleTagHelpers.cshtml) - Html - \n    
                 TagHelper - (56:3,4 [35] SimpleTagHelpers.cshtml)
                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                    CreateTagHelper -  - InputTagHelper
                     SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_0 - value - FooProp
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
-                    ExecuteTagHelpers - 
                 HtmlContent - (91:3,39 [9] SimpleTagHelpers.cshtml)
                     RazorIRToken - (91:3,39 [2] SimpleTagHelpers.cshtml) - Html - \n
                     RazorIRToken - (93:4,0 [7] SimpleTagHelpers.cshtml) - Html - </form>

@@ -20,6 +20,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
 
         internal TagMode TagMode { get; set; }
 
+        public TagHelperBinding TagHelperBinding { get; set; }
+
         public override void Accept(RazorIRNodeVisitor visitor)
         {
             if (visitor == null)
