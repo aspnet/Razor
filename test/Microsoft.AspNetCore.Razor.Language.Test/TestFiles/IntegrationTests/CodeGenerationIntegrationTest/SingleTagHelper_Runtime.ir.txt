@@ -7,8 +7,8 @@ Document -
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (33:1,0 [2] SingleTagHelper.cshtml)
                     RazorIRToken - (33:1,0 [2] SingleTagHelper.cshtml) - Html - \n
-                TagHelper - (35:2,0 [49] SingleTagHelper.cshtml)
-                    InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
+                TagHelper - (35:2,0 [49] SingleTagHelper.cshtml) - p - TagMode.StartTagAndEndTag - TestNamespace.PTagHelper
+                    TagHelperBody - 
                         HtmlContent - (69:2,34 [11] SingleTagHelper.cshtml)
                             RazorIRToken - (69:2,34 [11] SingleTagHelper.cshtml) - Html - Body of Tag
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0

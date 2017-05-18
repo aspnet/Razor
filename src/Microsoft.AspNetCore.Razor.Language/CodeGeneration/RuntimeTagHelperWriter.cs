@@ -50,6 +50,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public string TagModeTypeName { get; set; } = "global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode";
 
+        public string HtmlAttributeValueStyleTypeName { get; set; } = "global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle";
+
         public string CreateTagHelperMethodName { get; set; } = "CreateTagHelper";
 
         public string TagHelperOutputIsContentModifiedPropertyName { get; set; } = "IsContentModified";
@@ -147,7 +149,45 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public override void WriteTagHelper(CSharpRenderingContext context, TagHelperIRNode node)
         {
-            context.RenderChildren(node);
+            var tagHelperBody = node.Children.First() as TagHelperBodyIRNode;
+            Debug.Assert(tagHelperBody != null);
+            WriteTagHelperBody(context, tagHelperBody, node.TagName, node.TagMode);
+
+            // Create tag helper
+            foreach (var descriptor in node.TagHelperBinding.Descriptors)
+            {
+                var typeName = descriptor.Metadata[TagHelperDescriptorBuilder.TypeNameKey];
+                var tagHelperVariableName = GetTagHelperVariableName(typeName);
+
+                context.Writer
+                    .WriteStartAssignment(tagHelperVariableName)
+                    .WriteStartMethodInvocation(
+                         CreateTagHelperMethodName,
+                        "global::" + typeName)
+                    .WriteEndMethodInvocation();
+
+                context.Writer.WriteInstanceMethodInvocation(
+                    ExecutionContextVariableName,
+                    ExecutionContextAddMethodName,
+                    tagHelperVariableName);
+            }
+
+            // Render attributes
+            foreach (var item in node.Children.Skip(1))
+            {
+                switch (item)
+                {
+                    case AddTagHelperHtmlAttributeIRNode attributeNode:
+                        WriteAddTagHelperHtmlAttribute(context, attributeNode);
+                        break;
+                    case SetTagHelperPropertyIRNode attributeNode:
+                        WriteSetTagHelperProperty(context, attributeNode);
+                        break;
+                    default:
+                        context.RenderNode(item);
+                        break;
+                }
+            }
 
             // Execute tag helper
             context.Writer
@@ -186,7 +226,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                     ScopeManagerEndMethodName);
         }
 
-        public override void WriteInitializeTagHelperStructure(CSharpRenderingContext context, InitializeTagHelperStructureIRNode node)
+        // Internal for testing.
+        internal void WriteTagHelperBody(CSharpRenderingContext context, TagHelperBodyIRNode node, string tagName, TagMode tagMode)
         {
             // Call into the tag helper scope manager to start a new tag helper scope.
             // Also capture the value as the current execution context.
@@ -198,11 +239,11 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             // Assign a unique ID for this instance of the source HTML tag. This must be unique
             // per call site, e.g. if the tag is on the view twice, there should be two IDs.
-            context.Writer.WriteStringLiteral(node.TagName)
+            context.Writer.WriteStringLiteral(tagName)
                 .WriteParameterSeparator()
                 .Write(TagModeTypeName)
                 .Write(".")
-                .Write(node.TagMode.ToString())
+                .Write(tagMode.ToString())
                 .WriteParameterSeparator()
                 .WriteStringLiteral(context.IdGenerator())
                 .WriteParameterSeparator();
@@ -218,30 +259,11 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             }
 
             context.Writer.WriteEndMethodInvocation();
-
-            // CreateTagHelper
-            foreach (var descriptor in node.TagHelperBinding.Descriptors)
-            {
-                var typeName = descriptor.Metadata[TagHelperDescriptorBuilder.TypeNameKey];
-                var tagHelperVariableName = GetTagHelperVariableName(typeName);
-
-                context.Writer
-                    .WriteStartAssignment(tagHelperVariableName)
-                    .WriteStartMethodInvocation(
-                         CreateTagHelperMethodName,
-                        "global::" + typeName)
-                    .WriteEndMethodInvocation();
-
-                context.Writer.WriteInstanceMethodInvocation(
-                    ExecutionContextVariableName,
-                    ExecutionContextAddMethodName,
-                    tagHelperVariableName);
-            }
         }
 
-        public override void WriteAddTagHelperHtmlAttribute(CSharpRenderingContext context, AddTagHelperHtmlAttributeIRNode node)
+        internal void WriteAddTagHelperHtmlAttribute(CSharpRenderingContext context, AddTagHelperHtmlAttributeIRNode node)
         {
-            var attributeValueStyleParameter = $"global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.{node.ValueStyle}";
+            var attributeValueStyleParameter = $"{HtmlAttributeValueStyleTypeName}.{node.ValueStyle}";
             var isConditionalAttributeValue = node.Children.Any(child => child is CSharpAttributeValueIRNode);
 
             // All simple text and minimized attributes will be pre-allocated.
@@ -311,7 +333,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             }
         }
 
-        public override void WriteSetTagHelperProperty(CSharpRenderingContext context, SetTagHelperPropertyIRNode node)
+        internal void WriteSetTagHelperProperty(CSharpRenderingContext context, SetTagHelperPropertyIRNode node)
         {
             var tagHelperVariableName = GetTagHelperVariableName(node.TagHelperTypeName);
             var tagHelperRenderingContext = context.TagHelperRenderingContext;

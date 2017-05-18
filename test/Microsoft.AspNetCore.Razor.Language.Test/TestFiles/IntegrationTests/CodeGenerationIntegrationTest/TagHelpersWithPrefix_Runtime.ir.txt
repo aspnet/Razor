@@ -8,8 +8,8 @@ Document -
                 HtmlContent - (55:2,0 [12] TagHelpersWithPrefix.cshtml)
                     RazorIRToken - (55:2,0 [6] TagHelpersWithPrefix.cshtml) - Html - <form>
                     RazorIRToken - (61:2,6 [6] TagHelpersWithPrefix.cshtml) - Html - \n    
-                TagHelper - (67:3,4 [39] TagHelpersWithPrefix.cshtml)
-                    InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                TagHelper - (67:3,4 [39] TagHelpersWithPrefix.cshtml) - input - TagMode.SelfClosing - InputTagHelper
+                    TagHelperBody - 
                     SetTagHelperProperty - (85:3,22 [6] TagHelpersWithPrefix.cshtml) - bound - BoundProp - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (86:3,23 [5] TagHelpersWithPrefix.cshtml)
                             RazorIRToken - (86:3,23 [5] TagHelpersWithPrefix.cshtml) - CSharp - Hello

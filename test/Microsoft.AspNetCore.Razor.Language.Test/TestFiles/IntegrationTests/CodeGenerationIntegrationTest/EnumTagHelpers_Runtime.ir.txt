@@ -10,37 +10,37 @@ Document -
                     RazorIRToken - (37:2,2 [39] EnumTagHelpers.cshtml) - CSharp - \n    var enumValue = MyEnum.MyValue;\n
                 HtmlContent - (79:5,0 [2] EnumTagHelpers.cshtml)
                     RazorIRToken - (79:5,0 [2] EnumTagHelpers.cshtml) - Html - \n
-                TagHelper - (81:6,0 [33] EnumTagHelpers.cshtml)
-                    InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                TagHelper - (81:6,0 [33] EnumTagHelpers.cshtml) - input - TagMode.SelfClosing - TestNamespace.InputTagHelper - TestNamespace.CatchAllTagHelper
+                    TagHelperBody - 
                     SetTagHelperProperty - (95:6,14 [15] EnumTagHelpers.cshtml) - value - Value - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (96:6,15 [14] EnumTagHelpers.cshtml)
                             RazorIRToken - (96:6,15 [14] EnumTagHelpers.cshtml) - CSharp - MyEnum.MyValue
                 HtmlContent - (114:6,33 [2] EnumTagHelpers.cshtml)
                     RazorIRToken - (114:6,33 [2] EnumTagHelpers.cshtml) - Html - \n
-                TagHelper - (116:7,0 [39] EnumTagHelpers.cshtml)
-                    InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                TagHelper - (116:7,0 [39] EnumTagHelpers.cshtml) - input - TagMode.SelfClosing - TestNamespace.InputTagHelper - TestNamespace.CatchAllTagHelper
+                    TagHelperBody - 
                     AddTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpAttributeValue - (130:7,14 [21] EnumTagHelpers.cshtml) - 
                             CSharpExpression - (131:7,15 [20] EnumTagHelpers.cshtml)
                                 RazorIRToken - (131:7,15 [20] EnumTagHelpers.cshtml) - CSharp - MyEnum.MySecondValue
                 HtmlContent - (155:7,39 [2] EnumTagHelpers.cshtml)
                     RazorIRToken - (155:7,39 [2] EnumTagHelpers.cshtml) - Html - \n
-                TagHelper - (157:8,0 [25] EnumTagHelpers.cshtml)
-                    InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                TagHelper - (157:8,0 [25] EnumTagHelpers.cshtml) - input - TagMode.SelfClosing - TestNamespace.InputTagHelper - TestNamespace.CatchAllTagHelper
+                    TagHelperBody - 
                     SetTagHelperProperty - (171:8,14 [7] EnumTagHelpers.cshtml) - value - Value - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (171:8,14 [7] EnumTagHelpers.cshtml) - CSharp - MyValue
                 HtmlContent - (182:8,25 [2] EnumTagHelpers.cshtml)
                     RazorIRToken - (182:8,25 [2] EnumTagHelpers.cshtml) - Html - \n
-                TagHelper - (184:9,0 [50] EnumTagHelpers.cshtml)
-                    InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                TagHelper - (184:9,0 [50] EnumTagHelpers.cshtml) - input - TagMode.SelfClosing - TestNamespace.InputTagHelper - TestNamespace.CatchAllTagHelper
+                    TagHelperBody - 
                     SetTagHelperProperty - (198:9,14 [13] EnumTagHelpers.cshtml) - value - Value - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (198:9,14 [13] EnumTagHelpers.cshtml) - CSharp - MySecondValue
                     SetTagHelperProperty - (224:9,40 [7] EnumTagHelpers.cshtml) - catch-all - CatchAll - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (224:9,40 [7] EnumTagHelpers.cshtml) - CSharp - MyValue
                 HtmlContent - (234:9,50 [2] EnumTagHelpers.cshtml)
                     RazorIRToken - (234:9,50 [2] EnumTagHelpers.cshtml) - Html - \n
-                TagHelper - (236:10,0 [51] EnumTagHelpers.cshtml)
-                    InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                TagHelper - (236:10,0 [51] EnumTagHelpers.cshtml) - input - TagMode.SelfClosing - TestNamespace.InputTagHelper - TestNamespace.CatchAllTagHelper
+                    TagHelperBody - 
                     SetTagHelperProperty - (250:10,14 [10] EnumTagHelpers.cshtml) - value - Value - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (251:10,15 [9] EnumTagHelpers.cshtml)
                             RazorIRToken - (251:10,15 [9] EnumTagHelpers.cshtml) - CSharp - enumValue

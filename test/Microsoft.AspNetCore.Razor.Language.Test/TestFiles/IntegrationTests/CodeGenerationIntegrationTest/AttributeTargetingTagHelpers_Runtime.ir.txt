@@ -9,13 +9,13 @@ Document -
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (31:1,0 [2] AttributeTargetingTagHelpers.cshtml)
                     RazorIRToken - (31:1,0 [2] AttributeTargetingTagHelpers.cshtml) - Html - \n
-                TagHelper - (33:2,0 [228] AttributeTargetingTagHelpers.cshtml)
-                    InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
+                TagHelper - (33:2,0 [228] AttributeTargetingTagHelpers.cshtml) - p - TagMode.StartTagAndEndTag - TestNamespace.PTagHelper
+                    TagHelperBody - 
                         HtmlContent - (48:2,15 [9] AttributeTargetingTagHelpers.cshtml)
                             RazorIRToken - (48:2,15 [6] AttributeTargetingTagHelpers.cshtml) - Html - \n    
                             RazorIRToken - (54:3,4 [3] AttributeTargetingTagHelpers.cshtml) - Html - <p>
-                        TagHelper - (57:3,7 [36] AttributeTargetingTagHelpers.cshtml)
-                            InitializeTagHelperStructure -  - strong - TagMode.StartTagAndEndTag
+                        TagHelper - (57:3,7 [36] AttributeTargetingTagHelpers.cshtml) - strong - TagMode.StartTagAndEndTag - TestNamespace.CatchAllTagHelper
+                            TagHelperBody - 
                                 HtmlContent - (79:3,29 [5] AttributeTargetingTagHelpers.cshtml)
                                     RazorIRToken - (79:3,29 [5] AttributeTargetingTagHelpers.cshtml) - Html - Hello
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
@@ -29,16 +29,16 @@ Document -
                             RazorIRToken - (131:4,10 [15] AttributeTargetingTagHelpers.cshtml) - Html -  checked="true"
                             RazorIRToken - (146:4,25 [3] AttributeTargetingTagHelpers.cshtml) - Html -  />
                             RazorIRToken - (149:4,28 [6] AttributeTargetingTagHelpers.cshtml) - Html - \n    
-                        TagHelper - (155:5,4 [40] AttributeTargetingTagHelpers.cshtml)
-                            InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                        TagHelper - (155:5,4 [40] AttributeTargetingTagHelpers.cshtml) - input - TagMode.SelfClosing - TestNamespace.InputTagHelper - TestNamespace.InputTagHelper2
+                            TagHelperBody - 
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_1 - type - Type
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_1 - type - Type
                             SetTagHelperProperty - (187:5,36 [4] AttributeTargetingTagHelpers.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 RazorIRToken - (187:5,36 [4] AttributeTargetingTagHelpers.cshtml) - CSharp - true
                         HtmlContent - (195:5,44 [6] AttributeTargetingTagHelpers.cshtml)
                             RazorIRToken - (195:5,44 [6] AttributeTargetingTagHelpers.cshtml) - Html - \n    
-                        TagHelper - (201:6,4 [54] AttributeTargetingTagHelpers.cshtml)
-                            InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                        TagHelper - (201:6,4 [54] AttributeTargetingTagHelpers.cshtml) - input - TagMode.SelfClosing - TestNamespace.InputTagHelper - TestNamespace.InputTagHelper2 - TestNamespace.CatchAllTagHelper
+                            TagHelperBody - 
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_1 - type - Type
                             SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_1 - type - Type
                             SetTagHelperProperty - (233:6,36 [4] AttributeTargetingTagHelpers.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes

@@ -16,8 +16,8 @@ Document -
                     RazorIRToken - (42:1,11 [2] SimpleTagHelpers.cshtml) - Html - \n
                     RazorIRToken - (44:2,0 [6] SimpleTagHelpers.cshtml) - Html - <form>
                     RazorIRToken - (50:2,6 [6] SimpleTagHelpers.cshtml) - Html - \n    
-                TagHelper - (56:3,4 [35] SimpleTagHelpers.cshtml)
-                    InitializeTagHelperStructure -  - input - TagMode.SelfClosing
+                TagHelper - (56:3,4 [35] SimpleTagHelpers.cshtml) - input - TagMode.SelfClosing - InputTagHelper
+                    TagHelperBody - 
                     SetTagHelperProperty - (70:3,18 [5] SimpleTagHelpers.cshtml) - value - FooProp - HtmlAttributeValueStyle.SingleQuotes
                         HtmlContent - (70:3,18 [5] SimpleTagHelpers.cshtml)
                             RazorIRToken - (70:3,18 [5] SimpleTagHelpers.cshtml) - Html - Hello

@@ -453,27 +453,25 @@ namespace Microsoft.AspNetCore.Razor.Language
 
                 DeclareTagHelperFields(tagHelperBlock);
 
-                _builder.Push(new TagHelperIRNode()
-                {
-                    Source = BuildSourceSpanFromNode(block)
-                });
-
                 var tagName = tagHelperBlock.TagName;
                 if (_tagHelperPrefix != null)
                 {
                     tagName = tagName.Substring(_tagHelperPrefix.Length);
                 }
 
-                _builder.Push(new InitializeTagHelperStructureIRNode()
+                _builder.Push(new TagHelperIRNode()
                 {
+                    Source = BuildSourceSpanFromNode(block),
                     TagName = tagName,
                     TagMode = tagHelperBlock.TagMode,
                     TagHelperBinding = tagHelperBlock.Binding
                 });
 
+                _builder.Push(new TagHelperBodyIRNode());
+
                 VisitDefault(block);
 
-                _builder.Pop(); // Pop InitializeTagHelperStructureIRNode
+                _builder.Pop(); // Pop TagHelperBodyIRNode
 
                 AddTagHelperAttributes(tagHelperBlock.Attributes, tagHelperBlock.Binding);
 

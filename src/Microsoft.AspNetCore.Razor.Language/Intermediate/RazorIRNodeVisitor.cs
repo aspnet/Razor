@@ -114,7 +114,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
             VisitDefault(node);
         }
 
-        public virtual void VisitInitializeTagHelperStructure(InitializeTagHelperStructureIRNode node)
+        public virtual void VisitTagHelperBody(TagHelperBodyIRNode node)
         {
             VisitDefault(node);
         }

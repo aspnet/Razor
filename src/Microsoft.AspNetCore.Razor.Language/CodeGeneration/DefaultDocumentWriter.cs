@@ -232,20 +232,20 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 }
             }
 
-            public override void VisitInitializeTagHelperStructure(InitializeTagHelperStructureIRNode node)
-            {
-                Context.TagHelperWriter.WriteInitializeTagHelperStructure(Context, node);
-            }
+            //public override void VisitTagHelperBody(TagHelperBodyIRNode node)
+            //{
+            //    Context.TagHelperWriter.WriteTagHelperBody(Context, node);
+            //}
 
-            public override void VisitAddTagHelperHtmlAttribute(AddTagHelperHtmlAttributeIRNode node)
-            {
-                Context.TagHelperWriter.WriteAddTagHelperHtmlAttribute(Context, node);
-            }
+            //public override void VisitAddTagHelperHtmlAttribute(AddTagHelperHtmlAttributeIRNode node)
+            //{
+            //    Context.TagHelperWriter.WriteAddTagHelperHtmlAttribute(Context, node);
+            //}
 
-            public override void VisitSetTagHelperProperty(SetTagHelperPropertyIRNode node)
-            {
-                Context.TagHelperWriter.WriteSetTagHelperProperty(Context, node);
-            }
+            //public override void VisitSetTagHelperProperty(SetTagHelperPropertyIRNode node)
+            //{
+            //    Context.TagHelperWriter.WriteSetTagHelperProperty(Context, node);
+            //}
 
             public override void VisitDefault(RazorIRNode node)
             {

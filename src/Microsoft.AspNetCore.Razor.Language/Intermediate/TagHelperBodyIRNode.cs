@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.AspNetCore.Razor.Language.Intermediate
 {
-    public sealed class InitializeTagHelperStructureIRNode : RazorIRNode
+    public sealed class TagHelperBodyIRNode : RazorIRNode
     {
         public override ItemCollection Annotations => ReadonlyItemCollection.Empty;
 
@@ -16,12 +16,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
 
         public override SourceSpan? Source { get; set; }
 
-        public string TagName { get; set; }
-
-        internal TagMode TagMode { get; set; }
-
-        public TagHelperBinding TagHelperBinding { get; set; }
-
         public override void Accept(RazorIRNodeVisitor visitor)
         {
             if (visitor == null)
@@ -29,7 +23,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
                 throw new ArgumentNullException(nameof(visitor));
             }
 
-            visitor.VisitInitializeTagHelperStructure(this);
+            visitor.VisitTagHelperBody(this);
         }
     }
 }

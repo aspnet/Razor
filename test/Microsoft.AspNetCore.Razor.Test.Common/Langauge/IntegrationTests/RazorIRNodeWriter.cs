@@ -81,15 +81,17 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             WriteContentNode(node, node.UsedTagHelperTypeNames.ToArray());
         }
 
-        public override void VisitInitializeTagHelperStructure(InitializeTagHelperStructureIRNode node)
+        public override void VisitTagHelper(TagHelperIRNode node)
         {
             WriteContentNode(node, node.TagName, string.Format("{0}.{1}", nameof(TagMode), node.TagMode));
-        }
 
-        //public override void VisitCreateTagHelper(CreateTagHelperIRNode node)
-        //{
-        //    WriteContentNode(node, node.TagHelperTypeName);
-        //}
+            var taghelperTypeNames = node.TagHelperBinding.Descriptors.Select(d => d.Metadata[TagHelperDescriptorBuilder.TypeNameKey]);
+            foreach (var typeName in taghelperTypeNames)
+            {
+                WriteSeparator();
+                WriteContent(typeName);
+            }
+        }
 
         public override void VisitSetTagHelperProperty(SetTagHelperPropertyIRNode node)
         {

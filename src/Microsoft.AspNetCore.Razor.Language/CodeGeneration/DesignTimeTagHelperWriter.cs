@@ -14,11 +14,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
     {
         public string CreateTagHelperMethodName { get; set; } = "CreateTagHelper";
 
-        public override void WriteTagHelper(CSharpRenderingContext context, TagHelperIRNode node)
-        {
-            context.RenderChildren(node);
-        }
-
         public override void WriteDeclareTagHelperFields(CSharpRenderingContext context, DeclareTagHelperFieldsIRNode node)
         {
             foreach (var tagHelperTypeName in node.UsedTagHelperTypeNames)
@@ -33,16 +28,13 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             }
         }
 
-        public override void WriteAddTagHelperHtmlAttribute(CSharpRenderingContext context, AddTagHelperHtmlAttributeIRNode node)
+        public override void WriteTagHelper(CSharpRenderingContext context, TagHelperIRNode node)
         {
-            context.RenderChildren(node);
-        }
+            var tagHelperBody = node.Children.First() as TagHelperBodyIRNode;
+            Debug.Assert(tagHelperBody != null);
+            WriteTagHelperBody(context, tagHelperBody);
 
-        public override void WriteInitializeTagHelperStructure(CSharpRenderingContext context, InitializeTagHelperStructureIRNode node)
-        {
-            context.RenderChildren(node);
-
-            // CreateTagHelper
+            // Create tag helper
             foreach (var descriptor in node.TagHelperBinding.Descriptors)
             {
                 var typeName = descriptor.Metadata[TagHelperDescriptorBuilder.TypeNameKey];
@@ -55,9 +47,36 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                         "global::" + typeName)
                     .WriteEndMethodInvocation();
             }
+
+            // Render attributes
+            foreach (var item in node.Children.Skip(1))
+            {
+                switch (item)
+                {
+                    case AddTagHelperHtmlAttributeIRNode attributeNode:
+                        WriteAddTagHelperHtmlAttribute(context, attributeNode);
+                        break;
+                    case SetTagHelperPropertyIRNode attributeNode:
+                        WriteSetTagHelperProperty(context, attributeNode);
+                        break;
+                    default:
+                        context.RenderNode(item);
+                        break;
+                }
+            }
         }
 
-        public override void WriteSetTagHelperProperty(CSharpRenderingContext context, SetTagHelperPropertyIRNode node)
+        internal void WriteTagHelperBody(CSharpRenderingContext context, TagHelperBodyIRNode node)
+        {
+            context.RenderChildren(node);
+        }
+
+        internal void WriteAddTagHelperHtmlAttribute(CSharpRenderingContext context, AddTagHelperHtmlAttributeIRNode node)
+        {
+            context.RenderChildren(node);
+        }
+
+        internal void WriteSetTagHelperProperty(CSharpRenderingContext context, SetTagHelperPropertyIRNode node)
         {
             var tagHelperVariableName = GetTagHelperVariableName(node.TagHelperTypeName);
             var tagHelperRenderingContext = context.TagHelperRenderingContext;

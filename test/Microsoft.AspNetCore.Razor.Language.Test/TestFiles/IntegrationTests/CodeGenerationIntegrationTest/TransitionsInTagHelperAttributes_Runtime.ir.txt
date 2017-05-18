@@ -9,8 +9,8 @@ Document -
                     RazorIRToken - (35:1,2 [59] TransitionsInTagHelperAttributes.cshtml) - CSharp -  \n    var @class = "container-fluid";\n    var @int = 1;\n
                 HtmlContent - (97:5,0 [2] TransitionsInTagHelperAttributes.cshtml)
                     RazorIRToken - (97:5,0 [2] TransitionsInTagHelperAttributes.cshtml) - Html - \n
-                TagHelper - (99:6,0 [44] TransitionsInTagHelperAttributes.cshtml)
-                    InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
+                TagHelper - (99:6,0 [44] TransitionsInTagHelperAttributes.cshtml) - p - TagMode.StartTagAndEndTag - TestNamespace.PTagHelper
+                    TagHelperBody - 
                         HtmlContent - (128:6,29 [11] TransitionsInTagHelperAttributes.cshtml)
                             RazorIRToken - (128:6,29 [11] TransitionsInTagHelperAttributes.cshtml) - Html - Body of Tag
                     AddTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
@@ -19,8 +19,8 @@ Document -
                         RazorIRToken - (122:6,23 [4] TransitionsInTagHelperAttributes.cshtml) - CSharp - 1337
                 HtmlContent - (143:6,44 [2] TransitionsInTagHelperAttributes.cshtml)
                     RazorIRToken - (143:6,44 [2] TransitionsInTagHelperAttributes.cshtml) - Html - \n
-                TagHelper - (145:7,0 [34] TransitionsInTagHelperAttributes.cshtml)
-                    InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
+                TagHelper - (145:7,0 [34] TransitionsInTagHelperAttributes.cshtml) - p - TagMode.StartTagAndEndTag - TestNamespace.PTagHelper
+                    TagHelperBody - 
                     AddTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpAttributeValue - (155:7,10 [9] TransitionsInTagHelperAttributes.cshtml) - 
                             CSharpExpression - (157:7,12 [6] TransitionsInTagHelperAttributes.cshtml)
@@ -29,8 +29,8 @@ Document -
                         RazorIRToken - (171:7,26 [2] TransitionsInTagHelperAttributes.cshtml) - CSharp - 42
                 HtmlContent - (179:7,34 [2] TransitionsInTagHelperAttributes.cshtml)
                     RazorIRToken - (179:7,34 [2] TransitionsInTagHelperAttributes.cshtml) - Html - \n
-                TagHelper - (181:8,0 [36] TransitionsInTagHelperAttributes.cshtml)
-                    InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
+                TagHelper - (181:8,0 [36] TransitionsInTagHelperAttributes.cshtml) - p - TagMode.StartTagAndEndTag - TestNamespace.PTagHelper
+                    TagHelperBody - 
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                     SetTagHelperProperty - (202:8,21 [9] TransitionsInTagHelperAttributes.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (202:8,21 [2] TransitionsInTagHelperAttributes.cshtml) - CSharp - 42
@@ -41,16 +41,16 @@ Document -
                             RazorIRToken - (208:8,27 [3] TransitionsInTagHelperAttributes.cshtml) - CSharp - int
                 HtmlContent - (217:8,36 [2] TransitionsInTagHelperAttributes.cshtml)
                     RazorIRToken - (217:8,36 [2] TransitionsInTagHelperAttributes.cshtml) - Html - \n
-                TagHelper - (219:9,0 [31] TransitionsInTagHelperAttributes.cshtml)
-                    InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
+                TagHelper - (219:9,0 [31] TransitionsInTagHelperAttributes.cshtml) - p - TagMode.StartTagAndEndTag - TestNamespace.PTagHelper
+                    TagHelperBody - 
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                     SetTagHelperProperty - (240:9,21 [4] TransitionsInTagHelperAttributes.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (241:9,22 [3] TransitionsInTagHelperAttributes.cshtml)
                             RazorIRToken - (241:9,22 [3] TransitionsInTagHelperAttributes.cshtml) - CSharp - int
                 HtmlContent - (250:9,31 [2] TransitionsInTagHelperAttributes.cshtml)
                     RazorIRToken - (250:9,31 [2] TransitionsInTagHelperAttributes.cshtml) - Html - \n
-                TagHelper - (252:10,0 [34] TransitionsInTagHelperAttributes.cshtml)
-                    InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
+                TagHelper - (252:10,0 [34] TransitionsInTagHelperAttributes.cshtml) - p - TagMode.StartTagAndEndTag - TestNamespace.PTagHelper
+                    TagHelperBody - 
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                     SetTagHelperProperty - (273:10,21 [7] TransitionsInTagHelperAttributes.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (274:10,22 [6] TransitionsInTagHelperAttributes.cshtml)
@@ -59,8 +59,8 @@ Document -
                             RazorIRToken - (279:10,27 [1] TransitionsInTagHelperAttributes.cshtml) - CSharp - )
                 HtmlContent - (286:10,34 [2] TransitionsInTagHelperAttributes.cshtml)
                     RazorIRToken - (286:10,34 [2] TransitionsInTagHelperAttributes.cshtml) - Html - \n
-                TagHelper - (288:11,0 [54] TransitionsInTagHelperAttributes.cshtml)
-                    InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
+                TagHelper - (288:11,0 [54] TransitionsInTagHelperAttributes.cshtml) - p - TagMode.StartTagAndEndTag - TestNamespace.PTagHelper
+                    TagHelperBody - 
                     AddTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlAttributeValue - (298:11,10 [7] TransitionsInTagHelperAttributes.cshtml) -  - custom-
                         CSharpAttributeValue - (305:11,17 [9] TransitionsInTagHelperAttributes.cshtml) - 
