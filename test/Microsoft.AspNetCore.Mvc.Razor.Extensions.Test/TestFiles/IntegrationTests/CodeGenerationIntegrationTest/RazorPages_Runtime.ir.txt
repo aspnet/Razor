@@ -43,23 +43,23 @@ Document -
                     RazorIRToken - (550:25,45 [6] RazorPages.cshtml) - Html - \n    
                 CSharpStatement - 
                     RazorIRToken -  - CSharp - EndContext();
-                TagHelper - (556:26,4 [31] RazorPages.cshtml)
-                    InitializeTagHelperStructure -  - div - TagMode.StartTagAndEndTag
-                    CreateTagHelper -  - DivTagHelper
+                CSharpStatement - 
+                    RazorIRToken -  - CSharp - BeginContext(556, 31, false);
+                TagHelper - (556:26,4 [31] RazorPages.cshtml) - div - TagMode.StartTagAndEndTag - DivTagHelper
+                    TagHelperBody - 
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
-                    CSharpStatement - 
-                        RazorIRToken -  - CSharp - BeginContext(556, 31, false);
-                    ExecuteTagHelpers - 
-                    CSharpStatement - 
-                        RazorIRToken -  - CSharp - EndContext();
+                CSharpStatement - 
+                    RazorIRToken -  - CSharp - EndContext();
                 CSharpStatement - 
                     RazorIRToken -  - CSharp - BeginContext(587, 6, true);
                 HtmlContent - (587:26,35 [6] RazorPages.cshtml)
                     RazorIRToken - (587:26,35 [6] RazorPages.cshtml) - Html - \n    
                 CSharpStatement - 
                     RazorIRToken -  - CSharp - EndContext();
-                TagHelper - (593:27,4 [237] RazorPages.cshtml)
-                    InitializeTagHelperStructure -  - div - TagMode.StartTagAndEndTag
+                CSharpStatement - 
+                    RazorIRToken -  - CSharp - BeginContext(593, 237, false);
+                TagHelper - (593:27,4 [237] RazorPages.cshtml) - div - TagMode.StartTagAndEndTag - DivTagHelper
+                    TagHelperBody - 
                         CSharpStatement - 
                             RazorIRToken -  - CSharp - BeginContext(617, 48, true);
                         HtmlContent - (617:27,28 [48] RazorPages.cshtml)
@@ -82,8 +82,10 @@ Document -
                             RazorIRToken - (678:28,59 [10] RazorPages.cshtml) - Html - \n        
                         CSharpStatement - 
                             RazorIRToken -  - CSharp - EndContext();
-                        TagHelper - (688:29,8 [130] RazorPages.cshtml)
-                            InitializeTagHelperStructure -  - div - TagMode.StartTagAndEndTag
+                        CSharpStatement - 
+                            RazorIRToken -  - CSharp - BeginContext(688, 130, false);
+                        TagHelper - (688:29,8 [130] RazorPages.cshtml) - div - TagMode.StartTagAndEndTag - DivTagHelper
+                            TagHelperBody - 
                                 CSharpStatement - 
                                     RazorIRToken -  - CSharp - BeginContext(711, 101, true);
                                 HtmlContent - (711:29,31 [101] RazorPages.cshtml)
@@ -99,42 +101,38 @@ Document -
                                     RazorIRToken - (802:31,45 [10] RazorPages.cshtml) - Html - \n        
                                 CSharpStatement - 
                                     RazorIRToken -  - CSharp - EndContext();
-                            CreateTagHelper -  - DivTagHelper
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
-                            CSharpStatement - 
-                                RazorIRToken -  - CSharp - BeginContext(688, 130, false);
-                            ExecuteTagHelpers - 
-                            CSharpStatement - 
-                                RazorIRToken -  - CSharp - EndContext();
+                        CSharpStatement - 
+                            RazorIRToken -  - CSharp - EndContext();
                         CSharpStatement - 
                             RazorIRToken -  - CSharp - BeginContext(818, 6, true);
                         HtmlContent - (818:32,14 [6] RazorPages.cshtml)
                             RazorIRToken - (818:32,14 [6] RazorPages.cshtml) - Html - \n    
                         CSharpStatement - 
                             RazorIRToken -  - CSharp - EndContext();
-                    CreateTagHelper -  - DivTagHelper
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
-                    CSharpStatement - 
-                        RazorIRToken -  - CSharp - BeginContext(593, 237, false);
-                    ExecuteTagHelpers - 
-                    CSharpStatement - 
-                        RazorIRToken -  - CSharp - EndContext();
+                CSharpStatement - 
+                    RazorIRToken -  - CSharp - EndContext();
                 CSharpStatement - 
                     RazorIRToken -  - CSharp - BeginContext(830, 6, true);
                 HtmlContent - (830:33,10 [6] RazorPages.cshtml)
                     RazorIRToken - (830:33,10 [6] RazorPages.cshtml) - Html - \n    
                 CSharpStatement - 
                     RazorIRToken -  - CSharp - EndContext();
-                TagHelper - (836:34,4 [174] RazorPages.cshtml)
-                    InitializeTagHelperStructure -  - div - TagMode.StartTagAndEndTag
+                CSharpStatement - 
+                    RazorIRToken -  - CSharp - BeginContext(836, 174, false);
+                TagHelper - (836:34,4 [174] RazorPages.cshtml) - div - TagMode.StartTagAndEndTag - DivTagHelper
+                    TagHelperBody - 
                         CSharpStatement - 
                             RazorIRToken -  - CSharp - BeginContext(860, 10, true);
                         HtmlContent - (860:34,28 [10] RazorPages.cshtml)
                             RazorIRToken - (860:34,28 [10] RazorPages.cshtml) - Html - \n        
                         CSharpStatement - 
                             RazorIRToken -  - CSharp - EndContext();
-                        TagHelper - (870:35,8 [128] RazorPages.cshtml)
-                            InitializeTagHelperStructure -  - div - TagMode.StartTagAndEndTag
+                        CSharpStatement - 
+                            RazorIRToken -  - CSharp - BeginContext(870, 128, false);
+                        TagHelper - (870:35,8 [128] RazorPages.cshtml) - div - TagMode.StartTagAndEndTag - DivTagHelper
+                            TagHelperBody - 
                                 CSharpStatement - 
                                     RazorIRToken -  - CSharp - BeginContext(909, 83, true);
                                 HtmlContent - (909:35,47 [83] RazorPages.cshtml)
@@ -148,26 +146,18 @@ Document -
                                     RazorIRToken - (982:36,71 [10] RazorPages.cshtml) - Html - \n        
                                 CSharpStatement - 
                                     RazorIRToken -  - CSharp - EndContext();
-                            CreateTagHelper -  - DivTagHelper
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_3
-                            CSharpStatement - 
-                                RazorIRToken -  - CSharp - BeginContext(870, 128, false);
-                            ExecuteTagHelpers - 
-                            CSharpStatement - 
-                                RazorIRToken -  - CSharp - EndContext();
+                        CSharpStatement - 
+                            RazorIRToken -  - CSharp - EndContext();
                         CSharpStatement - 
                             RazorIRToken -  - CSharp - BeginContext(998, 6, true);
                         HtmlContent - (998:37,14 [6] RazorPages.cshtml)
                             RazorIRToken - (998:37,14 [6] RazorPages.cshtml) - Html - \n    
                         CSharpStatement - 
                             RazorIRToken -  - CSharp - EndContext();
-                    CreateTagHelper -  - DivTagHelper
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
-                    CSharpStatement - 
-                        RazorIRToken -  - CSharp - BeginContext(836, 174, false);
-                    ExecuteTagHelpers - 
-                    CSharpStatement - 
-                        RazorIRToken -  - CSharp - EndContext();
+                CSharpStatement - 
+                    RazorIRToken -  - CSharp - EndContext();
                 CSharpStatement - 
                     RazorIRToken -  - CSharp - BeginContext(1010, 11, true);
                 HtmlContent - (1010:38,10 [11] RazorPages.cshtml)

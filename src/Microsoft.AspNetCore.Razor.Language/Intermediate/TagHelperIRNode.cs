@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
 
         internal TagMode TagMode { get; set; }
 
-        public TagHelperBinding TagHelperBinding { get; set; }
+        public Dictionary<TagHelperDescriptor, string> TagHelperTypes { get; set; }
 
         public override void Accept(RazorIRNodeVisitor visitor)
         {

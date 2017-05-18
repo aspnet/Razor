@@ -132,203 +132,203 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 n => CSharpExpression("Hi", n));
         }
 
-        [Fact]
-        public void InstrumentationPass_SkipsCSharpExpression_InsideTagHelperAttribute()
-        {
-            // Arrange
-            var document = new DocumentIRNode();
-            var builder = RazorIRBuilder.Create(document);
-            builder.Push(new TagHelperIRNode()
-            {
-                Source = CreateSource(3)
-            });
+        //[Fact]
+        //public void InstrumentationPass_SkipsCSharpExpression_InsideTagHelperAttribute()
+        //{
+        //    // Arrange
+        //    var document = new DocumentIRNode();
+        //    var builder = RazorIRBuilder.Create(document);
+        //    builder.Push(new TagHelperIRNode()
+        //    {
+        //        Source = CreateSource(3)
+        //    });
 
-            builder.Push(new AddTagHelperHtmlAttributeIRNode());
+        //    builder.Push(new AddTagHelperHtmlAttributeIRNode());
 
-            builder.Push(new CSharpExpressionIRNode()
-            {
-                Source = CreateSource(5)
-            });
+        //    builder.Push(new CSharpExpressionIRNode()
+        //    {
+        //        Source = CreateSource(5)
+        //    });
 
-            builder.Add(new RazorIRToken()
-            {
-                Content = "Hi",
-                Kind = RazorIRToken.TokenKind.CSharp,
-            });
+        //    builder.Add(new RazorIRToken()
+        //    {
+        //        Content = "Hi",
+        //        Kind = RazorIRToken.TokenKind.CSharp,
+        //    });
 
-            var pass = new InstrumentationPass()
-            {
-                Engine = RazorEngine.CreateEmpty(b => { }),
-            };
+        //    var pass = new InstrumentationPass()
+        //    {
+        //        Engine = RazorEngine.CreateEmpty(b => { }),
+        //    };
 
-            // Act
-            pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
+        //    // Act
+        //    pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
 
-            // Assert
-            Children(
-                document,
-                n =>
-                {
-                    Assert.IsType<TagHelperIRNode>(n);
-                    Children(
-                        n,
-                        c =>
-                        {
-                            Assert.IsType<AddTagHelperHtmlAttributeIRNode>(c);
-                            Children(
-                                c,
-                                s => CSharpExpression("Hi", s));
-                        });
-                });
-        }
+        //    // Assert
+        //    Children(
+        //        document,
+        //        n =>
+        //        {
+        //            Assert.IsType<TagHelperIRNode>(n);
+        //            Children(
+        //                n,
+        //                c =>
+        //                {
+        //                    Assert.IsType<AddTagHelperHtmlAttributeIRNode>(c);
+        //                    Children(
+        //                        c,
+        //                        s => CSharpExpression("Hi", s));
+        //                });
+        //        });
+        //}
 
-        [Fact]
-        public void InstrumentationPass_SkipsCSharpExpression_InsideTagHelperProperty()
-        {
-            // Arrange
-            var document = new DocumentIRNode();
-            var builder = RazorIRBuilder.Create(document);
-            builder.Push(new TagHelperIRNode()
-            {
-                Source = CreateSource(3)
-            });
+        //[Fact]
+        //public void InstrumentationPass_SkipsCSharpExpression_InsideTagHelperProperty()
+        //{
+        //    // Arrange
+        //    var document = new DocumentIRNode();
+        //    var builder = RazorIRBuilder.Create(document);
+        //    builder.Push(new TagHelperIRNode()
+        //    {
+        //        Source = CreateSource(3)
+        //    });
 
-            builder.Push(new SetTagHelperPropertyIRNode());
+        //    builder.Push(new SetTagHelperPropertyIRNode());
 
-            builder.Push(new CSharpExpressionIRNode()
-            {
-                Source = CreateSource(5)
-            });
+        //    builder.Push(new CSharpExpressionIRNode()
+        //    {
+        //        Source = CreateSource(5)
+        //    });
 
-            builder.Add(new RazorIRToken()
-            {
-                Content = "Hi",
-                Kind = RazorIRToken.TokenKind.CSharp,
-            });
+        //    builder.Add(new RazorIRToken()
+        //    {
+        //        Content = "Hi",
+        //        Kind = RazorIRToken.TokenKind.CSharp,
+        //    });
 
-            var pass = new InstrumentationPass()
-            {
-                Engine = RazorEngine.CreateEmpty(b => { }),
-            };
+        //    var pass = new InstrumentationPass()
+        //    {
+        //        Engine = RazorEngine.CreateEmpty(b => { }),
+        //    };
 
-            // Act
-            pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
+        //    // Act
+        //    pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
 
-            // Assert
-            Children(
-                document,
-                n =>
-                {
-                    Assert.IsType<TagHelperIRNode>(n);
-                    Children(
-                        n,
-                        c =>
-                        {
-                            Assert.IsType<SetTagHelperPropertyIRNode>(c);
-                            Children(
-                                c,
-                                s => CSharpExpression("Hi", s));
-                        });
-                });
-        }
+        //    // Assert
+        //    Children(
+        //        document,
+        //        n =>
+        //        {
+        //            Assert.IsType<TagHelperIRNode>(n);
+        //            Children(
+        //                n,
+        //                c =>
+        //                {
+        //                    Assert.IsType<SetTagHelperPropertyIRNode>(c);
+        //                    Children(
+        //                        c,
+        //                        s => CSharpExpression("Hi", s));
+        //                });
+        //        });
+        //}
 
-        [Fact]
-        public void InstrumentationPass_InstrumentsExecuteTagHelper_InsideTagHelper()
-        {
-            // Arrange
-            var document = new DocumentIRNode();
-            var builder = RazorIRBuilder.Create(document);
-            builder.Push(new TagHelperIRNode()
-            {
-                Source = CreateSource(3),
-            });
+        //[Fact]
+        //public void InstrumentationPass_InstrumentsExecuteTagHelper_InsideTagHelper()
+        //{
+        //    // Arrange
+        //    var document = new DocumentIRNode();
+        //    var builder = RazorIRBuilder.Create(document);
+        //    builder.Push(new TagHelperIRNode()
+        //    {
+        //        Source = CreateSource(3),
+        //    });
 
-            builder.Add(new ExecuteTagHelpersIRNode());
+        //    builder.Add(new ExecuteTagHelpersIRNode());
 
-            var pass = new InstrumentationPass()
-            {
-                Engine = RazorEngine.CreateEmpty(b => { }),
-            };
+        //    var pass = new InstrumentationPass()
+        //    {
+        //        Engine = RazorEngine.CreateEmpty(b => { }),
+        //    };
 
-            // Act
-            pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
+        //    // Act
+        //    pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
 
-            // Assert
-            Children(
-                document,
-                n =>
-                {
-                    Assert.IsType<TagHelperIRNode>(n);
-                    Children(
-                        n,
-                        c => BeginInstrumentation("3, 3, false", c),
-                        c => Assert.IsType<ExecuteTagHelpersIRNode>(c),
-                        c => EndInstrumentation(c));
-                });
-        }
+        //    // Assert
+        //    Children(
+        //        document,
+        //        n =>
+        //        {
+        //            Assert.IsType<TagHelperIRNode>(n);
+        //            Children(
+        //                n,
+        //                c => BeginInstrumentation("3, 3, false", c),
+        //                c => Assert.IsType<ExecuteTagHelpersIRNode>(c),
+        //                c => EndInstrumentation(c));
+        //        });
+        //}
 
-        [Fact]
-        public void InstrumentationPass_SkipsExecuteTagHelper_WithoutLocation()
-        {
-            // Arrange
-            var document = new DocumentIRNode();
-            var builder = RazorIRBuilder.Create(document);
-            builder.Push(new TagHelperIRNode());
+        //[Fact]
+        //public void InstrumentationPass_SkipsExecuteTagHelper_WithoutLocation()
+        //{
+        //    // Arrange
+        //    var document = new DocumentIRNode();
+        //    var builder = RazorIRBuilder.Create(document);
+        //    builder.Push(new TagHelperIRNode());
 
-            builder.Add(new ExecuteTagHelpersIRNode());
+        //    builder.Add(new ExecuteTagHelpersIRNode());
 
-            var pass = new InstrumentationPass()
-            {
-                Engine = RazorEngine.CreateEmpty(b => { }),
-            };
+        //    var pass = new InstrumentationPass()
+        //    {
+        //        Engine = RazorEngine.CreateEmpty(b => { }),
+        //    };
 
-            // Act
-            pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
+        //    // Act
+        //    pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
 
-            // Assert
-            Children(
-                document,
-                n =>
-                {
-                    Assert.IsType<TagHelperIRNode>(n);
-                    Children(
-                        n,
-                        c => Assert.IsType<ExecuteTagHelpersIRNode>(c));
-                });
-        }
+        //    // Assert
+        //    Children(
+        //        document,
+        //        n =>
+        //        {
+        //            Assert.IsType<TagHelperIRNode>(n);
+        //            Children(
+        //                n,
+        //                c => Assert.IsType<ExecuteTagHelpersIRNode>(c));
+        //        });
+        //}
 
-        [Fact]
-        public void InstrumentationPass_SkipsExecuteTagHelper_MalformedTagHelper()
-        {
-            // Arrange
-            var document = new DocumentIRNode();
-            var builder = RazorIRBuilder.Create(document);
-            builder.Push(new TagHelperIRNode()
-            {
-                Source = CreateSource(3),
-            });
-            builder.Push(new CSharpExpressionIRNode());
-            builder.Add(new ExecuteTagHelpersIRNode()); // Malformed
+        //[Fact]
+        //public void InstrumentationPass_SkipsExecuteTagHelper_MalformedTagHelper()
+        //{
+        //    // Arrange
+        //    var document = new DocumentIRNode();
+        //    var builder = RazorIRBuilder.Create(document);
+        //    builder.Push(new TagHelperIRNode()
+        //    {
+        //        Source = CreateSource(3),
+        //    });
+        //    builder.Push(new CSharpExpressionIRNode());
+        //    builder.Add(new ExecuteTagHelpersIRNode()); // Malformed
 
-            var pass = new InstrumentationPass()
-            {
-                Engine = RazorEngine.CreateEmpty(b => { }),
-            };
+        //    var pass = new InstrumentationPass()
+        //    {
+        //        Engine = RazorEngine.CreateEmpty(b => { }),
+        //    };
 
-            // Act
-            pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
+        //    // Act
+        //    pass.Execute(TestRazorCodeDocument.CreateEmpty(), document);
 
-            // Assert
-            Children(
-                document,
-                n =>
-                {
-                    Assert.IsType<TagHelperIRNode>(n);
-                    Children(
-                        n,
-                        c => SingleChild<ExecuteTagHelpersIRNode>(Assert.IsType<CSharpExpressionIRNode>(c)));
-                });
-        }
+        //    // Assert
+        //    Children(
+        //        document,
+        //        n =>
+        //        {
+        //            Assert.IsType<TagHelperIRNode>(n);
+        //            Children(
+        //                n,
+        //                c => SingleChild<ExecuteTagHelpersIRNode>(Assert.IsType<CSharpExpressionIRNode>(c)));
+        //        });
+        //}
 
         private SourceSpan CreateSource(int number)
         {

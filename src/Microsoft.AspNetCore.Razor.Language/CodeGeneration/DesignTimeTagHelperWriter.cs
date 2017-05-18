@@ -35,9 +35,8 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             WriteTagHelperBody(context, tagHelperBody);
 
             // Create tag helper
-            foreach (var descriptor in node.TagHelperBinding.Descriptors)
+            foreach (var typeName in node.TagHelperTypes.Values)
             {
-                var typeName = descriptor.Metadata[TagHelperDescriptorBuilder.TypeNameKey];
                 var tagHelperVariableName = GetTagHelperVariableName(typeName);
 
                 context.Writer

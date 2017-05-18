@@ -85,8 +85,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
         {
             WriteContentNode(node, node.TagName, string.Format("{0}.{1}", nameof(TagMode), node.TagMode));
 
-            var taghelperTypeNames = node.TagHelperBinding.Descriptors.Select(d => d.Metadata[TagHelperDescriptorBuilder.TypeNameKey]);
-            foreach (var typeName in taghelperTypeNames)
+            foreach (var typeName in node.TagHelperTypes.Values)
             {
                 WriteSeparator();
                 WriteContent(typeName);

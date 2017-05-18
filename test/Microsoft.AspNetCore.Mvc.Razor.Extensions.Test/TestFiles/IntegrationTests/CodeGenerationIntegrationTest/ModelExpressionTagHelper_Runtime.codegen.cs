@@ -39,6 +39,7 @@ namespace AspNetCore
             BeginContext(143, 2, true);
             WriteLiteral("\r\n");
             EndContext();
+            BeginContext(145, 24, false);
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input-test", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
@@ -50,7 +51,6 @@ __Microsoft_AspNetCore_Mvc_Razor_Extensions_InputTestTagHelper.For = ModelExpres
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("for", __Microsoft_AspNetCore_Mvc_Razor_Extensions_InputTestTagHelper.For, global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
-            BeginContext(145, 24, false);
             await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             if (!__tagHelperExecutionContext.Output.IsContentModified)
             {
@@ -62,6 +62,7 @@ __Microsoft_AspNetCore_Mvc_Razor_Extensions_InputTestTagHelper.For = ModelExpres
             BeginContext(169, 2, true);
             WriteLiteral("\r\n");
             EndContext();
+            BeginContext(171, 27, false);
             __tagHelperExecutionContext = __tagHelperScopeManager.Begin("input-test", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "test", async() => {
             }
             );
@@ -73,7 +74,6 @@ __Microsoft_AspNetCore_Mvc_Razor_Extensions_InputTestTagHelper.For = ModelExpres
 #line default
 #line hidden
             __tagHelperExecutionContext.AddTagHelperAttribute("for", __Microsoft_AspNetCore_Mvc_Razor_Extensions_InputTestTagHelper.For, global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
-            BeginContext(171, 27, false);
             await __tagHelperRunner.RunAsync(__tagHelperExecutionContext);
             if (!__tagHelperExecutionContext.Output.IsContentModified)
             {

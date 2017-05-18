@@ -36,9 +36,9 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 }
             }
 
-            foreach (var createNode in visitor.CreateTagHelpers)
+            foreach (var tagHelperNode in visitor.TagHelperNodes)
             {
-                RewriteCreateNode(visitor.Namespace, visitor.Class, createNode);
+                RewriteTagHelperNode(visitor.Namespace, visitor.Class, tagHelperNode);
             }
         }
 
@@ -61,24 +61,25 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             @class.Children.Add(statement);
         }
 
-        private void RewriteCreateNode(
+        private void RewriteTagHelperNode(
             NamespaceDeclarationIRNode @namespace,
             ClassDeclarationIRNode @class,
-            CreateTagHelperIRNode node)
+            TagHelperIRNode node)
         {
-            var originalTypeName = node.TagHelperTypeName;
-
-            var newTypeName = GetVCTHFullName(@namespace, @class, node.Descriptor);
-            for (var i = 0; i < node.Parent.Children.Count; i++)
+            foreach (var descriptor in node.TagHelperTypes.Keys)
             {
-                var setProperty = node.Parent.Children[i] as SetTagHelperPropertyIRNode;
-                if (setProperty != null)
+                var newTypeName = GetVCTHFullName(@namespace, @class, descriptor);
+                for (var i = 0; i < node.Children.Count; i++)
                 {
-                    setProperty.TagHelperTypeName = newTypeName;
+                    if (node.Children[i] is SetTagHelperPropertyIRNode setProperty)
+                    {
+                        setProperty.TagHelperTypeName = newTypeName;
+                    }
                 }
+
+                node.TagHelperTypes[descriptor] = newTypeName;
             }
 
-            node.TagHelperTypeName = newTypeName;
         }
 
         private static string GetVCTHFullName(
@@ -233,20 +234,22 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
 
             public NamespaceDeclarationIRNode Namespace { get; private set; }
 
-            public List<CreateTagHelperIRNode> CreateTagHelpers { get; } = new List<CreateTagHelperIRNode>();
+            public List<TagHelperIRNode> TagHelperNodes { get; } = new List<TagHelperIRNode>();
 
             public Dictionary<string, TagHelperDescriptor> TagHelpers { get; } = new Dictionary<string, TagHelperDescriptor>();
 
-            public override void VisitCreateTagHelper(CreateTagHelperIRNode node)
+            public override void VisitTagHelper(TagHelperIRNode node)
             {
-                var tagHelper = node.Descriptor;
-                if (ViewComponentTagHelperDescriptorConventions.IsViewComponentDescriptor(tagHelper))
+                foreach (var descriptor in node.TagHelperTypes.Keys)
                 {
-                    // Capture all the VCTagHelpers (unique by type name) so we can generate a class for each one.
-                    var vcName = tagHelper.Metadata[ViewComponentTagHelperDescriptorConventions.ViewComponentNameKey];
-                    TagHelpers[vcName] = tagHelper;
+                    if (ViewComponentTagHelperDescriptorConventions.IsViewComponentDescriptor(descriptor))
+                    {
+                        // Capture all the VCTagHelpers (unique by type name) so we can generate a class for each one.
+                        var vcName = descriptor.Metadata[ViewComponentTagHelperDescriptorConventions.ViewComponentNameKey];
+                        TagHelpers[vcName] = descriptor;
 
-                    CreateTagHelpers.Add(node);
+                        TagHelperNodes.Add(node);
+                    }
                 }
             }
 
