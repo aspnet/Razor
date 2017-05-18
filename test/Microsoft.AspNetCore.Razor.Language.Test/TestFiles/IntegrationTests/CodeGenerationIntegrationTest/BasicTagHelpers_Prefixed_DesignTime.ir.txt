@@ -30,8 +30,6 @@ Document -
                             RazorIRToken - (181:6,27 [10] BasicTagHelpers_Prefixed.cshtml) - Html - \n        
                         TagHelper - (191:7,8 [41] BasicTagHelpers_Prefixed.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.StartTagOnly
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.InputTagHelper2
                             SetTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - type - Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml)
                                     RazorIRToken - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - Html - checkbox
@@ -40,14 +38,11 @@ Document -
                                     RazorIRToken - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - Html - checkbox
                             SetTagHelperProperty - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 RazorIRToken - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - CSharp - true
-                            ExecuteTagHelpers - 
                         HtmlContent - (232:7,49 [6] BasicTagHelpers_Prefixed.cshtml)
                             RazorIRToken - (232:7,49 [6] BasicTagHelpers_Prefixed.cshtml) - Html - \n    
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     AddTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (122:4,17 [11] BasicTagHelpers_Prefixed.cshtml)
                             RazorIRToken - (122:4,17 [11] BasicTagHelpers_Prefixed.cshtml) - Html - Hello World
-                    ExecuteTagHelpers - 
                 HtmlContent - (245:8,11 [11] BasicTagHelpers_Prefixed.cshtml)
                     RazorIRToken - (245:8,11 [2] BasicTagHelpers_Prefixed.cshtml) - Html - \n
                     RazorIRToken - (247:9,0 [9] BasicTagHelpers_Prefixed.cshtml) - Html - </THSdiv>

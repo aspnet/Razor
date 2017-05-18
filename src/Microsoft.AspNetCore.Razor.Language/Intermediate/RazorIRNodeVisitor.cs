@@ -119,22 +119,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
             VisitDefault(node);
         }
 
-        public virtual void VisitCreateTagHelper(CreateTagHelperIRNode node)
-        {
-            VisitDefault(node);
-        }
-
         public virtual void VisitSetTagHelperProperty(SetTagHelperPropertyIRNode node)
         {
             VisitDefault(node);
         }
 
         public virtual void VisitAddTagHelperHtmlAttribute(AddTagHelperHtmlAttributeIRNode node)
-        {
-            VisitDefault(node);
-        }
-
-        public virtual void VisitExecuteTagHelpers(ExecuteTagHelpersIRNode node)
         {
             VisitDefault(node);
         }

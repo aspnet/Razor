@@ -9,6 +9,4 @@ Document -
                     RazorIRToken - (33:1,0 [2] IncompleteTagHelper.cshtml) - Html - \n
                 TagHelper - (35:2,0 [10] IncompleteTagHelper.cshtml)
                     InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
-                    ExecuteTagHelpers - 

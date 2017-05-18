@@ -34,28 +34,28 @@ private global::MyTagHelper __MyTagHelper = null;
                 ignoreLineEndingDifferences: true);
         }
 
-        [Fact]
-        public void WriteCreateTagHelper_RendersCorrectly_UsesSpecifiedTagHelperType()
-        {
-            // Arrange
-            var writer = new DesignTimeTagHelperWriter();
-            var context = GetCSharpRenderingContext(writer);
-            var node = new CreateTagHelperIRNode()
-            {
-                TagHelperTypeName = "TestNamespace.MyTagHelper"
-            };
+//        [Fact]
+//        public void WriteCreateTagHelper_RendersCorrectly_UsesSpecifiedTagHelperType()
+//        {
+//            // Arrange
+//            var writer = new DesignTimeTagHelperWriter();
+//            var context = GetCSharpRenderingContext(writer);
+//            var node = new CreateTagHelperIRNode()
+//            {
+//                TagHelperTypeName = "TestNamespace.MyTagHelper"
+//            };
 
-            // Act
-            writer.WriteCreateTagHelper(context, node);
+//            // Act
+//            writer.WriteCreateTagHelper(context, node);
 
-            // Assert
-            var csharp = context.Writer.Builder.ToString();
-            Assert.Equal(
-@"__TestNamespace_MyTagHelper = CreateTagHelper<global::TestNamespace.MyTagHelper>();
-",
-                csharp,
-                ignoreLineEndingDifferences: true);
-        }
+//            // Assert
+//            var csharp = context.Writer.Builder.ToString();
+//            Assert.Equal(
+//@"__TestNamespace_MyTagHelper = CreateTagHelper<global::TestNamespace.MyTagHelper>();
+//",
+//                csharp,
+//                ignoreLineEndingDifferences: true);
+//        }
 
         [Fact]
         public void WriteSetTagHelperProperty_RendersCorrectly()
@@ -82,7 +82,7 @@ private global::MyTagHelper __MyTagHelper = null;
             var sourceDocument = TestRazorSourceDocument.Create(content);
             var codeDocument = RazorCodeDocument.Create(sourceDocument);
             var irDocument = Lower(codeDocument, engine);
-            var node = irDocument.Children.Last().Children[2] as SetTagHelperPropertyIRNode;
+            var node = irDocument.Children.Last().Children[1] as SetTagHelperPropertyIRNode;
 
             var writer = new DesignTimeTagHelperWriter();
             var context = GetCSharpRenderingContext(writer, codeDocument);
@@ -125,7 +125,7 @@ __InputTagHelper.FooProp = ""value"";
             var sourceDocument = TestRazorSourceDocument.Create(content);
             var codeDocument = RazorCodeDocument.Create(sourceDocument);
             var irDocument = Lower(codeDocument, engine);
-            var node = irDocument.Children.Last().Children[2] as SetTagHelperPropertyIRNode;
+            var node = irDocument.Children.Last().Children[1] as SetTagHelperPropertyIRNode;
 
             var writer = new DesignTimeTagHelperWriter();
             var context = GetCSharpRenderingContext(writer, codeDocument);
@@ -172,7 +172,7 @@ __InputTagHelper.FooProp = 42;
             var sourceDocument = TestRazorSourceDocument.Create(content);
             var codeDocument = RazorCodeDocument.Create(sourceDocument);
             var irDocument = Lower(codeDocument, engine);
-            var node = irDocument.Children.Last().Children[2] as SetTagHelperPropertyIRNode;
+            var node = irDocument.Children.Last().Children[1] as SetTagHelperPropertyIRNode;
 
             var writer = new DesignTimeTagHelperWriter();
             var context = GetCSharpRenderingContext(writer, codeDocument);

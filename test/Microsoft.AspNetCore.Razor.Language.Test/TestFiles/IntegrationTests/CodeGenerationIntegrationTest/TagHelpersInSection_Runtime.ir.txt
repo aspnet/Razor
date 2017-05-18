@@ -26,11 +26,8 @@ Document -
                                     RazorIRToken - (286:10,29 [26] TagHelpersInSection.cshtml) - Html - Some buffered values with 
                                 CSharpExpression - (313:10,56 [4] TagHelpersInSection.cshtml)
                                     RazorIRToken - (313:10,56 [4] TagHelpersInSection.cshtml) - CSharp - code
-                            CreateTagHelper -  - TestNamespace.NestedTagHelper
-                            ExecuteTagHelpers - 
                         HtmlContent - (335:10,78 [10] TagHelpersInSection.cshtml)
                             RazorIRToken - (335:10,78 [10] TagHelpersInSection.cshtml) - Html - \n        
-                    CreateTagHelper -  - TestNamespace.MyTagHelper
                     SetTagHelperProperty - (142:8,36 [27] TagHelpersInSection.cshtml) - boundproperty - BoundProperty - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (142:8,36 [14] TagHelpersInSection.cshtml)
                             RazorIRToken - (142:8,36 [7] TagHelpersInSection.cshtml) - Html - Current
@@ -44,7 +41,6 @@ Document -
                         CSharpAttributeValue - (201:8,95 [14] TagHelpersInSection.cshtml) -  
                             CSharpExpression - (203:8,97 [12] TagHelpersInSection.cshtml)
                                 RazorIRToken - (203:8,97 [12] TagHelpersInSection.cshtml) - CSharp - DateTime.Now
-                    ExecuteTagHelpers - 
                 HtmlContent - (359:11,22 [14] TagHelpersInSection.cshtml)
                     RazorIRToken - (359:11,22 [6] TagHelpersInSection.cshtml) - Html - \n    
                     RazorIRToken - (365:12,4 [6] TagHelpersInSection.cshtml) - Html - </div>

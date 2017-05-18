@@ -11,8 +11,6 @@ Document -
                     InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
                         HtmlContent - (69:2,34 [11] SingleTagHelper.cshtml)
                             RazorIRToken - (69:2,34 [11] SingleTagHelper.cshtml) - Html - Body of Tag
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                     SetTagHelperProperty - (63:2,28 [4] SingleTagHelper.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (63:2,28 [4] SingleTagHelper.cshtml) - CSharp - 1337
-                    ExecuteTagHelpers - 

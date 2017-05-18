@@ -86,10 +86,10 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             WriteContentNode(node, node.TagName, string.Format("{0}.{1}", nameof(TagMode), node.TagMode));
         }
 
-        public override void VisitCreateTagHelper(CreateTagHelperIRNode node)
-        {
-            WriteContentNode(node, node.TagHelperTypeName);
-        }
+        //public override void VisitCreateTagHelper(CreateTagHelperIRNode node)
+        //{
+        //    WriteContentNode(node, node.TagHelperTypeName);
+        //}
 
         public override void VisitSetTagHelperProperty(SetTagHelperPropertyIRNode node)
         {

@@ -24,7 +24,6 @@ Document -
                     RazorIRToken - (129:6,45 [10] ComplexTagHelpers.cshtml) - Html - \n        
                 TagHelper - (139:7,8 [39] ComplexTagHelpers.cshtml)
                     InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     SetTagHelperProperty - (147:7,16 [8] ComplexTagHelpers.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (147:7,16 [1] ComplexTagHelpers.cshtml) - CSharp - @
                         RazorIRToken - (149:7,18 [0] ComplexTagHelpers.cshtml) - CSharp - 
@@ -38,7 +37,6 @@ Document -
                             RazorIRToken - (164:7,33 [1] ComplexTagHelpers.cshtml) - Html - @
                         HtmlContent - (166:7,35 [6] ComplexTagHelpers.cshtml)
                             RazorIRToken - (166:7,35 [6] ComplexTagHelpers.cshtml) - Html - string
-                    ExecuteTagHelpers - 
                 HtmlContent - (178:7,47 [10] ComplexTagHelpers.cshtml)
                     RazorIRToken - (178:7,47 [10] ComplexTagHelpers.cshtml) - Html - \n        
                 TagHelper - (188:8,8 [529] ComplexTagHelpers.cshtml)
@@ -61,15 +59,10 @@ Document -
                                     RazorIRToken - (319:12,19 [10] ComplexTagHelpers.cshtml) - Html - New Time: 
                                 TagHelper - (329:12,29 [66] ComplexTagHelpers.cshtml)
                                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                                    CreateTagHelper -  - TestNamespace.InputTagHelper
-                                    CreateTagHelper -  - TestNamespace.InputTagHelper2
                                     SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_0 - type - Type
                                     SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_0 - type - Type
                                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
                                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
-                                    ExecuteTagHelpers - 
-                            CreateTagHelper -  - TestNamespace.PTagHelper
-                            ExecuteTagHelpers - 
                         HtmlContent - (399:12,99 [2] ComplexTagHelpers.cshtml)
                             RazorIRToken - (399:12,99 [2] ComplexTagHelpers.cshtml) - Html - \n
                         CSharpStatement - (401:13,0 [48] ComplexTagHelpers.cshtml)
@@ -82,8 +75,6 @@ Document -
                                     RazorIRToken - (468:16,19 [14] ComplexTagHelpers.cshtml) - Html - Current Time: 
                                 TagHelper - (482:16,33 [37] ComplexTagHelpers.cshtml)
                                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                                    CreateTagHelper -  - TestNamespace.InputTagHelper
-                                    CreateTagHelper -  - TestNamespace.InputTagHelper2
                                     SetTagHelperProperty - (494:16,45 [9] ComplexTagHelpers.cshtml) - type - Type - HtmlAttributeValueStyle.DoubleQuotes
                                         CSharpExpression - (495:16,46 [8] ComplexTagHelpers.cshtml)
                                             RazorIRToken - (495:16,46 [8] ComplexTagHelpers.cshtml) - CSharp - checkbox
@@ -92,30 +83,22 @@ Document -
                                             RazorIRToken - (495:16,46 [8] ComplexTagHelpers.cshtml) - CSharp - checkbox
                                     SetTagHelperProperty - (512:16,63 [4] ComplexTagHelpers.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes
                                         RazorIRToken - (512:16,63 [4] ComplexTagHelpers.cshtml) - CSharp - true
-                                    ExecuteTagHelpers - 
-                            CreateTagHelper -  - TestNamespace.PTagHelper
-                            ExecuteTagHelpers - 
                         HtmlContent - (523:16,74 [18] ComplexTagHelpers.cshtml)
                             RazorIRToken - (523:16,74 [2] ComplexTagHelpers.cshtml) - Html - \n
                             RazorIRToken - (525:17,0 [16] ComplexTagHelpers.cshtml) - Html -                 
                         TagHelper - (541:17,16 [50] ComplexTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.InputTagHelper2
                             SetTagHelperProperty - (554:17,29 [33] ComplexTagHelpers.cshtml) - tYPe - Type - HtmlAttributeValueStyle.SingleQuotes
                                 CSharpExpression - (556:17,31 [30] ComplexTagHelpers.cshtml)
                                     RazorIRToken - (556:17,31 [30] ComplexTagHelpers.cshtml) - CSharp - true ? "checkbox" : "anything"
                             SetTagHelperProperty - (554:17,29 [33] ComplexTagHelpers.cshtml) - tYPe - Type - HtmlAttributeValueStyle.SingleQuotes
                                 CSharpExpression - (556:17,31 [30] ComplexTagHelpers.cshtml)
                                     RazorIRToken - (556:17,31 [30] ComplexTagHelpers.cshtml) - CSharp - true ? "checkbox" : "anything"
-                            ExecuteTagHelpers - 
                         HtmlContent - (591:17,66 [18] ComplexTagHelpers.cshtml)
                             RazorIRToken - (591:17,66 [2] ComplexTagHelpers.cshtml) - Html - \n
                             RazorIRToken - (593:18,0 [16] ComplexTagHelpers.cshtml) - Html -                 
                         TagHelper - (609:18,16 [79] ComplexTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.StartTagOnly
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.InputTagHelper2
                             SetTagHelperProperty - (622:18,29 [64] ComplexTagHelpers.cshtml) - type - Type - HtmlAttributeValueStyle.SingleQuotes
                                 CSharpStatement - (623:18,30 [10] ComplexTagHelpers.cshtml)
                                     RazorIRToken - (623:18,30 [10] ComplexTagHelpers.cshtml) - CSharp - if(true) {
@@ -138,21 +121,18 @@ Document -
                                     RazorIRToken - (671:18,78 [8] ComplexTagHelpers.cshtml) - Html - anything
                                 CSharpStatement - (686:18,93 [2] ComplexTagHelpers.cshtml)
                                     RazorIRToken - (686:18,93 [2] ComplexTagHelpers.cshtml) - CSharp -  }
-                            ExecuteTagHelpers - 
                         HtmlContent - (690:18,97 [2] ComplexTagHelpers.cshtml)
                             RazorIRToken - (690:18,97 [2] ComplexTagHelpers.cshtml) - Html - \n
                         CSharpStatement - (692:19,0 [15] ComplexTagHelpers.cshtml)
                             RazorIRToken - (692:19,0 [15] ComplexTagHelpers.cshtml) - CSharp -             }\n
                         HtmlContent - (707:20,0 [8] ComplexTagHelpers.cshtml)
                             RazorIRToken - (707:20,0 [8] ComplexTagHelpers.cshtml) - Html -         
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     AddTagHelperHtmlAttribute -  - time - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlAttributeValue - (197:8,17 [7] ComplexTagHelpers.cshtml) -  - Current
                         HtmlAttributeValue - (204:8,24 [6] ComplexTagHelpers.cshtml) -   - Time:
                         CSharpAttributeValue - (210:8,30 [14] ComplexTagHelpers.cshtml) -  
                             CSharpExpression - (212:8,32 [12] ComplexTagHelpers.cshtml)
                                 RazorIRToken - (212:8,32 [12] ComplexTagHelpers.cshtml) - CSharp - DateTime.Now
-                    ExecuteTagHelpers - 
                 HtmlContent - (719:20,12 [10] ComplexTagHelpers.cshtml)
                     RazorIRToken - (719:20,12 [10] ComplexTagHelpers.cshtml) - Html - \n        
                 TagHelper - (729:21,8 [181] ComplexTagHelpers.cshtml)
@@ -167,17 +147,13 @@ Document -
                             RazorIRToken - (856:23,0 [12] ComplexTagHelpers.cshtml) - Html -             
                         TagHelper - (868:23,12 [28] ComplexTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.StartTagOnly
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.InputTagHelper2
                             SetTagHelperProperty - (884:23,28 [10] ComplexTagHelpers.cshtml) - ChecKED - Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 CSharpExpression - (885:23,29 [9] ComplexTagHelpers.cshtml)
                                     RazorIRToken - (885:23,29 [1] ComplexTagHelpers.cshtml) - CSharp - (
                                     RazorIRToken - (886:23,30 [7] ComplexTagHelpers.cshtml) - CSharp - @object
                                     RazorIRToken - (893:23,37 [1] ComplexTagHelpers.cshtml) - CSharp - )
-                            ExecuteTagHelpers - 
                         HtmlContent - (896:23,40 [10] ComplexTagHelpers.cshtml)
                             RazorIRToken - (896:23,40 [10] ComplexTagHelpers.cshtml) - Html - \n        
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_3
                     SetTagHelperProperty - (759:21,38 [31] ComplexTagHelpers.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (760:21,39 [23] ComplexTagHelpers.cshtml)
@@ -185,7 +161,6 @@ Document -
                         RazorIRToken - (783:21,62 [2] ComplexTagHelpers.cshtml) - CSharp -  -
                         RazorIRToken - (785:21,64 [5] ComplexTagHelpers.cshtml) - CSharp -  1970
                     AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_4
-                    ExecuteTagHelpers - 
                 HtmlContent - (910:24,12 [10] ComplexTagHelpers.cshtml)
                     RazorIRToken - (910:24,12 [10] ComplexTagHelpers.cshtml) - Html - \n        
                 TagHelper - (920:25,8 [155] ComplexTagHelpers.cshtml)
@@ -194,8 +169,6 @@ Document -
                             RazorIRToken - (962:25,50 [14] ComplexTagHelpers.cshtml) - Html - \n            
                         TagHelper - (976:26,12 [85] ComplexTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.InputTagHelper2
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_6
                             SetTagHelperProperty - (1024:26,60 [33] ComplexTagHelpers.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes
@@ -203,10 +176,8 @@ Document -
                                     RazorIRToken - (1025:26,61 [1] ComplexTagHelpers.cshtml) - CSharp - (
                                     RazorIRToken - (1026:26,62 [30] ComplexTagHelpers.cshtml) - CSharp - DateTimeOffset.Now.Year > 2014
                                     RazorIRToken - (1056:26,92 [1] ComplexTagHelpers.cshtml) - CSharp - )
-                            ExecuteTagHelpers - 
                         HtmlContent - (1061:26,97 [10] ComplexTagHelpers.cshtml)
                             RazorIRToken - (1061:26,97 [10] ComplexTagHelpers.cshtml) - Html - \n        
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     SetTagHelperProperty - (928:25,16 [32] ComplexTagHelpers.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (928:25,16 [5] ComplexTagHelpers.cshtml) - CSharp - -1970
                         RazorIRToken - (933:25,21 [2] ComplexTagHelpers.cshtml) - CSharp -  +
@@ -214,7 +185,6 @@ Document -
                         CSharpExpression - (936:25,24 [24] ComplexTagHelpers.cshtml)
                             RazorIRToken - (936:25,24 [1] ComplexTagHelpers.cshtml) - CSharp - @
                             RazorIRToken - (937:25,25 [23] ComplexTagHelpers.cshtml) - CSharp - DateTimeOffset.Now.Year
-                    ExecuteTagHelpers - 
                 HtmlContent - (1075:27,12 [10] ComplexTagHelpers.cshtml)
                     RazorIRToken - (1075:27,12 [10] ComplexTagHelpers.cshtml) - Html - \n        
                 TagHelper - (1085:28,8 [116] ComplexTagHelpers.cshtml)
@@ -223,17 +193,12 @@ Document -
                             RazorIRToken - (1125:28,48 [14] ComplexTagHelpers.cshtml) - Html - \n            
                         TagHelper - (1139:29,12 [48] ComplexTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.StartTagOnly
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.InputTagHelper2
                             SetTagHelperProperty - (1155:29,28 [30] ComplexTagHelpers.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 RazorIRToken - (1155:29,28 [30] ComplexTagHelpers.cshtml) - CSharp - DateTimeOffset.Now.Year > 2014
-                            ExecuteTagHelpers - 
                         HtmlContent - (1187:29,60 [10] ComplexTagHelpers.cshtml)
                             RazorIRToken - (1187:29,60 [10] ComplexTagHelpers.cshtml) - Html - \n        
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     SetTagHelperProperty - (1093:28,16 [30] ComplexTagHelpers.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         RazorIRToken - (1093:28,16 [30] ComplexTagHelpers.cshtml) - CSharp - DateTimeOffset.Now.Year\-1970
-                    ExecuteTagHelpers - 
                 HtmlContent - (1201:30,12 [10] ComplexTagHelpers.cshtml)
                     RazorIRToken - (1201:30,12 [10] ComplexTagHelpers.cshtml) - Html - \n        
                 TagHelper - (1211:31,8 [133] ComplexTagHelpers.cshtml)
@@ -242,8 +207,6 @@ Document -
                             RazorIRToken - (1253:31,50 [14] ComplexTagHelpers.cshtml) - Html - \n            
                         TagHelper - (1267:32,12 [63] ComplexTagHelpers.cshtml)
                             InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                            CreateTagHelper -  - TestNamespace.InputTagHelper
-                            CreateTagHelper -  - TestNamespace.InputTagHelper2
                             SetTagHelperProperty - (1283:32,28 [43] ComplexTagHelpers.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 RazorIRToken - (1283:32,28 [3] ComplexTagHelpers.cshtml) - CSharp -    
                                 CSharpExpression - (1286:32,31 [30] ComplexTagHelpers.cshtml)
@@ -254,16 +217,13 @@ Document -
                                 RazorIRToken - (1316:32,61 [2] ComplexTagHelpers.cshtml) - CSharp -  >
                                 RazorIRToken - (1318:32,63 [5] ComplexTagHelpers.cshtml) - CSharp -  2014
                                 RazorIRToken - (1323:32,68 [3] ComplexTagHelpers.cshtml) - CSharp -    
-                            ExecuteTagHelpers - 
                         HtmlContent - (1330:32,75 [10] ComplexTagHelpers.cshtml)
                             RazorIRToken - (1330:32,75 [10] ComplexTagHelpers.cshtml) - Html - \n        
-                    CreateTagHelper -  - TestNamespace.PTagHelper
                     SetTagHelperProperty - (1219:31,16 [32] ComplexTagHelpers.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (1220:31,17 [31] ComplexTagHelpers.cshtml)
                             RazorIRToken - (1220:31,17 [1] ComplexTagHelpers.cshtml) - CSharp - (
                             RazorIRToken - (1221:31,18 [29] ComplexTagHelpers.cshtml) - CSharp - "My age is this long.".Length
                             RazorIRToken - (1250:31,47 [1] ComplexTagHelpers.cshtml) - CSharp - )
-                    ExecuteTagHelpers - 
                 HtmlContent - (1344:33,12 [10] ComplexTagHelpers.cshtml)
                     RazorIRToken - (1344:33,12 [2] ComplexTagHelpers.cshtml) - Html - \n
                     RazorIRToken - (1346:34,0 [8] ComplexTagHelpers.cshtml) - Html -         
@@ -274,17 +234,12 @@ Document -
                             InitializeTagHelperStructure -  - p - TagMode.StartTagAndEndTag
                                 TagHelper - (1394:34,48 [26] ComplexTagHelpers.cshtml)
                                     InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                                    CreateTagHelper -  - TestNamespace.InputTagHelper
-                                    CreateTagHelper -  - TestNamespace.InputTagHelper2
                                     SetTagHelperProperty - (1409:34,63 [8] ComplexTagHelpers.cshtml) - checked - Checked - HtmlAttributeValueStyle.DoubleQuotes
                                         CSharpExpression - (1410:34,64 [7] ComplexTagHelpers.cshtml)
                                             RazorIRToken - (1410:34,64 [7] ComplexTagHelpers.cshtml) - CSharp - checked
-                                    ExecuteTagHelpers - 
-                            CreateTagHelper -  - TestNamespace.PTagHelper
                             SetTagHelperProperty - (1375:34,29 [3] ComplexTagHelpers.cshtml) - age - Age - HtmlAttributeValueStyle.DoubleQuotes
                                 RazorIRToken - (1375:34,29 [3] ComplexTagHelpers.cshtml) - CSharp - 123
                             AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_7
-                            ExecuteTagHelpers - 
                     RazorIRToken - (1424:34,78 [1] ComplexTagHelpers.cshtml) - CSharp - )
                 HtmlContent - (1425:34,79 [14] ComplexTagHelpers.cshtml)
                     RazorIRToken - (1425:34,79 [6] ComplexTagHelpers.cshtml) - Html - \n    

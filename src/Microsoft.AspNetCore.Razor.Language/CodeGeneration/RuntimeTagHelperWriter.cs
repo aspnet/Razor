@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
@@ -145,6 +146,100 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             }
         }
 
+        public override void WriteTagHelper(CSharpRenderingContext context, TagHelperIRNode node)
+        {
+            context.RenderChildren(node);
+
+            // Execute tag helper
+            context.Writer
+                .Write("await ")
+                .WriteStartInstanceMethodInvocation(
+                    RunnerVariableName,
+                    RunnerRunAsyncMethodName)
+                .Write(ExecutionContextVariableName)
+                .WriteEndMethodInvocation();
+
+            var tagHelperOutputAccessor = $"{ExecutionContextVariableName}.{ExecutionContextOutputPropertyName}";
+
+            context.Writer
+                .Write("if (!")
+                .Write(tagHelperOutputAccessor)
+                .Write(".")
+                .Write(TagHelperOutputIsContentModifiedPropertyName)
+                .WriteLine(")");
+
+            using (context.Writer.BuildScope())
+            {
+                context.Writer
+                    .Write("await ")
+                    .WriteInstanceMethodInvocation(
+                        ExecutionContextVariableName,
+                        ExecutionContextSetOutputContentAsyncMethodName);
+            }
+
+            context.Writer
+                .WriteStartMethodInvocation(WriteTagHelperOutputMethod)
+                .Write(tagHelperOutputAccessor)
+                .WriteEndMethodInvocation()
+                .WriteStartAssignment(ExecutionContextVariableName)
+                .WriteInstanceMethodInvocation(
+                    ScopeManagerVariableName,
+                    ScopeManagerEndMethodName);
+        }
+
+        public override void WriteInitializeTagHelperStructure(CSharpRenderingContext context, InitializeTagHelperStructureIRNode node)
+        {
+            // Call into the tag helper scope manager to start a new tag helper scope.
+            // Also capture the value as the current execution context.
+            context.Writer
+                .WriteStartAssignment(ExecutionContextVariableName)
+                .WriteStartInstanceMethodInvocation(
+                    ScopeManagerVariableName,
+                    ScopeManagerBeginMethodName);
+
+            // Assign a unique ID for this instance of the source HTML tag. This must be unique
+            // per call site, e.g. if the tag is on the view twice, there should be two IDs.
+            context.Writer.WriteStringLiteral(node.TagName)
+                .WriteParameterSeparator()
+                .Write(TagModeTypeName)
+                .Write(".")
+                .Write(node.TagMode.ToString())
+                .WriteParameterSeparator()
+                .WriteStringLiteral(context.IdGenerator())
+                .WriteParameterSeparator();
+
+            // We remove and redirect writers so TagHelper authors can retrieve content.
+            using (context.Push(new RuntimeBasicWriter()))
+            using (context.Push(new RuntimeTagHelperWriter()))
+            {
+                using (context.Writer.BuildAsyncLambda(endLine: false))
+                {
+                    context.RenderChildren(node);
+                }
+            }
+
+            context.Writer.WriteEndMethodInvocation();
+
+            // CreateTagHelper
+            foreach (var descriptor in node.TagHelperBinding.Descriptors)
+            {
+                var typeName = descriptor.Metadata[TagHelperDescriptorBuilder.TypeNameKey];
+                var tagHelperVariableName = GetTagHelperVariableName(typeName);
+
+                context.Writer
+                    .WriteStartAssignment(tagHelperVariableName)
+                    .WriteStartMethodInvocation(
+                         CreateTagHelperMethodName,
+                        "global::" + typeName)
+                    .WriteEndMethodInvocation();
+
+                context.Writer.WriteInstanceMethodInvocation(
+                    ExecutionContextVariableName,
+                    ExecutionContextAddMethodName,
+                    tagHelperVariableName);
+            }
+        }
+
         public override void WriteAddTagHelperHtmlAttribute(CSharpRenderingContext context, AddTagHelperHtmlAttributeIRNode node)
         {
             var attributeValueStyleParameter = $"global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.{node.ValueStyle}";
@@ -215,95 +310,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                     .Write(attributeValueStyleParameter)
                     .WriteEndMethodInvocation();
             }
-        }
-
-        public override void WriteCreateTagHelper(CSharpRenderingContext context, CreateTagHelperIRNode node)
-        {
-            var tagHelperVariableName = GetTagHelperVariableName(node.TagHelperTypeName);
-
-            context.Writer
-                .WriteStartAssignment(tagHelperVariableName)
-                .WriteStartMethodInvocation(
-                     CreateTagHelperMethodName,
-                    "global::" + node.TagHelperTypeName)
-                .WriteEndMethodInvocation();
-
-            context.Writer.WriteInstanceMethodInvocation(
-                ExecutionContextVariableName,
-                ExecutionContextAddMethodName,
-                tagHelperVariableName);
-        }
-
-        public override void WriteExecuteTagHelpers(CSharpRenderingContext context, ExecuteTagHelpersIRNode node)
-        {
-            context.Writer
-                .Write("await ")
-                .WriteStartInstanceMethodInvocation(
-                    RunnerVariableName,
-                    RunnerRunAsyncMethodName)
-                .Write(ExecutionContextVariableName)
-                .WriteEndMethodInvocation();
-
-            var tagHelperOutputAccessor = $"{ExecutionContextVariableName}.{ExecutionContextOutputPropertyName}";
-
-            context.Writer
-                .Write("if (!")
-                .Write(tagHelperOutputAccessor)
-                .Write(".")
-                .Write(TagHelperOutputIsContentModifiedPropertyName)
-                .WriteLine(")");
-
-            using (context.Writer.BuildScope())
-            {
-                context.Writer
-                    .Write("await ")
-                    .WriteInstanceMethodInvocation(
-                        ExecutionContextVariableName,
-                        ExecutionContextSetOutputContentAsyncMethodName);
-            }
-
-            context.Writer
-                .WriteStartMethodInvocation(WriteTagHelperOutputMethod)
-                .Write(tagHelperOutputAccessor)
-                .WriteEndMethodInvocation()
-                .WriteStartAssignment(ExecutionContextVariableName)
-                .WriteInstanceMethodInvocation(
-                    ScopeManagerVariableName,
-                    ScopeManagerEndMethodName);
-        }
-
-        public override void WriteInitializeTagHelperStructure(CSharpRenderingContext context, InitializeTagHelperStructureIRNode node)
-        {
-            // Call into the tag helper scope manager to start a new tag helper scope.
-            // Also capture the value as the current execution context.
-            context.Writer
-                .WriteStartAssignment(ExecutionContextVariableName)
-                .WriteStartInstanceMethodInvocation(
-                    ScopeManagerVariableName,
-                    ScopeManagerBeginMethodName);
-
-            // Assign a unique ID for this instance of the source HTML tag. This must be unique
-            // per call site, e.g. if the tag is on the view twice, there should be two IDs.
-            context.Writer.WriteStringLiteral(node.TagName)
-                .WriteParameterSeparator()
-                .Write(TagModeTypeName)
-                .Write(".")
-                .Write(node.TagMode.ToString())
-                .WriteParameterSeparator()
-                .WriteStringLiteral(context.IdGenerator())
-                .WriteParameterSeparator();
-
-            // We remove and redirect writers so TagHelper authors can retrieve content.
-            using (context.Push(new RuntimeBasicWriter()))
-            using (context.Push(new RuntimeTagHelperWriter()))
-            {
-                using (context.Writer.BuildAsyncLambda(endLine: false))
-                {
-                    context.RenderChildren(node);
-                }
-            }
-
-            context.Writer.WriteEndMethodInvocation();
         }
 
         public override void WriteSetTagHelperProperty(CSharpRenderingContext context, SetTagHelperPropertyIRNode node)

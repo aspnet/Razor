@@ -30,17 +30,11 @@ Document -
                                         RazorIRToken - (431:15,44 [5] TagHelpersWithTemplate.cshtml) - Html - </h3>
                                     TagHelper - (436:15,49 [40] TagHelpersWithTemplate.cshtml)
                                         InitializeTagHelperStructure -  - input - TagMode.SelfClosing
-                                        CreateTagHelper -  - InputTagHelper
                                         AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
                                         AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
-                                        ExecuteTagHelpers - 
-                                CreateTagHelper -  - DivTagHelper
                                 AddPreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
-                                ExecuteTagHelpers - 
                         CSharpStatement - (482:15,95 [8] TagHelpersWithTemplate.cshtml)
                             RazorIRToken - (482:15,95 [8] TagHelpersWithTemplate.cshtml) - CSharp - );\n    
-                    CreateTagHelper -  - DivTagHelper
-                    ExecuteTagHelpers - 
                 HtmlContent - (499:17,6 [4] TagHelpersWithTemplate.cshtml)
                     RazorIRToken - (499:17,6 [4] TagHelpersWithTemplate.cshtml) - Html - \n\n
             CSharpStatement - (47:2,12 [268] TagHelpersWithTemplate.cshtml)
