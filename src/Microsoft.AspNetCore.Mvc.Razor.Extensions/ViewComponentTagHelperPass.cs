@@ -66,6 +66,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             ClassDeclarationIRNode @class,
             TagHelperIRNode node)
         {
+            var tagHelperTypes = new Dictionary<TagHelperDescriptor, string>();
             foreach (var descriptor in node.TagHelperTypes.Keys)
             {
                 var newTypeName = GetVCTHFullName(@namespace, @class, descriptor);
@@ -77,9 +78,10 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                     }
                 }
 
-                node.TagHelperTypes[descriptor] = newTypeName;
+                tagHelperTypes[descriptor] = newTypeName;
             }
 
+            node.TagHelperTypes = tagHelperTypes;
         }
 
         private static string GetVCTHFullName(
