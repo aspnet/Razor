@@ -128,6 +128,11 @@ namespace Microsoft.CodeAnalysis.Razor
 
         private ImmutableArray<IParameterSymbol> GetInvokeMethodParameters(INamedTypeSymbol componentType)
         {
+            // Note: we have some code here that formerly attempted to validate the signature of the
+            // VC methods and would throw. We definitely don't want to throw since that will block
+            // discovery of ALL tag helpers.
+            //
+            // Now what happens here is that we just return an empty parameter list.
             var methods = componentType.GetMembers()
                 .OfType<IMethodSymbol>()
                 .Where(method =>
@@ -138,26 +143,31 @@ namespace Microsoft.CodeAnalysis.Razor
 
             if (methods.Length == 0)
             {
-                throw new InvalidOperationException(
-                    ViewComponentResources.FormatViewComponent_CannotFindMethod(ViewComponentTypes.SyncMethodName, ViewComponentTypes.AsyncMethodName, componentType.ToDisplayString(FullNameTypeDisplayFormat)));
+                // Invalid, no Invoke methods.
+                return ImmutableArray<IParameterSymbol>.Empty;
             }
             else if (methods.Length > 1)
             {
-                throw new InvalidOperationException(
-                    ViewComponentResources.FormatViewComponent_AmbiguousMethods(componentType.ToDisplayString(FullNameTypeDisplayFormat), ViewComponentTypes.AsyncMethodName, ViewComponentTypes.SyncMethodName));
+                // Invalid, too manyInvoke methods.
+                return ImmutableArray<IParameterSymbol>.Empty;
             }
 
             var selectedMethod = methods[0];
             var returnType = selectedMethod.ReturnType as INamedTypeSymbol;
             if (string.Equals(selectedMethod.Name, ViewComponentTypes.AsyncMethodName, StringComparison.Ordinal) && returnType != null)
             {
-                if (!returnType.IsGenericType == true ||
-                    returnType.ConstructedFrom == _genericTaskSymbol)
+                if (returnType == _taskSymbol)
                 {
-                    throw new InvalidOperationException(ViewComponentResources.FormatViewComponent_AsyncMethod_ShouldReturnTask(
-                        ViewComponentTypes.AsyncMethodName,
-                        componentType.ToDisplayString(FullNameTypeDisplayFormat),
-                        nameof(Task)));
+                    // Task - This is fine.
+                }
+                else if (returnType.IsGenericType && returnType.ConstructedFrom == _genericTaskSymbol)
+                {
+                    // Task<T> - This is fine.
+                }
+                else
+                {
+                    // Invalid, needs to be Task or Task<T>
+                    return ImmutableArray<IParameterSymbol>.Empty;
                 }
             }
             else if (returnType != null)
@@ -165,30 +175,18 @@ namespace Microsoft.CodeAnalysis.Razor
                 // Will invoke synchronously. Method must not return void, Task or Task<T>.
                 if (returnType.SpecialType == SpecialType.System_Void)
                 {
-                    throw new InvalidOperationException(ViewComponentResources.FormatViewComponent_SyncMethod_ShouldReturnValue(
-                        ViewComponentTypes.SyncMethodName,
-                        componentType.ToDisplayString(FullNameTypeDisplayFormat)));
+                    // Invalid, cannot be void.
+                    return ImmutableArray<IParameterSymbol>.Empty;
                 }
-
-                var inheritsFromTask = false;
-                var currentType = returnType;
-                while (currentType != null)
+                else if (returnType == _taskSymbol)
                 {
-                    if (currentType == _taskSymbol)
-                    {
-                        inheritsFromTask = true;
-                        break;
-                    }
-
-                    currentType = currentType.BaseType;
+                    // Invalid, cannot be Task.
+                    return ImmutableArray<IParameterSymbol>.Empty;
                 }
-
-                if (inheritsFromTask)
+                else if (returnType.IsGenericType && returnType.ConstructedFrom == _genericTaskSymbol)
                 {
-                    throw new InvalidOperationException(ViewComponentResources.FormatViewComponent_SyncMethod_CannotReturnTask(
-                        ViewComponentTypes.SyncMethodName,
-                        componentType.ToDisplayString(FullNameTypeDisplayFormat),
-                        nameof(Task)));
+                    // Invalid, cannot be Task<T>.
+                    return ImmutableArray<IParameterSymbol>.Empty;
                 }
             }
 
