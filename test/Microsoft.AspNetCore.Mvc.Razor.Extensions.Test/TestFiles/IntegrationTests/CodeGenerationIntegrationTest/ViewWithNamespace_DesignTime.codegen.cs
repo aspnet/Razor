@@ -1,3 +1,4 @@
+[assembly:Microsoft.AspNetCore.Mvc.Razor.Compilation.RazorViewAttribute(null, typeof(Test.Namespace.ViewWithNamespace_View))]
 namespace Test.Namespace
 {
     #line hidden

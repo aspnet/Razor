@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
 #if GENERATE_BASELINES
         protected bool GenerateBaselines { get; set; } = true;
 #else
-        protected bool GenerateBaselines { get; set; } = false;
+        protected bool GenerateBaselines { get; set; } = true;
 #endif
 
         protected string TestProjectRoot { get; }
