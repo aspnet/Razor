@@ -3,13 +3,13 @@
   <Import Project="..\..\build\common.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net46;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
     <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.AspNetCore.Razor.Runtime\Microsoft.AspNetCore.Razor.Runtime.csproj" />
 
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="4.4.0-*" />
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(CoreFxVersion)" />
   </ItemGroup>
 </Project>
