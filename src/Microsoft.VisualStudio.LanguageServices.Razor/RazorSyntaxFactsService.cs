@@ -3,11 +3,12 @@
 
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.CodeAnalysis.Host;
 using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.LanguageServices.Razor
 {
-    public abstract class RazorSyntaxFactsService
+    public abstract class RazorSyntaxFactsService : ILanguageService
     {
         public abstract IReadOnlyList<ClassifiedSpan> GetClassifiedSpans(RazorSyntaxTree syntaxTree);
 
