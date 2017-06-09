@@ -1,0 +1,17 @@
+Document - 
+    Checksum - 
+    NamespaceDeclaration -  - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
+        ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PreallocatedTagHelperAttributes_Runtime -  - 
+            DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_0 - type - text - HtmlAttributeValueStyle.DoubleQuotes
+            DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_1 - prefix-hello - world - HtmlAttributeValueStyle.DoubleQuotes
+            DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_2 - prefix-test - value - HtmlAttributeValueStyle.DoubleQuotes
+            DeclareTagHelperFields -  - TestNamespace.InputTagHelper
+            MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
+                HtmlContent - (31:1,0 [2] PreallocatedTagHelperAttributes.cshtml)
+                    RazorIRToken - (31:1,0 [2] PreallocatedTagHelperAttributes.cshtml) - Html - \n
+                TagHelper - (33:2,0 [62] PreallocatedTagHelperAttributes.cshtml) - input - TagMode.SelfClosing
+                    TagHelperBody - 
+                    CreateTagHelper -  - TestNamespace.InputTagHelper
+                    SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_0 - type - Type
+                    SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_1 - prefix-hello - FooProp
+                    SetPreallocatedTagHelperProperty -  - __tagHelperAttribute_2 - prefix-test - FooProp

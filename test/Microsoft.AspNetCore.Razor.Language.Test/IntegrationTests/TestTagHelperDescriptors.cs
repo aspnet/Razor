@@ -509,6 +509,35 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             }
         }
 
+        public static IEnumerable<TagHelperDescriptor> PreallocatedAttributesTagHelperDescriptors
+        {
+            get
+            {
+                var inputTypePropertyInfo = typeof(TestType).GetRuntimeProperty("Type");
+
+                return new[]
+                {
+                    CreateTagHelperDescriptor(
+                        tagName: "input",
+                        typeName: "TestNamespace.InputTagHelper",
+                        assemblyName: "TestAssembly",
+                        attributes: new Action<BoundAttributeDescriptorBuilder>[]
+                        {
+                            builder => BuildBoundAttributeDescriptorFromPropertyInfo(builder, "type", inputTypePropertyInfo),
+                            builder => builder
+                                .Name("foo-dictionary")
+                                .PropertyName("FooProp")
+                                .TypeName(typeof(IDictionary<string, string>).FullName)
+                                .AsDictionary("prefix-", typeof(string).FullName)
+                        },
+                        ruleBuilders: new Action<TagMatchingRuleBuilder>[]
+                        {
+                            builder => builder.RequireTagStructure(TagStructure.NormalOrSelfClosing)
+                        }),
+                };
+            }
+        }
+
         private static TagHelperDescriptor CreateTagHelperDescriptor(
             string tagName,
             string typeName,

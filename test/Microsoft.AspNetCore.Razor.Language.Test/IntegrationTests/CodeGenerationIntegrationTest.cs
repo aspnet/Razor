@@ -383,6 +383,13 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
         }
 
         [Fact]
+        public void PreallocatedTagHelperAttributes_Runtime()
+        {
+            // Arrange, Act & Assert
+            RunRuntimeTagHelpersTest(TestTagHelperDescriptors.PreallocatedAttributesTagHelperDescriptors);
+        }
+
+        [Fact]
         public void DuplicateAttributeTagHelpers_Runtime()
         {
             // Arrange, Act & Assert
@@ -821,6 +828,13 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
         {
             // Arrange, Act & Assert
             RunDesignTimeTagHelpersTest(TestTagHelperDescriptors.PrefixedAttributeTagHelperDescriptors);
+        }
+
+        [Fact]
+        public void PreallocatedTagHelperAttributes_DesignTime()
+        {
+            // Arrange, Act & Assert
+            RunDesignTimeTagHelpersTest(TestTagHelperDescriptors.PreallocatedAttributesTagHelperDescriptors);
         }
 
         [Fact]

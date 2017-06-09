@@ -1,0 +1,5 @@
+Source Location: (14:0,14 [15] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/PreallocatedTagHelperAttributes.cshtml)
+|*, TestAssembly|
+Generated Location: (386:8,38 [15] )
+|*, TestAssembly|
+

@@ -1,0 +1,24 @@
+Document - 
+    Checksum - 
+    NamespaceDeclaration -  - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
+        ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PreallocatedTagHelperAttributes_DesignTime -  - 
+            DesignTimeDirective - 
+                DirectiveToken - (14:0,14 [15] PreallocatedTagHelperAttributes.cshtml) - *, TestAssembly
+            CSharpCode - 
+                RazorIRToken -  - CSharp - private static System.Object __o = null;
+            DeclareTagHelperFields -  - TestNamespace.InputTagHelper
+            MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
+                HtmlContent - (29:0,29 [4] PreallocatedTagHelperAttributes.cshtml)
+                    RazorIRToken - (29:0,29 [4] PreallocatedTagHelperAttributes.cshtml) - Html - \n\n
+                TagHelper - (33:2,0 [62] PreallocatedTagHelperAttributes.cshtml) - input - TagMode.SelfClosing
+                    TagHelperBody - 
+                    CreateTagHelper -  - TestNamespace.InputTagHelper
+                    SetTagHelperProperty - (46:2,13 [4] PreallocatedTagHelperAttributes.cshtml) - type - Type - HtmlAttributeValueStyle.DoubleQuotes
+                        HtmlContent - (46:2,13 [4] PreallocatedTagHelperAttributes.cshtml)
+                            RazorIRToken - (46:2,13 [4] PreallocatedTagHelperAttributes.cshtml) - Html - text
+                    SetTagHelperProperty - (66:2,33 [5] PreallocatedTagHelperAttributes.cshtml) - prefix-hello - FooProp - HtmlAttributeValueStyle.DoubleQuotes
+                        HtmlContent - (66:2,33 [5] PreallocatedTagHelperAttributes.cshtml)
+                            RazorIRToken - (66:2,33 [5] PreallocatedTagHelperAttributes.cshtml) - Html - world
+                    SetTagHelperProperty - (86:2,53 [5] PreallocatedTagHelperAttributes.cshtml) - prefix-test - FooProp - HtmlAttributeValueStyle.DoubleQuotes
+                        HtmlContent - (86:2,53 [5] PreallocatedTagHelperAttributes.cshtml)
+                            RazorIRToken - (86:2,53 [5] PreallocatedTagHelperAttributes.cshtml) - Html - value
