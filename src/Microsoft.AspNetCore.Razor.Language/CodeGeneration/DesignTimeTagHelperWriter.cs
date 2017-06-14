@@ -14,18 +14,9 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
     {
         public string CreateTagHelperMethodName { get; set; } = "CreateTagHelper";
 
-        public override void WriteDeclareTagHelperFields(CSharpRenderingContext context, DeclareTagHelperFieldsIRNode node)
+        public override void WriteDeclareTagHelperFields(CSharpRenderingContext context)
         {
-            foreach (var tagHelperTypeName in node.UsedTagHelperTypeNames)
-            {
-                var tagHelperVariableName = GetTagHelperVariableName(tagHelperTypeName);
-                context.Writer
-                    .Write("private global::")
-                    .WriteVariableDeclaration(
-                        tagHelperTypeName,
-                        tagHelperVariableName,
-                        value: null);
-            }
+            // Do nothing.
         }
 
         public override void WriteTagHelper(CSharpRenderingContext context, TagHelperIRNode node)

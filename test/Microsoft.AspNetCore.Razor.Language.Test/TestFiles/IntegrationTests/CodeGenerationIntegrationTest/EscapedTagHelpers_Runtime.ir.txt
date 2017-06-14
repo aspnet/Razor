@@ -2,7 +2,9 @@ Document -
     Checksum - 
     NamespaceDeclaration -  - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_EscapedTagHelpers_Runtime -  - 
-            DeclareTagHelperFields -  - TestNamespace.InputTagHelper - TestNamespace.InputTagHelper2
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper - __TestNamespace_InputTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper2 - __TestNamespace_InputTagHelper2
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (31:1,0 [3] EscapedTagHelpers.cshtml)
                     RazorIRToken - (31:1,0 [2] EscapedTagHelpers.cshtml) - Html - \n

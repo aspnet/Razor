@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -28,10 +29,14 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             {
                 GenerateVCTHClass(visitor.Class, tagHelper.Value);
 
-                var tagHelperTypeName = tagHelper.Value.GetTypeName();
-                if (visitor.Fields.UsedTagHelperTypeNames.Remove(tagHelperTypeName))
+                var tagHelperTypeName = "global::" + tagHelper.Value.GetTypeName();
+                var tagHelperField = visitor.TagHelperFields.SingleOrDefault(
+                    n => string.Equals(n.Type, tagHelperTypeName, StringComparison.Ordinal));
+                if (tagHelperField != null)
                 {
-                    visitor.Fields.UsedTagHelperTypeNames.Add(GetVCTHFullName(visitor.Namespace, visitor.Class, tagHelper.Value));
+                    var vcthFullTypeName = GetVCTHFullName(visitor.Namespace, visitor.Class, tagHelper.Value);
+                    tagHelperField.Type = "global::" + vcthFullTypeName;
+                    tagHelperField.Name = GetTagHelperVariableName(vcthFullTypeName);
                 }
             }
 
@@ -40,6 +45,8 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 RewriteCreateNode(visitor.Namespace, visitor.Class, (CreateTagHelperIRNode)node, parent);
             }
         }
+
+        private static string GetTagHelperVariableName(string tagHelperTypeName) => "__" + tagHelperTypeName.Replace('.', '_');
 
         private void GenerateVCTHClass(ClassDeclarationIRNode @class, TagHelperDescriptor tagHelper)
         {
@@ -224,7 +231,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
         {
             public ClassDeclarationIRNode Class { get; private set; }
 
-            public DeclareTagHelperFieldsIRNode Fields { get; private set; }
+            public List<FieldDeclarationIRNode> TagHelperFields { get; } = new List<FieldDeclarationIRNode>();
 
             public NamespaceDeclarationIRNode Namespace { get; private set; }
 
@@ -265,14 +272,11 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 base.VisitClassDeclaration(node);
             }
 
-            public override void VisitDeclareTagHelperFields(DeclareTagHelperFieldsIRNode node)
+            public override void VisitFieldDeclaration(FieldDeclarationIRNode node)
             {
-                if (Fields == null)
-                {
-                    Fields = node;
-                }
+                TagHelperFields.Add(node);
 
-                base.VisitDeclareTagHelperFields(node);
+                base.VisitFieldDeclaration(node);
             }
         }
     }

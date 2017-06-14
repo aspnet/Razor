@@ -9,7 +9,9 @@ Document -
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_4 - string-prefix-grabber - string - HtmlAttributeValueStyle.DoubleQuotes
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_5 - string-prefix-paprika - another string - HtmlAttributeValueStyle.DoubleQuotes
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_6 - string-prefix-thyme - string - HtmlAttributeValueStyle.DoubleQuotes
-            DeclareTagHelperFields -  - TestNamespace.InputTagHelper1 - TestNamespace.InputTagHelper2
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper1 - __TestNamespace_InputTagHelper1
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper2 - __TestNamespace_InputTagHelper2
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (33:1,0 [2] PrefixedAttributeTagHelpers.cshtml)
                     RazorIRToken - (33:1,0 [2] PrefixedAttributeTagHelpers.cshtml) - Html - \n

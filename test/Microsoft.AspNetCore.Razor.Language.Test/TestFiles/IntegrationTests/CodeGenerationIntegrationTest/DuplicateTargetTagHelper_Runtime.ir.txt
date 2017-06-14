@@ -3,7 +3,9 @@ Document -
     NamespaceDeclaration -  - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_DuplicateTargetTagHelper_Runtime -  - 
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_0 - type - checkbox - HtmlAttributeValueStyle.DoubleQuotes
-            DeclareTagHelperFields -  - TestNamespace.InputTagHelper - TestNamespace.CatchAllTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper - __TestNamespace_InputTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.CatchAllTagHelper - __TestNamespace_CatchAllTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (33:1,0 [2] DuplicateTargetTagHelper.cshtml)
                     RazorIRToken - (33:1,0 [2] DuplicateTargetTagHelper.cshtml) - Html - \n

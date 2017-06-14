@@ -39,7 +39,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
                 return __backed__tagHelperScopeManager;
             }
         }
-        private global::DivTagHelper __DivTagHelper = null;
+        private global::DivTagHelper __DivTagHelper;
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {

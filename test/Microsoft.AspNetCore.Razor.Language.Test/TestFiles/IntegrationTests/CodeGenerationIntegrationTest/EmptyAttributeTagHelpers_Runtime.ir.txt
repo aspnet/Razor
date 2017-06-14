@@ -4,7 +4,10 @@ Document -
         ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_EmptyAttributeTagHelpers_Runtime -  - 
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_0 - type -  - HtmlAttributeValueStyle.DoubleQuotes
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - class -  - HtmlAttributeValueStyle.DoubleQuotes
-            DeclareTagHelperFields -  - TestNamespace.InputTagHelper - TestNamespace.InputTagHelper2 - TestNamespace.PTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper - __TestNamespace_InputTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper2 - __TestNamespace_InputTagHelper2
+            FieldDeclaration -  - private - global::TestNamespace.PTagHelper - __TestNamespace_PTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (31:1,0 [13] EmptyAttributeTagHelpers.cshtml)
                     RazorIRToken - (31:1,0 [2] EmptyAttributeTagHelpers.cshtml) - Html - \n

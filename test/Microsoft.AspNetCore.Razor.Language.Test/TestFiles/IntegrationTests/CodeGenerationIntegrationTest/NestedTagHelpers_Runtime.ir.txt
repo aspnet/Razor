@@ -5,7 +5,10 @@ Document -
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_0 - value - Hello - HtmlAttributeValueStyle.DoubleQuotes
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - type - text - HtmlAttributeValueStyle.SingleQuotes
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2 - unbound - foo - HtmlAttributeValueStyle.DoubleQuotes
-            DeclareTagHelperFields -  - SpanTagHelper - DivTagHelper - InputTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::SpanTagHelper - __SpanTagHelper
+            FieldDeclaration -  - private - global::DivTagHelper - __DivTagHelper
+            FieldDeclaration -  - private - global::InputTagHelper - __InputTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 TagHelper - (31:1,0 [26] NestedTagHelpers.cshtml) - span - TagMode.StartTagAndEndTag
                     TagHelperBody - 

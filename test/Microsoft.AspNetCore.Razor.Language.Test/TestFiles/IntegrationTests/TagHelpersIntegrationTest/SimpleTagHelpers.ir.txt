@@ -4,7 +4,8 @@ Document -
         ClassDeclaration -  - public - Template -  - 
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - value - Hello - HtmlAttributeValueStyle.SingleQuotes
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - type - text - HtmlAttributeValueStyle.SingleQuotes
-            DeclareTagHelperFields -  - InputTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::InputTagHelper - __InputTagHelper
             MethodDeclaration -  - public - async, override - global::System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (31:1,0 [25] SimpleTagHelpers.cshtml)
                     RazorIRToken - (31:1,0 [3] SimpleTagHelpers.cshtml) - Html - <p>

@@ -3,7 +3,8 @@ Document -
     NamespaceDeclaration -  - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_TransitionsInTagHelperAttributes_Runtime -  - 
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - class - test - HtmlAttributeValueStyle.DoubleQuotes
-            DeclareTagHelperFields -  - TestNamespace.PTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.PTagHelper - __TestNamespace_PTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 CSharpCode - (35:1,2 [59] TransitionsInTagHelperAttributes.cshtml)
                     RazorIRToken - (35:1,2 [59] TransitionsInTagHelperAttributes.cshtml) - CSharp -  \n    var @class = "container-fluid";\n    var @int = 1;\n

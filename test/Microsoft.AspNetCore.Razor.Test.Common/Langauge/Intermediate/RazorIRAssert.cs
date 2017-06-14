@@ -320,17 +320,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
             }
         }
 
-        internal static void TagHelperFieldDeclaration(RazorIRNode node, params string[] tagHelperTypes)
+        internal static void FieldDeclaration(RazorIRNode node, string accessModifier, string typeName, string variableName)
         {
-            var declareTagHelperFields = Assert.IsType<DeclareTagHelperFieldsIRNode>(node);
+            var fieldDeclaration = Assert.IsType<FieldDeclarationIRNode>(node);
 
             try
             {
-                Assert.Equal(tagHelperTypes, declareTagHelperFields.UsedTagHelperTypeNames);
+                Assert.Equal(accessModifier, fieldDeclaration.AccessModifier);
+                Assert.Equal(typeName, fieldDeclaration.Type);
+                Assert.Equal(variableName, fieldDeclaration.Name);
             }
             catch (XunitException e)
             {
-                throw new IRAssertException(declareTagHelperFields, e.Message);
+                throw new IRAssertException(fieldDeclaration, e.Message);
             }
         }
 

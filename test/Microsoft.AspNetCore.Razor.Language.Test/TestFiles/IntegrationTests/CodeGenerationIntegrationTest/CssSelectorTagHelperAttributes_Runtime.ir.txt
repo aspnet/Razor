@@ -11,7 +11,13 @@ Document -
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_6 - type - texty - HtmlAttributeValueStyle.SingleQuotes
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_7 - type - checkbox - HtmlAttributeValueStyle.DoubleQuotes
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_8 - value - 2 TagHelper - HtmlAttributeValueStyle.DoubleQuotes
-            DeclareTagHelperFields -  - TestNamespace.ATagHelper - TestNamespace.CatchAllTagHelper - TestNamespace.ATagHelperMultipleSelectors - TestNamespace.InputTagHelper - TestNamespace.InputTagHelper2 - TestNamespace.CatchAllTagHelper2
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.ATagHelper - __TestNamespace_ATagHelper
+            FieldDeclaration -  - private - global::TestNamespace.CatchAllTagHelper - __TestNamespace_CatchAllTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.ATagHelperMultipleSelectors - __TestNamespace_ATagHelperMultipleSelectors
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper - __TestNamespace_InputTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper2 - __TestNamespace_InputTagHelper2
+            FieldDeclaration -  - private - global::TestNamespace.CatchAllTagHelper2 - __TestNamespace_CatchAllTagHelper2
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (33:1,0 [2] CssSelectorTagHelperAttributes.cshtml)
                     RazorIRToken - (33:1,0 [2] CssSelectorTagHelperAttributes.cshtml) - Html - \n

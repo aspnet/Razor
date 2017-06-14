@@ -12,8 +12,8 @@ global::System.Object __typeHelper = "*, TestAssembly";
         }
         #pragma warning restore 219
         private static System.Object __o = null;
-        private global::TestNamespace.CatchAllTagHelper __TestNamespace_CatchAllTagHelper = null;
-        private global::TestNamespace.InputTagHelper __TestNamespace_InputTagHelper = null;
+        private global::TestNamespace.CatchAllTagHelper __TestNamespace_CatchAllTagHelper;
+        private global::TestNamespace.InputTagHelper __TestNamespace_InputTagHelper;
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {

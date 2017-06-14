@@ -5,7 +5,9 @@ Document -
             DeclarePreallocatedTagHelperAttribute -  - __tagHelperAttribute_0 - value - Hello - HtmlAttributeValueStyle.DoubleQuotes
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - type - text - HtmlAttributeValueStyle.SingleQuotes
             DeclarePreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2 - unbound - foo - HtmlAttributeValueStyle.DoubleQuotes
-            DeclareTagHelperFields -  - FormTagHelper - InputTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::FormTagHelper - __FormTagHelper
+            FieldDeclaration -  - private - global::InputTagHelper - __InputTagHelper
             MethodDeclaration -  - public - async, override - global::System.Threading.Tasks.Task - ExecuteAsync
                 CSharpCode - 
                     RazorIRToken -  - CSharp - BeginContext(31, 28, true);

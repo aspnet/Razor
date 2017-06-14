@@ -30,7 +30,8 @@ Document -
                 DirectiveToken - (33:2,14 [29] ModelExpressionTagHelper.cshtml) - "InputTestTagHelper, AppCode"
             CSharpCode - 
                 RazorIRToken -  - CSharp - private static System.Object __o = null;
-            DeclareTagHelperFields -  - InputTestTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::InputTestTagHelper - __InputTestTagHelper
             MethodDeclaration -  - public - async, override - global::System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (17:1,0 [2] ModelExpressionTagHelper.cshtml)
                     RazorIRToken - (17:1,0 [2] ModelExpressionTagHelper.cshtml) - Html - \n

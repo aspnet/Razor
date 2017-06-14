@@ -177,8 +177,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                 Options = RazorCodeGenerationOptions.CreateDefault(),
             };
 
+            var tagHelperFieldIRNode = new FieldDeclarationIRNode();
+            tagHelperFieldIRNode.Annotations[CommonAnnotations.TagHelperField] = CommonAnnotations.TagHelperField;
             var builder = RazorIRBuilder.Create(irDocument);
-            builder.Add(new DeclareTagHelperFieldsIRNode());
+            builder.Add(tagHelperFieldIRNode);
 
             var pass = new TestDocumentClassifierPass();
             pass.Engine = RazorEngine.CreateEmpty(b => { });
@@ -191,7 +193,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             var @class = SingleChild<ClassDeclarationIRNode>(@namespace);
             Children(
                 @class,
-                n => Assert.IsType<DeclareTagHelperFieldsIRNode>(n),
+                n => Assert.Same(tagHelperFieldIRNode, n),
                 n => Assert.IsType<MethodDeclarationIRNode>(n));
         }
 

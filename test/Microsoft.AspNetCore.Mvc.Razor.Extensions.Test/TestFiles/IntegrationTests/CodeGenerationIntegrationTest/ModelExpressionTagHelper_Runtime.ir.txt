@@ -11,7 +11,8 @@ Document -
         UsingStatement - (135:5,1 [42] ) - Microsoft.AspNetCore.Mvc.Rendering
         UsingStatement - (178:6,1 [45] ) - Microsoft.AspNetCore.Mvc.ViewFeatures
         ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_ModelExpressionTagHelper_cshtml - global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<DateTime> - 
-            DeclareTagHelperFields -  - InputTestTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::InputTestTagHelper - __InputTestTagHelper
             MethodDeclaration -  - public - async, override - global::System.Threading.Tasks.Task - ExecuteAsync
                 CSharpCode - 
                     RazorIRToken -  - CSharp - BeginContext(17, 2, true);

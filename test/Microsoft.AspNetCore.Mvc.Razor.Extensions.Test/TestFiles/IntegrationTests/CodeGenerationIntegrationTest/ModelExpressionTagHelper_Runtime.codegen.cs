@@ -30,7 +30,7 @@ namespace AspNetCore
                 return __backed__tagHelperScopeManager;
             }
         }
-        private global::InputTestTagHelper __InputTestTagHelper = null;
+        private global::InputTestTagHelper __InputTestTagHelper;
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {

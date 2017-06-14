@@ -25,7 +25,7 @@ global::System.Object __typeHelper = "InputTestTagHelper, AppCode";
         }
         #pragma warning restore 219
         private static System.Object __o = null;
-        private global::InputTestTagHelper __InputTestTagHelper = null;
+        private global::InputTestTagHelper __InputTestTagHelper;
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {

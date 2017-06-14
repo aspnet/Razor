@@ -16,7 +16,7 @@ global::System.Object __typeHelper = "cool:";
         }
         #pragma warning restore 219
         private static System.Object __o = null;
-        private global::InputTagHelper __InputTagHelper = null;
+        private global::InputTagHelper __InputTagHelper;
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {

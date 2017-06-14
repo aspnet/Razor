@@ -215,7 +215,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                     SyntaxConstants.CSharp.AddTagHelperKeyword,
                     n,
                     v => DirectiveToken(DirectiveTokenKind.String, "*, TestAssembly", v)),
-                n => TagHelperFieldDeclaration(n, "SpanTagHelper"),
+                n => FieldDeclaration(n, "private", "global::SpanTagHelper", "__SpanTagHelper"),
+                n => FieldDeclaration(n, null, null, null),
                 n => TagHelper(
                     "span",
                     TagMode.StartTagAndEndTag,
@@ -259,7 +260,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                     SyntaxConstants.CSharp.TagHelperPrefixKeyword,
                     n,
                     v => DirectiveToken(DirectiveTokenKind.String, "cool:", v)),
-                n => TagHelperFieldDeclaration(n, "SpanTagHelper"),
+                n => FieldDeclaration(n, "private", "global::SpanTagHelper", "__SpanTagHelper"),
+                n => FieldDeclaration(n, null, null, null),
                 n => TagHelper(
                     "span",  // Note: this is span not cool:span
                     TagMode.StartTagAndEndTag,
@@ -319,7 +321,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                             v => CSharpExpressionAttributeValue(string.Empty, "Hello", v),
                             v => LiteralAttributeValue(" ", "World", v))),
                     c1 => Html(Environment.NewLine, c1)),
-                n => TagHelperFieldDeclaration(n, "SpanTagHelper"));
+                n => FieldDeclaration(n, "private", "global::SpanTagHelper", "__SpanTagHelper"),
+                n => FieldDeclaration(n, null, null, null));
         }
 
         [Fact]
@@ -354,7 +357,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                     SyntaxConstants.CSharp.AddTagHelperKeyword,
                     n,
                     v => DirectiveToken(DirectiveTokenKind.String, "*, TestAssembly", v)),
-                n => TagHelperFieldDeclaration(n, "InputTagHelper"),
+                n => FieldDeclaration(n, "private", "global::InputTagHelper", "__InputTagHelper"),
+                n => FieldDeclaration(n, null, null, null),
                 n => TagHelper(
                     "input",
                     TagMode.SelfClosing,

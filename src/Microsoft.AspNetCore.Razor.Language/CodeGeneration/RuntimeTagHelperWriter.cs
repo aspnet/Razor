@@ -68,7 +68,7 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
         public string FormatInvalidIndexerAssignmentMethodName { get; set; } = "InvalidTagHelperIndexerAssignment";
 
-        public override void WriteDeclareTagHelperFields(CSharpRenderingContext context, DeclareTagHelperFieldsIRNode node)
+        public override void WriteDeclareTagHelperFields(CSharpRenderingContext context)
         {
             context.Writer.WriteLineHiddenDirective();
 
@@ -133,17 +133,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
                     context.Writer.WriteReturn(backedScopeManageVariableName);
                 }
-            }
-
-            foreach (var tagHelperTypeName in node.UsedTagHelperTypeNames)
-            {
-                var tagHelperVariableName = GetTagHelperVariableName(tagHelperTypeName);
-                context.Writer
-                    .Write("private global::")
-                    .WriteVariableDeclaration(
-                        tagHelperTypeName,
-                        tagHelperVariableName,
-                        value: null);
             }
         }
 

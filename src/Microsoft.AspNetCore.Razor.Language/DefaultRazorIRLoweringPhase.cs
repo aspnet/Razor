@@ -256,7 +256,8 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         private class MainSourceVisitor : LoweringVisitor
         {
-            private DeclareTagHelperFieldsIRNode _tagHelperFields;
+            private RazorIRNodeReference? _tagHelperFieldDeclaration;
+            private HashSet<string> _usedTagHelperTypeNames;
             private readonly string _tagHelperPrefix;
 
             public MainSourceVisitor(DocumentIRNode document, RazorIRBuilder builder, Dictionary<string, SourceSpan?> namespaces, string tagHelperPrefix)
@@ -588,18 +589,38 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             private void DeclareTagHelperFields(TagHelperBlock block)
             {
-                if (_tagHelperFields == null)
+                if (_tagHelperFieldDeclaration == null)
                 {
-                    _tagHelperFields = new DeclareTagHelperFieldsIRNode();
-                    _document.Children.Add(_tagHelperFields);
+                    var node = new FieldDeclarationIRNode();
+                    node.Annotations[CommonAnnotations.InitializeTagHelperVariables] = CommonAnnotations.InitializeTagHelperVariables;
+                    _document.Children.Add(node);
+
+                    _tagHelperFieldDeclaration = new RazorIRNodeReference(_document, node);
+                    _usedTagHelperTypeNames = new HashSet<string>(StringComparer.Ordinal);
                 }
 
                 foreach (var descriptor in block.Binding.Descriptors)
                 {
                     var typeName = descriptor.GetTypeName();
-                    _tagHelperFields.UsedTagHelperTypeNames.Add(typeName);
+                    if (_usedTagHelperTypeNames.Contains(typeName))
+                    {
+                        continue;
+                    }
+
+                    _usedTagHelperTypeNames.Add(typeName);
+
+                    var tagHelperField = new FieldDeclarationIRNode()
+                    {
+                        AccessModifier = "private",
+                        Name = GetTagHelperVariableName(typeName),
+                        Type = "global::" + typeName
+                    };
+                    tagHelperField.Annotations[CommonAnnotations.TagHelperField] = CommonAnnotations.TagHelperField;
+                    _tagHelperFieldDeclaration = _tagHelperFieldDeclaration.Value.InsertBefore(tagHelperField);
                 }
             }
+
+            private static string GetTagHelperVariableName(string tagHelperTypeName) => "__" + tagHelperTypeName.Replace('.', '_');
 
             private void AddTagHelperCreation(TagHelperBinding tagHelperBinding)
             {

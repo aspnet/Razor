@@ -5,16 +5,16 @@ Generated Location: (379:8,38 [15] )
 
 Source Location: (66:3,26 [0] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml)
 ||
-Generated Location: (1403:25,42 [0] )
+Generated Location: (1382:25,42 [0] )
 ||
 
 Source Location: (126:5,30 [0] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml)
 ||
-Generated Location: (1931:34,42 [0] )
+Generated Location: (1910:34,42 [0] )
 ||
 
 Source Location: (92:4,12 [0] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml)
 ||
-Generated Location: (2193:40,33 [0] )
+Generated Location: (2172:40,33 [0] )
 ||
 

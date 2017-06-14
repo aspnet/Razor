@@ -6,7 +6,10 @@ Document -
                 DirectiveToken - (14:0,14 [15] NestedTagHelpers.cshtml) - *, TestAssembly
             CSharpCode - 
                 RazorIRToken -  - CSharp - private static System.Object __o = null;
-            DeclareTagHelperFields -  - SpanTagHelper - DivTagHelper - InputTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::SpanTagHelper - __SpanTagHelper
+            FieldDeclaration -  - private - global::DivTagHelper - __DivTagHelper
+            FieldDeclaration -  - private - global::InputTagHelper - __InputTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (29:0,29 [2] NestedTagHelpers.cshtml)
                     RazorIRToken - (29:0,29 [2] NestedTagHelpers.cshtml) - Html - \n
