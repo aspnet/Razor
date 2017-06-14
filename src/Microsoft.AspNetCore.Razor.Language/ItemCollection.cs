@@ -20,6 +20,8 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public abstract bool Contains(KeyValuePair<object, object> item);
 
+        public abstract bool ContainsKey(object key);
+
         public abstract void CopyTo(KeyValuePair<object, object>[] array, int arrayIndex);
 
         public abstract IEnumerator<KeyValuePair<object, object>> GetEnumerator();

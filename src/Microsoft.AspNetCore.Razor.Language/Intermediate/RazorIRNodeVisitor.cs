@@ -109,11 +109,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
             VisitDefault(node);
         }
 
-        public virtual void VisitDeclareTagHelperFields(DeclareTagHelperFieldsIRNode node)
-        {
-            VisitDefault(node);
-        }
-
         public virtual void VisitTagHelper(TagHelperIRNode node)
         {
             VisitDefault(node);

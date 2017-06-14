@@ -2,7 +2,9 @@ Document -
     Checksum - 
     NamespaceDeclaration -  - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
         ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_TagHelpersInSection_Runtime -  - 
-            DeclareTagHelperFields -  - TestNamespace.MyTagHelper - TestNamespace.NestedTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.MyTagHelper - __TestNamespace_MyTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.NestedTagHelper - __TestNamespace_NestedTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (33:1,0 [2] TagHelpersInSection.cshtml)
                     RazorIRToken - (33:1,0 [2] TagHelpersInSection.cshtml) - Html - \n

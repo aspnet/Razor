@@ -31,12 +31,12 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
                 return __backed__tagHelperScopeManager;
             }
         }
-        private global::TestNamespace.ATagHelper __TestNamespace_ATagHelper = null;
-        private global::TestNamespace.CatchAllTagHelper __TestNamespace_CatchAllTagHelper = null;
-        private global::TestNamespace.ATagHelperMultipleSelectors __TestNamespace_ATagHelperMultipleSelectors = null;
-        private global::TestNamespace.InputTagHelper __TestNamespace_InputTagHelper = null;
-        private global::TestNamespace.InputTagHelper2 __TestNamespace_InputTagHelper2 = null;
-        private global::TestNamespace.CatchAllTagHelper2 __TestNamespace_CatchAllTagHelper2 = null;
+        private global::TestNamespace.ATagHelper __TestNamespace_ATagHelper;
+        private global::TestNamespace.CatchAllTagHelper __TestNamespace_CatchAllTagHelper;
+        private global::TestNamespace.ATagHelperMultipleSelectors __TestNamespace_ATagHelperMultipleSelectors;
+        private global::TestNamespace.InputTagHelper __TestNamespace_InputTagHelper;
+        private global::TestNamespace.InputTagHelper2 __TestNamespace_InputTagHelper2;
+        private global::TestNamespace.CatchAllTagHelper2 __TestNamespace_CatchAllTagHelper2;
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {

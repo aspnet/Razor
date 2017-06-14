@@ -21,8 +21,8 @@ global::System.Object __typeHelper = "*, AppCode";
         }
         #pragma warning restore 219
         private static System.Object __o = null;
-        private global::AspNetCore.TestFiles_IntegrationTests_CodeGenerationIntegrationTest_ViewComponentTagHelper_cshtml.__Generated__TestViewComponentTagHelper __AspNetCore_TestFiles_IntegrationTests_CodeGenerationIntegrationTest_ViewComponentTagHelper_cshtml___Generated__TestViewComponentTagHelper = null;
-        private global::AllTagHelper __AllTagHelper = null;
+        private global::AspNetCore.TestFiles_IntegrationTests_CodeGenerationIntegrationTest_ViewComponentTagHelper_cshtml.__Generated__TestViewComponentTagHelper __AspNetCore_TestFiles_IntegrationTests_CodeGenerationIntegrationTest_ViewComponentTagHelper_cshtml___Generated__TestViewComponentTagHelper;
+        private global::AllTagHelper __AllTagHelper;
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {

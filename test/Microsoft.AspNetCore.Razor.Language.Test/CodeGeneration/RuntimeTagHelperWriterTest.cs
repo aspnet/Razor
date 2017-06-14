@@ -15,12 +15,11 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
         public void WriteDeclareTagHelperFields_DeclaresRequiredFields()
         {
             // Arrange
-            var node = new DeclareTagHelperFieldsIRNode();
             var writer = new RuntimeTagHelperWriter();
             var context = GetCSharpRenderingContext(writer);
 
             // Act
-            writer.WriteDeclareTagHelperFields(context, node);
+            writer.WriteDeclareTagHelperFields(context);
 
             // Assert
             var csharp = context.Writer.Builder.ToString();
@@ -43,48 +42,6 @@ private global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperScopeMana
         return __backed__tagHelperScopeManager;
     }
 }
-",
-                csharp,
-                ignoreLineEndingDifferences: true);
-        }
-
-        [Fact]
-        public void WriteDeclareTagHelperFields_DeclaresUsedTagHelperTypes()
-        {
-            // Arrange
-            var node = new DeclareTagHelperFieldsIRNode();
-            node.UsedTagHelperTypeNames.Add("PTagHelper");
-            node.UsedTagHelperTypeNames.Add("MyTagHelper");
-
-            var writer = new RuntimeTagHelperWriter();
-            var context = GetCSharpRenderingContext(writer);
-
-            // Act
-            writer.WriteDeclareTagHelperFields(context, node);
-
-            // Assert
-            var csharp = context.Writer.Builder.ToString();
-            Assert.Equal(
-@"#line hidden
-#pragma warning disable 0414
-private string __tagHelperStringValueBuffer = null;
-#pragma warning restore 0414
-private global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperExecutionContext __tagHelperExecutionContext = null;
-private global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperRunner __tagHelperRunner = new global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperRunner();
-private global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperScopeManager __backed__tagHelperScopeManager = null;
-private global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperScopeManager __tagHelperScopeManager
-{
-    get
-    {
-        if (__backed__tagHelperScopeManager == null)
-        {
-            __backed__tagHelperScopeManager = new global::Microsoft.AspNetCore.Razor.Runtime.TagHelpers.TagHelperScopeManager(StartTagHelperWritingScope, EndTagHelperWritingScope);
-        }
-        return __backed__tagHelperScopeManager;
-    }
-}
-private global::PTagHelper __PTagHelper = null;
-private global::MyTagHelper __MyTagHelper = null;
 ",
                 csharp,
                 ignoreLineEndingDifferences: true);

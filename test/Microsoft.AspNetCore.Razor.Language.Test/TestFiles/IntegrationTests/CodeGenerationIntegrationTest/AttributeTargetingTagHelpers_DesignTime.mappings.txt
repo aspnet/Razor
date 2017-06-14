@@ -5,11 +5,11 @@ Generated Location: (383:8,38 [15] )
 
 Source Location: (187:5,36 [4] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/AttributeTargetingTagHelpers.cshtml)
 |true|
-Generated Location: (1627:27,42 [4] )
+Generated Location: (1599:27,42 [4] )
 |true|
 
 Source Location: (233:6,36 [4] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/AttributeTargetingTagHelpers.cshtml)
 |true|
-Generated Location: (2280:37,42 [4] )
+Generated Location: (2252:37,42 [4] )
 |true|
 

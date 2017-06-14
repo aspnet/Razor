@@ -26,7 +26,7 @@ global::System.Object __typeHelper = "*, AppCode";
         }
         #pragma warning restore 219
         private static System.Object __o = null;
-        private global::DivTagHelper __DivTagHelper = null;
+        private global::DivTagHelper __DivTagHelper;
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {

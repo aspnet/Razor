@@ -6,7 +6,9 @@ Document -
                 DirectiveToken - (14:0,14 [17] EnumTagHelpers.cshtml) - "*, TestAssembly"
             CSharpCode - 
                 RazorIRToken -  - CSharp - private static System.Object __o = null;
-            DeclareTagHelperFields -  - TestNamespace.InputTagHelper - TestNamespace.CatchAllTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper - __TestNamespace_InputTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.CatchAllTagHelper - __TestNamespace_CatchAllTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (31:0,31 [4] EnumTagHelpers.cshtml)
                     RazorIRToken - (31:0,31 [4] EnumTagHelpers.cshtml) - Html - \n\n

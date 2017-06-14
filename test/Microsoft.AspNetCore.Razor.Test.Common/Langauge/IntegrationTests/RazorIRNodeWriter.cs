@@ -33,6 +33,17 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             WriteContentNode(node, node.AccessModifier, node.Name, node.BaseType, string.Join(", ", node.Interfaces ?? new List<string>()));
         }
 
+        public override void VisitFieldDeclaration(FieldDeclarationIRNode node)
+        {
+            var content = new List<string>();
+            content.Add(node.AccessModifier);
+            content.AddRange(node.Modifiers);
+            content.Add(node.Type);
+            content.Add(node.Name);
+
+            WriteContentNode(node, content.ToArray());
+        }
+
         public override void VisitCSharpExpressionAttributeValue(CSharpExpressionAttributeValueIRNode node)
         {
             WriteContentNode(node, node.Prefix);
@@ -81,11 +92,6 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
         public override void VisitUsingStatement(UsingStatementIRNode node)
         {
             WriteContentNode(node, node.Content);
-        }
-
-        public override void VisitDeclareTagHelperFields(DeclareTagHelperFieldsIRNode node)
-        {
-            WriteContentNode(node, node.UsedTagHelperTypeNames.ToArray());
         }
 
         public override void VisitTagHelper(TagHelperIRNode node)

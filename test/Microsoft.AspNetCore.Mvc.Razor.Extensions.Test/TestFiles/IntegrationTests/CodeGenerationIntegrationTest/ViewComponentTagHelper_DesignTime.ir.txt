@@ -29,7 +29,9 @@ Document -
                 DirectiveToken - (14:0,14 [12] ViewComponentTagHelper.cshtml) - "*, AppCode"
             CSharpCode - 
                 RazorIRToken -  - CSharp - private static System.Object __o = null;
-            DeclareTagHelperFields -  - AspNetCore.TestFiles_IntegrationTests_CodeGenerationIntegrationTest_ViewComponentTagHelper_cshtml.__Generated__TestViewComponentTagHelper - AllTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::AspNetCore.TestFiles_IntegrationTests_CodeGenerationIntegrationTest_ViewComponentTagHelper_cshtml.__Generated__TestViewComponentTagHelper - __AspNetCore_TestFiles_IntegrationTests_CodeGenerationIntegrationTest_ViewComponentTagHelper_cshtml___Generated__TestViewComponentTagHelper
+            FieldDeclaration -  - private - global::AllTagHelper - __AllTagHelper
             MethodDeclaration -  - public - async, override - global::System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (26:0,26 [2] ViewComponentTagHelper.cshtml)
                     RazorIRToken - (26:0,26 [2] ViewComponentTagHelper.cshtml) - Html - \n

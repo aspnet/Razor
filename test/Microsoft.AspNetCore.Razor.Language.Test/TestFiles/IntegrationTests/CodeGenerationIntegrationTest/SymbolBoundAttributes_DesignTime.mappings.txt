@@ -5,21 +5,21 @@ Generated Location: (376:8,38 [15] )
 
 Source Location: (302:11,18 [5] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/SymbolBoundAttributes.cshtml)
 |items|
-Generated Location: (985:20,46 [5] )
+Generated Location: (978:20,46 [5] )
 |items|
 
 Source Location: (351:12,20 [5] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/SymbolBoundAttributes.cshtml)
 |items|
-Generated Location: (1278:26,47 [5] )
+Generated Location: (1271:26,47 [5] )
 |items|
 
 Source Location: (405:13,23 [13] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/SymbolBoundAttributes.cshtml)
 |doSomething()|
-Generated Location: (1567:32,43 [13] )
+Generated Location: (1560:32,43 [13] )
 |doSomething()|
 
 Source Location: (487:14,24 [13] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/SymbolBoundAttributes.cshtml)
 |doSomething()|
-Generated Location: (1864:38,43 [13] )
+Generated Location: (1857:38,43 [13] )
 |doSomething()|
 

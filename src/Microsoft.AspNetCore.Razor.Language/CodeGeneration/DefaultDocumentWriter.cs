@@ -176,7 +176,14 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
             public override void VisitFieldDeclaration(FieldDeclarationIRNode node)
             {
-                Context.Writer.WriteField(node.AccessModifier, node.Modifiers, node.Type, node.Name);
+                if (node.Annotations.ContainsKey(CommonAnnotations.InitializeTagHelperVariables))
+                {
+                    Context.TagHelperWriter.WriteDeclareTagHelperFields(Context);
+                }
+                else
+                {
+                    Context.Writer.WriteField(node.AccessModifier, node.Modifiers, node.Type, node.Name);
+                }
             }
 
             public override void VisitPropertyDeclaration(PropertyDeclarationIRNode node)
@@ -222,11 +229,6 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
             public override void VisitHtml(HtmlContentIRNode node)
             {
                 Context.BasicWriter.WriteHtmlContent(Context, node);
-            }
-
-            public override void VisitDeclareTagHelperFields(DeclareTagHelperFieldsIRNode node)
-            {
-                Context.TagHelperWriter.WriteDeclareTagHelperFields(Context, node);
             }
 
             public override void VisitTagHelper(TagHelperIRNode node)

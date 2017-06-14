@@ -5,16 +5,16 @@ Generated Location: (382:8,37 [17] )
 
 Source Location: (146:4,34 [4] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/DuplicateAttributeTagHelpers.cshtml)
 |true|
-Generated Location: (1775:29,42 [4] )
+Generated Location: (1754:29,42 [4] )
 |true|
 
 Source Location: (222:5,34 [4] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/DuplicateAttributeTagHelpers.cshtml)
 |true|
-Generated Location: (2317:38,42 [4] )
+Generated Location: (2296:38,42 [4] )
 |true|
 
 Source Location: (43:2,8 [1] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/DuplicateAttributeTagHelpers.cshtml)
 |3|
-Generated Location: (2587:44,33 [1] )
+Generated Location: (2566:44,33 [1] )
 |3|
 

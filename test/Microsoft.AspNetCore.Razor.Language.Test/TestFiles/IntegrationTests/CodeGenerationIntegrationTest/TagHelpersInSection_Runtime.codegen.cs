@@ -22,8 +22,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
                 return __backed__tagHelperScopeManager;
             }
         }
-        private global::TestNamespace.MyTagHelper __TestNamespace_MyTagHelper = null;
-        private global::TestNamespace.NestedTagHelper __TestNamespace_NestedTagHelper = null;
+        private global::TestNamespace.MyTagHelper __TestNamespace_MyTagHelper;
+        private global::TestNamespace.NestedTagHelper __TestNamespace_NestedTagHelper;
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {

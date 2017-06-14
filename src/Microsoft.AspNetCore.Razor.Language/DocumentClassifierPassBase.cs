@@ -144,9 +144,17 @@ namespace Microsoft.AspNetCore.Razor.Language
                 _namespace.Insert(i + 1, node);
             }
 
-            public override void VisitDeclareTagHelperFields(DeclareTagHelperFieldsIRNode node)
+            public override void VisitFieldDeclaration(FieldDeclarationIRNode node)
             {
-                _class.Insert(0, node);
+                if (node.Annotations.ContainsKey(CommonAnnotations.InitializeTagHelperVariables) ||
+                    node.Annotations.ContainsKey(CommonAnnotations.TagHelperField))
+                {
+                    _class.Insert(0, node);
+                }
+                else
+                {
+                    base.VisitFieldDeclaration(node);
+                }
             }
 
             public override void VisitDefault(RazorIRNode node)

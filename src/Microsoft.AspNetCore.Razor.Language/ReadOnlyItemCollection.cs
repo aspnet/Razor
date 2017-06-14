@@ -46,6 +46,16 @@ namespace Microsoft.AspNetCore.Razor.Language
             return false;
         }
 
+        public override bool ContainsKey(object key)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            return false;
+        }
+
         public override void CopyTo(KeyValuePair<object, object>[] array, int arrayIndex)
         {
             if (array == null)

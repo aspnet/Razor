@@ -25,8 +25,8 @@ namespace Razor
                 return __backed__tagHelperScopeManager;
             }
         }
-        private global::FormTagHelper __FormTagHelper = null;
-        private global::InputTagHelper __InputTagHelper = null;
+        private global::FormTagHelper __FormTagHelper;
+        private global::InputTagHelper __InputTagHelper;
         #pragma warning disable 1998
         public async override global::System.Threading.Tasks.Task ExecuteAsync()
         {

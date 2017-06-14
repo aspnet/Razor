@@ -12,7 +12,7 @@ global::System.Object __typeHelper = "*, TestAssembly";
         }
         #pragma warning restore 219
         private static System.Object __o = null;
-        private global::TestNamespace.PTagHelper __TestNamespace_PTagHelper = null;
+        private global::TestNamespace.PTagHelper __TestNamespace_PTagHelper;
         #pragma warning disable 1998
         public async System.Threading.Tasks.Task ExecuteAsync()
         {

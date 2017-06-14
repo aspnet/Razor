@@ -7,7 +7,10 @@ Document -
                 DirectiveToken - (38:1,14 [17] BasicTagHelpers_Prefixed.cshtml) - "*, TestAssembly"
             CSharpCode - 
                 RazorIRToken -  - CSharp - private static System.Object __o = null;
-            DeclareTagHelperFields -  - TestNamespace.PTagHelper - TestNamespace.InputTagHelper - TestNamespace.InputTagHelper2
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.PTagHelper - __TestNamespace_PTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper - __TestNamespace_InputTagHelper
+            FieldDeclaration -  - private - global::TestNamespace.InputTagHelper2 - __TestNamespace_InputTagHelper2
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (22:0,22 [2] BasicTagHelpers_Prefixed.cshtml)
                     RazorIRToken - (22:0,22 [2] BasicTagHelpers_Prefixed.cshtml) - Html - \n

@@ -6,7 +6,8 @@ Document -
                 DirectiveToken - (14:0,14 [17] IncompleteTagHelper.cshtml) - "*, TestAssembly"
             CSharpCode - 
                 RazorIRToken -  - CSharp - private static System.Object __o = null;
-            DeclareTagHelperFields -  - TestNamespace.PTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::TestNamespace.PTagHelper - __TestNamespace_PTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (31:0,31 [4] IncompleteTagHelper.cshtml)
                     RazorIRToken - (31:0,31 [4] IncompleteTagHelper.cshtml) - Html - \n\n

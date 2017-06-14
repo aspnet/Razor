@@ -31,7 +31,8 @@ Document -
                 DirectiveToken - (40:3,14 [12] RazorPages.cshtml) - "*, AppCode"
             CSharpCode - 
                 RazorIRToken -  - CSharp - private static System.Object __o = null;
-            DeclareTagHelperFields -  - DivTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::DivTagHelper - __DivTagHelper
             MethodDeclaration -  - public - async, override - global::System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (7:1,0 [2] RazorPages.cshtml)
                     RazorIRToken - (7:1,0 [2] RazorPages.cshtml) - Html - \n

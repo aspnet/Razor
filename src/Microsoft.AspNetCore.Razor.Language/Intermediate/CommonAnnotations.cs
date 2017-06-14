@@ -10,5 +10,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
         public static readonly object PrimaryMethod = "PrimaryMethod";
 
         public static readonly object PrimaryNamespace = "PrimaryNamespace";
+
+        public static readonly object InitializeTagHelperVariables = "InitializeTagHelperVariables";
+
+        public static readonly object TagHelperField = "TagHelperField";
     }
 }

@@ -6,7 +6,8 @@ Document -
                 DirectiveToken - (14:0,14 [15] SimpleTagHelpers.cshtml) - *, TestAssembly
             CSharpCode - 
                 RazorIRToken -  - CSharp - private static System.Object __o = null;
-            DeclareTagHelperFields -  - InputTagHelper
+            FieldDeclaration -  -  -  - 
+            FieldDeclaration -  - private - global::InputTagHelper - __InputTagHelper
             MethodDeclaration -  - public - async - System.Threading.Tasks.Task - ExecuteAsync
                 HtmlContent - (29:0,29 [27] SimpleTagHelpers.cshtml)
                     RazorIRToken - (29:0,29 [2] SimpleTagHelpers.cshtml) - Html - \n
