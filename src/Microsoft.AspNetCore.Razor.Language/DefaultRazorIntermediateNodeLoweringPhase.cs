@@ -649,14 +649,17 @@ namespace Microsoft.AspNetCore.Razor.Language
                     Source = BuildSourceSpanFromNode(block)
                 };
 
+                var tagHelperBody = new TagHelperBodyIntermediateNode();
+
                 foreach (var tagHelper in tagHelperBlock.Binding.Descriptors)
                 {
                     tagHelperNode.TagHelpers.Add(tagHelper);
+                    tagHelperBody.TagHelpers.Add(tagHelper);
                 }
 
                 _builder.Push(tagHelperNode);
 
-                _builder.Push(new TagHelperBodyIntermediateNode());
+                _builder.Push(tagHelperBody);
 
                 VisitDefault(block);
 
