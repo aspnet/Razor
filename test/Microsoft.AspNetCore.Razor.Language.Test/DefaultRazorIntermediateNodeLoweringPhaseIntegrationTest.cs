@@ -204,7 +204,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                     TagMode.StartTagAndEndTag,
                     tagHelpers,
                     n,
-                    c => Assert.IsType<TagHelperBodyIntermediateNode>(c),
+                    c => TagHelperBody(tagHelpers, c),
                     c => Assert.IsType<CreateTagHelperIntermediateNode>(c),
                     c => TagHelperHtmlAttribute(
                         "val",
@@ -248,7 +248,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                     TagMode.StartTagAndEndTag,
                     tagHelpers,
                     n,
-                    c => Assert.IsType<TagHelperBodyIntermediateNode>(c),
+                    c => TagHelperBody(tagHelpers, c),
                     c => Assert.IsType<CreateTagHelperIntermediateNode>(c),
                     c => TagHelperHtmlAttribute(
                         "val",
@@ -294,7 +294,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                         TagMode.StartTagAndEndTag,
                         tagHelpers,
                         c1,
-                        c2 => Assert.IsType<TagHelperBodyIntermediateNode>(c2),
+                        c2 => TagHelperBody(tagHelpers, c2),
                         c2 => Assert.IsType<CreateTagHelperIntermediateNode>(c2),
                         c2 => TagHelperHtmlAttribute(
                             "val",
@@ -343,7 +343,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                     TagMode.SelfClosing,
                     tagHelpers,
                     n,
-                    c => Assert.IsType<TagHelperBodyIntermediateNode>(c),
+                    c => TagHelperBody(tagHelpers, c),
                     c => Assert.IsType<CreateTagHelperIntermediateNode>(c),
                     c => SetTagHelperProperty(
                         "bound",

@@ -352,7 +352,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
                 Assert.Equal(tagName, tagHelperNode.TagName);
                 Assert.Equal(tagMode, tagHelperNode.TagMode);
 
-                Assert.Equal(tagHelpers, tagHelperNode.TagHelpers);
+                Assert.Equal(tagHelpers, tagHelperNode.TagHelpers, TagHelperDescriptorComparer.CaseSensitive);
             }
             catch (XunitException e)
             {
@@ -360,6 +360,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
             }
 
             Children(node, childValidators);
+        }
+
+        internal static void TagHelperBody(IEnumerable<TagHelperDescriptor> tagHelpers, IntermediateNode node)
+        {
+            var tagHelperBodyNode = Assert.IsType<TagHelperBodyIntermediateNode>(node);
+
+            try
+            {
+                Assert.Equal(tagHelpers, tagHelperBodyNode.TagHelpers, TagHelperDescriptorComparer.CaseSensitive);
+            }
+            catch (XunitException e)
+            {
+                throw new IntermediateNodeAssertException(tagHelperBodyNode, e.Message);
+            }
         }
 
         internal static void TagHelperHtmlAttribute(
