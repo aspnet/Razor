@@ -24,19 +24,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 SectionMethodName = "CreateSection"
             };
 
-            var codeWriter = new CodeWriter();
-            var nodeWriter = new RuntimeNodeWriter();
-            var options = RazorCodeGenerationOptions.CreateDefault();
-            var context = new DefaultCodeRenderingContext(codeWriter, nodeWriter, sourceDocument: null, options: options)
-            { 
-                TagHelperWriter = new RuntimeTagHelperWriter(),
-            };
-
-            context.SetRenderChildren((n) =>
-            {
-                Assert.Same(node, n);
-                context.CodeWriter.WriteLine(" var s = \"Inside\"");
-            });
+            var context = TestCodeRenderingContext.CreateRuntime();
 
             // Act
             extension.WriteSection(context, node);
@@ -66,19 +54,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 SectionMethodName = "CreateSection"
             };
 
-            var codeWriter = new CodeWriter();
-            var nodeWriter = new RuntimeNodeWriter();
-            var options = RazorCodeGenerationOptions.Create(false, 4, true, false);
-            var context = new DefaultCodeRenderingContext(codeWriter, nodeWriter, sourceDocument: null, options: options)
-            {
-                TagHelperWriter = new RuntimeTagHelperWriter(),
-            };
-
-            context.SetRenderChildren((n) =>
-            {
-                Assert.Same(node, n);
-                context.CodeWriter.WriteLine(" var s = \"Inside\"");
-            });
+            var context = TestCodeRenderingContext.CreateRuntime();
 
             // Act
             extension.WriteSection(context, node);
