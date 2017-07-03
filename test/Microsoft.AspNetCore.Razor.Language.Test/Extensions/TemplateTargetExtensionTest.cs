@@ -17,24 +17,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
             {
                 TemplateTypeName = "global::TestTemplate"
             };
-
-            var codeWriter = new CodeWriter();
+            
             var nodeWriter = new RuntimeNodeWriter()
             {
                 PushWriterMethod = "TestPushWriter",
                 PopWriterMethod = "TestPopWriter"
             };
-            var options = RazorCodeGenerationOptions.CreateDefault();
-            var context = new DefaultCodeRenderingContext(codeWriter, nodeWriter, sourceDocument: null, options: options)
-            {
-                TagHelperWriter = new RuntimeTagHelperWriter(),
-            };
 
-            context.SetRenderChildren((n) =>
-            {
-                Assert.Same(node, n);
-                context.CodeWriter.WriteLine(" var s = \"Inside\"");
-            });
+            var context = TestCodeRenderingContext.CreateRuntime(nodeWriter: nodeWriter);
 
             // Act
             extension.WriteTemplate(context, node);
