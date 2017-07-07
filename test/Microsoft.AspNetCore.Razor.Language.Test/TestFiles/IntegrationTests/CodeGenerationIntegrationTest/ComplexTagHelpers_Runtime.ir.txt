@@ -27,7 +27,7 @@ Document -
                 TagHelper - (139:7,8 [39] ComplexTagHelpers.cshtml) - p - TagMode.StartTagAndEndTag
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    DefaultTagHelperProperty - (147:7,16 [8] ComplexTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (147:7,16 [8] ComplexTagHelpers.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (147:7,16 [1] ComplexTagHelpers.cshtml) - CSharp - @
                         IntermediateToken - (149:7,18 [0] ComplexTagHelpers.cshtml) - CSharp - 
                         CSharpExpression - (149:7,18 [6] ComplexTagHelpers.cshtml)
@@ -65,10 +65,10 @@ Document -
                                     DefaultTagHelperBody - 
                                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                                    PreallocatedTagHelperProperty - (342:12,42 [4] ComplexTagHelpers.cshtml) - __tagHelperAttribute_0 - type - Type
-                                    PreallocatedTagHelperProperty - (342:12,42 [4] ComplexTagHelpers.cshtml) - __tagHelperAttribute_0 - type - Type
-                                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
-                                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
+                                    PreallocatedTagHelperProperty - (342:12,42 [4] ComplexTagHelpers.cshtml) - __tagHelperAttribute_0 - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                                    PreallocatedTagHelperProperty - (342:12,42 [4] ComplexTagHelpers.cshtml) - __tagHelperAttribute_0 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - value - HtmlAttributeValueStyle.DoubleQuotes
+                                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2 - placeholder - HtmlAttributeValueStyle.DoubleQuotes
                                     DefaultTagHelperExecute - 
                             DefaultTagHelperCreate -  - TestNamespace.PTagHelper
                             DefaultTagHelperExecute - 
@@ -86,13 +86,13 @@ Document -
                                     DefaultTagHelperBody - 
                                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                                    DefaultTagHelperProperty - (494:16,45 [9] ComplexTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                                    DefaultTagHelperProperty - (494:16,45 [9] ComplexTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                                         CSharpExpression - (495:16,46 [8] ComplexTagHelpers.cshtml)
                                             IntermediateToken - (495:16,46 [8] ComplexTagHelpers.cshtml) - CSharp - checkbox
-                                    DefaultTagHelperProperty - (494:16,45 [9] ComplexTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                                    DefaultTagHelperProperty - (494:16,45 [9] ComplexTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                                         CSharpExpression - (495:16,46 [8] ComplexTagHelpers.cshtml)
                                             IntermediateToken - (495:16,46 [8] ComplexTagHelpers.cshtml) - CSharp - checkbox
-                                    DefaultTagHelperProperty - (512:16,63 [4] ComplexTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                                    DefaultTagHelperProperty - (512:16,63 [4] ComplexTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                         IntermediateToken - (512:16,63 [4] ComplexTagHelpers.cshtml) - CSharp - true
                                     DefaultTagHelperExecute - 
                             DefaultTagHelperCreate -  - TestNamespace.PTagHelper
@@ -104,10 +104,10 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (554:17,29 [33] ComplexTagHelpers.cshtml) - tYPe - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.SingleQuotes
+                            DefaultTagHelperProperty - (554:17,29 [33] ComplexTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - tYPe - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.SingleQuotes
                                 CSharpExpression - (556:17,31 [30] ComplexTagHelpers.cshtml)
                                     IntermediateToken - (556:17,31 [30] ComplexTagHelpers.cshtml) - CSharp - true ? "checkbox" : "anything"
-                            DefaultTagHelperProperty - (554:17,29 [33] ComplexTagHelpers.cshtml) - tYPe - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
+                            DefaultTagHelperProperty - (554:17,29 [33] ComplexTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - tYPe - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
                                 CSharpExpression - (556:17,31 [30] ComplexTagHelpers.cshtml)
                                     IntermediateToken - (556:17,31 [30] ComplexTagHelpers.cshtml) - CSharp - true ? "checkbox" : "anything"
                             DefaultTagHelperExecute - 
@@ -118,7 +118,7 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (622:18,29 [66] ComplexTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.SingleQuotes
+                            DefaultTagHelperProperty - (622:18,29 [66] ComplexTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.SingleQuotes
                                 CSharpCode - (623:18,30 [11] ComplexTagHelpers.cshtml)
                                     IntermediateToken - (623:18,30 [11] ComplexTagHelpers.cshtml) - CSharp - if(true) { 
                                 HtmlContent - (640:18,47 [8] ComplexTagHelpers.cshtml)
@@ -129,7 +129,7 @@ Document -
                                     IntermediateToken - (671:18,78 [8] ComplexTagHelpers.cshtml) - Html - anything
                                 CSharpCode - (686:18,93 [2] ComplexTagHelpers.cshtml)
                                     IntermediateToken - (686:18,93 [2] ComplexTagHelpers.cshtml) - CSharp -  }
-                            DefaultTagHelperProperty - (622:18,29 [66] ComplexTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
+                            DefaultTagHelperProperty - (622:18,29 [66] ComplexTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
                                 CSharpCode - (623:18,30 [11] ComplexTagHelpers.cshtml)
                                     IntermediateToken - (623:18,30 [11] ComplexTagHelpers.cshtml) - CSharp - if(true) { 
                                 HtmlContent - (640:18,47 [8] ComplexTagHelpers.cshtml)
@@ -172,7 +172,7 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (884:23,28 [10] ComplexTagHelpers.cshtml) - ChecKED - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (884:23,28 [10] ComplexTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - ChecKED - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 CSharpExpression - (885:23,29 [9] ComplexTagHelpers.cshtml)
                                     IntermediateToken - (885:23,29 [1] ComplexTagHelpers.cshtml) - CSharp - (
                                     IntermediateToken - (886:23,30 [7] ComplexTagHelpers.cshtml) - CSharp - @object
@@ -181,13 +181,13 @@ Document -
                         HtmlContent - (896:23,40 [10] ComplexTagHelpers.cshtml)
                             IntermediateToken - (896:23,40 [10] ComplexTagHelpers.cshtml) - Html - \n        
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_3
-                    DefaultTagHelperProperty - (759:21,38 [31] ComplexTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_3 - unbound - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (759:21,38 [31] ComplexTagHelpers.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (760:21,39 [23] ComplexTagHelpers.cshtml)
                             IntermediateToken - (760:21,39 [23] ComplexTagHelpers.cshtml) - CSharp - DateTimeOffset.Now.Year
                         IntermediateToken - (783:21,62 [2] ComplexTagHelpers.cshtml) - CSharp -  -
                         IntermediateToken - (785:21,64 [5] ComplexTagHelpers.cshtml) - CSharp -  1970
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_4
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_4 - unbound - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (910:24,12 [10] ComplexTagHelpers.cshtml)
                     IntermediateToken - (910:24,12 [10] ComplexTagHelpers.cshtml) - Html - \n        
@@ -199,9 +199,9 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_6
-                            DefaultTagHelperProperty - (1024:26,60 [33] ComplexTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5 - unbound - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_6 - unbound - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (1024:26,60 [33] ComplexTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 CSharpExpression - (1025:26,61 [32] ComplexTagHelpers.cshtml)
                                     IntermediateToken - (1025:26,61 [1] ComplexTagHelpers.cshtml) - CSharp - (
                                     IntermediateToken - (1026:26,62 [30] ComplexTagHelpers.cshtml) - CSharp - DateTimeOffset.Now.Year > 2014
@@ -210,7 +210,7 @@ Document -
                         HtmlContent - (1061:26,97 [10] ComplexTagHelpers.cshtml)
                             IntermediateToken - (1061:26,97 [10] ComplexTagHelpers.cshtml) - Html - \n        
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    DefaultTagHelperProperty - (928:25,16 [32] ComplexTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (928:25,16 [32] ComplexTagHelpers.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (928:25,16 [5] ComplexTagHelpers.cshtml) - CSharp - -1970
                         IntermediateToken - (933:25,21 [2] ComplexTagHelpers.cshtml) - CSharp -  +
                         IntermediateToken - (935:25,23 [1] ComplexTagHelpers.cshtml) - CSharp -  
@@ -228,13 +228,13 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (1155:29,28 [30] ComplexTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (1155:29,28 [30] ComplexTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (1155:29,28 [30] ComplexTagHelpers.cshtml) - CSharp - DateTimeOffset.Now.Year > 2014
                             DefaultTagHelperExecute - 
                         HtmlContent - (1187:29,60 [10] ComplexTagHelpers.cshtml)
                             IntermediateToken - (1187:29,60 [10] ComplexTagHelpers.cshtml) - Html - \n        
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    DefaultTagHelperProperty - (1093:28,16 [30] ComplexTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (1093:28,16 [30] ComplexTagHelpers.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (1093:28,16 [30] ComplexTagHelpers.cshtml) - CSharp - DateTimeOffset.Now.Year\-1970
                     DefaultTagHelperExecute - 
                 HtmlContent - (1201:30,12 [10] ComplexTagHelpers.cshtml)
@@ -247,7 +247,7 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (1283:32,28 [43] ComplexTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (1283:32,28 [43] ComplexTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (1283:32,28 [3] ComplexTagHelpers.cshtml) - CSharp -    
                                 CSharpExpression - (1286:32,31 [30] ComplexTagHelpers.cshtml)
                                     IntermediateToken - (1286:32,31 [1] ComplexTagHelpers.cshtml) - CSharp - @
@@ -261,7 +261,7 @@ Document -
                         HtmlContent - (1330:32,75 [10] ComplexTagHelpers.cshtml)
                             IntermediateToken - (1330:32,75 [10] ComplexTagHelpers.cshtml) - Html - \n        
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    DefaultTagHelperProperty - (1219:31,16 [32] ComplexTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (1219:31,16 [32] ComplexTagHelpers.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (1220:31,17 [31] ComplexTagHelpers.cshtml)
                             IntermediateToken - (1220:31,17 [1] ComplexTagHelpers.cshtml) - CSharp - (
                             IntermediateToken - (1221:31,18 [29] ComplexTagHelpers.cshtml) - CSharp - "My age is this long.".Length
@@ -279,14 +279,14 @@ Document -
                                     DefaultTagHelperBody - 
                                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                                    DefaultTagHelperProperty - (1409:34,63 [8] ComplexTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                                    DefaultTagHelperProperty - (1409:34,63 [8] ComplexTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                         CSharpExpression - (1410:34,64 [7] ComplexTagHelpers.cshtml)
                                             IntermediateToken - (1410:34,64 [7] ComplexTagHelpers.cshtml) - CSharp - checked
                                     DefaultTagHelperExecute - 
                             DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                            DefaultTagHelperProperty - (1375:34,29 [3] ComplexTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (1375:34,29 [3] ComplexTagHelpers.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (1375:34,29 [3] ComplexTagHelpers.cshtml) - CSharp - 123
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_7
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_7 - class - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperExecute - 
                     IntermediateToken - (1424:34,78 [1] ComplexTagHelpers.cshtml) - CSharp - )
                 HtmlContent - (1425:34,79 [14] ComplexTagHelpers.cshtml)

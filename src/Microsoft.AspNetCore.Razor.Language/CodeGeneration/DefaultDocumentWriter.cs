@@ -203,6 +203,21 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
                 VisitDefault(node);
             }
 
+            public override void VisitTagHelperBody(TagHelperBodyIntermediateNode node)
+            {
+                node.WriteNode(_target, _context);
+            }
+
+            public override void VisitTagHelperHtmlAttribute(TagHelperHtmlAttributeIntermediateNode node)
+            {
+                node.WriteNode(_target, _context);
+            }
+
+            public override void VisitTagHelperProperty(TagHelperPropertyIntermediateNode node)
+            {
+                node.WriteNode(_target, _context);
+            }
+
             public override void VisitDefault(IntermediateNode node)
             {
                 Context.RenderChildren(node);

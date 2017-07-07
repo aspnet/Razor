@@ -19,14 +19,14 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    DefaultTagHelperProperty - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (48:2,13 [8] DuplicateTargetTagHelper.cshtml)
                             IntermediateToken - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - Html - checkbox
-                    DefaultTagHelperProperty - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - type - string TestNamespace.CatchAllTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - Type - __TestNamespace_CatchAllTagHelper - type - string TestNamespace.CatchAllTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (48:2,13 [8] DuplicateTargetTagHelper.cshtml)
                             IntermediateToken - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - Html - checkbox
-                    DefaultTagHelperProperty - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - checked - bool TestNamespace.InputTagHelper.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - Checked - __TestNamespace_InputTagHelper - checked - bool TestNamespace.InputTagHelper.Checked - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - CSharp - true
-                    DefaultTagHelperProperty - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - checked - bool TestNamespace.CatchAllTagHelper.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - Checked - __TestNamespace_CatchAllTagHelper - checked - bool TestNamespace.CatchAllTagHelper.Checked - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - CSharp - true
                     DefaultTagHelperExecute - 

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 namespace Microsoft.AspNetCore.Razor.Language.Extensions
 {
-    public sealed class DefaultTagHelperBodyIntermediateNode : ExtensionIntermediateNode
+    public sealed class DefaultTagHelperBodyIntermediateNode : TagHelperBodyIntermediateNode
     {
         public DefaultTagHelperBodyIntermediateNode()
         {
@@ -32,8 +32,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 Diagnostics.Add(bodyNode.Diagnostics[i]);
             }
         }
-
-        public override IntermediateNodeCollection Children { get; } = new IntermediateNodeCollection();
 
         public TagMode TagMode { get; set; }
 

@@ -24,10 +24,10 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (84:3,17 [6] DuplicateAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (84:3,17 [6] DuplicateAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (84:3,17 [6] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (84:3,17 [6] DuplicateAttributeTagHelpers.cshtml) - Html - button
-                            DefaultTagHelperProperty - (84:3,17 [6] DuplicateAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (84:3,17 [6] DuplicateAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (84:3,17 [6] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (84:3,17 [6] DuplicateAttributeTagHelpers.cshtml) - Html - button
                             DefaultTagHelperHtmlAttribute -  - TYPE - HtmlAttributeValueStyle.DoubleQuotes
@@ -40,13 +40,13 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (129:4,17 [6] DuplicateAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (129:4,17 [6] DuplicateAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (129:4,17 [6] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (129:4,17 [6] DuplicateAttributeTagHelpers.cshtml) - Html - button
-                            DefaultTagHelperProperty - (129:4,17 [6] DuplicateAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (129:4,17 [6] DuplicateAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (129:4,17 [6] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (129:4,17 [6] DuplicateAttributeTagHelpers.cshtml) - Html - button
-                            DefaultTagHelperProperty - (146:4,34 [4] DuplicateAttributeTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (146:4,34 [4] DuplicateAttributeTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (146:4,34 [4] DuplicateAttributeTagHelpers.cshtml) - CSharp - true
                             DefaultTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (158:4,46 [8] DuplicateAttributeTagHelpers.cshtml)
@@ -61,13 +61,13 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.SingleQuotes
+                            DefaultTagHelperProperty - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.SingleQuotes
                                 HtmlContent - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml) - Html - button
-                            DefaultTagHelperProperty - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
+                            DefaultTagHelperProperty - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
                                 HtmlContent - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml) - Html - button
-                            DefaultTagHelperProperty - (222:5,34 [4] DuplicateAttributeTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (222:5,34 [4] DuplicateAttributeTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (222:5,34 [4] DuplicateAttributeTagHelpers.cshtml) - CSharp - true
                             DefaultTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (233:5,45 [8] DuplicateAttributeTagHelpers.cshtml)
@@ -85,7 +85,7 @@ Document -
                         HtmlContent - (288:5,100 [2] DuplicateAttributeTagHelpers.cshtml)
                             IntermediateToken - (288:5,100 [2] DuplicateAttributeTagHelpers.cshtml) - Html - \n
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    DefaultTagHelperProperty - (43:2,8 [1] DuplicateAttributeTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (43:2,8 [1] DuplicateAttributeTagHelpers.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (43:2,8 [1] DuplicateAttributeTagHelpers.cshtml) - CSharp - 3
                     DefaultTagHelperHtmlAttribute -  - AGE - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (51:2,16 [2] DuplicateAttributeTagHelpers.cshtml)

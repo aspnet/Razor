@@ -45,7 +45,7 @@ Document -
                 TagHelper - (154:6,0 [83] DynamicAttributeTagHelpers.cshtml) - input - TagMode.SelfClosing
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
-                    DefaultTagHelperProperty - (168:6,14 [27] DynamicAttributeTagHelpers.cshtml) - bound - string TestNamespace.InputTagHelper.Bound - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (168:6,14 [27] DynamicAttributeTagHelpers.cshtml) - Bound - __TestNamespace_InputTagHelper - bound - string TestNamespace.InputTagHelper.Bound - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (168:6,14 [7] DynamicAttributeTagHelpers.cshtml)
                             IntermediateToken - (168:6,14 [6] DynamicAttributeTagHelpers.cshtml) - Html - prefix
                             IntermediateToken - (174:6,20 [1] DynamicAttributeTagHelpers.cshtml) - Html -  
@@ -66,7 +66,7 @@ Document -
                 TagHelper - (241:8,0 [183] DynamicAttributeTagHelpers.cshtml) - input - TagMode.SelfClosing
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
-                    DefaultTagHelperProperty - (255:8,14 [73] DynamicAttributeTagHelpers.cshtml) - bound - string TestNamespace.InputTagHelper.Bound - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (255:8,14 [73] DynamicAttributeTagHelpers.cshtml) - Bound - __TestNamespace_InputTagHelper - bound - string TestNamespace.InputTagHelper.Bound - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (256:8,15 [13] DynamicAttributeTagHelpers.cshtml)
                             IntermediateToken - (256:8,15 [13] DynamicAttributeTagHelpers.cshtml) - CSharp - long.MinValue
                         HtmlContent - (269:8,28 [1] DynamicAttributeTagHelpers.cshtml)

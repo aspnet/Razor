@@ -50,13 +50,13 @@ Document -
                                     IntermediateToken - (339:7,50 [23] NestedScriptTagTagHelpers.cshtml) - CSharp - ViewBag.DefaultInterval
                                 HtmlContent - (362:7,73 [4] NestedScriptTagTagHelpers.cshtml)
                                     IntermediateToken - (362:7,73 [4] NestedScriptTagTagHelpers.cshtml) - Html -  + 1
-                            DefaultTagHelperProperty - (374:7,85 [4] NestedScriptTagTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (374:7,85 [4] NestedScriptTagTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (374:7,85 [4] NestedScriptTagTagHelpers.cshtml)
                                     IntermediateToken - (374:7,85 [4] NestedScriptTagTagHelpers.cshtml) - Html - text
-                            DefaultTagHelperProperty - (374:7,85 [4] NestedScriptTagTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (374:7,85 [4] NestedScriptTagTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (374:7,85 [4] NestedScriptTagTagHelpers.cshtml)
                                     IntermediateToken - (374:7,85 [4] NestedScriptTagTagHelpers.cshtml) - Html - text
-                            DefaultTagHelperProperty - (389:7,100 [4] NestedScriptTagTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (389:7,100 [4] NestedScriptTagTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (389:7,100 [4] NestedScriptTagTagHelpers.cshtml) - CSharp - true
                             DefaultTagHelperExecute - 
                         HtmlContent - (395:7,106 [27] NestedScriptTagTagHelpers.cshtml)

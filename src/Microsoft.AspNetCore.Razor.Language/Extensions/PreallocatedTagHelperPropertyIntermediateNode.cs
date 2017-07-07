@@ -7,44 +7,23 @@ using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 namespace Microsoft.AspNetCore.Razor.Language.Extensions
 {
-    internal sealed class PreallocatedTagHelperPropertyIntermediateNode : ExtensionIntermediateNode
+    internal sealed class PreallocatedTagHelperPropertyIntermediateNode : TagHelperPropertyIntermediateNode
     {
         public PreallocatedTagHelperPropertyIntermediateNode()
         {
         }
 
-        public PreallocatedTagHelperPropertyIntermediateNode(DefaultTagHelperPropertyIntermediateNode propertyNode)
+        public PreallocatedTagHelperPropertyIntermediateNode(DefaultTagHelperPropertyIntermediateNode other)
+            : base(other)
         {
-            if (propertyNode == null)
-            {
-                throw new ArgumentNullException(nameof(propertyNode));
-            }
-
-            AttributeName = propertyNode.AttributeName;
-            AttributeStructure = propertyNode.AttributeStructure;
-            BoundAttribute = propertyNode.BoundAttribute;
-            Field = propertyNode.Field;
-            IsIndexerNameMatch = propertyNode.IsIndexerNameMatch;
-            Property = propertyNode.Property;
-            Source = propertyNode.Source;
-            TagHelper = propertyNode.TagHelper;
+            // We don't want to add any of the children of the node we were created from. The contents of the attribute
+            // are represented elsewhere.
+            Children.Clear();
         }
 
-        public override IntermediateNodeCollection Children => IntermediateNodeCollection.ReadOnly;
+        public string FieldName { get; set; }
 
-        public string AttributeName { get; set; }
-
-        public AttributeStructure AttributeStructure { get; set; }
-
-        public BoundAttributeDescriptor BoundAttribute { get; set; }
-
-        public string Field { get; set; }
-
-        public bool IsIndexerNameMatch { get; set; }
-
-        public string Property { get; set; }
-
-        public TagHelperDescriptor TagHelper { get; set; }
+        public string PropertyName { get; set; }
 
         public string VariableName { get; set; }
 

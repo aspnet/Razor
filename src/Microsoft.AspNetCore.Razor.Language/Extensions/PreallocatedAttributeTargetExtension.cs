@@ -97,9 +97,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 // Throw a reasonable Exception at runtime if the dictionary property is null.
                 context.CodeWriter
                     .Write("if (")
-                    .Write(node.Field)
+                    .Write(node.FieldName)
                     .Write(".")
-                    .Write(node.Property)
+                    .Write(node.PropertyName)
                     .WriteLine(" == null)");
                 using (context.CodeWriter.BuildScope())
                 {
@@ -113,7 +113,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                         .WriteParameterSeparator()
                         .WriteStringLiteral(node.TagHelper.GetTypeName())
                         .WriteParameterSeparator()
-                        .WriteStringLiteral(node.Property)
+                        .WriteStringLiteral(node.PropertyName)
                         .WriteEndMethodInvocation(endLine: false)   // End of method call
                         .WriteEndMethodInvocation();   // End of new expression / throw statement
                 }
@@ -129,7 +129,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 .WriteEndMethodInvocation();
         }
 
-        private static PreallocatedTagHelperPropertyIntermediateNode FindFirstUseOfIndexer(
+        private static TagHelperPropertyIntermediateNode FindFirstUseOfIndexer(
             TagHelperIntermediateNode tagHelperNode,
             PreallocatedTagHelperPropertyIntermediateNode propertyNode)
         {
@@ -138,7 +138,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
 
             for (var i = 0; i < tagHelperNode.Children.Count; i++)
             {
-                if (tagHelperNode.Children[i] is PreallocatedTagHelperPropertyIntermediateNode otherPropertyNode &&
+                if (tagHelperNode.Children[i] is TagHelperPropertyIntermediateNode otherPropertyNode &&
                     otherPropertyNode.TagHelper.Equals(propertyNode.TagHelper) &&
                     otherPropertyNode.BoundAttribute.Equals(propertyNode.BoundAttribute) &&
                     otherPropertyNode.IsIndexerNameMatch)
@@ -153,7 +153,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
 
         private static string GetPropertyAccessor(PreallocatedTagHelperPropertyIntermediateNode node)
         {
-            var propertyAccessor = $"{node.Field}.{node.Property}";
+            var propertyAccessor = $"{node.FieldName}.{node.PropertyName}";
 
             if (node.IsIndexerNameMatch)
             {

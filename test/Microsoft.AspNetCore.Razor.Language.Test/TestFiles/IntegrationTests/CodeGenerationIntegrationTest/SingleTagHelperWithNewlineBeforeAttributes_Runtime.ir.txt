@@ -12,7 +12,7 @@ Document -
                         HtmlContent - (73:3,34 [11] SingleTagHelperWithNewlineBeforeAttributes.cshtml)
                             IntermediateToken - (73:3,34 [11] SingleTagHelperWithNewlineBeforeAttributes.cshtml) - Html - Body of Tag
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
-                    DefaultTagHelperProperty - (67:3,28 [4] SingleTagHelperWithNewlineBeforeAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - class - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (67:3,28 [4] SingleTagHelperWithNewlineBeforeAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (67:3,28 [4] SingleTagHelperWithNewlineBeforeAttributes.cshtml) - CSharp - 1337
                     DefaultTagHelperExecute - 

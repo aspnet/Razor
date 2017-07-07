@@ -42,7 +42,7 @@ Document -
                                     IntermediateToken - (190:7,18 [3] MinimizedTagHelpers.cshtml) - Html - btn
                             DefaultTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
                             DefaultTagHelperHtmlAttribute -  - input-unbound-required - HtmlAttributeValueStyle.Minimized
-                            DefaultTagHelperProperty - (273:7,101 [5] MinimizedTagHelpers.cshtml) - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (273:7,101 [5] MinimizedTagHelpers.cshtml) - BoundRequiredString - __TestNamespace_InputTagHelper - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (273:7,101 [5] MinimizedTagHelpers.cshtml)
                                     IntermediateToken - (273:7,101 [5] MinimizedTagHelpers.cshtml) - Html - hello
                             DefaultTagHelperExecute - 
@@ -57,10 +57,10 @@ Document -
                                     IntermediateToken - (315:9,18 [3] MinimizedTagHelpers.cshtml) - Html - btn
                             DefaultTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
                             DefaultTagHelperHtmlAttribute -  - input-unbound-required - HtmlAttributeValueStyle.Minimized
-                            DefaultTagHelperProperty - (418:11,57 [5] MinimizedTagHelpers.cshtml) - catchall-bound-string - string TestNamespace.CatchAllTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (418:11,57 [5] MinimizedTagHelpers.cshtml) - BoundRequiredString - __TestNamespace_CatchAllTagHelper - catchall-bound-string - string TestNamespace.CatchAllTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (418:11,57 [5] MinimizedTagHelpers.cshtml)
                                     IntermediateToken - (418:11,57 [5] MinimizedTagHelpers.cshtml) - Html - world
-                            DefaultTagHelperProperty - (454:11,93 [6] MinimizedTagHelpers.cshtml) - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (454:11,93 [6] MinimizedTagHelpers.cshtml) - BoundRequiredString - __TestNamespace_InputTagHelper - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (454:11,93 [6] MinimizedTagHelpers.cshtml)
                                     IntermediateToken - (454:11,93 [6] MinimizedTagHelpers.cshtml) - Html - hello2
                             DefaultTagHelperExecute - 
@@ -80,7 +80,7 @@ Document -
                                 HtmlContent - (578:14,40 [6] MinimizedTagHelpers.cshtml)
                                     IntermediateToken - (578:14,40 [6] MinimizedTagHelpers.cshtml) - Html - hello2
                             DefaultTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
-                            DefaultTagHelperProperty - (667:16,40 [5] MinimizedTagHelpers.cshtml) - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (667:16,40 [5] MinimizedTagHelpers.cshtml) - BoundRequiredString - __TestNamespace_InputTagHelper - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (667:16,40 [5] MinimizedTagHelpers.cshtml)
                                     IntermediateToken - (667:16,40 [5] MinimizedTagHelpers.cshtml) - Html - world
                             DefaultTagHelperExecute - 

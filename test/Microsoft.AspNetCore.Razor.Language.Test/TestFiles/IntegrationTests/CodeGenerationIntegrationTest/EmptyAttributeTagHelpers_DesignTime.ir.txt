@@ -22,13 +22,13 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                    DefaultTagHelperProperty - (56:3,16 [0] EmptyAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (56:3,16 [0] EmptyAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (56:3,16 [0] EmptyAttributeTagHelpers.cshtml)
                             IntermediateToken - (56:3,16 [0] EmptyAttributeTagHelpers.cshtml) - Html - 
-                    DefaultTagHelperProperty - (56:3,16 [0] EmptyAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (56:3,16 [0] EmptyAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (56:3,16 [0] EmptyAttributeTagHelpers.cshtml)
                             IntermediateToken - (56:3,16 [0] EmptyAttributeTagHelpers.cshtml) - Html - 
-                    DefaultTagHelperProperty - (66:3,26 [0] EmptyAttributeTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (66:3,26 [0] EmptyAttributeTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (66:3,26 [0] EmptyAttributeTagHelpers.cshtml) - CSharp - 
                     DefaultTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (74:3,34 [0] EmptyAttributeTagHelpers.cshtml)
@@ -44,13 +44,13 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (117:5,21 [0] EmptyAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (117:5,21 [0] EmptyAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (117:5,21 [0] EmptyAttributeTagHelpers.cshtml)
                                     IntermediateToken - (117:5,21 [0] EmptyAttributeTagHelpers.cshtml) - Html - 
-                            DefaultTagHelperProperty - (117:5,21 [0] EmptyAttributeTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (117:5,21 [0] EmptyAttributeTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (117:5,21 [0] EmptyAttributeTagHelpers.cshtml)
                                     IntermediateToken - (117:5,21 [0] EmptyAttributeTagHelpers.cshtml) - Html - 
-                            DefaultTagHelperProperty - (126:5,30 [0] EmptyAttributeTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (126:5,30 [0] EmptyAttributeTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (126:5,30 [0] EmptyAttributeTagHelpers.cshtml) - CSharp - 
                             DefaultTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (134:5,38 [0] EmptyAttributeTagHelpers.cshtml)
@@ -59,7 +59,7 @@ Document -
                         HtmlContent - (138:5,42 [6] EmptyAttributeTagHelpers.cshtml)
                             IntermediateToken - (138:5,42 [6] EmptyAttributeTagHelpers.cshtml) - Html - \n    
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    DefaultTagHelperProperty - (92:4,12 [0] EmptyAttributeTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.SingleQuotes
+                    DefaultTagHelperProperty - (92:4,12 [0] EmptyAttributeTagHelpers.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.SingleQuotes
                         IntermediateToken - (92:4,12 [0] EmptyAttributeTagHelpers.cshtml) - CSharp - 
                     DefaultTagHelperExecute - 
                 HtmlContent - (148:6,8 [8] EmptyAttributeTagHelpers.cshtml)

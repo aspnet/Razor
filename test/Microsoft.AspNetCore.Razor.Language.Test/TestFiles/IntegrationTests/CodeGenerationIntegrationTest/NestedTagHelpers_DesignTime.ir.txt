@@ -32,7 +32,7 @@ Document -
                         TagHelper - (84:3,4 [33] NestedTagHelpers.cshtml) - input - TagMode.SelfClosing
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - InputTagHelper
-                            DefaultTagHelperProperty - (97:3,17 [5] NestedTagHelpers.cshtml) - value - string InputTagHelper.FooProp - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (97:3,17 [5] NestedTagHelpers.cshtml) - FooProp - __InputTagHelper - value - string InputTagHelper.FooProp - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (97:3,17 [5] NestedTagHelpers.cshtml)
                                     IntermediateToken - (97:3,17 [5] NestedTagHelpers.cshtml) - Html - Hello
                             DefaultTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.SingleQuotes

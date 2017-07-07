@@ -25,11 +25,11 @@ Document -
                         TagHelper - (79:3,4 [33] NestedTagHelpers.cshtml) - input - TagMode.SelfClosing
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - InputTagHelper
-                            PreallocatedTagHelperProperty - (92:3,17 [5] NestedTagHelpers.cshtml) - __tagHelperAttribute_0 - value - FooProp
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
+                            PreallocatedTagHelperProperty - (92:3,17 [5] NestedTagHelpers.cshtml) - __tagHelperAttribute_0 - FooProp - __InputTagHelper - value - string InputTagHelper.FooProp - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - type - HtmlAttributeValueStyle.SingleQuotes
                             DefaultTagHelperExecute - 
                         HtmlContent - (112:3,37 [2] NestedTagHelpers.cshtml)
                             IntermediateToken - (112:3,37 [2] NestedTagHelpers.cshtml) - Html - \n
                     DefaultTagHelperCreate -  - FormTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2 - unbound - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 

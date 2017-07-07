@@ -29,8 +29,8 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            PreallocatedTagHelperProperty - (184:6,21 [4] BasicTagHelpers_RemoveTagHelper.cshtml) - __tagHelperAttribute_0 - type - Type
-                            PreallocatedTagHelperProperty - (184:6,21 [4] BasicTagHelpers_RemoveTagHelper.cshtml) - __tagHelperAttribute_0 - type - Type
+                            PreallocatedTagHelperProperty - (184:6,21 [4] BasicTagHelpers_RemoveTagHelper.cshtml) - __tagHelperAttribute_0 - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (184:6,21 [4] BasicTagHelpers_RemoveTagHelper.cshtml) - __tagHelperAttribute_0 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperExecute - 
                         HtmlContent - (192:6,29 [10] BasicTagHelpers_RemoveTagHelper.cshtml)
                             IntermediateToken - (192:6,29 [10] BasicTagHelpers_RemoveTagHelper.cshtml) - Html - \n        
@@ -38,15 +38,15 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            PreallocatedTagHelperProperty - (215:7,21 [8] BasicTagHelpers_RemoveTagHelper.cshtml) - __tagHelperAttribute_1 - type - Type
-                            PreallocatedTagHelperProperty - (215:7,21 [8] BasicTagHelpers_RemoveTagHelper.cshtml) - __tagHelperAttribute_1 - type - Type
-                            DefaultTagHelperProperty - (234:7,40 [4] BasicTagHelpers_RemoveTagHelper.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (215:7,21 [8] BasicTagHelpers_RemoveTagHelper.cshtml) - __tagHelperAttribute_1 - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (215:7,21 [8] BasicTagHelpers_RemoveTagHelper.cshtml) - __tagHelperAttribute_1 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (234:7,40 [4] BasicTagHelpers_RemoveTagHelper.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (234:7,40 [4] BasicTagHelpers_RemoveTagHelper.cshtml) - CSharp - true
                             DefaultTagHelperExecute - 
                         HtmlContent - (241:7,47 [6] BasicTagHelpers_RemoveTagHelper.cshtml)
                             IntermediateToken - (241:7,47 [6] BasicTagHelpers_RemoveTagHelper.cshtml) - Html - \n    
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2 - class - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (251:8,8 [8] BasicTagHelpers_RemoveTagHelper.cshtml)
                     IntermediateToken - (251:8,8 [2] BasicTagHelpers_RemoveTagHelper.cshtml) - Html - \n

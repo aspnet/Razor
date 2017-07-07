@@ -38,13 +38,13 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            DefaultTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml)
                                     IntermediateToken - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - Html - checkbox
-                            DefaultTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml)
                                     IntermediateToken - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - Html - checkbox
-                            DefaultTagHelperProperty - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - CSharp - true
                             DefaultTagHelperExecute - 
                         HtmlContent - (232:7,49 [6] BasicTagHelpers_Prefixed.cshtml)

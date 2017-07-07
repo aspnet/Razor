@@ -70,7 +70,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                 {
                     var variableCount = _classDeclaration.Children.Count - _variableCountOffset;
                     var preAllocatedAttributeVariableName = PreAllocatedAttributeVariablePrefix + variableCount;
-                    declaration = new PreallocatedTagHelperHtmlAttributeValueIntermediateNode
+                    declaration = new PreallocatedTagHelperHtmlAttributeValueIntermediateNode()
                     {
                         VariableName = preAllocatedAttributeVariableName,
                         AttributeName = node.AttributeName,
@@ -80,13 +80,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                     _classDeclaration.Children.Insert(_preallocatedDeclarationCount++, declaration);
                 }
 
-                var addPreAllocatedAttribute = new PreallocatedTagHelperHtmlAttributeIntermediateNode
+                var attributeNode = new PreallocatedTagHelperHtmlAttributeIntermediateNode(node)
                 {
                     VariableName = declaration.VariableName,
                 };
 
                 var nodeIndex = Parent.Children.IndexOf(node);
-                Parent.Children[nodeIndex] = addPreAllocatedAttribute;
+                Parent.Children[nodeIndex] = attributeNode;
             }
 
             public void VisitExtension(DefaultTagHelperPropertyIntermediateNode node)
@@ -133,13 +133,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                     _classDeclaration.Children.Insert(_preallocatedDeclarationCount++, declaration);
                 }
 
-                var setPreallocatedProperty = new PreallocatedTagHelperPropertyIntermediateNode(node)
+                var propertyNode = new PreallocatedTagHelperPropertyIntermediateNode(node)
                 {
+                    FieldName = node.FieldName,
+                    PropertyName = node.PropertyName,
                     VariableName = declaration.VariableName,
                 };
 
                 var nodeIndex = Parent.Children.IndexOf(node);
-                Parent.Children[nodeIndex] = setPreallocatedProperty;
+                Parent.Children[nodeIndex] = propertyNode;
             }
 
             private string GetContent(HtmlContentIntermediateNode node)

@@ -26,7 +26,7 @@ Document -
                             IntermediateToken - (48:2,13 [13] CssSelectorTagHelperAttributes.cshtml) - Html - 2 TagHelpers.
                     DefaultTagHelperCreate -  - TestNamespace.ATagHelper
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - href - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (65:2,30 [2] CssSelectorTagHelperAttributes.cshtml)
                     IntermediateToken - (65:2,30 [2] CssSelectorTagHelperAttributes.cshtml) - Html - \n
@@ -35,7 +35,7 @@ Document -
                         HtmlContent - (83:3,16 [12] CssSelectorTagHelperAttributes.cshtml)
                             IntermediateToken - (83:3,16 [12] CssSelectorTagHelperAttributes.cshtml) - Html - 1 TagHelper.
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - href - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (99:3,32 [2] CssSelectorTagHelperAttributes.cshtml)
                     IntermediateToken - (99:3,32 [2] CssSelectorTagHelperAttributes.cshtml) - Html - \n
@@ -45,7 +45,7 @@ Document -
                             IntermediateToken - (126:4,25 [12] CssSelectorTagHelperAttributes.cshtml) - Html - 2 TagHelpers
                     DefaultTagHelperCreate -  - TestNamespace.ATagHelperMultipleSelectors
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2 - href - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (142:4,41 [2] CssSelectorTagHelperAttributes.cshtml)
                     IntermediateToken - (142:4,41 [2] CssSelectorTagHelperAttributes.cshtml) - Html - \n
@@ -89,7 +89,7 @@ Document -
                         HtmlContent - (291:8,31 [11] CssSelectorTagHelperAttributes.cshtml)
                             IntermediateToken - (291:8,31 [11] CssSelectorTagHelperAttributes.cshtml) - Html - 1 TagHelper
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_3
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_3 - href - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (306:8,46 [2] CssSelectorTagHelperAttributes.cshtml)
                     IntermediateToken - (306:8,46 [2] CssSelectorTagHelperAttributes.cshtml) - Html - \n
@@ -111,9 +111,9 @@ Document -
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper2
-                    PreallocatedTagHelperProperty - (370:10,13 [4] CssSelectorTagHelperAttributes.cshtml) - __tagHelperAttribute_4 - type - Type
-                    PreallocatedTagHelperProperty - (370:10,13 [4] CssSelectorTagHelperAttributes.cshtml) - __tagHelperAttribute_4 - type - Type
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5
+                    PreallocatedTagHelperProperty - (370:10,13 [4] CssSelectorTagHelperAttributes.cshtml) - __tagHelperAttribute_4 - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    PreallocatedTagHelperProperty - (370:10,13 [4] CssSelectorTagHelperAttributes.cshtml) - __tagHelperAttribute_4 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5 - value - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (399:10,42 [2] CssSelectorTagHelperAttributes.cshtml)
                     IntermediateToken - (399:10,42 [2] CssSelectorTagHelperAttributes.cshtml) - Html - \n
@@ -121,8 +121,8 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper2
-                    PreallocatedTagHelperProperty - (414:11,13 [5] CssSelectorTagHelperAttributes.cshtml) - __tagHelperAttribute_6 - type - Type
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5
+                    PreallocatedTagHelperProperty - (414:11,13 [5] CssSelectorTagHelperAttributes.cshtml) - __tagHelperAttribute_6 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5 - value - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (444:11,43 [2] CssSelectorTagHelperAttributes.cshtml)
                     IntermediateToken - (444:11,43 [2] CssSelectorTagHelperAttributes.cshtml) - Html - \n
@@ -130,6 +130,6 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper2
-                    PreallocatedTagHelperProperty - (459:12,13 [8] CssSelectorTagHelperAttributes.cshtml) - __tagHelperAttribute_7 - type - Type
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_8
+                    PreallocatedTagHelperProperty - (459:12,13 [8] CssSelectorTagHelperAttributes.cshtml) - __tagHelperAttribute_7 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_8 - value - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 

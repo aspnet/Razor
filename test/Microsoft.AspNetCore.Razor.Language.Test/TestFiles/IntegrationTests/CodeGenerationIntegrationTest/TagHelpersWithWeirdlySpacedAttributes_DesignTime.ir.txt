@@ -24,7 +24,7 @@ Document -
                     DefaultTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (54:5,1 [11] TagHelpersWithWeirdlySpacedAttributes.cshtml)
                             IntermediateToken - (54:5,1 [11] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Html - Hello World
-                    DefaultTagHelperProperty - (74:5,21 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (74:5,21 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (74:5,21 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - CSharp - 1337
                     DefaultTagHelperHtmlAttribute -  - data-content - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (99:6,19 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml)
@@ -36,10 +36,10 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                    DefaultTagHelperProperty - (140:8,16 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.SingleQuotes
+                    DefaultTagHelperProperty - (140:8,16 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.SingleQuotes
                         HtmlContent - (140:8,16 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml)
                             IntermediateToken - (140:8,16 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Html - text
-                    DefaultTagHelperProperty - (140:8,16 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
+                    DefaultTagHelperProperty - (140:8,16 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.SingleQuotes
                         HtmlContent - (140:8,16 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml)
                             IntermediateToken - (140:8,16 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Html - text
                     DefaultTagHelperHtmlAttribute -  - data-content - HtmlAttributeValueStyle.DoubleQuotes
@@ -51,7 +51,7 @@ Document -
                 TagHelper - (175:10,0 [46] TagHelpersWithWeirdlySpacedAttributes.cshtml) - p - TagMode.StartTagAndEndTag
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    DefaultTagHelperProperty - (186:10,11 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (186:10,11 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (186:10,11 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - CSharp - 1234
                     DefaultTagHelperHtmlAttribute -  - data-content - HtmlAttributeValueStyle.SingleQuotes
                         HtmlContent - (209:11,3 [6] TagHelpersWithWeirdlySpacedAttributes.cshtml)
@@ -63,10 +63,10 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                    DefaultTagHelperProperty - (247:14,8 [8] TagHelpersWithWeirdlySpacedAttributes.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (247:14,8 [8] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (247:14,8 [8] TagHelpersWithWeirdlySpacedAttributes.cshtml)
                             IntermediateToken - (247:14,8 [8] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Html - password
-                    DefaultTagHelperProperty - (247:14,8 [8] TagHelpersWithWeirdlySpacedAttributes.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (247:14,8 [8] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (247:14,8 [8] TagHelpersWithWeirdlySpacedAttributes.cshtml)
                             IntermediateToken - (247:14,8 [8] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Html - password
                     DefaultTagHelperHtmlAttribute -  - data-content - HtmlAttributeValueStyle.NoQuotes

@@ -7,52 +7,21 @@ using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 namespace Microsoft.AspNetCore.Razor.Language.Extensions
 {
-    public sealed class DefaultTagHelperPropertyIntermediateNode : ExtensionIntermediateNode
+    public sealed class DefaultTagHelperPropertyIntermediateNode : TagHelperPropertyIntermediateNode
     {
         public DefaultTagHelperPropertyIntermediateNode()
         {
         }
 
-        public DefaultTagHelperPropertyIntermediateNode(TagHelperPropertyIntermediateNode propertyNode)
+        public DefaultTagHelperPropertyIntermediateNode(TagHelperPropertyIntermediateNode other)
+            : base(other)
         {
-            if (propertyNode == null)
-            {
-                throw new ArgumentNullException(nameof(propertyNode));
-            }
-
-            AttributeName = propertyNode.AttributeName;
-            AttributeStructure = propertyNode.AttributeStructure;
-            BoundAttribute = propertyNode.BoundAttribute;
-            IsIndexerNameMatch = propertyNode.IsIndexerNameMatch;
-            Source = propertyNode.Source;
-            TagHelper = propertyNode.TagHelper;
-
-            for (var i = 0; i < propertyNode.Children.Count; i++)
-            {
-                Children.Add(propertyNode.Children[i]);
-            }
-
-            for (var i = 0; i < propertyNode.Diagnostics.Count; i++)
-            {
-                Diagnostics.Add(propertyNode.Diagnostics[i]);
-            }
         }
 
-        public override IntermediateNodeCollection Children { get; } = new IntermediateNodeCollection();
+        public string FieldName { get; set; }
 
-        public string AttributeName { get; set; }
-
-        public AttributeStructure AttributeStructure { get; set; }
-
-        public BoundAttributeDescriptor BoundAttribute { get; set; }
-
-        public string Field { get; set; }
-
-        public bool IsIndexerNameMatch { get; set; }
-
-        public string Property { get; set; }
-
-        public TagHelperDescriptor TagHelper { get; set; }
+        public string PropertyName { get; set; }
+        
 
         public override void Accept(IntermediateNodeVisitor visitor)
         {
@@ -79,7 +48,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
             var extension = target.GetExtension<IDefaultTagHelperTargetExtension>();
             if (extension == null)
             {
-                ReportMissingCodeTargetExtension<IDefaultTagHelperTargetExtension>(context);
+                ExtensionIntermediateNode.ReportMissingCodeTargetExtension<IDefaultTagHelperTargetExtension>(context);
                 return;
             }
 

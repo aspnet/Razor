@@ -19,7 +19,7 @@ Document -
                 TagHelper - (43:2,4 [34] TagHelpersWithBoundAttributes.cshtml) - input - TagMode.SelfClosing
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - InputTagHelper
-                    DefaultTagHelperProperty - (56:2,17 [6] TagHelpersWithBoundAttributes.cshtml) - bound - string InputTagHelper.BoundProp - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (56:2,17 [6] TagHelpersWithBoundAttributes.cshtml) - BoundProp - __InputTagHelper - bound - string InputTagHelper.BoundProp - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (57:2,18 [5] TagHelpersWithBoundAttributes.cshtml)
                             IntermediateToken - (57:2,18 [5] TagHelpersWithBoundAttributes.cshtml) - CSharp - Hello
                     DefaultTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.SingleQuotes

@@ -10,5 +10,5 @@ Document -
                 TagHelper - (35:2,0 [10] IncompleteTagHelper.cshtml) - p - TagMode.StartTagAndEndTag
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - class - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 

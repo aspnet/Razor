@@ -22,7 +22,7 @@ Document -
                                 HtmlContent - (79:3,29 [5] AttributeTargetingTagHelpers.cshtml)
                                     IntermediateToken - (79:3,29 [5] AttributeTargetingTagHelpers.cshtml) - Html - Hello
                             DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - catchAll - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperExecute - 
                         HtmlContent - (93:3,43 [62] AttributeTargetingTagHelpers.cshtml)
                             IntermediateToken - (93:3,43 [8] AttributeTargetingTagHelpers.cshtml) - Html - <strong>
@@ -38,9 +38,9 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            PreallocatedTagHelperProperty - (168:5,17 [8] AttributeTargetingTagHelpers.cshtml) - __tagHelperAttribute_1 - type - Type
-                            PreallocatedTagHelperProperty - (168:5,17 [8] AttributeTargetingTagHelpers.cshtml) - __tagHelperAttribute_1 - type - Type
-                            DefaultTagHelperProperty - (187:5,36 [4] AttributeTargetingTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (168:5,17 [8] AttributeTargetingTagHelpers.cshtml) - __tagHelperAttribute_1 - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (168:5,17 [8] AttributeTargetingTagHelpers.cshtml) - __tagHelperAttribute_1 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (187:5,36 [4] AttributeTargetingTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (187:5,36 [4] AttributeTargetingTagHelpers.cshtml) - CSharp - true
                             DefaultTagHelperExecute - 
                         HtmlContent - (195:5,44 [6] AttributeTargetingTagHelpers.cshtml)
@@ -50,14 +50,14 @@ Document -
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
                             DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                            PreallocatedTagHelperProperty - (214:6,17 [8] AttributeTargetingTagHelpers.cshtml) - __tagHelperAttribute_1 - type - Type
-                            PreallocatedTagHelperProperty - (214:6,17 [8] AttributeTargetingTagHelpers.cshtml) - __tagHelperAttribute_1 - type - Type
-                            DefaultTagHelperProperty - (233:6,36 [4] AttributeTargetingTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (214:6,17 [8] AttributeTargetingTagHelpers.cshtml) - __tagHelperAttribute_1 - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (214:6,17 [8] AttributeTargetingTagHelpers.cshtml) - __tagHelperAttribute_1 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (233:6,36 [4] AttributeTargetingTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (233:6,36 [4] AttributeTargetingTagHelpers.cshtml) - CSharp - true
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - catchAll - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperExecute - 
                         HtmlContent - (255:6,58 [2] AttributeTargetingTagHelpers.cshtml)
                             IntermediateToken - (255:6,58 [2] AttributeTargetingTagHelpers.cshtml) - Html - \n
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2 - class - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 

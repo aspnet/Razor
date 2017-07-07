@@ -7,9 +7,19 @@ using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
 namespace Microsoft.AspNetCore.Razor.Language.Extensions
 {
-    internal sealed class PreallocatedTagHelperHtmlAttributeIntermediateNode : ExtensionIntermediateNode
+    internal sealed class PreallocatedTagHelperHtmlAttributeIntermediateNode : TagHelperHtmlAttributeIntermediateNode
     {
-        public override IntermediateNodeCollection Children => IntermediateNodeCollection.ReadOnly;
+        public PreallocatedTagHelperHtmlAttributeIntermediateNode()
+        {
+        }
+
+        public PreallocatedTagHelperHtmlAttributeIntermediateNode(DefaultTagHelperHtmlAttributeIntermediateNode other)
+            : base(other)
+        {
+            // We don't want to add any of the children of the node we were created from. The contents of the attribute
+            // are represented elsewhere.
+            Children.Clear();
+        }
 
         public string VariableName { get; set; }
 

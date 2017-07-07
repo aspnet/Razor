@@ -32,11 +32,11 @@ Document -
                                     TagHelper - (436:15,49 [40] TagHelpersWithTemplate.cshtml) - input - TagMode.SelfClosing
                                         DefaultTagHelperBody - 
                                         DefaultTagHelperCreate -  - InputTagHelper
-                                        PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
-                                        PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
+                                        PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - type - HtmlAttributeValueStyle.DoubleQuotes
+                                        PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - checked - HtmlAttributeValueStyle.DoubleQuotes
                                         DefaultTagHelperExecute - 
                                 DefaultTagHelperCreate -  - DivTagHelper
-                                PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
+                                PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2 - condition - HtmlAttributeValueStyle.DoubleQuotes
                                 DefaultTagHelperExecute - 
                         CSharpCode - (482:15,95 [8] TagHelpersWithTemplate.cshtml)
                             IntermediateToken - (482:15,95 [8] TagHelpersWithTemplate.cshtml) - CSharp - );\n    
