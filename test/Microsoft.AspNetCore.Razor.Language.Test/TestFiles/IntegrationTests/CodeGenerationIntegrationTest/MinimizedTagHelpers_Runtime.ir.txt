@@ -25,7 +25,7 @@ Document -
                         TagHelper - (98:4,4 [59] MinimizedTagHelpers.cshtml) - input - TagMode.SelfClosing
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - class - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
                             DefaultTagHelperExecute - 
                         HtmlContent - (157:5,39 [6] MinimizedTagHelpers.cshtml)
@@ -34,10 +34,10 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - class - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
                             DefaultTagHelperHtmlAttribute -  - input-unbound-required - HtmlAttributeValueStyle.Minimized
-                            PreallocatedTagHelperProperty - (273:7,101 [5] MinimizedTagHelpers.cshtml) - __tagHelperAttribute_1 - input-bound-required-string - BoundRequiredString
+                            PreallocatedTagHelperProperty - (273:7,101 [5] MinimizedTagHelpers.cshtml) - __tagHelperAttribute_1 - BoundRequiredString - __TestNamespace_InputTagHelper - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperExecute - 
                         HtmlContent - (282:7,110 [6] MinimizedTagHelpers.cshtml)
                             IntermediateToken - (282:7,110 [6] MinimizedTagHelpers.cshtml) - Html - \n    
@@ -45,11 +45,11 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - class - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
                             DefaultTagHelperHtmlAttribute -  - input-unbound-required - HtmlAttributeValueStyle.Minimized
-                            PreallocatedTagHelperProperty - (418:11,57 [5] MinimizedTagHelpers.cshtml) - __tagHelperAttribute_2 - catchall-bound-string - BoundRequiredString
-                            PreallocatedTagHelperProperty - (454:11,93 [6] MinimizedTagHelpers.cshtml) - __tagHelperAttribute_3 - input-bound-required-string - BoundRequiredString
+                            PreallocatedTagHelperProperty - (418:11,57 [5] MinimizedTagHelpers.cshtml) - __tagHelperAttribute_2 - BoundRequiredString - __TestNamespace_CatchAllTagHelper - catchall-bound-string - string TestNamespace.CatchAllTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (454:11,93 [6] MinimizedTagHelpers.cshtml) - __tagHelperAttribute_3 - BoundRequiredString - __TestNamespace_InputTagHelper - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperExecute - 
                         HtmlContent - (464:11,103 [6] MinimizedTagHelpers.cshtml)
                             IntermediateToken - (464:11,103 [6] MinimizedTagHelpers.cshtml) - Html - \n    
@@ -57,11 +57,11 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_4
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - class - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_4 - catchall-unbound-required - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5 - input-unbound-required - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperHtmlAttribute -  - catchall-unbound-required - HtmlAttributeValueStyle.Minimized
-                            PreallocatedTagHelperProperty - (667:16,40 [5] MinimizedTagHelpers.cshtml) - __tagHelperAttribute_6 - input-bound-required-string - BoundRequiredString
+                            PreallocatedTagHelperProperty - (667:16,40 [5] MinimizedTagHelpers.cshtml) - __tagHelperAttribute_6 - BoundRequiredString - __TestNamespace_InputTagHelper - input-bound-required-string - string TestNamespace.InputTagHelper.BoundRequiredString - HtmlAttributeValueStyle.DoubleQuotes
                             DefaultTagHelperExecute - 
                         HtmlContent - (676:16,49 [2] MinimizedTagHelpers.cshtml)
                             IntermediateToken - (676:16,49 [2] MinimizedTagHelpers.cshtml) - Html - \n

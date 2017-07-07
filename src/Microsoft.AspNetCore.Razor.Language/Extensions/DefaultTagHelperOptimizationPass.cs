@@ -137,10 +137,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
             {
                 i++;
             }
-            while (i < node.Children.Count && node.Children[i] is DefaultTagHelperBodyIntermediateNode)
-            {
-                i++;
-            }
 
             // Now find the last create node.
             while (i < node.Children.Count && node.Children[i] is DefaultTagHelperCreateIntermediateNode)
@@ -151,9 +147,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
             // Now i has the right insertion point.
             node.Children.Insert(i, new DefaultTagHelperCreateIntermediateNode()
             {
-                Field = context.GetFieldName(tagHelper),
+                FieldName = context.GetFieldName(tagHelper),
                 TagHelper = tagHelper,
-                Type = tagHelper.GetTypeName(),
+                TypeName = tagHelper.GetTypeName(),
             });
 
             // Next we need to rewrite any property nodes to use the field and property name for this
@@ -166,8 +162,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                     // This belongs to the current tag helper, replace it.
                     node.Children[i] = new DefaultTagHelperPropertyIntermediateNode(propertyNode)
                     {
-                        Field = context.GetFieldName(tagHelper),
-                        Property = propertyNode.BoundAttribute.GetPropertyName(),
+                        FieldName = context.GetFieldName(tagHelper),
+                        PropertyName = propertyNode.BoundAttribute.GetPropertyName(),
                     };
                 }
             }

@@ -31,7 +31,7 @@ Document -
                             HtmlContent - (335:10,78 [10] TagHelpersInSection.cshtml)
                                 IntermediateToken - (335:10,78 [10] TagHelpersInSection.cshtml) - Html - \n        
                         DefaultTagHelperCreate -  - TestNamespace.MyTagHelper
-                        DefaultTagHelperProperty - (142:8,36 [27] TagHelpersInSection.cshtml) - boundproperty - string TestNamespace.MyTagHelper.BoundProperty - HtmlAttributeValueStyle.DoubleQuotes
+                        DefaultTagHelperProperty - (142:8,36 [27] TagHelpersInSection.cshtml) - BoundProperty - __TestNamespace_MyTagHelper - boundproperty - string TestNamespace.MyTagHelper.BoundProperty - HtmlAttributeValueStyle.DoubleQuotes
                             HtmlContent - (142:8,36 [14] TagHelpersInSection.cshtml)
                                 IntermediateToken - (142:8,36 [7] TagHelpersInSection.cshtml) - Html - Current
                                 IntermediateToken - (149:8,43 [6] TagHelpersInSection.cshtml) - Html -  Time:

@@ -132,16 +132,16 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
             }
 
             context.CodeWriter
-                .WriteStartAssignment(node.Field)
+                .WriteStartAssignment(node.FieldName)
                 .Write(CreateTagHelperMethodName)
-                .WriteLine("<global::" + node.Type + ">();");
+                .WriteLine("<global::" + node.TypeName + ">();");
 
             if (!DesignTime)
             {
                 context.CodeWriter.WriteInstanceMethodInvocation(
                     ExecutionContextVariableName,
                     ExecutionContextAddMethodName,
-                    node.Field);
+                    node.FieldName);
             }
         }
 
@@ -293,9 +293,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                     // Throw a reasonable Exception at runtime if the dictionary property is null.
                     context.CodeWriter
                         .Write("if (")
-                        .Write(node.Field)
+                        .Write(node.FieldName)
                         .Write(".")
-                        .Write(node.Property)
+                        .Write(node.PropertyName)
                         .WriteLine(" == null)");
                     using (context.CodeWriter.BuildScope())
                     {
@@ -309,7 +309,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
                             .WriteParameterSeparator()
                             .WriteStringLiteral(node.TagHelper.GetTypeName())
                             .WriteParameterSeparator()
-                            .WriteStringLiteral(node.Property)
+                            .WriteStringLiteral(node.PropertyName)
                             .WriteEndMethodInvocation(endLine: false)   // End of method call
                             .WriteEndMethodInvocation();   // End of new expression / throw statement
                     }
@@ -571,16 +571,16 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
             }
         }
 
-        private static DefaultTagHelperPropertyIntermediateNode FindFirstUseOfIndexer(
+        private static TagHelperPropertyIntermediateNode FindFirstUseOfIndexer(
             TagHelperIntermediateNode tagHelperNode,
-            DefaultTagHelperPropertyIntermediateNode propertyNode)
+            TagHelperPropertyIntermediateNode propertyNode)
         {
             Debug.Assert(tagHelperNode.Children.Contains(propertyNode));
             Debug.Assert(propertyNode.IsIndexerNameMatch);
 
             for (var i = 0; i < tagHelperNode.Children.Count; i++)
             {
-                if (tagHelperNode.Children[i] is DefaultTagHelperPropertyIntermediateNode otherPropertyNode &&
+                if (tagHelperNode.Children[i] is TagHelperPropertyIntermediateNode otherPropertyNode &&
                     otherPropertyNode.TagHelper.Equals(propertyNode.TagHelper) &&
                     otherPropertyNode.BoundAttribute.Equals(propertyNode.BoundAttribute) &&
                     otherPropertyNode.IsIndexerNameMatch)
@@ -626,7 +626,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
 
         private static string GetPropertyAccessor(DefaultTagHelperPropertyIntermediateNode node)
         {
-            var propertyAccessor = $"{node.Field}.{node.Property}";
+            var propertyAccessor = $"{node.FieldName}.{node.PropertyName}";
 
             if (node.IsIndexerNameMatch)
             {

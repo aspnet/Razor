@@ -43,7 +43,7 @@ Document -
                 TagHelper - (66:4,0 [25] ModelExpressionTagHelper.cshtml) - input-test - TagMode.SelfClosing
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - InputTestTagHelper
-                    DefaultTagHelperProperty - (83:4,17 [4] ModelExpressionTagHelper.cshtml) - for - Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression InputTestTagHelper.For - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (83:4,17 [4] ModelExpressionTagHelper.cshtml) - For - __InputTestTagHelper - for - Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression InputTestTagHelper.For - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - 
                             IntermediateToken -  - CSharp - ModelExpressionProvider.CreateModelExpression(ViewData, __model => 
                             IntermediateToken -  - CSharp - __model.
@@ -55,7 +55,7 @@ Document -
                 TagHelper - (93:5,0 [27] ModelExpressionTagHelper.cshtml) - input-test - TagMode.SelfClosing
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - InputTestTagHelper
-                    DefaultTagHelperProperty - (110:5,17 [6] ModelExpressionTagHelper.cshtml) - for - Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression InputTestTagHelper.For - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (110:5,17 [6] ModelExpressionTagHelper.cshtml) - For - __InputTestTagHelper - for - Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression InputTestTagHelper.For - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - 
                             IntermediateToken -  - CSharp - ModelExpressionProvider.CreateModelExpression(ViewData, __model => 
                             IntermediateToken - (111:5,18 [5] ModelExpressionTagHelper.cshtml) - CSharp - Model

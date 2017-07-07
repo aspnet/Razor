@@ -15,7 +15,7 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    DefaultTagHelperProperty - (95:6,14 [15] EnumTagHelpers.cshtml) - value - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.InputTagHelper.Value - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (95:6,14 [15] EnumTagHelpers.cshtml) - Value - __TestNamespace_InputTagHelper - value - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.InputTagHelper.Value - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (96:6,15 [14] EnumTagHelpers.cshtml)
                             IntermediateToken - (96:6,15 [14] EnumTagHelpers.cshtml) - CSharp - MyEnum.MyValue
                     DefaultTagHelperExecute - 
@@ -35,7 +35,7 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    DefaultTagHelperProperty - (171:8,14 [7] EnumTagHelpers.cshtml) - value - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.InputTagHelper.Value - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (171:8,14 [7] EnumTagHelpers.cshtml) - Value - __TestNamespace_InputTagHelper - value - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.InputTagHelper.Value - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (171:8,14 [7] EnumTagHelpers.cshtml) - CSharp - MyValue
                     DefaultTagHelperExecute - 
                 HtmlContent - (182:8,25 [2] EnumTagHelpers.cshtml)
@@ -44,9 +44,9 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    DefaultTagHelperProperty - (198:9,14 [13] EnumTagHelpers.cshtml) - value - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.InputTagHelper.Value - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (198:9,14 [13] EnumTagHelpers.cshtml) - Value - __TestNamespace_InputTagHelper - value - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.InputTagHelper.Value - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (198:9,14 [13] EnumTagHelpers.cshtml) - CSharp - MySecondValue
-                    DefaultTagHelperProperty - (224:9,40 [7] EnumTagHelpers.cshtml) - catch-all - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.CatchAllTagHelper.CatchAll - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (224:9,40 [7] EnumTagHelpers.cshtml) - CatchAll - __TestNamespace_CatchAllTagHelper - catch-all - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.CatchAllTagHelper.CatchAll - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (224:9,40 [7] EnumTagHelpers.cshtml) - CSharp - MyValue
                     DefaultTagHelperExecute - 
                 HtmlContent - (234:9,50 [2] EnumTagHelpers.cshtml)
@@ -55,10 +55,10 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    DefaultTagHelperProperty - (250:10,14 [10] EnumTagHelpers.cshtml) - value - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.InputTagHelper.Value - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (250:10,14 [10] EnumTagHelpers.cshtml) - Value - __TestNamespace_InputTagHelper - value - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.InputTagHelper.Value - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (251:10,15 [9] EnumTagHelpers.cshtml)
                             IntermediateToken - (251:10,15 [9] EnumTagHelpers.cshtml) - CSharp - enumValue
-                    DefaultTagHelperProperty - (273:10,37 [10] EnumTagHelpers.cshtml) - catch-all - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.CatchAllTagHelper.CatchAll - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (273:10,37 [10] EnumTagHelpers.cshtml) - CatchAll - __TestNamespace_CatchAllTagHelper - catch-all - Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestTagHelperDescriptors.MyEnum TestNamespace.CatchAllTagHelper.CatchAll - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (274:10,38 [9] EnumTagHelpers.cshtml)
                             IntermediateToken - (274:10,38 [9] EnumTagHelpers.cshtml) - CSharp - enumValue
                     DefaultTagHelperExecute - 

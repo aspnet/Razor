@@ -23,7 +23,7 @@ Document -
                 TagHelper - (56:3,4 [35] SimpleTagHelpers.cshtml) - input - TagMode.SelfClosing
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - InputTagHelper
-                    DefaultTagHelperProperty - (70:3,18 [5] SimpleTagHelpers.cshtml) - value - string InputTagHelper.FooProp - HtmlAttributeValueStyle.SingleQuotes
+                    DefaultTagHelperProperty - (70:3,18 [5] SimpleTagHelpers.cshtml) - FooProp - __InputTagHelper - value - string InputTagHelper.FooProp - HtmlAttributeValueStyle.SingleQuotes
                         HtmlContent - (70:3,18 [5] SimpleTagHelpers.cshtml)
                             IntermediateToken - (70:3,18 [5] SimpleTagHelpers.cshtml) - Html - Hello
                     DefaultTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.SingleQuotes

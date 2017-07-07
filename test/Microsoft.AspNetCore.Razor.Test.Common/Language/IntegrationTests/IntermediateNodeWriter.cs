@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -102,41 +103,56 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
 
         public override void VisitTagHelperProperty(TagHelperPropertyIntermediateNode node)
         {
-            WriteContentNode(node, node.AttributeName, node.BoundAttribute.DisplayName, string.Format("HtmlAttributeValueStyle.{0}", node.AttributeStructure));
+            switch (node)
+            {
+                case PreallocatedTagHelperPropertyIntermediateNode n:
+                    WriteContentNode(n, n.VariableName, n.PropertyName, n.FieldName, n.AttributeName, n.BoundAttribute.DisplayName, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
+                    return;
+                case DefaultTagHelperPropertyIntermediateNode n:
+                    WriteContentNode(n, n.PropertyName, n.FieldName, n.AttributeName, n.BoundAttribute.DisplayName, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
+                    return;
+                case TagHelperPropertyIntermediateNode n:
+                    WriteContentNode(n, n.AttributeName, n.BoundAttribute.DisplayName, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
+                    return;
+                default:
+                    throw new InvalidOperationException("unreachable");
+            }
         }
 
         public override void VisitTagHelperHtmlAttribute(TagHelperHtmlAttributeIntermediateNode node)
         {
-            WriteContentNode(node, node.AttributeName, string.Format("HtmlAttributeValueStyle.{0}", node.AttributeStructure));
+            switch (node)
+            {
+                case PreallocatedTagHelperHtmlAttributeIntermediateNode n:
+                    WriteContentNode(n, n.VariableName, n.AttributeName, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
+                    return;
+                case DefaultTagHelperHtmlAttributeIntermediateNode n:
+                    WriteContentNode(n, n.AttributeName, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
+                    return;
+                case TagHelperHtmlAttributeIntermediateNode n:
+                    WriteContentNode(n, n.AttributeName, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
+                    return;
+                default:
+                    throw new InvalidOperationException("unreachable");
+            }
+            
         }
 
         public override void VisitExtension(ExtensionIntermediateNode node)
         {
             switch (node)
             {
-                case PreallocatedTagHelperHtmlAttributeIntermediateNode n:
-                    WriteContentNode(n, n.VariableName);
-                    break;
                 case PreallocatedTagHelperHtmlAttributeValueIntermediateNode n:
                     WriteContentNode(n, n.VariableName, n.AttributeName, n.Value, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
-                    break;
-                case PreallocatedTagHelperPropertyIntermediateNode n:
-                    WriteContentNode(n, n.VariableName, n.AttributeName, n.Property);
                     break;
                 case PreallocatedTagHelperPropertyValueIntermediateNode n:
                     WriteContentNode(n, n.VariableName, n.AttributeName, n.Value, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
                     break;
                 case DefaultTagHelperCreateIntermediateNode n:
-                    WriteContentNode(n, n.Type);
+                    WriteContentNode(n, n.TypeName);
                     break;
                 case DefaultTagHelperExecuteIntermediateNode n:
                     WriteBasicNode(n);
-                    break;
-                case DefaultTagHelperHtmlAttributeIntermediateNode n:
-                    WriteContentNode(n, n.AttributeName, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
-                    break;
-                case DefaultTagHelperPropertyIntermediateNode n:
-                    WriteContentNode(n, n.AttributeName, n.BoundAttribute.DisplayName, string.Format("HtmlAttributeValueStyle.{0}", n.AttributeStructure));
                     break;
                 case DefaultTagHelperRuntimeIntermediateNode n:
                     WriteBasicNode(n);

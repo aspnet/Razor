@@ -12,10 +12,10 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.CatchAllTagHelper
-                    PreallocatedTagHelperProperty - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - __tagHelperAttribute_0 - type - Type
-                    PreallocatedTagHelperProperty - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - __tagHelperAttribute_0 - type - Type
-                    DefaultTagHelperProperty - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - checked - bool TestNamespace.InputTagHelper.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                    PreallocatedTagHelperProperty - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - __tagHelperAttribute_0 - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    PreallocatedTagHelperProperty - (48:2,13 [8] DuplicateTargetTagHelper.cshtml) - __tagHelperAttribute_0 - Type - __TestNamespace_CatchAllTagHelper - type - string TestNamespace.CatchAllTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - Checked - __TestNamespace_InputTagHelper - checked - bool TestNamespace.InputTagHelper.Checked - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - CSharp - true
-                    DefaultTagHelperProperty - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - checked - bool TestNamespace.CatchAllTagHelper.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - Checked - __TestNamespace_CatchAllTagHelper - checked - bool TestNamespace.CatchAllTagHelper.Checked - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (67:2,32 [4] DuplicateTargetTagHelper.cshtml) - CSharp - true
                     DefaultTagHelperExecute - 

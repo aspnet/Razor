@@ -13,26 +13,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Extensions
         {
         }
 
-        public PreallocatedTagHelperHtmlAttributeValueIntermediateNode(DefaultTagHelperHtmlAttributeIntermediateNode htmlAttributeNode)
-        {
-            if (htmlAttributeNode == null)
-            {
-                throw new ArgumentNullException(nameof(htmlAttributeNode));
-            }
-
-            Source = htmlAttributeNode.Source;
-
-            for (var i = 0; i < htmlAttributeNode.Children.Count; i++)
-            {
-                Children.Add(htmlAttributeNode.Children[i]);
-            }
-
-            for (var i = 0; i < htmlAttributeNode.Diagnostics.Count; i++)
-            {
-                Diagnostics.Add(htmlAttributeNode.Diagnostics[i]);
-            }
-        }
-
         public override IntermediateNodeCollection Children => IntermediateNodeCollection.ReadOnly;
 
         public string VariableName { get; set; }

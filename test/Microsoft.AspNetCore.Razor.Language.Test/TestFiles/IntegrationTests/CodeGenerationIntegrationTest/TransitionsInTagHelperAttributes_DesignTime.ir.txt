@@ -25,7 +25,7 @@ Document -
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
                     DefaultTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpCodeAttributeValue - (109:6,10 [6] TransitionsInTagHelperAttributes.cshtml) - 
-                    DefaultTagHelperProperty - (122:6,23 [4] TransitionsInTagHelperAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (122:6,23 [4] TransitionsInTagHelperAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (122:6,23 [4] TransitionsInTagHelperAttributes.cshtml) - CSharp - 1337
                     DefaultTagHelperExecute - 
                 HtmlContent - (143:6,44 [2] TransitionsInTagHelperAttributes.cshtml)
@@ -36,7 +36,7 @@ Document -
                     DefaultTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpressionAttributeValue - (155:7,10 [9] TransitionsInTagHelperAttributes.cshtml) - 
                             IntermediateToken - (157:7,12 [6] TransitionsInTagHelperAttributes.cshtml) - CSharp - @class
-                    DefaultTagHelperProperty - (171:7,26 [2] TransitionsInTagHelperAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (171:7,26 [2] TransitionsInTagHelperAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (171:7,26 [2] TransitionsInTagHelperAttributes.cshtml) - CSharp - 42
                     DefaultTagHelperExecute - 
                 HtmlContent - (179:7,34 [2] TransitionsInTagHelperAttributes.cshtml)
@@ -47,7 +47,7 @@ Document -
                     DefaultTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (191:8,10 [4] TransitionsInTagHelperAttributes.cshtml)
                             IntermediateToken - (191:8,10 [4] TransitionsInTagHelperAttributes.cshtml) - Html - test
-                    DefaultTagHelperProperty - (202:8,21 [9] TransitionsInTagHelperAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (202:8,21 [9] TransitionsInTagHelperAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (202:8,21 [2] TransitionsInTagHelperAttributes.cshtml) - CSharp - 42
                         IntermediateToken - (204:8,23 [2] TransitionsInTagHelperAttributes.cshtml) - CSharp -  +
                         IntermediateToken - (206:8,25 [1] TransitionsInTagHelperAttributes.cshtml) - CSharp -  
@@ -63,7 +63,7 @@ Document -
                     DefaultTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (229:9,10 [4] TransitionsInTagHelperAttributes.cshtml)
                             IntermediateToken - (229:9,10 [4] TransitionsInTagHelperAttributes.cshtml) - Html - test
-                    DefaultTagHelperProperty - (240:9,21 [4] TransitionsInTagHelperAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (240:9,21 [4] TransitionsInTagHelperAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (241:9,22 [3] TransitionsInTagHelperAttributes.cshtml)
                             IntermediateToken - (241:9,22 [3] TransitionsInTagHelperAttributes.cshtml) - CSharp - int
                     DefaultTagHelperExecute - 
@@ -75,7 +75,7 @@ Document -
                     DefaultTagHelperHtmlAttribute -  - class - HtmlAttributeValueStyle.DoubleQuotes
                         HtmlContent - (262:10,10 [4] TransitionsInTagHelperAttributes.cshtml)
                             IntermediateToken - (262:10,10 [4] TransitionsInTagHelperAttributes.cshtml) - Html - test
-                    DefaultTagHelperProperty - (273:10,21 [7] TransitionsInTagHelperAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (273:10,21 [7] TransitionsInTagHelperAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (274:10,22 [6] TransitionsInTagHelperAttributes.cshtml)
                             IntermediateToken - (274:10,22 [1] TransitionsInTagHelperAttributes.cshtml) - CSharp - (
                             IntermediateToken - (275:10,23 [4] TransitionsInTagHelperAttributes.cshtml) - CSharp - @int
@@ -91,7 +91,7 @@ Document -
                             IntermediateToken - (298:11,10 [7] TransitionsInTagHelperAttributes.cshtml) - Html - custom-
                         CSharpExpressionAttributeValue - (305:11,17 [9] TransitionsInTagHelperAttributes.cshtml) - 
                             IntermediateToken - (307:11,19 [6] TransitionsInTagHelperAttributes.cshtml) - CSharp - @class
-                    DefaultTagHelperProperty - (321:11,33 [15] TransitionsInTagHelperAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (321:11,33 [15] TransitionsInTagHelperAttributes.cshtml) - Age - __TestNamespace_PTagHelper - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (321:11,33 [1] TransitionsInTagHelperAttributes.cshtml) - CSharp - 4
                         IntermediateToken - (322:11,34 [2] TransitionsInTagHelperAttributes.cshtml) - CSharp -  *
                         IntermediateToken - (324:11,36 [1] TransitionsInTagHelperAttributes.cshtml) - CSharp -  

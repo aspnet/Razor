@@ -41,13 +41,13 @@ Document -
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                     DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                    DefaultTagHelperProperty - (203:5,50 [13] EscapedTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (203:5,50 [13] EscapedTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (204:5,51 [12] EscapedTagHelpers.cshtml)
                             IntermediateToken - (204:5,51 [12] EscapedTagHelpers.cshtml) - CSharp - DateTime.Now
-                    DefaultTagHelperProperty - (203:5,50 [13] EscapedTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (203:5,50 [13] EscapedTagHelpers.cshtml) - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (204:5,51 [12] EscapedTagHelpers.cshtml)
                             IntermediateToken - (204:5,51 [12] EscapedTagHelpers.cshtml) - CSharp - DateTime.Now
-                    DefaultTagHelperProperty - (227:5,74 [4] EscapedTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (227:5,74 [4] EscapedTagHelpers.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (227:5,74 [4] EscapedTagHelpers.cshtml) - CSharp - true
                     DefaultTagHelperExecute - 
                 HtmlContent - (235:5,82 [8] EscapedTagHelpers.cshtml)

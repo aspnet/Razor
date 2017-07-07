@@ -16,8 +16,8 @@ Document -
                 TagHelper - (56:3,4 [35] SimpleTagHelpers.cshtml) - input - TagMode.SelfClosing
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - InputTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - value - HtmlAttributeValueStyle.SingleQuotes
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - type - HtmlAttributeValueStyle.SingleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (91:3,39 [9] SimpleTagHelpers.cshtml)
                     IntermediateToken - (91:3,39 [2] SimpleTagHelpers.cshtml) - Html - \n

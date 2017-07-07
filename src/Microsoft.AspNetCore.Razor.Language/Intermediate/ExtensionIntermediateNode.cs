@@ -13,18 +13,27 @@ namespace Microsoft.AspNetCore.Razor.Language.Intermediate
         protected static void AcceptExtensionNode<TNode>(TNode node, IntermediateNodeVisitor visitor)
             where TNode : ExtensionIntermediateNode
         {
-            var typedVisitor = visitor as IExtensionIntermediateNodeVisitor<TNode>;
-            if (typedVisitor == null)
+            if (visitor == null)
             {
-                visitor.VisitExtension(node);
+                throw new ArgumentNullException(nameof(visitor));
             }
-            else
+
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            if (visitor is IExtensionIntermediateNodeVisitor<TNode> typedVisitor)
             {
                 typedVisitor.VisitExtension(node);
             }
+            else
+            {
+                visitor.VisitExtension(node);
+            }
         }
 
-        protected void ReportMissingCodeTargetExtension<TDependency>(CodeRenderingContext context)
+        protected internal static void ReportMissingCodeTargetExtension<TDependency>(CodeRenderingContext context)
         {
             if (context == null)
             {

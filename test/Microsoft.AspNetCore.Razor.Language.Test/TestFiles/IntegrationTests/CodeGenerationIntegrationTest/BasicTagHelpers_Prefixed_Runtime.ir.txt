@@ -29,15 +29,15 @@ Document -
                             DefaultTagHelperBody - 
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper
                             DefaultTagHelperCreate -  - TestNamespace.InputTagHelper2
-                            PreallocatedTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - __tagHelperAttribute_0 - type - Type
-                            PreallocatedTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - __tagHelperAttribute_0 - type - Type
-                            DefaultTagHelperProperty - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - __tagHelperAttribute_0 - Type - __TestNamespace_InputTagHelper - type - string TestNamespace.InputTagHelper.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            PreallocatedTagHelperProperty - (207:7,24 [8] BasicTagHelpers_Prefixed.cshtml) - __tagHelperAttribute_0 - Type - __TestNamespace_InputTagHelper2 - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
+                            DefaultTagHelperProperty - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - Checked - __TestNamespace_InputTagHelper2 - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (226:7,43 [4] BasicTagHelpers_Prefixed.cshtml) - CSharp - true
                             DefaultTagHelperExecute - 
                         HtmlContent - (232:7,49 [6] BasicTagHelpers_Prefixed.cshtml)
                             IntermediateToken - (232:7,49 [6] BasicTagHelpers_Prefixed.cshtml) - Html - \n    
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_1 - class - HtmlAttributeValueStyle.DoubleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (245:8,11 [11] BasicTagHelpers_Prefixed.cshtml)
                     IntermediateToken - (245:8,11 [2] BasicTagHelpers_Prefixed.cshtml) - Html - \n

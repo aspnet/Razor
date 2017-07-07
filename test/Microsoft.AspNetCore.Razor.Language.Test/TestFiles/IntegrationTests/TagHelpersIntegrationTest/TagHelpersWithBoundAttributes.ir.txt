@@ -11,10 +11,10 @@ Document -
                 TagHelper - (43:2,4 [34] TagHelpersWithBoundAttributes.cshtml) - input - TagMode.SelfClosing
                     DefaultTagHelperBody - 
                     DefaultTagHelperCreate -  - InputTagHelper
-                    DefaultTagHelperProperty - (56:2,17 [6] TagHelpersWithBoundAttributes.cshtml) - bound - string InputTagHelper.FooProp - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (56:2,17 [6] TagHelpersWithBoundAttributes.cshtml) - FooProp - __InputTagHelper - bound - string InputTagHelper.FooProp - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (57:2,18 [5] TagHelpersWithBoundAttributes.cshtml)
                             IntermediateToken - (57:2,18 [5] TagHelpersWithBoundAttributes.cshtml) - CSharp - Hello
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0 - type - HtmlAttributeValueStyle.SingleQuotes
                     DefaultTagHelperExecute - 
                 HtmlContent - (77:2,38 [9] TagHelpersWithBoundAttributes.cshtml)
                     IntermediateToken - (77:2,38 [2] TagHelpersWithBoundAttributes.cshtml) - Html - \n
