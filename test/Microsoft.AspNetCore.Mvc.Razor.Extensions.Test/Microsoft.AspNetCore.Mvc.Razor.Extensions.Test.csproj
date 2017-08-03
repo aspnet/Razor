@@ -30,15 +30,19 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitRunnerVisualStudioPackageVersion)" />
 
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(MicrosoftCodeAnalysisCSharpPackageVersion)" />
+  </ItemGroup>
 
-    <!-- We need this to compile but don't want it referenced by the project.
-      It is included dynamically in CodeGeneration tests. -->
+  <ItemGroup>
+    <!-- We need this to compile but don't want it referenced by the project. It is included dynamically in CodeGeneration tests. -->
     <ProjectReference Include="..\Microsoft.AspNetCore.Razor.Test.MvcShim\Microsoft.AspNetCore.Razor.Test.MvcShim.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <OutputItemType>Content</OutputItemType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Targets>Build</Targets>
     </ProjectReference>
+
+    <!-- Due to how DependencyContext.Load handles our special MvcShim reference above we need to also reference the MvcShim's DiagnosticSource dependency -->
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="$(SystemDiagnosticsDiagnosticSourcePackageVersion)" />
   </ItemGroup>
 
   <ItemGroup>
