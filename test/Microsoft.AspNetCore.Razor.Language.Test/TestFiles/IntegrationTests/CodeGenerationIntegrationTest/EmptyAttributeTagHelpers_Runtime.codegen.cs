@@ -45,7 +45,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
             __TestNamespace_InputTagHelper2.Type = (string)__tagHelperAttribute_0.Value;
             __tagHelperExecutionContext.AddTagHelperAttribute(__tagHelperAttribute_0);
 #line 4 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_InputTagHelper2.Checked = ;
+__TestNamespace_InputTagHelper2.Checked = default(System.Boolean);
 
 #line default
 #line hidden
@@ -73,7 +73,7 @@ __TestNamespace_InputTagHelper2.Checked = ;
                 __TestNamespace_InputTagHelper2.Type = (string)__tagHelperAttribute_0.Value;
                 __tagHelperExecutionContext.AddTagHelperAttribute(__tagHelperAttribute_0);
 #line 6 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_InputTagHelper2.Checked = ;
+__TestNamespace_InputTagHelper2.Checked = default(System.Boolean);
 
 #line default
 #line hidden
@@ -92,7 +92,7 @@ __TestNamespace_InputTagHelper2.Checked = ;
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
             __tagHelperExecutionContext.Add(__TestNamespace_PTagHelper);
 #line 5 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_PTagHelper.Age = ;
+__TestNamespace_PTagHelper.Age = default(System.Int32);
 
 #line default
 #line hidden

@@ -27,7 +27,7 @@ global::System.Object __typeHelper = "*, TestAssembly";
             __TestNamespace_InputTagHelper.Type = "";
             __TestNamespace_InputTagHelper2.Type = __TestNamespace_InputTagHelper.Type;
 #line 4 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_InputTagHelper2.Checked = ;
+__TestNamespace_InputTagHelper2.Checked = default(System.Boolean);
 
 #line default
 #line hidden
@@ -36,13 +36,13 @@ __TestNamespace_InputTagHelper2.Checked = ;
             __TestNamespace_InputTagHelper.Type = "";
             __TestNamespace_InputTagHelper2.Type = __TestNamespace_InputTagHelper.Type;
 #line 6 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_InputTagHelper2.Checked = ;
+__TestNamespace_InputTagHelper2.Checked = default(System.Boolean);
 
 #line default
 #line hidden
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
 #line 5 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_PTagHelper.Age = ;
+__TestNamespace_PTagHelper.Age = default(System.Int32);
 
 #line default
 #line hidden

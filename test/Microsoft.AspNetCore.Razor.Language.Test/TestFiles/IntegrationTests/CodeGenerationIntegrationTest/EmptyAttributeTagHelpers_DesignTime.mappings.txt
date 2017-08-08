@@ -10,11 +10,11 @@ Generated Location: (1510:29,42 [0] )
 
 Source Location: (126:5,30 [0] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml)
 ||
-Generated Location: (2038:38,42 [0] )
+Generated Location: (2061:38,42 [0] )
 ||
 
 Source Location: (92:4,12 [0] TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml)
 ||
-Generated Location: (2300:44,33 [0] )
+Generated Location: (2346:44,33 [0] )
 ||
 
