@@ -646,7 +646,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return builder.Build();
         }
 
-        private static bool IsNullOrWhitespaceAttributeValue(SyntaxTreeNode attributeValue)
+        internal static bool IsNullOrWhitespaceAttributeValue(SyntaxTreeNode attributeValue)
         {
             if (attributeValue.IsBlock)
             {

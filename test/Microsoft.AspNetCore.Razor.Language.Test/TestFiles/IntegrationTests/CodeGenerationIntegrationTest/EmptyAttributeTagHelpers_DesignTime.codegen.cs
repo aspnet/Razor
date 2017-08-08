@@ -26,26 +26,11 @@ global::System.Object __typeHelper = "*, TestAssembly";
             __TestNamespace_InputTagHelper2 = CreateTagHelper<global::TestNamespace.InputTagHelper2>();
             __TestNamespace_InputTagHelper.Type = "";
             __TestNamespace_InputTagHelper2.Type = __TestNamespace_InputTagHelper.Type;
-#line 4 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_InputTagHelper2.Checked = ;
-
-#line default
-#line hidden
             __TestNamespace_InputTagHelper = CreateTagHelper<global::TestNamespace.InputTagHelper>();
             __TestNamespace_InputTagHelper2 = CreateTagHelper<global::TestNamespace.InputTagHelper2>();
             __TestNamespace_InputTagHelper.Type = "";
             __TestNamespace_InputTagHelper2.Type = __TestNamespace_InputTagHelper.Type;
-#line 6 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_InputTagHelper2.Checked = ;
-
-#line default
-#line hidden
             __TestNamespace_PTagHelper = CreateTagHelper<global::TestNamespace.PTagHelper>();
-#line 5 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/EmptyAttributeTagHelpers.cshtml"
-__TestNamespace_PTagHelper.Age = ;
-
-#line default
-#line hidden
         }
         #pragma warning restore 1998
     }
