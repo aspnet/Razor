@@ -684,14 +684,6 @@ namespace Microsoft.AspNetCore.Razor.Language
                                 return TagHelperMatchingConventions.CanSatisfyBoundAttribute(attribute.Name, a);
                             });
 
-                            if (!associatedAttributeDescriptor.IsStringProperty &&
-                                TagHelperBlockRewriter.IsNullOrWhitespaceAttributeValue(attributeValueNode))
-                            {
-                                // TagHelperBlockRewriter has already logged an error for this. We don't want to generate
-                                // invalid code for this attribute which might produce misleading errors.
-                                continue;
-                            }
-
                             var setTagHelperProperty = new TagHelperPropertyIntermediateNode()
                             {
                                 AttributeName = attribute.Name,
@@ -703,7 +695,26 @@ namespace Microsoft.AspNetCore.Razor.Language
                             };
 
                             _builder.Push(setTagHelperProperty);
-                            attributeValueNode.Accept(this);
+
+                            if (!associatedAttributeDescriptor.IsStringProperty &&
+                                TagHelperBlockRewriter.IsNullOrWhitespaceAttributeValue(attributeValueNode))
+                            {
+                                // TagHelperBlockRewriter has already logged an error for this. We don't want to generate
+                                // invalid code for this attribute which might produce misleading errors.
+                                _builder.Push(new CSharpExpressionIntermediateNode());
+                                _builder.Add(new IntermediateToken()
+                                {
+                                    Content = $"default({associatedAttributeDescriptor.TypeName})",
+                                    Source = BuildSourceSpanFromNode(attributeValueNode),
+                                    Kind = TokenKind.CSharp
+                                });
+                                _builder.Pop();
+                            }
+                            else
+                            {
+                                attributeValueNode.Accept(this);
+                            }
+
                             _builder.Pop();
                         }
                     }
