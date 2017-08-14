@@ -107,6 +107,20 @@ public class MyModel
         }
 
         [Fact]
+        public void Sections_Runtime()
+        {
+            var references = CreateCompilationReferences(CurrentMvcShim, appCode: $@"
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+
+public class InputTestTagHelper : {typeof(TagHelper).FullName}
+{{
+    public ModelExpression For {{ get; set; }}
+}}
+");
+            RunRuntimeTest(references);
+        }
+
+        [Fact]
         public void _ViewImports_Runtime()
         {
             var error = "'TestFiles_IntegrationTests_CodeGenerationIntegrationTest__ViewImports_cshtml.Model' " + 
@@ -342,6 +356,24 @@ public abstract class MyPageModel<T> : Page
         {
             var references = CreateCompilationReferences(CurrentMvcShim);
             RunDesignTimeTest(references);
+        }
+
+        [Fact]
+        public void Sections_DesignTime()
+        {
+            // This is a problem because we don't yet have multitargeting.
+            var error = "Delegate 'RenderAsyncDelegate' does not take 1 arguments";
+
+            var references = CreateCompilationReferences(CurrentMvcShim, appCode: $@"
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+
+public class InputTestTagHelper : {typeof(TagHelper).FullName}
+{{
+    public ModelExpression For {{ get; set; }}
+}}
+");
+
+            RunDesignTimeTest(references, new[] { error });
         }
 
         [Fact]
