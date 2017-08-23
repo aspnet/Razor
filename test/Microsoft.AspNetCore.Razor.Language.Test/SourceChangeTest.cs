@@ -146,7 +146,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void GetOffSet_SpanIsNotOwnerOfChange_ThrowsException(int absoluteIndex, int length)
         {
             // Arrange
-            var builder = new SpanBuilder(new SourceLocation(13, 0, 0));
+            var builder = new SpanBuilder(new SourceLocation(absoluteIndex, length, 0));
             builder.Accept(new RawTextSymbol(new SourceLocation(13, 0, 13), "Hello, "));
             builder.Accept(new RawTextSymbol(new SourceLocation(20, 0, 20), "World"));
 

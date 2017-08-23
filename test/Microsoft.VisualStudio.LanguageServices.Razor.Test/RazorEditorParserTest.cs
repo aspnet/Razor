@@ -85,7 +85,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
 
         [Theory]
         [MemberData(nameof(TagHelperPartialParseRejectData))]
-        public void TagHelperTagBodiesRejectPartialChanges(object editObject, object expectedDocument)
+        public void TagHelperTagBodiesRejectPartialChanges(object editObject,
+            // This parameter is not used in this tests. This disables the build warning
+            // that says 'Theory methods should use all of their parameters'
+#pragma warning disable xUnit1026
+            object expectedDocument)
+#pragma warning restore xUnit1026
         {
             // Arrange
             var edit = (TestEdit)editObject;
@@ -231,7 +236,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
         [MemberData(nameof(TagHelperAttributeAcceptData))]
         public void TagHelperAttributesAreLocatedAndAcceptChangesCorrectly(
             object editObject,
+            // This parameter is not used in this tests. This disables the build warning
+            // that says 'Theory methods should use all of their parameters'
+#pragma warning disable xUnit1026
             object expectedDocument,
+#pragma warning restore xUnit1026
             PartialParseResult partialParseResult)
         {
             // Arrange
