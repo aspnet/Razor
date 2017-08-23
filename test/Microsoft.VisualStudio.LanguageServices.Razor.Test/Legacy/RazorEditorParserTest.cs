@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
             modified.LinkNodes();
 
             // Act
-            var treesAreDifferent = BackgroundParser.TreesAreDifferent(
+            var treesAreDifferent = RazorEditorParser.BackgroundParser.TreesAreDifferent(
                 original,
                 modified,
                 new[]
@@ -221,7 +221,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
                     factory.Code("f")
                            .AsImplicitExpression(CSharpCodeParser.DefaultKeywords, acceptTrailingDot: false)),
                 factory.Markup("</p>"));
-            Assert.True(BackgroundParser.TreesAreDifferent(
+            Assert.True(RazorEditorParser.BackgroundParser.TreesAreDifferent(
                 original,
                 modified,
                 new[]
@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
                 factory.Markup("</p>"));
             original.LinkNodes();
             modified.LinkNodes();
-            Assert.False(BackgroundParser.TreesAreDifferent(
+            Assert.False(RazorEditorParser.BackgroundParser.TreesAreDifferent(
                 original,
                 modified,
                 new[]
