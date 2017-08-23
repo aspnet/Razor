@@ -137,16 +137,11 @@ namespace Microsoft.AspNetCore.Razor.Language
             Assert.Equal(2, result);
         }
 
-        [Theory]
-        [InlineData(12, 2)]
-        [InlineData(12, 14)]
-        [InlineData(13, 13)]
-        [InlineData(20, 1)]
-        [InlineData(21, 0)]
-        public void GetOffSet_SpanIsNotOwnerOfChange_ThrowsException(int absoluteIndex, int length)
+        [Fact]
+        public void GetOffSet_SpanIsNotOwnerOfChange_ThrowsException()
         {
             // Arrange
-            var builder = new SpanBuilder(new SourceLocation(absoluteIndex, length, 0));
+            var builder = new SpanBuilder(new SourceLocation(13, 0, 0));
             builder.Accept(new RawTextSymbol(new SourceLocation(13, 0, 13), "Hello, "));
             builder.Accept(new RawTextSymbol(new SourceLocation(20, 0, 20), "World"));
 
