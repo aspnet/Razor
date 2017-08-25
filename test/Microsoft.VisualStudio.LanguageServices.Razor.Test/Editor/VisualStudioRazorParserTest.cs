@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc.Razor.Extensions;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
 using Microsoft.VisualStudio.Language.Intellisense;
-using Microsoft.VisualStudio.LanguageServices.Razor.Editor;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Utilities;
@@ -55,7 +54,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
 
                 // Act - 1
                 testBuffer.ApplyEdit(edit);
-                DoWithTimeoutIfNotDebugging(parseComplete.Wait); // Wait for the parse to finish
+                DoWithTimeoutIfNotDebugging(parseComplete); // Wait for the parse to finish
 
                 // Assert - 1
                 Assert.Equal(1, parseCount);
@@ -65,7 +64,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
                 testBuffer.ApplyEdit(edit);
 
                 // Assert - 2
-                DoWithTimeoutIfNotDebugging(parseComplete.Wait);
+                DoWithTimeoutIfNotDebugging(parseComplete);
                 Assert.Equal(2, parseCount);
             }
         }
@@ -578,17 +577,28 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             }
         }
 
-        private static void DoWithTimeoutIfNotDebugging(Func<int, bool> withTimeout)
+        private static void DoWithTimeoutIfNotDebugging(ManualResetEventSlim resetEvent)
         {
+            if (resetEvent.IsSet)
+            {
+                // Already fired due to a race; we'll bail early to avoid the wait.
+                return;
+            }
+
 #if DEBUG
             if (Debugger.IsAttached)
             {
-                withTimeout(Timeout.Infinite);
+                resetEvent.Wait(Timeout.Infinite);
             }
             else
             {
 #endif
-                Assert.True(withTimeout((int)TimeSpan.FromSeconds(1).TotalMilliseconds), "Timeout expired!");
+                // Possible race between reset event firing and this wait. We'll only fail after the Wait
+                // if the reset event is not set.
+
+                resetEvent.Wait(TimeSpan.FromSeconds(1));
+
+                Assert.True(resetEvent.IsSet, "Timeout Expired!");
 #if DEBUG
             }
 #endif
@@ -596,8 +606,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
 
         private class TestParserManager : IDisposable
         {
-            public int ParseCount;
-
+            public int _parseCount;
             private readonly ManualResetEventSlim _parserComplete;
             private readonly ManualResetEventSlim _reparseComplete;
             private readonly TestTextBuffer _testBuffer;
@@ -608,14 +617,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
                 _parserComplete = new ManualResetEventSlim();
                 _reparseComplete = new ManualResetEventSlim();
                 _testBuffer = (TestTextBuffer)parser._textBuffer;
-                ParseCount = 0;
+                _parseCount = 0;
 
                 // Change idle delay to be huge in order to enable us to take control of when idle methods fire.
                 parser._idleTimer.Interval = TimeSpan.FromMinutes(2).TotalMilliseconds;
                 _parser = parser;
                 parser.DocumentStructureChanged += (sender, args) =>
                 {
-                    Interlocked.Increment(ref ParseCount);
+                    Interlocked.Increment(ref _parseCount);
                     _parserComplete.Set();
 
                     if (args.SourceChange == null)
@@ -627,6 +636,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
                     CurrentSyntaxTree = args.CodeDocument.GetSyntaxTree();
                 };
             }
+
+            public int ParseCount => _parseCount;
 
             public RazorSyntaxTree CurrentSyntaxTree { get; private set; }
 
@@ -662,7 +673,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
 
             public void WaitForParse()
             {
-                DoWithTimeoutIfNotDebugging(_parserComplete.Wait); // Wait for the parse to finish
+                DoWithTimeoutIfNotDebugging(_parserComplete); // Wait for the parse to finish
                 _parserComplete.Reset();
             }
 
@@ -673,7 +684,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
                 _parser._idleTimer.Stop();
                 _parser._idleTimer.Interval = 50;
                 _parser._idleTimer.Start();
-                DoWithTimeoutIfNotDebugging(_reparseComplete.Wait);
+                DoWithTimeoutIfNotDebugging(_reparseComplete);
                 _reparseComplete.Reset();
                 Assert.False(_parser._idleTimer.Enabled);
                 _parser._idleTimer.Interval = TimeSpan.FromMinutes(2).TotalMilliseconds;
