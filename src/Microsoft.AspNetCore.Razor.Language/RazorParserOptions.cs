@@ -10,7 +10,7 @@ namespace Microsoft.AspNetCore.Razor.Language
     {
         public static RazorParserOptions CreateDefault()
         {
-            return new DefaultRazorParserOptions(Array.Empty<DirectiveDescriptor>(), designTime: false, parseLeadingDirectives: false);
+            return new DefaultRazorParserOptions(Array.Empty<DirectiveDescriptor>(), designTime: false, parseLeadingDirectives: false, version: null);
         }
 
         public static RazorParserOptions Create(Action<RazorParserOptionsBuilder> configure)
@@ -54,5 +54,9 @@ namespace Microsoft.AspNetCore.Razor.Language
         /// In a future release this may be updated to include all leading directive content.
         /// </remarks>
         public abstract bool ParseLeadingDirectives { get; }
+
+        public abstract Version Version { get; }
+
+        internal abstract RazorParserFeatureContext FeatureContext { get; }
     }
 }
