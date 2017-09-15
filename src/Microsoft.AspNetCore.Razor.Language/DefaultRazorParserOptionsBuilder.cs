@@ -20,7 +20,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override bool ParseLeadingDirectives { get; set; }
 
-        public override Version Version { get; set; }
+        public override RazorParserVersion Version { get; set; }
 
         public override RazorParserOptions Build()
         {

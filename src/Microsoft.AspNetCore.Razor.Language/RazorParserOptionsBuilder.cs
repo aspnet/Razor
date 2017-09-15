@@ -14,7 +14,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public abstract bool ParseLeadingDirectives { get; set; }
 
-        public abstract Version Version { get; set; }
+        public virtual RazorParserVersion Version { get; set; }
 
         public abstract RazorParserOptions Build();
     }
