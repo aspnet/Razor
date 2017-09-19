@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     internal class DefaultRazorParserOptions : RazorParserOptions
     {
-        public DefaultRazorParserOptions(DirectiveDescriptor[] directives, bool designTime, bool parseLeadingDirectives, RazorParserVersion version)
+        public DefaultRazorParserOptions(DirectiveDescriptor[] directives, bool designTime, bool parseLeadingDirectives, RazorLanguageVersion version)
         {
             if (directives == null)
             {
@@ -28,7 +28,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override bool ParseLeadingDirectives { get; }
 
-        public override RazorParserVersion Version { get; }
+        public override RazorLanguageVersion Version { get; }
 
         internal override RazorParserFeatureFlags FeatureFlags { get; }
     }

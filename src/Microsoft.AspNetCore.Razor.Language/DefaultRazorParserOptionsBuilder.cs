@@ -9,9 +9,10 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     internal class DefaultRazorParserOptionsBuilder : RazorParserOptionsBuilder
     {
-        public DefaultRazorParserOptionsBuilder(bool designTime)
+        public DefaultRazorParserOptionsBuilder(bool designTime, RazorLanguageVersion version)
         {
             DesignTime = designTime;
+            Version = version;
         }
 
         public override bool DesignTime { get; }
@@ -20,7 +21,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override bool ParseLeadingDirectives { get; set; }
 
-        public override RazorParserVersion Version { get; set; }
+        public override RazorLanguageVersion Version { get; }
 
         public override RazorParserOptions Build()
         {

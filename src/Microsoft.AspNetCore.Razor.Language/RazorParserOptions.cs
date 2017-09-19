@@ -8,13 +8,15 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     public abstract class RazorParserOptions
     {
+        internal static readonly RazorLanguageVersion LatestRazorLanguageVersion = RazorLanguageVersion.Version2_1;
+
         public static RazorParserOptions CreateDefault()
         {
             return new DefaultRazorParserOptions(
                 Array.Empty<DirectiveDescriptor>(),
                 designTime: false,
                 parseLeadingDirectives: false,
-                version: RazorParserFeatureFlags.LatestRazorParserVersion);
+                version: LatestRazorLanguageVersion);
         }
 
         public static RazorParserOptions Create(Action<RazorParserOptionsBuilder> configure)
@@ -24,7 +26,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 throw new ArgumentNullException(nameof(configure));
             }
 
-            var builder = new DefaultRazorParserOptionsBuilder(designTime: false);
+            var builder = new DefaultRazorParserOptionsBuilder(designTime: false, version: LatestRazorLanguageVersion);
             configure(builder);
             var options = builder.Build();
 
@@ -38,7 +40,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 throw new ArgumentNullException(nameof(configure));
             }
 
-            var builder = new DefaultRazorParserOptionsBuilder(designTime: true);
+            var builder = new DefaultRazorParserOptionsBuilder(designTime: true, version: LatestRazorLanguageVersion);
             configure(builder);
             var options = builder.Build();
 
@@ -59,7 +61,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         /// </remarks>
         public abstract bool ParseLeadingDirectives { get; }
 
-        public virtual RazorParserVersion Version { get; } = RazorParserFeatureFlags.LatestRazorParserVersion;
+        public virtual RazorLanguageVersion Version { get; } = LatestRazorLanguageVersion;
 
         internal virtual RazorParserFeatureFlags FeatureFlags { get; }
     }

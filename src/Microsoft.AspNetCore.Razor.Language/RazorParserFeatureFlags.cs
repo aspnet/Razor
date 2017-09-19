@@ -7,16 +7,21 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     internal abstract class RazorParserFeatureFlags
     {
-        internal static readonly RazorParserVersion LatestRazorParserVersion = RazorParserVersion.Version2_1;
-
-        public static RazorParserFeatureFlags Create(RazorParserVersion version)
+        public static RazorParserFeatureFlags Create(RazorLanguageVersion version)
         {
-            if (version == LatestRazorParserVersion)
+            if (!version.IsValid())
             {
-                return new DefaultRazorParserFeatureFlags(allowMinimizedBooleanTagHelperAttributes: true);
+                throw new ArgumentException(Resources.FormatInvalidRazorLanguageVersion(version.ToString()));
             }
 
-            return new DefaultRazorParserFeatureFlags(allowMinimizedBooleanTagHelperAttributes: false);
+            var allowMinimizedBooleanTagHelperAttributes = false;
+
+            if (version == RazorLanguageVersion.Version2_1)
+            {
+                allowMinimizedBooleanTagHelperAttributes = true;
+            }
+
+            return new DefaultRazorParserFeatureFlags(allowMinimizedBooleanTagHelperAttributes);
         }
 
         public abstract bool AllowMinimizedBooleanTagHelperAttributes { get; }
