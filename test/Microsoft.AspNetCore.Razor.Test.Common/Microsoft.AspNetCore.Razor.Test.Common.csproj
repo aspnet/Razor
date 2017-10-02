@@ -14,7 +14,7 @@
 
     <PackageReference Include="Microsoft.AspNetCore.Testing" Version="$(AspNetCoreVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(DependencyModelVersion)" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(MicrosoftExtensionsDependencyModelPackageVersion)" />
   </ItemGroup>
 
 </Project>
