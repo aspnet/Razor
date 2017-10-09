@@ -16,7 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(RoslynVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(MicrosoftCodeAnalysisWorkspacesCommonPackageVersion)" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+    <PackageReference Include="NETStandard.Library" Version="$(NETStandardLibraryPackageVersion)" />
   </ItemGroup>
 
 </Project>

@@ -22,9 +22,9 @@ Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="$(AspNetCoreVersion)" />
-    <PackageReference Include="Microsoft.Extensions.CopyOnWriteDictionary.Sources" Version="$(AspNetCoreVersion)" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Extensions.HashCodeCombiner.Sources" Version="$(AspNetCoreVersion)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="$(MicrosoftAspNetCoreHtmlAbstractionsPackageVersion)" />
+    <PackageReference Include="Microsoft.Extensions.CopyOnWriteDictionary.Sources" Version="$(MicrosoftExtensionsCopyOnWriteDictionarySourcesPackageVersion)" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.HashCodeCombiner.Sources" Version="$(MicrosoftExtensionsHashCodeCombinerSourcesPackageVersion)" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

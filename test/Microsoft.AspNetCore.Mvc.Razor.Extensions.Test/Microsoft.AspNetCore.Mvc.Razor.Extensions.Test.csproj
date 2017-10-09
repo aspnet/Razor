@@ -22,14 +22,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Testing" Version="$(AspNetCoreVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Testing" Version="$(MicrosoftAspNetCoreTestingPackageVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="$(MicrosoftExtensionsDependencyModelPackageVersion)" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(TestSdkVersion)" />
-    <PackageReference Include="Moq" Version="$(MoqVersion)" />
-    <PackageReference Include="xunit" Version="$(XunitVersion)" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitRunnerVisualStudioVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />
+    <PackageReference Include="Moq" Version="$(MoqPackageVersion)" />
+    <PackageReference Include="xunit" Version="$(XunitPackageVersion)" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="$(XunitRunnerVisualStudioPackageVersion)" />
 
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(MicrosoftCodeAnalysisCSharpPackageVersion)" />
 
     <!-- We need this to compile but don't want it referenced by the project.
       It is included dynamically in CodeGeneration tests. -->
@@ -42,9 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <MvcShim
-      Condition="$(TargetFramework) != ''"
-      Include="..\Microsoft.AspNetCore.Razor.Test.MvcShim\bin\$(Configuration)\$(TargetFramework)\Microsoft.AspNetCore.Razor.Test.MvcShim.deps.json" />
+    <MvcShim Condition="$(TargetFramework) != ''" Include="..\Microsoft.AspNetCore.Razor.Test.MvcShim\bin\$(Configuration)\$(TargetFramework)\Microsoft.AspNetCore.Razor.Test.MvcShim.deps.json" />
   </ItemGroup>
 
   <Target Name="CopyDepsFromShims" AfterTargets="Build">

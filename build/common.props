@@ -12,11 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Internal.AspNetCore.Sdk" Version="$(InternalAspNetCoreSdkVersion)" PrivateAssets="All" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFrameworkIdentifier)'=='.NETFramework' AND '$(OutputType)'=='library'">
-    <PackageReference Include="NETStandard.Library" Version="$(NETStandardImplicitPackageVersion)" />
+    <PackageReference Include="Internal.AspNetCore.Sdk" Version="$(InternalAspNetCoreSdkPackageVersion)" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

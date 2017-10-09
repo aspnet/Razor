@@ -19,17 +19,17 @@
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.CodeAnalysis.Razor.Workspaces\Microsoft.CodeAnalysis.Razor.Workspaces.csproj" />
     <ProjectReference Include="..\Microsoft.AspNetCore.Razor.Language\Microsoft.AspNetCore.Razor.Language.csproj" />
+    <ProjectReference Include="..\Microsoft.AspNetCore.Mvc.Razor.Extensions\Microsoft.AspNetCore.Mvc.Razor.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="$(RoslynDevVersion)">
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="$(MicrosoftCodeAnalysisCommonToolingPackageVersion)">
       <!-- This package version is intentional forced to ensure this matches with the version of Roslyn in VS. -->
       <NoWarn>NU1608</NoWarn>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(RoslynDevVersion)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Remote.Razor.ServiceHub" Version="$(RoslynDevVersion)" />
-    <PackageReference Include="StreamJsonRpc" Version="$(StreamJsonRpcVersion)" />
-    <ProjectReference Include="..\Microsoft.AspNetCore.Mvc.Razor.Extensions\Microsoft.AspNetCore.Mvc.Razor.Extensions.csproj" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(MicrosoftCodeAnalysisWorkspacesCommonToolingPackageVersion)" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Remote.Razor.ServiceHub" Version="$(MicrosoftCodeAnalysisRemoteRazorServiceHubPackageVersion)" />
+    <PackageReference Include="StreamJsonRpc" Version="$(StreamJsonRpcPackageVersion)" />
   </ItemGroup>
 
 </Project>
