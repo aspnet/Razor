@@ -6,9 +6,9 @@
   },
   "dependencies": {
     "dotnet-test-xunit": "1.0.0-rc3-000000-01",
-    "Microsoft.AspNetCore.Razor.Runtime": "1.0.3",
+    "Microsoft.AspNetCore.Razor.Runtime": "1.0.4",
     "Microsoft.AspNetCore.Razor.Test.Sources": {
-      "version": "1.0.3",
+      "version": "1.0.4",
       "type": "build"
     },
     "Microsoft.AspNetCore.Testing": "1.0.1",
@@ -24,7 +24,7 @@
       ],
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "version": "1.0.8-servicing-005009-00",
+          "version": "1.0.8",
           "type": "platform"
         },
         "moq.netcore": "4.4.0-beta8",
