@@ -31,7 +31,7 @@ Examples:
 
             var rootNamespace = args[0];
             var targetProjectDirectory = args.Length > 1 ? args[1] : Directory.GetCurrentDirectory();
-            var razorEngine = CreateRazor(rootNamespace);
+            var razorEngine = CreateRazorEngine(rootNamespace);
             var results = MainCore(razorEngine, targetProjectDirectory);
 
             foreach (var result in results)
@@ -45,7 +45,7 @@ Examples:
             return 0;
         }
 
-        public static RazorEngine CreateRazor(string rootNamespace, Action<IRazorEngineBuilder> configure = null)
+        public static RazorEngine CreateRazorEngine(string rootNamespace, Action<IRazorEngineBuilder> configure = null)
         {
             var razorEngine = RazorEngine.Create(builder =>
             {
@@ -67,6 +67,7 @@ Examples:
             });
             return razorEngine;
         }
+
         public static IList<RazorPageGeneratorResult> MainCore(RazorEngine razorEngine, string targetProjectDirectory)
         {
             var viewDirectories = Directory.EnumerateDirectories(targetProjectDirectory, "Views", SearchOption.AllDirectories);
