@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
 
         public override EditorSettings EditorSettings => _editorSettingsManager.Current;
 
-        public override IReadOnlyList<TagHelperDescriptor> TagHelpers => Array.Empty<TagHelperDescriptor>();
+        public override IReadOnlyList<TagHelperDescriptor> TagHelpers => _project.TagHelpers ?? Array.Empty<TagHelperDescriptor>();
 
         public override bool IsSupportedProject => _isSupportedProject;
 

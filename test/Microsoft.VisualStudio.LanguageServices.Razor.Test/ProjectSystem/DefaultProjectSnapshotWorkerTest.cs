@@ -16,11 +16,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             CompletionSource = new TaskCompletionSource<ProjectExtensibilityConfiguration>();
             ConfigurationFactory = Mock.Of<ProjectExtensibilityConfigurationFactory>(f => f.GetConfigurationAsync(It.IsAny<Project>(), default(CancellationToken)) == CompletionSource.Task);
+            TagHelperResolver = Mock.Of<TagHelperResolver>();
         }
 
         private Project Project { get; }
 
         private ProjectExtensibilityConfigurationFactory ConfigurationFactory { get; }
+
+        private TagHelperResolver TagHelperResolver { get; }
 
         private TaskCompletionSource<ProjectExtensibilityConfiguration> CompletionSource { get; }
 
@@ -28,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public async Task ProcessUpdateAsync_DoesntBlockForegroundThread()
         {
             // Arrange
-            var worker = new DefaultProjectSnapshotWorker(Dispatcher, ConfigurationFactory);
+            var worker = new DefaultProjectSnapshotWorker(Dispatcher, ConfigurationFactory, TagHelperResolver);
 
             var context = new ProjectSnapshotUpdateContext(Project);
 

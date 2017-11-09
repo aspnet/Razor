@@ -149,9 +149,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
                 // Now we need to know if the changes that we applied are significant. If that's the case then 
                 // we need to notify listeners.
-                if (snapshot.HasChangesComparedTo(original))
+                if (snapshot.HasConfigurationChanged(original))
                 {
                     NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Changed));
+                }
+
+                if (snapshot.HasTagHelpersChanged(original))
+                {
+                    NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.TagHelpersChanged));
                 }
             }
         }
@@ -169,6 +174,21 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
                 // We need to notify listeners about every project removal.
                 NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Removed));
+            }
+        }
+
+        // TODO: Write a trigger to call this method.
+        public override void ProjectBuilt(Project underlyingProject)
+        {
+            if (underlyingProject == null)
+            {
+                throw new ArgumentNullException(nameof(underlyingProject));
+            }
+
+            if (_projects.ContainsKey(underlyingProject.Id))
+            {
+                // Notify the background worker so it can trigger tag helper dicovery.
+                NotifyBackgroundWorker(underlyingProject);
             }
         }
 

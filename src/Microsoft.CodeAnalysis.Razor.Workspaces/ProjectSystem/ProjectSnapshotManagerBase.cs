@@ -17,6 +17,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public abstract void ProjectRemoved(Project underlyingProject);
 
+        public abstract void ProjectBuilt(Project underlyingProject);
+
         public abstract void ProjectsCleared();
 
         public abstract void ReportError(Exception exception);
