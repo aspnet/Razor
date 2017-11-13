@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Razor;
 using Microsoft.CodeAnalysis.Razor.Editor;
 using Microsoft.CodeAnalysis.Razor.ProjectSystem;
+using Microsoft.VisualStudio.Editor.Razor;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
@@ -42,6 +43,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             var called = false;
             documentTracker.ContextChanged += (sender, args) =>
             {
+                Assert.Equal(ContextChangeKind.EditorSettingsChanged, args.Kind);
                 called = true;
             };
 
@@ -50,6 +52,77 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
 
             // Assert
             Assert.True(called);
+        }
+
+        [Fact]
+        public void ProjectManager_Changed_ProjectChanged_TriggersContextChanged()
+        {
+            // Arrange
+            var documentTracker = new DefaultVisualStudioDocumentTracker(FilePath, ProjectManager, ProjectService, EditorSettingsManager, Workspace, TextBuffer, projectPath: "C:/Some/Path/TestProject.csproj");
+
+            var project = new AdhocWorkspace().AddProject(ProjectInfo.Create(ProjectId.CreateNewId(), new VersionStamp(), "Test1", "TestAssembly", LanguageNames.CSharp, filePath: "C:/Some/Path/TestProject.csproj"));
+            var projectSnapshot = new DefaultProjectSnapshot(project);
+            var projectChangedArgs = new ProjectChangeEventArgs(projectSnapshot, ProjectChangeKind.Changed);
+
+            var called = false;
+            documentTracker.ContextChanged += (sender, args) =>
+            {
+                Assert.Equal(ContextChangeKind.ProjectChanged, args.Kind);
+                called = true;
+            };
+
+            // Act
+            documentTracker.ProjectManager_Changed(null, projectChangedArgs);
+
+            // Assert
+            Assert.True(called);
+        }
+
+        [Fact]
+        public void ProjectManager_Changed_TagHelpersChanged_TriggersContextChanged()
+        {
+            // Arrange
+            var documentTracker = new DefaultVisualStudioDocumentTracker(FilePath, ProjectManager, ProjectService, EditorSettingsManager, Workspace, TextBuffer, projectPath: "C:/Some/Path/TestProject.csproj");
+
+            var project = new AdhocWorkspace().AddProject(ProjectInfo.Create(ProjectId.CreateNewId(), new VersionStamp(), "Test1", "TestAssembly", LanguageNames.CSharp, filePath: "C:/Some/Path/TestProject.csproj"));
+            var projectSnapshot = new DefaultProjectSnapshot(project);
+            var projectChangedArgs = new ProjectChangeEventArgs(projectSnapshot, ProjectChangeKind.TagHelpersChanged);
+
+            var called = false;
+            documentTracker.ContextChanged += (sender, args) =>
+            {
+                Assert.Equal(ContextChangeKind.TagHelpersChanged, args.Kind);
+                called = true;
+            };
+
+            // Act
+            documentTracker.ProjectManager_Changed(null, projectChangedArgs);
+
+            // Assert
+            Assert.True(called);
+        }
+
+        [Fact]
+        public void ProjectManager_Changed_IgnoresUnknownProject()
+        {
+            // Arrange
+            var documentTracker = new DefaultVisualStudioDocumentTracker(FilePath, ProjectManager, ProjectService, EditorSettingsManager, Workspace, TextBuffer, projectPath: "C:/Some/Path/TestProject.csproj");
+
+            var project = new AdhocWorkspace().AddProject(ProjectInfo.Create(ProjectId.CreateNewId(), new VersionStamp(), "Test1", "TestAssembly", LanguageNames.CSharp, filePath: "C:/Some/Other/Path/TestProject.csproj"));
+            var projectSnapshot = new DefaultProjectSnapshot(project);
+            var projectChangedArgs = new ProjectChangeEventArgs(projectSnapshot, ProjectChangeKind.Changed);
+
+            var called = false;
+            documentTracker.ContextChanged += (sender, args) =>
+            {
+                called = true;
+            };
+
+            // Act
+            documentTracker.ProjectManager_Changed(null, projectChangedArgs);
+
+            // Assert
+            Assert.False(called);
         }
 
         [Fact]

@@ -81,5 +81,20 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
 
             return hierarchy.IsCapabilityMatch("DotNetCoreWeb");
         }
+
+        public override string GetProjectName(IVsHierarchy hierarchy)
+        {
+            if (hierarchy == null)
+            {
+                throw new ArgumentNullException(nameof(hierarchy));
+            }
+
+            if (ErrorHandler.Failed(hierarchy.GetProperty((uint)VSConstants.VSITEMID.Root, (int)__VSHPROPID.VSHPROPID_Name, out var name)))
+            {
+                return null;
+            }
+
+            return (string)name;
+        }
     }
 }

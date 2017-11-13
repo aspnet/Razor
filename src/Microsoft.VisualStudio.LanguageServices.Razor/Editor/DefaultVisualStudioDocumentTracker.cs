@@ -78,6 +78,19 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             _textViews = new List<ITextView>();
         }
 
+        // Used for unit testing.
+        internal DefaultVisualStudioDocumentTracker(
+            string filePath,
+            ProjectSnapshotManager projectManager,
+            TextBufferProjectService projectService,
+            EditorSettingsManagerInternal editorSettingsManager,
+            Workspace workspace,
+            ITextBuffer textBuffer,
+            string projectPath) : this(filePath, projectManager, projectService, editorSettingsManager, workspace, textBuffer)
+        {
+            _projectPath = projectPath;
+        }
+
         internal override ProjectExtensibilityConfiguration Configuration => _project.Configuration;
 
         public override EditorSettings EditorSettings => _editorSettingsManager.Current;
@@ -204,7 +217,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             }
         }
 
-        private void ProjectManager_Changed(object sender, ProjectChangeEventArgs e)
+        // Internal for testing
+        internal void ProjectManager_Changed(object sender, ProjectChangeEventArgs e)
         {
             if (_projectPath != null &&
                 string.Equals(_projectPath, e.Project.UnderlyingProject.FilePath, StringComparison.OrdinalIgnoreCase))

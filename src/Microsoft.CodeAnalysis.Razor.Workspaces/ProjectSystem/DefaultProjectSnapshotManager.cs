@@ -177,8 +177,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
         }
 
-        // TODO: Write a trigger to call this method.
-        public override void ProjectBuilt(Project underlyingProject)
+        public override void ProjectBuildComplete(Project underlyingProject)
         {
             if (underlyingProject == null)
             {

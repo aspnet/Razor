@@ -118,7 +118,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             if (TagHelpers == null || original.TagHelpers == null)
             {
-                return TagHelpers != original.TagHelpers;
+                return !object.ReferenceEquals(TagHelpers, original.TagHelpers);
             }
 
             return !Enumerable.SequenceEqual(TagHelpers, original.TagHelpers);
