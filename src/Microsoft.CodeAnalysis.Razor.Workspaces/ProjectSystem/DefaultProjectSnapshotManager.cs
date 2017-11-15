@@ -154,7 +154,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Changed));
                 }
 
-                if (snapshot.HasTagHelpersChanged(original))
+                if (snapshot.HaveTagHelpersChanged(original))
                 {
                     NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.TagHelpersChanged));
                 }
@@ -184,9 +184,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(underlyingProject));
             }
 
-            if (_projects.ContainsKey(underlyingProject.Id))
+            if (_projects.TryGetValue(underlyingProject.Id, out var original))
             {
-                // Notify the background worker so it can trigger tag helper dicovery.
+                // Doing an update to the project should keep computed values, but mark the project as dirty if the
+                // underlying project is newer.
+                var snapshot = original.WithProjectChange(underlyingProject);
+                _projects[underlyingProject.Id] = snapshot;
+
+                // Notify the background worker so it can trigger tag helper discovery.
                 NotifyBackgroundWorker(underlyingProject);
             }
         }

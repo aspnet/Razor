@@ -63,14 +63,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             ComputedVersion = update.UnderlyingProject.Version;
             Configuration = update.Configuration;
-            TagHelpers = update.TagHelpers;
+            TagHelpers = update.TagHelpers ?? Array.Empty<TagHelperDescriptor>();
         }
 
         public override ProjectExtensibilityConfiguration Configuration { get; }
 
         public override Project UnderlyingProject { get; }
 
-        public override IReadOnlyList<TagHelperDescriptor> TagHelpers { get; }
+        public override IReadOnlyList<TagHelperDescriptor> TagHelpers { get; } = Array.Empty<TagHelperDescriptor>();
 
         // This is the version that the computed state is based on.
         public VersionStamp? ComputedVersion { get; set; }
@@ -109,16 +109,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             return !object.Equals(Configuration, original.Configuration);
         }
 
-        public bool HasTagHelpersChanged(ProjectSnapshot original)
+        public bool HaveTagHelpersChanged(ProjectSnapshot original)
         {
             if (original == null)
             {
                 throw new ArgumentNullException(nameof(original));
-            }
-
-            if (TagHelpers == null || original.TagHelpers == null)
-            {
-                return !object.ReferenceEquals(TagHelpers, original.TagHelpers);
             }
 
             return !Enumerable.SequenceEqual(TagHelpers, original.TagHelpers);

@@ -421,7 +421,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             public IReadOnlyList<TagHelperDescriptor> GetDescriptors()
             {
-                return _tagHelpers ?? Array.Empty<TagHelperDescriptor>();
+                return _tagHelpers;
             }
         }
 

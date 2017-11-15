@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.LanguageServices.Razor.Editor;
 
-namespace Microsoft.VisualStudio.LanguageServices.Razor.ProjectSystem
+namespace Microsoft.VisualStudio.LanguageServices.Razor
 {
     [Export(typeof(ProjectSnapshotChangeTrigger))]
     internal class VsSolutionUpdatesProjectSnapshotChangeTrigger : ProjectSnapshotChangeTrigger

@@ -91,11 +91,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             _projectPath = projectPath;
         }
 
-        internal override ProjectExtensibilityConfiguration Configuration => _project.Configuration;
+        internal override ProjectExtensibilityConfiguration Configuration => _project?.Configuration;
 
         public override EditorSettings EditorSettings => _editorSettingsManager.Current;
 
-        public override IReadOnlyList<TagHelperDescriptor> TagHelpers => _project.TagHelpers ?? Array.Empty<TagHelperDescriptor>();
+        public override IReadOnlyList<TagHelperDescriptor> TagHelpers => _project?.TagHelpers ?? Array.Empty<TagHelperDescriptor>();
 
         public override bool IsSupportedProject => _isSupportedProject;
 

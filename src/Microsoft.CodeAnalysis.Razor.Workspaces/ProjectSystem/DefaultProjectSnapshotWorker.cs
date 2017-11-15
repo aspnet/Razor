@@ -28,6 +28,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(configurationFactory));
             }
 
+            if (tagHelperResolver == null)
+            {
+                throw new ArgumentNullException(nameof(tagHelperResolver));
+            }
+
             _foregroundDispatcher = foregroundDispatcher;
             _configurationFactory = configurationFactory;
             _tagHelperResolver = tagHelperResolver;

@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Razor.ProjectSystem;
 using Microsoft.VisualStudio.LanguageServices.Razor.Editor;
@@ -10,7 +9,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Moq;
 using Xunit;
 
-namespace Microsoft.VisualStudio.LanguageServices.Razor.ProjectSystem
+namespace Microsoft.VisualStudio.LanguageServices.Razor
 {
     public class VsSolutionUpdatesProjectSnapshotChangeTriggerTest
     {
