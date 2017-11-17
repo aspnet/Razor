@@ -23,12 +23,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
         private readonly ForegroundDispatcher _foregroundDispatcher;
         private readonly ProjectSnapshotManager _projectManager;
         private readonly EditorSettingsManagerInternal _editorSettingsManager;
+        private readonly VisualStudioOpenDocumentManager _documentManager;
 
         [ImportingConstructor]
         public DefaultVisualStudioDocumentTrackerFactory(
             TextBufferProjectService projectService,
             ITextDocumentFactoryService textDocumentFactory,
-            [Import(typeof(VisualStudioWorkspace))] Workspace workspace)
+            [Import(typeof(VisualStudioWorkspace))] Workspace workspace,
+            VisualStudioOpenDocumentManager documentManager)
         {
             if (projectService == null)
             {
@@ -45,9 +47,15 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
                 throw new ArgumentNullException(nameof(workspace));
             }
 
+            if (documentManager == null)
+            {
+                throw new ArgumentNullException(nameof(documentManager));
+            }
+
             _projectService = projectService;
             _textDocumentFactory = textDocumentFactory;
             _workspace = workspace;
+            _documentManager = documentManager;
 
             _foregroundDispatcher = workspace.Services.GetRequiredService<ForegroundDispatcher>();
             var razorLanguageServices = workspace.Services.GetLanguageServices(RazorLanguage.Name);
@@ -69,7 +77,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             }
 
             var filePath = textDocument.FilePath;
-            var tracker = new DefaultVisualStudioDocumentTracker(filePath, _projectManager, _projectService, _editorSettingsManager, _workspace, textBuffer);
+            var tracker = new DefaultVisualStudioDocumentTracker(filePath, _projectManager, _projectService, _editorSettingsManager, _workspace, textBuffer, _documentManager);
 
             return tracker;
         }

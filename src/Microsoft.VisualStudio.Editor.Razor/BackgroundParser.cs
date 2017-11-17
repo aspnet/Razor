@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
 using Microsoft.VisualStudio.Text;
@@ -263,6 +264,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             private void WorkerLoop()
             {
                 var fileNameOnly = Path.GetFileName(_filePath);
+                RazorCodeDocument previousResult = null;
 
                 try
                 {
@@ -295,10 +297,12 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
                                         var finalEdit = allEdits.Last();
 
-                                        var results = ParseChange(finalEdit.Snapshot, linkedCancel.Token);
+                                        var results = ParseChange(finalEdit.Snapshot, previousResult, linkedCancel.Token);
 
                                         if (results != null && !linkedCancel.IsCancellationRequested)
                                         {
+                                            previousResult = results;
+
                                             // Clear discarded changes list
                                             _previouslyDiscarded = null;
 
@@ -343,12 +347,24 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 }
             }
 
-            private RazorCodeDocument ParseChange(ITextSnapshot snapshot, CancellationToken token)
+            private RazorCodeDocument ParseChange(ITextSnapshot snapshot, RazorCodeDocument previousResult, CancellationToken token)
             {
                 EnsureOnThread();
 
                 var sourceDocument = new TextSnapshotSourceDocument(snapshot, _filePath);
-                var imports = _templateEngine.GetImports(_filePath);
+
+                IEnumerable<RazorSourceDocument> imports = null;
+
+                try
+                {
+                    imports = _templateEngine.GetImports(_filePath);
+                }
+                catch (IOException)
+                {
+                    // This could be because someone process is still holding a write lock when we tried to read the imports.
+                    // Return previous result so we don't crash VS.
+                    return previousResult;
+                }
 
                 var codeDocument = RazorCodeDocument.Create(sourceDocument, imports);
 

@@ -21,8 +21,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
         private readonly ProjectSnapshotManager _projectManager;
         private readonly EditorSettingsManagerInternal _editorSettingsManager;
         private readonly TextBufferProjectService _projectService;
+        private readonly VisualStudioOpenDocumentManager _documentManager;
         private readonly ITextBuffer _textBuffer;
         private readonly List<ITextView> _textViews;
+        private readonly List<ImportDocumentInfo> _imports;
         private readonly Workspace _workspace;
         private bool _isSupportedProject;
         private ProjectSnapshot _project;
@@ -36,7 +38,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             TextBufferProjectService projectService,
             EditorSettingsManagerInternal editorSettingsManager,
             Workspace workspace,
-            ITextBuffer textBuffer)
+            ITextBuffer textBuffer,
+            VisualStudioOpenDocumentManager documentManager)
         {
             if (string.IsNullOrEmpty(filePath))
             {
@@ -68,14 +71,21 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
                 throw new ArgumentNullException(nameof(textBuffer));
             }
 
+            if (documentManager == null)
+            {
+                throw new ArgumentNullException(nameof(documentManager));
+            }
+
             _filePath = filePath;
             _projectManager = projectManager;
             _projectService = projectService;
             _editorSettingsManager = editorSettingsManager;
             _textBuffer = textBuffer;
+            _documentManager = documentManager;
             _workspace = workspace; // For now we assume that the workspace is the always default VS workspace.
 
             _textViews = new List<ITextView>();
+            _imports = new List<ImportDocumentInfo>();
         }
 
         // Used for unit testing.
@@ -86,7 +96,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             EditorSettingsManagerInternal editorSettingsManager,
             Workspace workspace,
             ITextBuffer textBuffer,
-            string projectPath) : this(filePath, projectManager, projectService, editorSettingsManager, workspace, textBuffer)
+            VisualStudioOpenDocumentManager documentManager,
+            string projectPath) : this(filePath, projectManager, projectService, editorSettingsManager, workspace, textBuffer, documentManager)
         {
             _projectPath = projectPath;
         }
@@ -96,6 +107,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
         public override EditorSettings EditorSettings => _editorSettingsManager.Current;
 
         public override IReadOnlyList<TagHelperDescriptor> TagHelpers => _project?.TagHelpers ?? Array.Empty<TagHelperDescriptor>();
+
+        public override IReadOnlyList<ImportDocumentInfo> Imports => _imports;
 
         public override bool IsSupportedProject => _isSupportedProject;
 
@@ -193,6 +206,20 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             _editorSettingsManager.Changed += EditorSettingsManager_Changed;
 
             OnContextChanged(_project, ContextChangeKind.ProjectChanged);
+
+            if (_textBuffer.Properties.TryGetProperty<VisualStudioRazorParser>(typeof(VisualStudioRazorParser), out var parser) &&
+                parser.TemplateEngine != null)
+            {
+                // The parser has been initialized.
+                var imports = parser.TemplateEngine.GetImports(_filePath);
+                foreach (var import in imports)
+                {
+                    var importInfo = new DefaultImportDocumentInfo(import.FilePath, import);
+                    _imports.Add(importInfo);
+                }
+            }
+
+            _documentManager.AddDocument(this);
         }
 
         private void Unsubscribe()
@@ -204,6 +231,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             _isSupportedProject = false;
             _project = null;
             OnContextChanged(project: null, kind: ContextChangeKind.ProjectChanged);
+
+            _documentManager.RemoveDocument(this);
+
+            _imports.Clear();
         }
 
         private void OnContextChanged(ProjectSnapshot project, ContextChangeKind kind)
@@ -238,6 +269,19 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
         internal void EditorSettingsManager_Changed(object sender, EditorSettingsChangedEventArgs args)
         {
             OnContextChanged(_project, ContextChangeKind.EditorSettingsChanged);
+        }
+
+        private class DefaultImportDocumentInfo : ImportDocumentInfo
+        {
+            public DefaultImportDocumentInfo(string filePath, RazorSourceDocument import)
+            {
+                FilePath = filePath;
+                Import = import;
+            }
+
+            public override string FilePath { get; }
+
+            public override RazorSourceDocument Import { get; }
         }
     }
 }
