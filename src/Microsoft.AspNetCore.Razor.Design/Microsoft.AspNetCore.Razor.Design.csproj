@@ -2,8 +2,68 @@
 
   <PropertyGroup>
     <Description>Razor is a markup syntax for adding server-side logic to web pages. This package contains MSBuild support for Razor.</Description>
-    <TargetFrameworks>net46;netstandard2.0</TargetFrameworks>
+
+    <!-- 
+      Using netcoreapp2.0 here is a workaround for https://github.com/Microsoft/msbuild/issues/2661
+
+      We need to use a P2P reference to build some other projects that need to target netcoreapp2.0
+      and even though we don't actually want to reference the output, MSBuild will not allow it.
+    -->
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <!-- This project doesn't have any code, so don't include it in the .nupkg -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
   </PropertyGroup>
 
+  <!-- 
+    We're using CopyToOutputDirectory and Link here to mimic shape of what goes into the package in the output
+    directory. This is used by tests.
+  -->
+  <ItemGroup>
+    <Content Include="build\**\*.props" PackagePath="build\" />
+    <Content Include="build\**\*.targets" PackagePath="build\" />
+    <Content Include="buildMultiTargeting\*.props" PackagePath="buildMultiTargeting\" />
+    <Content Include="buildMultiTargeting\*.targets" PackagePath="buildMultiTargeting\" />
+
+    <Content Include="..\Microsoft.AspNetCore.Razor.Tasks\bin\$(Configuration)\net46\Microsoft.AspNetCore.Razor.Tasks.dll">
+      <PackagePath>tasks\net46\</PackagePath>
+      <Link>tasks\net461\Microsoft.AspNetCore.Razor.Tasks.dll</Link>
+      <Hidden>true</Hidden>
+    </Content>
+    <Content Include="..\Microsoft.AspNetCore.Razor.Tasks\bin\$(Configuration)\netstandard2.0\Microsoft.AspNetCore.Razor.Tasks.dll">
+      <PackagePath>tasks\netstandard2.0\</PackagePath>
+      <Link>tasks\netstandard2.0\Microsoft.AspNetCore.Razor.Tasks.dll</Link>
+      <Hidden>true</Hidden>
+    </Content>
+
+    <Content Include="..\Microsoft.AspNetCore.Razor.GenerateTool\bin\$(Configuration)\netcoreapp2.0\publish\**\*.*">
+      <PackagePath>tools\%(RecursiveDir)\%(Filename)%(Extension)</PackagePath>
+      <Link>tools\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+      <Hidden>true</Hidden>
+    </Content>
+
+    <Content Include="..\Microsoft.AspNetCore.Razor.TagHelperTool\bin\$(Configuration)\netcoreapp2.0\publish\**\*.*">
+      <PackagePath>tools\%(RecursiveDir)\%(Filename)%(Extension)</PackagePath>
+      <Link>tools\%(RecursiveDir)\%(Filename)%(Extension)</Link>
+      <Hidden>true</Hidden>
+    </Content>
+
+    <Content Update="@(Content)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.AspNetCore.Razor.Tasks\Microsoft.AspNetCore.Razor.Tasks.csproj" />
+    <ProjectReference Include="..\Microsoft.AspNetCore.Razor.GenerateTool\Microsoft.AspNetCore.Razor.GenerateTool.csproj">
+      <Targets>Publish</Targets>
+    </ProjectReference>
+    <ProjectReference Include="..\Microsoft.AspNetCore.Razor.TagHelperTool\Microsoft.AspNetCore.Razor.TagHelperTool.csproj">
+      <Targets>Publish</Targets>
+    </ProjectReference>
+
+    <!-- We don't need to really reference anything, we just want these other projects to build first -->
+    <ProjectReference Update="@(ProjectReference)">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
 
 </Project>

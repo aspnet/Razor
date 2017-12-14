@@ -37,10 +37,9 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
                 CopyDirectory(new DirectoryInfo(projectRoot), new DirectoryInfo(destinationPath));
 
-                foreach (var project in Directory.EnumerateFiles(destinationPath, "*.csproj"))
-                {
-                    RewriteCsproj(projectRoot, project);
-                }
+                CreateDirectoryProps(projectRoot, destinationPath);
+                RewriteCsproj(projectRoot, Path.Combine(destinationPath, projectName + ".csproj"));
+                CreateDirectoryTargets(destinationPath);
 
                 return new ProjectDirectory(destinationPath);
             }
@@ -78,6 +77,37 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 var text = File.ReadAllText(filePath);
                 text = text.Replace("$(OriginalProjectRoot)", originalProjectRoot);
                 File.WriteAllText(filePath, text);
+            }
+
+            void CreateDirectoryProps(string originalProjectRoot, string projectRoot)
+            {
+#if DEBUG
+                var configuration = "Debug";
+#elif RELEASE
+                var configuration = "Release";
+#else
+#error Unknown Configuration
+#endif
+                var text = $@"
+<Project>
+  <PropertyGroup>
+    <OriginalProjectRoot>{originalProjectRoot}</OriginalProjectRoot>
+    <_RazorMSBuildRoot>$(OriginalProjectRoot)\..\..\..\src\Microsoft.AspNetCore.Razor.Design\bin\{configuration}\netcoreapp2.0\</_RazorMSBuildRoot>
+  </PropertyGroup>
+  <Import Project=""$(OriginalProjectRoot)\..\..\..\src\Microsoft.AspNetCore.Razor.Design\build\netstandard2.0\Microsoft.AspNetCore.Razor.Design.props""/>
+</Project>
+";
+                File.WriteAllText(Path.Combine(projectRoot, "Directory.Build.props"), text);
+            }
+
+            void CreateDirectoryTargets(string projectRoot)
+            {
+                var text = $@"
+<Project>
+  <Import Project=""$(OriginalProjectRoot)\..\..\..\src\Microsoft.AspNetCore.Razor.Design\build\netstandard2.0\Microsoft.AspNetCore.Razor.Design.targets""/>
+</Project>
+";
+                File.WriteAllText(Path.Combine(projectRoot, "Directory.Build.targets"), text);
             }
         }
 

@@ -114,9 +114,20 @@ namespace Microsoft.AspNetCore.Razor.GenerateTool
             Parallel.For(0, outputs.Length, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, i =>
             {
                 var source = sources[i];
+<<<<<<< HEAD
                     
                 var csharpDocument = templateEngine.GenerateCode(source.ViewEnginePath);
                 outputs[i] = new OutputItem(source, csharpDocument);
+=======
+                OutputItem compilationInfo;
+                using (var fileStream = source.CreateReadStream())
+                {
+                    var csharpDocument = templateEngine.GenerateCode(source.ViewEnginePath);
+                    compilationInfo = new OutputItem(source, csharpDocument);
+                }
+
+                outputs[i] = compilationInfo;
+>>>>>>> Adds support for Razor compilation at build-time
             });
 
             return outputs;
