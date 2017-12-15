@@ -140,8 +140,6 @@
     Returns=""
     DependsOnTargets="_RazorResolveTagHelpers;RazorCoreGenerate">
 
-
-    <Message Importance="High" Text="Assembly Reference=%(RazorReferencePath.Identity)"/>
     <!-- These two compiler warnings are raised when a reference is bound to a different version
           than specified in the assembly reference version number.  MSBuild raises the same warning in this case,
           so the compiler warning would be redundant. -->
