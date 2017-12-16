@@ -38,7 +38,6 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 CopyDirectory(new DirectoryInfo(projectRoot), new DirectoryInfo(destinationPath));
 
                 CreateDirectoryProps(projectRoot, destinationPath);
-                RewriteCsproj(projectRoot, Path.Combine(destinationPath, projectName + ".csproj"));
                 CreateDirectoryTargets(destinationPath);
 
                 return new ProjectDirectory(destinationPath);
@@ -68,15 +67,6 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 {
                     file.CopyTo(Path.Combine(destination.FullName, file.Name));
                 }
-            }
-
-            void RewriteCsproj(string originalProjectRoot, string filePath)
-            {
-                // We need to replace $(OriginalProjectRoot) with the path to the original directory
-                // that way relative references will resolve.
-                var text = File.ReadAllText(filePath);
-                text = text.Replace("$(OriginalProjectRoot)", originalProjectRoot);
-                File.WriteAllText(filePath, text);
             }
 
             void CreateDirectoryProps(string originalProjectRoot, string projectRoot)

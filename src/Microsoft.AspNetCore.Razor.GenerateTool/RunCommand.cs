@@ -115,6 +115,7 @@ namespace Microsoft.AspNetCore.Razor.GenerateTool
             {
                 var source = sources[i];
 <<<<<<< HEAD
+<<<<<<< HEAD
                     
                 var csharpDocument = templateEngine.GenerateCode(source.ViewEnginePath);
                 outputs[i] = new OutputItem(source, csharpDocument);
@@ -128,6 +129,11 @@ namespace Microsoft.AspNetCore.Razor.GenerateTool
 
                 outputs[i] = compilationInfo;
 >>>>>>> Adds support for Razor compilation at build-time
+=======
+                    
+                var csharpDocument = templateEngine.GenerateCode(source.ViewEnginePath);
+                outputs[i] = new OutputItem(source, csharpDocument);
+>>>>>>> Fix minor feedback
             });
 
             return outputs;
