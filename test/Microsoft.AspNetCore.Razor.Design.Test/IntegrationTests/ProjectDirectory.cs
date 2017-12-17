@@ -82,7 +82,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 <Project>
   <PropertyGroup>
     <OriginalProjectRoot>{originalProjectRoot}</OriginalProjectRoot>
-    <_RazorMSBuildRoot>$(OriginalProjectRoot)\..\..\..\src\Microsoft.AspNetCore.Razor.Design\bin\{configuration}\netcoreapp2.0\</_RazorMSBuildRoot>
+    <_RazorMSBuildRoot>$(OriginalProjectRoot)\..\..\..\src\Microsoft.AspNetCore.Razor.Design\bin\{configuration}\netstandard2.0\</_RazorMSBuildRoot>
   </PropertyGroup>
   <Import Project=""$(OriginalProjectRoot)\..\..\..\src\Microsoft.AspNetCore.Razor.Design\build\netstandard2.0\Microsoft.AspNetCore.Razor.Design.props""/>
 </Project>
