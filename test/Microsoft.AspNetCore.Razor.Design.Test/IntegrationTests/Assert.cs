@@ -18,14 +18,14 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             }
         }
 
-        public static void FileExists(ProjectDirectory project, string filePath)
+        public static void FileExists(MSBuildResult result, string filePath)
         {
-            NotNull(project);
+            NotNull(result);
             NotNull(filePath);
 
-            if (!File.Exists(Path.Combine(project.DirectoryPath, filePath)))
+            if (!File.Exists(Path.Combine(result.Project.DirectoryPath, filePath)))
             {
-                throw new FileMissingException(filePath);
+                throw new FileMissingException(result, filePath);
             }
         }
 
@@ -57,14 +57,33 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
         private class FileMissingException : Xunit.Sdk.XunitException
         {
-            public FileMissingException(string filePath)
+            public FileMissingException(MSBuildResult result, string filePath)
             {
+                Result = result;
                 FilePath = filePath;
             }
 
             public string FilePath { get; }
 
-            public override string Message => $"File: '{FilePath}' was not found.";
+            public MSBuildResult Result { get; }
+
+            public override string Message
+            {
+                get
+                {
+                    var message = new StringBuilder();
+                    message.Append($"File: '{FilePath}' was not found.");
+                    message.Append(Result.FileName);
+                    message.Append(" ");
+                    message.Append(Result.Arguments);
+                    message.AppendLine();
+                    message.AppendLine();
+                    message.Append(Result.Output);
+                    return message.ToString();
+
+                    ;
+                }
+            }
         }
     }
 }

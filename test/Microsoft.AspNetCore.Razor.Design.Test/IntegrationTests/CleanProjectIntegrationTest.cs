@@ -15,8 +15,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             var result = await DotnetMSBuild("Restore;Build", "/p:RazorCompileOnBuild=true");
 
             Assert.BuildPassed(result);
-            Assert.FileExists(Project, @"bin\Debug\netcoreapp2.0\SimpleMvc.dll");
-            Assert.FileExists(Project, @"bin\Debug\netcoreapp2.0\SimpleMvc.PrecompiledViews.dll");
+            Assert.FileExists(result, @"bin/Debug/netcoreapp2.0/SimpleMvc.dll");
+            Assert.FileExists(result, @"bin/Debug/netcoreapp2.0/SimpleMvc.PrecompiledViews.dll");
         }
     }
 }
