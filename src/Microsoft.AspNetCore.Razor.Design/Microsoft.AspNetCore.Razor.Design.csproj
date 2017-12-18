@@ -37,9 +37,6 @@
   <!-- This is the tasks project that needs to be included in the package. -->
   <ItemGroup>
     <TaskProject Include="..\Microsoft.AspNetCore.Razor.Tasks\Microsoft.AspNetCore.Razor.Tasks.csproj"/>
-
-    <TaskProjectTargetFramework Include="netstandard2.0"/>
-    <TaskProjectTargetFramework Include="net46"/>
   </ItemGroup>
 
   <!-- These are tools that need to be included in the package. -->
@@ -61,16 +58,37 @@
       The Microsoft.AspNetCore.Razor.Tasks package needs to support both net46 and netstandard2.0 for desktop vs
       coreclr MSBuild - so we have to build it twice.
 
+      We're careful here to avoid setting properties when building the other projects. This can create problems
+      with concurrency.
+
       First, build the project, then copy it to the ouput directory, then add it as packable content.
     -->
-    <MSBuild 
+    <MSBuild Projects="@(TaskProject)"/>
+
+    <MSBuild
       Projects="@(TaskProject)"
-      Properties="TargetFramework=%(TaskProjectTargetFramework.Identity);OutputPath=$(MSBuildProjectDirectory)\$(OutputPath)tasks\%(TaskProjectTargetFramework.Identity)">
-      <Output TaskParameter="TargetOutputs" ItemName="FileWrites"/>
+      Properties="TargetFramework=net46"
+      Targets="GetTargetPath">
+      <Output TaskParameter="TargetOutputs" ItemName="TaskAssemblyNet46"/>
     </MSBuild>
 
+    <MSBuild
+      Projects="@(TaskProject)"
+      Properties="TargetFramework=netstandard2.0"
+      Targets="GetTargetPath">
+      <Output TaskParameter="TargetOutputs" ItemName="TaskAssemblyNetStandard"/>
+    </MSBuild>
+
+    <Copy SourceFiles="@(TaskAssemblyNet46)" DestinationFolder="$(OutputPath)\tasks\net46\">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites"/>
+    </Copy>
+    <Copy SourceFiles="@(TaskAssemblyNetStandard)" DestinationFolder="$(OutputPath)\tasks\netstandard2.0\">
+      <Output TaskParameter="CopiedFiles" ItemName="FileWrites"/>
+    </Copy>
+
     <ItemGroup>
-      <None Include="$(OutputPath)tasks\**\Microsoft.AspNetCore.Razor.Tasks.dll" PackagePath="tasks\" Pack="true"/>
+      <None Include="@(TaskAssemblyNet46)" PackagePath="tasks\net46\" Pack="true"/>
+      <None Include="@(TaskAssemblyNetStandard)" PackagePath="tasks\netstandard2.0\" Pack="true"/>
     </ItemGroup>
 
     <!--
@@ -78,9 +96,10 @@
       all of the output to put in the package. 
     -->
     <RemoveDir Directories="tools\"/>
+    <MSBuild Projects="@(ToolProject)"/>
     <MSBuild
       Projects="@(ToolProject)"
-      Properties="TargetFramework=netcoreapp2.0;PublishDir=$(MSBuildProjectDirectory)\$(OutputPath)tools\"
+      Properties="PublishDir=$(MSBuildProjectDirectory)\$(OutputPath)tools\"
       Targets="Publish"/>
 
     <ItemGroup>
