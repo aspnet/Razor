@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                    .AsImplicitExpression(KeywordSet)
                                    .Accepts(AcceptedCharactersInternal.NonWhiteSpace)
                                ),
-                           RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(
+                           RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(
                                 new SourceSpan(new SourceLocation(1, 0, 1), contentLength: 1),
                                 "\""));
         }
@@ -106,7 +106,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                Factory.EmptyCSharp()
                                    .AsImplicitExpression(CSharpCodeParser.DefaultKeywords)
                                    .Accepts(AcceptedCharactersInternal.NonWhiteSpace)),
-                           RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS(
+                           RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlock(
                                 new SourceSpan(new SourceLocation(1, 0, 1), Environment.NewLine.Length)));
         }
 
@@ -129,7 +129,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                Factory.Code("   {}" + Environment.NewLine).AsStatement(),
                                Factory.MetaCode("}").Accepts(AcceptedCharactersInternal.None)
                                ),
-                           RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS(
+                           RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlock(
                                 new SourceSpan(new SourceLocation(6 + Environment.NewLine.Length, 1, 5), contentLength: 3)));
         }
 
@@ -165,7 +165,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                Factory.EmptyCSharp()
                                    .AsImplicitExpression(CSharpCodeParser.DefaultKeywords)
                                    .Accepts(AcceptedCharactersInternal.NonWhiteSpace)),
-                           RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(
+                           RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(
                                 new SourceSpan(new SourceLocation(1, 0, 1), contentLength: 1),
                                 "!"));
         }

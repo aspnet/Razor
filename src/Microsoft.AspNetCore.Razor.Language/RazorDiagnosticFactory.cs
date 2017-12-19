@@ -60,14 +60,14 @@ namespace Microsoft.AspNetCore.Razor.Language
             return RazorDiagnostic.Create(Parsing_HelperDirectiveNotAvailable, location, SyntaxConstants.CSharp.HelperKeyword);
         }
 
-        internal static readonly RazorDiagnosticDescriptor Parsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS =
+        internal static readonly RazorDiagnosticDescriptor Parsing_UnexpectedWhiteSpaceAtStartOfCodeBlock =
             new RazorDiagnosticDescriptor(
                 $"{DiagnosticPrefix}1003",
                 () => LegacyResources.ParseError_Unexpected_WhiteSpace_At_Start_Of_CodeBlock_CS,
                 RazorDiagnosticSeverity.Error);
-        public static RazorDiagnostic CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS(SourceSpan location)
+        public static RazorDiagnostic CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlock(SourceSpan location)
         {
-            return RazorDiagnostic.Create(Parsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS, location);
+            return RazorDiagnostic.Create(Parsing_UnexpectedWhiteSpaceAtStartOfCodeBlock, location);
         }
 
         internal static readonly RazorDiagnosticDescriptor Parsing_UnexpectedEndOfFileAtStartOfCodeBlock =
@@ -80,14 +80,14 @@ namespace Microsoft.AspNetCore.Razor.Language
             return RazorDiagnostic.Create(Parsing_UnexpectedEndOfFileAtStartOfCodeBlock, location);
         }
 
-        internal static readonly RazorDiagnosticDescriptor Parsing_UnexpectedCharacterAtStartOfCodeBlockCS =
+        internal static readonly RazorDiagnosticDescriptor Parsing_UnexpectedCharacterAtStartOfCodeBlock =
             new RazorDiagnosticDescriptor(
                 $"{DiagnosticPrefix}1005",
                 () => LegacyResources.ParseError_Unexpected_Character_At_Start_Of_CodeBlock_CS,
                 RazorDiagnosticSeverity.Error);
-        public static RazorDiagnostic CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(SourceSpan location, string content)
+        public static RazorDiagnostic CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(SourceSpan location, string content)
         {
-            return RazorDiagnostic.Create(Parsing_UnexpectedCharacterAtStartOfCodeBlockCS, location, content);
+            return RazorDiagnostic.Create(Parsing_UnexpectedCharacterAtStartOfCodeBlock, location, content);
         }
 
         internal static readonly RazorDiagnosticDescriptor Parsing_ExpectedEndOfBlockBeforeEOF =

@@ -784,9 +784,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     Factory.Markup(" />")));
             var expectedErrors = new RazorDiagnostic[]
             {
-                RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS(
+                RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlock(
                     new SourceSpan(new SourceLocation(12, 0, 12), contentLength: 1)),
-                RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(
+                RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(
                     new SourceSpan(new SourceLocation(14, 0, 14), contentLength: 4),
                     "' />"),
             };

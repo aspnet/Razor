@@ -342,7 +342,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     if (At(CSharpSymbolType.WhiteSpace) || At(CSharpSymbolType.NewLine))
                     {
                         Context.ErrorSink.OnError(
-                            RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS(
+                            RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlock(
                                 new SourceSpan(CurrentStart, CurrentSymbol.Content.Length)));
                     }
                     else if (EndOfFile)
@@ -354,7 +354,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     else
                     {
                         Context.ErrorSink.OnError(
-                            RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(
+                            RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(
                                 new SourceSpan(CurrentStart, CurrentSymbol.Content.Length),
                                 CurrentSymbol.Content));
                     }

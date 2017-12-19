@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                            designTime: true,
                            expectedErrors: new[]
                            {
-                               RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(
+                               RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(
                                 new SourceSpan(new SourceLocation(2, 0, 2), contentLength: 1),
                                 "}")
                            });
@@ -68,7 +68,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                            designTime: true,
                            expectedErrors: new[]
                            {
-                               RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(
+                               RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(
                                    new SourceSpan(new SourceLocation(2, 0, 2), contentLength: 1),
                                    ".")
                            });
@@ -92,7 +92,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                Factory.Code(Environment.NewLine).AsStatement(),
                                Factory.MetaCode("}").Accepts(AcceptedCharactersInternal.None)),
                 /* designTimeParser */ true,
-                           RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS(
+                           RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlock(
                                 new SourceSpan(new SourceLocation(6 + Environment.NewLine.Length, 1, 5), Environment.NewLine.Length)));
         }
 

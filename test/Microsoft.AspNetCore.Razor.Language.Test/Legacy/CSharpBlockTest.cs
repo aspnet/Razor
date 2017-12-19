@@ -1186,9 +1186,9 @@ catch(bar) { baz(); }", BlockKindInternal.Statement, SpanKindInternal.Code);
                 Factory.MetaCode("}").Accepts(AcceptedCharactersInternal.None));
             var expectedErrors = new RazorDiagnostic[]
             {
-                RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlockCS(
+                RazorDiagnosticFactory.CreateParsing_UnexpectedWhiteSpaceAtStartOfCodeBlock(
                     new SourceSpan(new SourceLocation(13, 0, 13), contentLength: 1)),
-                RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(
+                RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(
                     new SourceSpan(new SourceLocation(15, 0, 15), contentLength: 5),
                     "' />}"),
             };

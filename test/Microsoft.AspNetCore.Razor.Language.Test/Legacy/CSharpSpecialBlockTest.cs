@@ -217,7 +217,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                Factory.EmptyCSharp()
                                    .AsImplicitExpression(CSharpCodeParser.DefaultKeywords)
                                    .Accepts(AcceptedCharactersInternal.NonWhiteSpace)),
-                           RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlockCS(
+                           RazorDiagnosticFactory.CreateParsing_UnexpectedCharacterAtStartOfCodeBlock(
                                 new SourceSpan(new SourceLocation(1, 0, 1), contentLength: 1),
                                 "/"));
         }
