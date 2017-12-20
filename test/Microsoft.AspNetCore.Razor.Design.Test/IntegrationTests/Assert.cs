@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
     {
         // Matches `{filename}: error {code}: {message} [{project}]
         // See https://stackoverflow.com/questions/3441452/msbuild-and-ignorestandarderrorwarningformat/5180353#5180353
-        private static readonly Regex ErrorRegex = new Regex(@"^(?'filename'.+): error (?'errorcode'[A-Z0-9]+): (?'message'.+) \[(?'project'.+)\]$");
+        private static readonly Regex ErrorRegex = new Regex(@"^(?'location'.+): error (?'errorcode'[A-Z0-9]+): (?'message'.+) \[(?'project'.+)\]$");
 
         public static void BuildPassed(MSBuildResult result)
         {
@@ -27,7 +27,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             }
         }
 
-        public static void BuildError(MSBuildResult result, string errorCode)
+        public static void BuildError(MSBuildResult result, string errorCode, string location = null)
         {
             if (result == null)
             {
@@ -42,10 +42,18 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 var match = ErrorRegex.Match(line);
                 if (match.Success)
                 {
-                    if (match.Groups["errorcode"].Value == errorCode)
+                    if (match.Groups["errorcode"].Value != errorCode)
                     {
-                        return;
+                        continue;
                     }
+
+                    if (location != null && match.Groups["location"].Value != location)
+                    {
+                        continue;
+                    }
+
+                    // This is a match
+                    return;
                 }
             }
 
