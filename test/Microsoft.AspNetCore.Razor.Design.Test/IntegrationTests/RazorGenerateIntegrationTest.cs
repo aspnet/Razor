@@ -49,15 +49,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.dll");
             Assert.FileDoesNotExist(result, IntermediateOutputPath, "SimpleMvc.PrecompiledViews.dll");
 
-            Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "_ViewImports.cs");
-            Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "_ViewStart.cs");
-            Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Home", "About.cs");
-            Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Home", "Contact.cs");
+            // The file should still be generated even if we had a Razor syntax error.
             Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Home", "Index.cs");
-            Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Shared", "_Layout.cs");
-            Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Shared", "_ValidationScriptsPartial.cs");
-            Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Shared", "Error.cs");
-            Assert.FileCountEquals(result, 8, RazorIntermediateOutputPath, "*.cs");
         }
     }
 }
