@@ -32,7 +32,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.BuildFailed(result);
 
             // Verifying that the error correctly gets mapped to the original source
-            Assert.BuildError(result, "CS1503", location: @"Views\Home\Index.cshtml(1,27)");
+            Assert.BuildError(result, "CS1503", location: Path.Combine("Views", "Home", "Index.cshtml") + "(1,27)");
 
             // Compilation failed without creating the views assembly
             Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.dll");
