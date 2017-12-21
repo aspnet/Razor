@@ -50,6 +50,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
                 CreateDirectoryProps(projectRoot, binariesRoot, destinationPath);
                 CreateDirectoryTargets(destinationPath);
+                CopyGlobalJson(solutionRoot, destinationPath);
 
                 return new ProjectDirectory(destinationPath);
             }
@@ -111,6 +112,14 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 </Project>
 ";
                 File.WriteAllText(Path.Combine(projectRoot, "Directory.Build.targets"), text);
+            }
+
+            void CopyGlobalJson(string solutionRoot, string projectRoot)
+            {
+                var srcGlobalJson = Path.Combine(solutionRoot, "global.json");
+                var destinationGlobalJson = Path.Combine(projectRoot, "global.json");
+
+                File.Copy(srcGlobalJson, destinationGlobalJson);
             }
         }
 
