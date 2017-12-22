@@ -11,7 +11,7 @@ namespace Test.Namespace
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
-    public class PageWithNamespace_Page : global::Microsoft.AspNetCore.Mvc.RazorPages.Page
+    public class TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace_cshtml : global::Microsoft.AspNetCore.Mvc.RazorPages.Page
     {
         #pragma warning disable 219
         private void __RazorDirectiveTokenHelpers__() {
@@ -38,9 +38,9 @@ global::System.Object __typeHelper = nameof(Test.Namespace);
         [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper Json { get; private set; }
         [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
-        public global::Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<PageWithNamespace_Page> Html { get; private set; }
-        public global::Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<PageWithNamespace_Page> ViewData => (global::Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<PageWithNamespace_Page>)PageContext?.ViewData;
-        public PageWithNamespace_Page Model => ViewData.Model;
+        public global::Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace_cshtml> Html { get; private set; }
+        public global::Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace_cshtml> ViewData => (global::Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace_cshtml>)PageContext?.ViewData;
+        public TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace_cshtml Model => ViewData.Model;
     }
 }
 #pragma warning restore 1591
