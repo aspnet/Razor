@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Razor.Hosting
         /// For items loaded with the default implementation of <see cref="RazorCompiledItemLoader"/>, the 
         /// metadata collection will return all attributes defined on the <see cref="Type"/>.
         /// </remarks>
-        public IReadOnlyList<object> Metadata { get; }
+        public abstract IReadOnlyList<object> Metadata { get; }
 
         /// <summary>
         /// Gets the <see cref="Type"/> of the compiled item.
