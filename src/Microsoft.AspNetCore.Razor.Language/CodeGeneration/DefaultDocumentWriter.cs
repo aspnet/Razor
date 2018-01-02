@@ -74,13 +74,13 @@ namespace Microsoft.AspNetCore.Razor.Language.CodeGeneration
 
                     string algorithmId;
                     var algorithm = Context.SourceDocument.GetChecksumAlgorithm();
-                    if (algorithm == HashAlgorithmName.SHA256.Name)
+                    if (string.Equals(algorithm, HashAlgorithmName.SHA256.Name, StringComparison.Ordinal))
                     {
                         algorithmId = "{8829d00f-11b8-4213-878b-770e8597ac16}";
                     }
-                    else if (algorithm == HashAlgorithmName.SHA1.Name || 
+                    else if (string.Equals(algorithm, HashAlgorithmName.SHA1.Name, StringComparison.Ordinal) || 
                         
-                        // In 2.0, we didn't actually expose the name of the algorith, so it's possible we could get null here.
+                        // In 2.0, we didn't actually expose the name of the algorithm, so it's possible we could get null here.
                         // If that's the case, we just assume SHA1 since that's the only thing we supported in 2.0.
                         algorithm == null)
                     {
