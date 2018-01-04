@@ -14,7 +14,7 @@ namespace Microsoft.AspNetCore.Razor.Performance
 {
     public class TagHelperSerializationBenchmark
     {
-        private byte[] _tagHelperBuffer;
+        private readonly byte[] _tagHelperBuffer;
 
         public TagHelperSerializationBenchmark()
         {
@@ -38,14 +38,14 @@ namespace Microsoft.AspNetCore.Razor.Performance
             // Deserialize from json file.
             IReadOnlyList<TagHelperDescriptor> tagHelpers;
             using (var stream = new MemoryStream(_tagHelperBuffer))
+            using (var reader = new JsonTextReader(new StreamReader(stream)))
             {
-                var reader = new JsonTextReader(new StreamReader(stream));
                 tagHelpers = serializer.Deserialize<IReadOnlyList<TagHelperDescriptor>>(reader);
             }
 
             // Serialize back to json.
             using (var stream = new MemoryStream())
-            using (var writer = new StreamWriter(stream, Encoding.UTF8, bufferSize: 4096, leaveOpen: true))
+            using (var writer = new StreamWriter(stream, Encoding.UTF8, bufferSize: 4096))
             {
                 serializer.Serialize(writer, tagHelpers);
             }
