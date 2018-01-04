@@ -14,7 +14,7 @@ namespace Microsoft.AspNetCore.Razor.Performance
 {
     public class TagHelperSerializationBenchmark
     {
-        private string _tagHelperFilePath;
+        private byte[] _tagHelperBuffer;
 
         public TagHelperSerializationBenchmark()
         {
@@ -24,7 +24,8 @@ namespace Microsoft.AspNetCore.Razor.Performance
                 current = current.Parent;
             }
 
-            _tagHelperFilePath = Path.Combine(current.FullName, "taghelpers.json");
+            var tagHelperFilePath = Path.Combine(current.FullName, "taghelpers.json");
+            _tagHelperBuffer = File.ReadAllBytes(tagHelperFilePath);
         }
 
         [Benchmark(Description = "Razor TagHelper Serialization")]
@@ -36,7 +37,7 @@ namespace Microsoft.AspNetCore.Razor.Performance
 
             // Deserialize from json file.
             IReadOnlyList<TagHelperDescriptor> tagHelpers;
-            using (var stream = File.OpenRead(_tagHelperFilePath))
+            using (var stream = new MemoryStream(_tagHelperBuffer))
             {
                 var reader = new JsonTextReader(new StreamReader(stream));
                 tagHelpers = serializer.Deserialize<IReadOnlyList<TagHelperDescriptor>>(reader);
