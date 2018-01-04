@@ -10,6 +10,7 @@ namespace Microsoft.AspNetCore.Razor.Language
     /// <summary>
     /// Entry point to parse Razor files and generate code.
     /// </summary>
+    [Obsolete("This class is obsolete and will be removed in a future version. Please use the " + nameof(RazorProjectEngine) + " instead.")]
     public class RazorTemplateEngine
     {
         private RazorTemplateEngineOptions _options;

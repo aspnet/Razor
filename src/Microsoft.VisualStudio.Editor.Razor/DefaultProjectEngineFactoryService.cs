@@ -12,7 +12,7 @@ using MvcLatest = Microsoft.AspNetCore.Mvc.Razor.Extensions;
 
 namespace Microsoft.VisualStudio.Editor.Razor
 {
-    internal class DefaultTemplateEngineFactoryService : RazorTemplateEngineFactoryService
+    internal class DefaultProjectEngineFactoryService : RazorProjectEngineFactoryService
     {
         private readonly static MvcExtensibilityConfiguration DefaultConfiguration = new MvcExtensibilityConfiguration(
             ProjectExtensibilityConfigurationKind.Fallback,
@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
         private readonly ProjectSnapshotManager _projectManager;
 
-        public DefaultTemplateEngineFactoryService(ProjectSnapshotManager projectManager)
+        public DefaultProjectEngineFactoryService(ProjectSnapshotManager projectManager)
         {
             if (projectManager == null)
             {
@@ -31,7 +31,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             _projectManager = projectManager;
         }
 
-        public override RazorTemplateEngine Create(string projectPath, Action<IRazorEngineBuilder> configure)
+        public override RazorProjectEngine Create(string projectPath, Action<IRazorEngineBuilder> configure)
         {
             if (projectPath == null)
             {
@@ -57,9 +57,11 @@ namespace Microsoft.VisualStudio.Editor.Razor
                     }
                 });
 
-                var templateEngine = new Mvc1_X.MvcRazorTemplateEngine(engine, RazorProject.Create(projectPath));
-                templateEngine.Options.ImportsFileName = "_ViewImports.cshtml";
-                return templateEngine;
+                var projectEngine = RazorProjectEngine.Create(engine, RazorProject.Create(projectPath), b =>
+                {
+                    Mvc1_X.RazorExtensions.Register(b);
+                });
+                return projectEngine;
             }
             else
             {
@@ -70,9 +72,11 @@ namespace Microsoft.VisualStudio.Editor.Razor
                     MvcLatest.RazorExtensions.Register(b);
                 });
 
-                var templateEngine = new MvcLatest.MvcRazorTemplateEngine(engine, RazorProject.Create(projectPath));
-                templateEngine.Options.ImportsFileName = "_ViewImports.cshtml";
-                return templateEngine;
+                var projectEngine = RazorProjectEngine.Create(engine, RazorProject.Create(projectPath), b =>
+                {
+                    MvcLatest.RazorExtensions.Register(b);
+                });
+                return projectEngine;
             }
         }
 

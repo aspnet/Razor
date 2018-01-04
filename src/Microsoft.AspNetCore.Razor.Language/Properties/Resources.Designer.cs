@@ -1842,6 +1842,20 @@ namespace Microsoft.AspNetCore.Razor.Language
         internal static string FormatUnsupportedChecksumAlgorithm(object p0, object p1, object p2, object p3)
             => string.Format(CultureInfo.CurrentCulture, GetString("UnsupportedChecksumAlgorithm"), p0, p1, p2, p3);
 
+        /// <summary>
+        /// The '{0}' is missing feature '{1}'.
+        /// </summary>
+        internal static string MissingFeatureDependency
+        {
+            get => GetString("MissingFeatureDependency");
+        }
+
+        /// <summary>
+        /// The '{0}' is missing feature '{1}'.
+        /// </summary>
+        internal static string FormatMissingFeatureDependency(object p0, object p1)
+            => string.Format(CultureInfo.CurrentCulture, GetString("MissingFeatureDependency"), p0, p1);
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);

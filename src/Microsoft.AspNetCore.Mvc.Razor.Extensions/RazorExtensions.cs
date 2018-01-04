@@ -1,6 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 
@@ -36,6 +37,19 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
                 builder.Features.Add(new AssemblyAttributeInjectionPass());
                 builder.Features.Add(new InstrumentationPass());
             }
+        }
+
+        public static void Register(RazorProjectEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            builder.SetImportFileName("_ViewImports.cshtml");
+
+            builder.Features.Add(new MvcImportDiscoverer());
+            builder.Features.Add(new RelativePathCodeDocumentProcessor());
         }
     }
 }

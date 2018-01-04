@@ -72,11 +72,10 @@ Examples:
         {
             var viewDirectories = Directory.EnumerateDirectories(targetProjectDirectory, "Views", SearchOption.AllDirectories);
             var razorProject = RazorProject.Create(targetProjectDirectory);
-            var templateEngine = new RazorTemplateEngine(razorEngine, razorProject);
-            templateEngine.Options.DefaultImports = RazorSourceDocument.Create(@"
-@using System
-@using System.Threading.Tasks
-", fileName: null);
+            var templateEngine = RazorProjectEngine.Create(razorEngine, razorProject, builder =>
+            {
+                builder.Features.Add(new ImportDiscoverer());
+            });
 
             var fileCount = 0;
 
@@ -106,10 +105,12 @@ Examples:
             return results;
         }
 
-        private static RazorPageGeneratorResult GenerateCodeFile(RazorTemplateEngine templateEngine, RazorProjectItem projectItem)
+        private static RazorPageGeneratorResult GenerateCodeFile(RazorProjectEngine projectEngine, RazorProjectItem projectItem)
         {
             var projectItemWrapper = new FileSystemRazorProjectItemWrapper(projectItem);
-            var cSharpDocument = templateEngine.GenerateCode(projectItemWrapper);
+            var sourceDocument = RazorSourceDocument.ReadFrom(projectItemWrapper);
+            var result = projectEngine.Process(sourceDocument);
+            var cSharpDocument = result.CodeDocument.GetCSharpDocument();
             if (cSharpDocument.Diagnostics.Any())
             {
                 var diagnostics = string.Join(Environment.NewLine, cSharpDocument.Diagnostics);
@@ -122,6 +123,26 @@ Examples:
                 FilePath = generatedCodeFilePath,
                 GeneratedCode = cSharpDocument.GeneratedCode,
             };
+        }
+
+        private class ImportDiscoverer : RazorProjectEngineFeatureBase, IRazorImportDiscoverer
+        {
+            public int Order { get; }
+
+            public void Execute(ImportDiscoveryContext context)
+            {
+                if (context == null)
+                {
+                    throw new ArgumentNullException(nameof(context));
+                }
+
+                var sourceDocument = RazorSourceDocument.Create(@"
+@using System
+@using System.Threading.Tasks
+", fileName: null);
+
+                context.Results.Add(sourceDocument);
+            }
         }
 
         private class SuppressChecksumOptionsFeature : RazorEngineFeatureBase, IConfigureRazorCodeGenerationOptionsFeature
