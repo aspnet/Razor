@@ -45,10 +45,10 @@ namespace Microsoft.AspNetCore.Razor.GenerateTool
                 b.Features.Add(new StaticTagHelperFeature() { TagHelpers = tagHelpers, });
             });
 
-            var templateEngine = new MvcRazorTemplateEngine(engine, RazorProject.Create(projectDirectory));
+            var projectEngine = RazorProjectEngine.Create(engine, RazorProject.Create(projectDirectory));
 
             var sourceItems = GetRazorFiles(projectDirectory, sources);
-            var results = GenerateCode(templateEngine, sourceItems);
+            var results = GenerateCode(projectEngine, sourceItems);
 
             var success = true;
 
@@ -107,14 +107,15 @@ namespace Microsoft.AspNetCore.Razor.GenerateTool
             return items;
         }
 
-        private OutputItem[] GenerateCode(RazorTemplateEngine templateEngine, IReadOnlyList<SourceItem> sources)
+        private OutputItem[] GenerateCode(RazorProjectEngine projectEngine, IReadOnlyList<SourceItem> sources)
         {
             var outputs = new OutputItem[sources.Count];
             Parallel.For(0, outputs.Length, new ParallelOptions() { MaxDegreeOfParallelism = 4 }, i =>
             {
                 var source = sources[i];
     
-                var csharpDocument = templateEngine.GenerateCode(source.ViewEnginePath);
+                var result = projectEngine.Process(source.ViewEnginePath);
+                var csharpDocument = result.CodeDocument.GetCSharpDocument();
                 outputs[i] = new OutputItem(source, csharpDocument);
             });
 

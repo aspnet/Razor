@@ -18,10 +18,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
         private MainThreadState _main;
         private BackgroundThread _bg;
 
-        public BackgroundParser(RazorTemplateEngine templateEngine, string filePath)
+        public BackgroundParser(RazorProjectEngine projectEngine, string filePath)
         {
             _main = new MainThreadState(filePath);
-            _bg = new BackgroundThread(_main, templateEngine, filePath);
+            _bg = new BackgroundThread(_main, projectEngine, filePath);
 
             _main.ResultsReady += (sender, args) => OnResultsReady(args);
         }
@@ -236,17 +236,17 @@ namespace Microsoft.VisualStudio.Editor.Razor
             private MainThreadState _main;
             private Thread _backgroundThread;
             private CancellationToken _shutdownToken;
-            private RazorTemplateEngine _templateEngine;
+            private RazorProjectEngine _projectEngine;
             private string _filePath;
             private RazorSyntaxTree _currentSyntaxTree;
             private IList<Edit> _previouslyDiscarded = new List<Edit>();
 
-            public BackgroundThread(MainThreadState main, RazorTemplateEngine templateEngine, string fileName)
+            public BackgroundThread(MainThreadState main, RazorProjectEngine projectEngine, string fileName)
             {
                 // Run on MAIN thread!
                 _main = main;
                 _shutdownToken = _main.CancelToken;
-                _templateEngine = templateEngine;
+                _projectEngine = projectEngine;
                 _filePath = fileName;
 
                 _backgroundThread = new Thread(WorkerLoop);
@@ -348,12 +348,9 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 EnsureOnThread();
 
                 var sourceDocument = new TextSnapshotSourceDocument(snapshot, _filePath);
-                var imports = _templateEngine.GetImports(_filePath);
+                var result = _projectEngine.Process(sourceDocument);
 
-                var codeDocument = RazorCodeDocument.Create(sourceDocument, imports);
-
-                _templateEngine.GenerateCode(codeDocument);
-                return codeDocument;
+                return result.CodeDocument;
             }
         }
 

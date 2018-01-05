@@ -8,39 +8,18 @@ using Microsoft.AspNetCore.Razor.Language;
 
 namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
 {
-    /// <summary>
-    /// A <see cref="RazorTemplateEngine"/> for Mvc Razor views.
-    /// </summary>
-    [Obsolete("This class is obsolete and will be removed in a future version. Please use the " + nameof(RazorProjectEngine) +
-        " in conjunction with " + nameof(RazorExtensions) + "." + nameof(RazorExtensions.Register) + " instead.")]
-    public class MvcRazorTemplateEngine : RazorTemplateEngine
+    internal class MvcImportDiscoverer : RazorProjectEngineFeatureBase, IRazorImportDiscoverer
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="MvcRazorTemplateEngine"/>.
-        /// </summary>
-        /// <param name="engine">The <see cref="RazorEngine"/>.</param>
-        /// <param name="project">The <see cref="RazorProject"/>.</param>
-        public MvcRazorTemplateEngine(
-            RazorEngine engine,
-            RazorProject project)
-            : base(engine, project)
-        {
-            Options.ImportsFileName = "_ViewImports.cshtml";
-            Options.DefaultImports = GetDefaultImports();
-        }
+        // Need to run prior to the default import discoverers so these are overridden by any user imports.
+        public int Order => -10;
 
-        /// <inheritsdoc />
-        public override RazorCodeDocument CreateCodeDocument(RazorProjectItem projectItem)
+        public void Execute(ImportDiscoveryContext context)
         {
-            var codeDocument = base.CreateCodeDocument(projectItem);
-            codeDocument.SetRelativePath(projectItem.FilePath);
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
 
-            return codeDocument;
-        }
-
-        // Internal for testing.
-        internal static RazorSourceDocument GetDefaultImports()
-        {
             using (var stream = new MemoryStream())
             using (var writer = new StreamWriter(stream, Encoding.UTF8))
             {
@@ -60,7 +39,8 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
                 writer.Flush();
 
                 stream.Position = 0;
-                return RazorSourceDocument.ReadFrom(stream, fileName: null, encoding: Encoding.UTF8);
+                var defaultMvcImports = RazorSourceDocument.ReadFrom(stream, fileName: null, encoding: Encoding.UTF8);
+                context.Results.Add(defaultMvcImports);
             }
         }
     }

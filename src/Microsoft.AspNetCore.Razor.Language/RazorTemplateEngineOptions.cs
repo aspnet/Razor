@@ -1,11 +1,15 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+
 namespace Microsoft.AspNetCore.Razor.Language
 {
     /// <summary>
     /// Options for code generation in the <see cref="RazorTemplateEngine"/>.
     /// </summary>
+    [Obsolete("This class is obsolete and will be removed in a future version.")]
+
     public sealed class RazorTemplateEngineOptions
     {
         /// <summary>

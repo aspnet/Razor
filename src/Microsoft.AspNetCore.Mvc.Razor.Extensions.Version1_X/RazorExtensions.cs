@@ -33,6 +33,19 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             builder.Features.Add(new MvcViewDocumentClassifierPass());
         }
 
+        public static void Register(RazorProjectEngineBuilder builder)
+        {
+            if (builder == null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
+            builder.SetImportFileName("_ViewImports.cshtml");
+
+            builder.Features.Add(new MvcImportDiscoverer());
+            builder.Features.Add(new RelativePathCodeDocumentProcessor());
+        }
+
         public static void RegisterViewComponentTagHelpers(IRazorEngineBuilder builder)
         {
             EnsureDesignTime(builder);

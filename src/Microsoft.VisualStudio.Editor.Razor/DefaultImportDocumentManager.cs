@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis.Razor;
 
@@ -15,7 +16,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         private readonly FileChangeTrackerFactory _fileChangeTrackerFactory;
         private readonly ForegroundDispatcher _foregroundDispatcher;
         private readonly ErrorReporter _errorReporter;
-        private readonly RazorTemplateEngineFactoryService _templateEngineFactoryService;
+        private readonly RazorProjectEngineFactoryService _projectEngineFactoryService;
         private readonly Dictionary<string, ImportTracker> _importTrackerCache;
 
         public override event EventHandler<ImportChangedEventArgs> Changed;
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             ForegroundDispatcher foregroundDispatcher,
             ErrorReporter errorReporter,
             FileChangeTrackerFactory fileChangeTrackerFactory,
-            RazorTemplateEngineFactoryService templateEngineFactoryService)
+            RazorProjectEngineFactoryService projectEngineFactoryService)
         {
             if (foregroundDispatcher == null)
             {
@@ -41,15 +42,15 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 throw new ArgumentNullException(nameof(fileChangeTrackerFactory));
             }
 
-            if (templateEngineFactoryService == null)
+            if (projectEngineFactoryService == null)
             {
-                throw new ArgumentNullException(nameof(templateEngineFactoryService));
+                throw new ArgumentNullException(nameof(projectEngineFactoryService));
             }
 
             _foregroundDispatcher = foregroundDispatcher;
             _errorReporter = errorReporter;
             _fileChangeTrackerFactory = fileChangeTrackerFactory;
-            _templateEngineFactoryService = templateEngineFactoryService;
+            _projectEngineFactoryService = projectEngineFactoryService;
             _importTrackerCache = new Dictionary<string, ImportTracker>(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -62,10 +63,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             _foregroundDispatcher.AssertForegroundThread();
 
-            var imports = GetImportItems(tracker);
+            var imports = GetImportDocuments(tracker);
             foreach (var import in imports)
             {
-                var importFilePath = import.PhysicalPath;
+                var importFilePath = import.FilePath;
                 Debug.Assert(importFilePath != null);
 
                 if (!_importTrackerCache.TryGetValue(importFilePath, out var importTracker))
@@ -92,10 +93,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             _foregroundDispatcher.AssertForegroundThread();
 
-            var imports = GetImportItems(tracker);
+            var imports = GetImportDocuments(tracker);
             foreach (var import in imports)
             {
-                var importFilePath = import.PhysicalPath;
+                var importFilePath = import.FilePath;
                 Debug.Assert(importFilePath != null);
 
                 if (_importTrackerCache.TryGetValue(importFilePath, out var importTracker))
@@ -112,11 +113,18 @@ namespace Microsoft.VisualStudio.Editor.Razor
             }
         }
 
-        private IEnumerable<RazorProjectItem> GetImportItems(VisualStudioDocumentTracker tracker)
+        private IEnumerable<RazorProjectItem> GetImportDocuments(VisualStudioDocumentTracker tracker)
         {
             var projectDirectory = Path.GetDirectoryName(tracker.ProjectPath);
-            var templateEngine = _templateEngineFactoryService.Create(projectDirectory, _ => { });
-            var imports = templateEngine.GetImportItems(tracker.FilePath);
+            var projectEngine = _projectEngineFactoryService.Create(projectDirectory, _ => { });
+            var importItemFeature = projectEngine.Features.OfType<IRazorImportItemFeature>().FirstOrDefault();
+
+            if (importItemFeature == null)
+            {
+                Debug.Fail("The import feature should always be available on the project engine.");
+                return Enumerable.Empty<RazorProjectItem>();
+            }
+            var imports = importItemFeature.GetAssociatedImportItems(tracker.FilePath);
 
             return imports;
         }
