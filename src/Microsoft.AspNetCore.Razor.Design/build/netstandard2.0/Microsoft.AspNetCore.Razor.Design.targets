@@ -125,8 +125,6 @@
   <!--
     Gathers input source files for code generation. This is a separate target so that we can avoid
     lots of work when there are no inputs for code generation.
-
-    Notice there are plenty of Condition="'@(RazorGenerate)'!=''" to avoid running more expensive targets.
   -->
   <Target Name="ResolveRazorGenerateInputs">
     <ItemGroup>

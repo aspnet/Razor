@@ -31,7 +31,7 @@
     AfterTargets="ResolveRazorGenerateInputs"
     Condition="'@(RazorGenerate)'!=''">
 
-    <Hash ItemsToHash="@(RazorGenerate)" Condition="'@(RazorGenerate)'!=''">
+    <Hash ItemsToHash="@(RazorGenerate)">
       <Output TaskParameter="HashResult" PropertyName="_RazorGenerateInputsHash" />
     </Hash>
 
