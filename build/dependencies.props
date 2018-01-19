@@ -16,6 +16,7 @@
     <MicrosoftExtensionsDependencyModelPackageVersion>2.0.2-servicing-25728-02</MicrosoftExtensionsDependencyModelPackageVersion>
     <MicrosoftExtensionsHashCodeCombinerSourcesPackageVersion>2.0.0</MicrosoftExtensionsHashCodeCombinerSourcesPackageVersion>
     <MicrosoftExtensionsWebEncodersPackageVersion>2.0.0</MicrosoftExtensionsWebEncodersPackageVersion>
+    <MicrosoftNETCoreApp20PackageVersion>2.0.5</MicrosoftNETCoreApp20PackageVersion>
     <MicrosoftNETTestSdkPackageVersion>15.3.0</MicrosoftNETTestSdkPackageVersion>
     <MicrosoftVisualStudioEditorPackageVersion>15.0.26606</MicrosoftVisualStudioEditorPackageVersion>
     <MicrosoftVisualStudioLanguageServicesPackageVersion>2.6.0-beta1-61924-08</MicrosoftVisualStudioLanguageServicesPackageVersion>
@@ -30,7 +31,7 @@
     <MicrosoftVisualStudioShellInterop90PackageVersion>9.0.30729</MicrosoftVisualStudioShellInterop90PackageVersion>
     <MicrosoftVisualStudioShellInteropPackageVersion>7.10.6071</MicrosoftVisualStudioShellInteropPackageVersion>
     <MoqPackageVersion>4.7.49</MoqPackageVersion>
-    <NETStandardLibraryPackageVersion>2.0.0</NETStandardLibraryPackageVersion>
+    <NETStandardLibrary20PackageVersion>2.0.1</NETStandardLibrary20PackageVersion>
     <NewtonsoftJsonRuntimePackageVersion>10.0.1</NewtonsoftJsonRuntimePackageVersion>
     <NewtonsoftJsonToolingPackageVersion>9.0.1</NewtonsoftJsonToolingPackageVersion>
     <StreamJsonRpcPackageVersion>1.1.92</StreamJsonRpcPackageVersion>
