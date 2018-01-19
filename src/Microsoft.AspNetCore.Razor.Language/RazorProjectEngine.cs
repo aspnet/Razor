@@ -29,6 +29,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             var builder = new DefaultRazorProjectEngineBuilder(designTime: false, projectFileSystem: projectFileSystem);
 
+            AddDefaults(builder);
             AddRuntimeDefaults(builder);
             configure?.Invoke(builder);
 
@@ -46,6 +47,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             var builder = new DefaultRazorProjectEngineBuilder(designTime: true, projectFileSystem: projectFileSystem);
 
+            AddDefaults(builder);
             AddDesignTimeDefaults(builder);
             configure?.Invoke(builder);
 
@@ -88,6 +90,11 @@ namespace Microsoft.AspNetCore.Razor.Language
             configure(builder);
 
             return builder.Build();
+        }
+
+        private static void AddDefaults(RazorProjectEngineBuilder builder)
+        {
+            builder.Features.Add(new DefaultImportFeature());
         }
 
         private static void AddDesignTimeDefaults(RazorProjectEngineBuilder builder)
