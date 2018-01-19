@@ -40,8 +40,25 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public static RazorEngine CreateEmpty(Action<IRazorEngineBuilder> configure)
         {
+            if (configure == null)
+            {
+                throw new ArgumentNullException(nameof(configure));
+            }
+
             var builder = new DefaultRazorEngineBuilder(designTime: false);
-            configure?.Invoke(builder);
+            configure(builder);
+            return builder.Build();
+        }
+
+        public static RazorEngine CreateDesignTimeEmpty(Action<IRazorEngineBuilder> configure)
+        {
+            if (configure == null)
+            {
+                throw new ArgumentNullException(nameof(configure));
+            }
+
+            var builder = new DefaultRazorEngineBuilder(designTime: true);
+            configure(builder);
             return builder.Build();
         }
 
