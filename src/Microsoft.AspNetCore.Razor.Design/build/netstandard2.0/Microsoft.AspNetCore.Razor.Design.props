@@ -10,10 +10,10 @@
     <!--
       Set to true to automatically include Razor (.cshtml) files in @(RazorGenerate) from @(Content).
     -->
-    <EnableDefaultRazorGenerateItems>true</EnableDefaultRazorGenerateItems>
+    <EnableDefaultRazorGenerateItems Condition="'$(EnableDefaultRazorGenerateItems)'==''">true</EnableDefaultRazorGenerateItems>
 
     <!-- 
-      Set to true to copy RazorGenerate items to the publish directory (.cshtml) files.
+      Set to true to copy RazorGenerate items (.cshtml) to the publish directory.
 
       Typically Razor files are not needed for a published application if they participate in compilation at build-time
       or publish-time. By default, the Razor SDK will suppress the copying of RazorGenerate items to the publish directory.
@@ -21,7 +21,7 @@
     <CopyRazorGenerateFilesToPublishDirectory Condition="'$(CopyRazorGenerateFilesToPublishDirectory)'==''">false</CopyRazorGenerateFilesToPublishDirectory>
 
     <!-- 
-      Set to true to copy reference assembly items to the publish directory (.cshtml) files.
+      Set to true to copy reference assembly items to the publish directory.
 
       Typically reference assemblies are not needed for a published application if Razor compilation occurs at build-time
       or publish-time. By default, the Razor SDK will suppress the copying of reference assemblies to the publish directory.

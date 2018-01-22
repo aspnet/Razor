@@ -49,7 +49,7 @@
 
   <PropertyGroup Condition="'$(RazorCompileOnPublish)'==''">
     <!-- Always compile on publish by default if we're compiling on build -->
-    <RazorCompileOnPublish Condition="'$(RazorCompileOnBuild)'=='true'"/>
+    <RazorCompileOnPublish Condition="'$(RazorCompileOnBuild)'=='true'">true</RazorCompileOnPublish>
 
     <!-- Compatibility with the old MVC Precompilation setting -->
     <RazorCompileOnPublish Condition="'$(RazorCompileOnPublish)'==''">$(MvcRazorCompileOnPublish)</RazorCompileOnPublish>
@@ -84,18 +84,11 @@
     <CopyRefAssembliesToPublishDirectory Condition="'$(MvcRazorExcludeRefAssembliesFromPublish)'=='false'">true</CopyRefAssembliesToPublishDirectory>
 
     <!-- 
-      We can't set the actual default value here due to evaluation order (depends on $(OutDir).
+      We can't set the actual default value here due to evaluation order (depends on $(OutDir)).
       
       This handles a compatibility case with MVC Precompilation.
     -->
     <RazorOutputPath Condition="'$(MvcRazorOutputPath)'!=''">$([MSBuild]::EnsureTrailingSlash('$(MvcRazorOutputPath)'))</RazorOutputPath>
-
-    <!--
-      Configures the 'project root' that we pass to CLI tools that process the project. There isn't really
-      a common scenario for configuring this, but MVC Precompilation provided it.
-    -->
-    <_RazorProjectDirectory Condition="'$(MvcRazorContentRoot)'!=''">$(MvcRazorContentRoot)</_RazorProjectDirectory>
-    <_RazorProjectDirectory Condition="'$(_RazorProjectDirectory)'==''">$(MSBuildProjectDirectory)</_RazorProjectDirectory>
 
     <!--
       Configures whether all of the @(RazorGenerate) items will be added as embedded files to the produced assembly.
