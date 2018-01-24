@@ -5,6 +5,11 @@
     so that it only shows up in supported versions.
     -->
     <IsRazorCompilerReferenced>true</IsRazorCompilerReferenced>
+
+    <!--
+    Location of the CodeGeneration targets. The SDK uses this to import the file ensuring deterministic import order.
+    -->
+    <MicrosoftAspNetCoreRazorCodeGenerationTargetsPath>$(MSBuildThisFileDirectory)Microsoft.AspNetCore.Razor.Design.CodeGeneration.targets</MicrosoftAspNetCoreRazorCodeGenerationTargetsPath>
   </PropertyGroup>
 
   <PropertyGroup>

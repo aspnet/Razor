@@ -1,3 +1,0 @@
-<Project>
-  <Import Project="Microsoft.AspNetCore.Razor.Design.CodeGeneration.targets "/>
-</Project>

@@ -25,6 +25,7 @@
     <PrepareForRazorGenerateDependsOn>
       ResolveRazorGenerateInputs;
       ResolveAssemblyReferenceRazorGenerateInputs;
+      _EnsureRazorCompilerReferenced;
       ResolveTagHelperRazorGenerateInputs
     </PrepareForRazorGenerateDependsOn>
 
@@ -38,6 +39,9 @@
       RazorGenerate;
       ResolveRazorCompileInputs
     </PrepareForRazorCompileDependsOn>
+
+    <ResolveRazorCompileInputsDependsOn>
+    </ResolveRazorCompileInputsDependsOn>
 
     <RazorCompileDependsOn>
       PrepareForRazorCompile;
@@ -124,6 +128,13 @@
     <_RazorDebugSymbolsIntermediatePath Condition="'$(_RazorDebugSymbolsProduced)'=='true'" Include="$(IntermediateOutputPath)$(RazorTargetName).pdb" />
   </ItemGroup>
 
+  <!--
+    These are the targets that generate code using Razor, separated for the main file for ease of maintenance.
+     Most targets related to Razor code generation are defined there.
+  -->
+  <Import Project="$(MicrosoftAspNetCoreRazorCodeGenerationTargetsPath)" 
+    Condition="'$(MicrosoftAspNetCoreRazorCodeGenerationTargetsPath)' != '' AND Exists('$(MicrosoftAspNetCoreRazorCodeGenerationTargetsPath)')" />
+
   <!-- 
     These are the targets that actually do compilation using CSC, separated for the main file for ease of maintenance.
 
@@ -141,13 +152,6 @@
   </Target>
 
   <Target Name="RazorCompile" DependsOnTargets="$(RazorCompileDependsOn)">
-  </Target>
-
-  <PropertyGroup>
-    <ResolveTagHelperRazorGenerateInputsDependsOn></ResolveTagHelperRazorGenerateInputsDependsOn>
-  </PropertyGroup>
-
-  <Target Name="ResolveTagHelperRazorGenerateInputs" DependsOnTargets="$(ResolveTagHelperRazorGenerateInputsDependsOn)">
   </Target>
 
   <!--
@@ -189,11 +193,6 @@
       <RazorReferencePath Include="$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)$(TargetName)$(TargetExt)'))"/>
     </ItemGroup>
   </Target>
-
-  <PropertyGroup>
-    <ResolveRazorCompileInputsDependsOn>
-    </ResolveRazorCompileInputsDependsOn>
-  </PropertyGroup>
 
   <!--
     Gathers inputs to the RazorCoreCompile target into the @(RazorCompile) itemgroup.

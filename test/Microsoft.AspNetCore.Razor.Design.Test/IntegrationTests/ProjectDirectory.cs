@@ -115,7 +115,6 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 var text = $@"
 <Project>
   <Import Project=""$(OriginalProjectRoot)\..\..\..\src\Microsoft.AspNetCore.Razor.Sdk\SDK\Sdk.targets""/>
-  <Import Project=""$(OriginalProjectRoot)\..\..\..\src\Microsoft.AspNetCore.Razor.Design\build\netstandard2.0\Microsoft.AspNetCore.Razor.Design.targets""/>
 </Project>
 ";
                 File.WriteAllText(Path.Combine(projectRoot, "Directory.Build.targets"), text);

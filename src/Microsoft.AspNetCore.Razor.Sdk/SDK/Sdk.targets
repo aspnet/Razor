@@ -14,7 +14,7 @@ Copyright (c) .NET Foundation. All rights reserved.
   <Import Project="$(_MicrosoftAspNetCoreRazorSdkCurrentVersionPath)" 
     Condition="'$(_MicrosoftAspNetCoreRazorSdkCurrentVersionPath)' != '' AND Exists('$(_MicrosoftAspNetCoreRazorSdkCurrentVersionPath)')" />
 
-  <Import Project="$(MSBuildThisFileDirectory)..\build\netstandard2.0\Sdk.CurrentVersion.targets"
-    Condition="'$(MicrosoftAspNetCoreRazorSdkTargetsImported)' != 'true' AND Exists('$(MSBuildThisFileDirectory)..\build\netstandard2.0\Sdk.CurrentVersion.props')" />
+  <Import Project="$(MSBuildThisFileDirectory)..\build\netstandard2.0\Razor.Sdk.CurrentVersion.targets"
+    Condition="'$(MicrosoftAspNetCoreRazorSdkTargetsImported)' != 'true'" />
 
 </Project>

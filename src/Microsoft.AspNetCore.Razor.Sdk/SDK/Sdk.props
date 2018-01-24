@@ -11,7 +11,6 @@ Copyright (c) .NET Foundation. All rights reserved.
 -->
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Import Project="$(MSBuildThisFileDirectory)..\build\netstandard2.0\Sdk.CurrentVersion.props"
-    Condition="Exists('$(MSBuildThisFileDirectory)..\build\netstandard2.0\Sdk.CurrentVersion.props')" />
+  <Import Project="$(MSBuildThisFileDirectory)..\build\netstandard2.0\Razor.Sdk.CurrentVersion.props" />
 
 </Project>
