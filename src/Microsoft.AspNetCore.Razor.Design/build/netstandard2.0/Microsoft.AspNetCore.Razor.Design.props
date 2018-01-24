@@ -1,24 +1,5 @@
 ﻿<Project TreatAsLocalProperty="_RazorTaskFolder;_RazorTaskAssembly">
-  <!-- 
-    Properties and tasks supporting Razor MSBuild integration
-  -->
-
-  <!--
-    Razor also attaches itself by default to some of the standard .NET targets. Uses these properties to
-    configure this behaviour.
-  -->
   <PropertyGroup>
-    <RazorGenerateDependsOn>RazorResolveGenerateInputs;RazorCoreGenerate</RazorGenerateDependsOn>
-    <RazorCompileDependsOn>RazorGenerate;RazorCoreCompile</RazorCompileDependsOn>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <!--
-      Used by the Web SDK to know if the Razor SDK is present. This needs to live in a nuget package (not in the SDK)
-      so that it only shows up in supported versions.
-    -->
-    <IsRazorCompilerReferenced>true</IsRazorCompilerReferenced>
-
     <!-- Override this to hijack the tasks and targets. Used by tests. -->
     <_RazorMSBuildRoot Condition="'$(_RazorMSBuildRoot)'==''">$(MSBuildThisFileDirectory)..\..\</_RazorMSBuildRoot>
     

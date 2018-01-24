@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <!--
+      Used by the Web SDK to know if the Razor SDK is present. This needs to live in a nuget package (not in the SDK)
+      so that it only shows up in supported versions.
+    -->
+    <IsRazorCompilerReferenced>true</IsRazorCompilerReferenced>
+
+    <!-- This property is used by the SDK package to redirect the location of Sdk.CurrentVersion.targets -->
+    <_MicrosoftAspNetCoreRazorSdkCurrentVersionPath>$(MSBuildThisFileDirectory)Sdk.CurrentVersions.target</_MicrosoftAspNetCoreRazorSdkCurrentVersionPath>
+  </PropertyGroup>
+
+</Project>

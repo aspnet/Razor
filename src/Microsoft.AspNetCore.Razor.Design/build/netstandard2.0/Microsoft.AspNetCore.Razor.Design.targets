@@ -1,335 +1,142 @@
 ﻿<Project>
-  <!-- 
-    Targets supporting Razor MSBuild integration. Contain support for generating C# code using Razor
-    and including the generated code in the project lifecycle, including compiling, publishing and producing
-    nuget packages.
-  -->
-
   <!--
-    This is a hook to import a set of targets before the Razor targets. By default this is used by MvcPrecompilation
-    so that we can interop between the 2.0 feature set and the 2.1+ features.
+    Targets used for Razor SDK code generation. Support for the RazorCoreGenerate target.
   -->
-  <Import Project="$(CustomBeforeRazorSdkTargets)" Condition="'$(CustomBeforeRazorSdkTargets)' != '' and Exists('$(CustomBeforeRazorSdkTargets)')"/>
 
-  <!--
-    Razor defines two primary targets:
-      'RazorGenerate' - which updates generated code
-      'RazorCompile' - compiles an assembly from generated code
-
-    Use these properties and targets to attach behavior to the corresponding phase.
-  -->
+  <!-- Used by the SDK to determine if the core targets are available to be invoked -->
   <PropertyGroup>
-    <PrepareForRazorGenerateDependsOn>
-      ResolveRazorGenerateInputs;
-      ResolveAssemblyReferenceRazorGenerateInputs;
-      ResolveTagHelperRazorGenerateInputs
-    </PrepareForRazorGenerateDependsOn>
-
-    <RazorGenerateDependsOn>
-      PrepareForRazorGenerate;
-      RazorCoreGenerate
-    </RazorGenerateDependsOn>
-  
-    <PrepareForRazorCompileDependsOn>
-      RazorGenerate;
-      ResolveRazorCompileInputs;
-    </PrepareForRazorCompileDependsOn>
-
-    <RazorCompileDependsOn>
-      PrepareForRazorCompile;
-      RazorCoreCompile
-    </RazorCompileDependsOn>
+    <RazorCodeGenerationTargetsDefined>true</RazorCodeGenerationTargetsDefined>
   </PropertyGroup>
 
   <!-- 
-    Default values for properties that affect Razor MSBuild behavior. 
+    Consider these properties to be private to this targets file. The main Razor SDK should define all of the properties
+    that we use to pass data back and forth. 
   -->
   <PropertyGroup>
-    <!--
-      Razor also attaches itself by default to some of the standard .NET targets. Uses these properties to
-      configure this behaviour.
-    -->
-    <RazorCompileOnBuild Condition="'$(RazorCompileOnBuild)'==''">false</RazorCompileOnBuild>
-    <RazorCompileOnPublish Condition="'$(RazorCompileOnPublish)'==''">true</RazorCompileOnPublish>
-
-    <!-- Output directory used for generated files -->
-    <RazorGenerateOutputPath Condition="'$(RazorGenerateOutputPath)'==''">$(IntermediateOutputPath)Razor\</RazorGenerateOutputPath>
+    <!-- Used for tag helper discovery -->
+    <_RazorTagHelperInputCache>$(IntermediateOutputPath)$(TargetName).TagHelpers.input.cache</_RazorTagHelperInputCache>
+    <_RazorTagHelperOutputCache>$(IntermediateOutputPath)$(TargetName).TagHelpers.output.cache</_RazorTagHelperOutputCache>
     
-    <!-- File name (without extension) of the assembly produced by Razor -->
-    <RazorTargetName Condition="'$(RazorTargetName)'==''">$(TargetName).PrecompiledViews</RazorTargetName>
+    <!-- Used to locate our tools -->
+    <_RazorGenerateToolAssembly>$(_RazorMSBuildRoot)tools\Microsoft.AspNetCore.Razor.GenerateTool.dll</_RazorGenerateToolAssembly>
+    <_RazorTagHelperToolAssembly>$(_RazorMSBuildRoot)tools\Microsoft.AspNetCore.Razor.TagHelperTool.dll</_RazorTagHelperToolAssembly>
 
-    <!-- 
-      Set to true to copy RazorGenerate items to the publish directory (.cshtml) files.
-
-      Typically Razor files are not needed for a published application if they participate in compilation at build-time
-      or publish-time. By default, the Razor SDK will suppress the copying of RazorGenerate items to the publish directory.
-    -->
-    <CopyRazorGenerateFilesToPublishDirectory Condition="'$(CopyRazorGenerateFilesToPublishDirectory)'==''">false</CopyRazorGenerateFilesToPublishDirectory>
-
-    <!-- 
-      Set to true to copy reference assembly items to the publish directory (.cshtml) files.
-
-      Typically reference assemblies are not needed for a published application if Razor compilation occurs at build-time
-      or publish-time. By default, the Razor SDK will suppress the copying of reference assemblies to the publish directory.
-    -->
-    <CopyRefAssembliesToPublishDirectory Condition="'$(CopyRefAssembliesToPublishDirectory)'==''">false</CopyRefAssembliesToPublishDirectory>
+    <!-- Used to hash file inputs for RazorGenerate -->
+    <_RazorGenerateInputsHash></_RazorGenerateInputsHash>
+    <_RazorGenerateInputsHashFile>$(IntermediateOutputPath)$(MSBuildProjectName).RazorCoreGenerate.cache</_RazorGenerateInputsHashFile>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- Used to creating the final compiled Razor dll -->
-    <RazorIntermediateAssembly Include="$(IntermediateOutputPath)$(RazorTargetName).dll" />
-  </ItemGroup>
+  <!--
+    This target will only be called when we have some .cshtml files that are going to participate in code generation.
 
-  <!-- Implementation details here... -->
+    This is part of the chain of targets that are called once we've actually committed to generating code.
+  -->
+  <Target 
+    Name="_HashRazorGenerateInputs" 
+    Condition="'@(RazorGenerate)'!=''">
+
+    <Hash ItemsToHash="@(RazorGenerate)">
+      <Output TaskParameter="HashResult" PropertyName="_RazorGenerateInputsHash" />
+    </Hash>
+
+    <MakeDir
+      Directories="$(IntermediateOutputPath)"
+      Condition="!Exists('$(IntermediateOutputPath)')" />
+
+    <WriteLinesToFile
+      Lines="$(_RazorGenerateInputsHash)"
+      File="$(_RazorGenerateInputsHashFile)"
+      Overwrite="True"
+      WriteOnlyWhenDifferent="True" />
+
+    <ItemGroup>
+      <FileWrites Include="$(_RazorGenerateInputsHashFile)" />
+    </ItemGroup>
+  </Target>
+
+  <Target
+    Name="ResolveTagHelperRazorGenerateInputs"
+    DependsOnTargets="Compile"
+    Inputs="$(MSBuildAllProjects);@(RazorReferencePath)"
+    Outputs="$(_RazorTagHelperInputCache)"
+    Condition="'@(RazorGenerate)'!=''">
+
+    <!-- 
+      We're manipulating our output directly here because we want to separate the actual up-to-date check
+      of RazorCoreGenerate from the output of this target. Many times the set of tag helpers doesn't change
+      so we don't need to regenerate the code.
+      -->
+    <Touch
+      Files="$(_RazorTagHelperInputCache)"
+      AlwaysCreate="true">
+      <Output
+        TaskParameter="TouchedFiles"
+        ItemName="FileWrites" />
+    </Touch>
+
+    <RazorTagHelper
+      Debug="$(_RazorDebugTagHelperTask)"
+      DebugTool="$(_RazorDebugTagHelperTool)"
+      ToolAssembly="$(_RazorTagHelperToolAssembly)"
+      ServerAssembly="$(_RazorBuildServerAssembly)"
+      Assemblies="@(RazorReferencePath)"
+      TagHelperManifest="$(_RazorTagHelperOutputCache)">
+      <Output
+        TaskParameter="TagHelperManifest"
+        ItemName="FileWrites"/>
+    </RazorTagHelper>
+  </Target>
+
+  <Target Name="_ResolveRazorGenerateOutputs">
+    <ItemGroup>
+      <_RazorGenerateOutput Include="%(RazorGenerate.GeneratedOutput)" Condition="'%(RazorGenerate.GeneratedOutput)'!=''"/>    
+    </ItemGroup>
+  </Target>
+
   <PropertyGroup>
-    <!-- Similar to https://github.com/Microsoft/msbuild/blob/908cc9ccd4961441628f68e37a148183a87bb067/src/Tasks/Microsoft.Common.CurrentVersion.targets#L146-L153 -->
-    <_RazorDebugSymbolsProduced>false</_RazorDebugSymbolsProduced>
-    <_RazorDebugSymbolsProduced Condition="'$(DebugSymbols)'=='true'">true</_RazorDebugSymbolsProduced>
-    <_RazorDebugSymbolsProduced Condition="'$(DebugType)'=='none'">false</_RazorDebugSymbolsProduced>
-    <_RazorDebugSymbolsProduced Condition="'$(DebugType)'=='pdbonly'">true</_RazorDebugSymbolsProduced>
-    <_RazorDebugSymbolsProduced Condition="'$(DebugType)'=='full'">true</_RazorDebugSymbolsProduced>
-    <_RazorDebugSymbolsProduced Condition="'$(DebugType)'=='portable'">true</_RazorDebugSymbolsProduced>
-    <_RazorDebugSymbolsProduced Condition="'$(DebugType)'=='embedded'">false</_RazorDebugSymbolsProduced>
+    <RazorCoreGenerateDependsOn>
+      _HashRazorGenerateInputs;
+      _ResolveRazorGenerateOutputs;
+    </RazorCoreGenerateDependsOn>
   </PropertyGroup>
 
-  <ItemGroup>
-    <!-- These are also referenced in .Compilation.targets - don't just casually change these -->
-    <_RazorDebugSymbolsIntermediatePath Condition="'$(_RazorDebugSymbolsProduced)'=='true'" Include="$(IntermediateOutputPath)$(RazorTargetName).pdb" />
-    <_RazorDebugSymbolsOutputPath Include="@(_RazorDebugSymbolsIntermediatePath->'$(OutDir)%(Filename)%(Extension)')" />
-  </ItemGroup>
-
-  <!--
-    These are the targets that generate code using Razor, separated for the main file for ease of maintenance.
-
-    Most targets related to Razor code generation are defined there.
-  -->
-  <Import Project="Microsoft.AspNetCore.Razor.Design.CodeGeneration.targets" />
-
-  <!-- 
-    These are the targets that actually do compilation using CSC, separated for the main file for ease of maintenance.
-
-    RazorCoreCompile should be defined there.
-  -->
-  <Import Project="Microsoft.AspNetCore.Razor.Design.Compilation.targets" />
-
-  <Target Name="PrepareForRazorGenerate" DependsOnTargets="$(PrepareForRazorGenerateDependsOn)">
-  </Target>
-
-  <Target Name="RazorGenerate" DependsOnTargets="$(RazorGenerateDependsOn)">
-  </Target>
-
-  <Target Name="PrepareForRazorCompile" DependsOnTargets="$(PrepareForRazorCompileDependsOn)">
-  </Target>
-
-  <Target Name="RazorCompile" DependsOnTargets="$(RazorCompileDependsOn)">
-  </Target>
-
-  <!--
-    Gathers input source files for code generation. This is a separate target so that we can avoid
-    lots of work when there are no inputs for code generation.
-  -->
-  <Target Name="ResolveRazorGenerateInputs">
-    <ItemGroup>
-      <RazorGenerate Include="@(Content)" Condition="'%(Content.Extension)'=='.cshtml'">
-        <GeneratedOutput>$(RazorGenerateOutputPath)%(RelativeDir)%(Filename).cs</GeneratedOutput>
-      </RazorGenerate>
-    </ItemGroup>
-  </Target>
-
-  <!-- 
-    Gathers input assemblies for Tag Helper discovery and compilation. Add items to @(ReferencePath)
-  -->
   <Target
-    Name="ResolveAssemblyReferenceRazorGenerateInputs"
-    DependsOnTargets="ResolveReferences">
+    Name="RazorCoreGenerate"
+    DependsOnTargets="$(RazorCoreGenerateDependsOn)"
+    Inputs="$(MSBuildAllProjects);$(_RazorGenerateInputsHashFile);$(_RazorTagHelperOutputCache);@(RazorGenerate)"
+    Outputs="@(_RazorGenerateOutput)"
+    Condition="'@(RazorGenerate)'!= ''">
+
+    <RemoveDir
+      Directories="$(RazorGenerateOutputPath)"
+      Condition = "Exists('$(RazorGenerateOutputPath)')"/>
+
+    <MakeDir
+      Directories="%(_RazorGenerateOutput.RelativeDir)"
+      Condition="!Exists('%(_RazorGenerateOutput.RelativeDir)')" />
+
+    <RazorGenerate
+      Debug="$(_RazorDebugGenerateCodeTask)"
+      DebugTool="$(_RazorDebugGenerateCodeTool)"
+      ToolAssembly="$(_RazorGenerateToolAssembly)"
+      Sources="@(RazorGenerate)"
+      ProjectRoot="$(MSBuildProjectDirectory)"
+      TagHelperManifest="$(_RazorTagHelperOutputCache)"
+      OutputPath="$(RazorGenerateOutputPath)" />
+
     <ItemGroup>
-      <RazorReferencePath Include="@(ReferencePath)"/>
-      <RazorReferencePath Include="$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)$(TargetName)$(TargetExt)'))"/>
+      <FileWrites Include="@(_RazorGenerateOutput)" />
     </ItemGroup>
   </Target>
 
-  <!--
-    Gathers inputs to the RazorCoreCompile target into the @(RazorCompile) itemgroup.
+  <PropertyGroup>
+    <ResolveRazorCompileInputsDependsOn>$(ResolveRazorCompileInputsDependsOn);_ResolveGeneratedRazorCompileInputs</ResolveRazorCompileInputsDependsOn>
+  </PropertyGroup>
 
-    This is marker target so that the code generation targets can attach.
-  -->
-  <Target Name="ResolveRazorCompileInputs">
-  </Target>
-
-  <!--
-    This target is called after PrepareForPublish when RazorCompileOnPublish=true so that we can hook into publish.
-    This target just hooks up other targets since Publish and PrepareForPublish don't have a DependsOnTargets
-    property we can use. 
-  -->
-  <Target 
-    Name="_RazorPrepareForPublish"
-    AfterTargets="PrepareForPublish"
-    DependsOnTargets="RazorCompile"
-    Condition="'$(ResolvedRazorCompileToolset)'=='RazorSdk' and '$(RazorCompileOnPublish)'=='true'">
-  </Target>
-
-  <!--
-    This target adds the Razor assembly to the BuiltProjectOutputGroupOutput - which is used as input to the Pack target.
-  -->
-  <Target 
-    Name="_RazorAddBuiltProjectOutputGroupOutput"
-    DependsOnTargets="ResolveRazorGenerateInputs"
-    BeforeTargets="BuiltProjectOutputGroup"
-    Condition="'$(ResolvedRazorCompileToolset)'=='RazorSdk' and '$(RazorCompileOnBuild)'=='true'">
-
-    <ItemGroup Condition="'@(RazorGenerate)'!= ''">
-      <BuiltProjectOutputGroupOutput Include="@(RazorIntermediateAssembly)" FinalOutputPath="$(Outdir)$(RazorTargetName).dll" />
-    </ItemGroup>
-    
-  </Target>
-
-  <!--
-    Called as part of GetCopyToOutputDirectoryItems - this target populates the list of items that get
-    copied to the output directory when building as a project reference.
-  -->
-  <Target 
-    Name="_RazorGetCopyToOutputDirectoryItems"
-    BeforeTargets="GetCopyToOutputDirectoryItems"
-    DependsOnTargets="RazorCompile"
-    Condition="'$(ResolvedRazorCompileToolset)'=='RazorSdk' and '$(RazorCompileOnBuild)'=='true'">
-
-    <!-- 
-      This condition needs to be inside the target because it the itemgroup will be populated after the target's
-      condition is evaluated.
-    -->
-    <ItemGroup Condition="'@(RazorGenerate)'!=''">
-      <AllItemsFullPathWithTargetPath Include="@(RazorIntermediateAssembly->'%(FullPath)')">
-        <TargetPath>%(Filename)%(Extension)</TargetPath>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </AllItemsFullPathWithTargetPath>
-      <AllItemsFullPathWithTargetPath Include="@(_RazorDebugSymbolsIntermediatePath->'%(FullPath)')">
-        <TargetPath>%(Filename)%(Extension)</TargetPath>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </AllItemsFullPathWithTargetPath>
-    </ItemGroup>
-
-  </Target>
-
-  <!--
-    Called as part of GetCopyToPublishDirectoryItems - this target populates the list of items that get
-    copied to the publish directory when publishing as a project reference.
-
-    The dependency on RazorCompile is needed because this will be called during publish on each P2P
-    reference without calling RazorCompile for the P2P references.
-  -->
-  <Target
-    Name="_RazorGetCopyToPublishDirectoryItems"
-    BeforeTargets="GetCopyToPublishDirectoryItems"
-    DependsOnTargets="RazorCompile"
-    Condition="'$(ResolvedRazorCompileToolset)'=='RazorSdk' and '$(RazorCompileOnPublish)'=='true'">
-
-    <!-- 
-      This condition needs to be inside the target because it the itemgroup will be populated after the target's
-      condition is evaluated.
-    -->
-    <ItemGroup Condition="'@(RazorGenerate)'!=''">
-      <AllPublishItemsFullPathWithTargetPath Include="@(RazorIntermediateAssembly->'%(FullPath)')">
-        <TargetPath>%(Filename)%(Extension)</TargetPath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </AllPublishItemsFullPathWithTargetPath>
-      <AllPublishItemsFullPathWithTargetPath Include="@(_RazorDebugSymbolsIntermediatePath->'%(FullPath)')">
-        <TargetPath>%(Filename)%(Extension)</TargetPath>
-        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      </AllPublishItemsFullPathWithTargetPath>
-    </ItemGroup>
-
-  </Target>
-
-  <!--
-    Called as part of CopyFilesToOutputDirectory - this target is called when building the project to copy
-    files to the output directory.
-  -->
-  <Target 
-    Name="_RazorCopyFilesToOutputDirectory" 
-    DependsOnTargets="RazorCompile"
-    AfterTargets="CopyFilesToOutputDirectory"
-    Condition="'$(ResolvedRazorCompileToolset)'=='RazorSdk' and '$(RazorCompileOnBuild)'=='true'">
-
-    <!-- Copy the Razor dll  -->
-    <Copy
-      SourceFiles="@(RazorIntermediateAssembly)"
-      DestinationFolder="$(OutDir)"
-      SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
-      OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
-      Retries="$(CopyRetryCount)"
-      RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
-      UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)"
-      UseSymboliclinksIfPossible="$(CreateSymbolicLinksForCopyFilesToOutputDirectoryIfPossible)"
-      Condition="Exists('@(RazorIntermediateAssembly)') and '$(CopyBuildOutputToOutputDirectory)' == 'true' and '$(SkipCopyBuildProduct)' != 'true'">
-
-      <Output TaskParameter="DestinationFiles" ItemName="_RazorAssembly"/>
-      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
-    </Copy>
-
-    <Message 
-      Importance="High" 
-      Text="$(MSBuildProjectName) -&gt; @(_RazorAssembly->'%(FullPath)')" 
-      Condition="Exists('@(RazorIntermediateAssembly)') and '$(CopyBuildOutputToOutputDirectory)' == 'true' and '$(SkipCopyBuildProduct)'!='true'" />
-
-    <!-- Copy the Razor debug information file (.pdb), if any -->
-    <Copy
-      SourceFiles="@(_RazorDebugSymbolsIntermediatePath)"
-      DestinationFiles="@(_RazorDebugSymbolsOutputPath)"
-      SkipUnchangedFiles="$(SkipCopyUnchangedFiles)"
-      OverwriteReadOnlyFiles="$(OverwriteReadOnlyFiles)"
-      Retries="$(CopyRetryCount)"
-      RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)"
-      UseHardlinksIfPossible="$(CreateHardLinksForCopyFilesToOutputDirectoryIfPossible)"
-      UseSymboliclinksIfPossible="$(CreateSymbolicLinksForCopyFilesToOutputDirectoryIfPossible)"
-      Condition="Exists('@(_RazorDebugSymbolsIntermediatePath)') and '$(SkipCopyingSymbolsToOutputDirectory)' != 'true' and '$(CopyOutputSymbolsToOutputDirectory)'=='true'">
-
-      <Output TaskParameter="DestinationFiles" ItemName="FileWrites"/>
-    </Copy>
-    
-  </Target>
-
-  <!--
-    Called after ComputeFilesToPublish and ComputeRefAssembliesToPublish but before CopyFilesToPublishDirectory - this target is called when 
-    publishing the project to get a list of files to the output directory.
-  -->
-  <Target
-    Name="_RazorComputeFilesToPublish"
-    AfterTargets="ComputeRefAssembliesToPublish"
-    Condition="'$(ResolvedRazorCompileToolset)'=='RazorSdk' and '$(RazorCompileOnPublish)'=='true' and '@(RazorGenerate)'!=''">
-
-    <!-- If we generated an assembly/pdb then include those -->
+  <Target Name="_ResolveGeneratedRazorCompileInputs">
     <ItemGroup>
-      <ResolvedFileToPublish Include="@(RazorIntermediateAssembly)" Condition="'$(CopyBuildOutputToPublishDirectory)'=='true'">
-        <RelativePath>@(RazorIntermediateAssembly->'%(Filename)%(Extension)')</RelativePath>
-      </ResolvedFileToPublish>
-      <ResolvedFileToPublish Include="@(_RazorDebugSymbolsIntermediatePath)" Condition="'$(CopyOutputSymbolsToPublishDirectory)'=='true'">
-        <RelativePath>@(_RazorDebugSymbolsIntermediatePath->'%(Filename)%(Extension)')</RelativePath>
-      </ResolvedFileToPublish>
+      <RazorCompile Include="@(_RazorGenerateOutput)" />
     </ItemGroup>
-
-    <!--
-      RazorGenerate items are usually populated from the '.cshtml' files in @(Content). These are published by default
-      so all we need to do is exclude them. 
-    -->
-    <ItemGroup Condition="'$(CopyRazorGenerateFilesToPublishDirectory)'=='false'">
-      <ResolvedFileToPublish Remove="%(RazorGenerate.FullPath)"/>
-    </ItemGroup>
-
-    <!--
-      The ref assemblies are published whenever PreserveCompilationContext is true, which we expect to be true for
-      most usages of Razor. There's no setting that excludes just the ref assemblies, so we do it ourselves. 
-    -->
-    <ItemGroup Condition="'$(CopyRefAssembliesToPublishDirectory)'=='false'">
-      <ResolvedFileToPublish 
-        Remove="%(ResolvedFileToPublish.Identity)"
-        Condition="'%(ResolvedFileToPublish.RelativePath)'=='$(RefAssembliesFolderName)\%(Filename)%(Extension)'"/>
-    </ItemGroup>
-
   </Target>
-
-  <!--
-    This is a hook to import a set of targets after the Razor targets. By default this is unused.
-  -->
-  <Import Project="$(CustomAfterRazorSdkTargets)" Condition="'$(CustomAfterRazorSdkTargets)' != '' and Exists('$(CustomAfterRazorSdkTargets)')"/>
 
 </Project>
