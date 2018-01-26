@@ -15,48 +15,17 @@ namespace Microsoft.VisualStudio.Editor.Razor
     {
         private static readonly object RazorTextBufferInitializationKey = new object();
 
-        private readonly VisualStudioDocumentTrackerFactory _documentTrackerFactory;
-        private readonly VisualStudioRazorParserFactory _parserFactory;
-        private readonly BraceSmartIndenterFactory _braceSmartIndenterFactory;
+        private readonly WorkspaceProvider _workspaceProvider;
 
         [ImportingConstructor]
-        public DefaultRazorEditorFactoryService(VisualStudioWorkspaceAccessor workspaceAccessor)
+        public DefaultRazorEditorFactoryService(WorkspaceProvider workspaceProvider)
         {
-            if (workspaceAccessor == null)
+            if (workspaceProvider == null)
             {
-                throw new ArgumentNullException(nameof(workspaceAccessor));
+                throw new ArgumentNullException(nameof(workspaceProvider));
             }
 
-            var razorLanguageServices = workspaceAccessor.Workspace.Services.GetLanguageServices(RazorLanguage.Name);
-            _documentTrackerFactory = razorLanguageServices.GetRequiredService<VisualStudioDocumentTrackerFactory>();
-            _parserFactory = razorLanguageServices.GetRequiredService<VisualStudioRazorParserFactory>();
-            _braceSmartIndenterFactory = razorLanguageServices.GetRequiredService<BraceSmartIndenterFactory>();
-        }
-
-        // Internal for testing
-        internal DefaultRazorEditorFactoryService(
-            VisualStudioDocumentTrackerFactory documentTrackerFactory,
-            VisualStudioRazorParserFactory parserFactory,
-            BraceSmartIndenterFactory braceSmartIndenterFactory)
-        {
-            if (documentTrackerFactory == null)
-            {
-                throw new ArgumentNullException(nameof(documentTrackerFactory));
-            }
-
-            if (parserFactory == null)
-            {
-                throw new ArgumentNullException(nameof(parserFactory));
-            }
-
-            if (braceSmartIndenterFactory == null)
-            {
-                throw new ArgumentNullException(nameof(braceSmartIndenterFactory));
-            }
-
-            _documentTrackerFactory = documentTrackerFactory;
-            _parserFactory = parserFactory;
-            _braceSmartIndenterFactory = braceSmartIndenterFactory;
+            _workspaceProvider = workspaceProvider;
         }
 
         public override bool TryGetDocumentTracker(ITextBuffer textBuffer, out VisualStudioDocumentTracker documentTracker)
@@ -140,13 +109,19 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 return;
             }
 
-            var tracker = _documentTrackerFactory.Create(textBuffer);
+            var workspace = _workspaceProvider.GetWorkspace(textBuffer);
+            var razorLanguageServices = workspace.Services.GetLanguageServices(RazorLanguage.Name);
+            var documentTrackerFactory = razorLanguageServices.GetRequiredService<VisualStudioDocumentTrackerFactory>();
+            var parserFactory = razorLanguageServices.GetRequiredService<VisualStudioRazorParserFactory>();
+            var braceSmartIndenterFactory = razorLanguageServices.GetRequiredService<BraceSmartIndenterFactory>();
+
+            var tracker = documentTrackerFactory.Create(textBuffer);
             textBuffer.Properties[typeof(VisualStudioDocumentTracker)] = tracker;
 
-            var parser = _parserFactory.Create(tracker);
+            var parser = parserFactory.Create(tracker);
             textBuffer.Properties[typeof(VisualStudioRazorParser)] = parser;
 
-            var braceSmartIndenter = _braceSmartIndenterFactory.Create(tracker);
+            var braceSmartIndenter = braceSmartIndenterFactory.Create(tracker);
             textBuffer.Properties[typeof(BraceSmartIndenter)] = braceSmartIndenter;
 
             textBuffer.Properties.AddProperty(RazorTextBufferInitializationKey, RazorTextBufferInitializationKey);

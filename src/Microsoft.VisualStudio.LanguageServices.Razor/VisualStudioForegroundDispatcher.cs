@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.Shell;
 namespace Microsoft.VisualStudio.LanguageServices.Razor
 {
     [Shared]
+    [Export(typeof(ForegroundDispatcher))]
     [ExportWorkspaceService(typeof(ForegroundDispatcher), ServiceLayer.Host)]
     internal class VisualStudioForegroundDispatcher : ForegroundDispatcher
     {

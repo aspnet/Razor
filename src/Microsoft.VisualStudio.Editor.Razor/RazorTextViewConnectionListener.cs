@@ -17,39 +17,23 @@ namespace Microsoft.VisualStudio.Editor.Razor
     internal class RazorTextViewConnectionListener : ITextViewConnectionListener
     {
         private readonly ForegroundDispatcher _foregroundDispatcher;
-        private readonly RazorDocumentManager _documentManager;
+        private readonly WorkspaceProvider _workspaceProvider;
 
         [ImportingConstructor]
-        public RazorTextViewConnectionListener(VisualStudioWorkspaceAccessor workspaceAccessor)
-        {
-            if (workspaceAccessor == null)
-            {
-                throw new ArgumentNullException(nameof(workspaceAccessor));
-            }
-
-            _foregroundDispatcher = workspaceAccessor.Workspace.Services.GetRequiredService<ForegroundDispatcher>();
-
-            var languageServices = workspaceAccessor.Workspace.Services.GetLanguageServices(RazorLanguage.Name);
-            _documentManager = languageServices.GetRequiredService<RazorDocumentManager>();
-        }
-
-        // This is only for testing. We want to avoid using the actual Roslyn GetService methods in unit tests.
-        internal RazorTextViewConnectionListener(
-            ForegroundDispatcher foregroundDispatcher,
-            RazorDocumentManager documentManager)
+        public RazorTextViewConnectionListener(ForegroundDispatcher foregroundDispatcher, WorkspaceProvider workspaceProvider)
         {
             if (foregroundDispatcher == null)
             {
                 throw new ArgumentNullException(nameof(foregroundDispatcher));
             }
 
-            if (documentManager == null)
+            if (workspaceProvider == null)
             {
-                throw new ArgumentNullException(nameof(documentManager));
+                throw new ArgumentNullException(nameof(workspaceProvider));
             }
 
             _foregroundDispatcher = foregroundDispatcher;
-            _documentManager = documentManager;
+            _workspaceProvider = workspaceProvider;
         }
 
         public void SubjectBuffersConnected(ITextView textView, ConnectionReason reason, IReadOnlyCollection<ITextBuffer> subjectBuffers)
@@ -66,7 +50,11 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             _foregroundDispatcher.AssertForegroundThread();
 
-            _documentManager.OnTextViewOpened(textView, subjectBuffers);
+            var workspace = _workspaceProvider.GetWorkspace(textView);
+            var languageServices = workspace.Services.GetLanguageServices(RazorLanguage.Name);
+            var documentManager = languageServices.GetRequiredService<RazorDocumentManager>();
+
+            documentManager.OnTextViewOpened(textView, subjectBuffers);
         }
 
         public void SubjectBuffersDisconnected(ITextView textView, ConnectionReason reason, IReadOnlyCollection<ITextBuffer> subjectBuffers)
@@ -83,7 +71,11 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             _foregroundDispatcher.AssertForegroundThread();
 
-            _documentManager.OnTextViewClosed(textView, subjectBuffers);
+            var workspace = _workspaceProvider.GetWorkspace(textView);
+            var languageServices = workspace.Services.GetLanguageServices(RazorLanguage.Name);
+            var documentManager = languageServices.GetRequiredService<RazorDocumentManager>();
+
+            documentManager.OnTextViewClosed(textView, subjectBuffers);
         }
     }
 }

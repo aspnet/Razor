@@ -5,8 +5,8 @@ using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.Editor.Razor
 {
-    internal abstract class VisualStudioWorkspaceAccessor
-    {
-        public abstract Workspace Workspace { get; }
-    }
+    //internal abstract class VisualStudioWorkspaceAccessor
+    //{
+    //    public abstract Workspace Workspace { get; }
+    //}
 }

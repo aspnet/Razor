@@ -11,7 +11,5 @@ namespace Microsoft.CodeAnalysis.Razor.Editor
         public abstract event EventHandler<EditorSettingsChangedEventArgs> Changed;
 
         public abstract EditorSettings Current { get; }
-
-        public abstract void Update(EditorSettings updateSettings);
     }
 }

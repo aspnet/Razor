@@ -19,14 +19,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         private static readonly HashSet<TagHelperDescriptor> _emptyHashSet = new HashSet<TagHelperDescriptor>();
 
         [ImportingConstructor]
-        public DefaultTagHelperCompletionService(VisualStudioWorkspaceAccessor workspaceAccessor)
-        {
-            var razorLanguageServices = workspaceAccessor.Workspace.Services.GetLanguageServices(RazorLanguage.Name);
-            _tagHelperFactsService = razorLanguageServices.GetRequiredService<TagHelperFactsServiceInternal>();
-        }
-
-        // Internal for testing
-        internal DefaultTagHelperCompletionService(TagHelperFactsServiceInternal tagHelperFactsService)
+        public DefaultTagHelperCompletionService(TagHelperFactsServiceInternal tagHelperFactsService)
         {
             _tagHelperFactsService = tagHelperFactsService;
         }

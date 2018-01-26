@@ -34,34 +34,6 @@ namespace Microsoft.VisualStudio.Editor.Razor
             CSharpCodeParser.RemoveTagHelperDirectiveDescriptor,
             CSharpCodeParser.TagHelperPrefixDirectiveDescriptor,
         };
-        private readonly Lazy<RazorCodeDocumentProvider> _codeDocumentProvider;
-
-        [ImportingConstructor]
-        public RazorDirectiveCompletionProvider(VisualStudioWorkspaceAccessor workspaceAccessor)
-        {
-            if (workspaceAccessor == null)
-            {
-                throw new ArgumentNullException(nameof(workspaceAccessor));
-            }
-
-            // Lazy because we don't want Microsoft.AspNetCore.Razor.Language assembly getting loaded for non Razor scenarios.
-            _codeDocumentProvider = new Lazy<RazorCodeDocumentProvider>(() =>
-            {
-                var languageServices = workspaceAccessor.Workspace.Services.GetLanguageServices(RazorLanguage.Name);
-                return languageServices.GetRequiredService<RazorCodeDocumentProvider>();
-            });
-        }
-
-        // Internal for testing
-        internal RazorDirectiveCompletionProvider(Lazy<RazorCodeDocumentProvider> codeDocumentProvider)
-        {
-            if (codeDocumentProvider == null)
-            {
-                throw new ArgumentNullException(nameof(codeDocumentProvider));
-            }
-
-            _codeDocumentProvider = codeDocumentProvider;
-        }
 
         public override Task<CompletionDescription> GetDescriptionAsync(Document document, CompletionItem item, CancellationToken cancellationToken)
         {
@@ -111,7 +83,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
         [MethodImpl(MethodImplOptions.NoInlining)]
         private Task AddCompletionItems(CompletionContext context)
         {
-            if (!_codeDocumentProvider.Value.TryGetFromDocument(context.Document, out var codeDocument))
+            var languageServices = context.Document.Project.Solution.Workspace.Services.GetLanguageServices(RazorLanguage.Name);
+            var codeDocumentProvider = languageServices.GetRequiredService<RazorCodeDocumentProvider>();
+
+            if (!codeDocumentProvider.TryGetFromDocument(context.Document, out var codeDocument))
             {
                 // A Razor code document has not yet been associated with the document.
                 return Task.CompletedTask;

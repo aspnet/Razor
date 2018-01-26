@@ -1,7 +1,6 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using Microsoft.AspNetCore.Razor.Language;
@@ -16,10 +15,9 @@ namespace Microsoft.VisualStudio.Editor.Razor
         private readonly TagHelperFactsServiceInternal _tagHelperFactsService;
 
         [ImportingConstructor]
-        public DefaultTagHelperFactsService(VisualStudioWorkspaceAccessor workspaceAccessor)
+        public DefaultTagHelperFactsService(TagHelperFactsServiceInternal tagHelperFactsService)
         {
-            var razorLanguageServices = workspaceAccessor.Workspace.Services.GetLanguageServices(RazorLanguage.Name);
-            _tagHelperFactsService = razorLanguageServices.GetRequiredService<TagHelperFactsServiceInternal>();
+            _tagHelperFactsService = tagHelperFactsService;
         }
 
         public override TagHelperBinding GetTagHelperBinding(
