@@ -23,13 +23,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             Debug.Assert(solution != null);
 
-            _projectManager.ProjectsCleared();
+            _projectManager.WorkspaceProjectsCleared();
 
             foreach (var project in solution.Projects)
             {
                 if (project.Language == LanguageNames.CSharp)
                 {
-                    _projectManager.ProjectAdded(project);
+                    _projectManager.WorkspaceProjectAdded(project);
                 }
             }
         }
@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
                         if (underlyingProject.Language == LanguageNames.CSharp)
                         {
-                            _projectManager.ProjectAdded(underlyingProject);
+                            _projectManager.WorkspaceProjectAdded(underlyingProject);
                         }
                         break;
                     }
@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                         underlyingProject = e.NewSolution.GetProject(e.ProjectId);
                         Debug.Assert(underlyingProject != null);
 
-                        _projectManager.ProjectChanged(underlyingProject);
+                        _projectManager.WorkspaceProjectChanged(underlyingProject);
                         break;
                     }
 
@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                         underlyingProject = e.OldSolution.GetProject(e.ProjectId);
                         Debug.Assert(underlyingProject != null);
 
-                        _projectManager.ProjectRemoved(underlyingProject);
+                        _projectManager.WorkspaceProjectRemoved(underlyingProject);
                         break;
                     }
 

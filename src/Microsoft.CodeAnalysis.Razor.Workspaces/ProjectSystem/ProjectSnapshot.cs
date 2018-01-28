@@ -9,6 +9,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         public abstract ProjectExtensibilityConfiguration Configuration { get; }
 
-        public abstract Project UnderlyingProject { get; }
+        public abstract bool IsInitialized { get; }
+
+        public abstract bool IsUnloaded { get; }
+
+        public abstract string FilePath { get; }
+
+        public abstract Project WorkspaceProject { get; }
     }
 }

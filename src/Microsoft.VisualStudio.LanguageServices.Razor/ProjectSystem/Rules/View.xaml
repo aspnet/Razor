@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Rule
+  Name="View"
+  DisplayName="View"
+  PageTemplate="generic"
+  Description="MVC Razor View"
+  xmlns="http://schemas.microsoft.com/build/2009/properties">
+  
+  <Rule.Categories>
+    <Category
+      Name="Advanced"
+      DisplayName="Advanced" />
+    <Category
+      Name="Misc"
+      DisplayName="Misc" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource
+      Persistence="View"
+      HasConfigurationCondition="false"
+      ItemType="View"
+      MSBuildTarget="RazorDesignTimeBuild"
+      SourceOfDefaultValue="AfterContext"
+      SourceType="TargetResults" />
+  </Rule.DataSource>
+
+  <StringProperty
+    Name="Identity"
+    Visible="false"
+    ReadOnly="true"
+    Category="Misc"
+    Description="The item specified in the Include attribute.">
+    <StringProperty.DataSource>
+      <DataSource
+        Persistence="Intrinsic"
+        ItemType="View"
+        PersistedName="Identity" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty
+    Name="FullPath"
+    DisplayName="Full Path"
+    ReadOnly="true"
+    Category="Misc"
+    Description="Location of the file.">
+    <StringProperty.DataSource>
+      <DataSource
+        Persistence="Intrinsic"
+        ItemType="View"
+        PersistedName="FullPath" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty
+    Name="FileNameAndExtension"
+    DisplayName="File Name"
+    ReadOnly="true"
+    Category="Misc"
+    Description="Name of the file or folder.">
+    <StringProperty.DataSource>
+      <DataSource
+        Persistence="Intrinsic"
+        ItemType="View"
+        PersistedName="FileNameAndExtension" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <StringProperty
+    Name="GeneratedFile"
+    DisplayName="Generated File Name"
+    ReadOnly="true"
+    Category="Misc"
+    Description="Name of the generated file.">
+    <StringProperty.DataSource>
+      <DataSource
+        Persistence="ProjectFile"
+        ItemType="View"
+        PersistedName="GeneratedFile" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+</Rule>

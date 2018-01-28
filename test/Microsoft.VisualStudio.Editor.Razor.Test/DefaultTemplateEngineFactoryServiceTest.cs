@@ -34,7 +34,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
+            projectManager.WorkspaceProjectAdded(Project);
             projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
             {
                 Configuration = new MvcExtensibilityConfiguration(
@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
+            projectManager.WorkspaceProjectAdded(Project);
             projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
             {
                 Configuration = new MvcExtensibilityConfiguration(
@@ -92,7 +92,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
+            projectManager.WorkspaceProjectAdded(Project);
             projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
             {
                 Configuration = new MvcExtensibilityConfiguration(
@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
+            projectManager.WorkspaceProjectAdded(Project);
             projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
             {
                 Configuration = new MvcExtensibilityConfiguration(
@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
+            projectManager.WorkspaceProjectAdded(Project);
 
             var factoryService = new DefaultTemplateEngineFactoryService(projectManager);
 

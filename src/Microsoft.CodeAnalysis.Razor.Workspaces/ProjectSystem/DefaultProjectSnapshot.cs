@@ -15,32 +15,74 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     // at once. 
     internal class DefaultProjectSnapshot : ProjectSnapshot
     {
-        public DefaultProjectSnapshot(Project underlyingProject)
+        public DefaultProjectSnapshot(string filePath)
         {
-            if (underlyingProject == null)
+            if (filePath == null)
             {
-                throw new ArgumentNullException(nameof(underlyingProject));
+                throw new ArgumentNullException(nameof(filePath));
             }
 
-            UnderlyingProject = underlyingProject;
+            FilePath = filePath;
         }
 
-        private DefaultProjectSnapshot(Project underlyingProject, DefaultProjectSnapshot other)
+        public DefaultProjectSnapshot(HostProject hostProject)
         {
-            if (underlyingProject == null)
+            if (hostProject == null)
             {
-                throw new ArgumentNullException(nameof(underlyingProject));
+                throw new ArgumentNullException(nameof(hostProject));
+            }
+
+            HostProject = hostProject;
+            FilePath = hostProject.FilePath;
+        }
+
+        public DefaultProjectSnapshot(Project workspaceProject)
+        {
+            if (workspaceProject == null)
+            {
+                throw new ArgumentNullException(nameof(workspaceProject));
+            }
+
+            WorkspaceProject = workspaceProject;
+            FilePath = workspaceProject.FilePath;
+        }
+
+        private DefaultProjectSnapshot(HostProject hostProject, DefaultProjectSnapshot other)
+        {
+            if (hostProject == null)
+            {
+                throw new ArgumentNullException(nameof(hostProject));
             }
 
             if (other == null)
             {
                 throw new ArgumentNullException(nameof(other));
             }
-            
-            UnderlyingProject = underlyingProject;
 
             ComputedVersion = other.ComputedVersion;
             Configuration = other.Configuration;
+            FilePath = other.FilePath;
+            HostProject = hostProject;
+            WorkspaceProject = other.WorkspaceProject;
+        }
+
+        private DefaultProjectSnapshot(Project workspaceProject, DefaultProjectSnapshot other)
+        {
+            if (workspaceProject == null)
+            {
+                throw new ArgumentNullException(nameof(workspaceProject));
+            }
+
+            if (other == null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
+            ComputedVersion = other.ComputedVersion;
+            Configuration = other.Configuration;
+            FilePath = other.FilePath;
+            HostProject = other.HostProject;
+            WorkspaceProject = workspaceProject;
         }
 
         private DefaultProjectSnapshot(ProjectSnapshotUpdateContext update, DefaultProjectSnapshot other)
@@ -55,34 +97,81 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(other));
             }
 
-            UnderlyingProject = other.UnderlyingProject;
-
-            ComputedVersion = update.UnderlyingProject.Version;
+            ComputedVersion = update.WorkspaceProject.Version;
             Configuration = update.Configuration;
+            FilePath = other.FilePath;
+            HostProject = other.HostProject;
+            WorkspaceProject = other.WorkspaceProject;
         }
 
         public override ProjectExtensibilityConfiguration Configuration { get; }
 
-        public override Project UnderlyingProject { get; }
+        public override string FilePath { get; }
+
+        public HostProject HostProject { get; }
+
+        public override bool IsInitialized => HostProject != null && WorkspaceProject != null;
+
+        public override bool IsUnloaded => HostProject == null && WorkspaceProject == null;
+
+        public override Project WorkspaceProject { get; }
 
         // This is the version that the computed state is based on.
         public VersionStamp? ComputedVersion { get; set; }
 
         // We know the project is dirty if we don't have a computed result, or it was computed for a different version.
         // Since the PSM updates the snapshots synchronously, the snapshot can never be older than the computed state.
-        public bool IsDirty => ComputedVersion == null || ComputedVersion.Value != UnderlyingProject.Version;
+        public bool IsDirty => ComputedVersion == null || ComputedVersion.Value != WorkspaceProject.Version;
 
-        public DefaultProjectSnapshot WithProjectChange(Project project)
+        public DefaultProjectSnapshot RemoveHostProject()
         {
-            if (project == null)
+            if (WorkspaceProject == null)
             {
-                throw new ArgumentNullException(nameof(project));
+                // If we've removed the workspace project and host project then this project is unloading.
+                return new DefaultProjectSnapshot(HostProject.FilePath);
             }
-
-            return new DefaultProjectSnapshot(project, this);
+            else
+            {
+                // We want to get rid of all of the computed state since it's not really valid.
+                return new DefaultProjectSnapshot(WorkspaceProject);
+            }
         }
 
-        public DefaultProjectSnapshot WithProjectChange(ProjectSnapshotUpdateContext update)
+        public DefaultProjectSnapshot WithHostProject(HostProject hostProject)
+        {
+            if (hostProject == null)
+            {
+                throw new ArgumentNullException(nameof(hostProject));
+            }
+
+            return new DefaultProjectSnapshot(hostProject, this);
+        }
+
+        public DefaultProjectSnapshot RemoveWorkspaceProject()
+        {
+            if (HostProject == null)
+            {
+                // If we've removed the workspace project and host project then this project is unloading.
+                return new DefaultProjectSnapshot(WorkspaceProject.FilePath);
+            }
+            else
+            {
+                // We want to get rid of all of the computed state since it's not really valid.
+                return new DefaultProjectSnapshot(HostProject);
+            }
+        }
+
+        public DefaultProjectSnapshot WithWorkspaceProject(Project workspaceProject)
+        {
+            if (workspaceProject == null)
+            {
+                throw new ArgumentNullException(nameof(workspaceProject));
+            }
+
+            return new DefaultProjectSnapshot(workspaceProject, this);
+        }
+
+        public DefaultProjectSnapshot WithComputedUpdate(ProjectSnapshotUpdateContext update)
         {
             if (update == null)
             {
