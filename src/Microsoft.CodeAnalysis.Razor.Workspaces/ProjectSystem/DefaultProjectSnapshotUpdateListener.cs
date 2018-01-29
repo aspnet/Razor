@@ -32,6 +32,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     });
 
                     RazorExtensions.Register(b);
+
+                    b.Features.Add(new Microsoft.CodeAnalysis.Razor.DefaultTagHelperDescriptorProvider());
+                    b.Features.Add(new ViewComponentTagHelperDescriptorProvider());
+
                 });
 
                 var templateEngine = new MvcRazorTemplateEngine(engine, RazorProject.Create(Path.GetDirectoryName(snapshot.FilePath)));
