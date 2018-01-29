@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
@@ -23,6 +25,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
 
             FilePath = filePath;
+            Documents = Array.Empty<DocumentSnapshot>();
         }
 
         public DefaultProjectSnapshot(HostProject hostProject)
@@ -33,6 +36,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
 
             HostProject = hostProject;
+
+            Documents = hostProject.Documents.Select(d => new DefaultDocumentSnapshot(d)).ToArray();
             FilePath = hostProject.FilePath;
         }
 
@@ -45,6 +50,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             WorkspaceProject = workspaceProject;
             FilePath = workspaceProject.FilePath;
+            Documents = Array.Empty<DocumentSnapshot>();
         }
 
         private DefaultProjectSnapshot(HostProject hostProject, DefaultProjectSnapshot other)
@@ -61,6 +67,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             ComputedVersion = other.ComputedVersion;
             Configuration = other.Configuration;
+            Documents = hostProject.Documents.Select(d => new DefaultDocumentSnapshot(d)).ToArray();
             FilePath = other.FilePath;
             HostProject = hostProject;
             WorkspaceProject = other.WorkspaceProject;
@@ -80,6 +87,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             ComputedVersion = other.ComputedVersion;
             Configuration = other.Configuration;
+            Documents = other.Documents;
             FilePath = other.FilePath;
             HostProject = other.HostProject;
             WorkspaceProject = workspaceProject;
@@ -99,12 +107,15 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             ComputedVersion = update.WorkspaceProject.Version;
             Configuration = update.Configuration;
+            Documents = other.Documents;
             FilePath = other.FilePath;
             HostProject = other.HostProject;
             WorkspaceProject = other.WorkspaceProject;
         }
 
         public override ProjectExtensibilityConfiguration Configuration { get; }
+
+        public override IReadOnlyList<DocumentSnapshot> Documents { get; }
 
         public override string FilePath { get; }
 

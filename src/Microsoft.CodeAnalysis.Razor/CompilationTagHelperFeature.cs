@@ -13,12 +13,14 @@ namespace Microsoft.CodeAnalysis.Razor
         private ITagHelperDescriptorProvider[] _providers;
         private IMetadataReferenceFeature _referenceFeature;
 
+        public CSharpCompilation Compilation { get; set; }
+
         public IReadOnlyList<TagHelperDescriptor> GetDescriptors()
         {
             var results = new List<TagHelperDescriptor>();
 
             var context = TagHelperDescriptorProviderContext.Create(results);
-            var compilation = CSharpCompilation.Create("__TagHelpers", references: _referenceFeature.References);
+            var compilation = Compilation ?? CSharpCompilation.Create("__TagHelpers", references: _referenceFeature.References);
             context.SetCompilation(compilation);
 
             for (var i = 0; i < _providers.Length; i++)

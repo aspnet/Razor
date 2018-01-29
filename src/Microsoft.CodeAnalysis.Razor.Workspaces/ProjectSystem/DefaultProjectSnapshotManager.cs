@@ -14,6 +14,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         private readonly ErrorReporter _errorReporter;
         private readonly ForegroundDispatcher _foregroundDispatcher;
         private readonly ProjectSnapshotChangeTrigger[] _triggers;
+        private readonly ProjectSnapshotUpdateListener _updateListener;
         private readonly ProjectSnapshotWorkerQueue _workerQueue;
         private readonly ProjectSnapshotWorker _worker;
 
@@ -57,6 +58,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             _triggers = triggers.ToArray();
             Workspace = workspace;
 
+            _updateListener = workspace.Services.GetLanguageServices(RazorLanguage.Name).GetRequiredService<ProjectSnapshotUpdateListener>();
+
             _projects = new Dictionary<string, DefaultProjectSnapshot>();
 
             _workerQueue = new ProjectSnapshotWorkerQueue(_foregroundDispatcher, this, worker);
@@ -89,6 +92,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 // This is an update to the project's computed values, so everything should be overwritten
                 var snapshot = original.WithComputedUpdate(update);
                 _projects[update.WorkspaceProject.FilePath] = snapshot;
+
+                _updateListener.OnProjectUpdated(snapshot);
 
                 if (snapshot.IsDirty)
                 {
