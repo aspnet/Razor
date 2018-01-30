@@ -194,5 +194,28 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, OutputPath, "ClassLibrary.PrecompiledViews.dll");
             Assert.FileExists(result, OutputPath, "ClassLibrary.PrecompiledViews.pdb");
         }
+
+        [Fact]
+        [InitializeTestProject("SimplePages", "LinkedDir")]
+        public async Task Build_SetsUpEmbeddedResourcesWithLogicalName()
+        {
+            // Arrange
+            var file = @"..\LinkedDir\LinkedFile.cshtml";
+            var additionalProjectContent = $@"
+<ItemGroup>
+  <Content Include=""{file}"" Link=""LinkedFileOut\LinkedFile.cshtml"" />
+</ItemGroup>
+";
+            AddProjectFileContent(additionalProjectContent);
+            Directory.CreateDirectory(Path.Combine(Project.DirectoryPath, "..", "LinkedDir"));
+
+            var result = await DotnetMSBuild("Build", "/t:_IntrospectRazorEmbeddedResources /p:RazorCompileOnBuild=true /p:EmbedRazorGenerateSources=true");
+
+            Assert.BuildPassed(result);
+
+            Assert.BuildOutputContainsLine(result, @"CompileResource: Pages\Index.cshtml /Pages/Index.cshtml");
+            Assert.BuildOutputContainsLine(result, @"CompileResource: Areas\Products\Pages\_ViewStart.cshtml /Areas/Products/Pages/_ViewStart.cshtml");
+            Assert.BuildOutputContainsLine(result, @"CompileResource: ..\LinkedDir\LinkedFile.cshtml /LinkedFileOut/LinkedFile.cshtml");
+        }
     }
 }
