@@ -116,82 +116,86 @@ namespace Microsoft.AspNetCore.Razor.Tools
         /// A shutdown request should not abort an existing compilation.  It should be allowed to run to 
         /// completion.
         /// </summary>
-        // Skipping temporarily on non-windows. https://github.com/aspnet/Razor/issues/1991
-        [ConditionalFact]
-        [OSSkipCondition(OperatingSystems.Linux)]
-        [OSSkipCondition(OperatingSystems.MacOSX)]
+        [Fact]
         public async Task ServerRunning_ShutdownRequest_DoesNotAbortCompilation()
         {
             // Arrange
-            var completionSource = new TaskCompletionSource<bool>();
-            var host = CreateCompilerHost(c => c.ExecuteFunc = (req, ct) =>
+            using (var startedMre = new ManualResetEventSlim(initialState: false))
+            using (var finishedMre = new ManualResetEventSlim(initialState: false))
             {
-                // We want this to keep running even after the shutdown is seen.
-                completionSource.Task.Wait();
-                return EmptyServerResponse;
-            });
+                var host = CreateCompilerHost(c => c.ExecuteFunc = (req, ct) =>
+                {
+                    // We want this to keep running even after the shutdown is seen.
+                    startedMre.Set();
+                    finishedMre.Wait();
+                    return EmptyServerResponse;
+                });
 
-            using (var serverData = ServerUtilities.CreateServer(compilerHost: host))
-            {
-                var compileTask = ServerUtilities.Send(serverData.PipeName, EmptyServerRequest);
+                using (var serverData = ServerUtilities.CreateServer(compilerHost: host))
+                {
+                    var compileTask = ServerUtilities.Send(serverData.PipeName, EmptyServerRequest);
+                    startedMre.Wait();
 
-                // Act
-                // The compilation is now in progress, send the shutdown.
-                await ServerUtilities.SendShutdown(serverData.PipeName);
-                Assert.False(compileTask.IsCompleted);
+                    // Act
+                    // The compilation is now in progress, send the shutdown.
+                    await ServerUtilities.SendShutdown(serverData.PipeName);
+                    Assert.False(compileTask.IsCompleted);
 
-                // Now let the task complete.
-                completionSource.SetResult(true);
+                    // Now let the task complete.
+                    finishedMre.Set();
 
-                // Assert
-                var response = await compileTask;
-                Assert.Equal(ServerResponse.ResponseType.Completed, response.Type);
-                Assert.Equal(0, ((CompletedServerResponse)response).ReturnCode);
+                    // Assert
+                    var response = await compileTask;
+                    Assert.Equal(ServerResponse.ResponseType.Completed, response.Type);
+                    Assert.Equal(0, ((CompletedServerResponse)response).ReturnCode);
 
-                await serverData.Verify(connections: 2, completed: 2);
+                    await serverData.Verify(connections: 2, completed: 2);
+                }
             }
         }
 
         /// <summary>
         /// Multiple clients should be able to send shutdown requests to the server.
         /// </summary>
-        // Skipping temporarily on non-windows. https://github.com/aspnet/Razor/issues/1991
-        [ConditionalFact]
-        [OSSkipCondition(OperatingSystems.Linux)]
-        [OSSkipCondition(OperatingSystems.MacOSX)]
+        [Fact]
         public async Task ServerRunning_MultipleShutdownRequests_HandlesSuccessfully()
         {
             // Arrange
-            var completionSource = new TaskCompletionSource<bool>();
-            var host = CreateCompilerHost(c => c.ExecuteFunc = (req, ct) =>
+            using (var startedMre = new ManualResetEventSlim(initialState: false))
+            using (var finishedMre = new ManualResetEventSlim(initialState: false))
             {
-                // We want this to keep running even after the shutdown is seen.
-                completionSource.Task.Wait();
-                return EmptyServerResponse;
-            });
-
-            using (var serverData = ServerUtilities.CreateServer(compilerHost: host))
-            {
-                var compileTask = ServerUtilities.Send(serverData.PipeName, EmptyServerRequest);
-
-                // Act
-                for (var i = 0; i < 10; i++)
+                var host = CreateCompilerHost(c => c.ExecuteFunc = (req, ct) =>
                 {
-                    // The compilation is now in progress, send the shutdown.
-                    var processId = await ServerUtilities.SendShutdown(serverData.PipeName);
-                    Assert.Equal(Process.GetCurrentProcess().Id, processId);
-                    Assert.False(compileTask.IsCompleted);
+                    // We want this to keep running even after the shutdown is seen.
+                    startedMre.Set();
+                    finishedMre.Wait();
+                    return EmptyServerResponse;
+                });
+
+                using (var serverData = ServerUtilities.CreateServer(compilerHost: host))
+                {
+                    var compileTask = ServerUtilities.Send(serverData.PipeName, EmptyServerRequest);
+                    startedMre.Wait();
+
+                    // Act
+                    for (var i = 0; i < 10; i++)
+                    {
+                        // The compilation is now in progress, send the shutdown.
+                        var processId = await ServerUtilities.SendShutdown(serverData.PipeName);
+                        Assert.Equal(Process.GetCurrentProcess().Id, processId);
+                        Assert.False(compileTask.IsCompleted);
+                    }
+
+                    // Now let the task complete.
+                    finishedMre.Set();
+
+                    // Assert
+                    var response = await compileTask;
+                    Assert.Equal(ServerResponse.ResponseType.Completed, response.Type);
+                    Assert.Equal(0, ((CompletedServerResponse)response).ReturnCode);
+
+                    await serverData.Verify(connections: 11, completed: 11);
                 }
-
-                // Now let the task complete.
-                completionSource.SetResult(true);
-
-                // Assert
-                var response = await compileTask;
-                Assert.Equal(ServerResponse.ResponseType.Completed, response.Type);
-                Assert.Equal(0, ((CompletedServerResponse)response).ReturnCode);
-
-                await serverData.Verify(connections: 11, completed: 11);
             }
         }
 
@@ -202,44 +206,47 @@ namespace Microsoft.AspNetCore.Razor.Tools
         public async Task ServerRunning_CancelCompilation_CancelsSuccessfully()
         {
             // Arrange
-            const int requestCount = 5;
-            var count = 0;
-            var completionSource = new TaskCompletionSource<bool>();
-            var host = CreateCompilerHost(c => c.ExecuteFunc = (req, ct) =>
+            using (var mre = new ManualResetEventSlim(initialState: false))
             {
-                if (Interlocked.Increment(ref count) == requestCount)
+                const int requestCount = 5;
+                var count = 0;
+
+                var host = CreateCompilerHost(c => c.ExecuteFunc = (req, ct) =>
                 {
-                    completionSource.SetResult(true);
-                }
+                    if (Interlocked.Increment(ref count) == requestCount)
+                    {
+                        mre.Set();
+                    }
 
-                ct.WaitHandle.WaitOne();
-                return new RejectedServerResponse();
-            });
+                    ct.WaitHandle.WaitOne();
+                    return new RejectedServerResponse();
+                });
 
-            using (var serverData = ServerUtilities.CreateServer(compilerHost: host))
-            {
-                var tasks = new List<Task<ServerResponse>>();
-                for (var i = 0; i < requestCount; i++)
+                using (var serverData = ServerUtilities.CreateServer(compilerHost: host))
                 {
-                    var task = ServerUtilities.Send(serverData.PipeName, EmptyServerRequest);
-                    tasks.Add(task);
-                }
+                    var tasks = new List<Task<ServerResponse>>();
+                    for (var i = 0; i < requestCount; i++)
+                    {
+                        var task = ServerUtilities.Send(serverData.PipeName, EmptyServerRequest);
+                        tasks.Add(task);
+                    }
 
-                // Act
-                // Wait until all of the connections are being processed by the server. 
-                completionSource.Task.Wait();
+                    // Act
+                    // Wait until all of the connections are being processed by the server. 
+                    mre.Wait();
 
-                // Now cancel
-                var stats = await serverData.CancelAndCompleteAsync();
+                    // Now cancel
+                    var stats = await serverData.CancelAndCompleteAsync();
 
-                // Assert
-                Assert.Equal(requestCount, stats.Connections);
-                Assert.Equal(requestCount, count);
+                    // Assert
+                    Assert.Equal(requestCount, stats.Connections);
+                    Assert.Equal(requestCount, count);
 
-                foreach (var task in tasks)
-                {
-                    // We expect this to throw because the stream is already closed.
-                    await Assert.ThrowsAsync<EndOfStreamException>(() => task);
+                    foreach (var task in tasks)
+                    {
+                        // We expect this to throw because the stream is already closed.
+                        await Assert.ThrowsAsync<EndOfStreamException>(() => task);
+                    }
                 }
             }
         }
