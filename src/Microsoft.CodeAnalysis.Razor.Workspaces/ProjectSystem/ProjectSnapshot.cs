@@ -1,7 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
+using System.Collections.Generic;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
@@ -9,6 +9,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         public abstract ProjectExtensibilityConfiguration Configuration { get; }
 
-        public abstract Project UnderlyingProject { get; }
+        public abstract IReadOnlyList<DocumentSnapshot> Documents { get; }
+
+        public abstract string FilePath { get; }
+
+        public abstract bool IsInitialized { get; }
+
+        public abstract bool IsUnloaded { get; }
+        
+        public abstract Project WorkspaceProject { get; }
     }
 }

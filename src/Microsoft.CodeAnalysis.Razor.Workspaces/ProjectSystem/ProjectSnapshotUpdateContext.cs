@@ -7,17 +7,17 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
     internal class ProjectSnapshotUpdateContext
     {
-        public ProjectSnapshotUpdateContext(Project underlyingProject)
+        public ProjectSnapshotUpdateContext(Project workspaceProject)
         {
-            if (underlyingProject == null)
+            if (workspaceProject == null)
             {
-                throw new ArgumentNullException(nameof(underlyingProject));
+                throw new ArgumentNullException(nameof(workspaceProject));
             }
 
-            UnderlyingProject = underlyingProject;
+            WorkspaceProject = workspaceProject;
         }
 
-        public Project UnderlyingProject { get; }
+        public Project WorkspaceProject { get; }
 
         public ProjectExtensibilityConfiguration Configuration { get; set; }
     }

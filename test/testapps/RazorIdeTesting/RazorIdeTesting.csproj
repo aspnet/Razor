@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeFrameworkVersion>2.1.0-preview1-26102-01</RuntimeFrameworkVersion>
+    <NETStandardImplicitPackageVersion>2.0.1</NETStandardImplicitPackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0-preview1-28042" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectCapability Include="RazorProjectSystem" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <RazorLangVersion>2.0</RazorLangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PropertyPageSchema Include="..\..\..\src\Microsoft.VisualStudio.LanguageServices.Razor\ProjectSystem\Rules\General.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="..\..\..\src\Microsoft.VisualStudio.LanguageServices.Razor\ProjectSystem\Rules\Component.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+    <PropertyPageSchema Include="..\..\..\src\Microsoft.VisualStudio.LanguageServices.Razor\ProjectSystem\Rules\View.xaml">
+      <Context>Project</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+
+  <Target Name="RazorDesignTimeBuild" Returns="@(View)">
+    <ItemGroup>
+      <View Include="%(Content.Identity)" Condition="'%(Content.Extension)'=='.cshtml'">
+        <GeneratedFile>$(IntermediateOutputPath)Razor\%(RelativeDir)%(Filename).cs</GeneratedFile>
+      </View>
+    </ItemGroup>
+  </Target>
+
+  <Target 
+    Name="RazorBeforeDesignTimeBuild" 
+    BeforeTargets="BeforeCompile" 
+    DependsOnTargets="RazorDesignTimeBuild" 
+    Condition="'$(DesignTimeBuild)'=='true' OR '$(BuildingProject)'!='true'">
+
+    <ItemGroup>
+      <RazorCompile Include="%(View.GeneratedFile)" />
+    </ItemGroup>
+
+    <MakeDir Directories="%(RazorCompile.RelativeDir)" />
+    <Touch Files="@(RazorCompile)" AlwaysCreate="true" />
+
+    <ItemGroup>
+      <Compile Include="@(RazorCompile)" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.1.0-preview1-28042" />
+  </ItemGroup>
+
+</Project>

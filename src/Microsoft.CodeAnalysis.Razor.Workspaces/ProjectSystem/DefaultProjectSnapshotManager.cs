@@ -14,11 +14,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         private readonly ErrorReporter _errorReporter;
         private readonly ForegroundDispatcher _foregroundDispatcher;
         private readonly ProjectSnapshotChangeTrigger[] _triggers;
+        private readonly ProjectSnapshotUpdateListener _updateListener;
         private readonly ProjectSnapshotWorkerQueue _workerQueue;
         private readonly ProjectSnapshotWorker _worker;
 
-        private readonly Dictionary<ProjectId, DefaultProjectSnapshot> _projects;
-        
+        private readonly Dictionary<string, DefaultProjectSnapshot> _projects;
+
         public DefaultProjectSnapshotManager(
             ForegroundDispatcher foregroundDispatcher,
             ErrorReporter errorReporter,
@@ -57,7 +58,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             _triggers = triggers.ToArray();
             Workspace = workspace;
 
-            _projects = new Dictionary<ProjectId, DefaultProjectSnapshot>();
+            _updateListener = workspace.Services.GetLanguageServices(RazorLanguage.Name).GetRequiredService<ProjectSnapshotUpdateListener>();
+
+            _projects = new Dictionary<string, DefaultProjectSnapshot>();
+
             _workerQueue = new ProjectSnapshotWorkerQueue(_foregroundDispatcher, this, worker);
 
             for (var i = 0; i < _triggers.Length; i++)
@@ -74,58 +78,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
         }
 
-        public DefaultProjectSnapshot FindProject(ProjectId id)
-        {
-            if (id == null)
-            {
-                throw new ArgumentNullException(nameof(id));
-            }
-
-            _projects.TryGetValue(id, out var project);
-            return project;
-        }
-
         public override Workspace Workspace { get; }
-
-        public override void ProjectAdded(Project underlyingProject)
-        {
-            if (underlyingProject == null)
-            {
-                throw new ArgumentNullException(nameof(underlyingProject));
-            }
-
-            var snapshot = new DefaultProjectSnapshot(underlyingProject);
-            _projects[underlyingProject.Id] = snapshot;
-
-            // New projects always start dirty, need to compute state in the background.
-            NotifyBackgroundWorker(snapshot.UnderlyingProject);
-
-            // We need to notify listeners about every project add.
-            NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Added));
-        }
-
-        public override void ProjectChanged(Project underlyingProject)
-        {
-            if (underlyingProject == null)
-            {
-                throw new ArgumentNullException(nameof(underlyingProject));
-            }
-
-            if (_projects.TryGetValue(underlyingProject.Id, out var original))
-            {
-                // Doing an update to the project should keep computed values, but mark the project as dirty if the
-                // underlying project is newer.
-                var snapshot = original.WithProjectChange(underlyingProject);
-                _projects[underlyingProject.Id] = snapshot;
-
-                if (snapshot.IsDirty)
-                {
-                    // We don't need to notify listeners yet because we don't have any **new** computed state. However we do 
-                    // need to trigger the background work to asynchronously compute the effect of the updates.
-                    NotifyBackgroundWorker(snapshot.UnderlyingProject);
-                }
-            }
-        }
 
         public override void ProjectUpdated(ProjectSnapshotUpdateContext update)
         {
@@ -133,18 +86,20 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 throw new ArgumentNullException(nameof(update));
             }
-
-            if (_projects.TryGetValue(update.UnderlyingProject.Id, out var original))
+            
+            if (_projects.TryGetValue(update.WorkspaceProject.FilePath, out var original))
             {
                 // This is an update to the project's computed values, so everything should be overwritten
-                var snapshot = original.WithProjectChange(update);
-                _projects[update.UnderlyingProject.Id] = snapshot;
+                var snapshot = original.WithComputedUpdate(update);
+                _projects[update.WorkspaceProject.FilePath] = snapshot;
+
+                _updateListener.OnProjectUpdated(snapshot);
 
                 if (snapshot.IsDirty)
                 {
                     // It's possible that the snapshot can still be dirty if we got a project update while computing state in
                     // the background. We need to trigger the background work to asynchronously compute the effect of the updates.
-                    NotifyBackgroundWorker(snapshot.UnderlyingProject);
+                    NotifyBackgroundWorker(snapshot.WorkspaceProject);
                 }
 
                 // Now we need to know if the changes that we applied are significant. If that's the case then 
@@ -156,30 +111,154 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
         }
 
-        public override void ProjectRemoved(Project underlyingProject)
+        public override void HostProjectAdded(HostProject hostProject)
         {
-            if (underlyingProject == null)
+            if (hostProject == null)
             {
-                throw new ArgumentNullException(nameof(underlyingProject));
+                throw new ArgumentNullException(nameof(hostProject));
             }
-            
-            if (_projects.TryGetValue(underlyingProject.Id, out var snapshot))
-            {
-                _projects.Remove(underlyingProject.Id);
 
-                // We need to notify listeners about every project removal.
-                NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Removed));
+            // It's possible that the workspace project was already initialized, and the host project is showing up
+            // a bit later. If that's the case then treat this as an update.
+            if (_projects.ContainsKey(hostProject.FilePath))
+            {
+                HostProjectChanged(hostProject);
+                return;
+            }
+
+            var snapshot = new DefaultProjectSnapshot(hostProject);
+            _projects[hostProject.FilePath] = snapshot;
+
+            // We expect new projects to always be dirty but the workspace project isn't yet set. We don't attempt to compute
+            // any state until the project is initialized.
+            //
+            // We need to notify listeners about every project add.
+            NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Added));
+        }
+
+        public override void HostProjectChanged(HostProject hostProject)
+        {
+            if (hostProject == null)
+            {
+                throw new ArgumentNullException(nameof(hostProject));
+            }
+
+            if (_projects.TryGetValue(hostProject.FilePath, out var original))
+            {
+                // Doing an update to the project should keep computed values, but mark the project as dirty if the
+                // underlying project is newer.
+                var snapshot = original.WithHostProject(hostProject);
+                _projects[hostProject.FilePath] = snapshot;
+
+                if (snapshot.IsInitialized && snapshot.IsDirty)
+                {
+                    // We don't need to notify listeners yet because we don't have any **new** computed state. However we do 
+                    // need to trigger the background work to asynchronously compute the effect of the updates.
+                    NotifyBackgroundWorker(snapshot.WorkspaceProject);
+                }
             }
         }
 
-        public override void ProjectsCleared()
+        public override void HostProjectRemoved(HostProject hostProject)
+        {
+            if (hostProject == null)
+            {
+                throw new ArgumentNullException(nameof(hostProject));
+            }
+
+            if (_projects.TryGetValue(hostProject.FilePath, out var snapshot))
+            {
+                snapshot = snapshot.RemoveHostProject();
+                _projects[hostProject.FilePath] = snapshot;
+
+                if (snapshot.IsUnloaded)
+                {
+                    _projects.Remove(hostProject.FilePath);
+
+                    // We need to notify listeners about every project removal.
+                    NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Removed));
+                }
+            }
+        }
+
+        public override void WorkspaceProjectAdded(Project workspaceProject)
+        {
+            if (workspaceProject == null)
+            {
+                throw new ArgumentNullException(nameof(workspaceProject));
+            }
+
+            // It's possible that the host project was already initialized, and the workspace project is showing up
+            // a bit later. If that's the case then treat this as an update.
+            if (_projects.ContainsKey(workspaceProject.FilePath))
+            {
+                WorkspaceProjectChanged(workspaceProject);
+                return;
+            }
+
+            var snapshot = new DefaultProjectSnapshot(workspaceProject);
+            _projects[workspaceProject.FilePath] = snapshot;
+
+            // We expect new projects to always be dirty but the host project isn't yet set. We don't attempt to compute
+            // any state until the project is initialized.
+            //
+            // We need to notify listeners about every project add.
+            NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Added));
+        }
+
+        public override void WorkspaceProjectChanged(Project workspaceProject)
+        {
+            if (workspaceProject == null)
+            {
+                throw new ArgumentNullException(nameof(workspaceProject));
+            }
+
+            if (_projects.TryGetValue(workspaceProject.FilePath, out var original))
+            {
+                // Doing an update to the project should keep computed values, but mark the project as dirty if the
+                // underlying project is newer.
+                var snapshot = original.WithWorkspaceProject(workspaceProject);
+                _projects[workspaceProject.FilePath] = snapshot;
+
+                if (snapshot.IsInitialized && snapshot.IsDirty)
+                {
+                    // We don't need to notify listeners yet because we don't have any **new** computed state. However we do 
+                    // need to trigger the background work to asynchronously compute the effect of the updates.
+                    NotifyBackgroundWorker(snapshot.WorkspaceProject);
+                }
+            }
+        }
+
+        public override void WorkspaceProjectRemoved(Project workspaceProject)
+        {
+            if (workspaceProject == null)
+            {
+                throw new ArgumentNullException(nameof(workspaceProject));
+            }
+            
+            if (_projects.TryGetValue(workspaceProject.FilePath, out var snapshot))
+            {
+                snapshot = snapshot.RemoveWorkspaceProject();
+                _projects[workspaceProject.FilePath] = snapshot;
+
+                if (snapshot.IsUnloaded)
+                {
+                    _projects.Remove(workspaceProject.FilePath);
+
+                    // We need to notify listeners about every project removal.
+                    NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Removed));
+                }
+            }
+        }
+
+        public override void WorkspaceProjectsCleared()
         {
             foreach (var kvp in _projects.ToArray())
             {
-                _projects.Remove(kvp.Key);
-
-                // We need to notify listeners about every project removal.
-                NotifyListeners(new ProjectChangeEventArgs(kvp.Value, ProjectChangeKind.Removed));
+                if (kvp.Value.WorkspaceProject != null)
+                {
+                    WorkspaceProjectRemoved(kvp.Value.WorkspaceProject);
+                }
             }
         }
 

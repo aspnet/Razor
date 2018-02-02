@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
 
             // Act
-            ProjectManager.ProjectAdded(project);
+            ProjectManager.WorkspaceProjectAdded(project);
 
             // Assert
             var snapshot = ProjectManager.GetSnapshot(project.Id);
@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
-            ProjectManager.ProjectAdded(project);
+            ProjectManager.WorkspaceProjectAdded(project);
             ProjectManager.Reset();
 
             // Adding some computed state
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             project = project.WithAssemblyName("Test1"); // Simulate a project change
 
             // Act
-            ProjectManager.ProjectChanged(project);
+            ProjectManager.WorkspaceProjectChanged(project);
 
             // Assert
             var snapshot = ProjectManager.GetSnapshot(project.Id);
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
-            ProjectManager.ProjectAdded(project);
+            ProjectManager.WorkspaceProjectAdded(project);
             ProjectManager.Reset();
 
             var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
-            ProjectManager.ProjectAdded(project);
+            ProjectManager.WorkspaceProjectAdded(project);
             ProjectManager.Reset();
 
             var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             ProjectManager.Reset();
 
             project = project.WithAssemblyName("Test1"); // Simulate a project change
-            ProjectManager.ProjectChanged(project);
+            ProjectManager.WorkspaceProjectChanged(project);
             ProjectManager.Reset();
 
             // Act
@@ -119,7 +119,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
-            ProjectManager.ProjectAdded(project);
+            ProjectManager.WorkspaceProjectAdded(project);
             ProjectManager.Reset();
 
             var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
@@ -128,7 +128,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var update = new ProjectSnapshotUpdateContext(project) { Configuration = configuration };
 
             project = project.WithAssemblyName("Test1"); // Simulate a project change
-            ProjectManager.ProjectChanged(project);
+            ProjectManager.WorkspaceProjectChanged(project);
             ProjectManager.Reset();
 
             // Act
@@ -148,21 +148,21 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
-            ProjectManager.ProjectAdded(project);
+            ProjectManager.WorkspaceProjectAdded(project);
             ProjectManager.Reset();
 
             var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
             ProjectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(project) { Configuration = configuration });
 
             project = project.WithAssemblyName("Test1"); // Simulate a project change
-            ProjectManager.ProjectChanged(project);
+            ProjectManager.WorkspaceProjectChanged(project);
             ProjectManager.Reset();
 
             // Compute an update for "Test1"
             var update = new ProjectSnapshotUpdateContext(project) { Configuration = configuration };
 
             project = project.WithAssemblyName("Test2"); // Simulate a project change
-            ProjectManager.ProjectChanged(project);
+            ProjectManager.WorkspaceProjectChanged(project);
             ProjectManager.Reset();
 
             // Act
@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
 
             // Act
-            ProjectManager.ProjectChanged(project);
+            ProjectManager.WorkspaceProjectChanged(project);
 
             // Assert
             Assert.Empty(ProjectManager.Projects);
@@ -215,11 +215,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Arrange
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
 
-            ProjectManager.ProjectAdded(project);
+            ProjectManager.WorkspaceProjectAdded(project);
             ProjectManager.Reset();
 
             // Act
-            ProjectManager.ProjectRemoved(project);
+            ProjectManager.WorkspaceProjectRemoved(project);
 
             // Assert
             Assert.Empty(ProjectManager.Projects);
@@ -235,7 +235,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
 
             // Act
-            ProjectManager.ProjectRemoved(project);
+            ProjectManager.WorkspaceProjectRemoved(project);
 
             // Assert
             Assert.Empty(ProjectManager.Projects);
@@ -250,11 +250,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Arrange
             var project = Workspace.CurrentSolution.AddProject("Test", "Test", LanguageNames.CSharp);
 
-            ProjectManager.ProjectAdded(project);
+            ProjectManager.WorkspaceProjectAdded(project);
             ProjectManager.Reset();
 
             // Act
-            ProjectManager.ProjectsCleared();
+            ProjectManager.WorkspaceProjectsCleared();
 
             // Assert
             Assert.Empty(ProjectManager.Projects);
@@ -276,7 +276,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             public DefaultProjectSnapshot GetSnapshot(ProjectId id)
             {
-                return Projects.Cast<DefaultProjectSnapshot>().FirstOrDefault(s => s.UnderlyingProject.Id == id);
+                return Projects.Cast<DefaultProjectSnapshot>().FirstOrDefault(s => s.WorkspaceProject.Id == id);
             }
 
             public void Reset()

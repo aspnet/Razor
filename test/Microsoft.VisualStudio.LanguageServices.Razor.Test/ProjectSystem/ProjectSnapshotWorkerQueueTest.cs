@@ -121,7 +121,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             public DefaultProjectSnapshot GetSnapshot(ProjectId id)
             {
-                return Projects.Cast<DefaultProjectSnapshot>().FirstOrDefault(s => s.UnderlyingProject.Id == id);
+                return Projects.Cast<DefaultProjectSnapshot>().FirstOrDefault(s => s.WorkspaceProject.Id == id);
             }
 
             protected override void NotifyListeners(ProjectChangeEventArgs e)

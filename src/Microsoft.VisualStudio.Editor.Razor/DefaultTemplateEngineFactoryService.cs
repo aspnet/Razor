@@ -87,9 +87,9 @@ namespace Microsoft.VisualStudio.Editor.Razor
             for (var i = 0; i < projects.Count; i++)
             {
                 var project = projects[i];
-                if (project.UnderlyingProject.FilePath != null)
+                if (project.WorkspaceProject.FilePath != null)
                 {
-                    if (string.Equals(directory, NormalizeDirectoryPath(Path.GetDirectoryName(project.UnderlyingProject.FilePath)), StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(directory, NormalizeDirectoryPath(Path.GetDirectoryName(project.WorkspaceProject.FilePath)), StringComparison.OrdinalIgnoreCase))
                     {
                         return project;
                     }

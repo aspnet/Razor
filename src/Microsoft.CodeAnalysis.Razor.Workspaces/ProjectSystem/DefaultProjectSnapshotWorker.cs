@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // We'll have more things to process here, but for now we're just hardcoding the configuration.
 
-            var configuration = await _configurationFactory.GetConfigurationAsync(update.UnderlyingProject);
+            var configuration = await _configurationFactory.GetConfigurationAsync(update.WorkspaceProject);
             update.Configuration = configuration;
         }
     }

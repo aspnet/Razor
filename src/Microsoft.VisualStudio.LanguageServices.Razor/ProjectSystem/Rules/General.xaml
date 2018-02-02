@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Rule
+    Name="General"
+    DisplayName="Razor"
+    PageTemplate="General"
+    Description="General Razor Properties"
+    xmlns="http://schemas.microsoft.com/build/2009/properties">
+
+    <Rule.Categories>
+        <Category Name="General" DisplayName="General"/>
+    </Rule.Categories>
+
+    <Rule.DataSource>
+        <DataSource Persistence="ProjectFile" Label="Configuration" />
+    </Rule.DataSource>
+
+    <StringProperty Category="General" Name="RazorLangVersion" DisplayName="Razor Language Version" Visible="True" Description="Razor Language Version"/>
+
+</Rule>

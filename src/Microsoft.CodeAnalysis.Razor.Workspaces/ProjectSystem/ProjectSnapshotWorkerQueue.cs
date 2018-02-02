@@ -196,7 +196,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 }
                 else
                 {
-                    _projectManager.ReportError(update.exception, update.context?.UnderlyingProject);
+                    _projectManager.ReportError(update.exception, update.context?.WorkspaceProject);
                 }
             }
         }
