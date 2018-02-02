@@ -123,6 +123,6 @@ namespace Microsoft.AspNetCore.Razor.Language
         // We need this to round-trip with TryParse
         public override string ToString() => Text;
 
-        private string DebuggerToString() => $"Razor 'Text'";
+        private string DebuggerToString() => $"Razor '{Text}'";
     }
 }
