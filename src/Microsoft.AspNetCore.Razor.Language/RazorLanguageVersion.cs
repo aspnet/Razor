@@ -9,15 +9,15 @@ namespace Microsoft.AspNetCore.Razor.Language
     [DebuggerDisplay("{" + nameof(DebuggerToString) + "(),nq}")]
     public sealed class RazorLanguageVersion : IEquatable<RazorLanguageVersion>, IComparable<RazorLanguageVersion>
     {
-        public static readonly RazorLanguageVersion Version_1_0 = new RazorLanguageVersion("1.0", 1, 0);
+        public static readonly RazorLanguageVersion Version_1_0 = new RazorLanguageVersion(1, 0);
 
-        public static readonly RazorLanguageVersion Version_1_1 = new RazorLanguageVersion("1.1", 1, 1);
+        public static readonly RazorLanguageVersion Version_1_1 = new RazorLanguageVersion(1, 1);
 
-        public static readonly RazorLanguageVersion Version_2_0 = new RazorLanguageVersion("2.0", 2, 0);
+        public static readonly RazorLanguageVersion Version_2_0 = new RazorLanguageVersion(2, 0);
 
-        public static readonly RazorLanguageVersion Version_2_1 = new RazorLanguageVersion("2.1", 2, 1);
+        public static readonly RazorLanguageVersion Version_2_1 = new RazorLanguageVersion(2, 1);
 
-        public static readonly RazorLanguageVersion Latest = new RazorLanguageVersion("Latest", 2, 1);
+        public static readonly RazorLanguageVersion Latest = Version_2_1;
 
         public static bool TryParse(string languageVersion, out RazorLanguageVersion version)
         {
@@ -26,9 +26,9 @@ namespace Microsoft.AspNetCore.Razor.Language
                 throw new ArgumentNullException(nameof(languageVersion));
             }
 
-            if (languageVersion == "Latest")
+            if (string.Equals(languageVersion, "latest", StringComparison.OrdinalIgnoreCase))
             {
-                version = Latest;
+                version = Version_2_1;
                 return true;
             }
             else if (languageVersion == "2.1")
@@ -74,14 +74,11 @@ namespace Microsoft.AspNetCore.Razor.Language
         }
 
         // Don't want anyone else constructing language versions.
-        private RazorLanguageVersion(string text, int major, int minor)
+        private RazorLanguageVersion(int major, int minor)
         {
-            Text = text;
             Major = major;
             Minor = minor;
         }
-
-        private string Text { get; }
 
         public int Major { get; }
 
@@ -119,10 +116,9 @@ namespace Microsoft.AspNetCore.Razor.Language
             // We don't need to do anything special for our hash code since reference equality is what we're going for.
             return base.GetHashCode();
         }
+        
+        public override string ToString() => $"{Major}.{Minor}";
 
-        // We need this to round-trip with TryParse
-        public override string ToString() => Text;
-
-        private string DebuggerToString() => $"Razor '{Text}'";
+        private string DebuggerToString() => $"Razor '{Major}.{Minor}'";
     }
 }

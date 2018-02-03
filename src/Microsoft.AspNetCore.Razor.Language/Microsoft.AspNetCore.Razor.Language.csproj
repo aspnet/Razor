@@ -9,8 +9,4 @@
     <PackageReference Include="Microsoft.Extensions.HashCodeCombiner.Sources" PrivateAssets="All" Version="$(MicrosoftExtensionsHashCodeCombinerSourcesPackageVersion)" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Hosting\" />
-  </ItemGroup>
-
 </Project>
