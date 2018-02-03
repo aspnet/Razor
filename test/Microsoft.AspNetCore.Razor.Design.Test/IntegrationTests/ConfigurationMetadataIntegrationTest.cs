@@ -32,7 +32,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileContainsLine(
                 result,
                 Path.Combine(IntermediateOutputPath, "SimpleMvc.AssemblyInfo.cs"),
-                "[assembly: Microsoft.AspNetCore.Razor.Hosting.RazorExtensionAssemblyNameAttribute(\"MVC-2.1\", \"Microsoft.AspNetCore.Razor.Extensions\")]");
+                "[assembly: Microsoft.AspNetCore.Razor.Hosting.RazorExtensionAssemblyNameAttribute(\"MVC-2.1\", \"Microsoft.AspNetCore.Mvc.Razor.Extensions\")]");
         }
 
         [Fact]

@@ -6,8 +6,6 @@
     <SolutionRoot>$([MSBuild]::EnsureTrailingSlash('$(SolutionRoot)'))</SolutionRoot>
   </PropertyGroup>
 
-  <Import Project="$(SolutionRoot)Directory.Build.props"/>
-
   <ItemGroup Condition="'$(BinariesRoot)'==''">
     <!-- In test scenarios $(BinariesRoot) is defined in a generated Directory.Build.props file -->
     <ProjectReference Include="..\..\Microsoft.AspNetCore.Razor.Test.MvcShim\Microsoft.AspNetCore.Razor.Test.MvcShim.csproj"/>
