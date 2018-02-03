@@ -17,12 +17,38 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             Workspace = new AdhocWorkspace();
             EmptySolution = Workspace.CurrentSolution.GetIsolatedSolution();
 
-            ProjectNumberOne = Workspace.CurrentSolution.AddProject("One", "One", LanguageNames.CSharp);
-            ProjectNumberTwo = ProjectNumberOne.Solution.AddProject("Two", "Two", LanguageNames.CSharp);
-            SolutionWithTwoProjects = ProjectNumberTwo.Solution;
+            var projectId1 = ProjectId.CreateNewId("One");
+            var projectId2 = ProjectId.CreateNewId("Two");
+            var projectId3 = ProjectId.CreateNewId("Three");
 
-            ProjectNumberThree = EmptySolution.GetIsolatedSolution().AddProject("Three", "Three", LanguageNames.CSharp);
-            SolutionWithOneProject = ProjectNumberThree.Solution;
+            SolutionWithTwoProjects = Workspace.CurrentSolution
+                .AddProject(ProjectInfo.Create(
+                    projectId1,
+                    VersionStamp.Default,
+                    "One",
+                    "One",
+                    LanguageNames.CSharp,
+                    filePath: "One.csproj"))
+                .AddProject(ProjectInfo.Create(
+                    projectId2,
+                    VersionStamp.Default,
+                    "Two",
+                    "Two",
+                    LanguageNames.CSharp,
+                    filePath: "Two.csproj"));
+
+            SolutionWithOneProject = EmptySolution.GetIsolatedSolution()
+                .AddProject(ProjectInfo.Create(
+                    projectId3,
+                    VersionStamp.Default,
+                    "Three",
+                    "Three",
+                    LanguageNames.CSharp,
+                    filePath: "Three.csproj"));
+
+            ProjectNumberOne = SolutionWithTwoProjects.GetProject(projectId1);
+            ProjectNumberTwo = SolutionWithTwoProjects.GetProject(projectId2);
+            ProjectNumberThree = SolutionWithOneProject.GetProject(projectId3);
         }
 
         private Solution EmptySolution { get; }
@@ -58,9 +84,9 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // Assert
             Assert.Collection(
-                projectManager.Projects.OrderBy(p => p.UnderlyingProject.Name),
-                p => Assert.Equal(ProjectNumberOne.Id, p.UnderlyingProject.Id),
-                p => Assert.Equal(ProjectNumberTwo.Id, p.UnderlyingProject.Id));
+                projectManager.Projects.OrderBy(p => p.WorkspaceProject.Name),
+                p => Assert.Equal(ProjectNumberOne.Id, p.WorkspaceProject.Id),
+                p => Assert.Equal(ProjectNumberTwo.Id, p.WorkspaceProject.Id));
         }
 
         [Theory]
@@ -86,9 +112,9 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // Assert
             Assert.Collection(
-                projectManager.Projects.OrderBy(p => p.UnderlyingProject.Name),
-                p => Assert.Equal(ProjectNumberOne.Id, p.UnderlyingProject.Id),
-                p => Assert.Equal(ProjectNumberTwo.Id, p.UnderlyingProject.Id));
+                projectManager.Projects.OrderBy(p => p.WorkspaceProject.Name),
+                p => Assert.Equal(ProjectNumberOne.Id, p.WorkspaceProject.Id),
+                p => Assert.Equal(ProjectNumberTwo.Id, p.WorkspaceProject.Id));
         }
 
         [Theory]
@@ -112,13 +138,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // Assert
             Assert.Collection(
-                projectManager.Projects.OrderBy(p => p.UnderlyingProject.Name),
+                projectManager.Projects.OrderBy(p => p.WorkspaceProject.Name),
                 p =>
                 {
-                    Assert.Equal(ProjectNumberOne.Id, p.UnderlyingProject.Id);
-                    Assert.Equal("Changed", p.UnderlyingProject.AssemblyName);
+                    Assert.Equal(ProjectNumberOne.Id, p.WorkspaceProject.Id);
+                    Assert.Equal("Changed", p.WorkspaceProject.AssemblyName);
                 },
-                p => Assert.Equal(ProjectNumberTwo.Id, p.UnderlyingProject.Id));
+                p => Assert.Equal(ProjectNumberTwo.Id, p.WorkspaceProject.Id));
         }
 
         [Fact]
@@ -140,8 +166,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // Assert
             Assert.Collection(
-                projectManager.Projects.OrderBy(p => p.UnderlyingProject.Name),
-                p => Assert.Equal(ProjectNumberTwo.Id, p.UnderlyingProject.Id));
+                projectManager.Projects.OrderBy(p => p.WorkspaceProject.Name),
+                p => Assert.Equal(ProjectNumberTwo.Id, p.WorkspaceProject.Id));
         }
 
         [Fact]
@@ -159,8 +185,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // Assert
             Assert.Collection(
-                projectManager.Projects.OrderBy(p => p.UnderlyingProject.Name),
-                p => Assert.Equal(ProjectNumberThree.Id, p.UnderlyingProject.Id));
+                projectManager.Projects.OrderBy(p => p.WorkspaceProject.Name),
+                p => Assert.Equal(ProjectNumberThree.Id, p.WorkspaceProject.Id));
         }
 
         private class TestProjectSnapshotManager : DefaultProjectSnapshotManager
@@ -170,8 +196,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
             }
 
-            protected override void NotifyBackgroundWorker(Project project)
+            protected override void NotifyBackgroundWorker(ProjectSnapshotUpdateContext context)
             {
+                Assert.NotNull(context.HostProject);
+                Assert.NotNull(context.WorkspaceProject);
             }
         }
 

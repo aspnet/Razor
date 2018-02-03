@@ -12,13 +12,17 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         public DefaultProjectSnapshotWorkerTest()
         {
-            Project = new AdhocWorkspace().AddProject("Test1", LanguageNames.CSharp);
+            HostProject = new HostProject("Test1.csproj", "2.1");
+
+            WorkspaceProject = new AdhocWorkspace().AddProject("Test1", LanguageNames.CSharp);
 
             CompletionSource = new TaskCompletionSource<ProjectExtensibilityConfiguration>();
             ConfigurationFactory = Mock.Of<ProjectExtensibilityConfigurationFactory>(f => f.GetConfigurationAsync(It.IsAny<Project>(), default(CancellationToken)) == CompletionSource.Task);
         }
 
-        private Project Project { get; }
+        private HostProject HostProject { get; }
+
+        private Project WorkspaceProject { get; }
 
         private ProjectExtensibilityConfigurationFactory ConfigurationFactory { get; }
 
@@ -30,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Arrange
             var worker = new DefaultProjectSnapshotWorker(Dispatcher, ConfigurationFactory);
 
-            var context = new ProjectSnapshotUpdateContext(Project);
+            var context = new ProjectSnapshotUpdateContext(HostProject.FilePath, HostProject, WorkspaceProject, VersionStamp.Default);
 
             var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
 

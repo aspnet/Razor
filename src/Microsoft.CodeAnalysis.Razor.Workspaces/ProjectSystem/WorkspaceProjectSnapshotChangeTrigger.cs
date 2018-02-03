@@ -23,13 +23,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             Debug.Assert(solution != null);
 
-            _projectManager.ProjectsCleared();
+            _projectManager.WorkspaceProjectsCleared();
 
             foreach (var project in solution.Projects)
             {
                 if (project.Language == LanguageNames.CSharp)
                 {
-                    _projectManager.ProjectAdded(project);
+                    _projectManager.WorkspaceProjectAdded(project);
                 }
             }
         }
@@ -37,37 +37,34 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         // Internal for testing
         internal void Workspace_WorkspaceChanged(object sender, WorkspaceChangeEventArgs e)
         {
-            Project underlyingProject;
+            Project project;
             switch (e.Kind)
             {
                 case WorkspaceChangeKind.ProjectAdded:
                     {
-                        underlyingProject = e.NewSolution.GetProject(e.ProjectId);
-                        Debug.Assert(underlyingProject != null);
+                        project = e.NewSolution.GetProject(e.ProjectId);
+                        Debug.Assert(project != null);
 
-                        if (underlyingProject.Language == LanguageNames.CSharp)
-                        {
-                            _projectManager.ProjectAdded(underlyingProject);
-                        }
+                        _projectManager.WorkspaceProjectAdded(project);
                         break;
                     }
 
                 case WorkspaceChangeKind.ProjectChanged:
                 case WorkspaceChangeKind.ProjectReloaded:
                     {
-                        underlyingProject = e.NewSolution.GetProject(e.ProjectId);
-                        Debug.Assert(underlyingProject != null);
+                        project = e.NewSolution.GetProject(e.ProjectId);
+                        Debug.Assert(project != null);
 
-                        _projectManager.ProjectChanged(underlyingProject);
+                        _projectManager.WorkspaceProjectChanged(project);
                         break;
                     }
 
                 case WorkspaceChangeKind.ProjectRemoved:
                     {
-                        underlyingProject = e.OldSolution.GetProject(e.ProjectId);
-                        Debug.Assert(underlyingProject != null);
+                        project = e.OldSolution.GetProject(e.ProjectId);
+                        Debug.Assert(project != null);
 
-                        _projectManager.ProjectRemoved(underlyingProject);
+                        _projectManager.WorkspaceProjectRemoved(project);
                         break;
                     }
 

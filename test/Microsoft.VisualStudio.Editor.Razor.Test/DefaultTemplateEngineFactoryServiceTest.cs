@@ -18,24 +18,30 @@ namespace Microsoft.VisualStudio.Editor.Razor
     {
         public DefaultTemplateEngineFactoryServiceTest()
         {
+            HostProject = new HostProject("/TestPath/SomePath/Test.csproj", "2.1");
+
             Workspace = new AdhocWorkspace();
 
             var info = ProjectInfo.Create(ProjectId.CreateNewId("Test"), VersionStamp.Default, "Test", "Test", LanguageNames.CSharp, filePath: "/TestPath/SomePath/Test.csproj");
-            Project = Workspace.CurrentSolution.AddProject(info).GetProject(info.Id);
+            WorkspaceProject = Workspace.CurrentSolution.AddProject(info).GetProject(info.Id);
         }
 
-        // We don't actually look at the project, we rely on the ProjectStateManager
-        public Project Project { get; }
+        private HostProject HostProject { get; }
 
-        public Workspace Workspace { get; }
+        // We don't actually look at the project, we rely on the ProjectStateManager
+        private Project WorkspaceProject { get; }
+
+        private Workspace Workspace { get; }
 
         [Fact]
         public void Create_CreatesDesignTimeTemplateEngine_ForLatest()
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
-            projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
+            projectManager.HostProjectAdded(HostProject);
+            projectManager.WorkspaceProjectAdded(WorkspaceProject);
+
+            projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(HostProject.FilePath, HostProject, WorkspaceProject, VersionStamp.Default)
             {
                 Configuration = new MvcExtensibilityConfiguration(
                     RazorLanguageVersion.Version_2_0,
@@ -64,8 +70,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
-            projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
+            projectManager.HostProjectAdded(HostProject);
+            projectManager.WorkspaceProjectAdded(WorkspaceProject);
+
+            projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(HostProject.FilePath, HostProject, WorkspaceProject, VersionStamp.Default)
             {
                 Configuration = new MvcExtensibilityConfiguration(
                     RazorLanguageVersion.Version_1_1,
@@ -94,8 +102,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
-            projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
+            projectManager.HostProjectAdded(HostProject);
+            projectManager.WorkspaceProjectAdded(WorkspaceProject);
+
+            projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(HostProject.FilePath, HostProject, WorkspaceProject, VersionStamp.Default)
             {
                 Configuration = new MvcExtensibilityConfiguration(
                     RazorLanguageVersion.Version_1_0,
@@ -123,8 +133,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
-            projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(Project)
+            projectManager.HostProjectAdded(HostProject);
+            projectManager.WorkspaceProjectAdded(WorkspaceProject);
+
+            projectManager.ProjectUpdated(new ProjectSnapshotUpdateContext(HostProject.FilePath, HostProject, WorkspaceProject, VersionStamp.Default)
             {
                 Configuration = new MvcExtensibilityConfiguration(
                     RazorLanguageVersion.Latest,
@@ -174,7 +186,8 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             // Arrange
             var projectManager = new TestProjectSnapshotManager(Workspace);
-            projectManager.ProjectAdded(Project);
+            projectManager.HostProjectAdded(HostProject);
+            projectManager.WorkspaceProjectAdded(WorkspaceProject);
 
             var factoryService = new DefaultTemplateEngineFactoryService(projectManager);
 
