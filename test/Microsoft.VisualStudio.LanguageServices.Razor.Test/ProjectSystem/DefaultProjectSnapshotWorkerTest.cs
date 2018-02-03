@@ -12,42 +12,57 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         public DefaultProjectSnapshotWorkerTest()
         {
-            Project = new AdhocWorkspace().AddProject("Test1", LanguageNames.CSharp);
+            HostProject = new HostProject("Test1.csproj", FallbackRazorConfiguration.MVC_1_0);
 
-            CompletionSource = new TaskCompletionSource<ProjectExtensibilityConfiguration>();
-            ConfigurationFactory = Mock.Of<ProjectExtensibilityConfigurationFactory>(f => f.GetConfigurationAsync(It.IsAny<Project>(), default(CancellationToken)) == CompletionSource.Task);
+            WorkspaceProject = new AdhocWorkspace().AddProject("Test1", LanguageNames.CSharp);
         }
 
-        private Project Project { get; }
+        private HostProject HostProject { get; }
 
-        private ProjectExtensibilityConfigurationFactory ConfigurationFactory { get; }
+        private Project WorkspaceProject { get; }
 
-        private TaskCompletionSource<ProjectExtensibilityConfiguration> CompletionSource { get; }
 
         [ForegroundFact]
         public async Task ProcessUpdateAsync_DoesntBlockForegroundThread()
         {
             // Arrange
-            var worker = new DefaultProjectSnapshotWorker(Dispatcher, ConfigurationFactory);
+            var worker = new TestProjectSnapshotWorker(Dispatcher);
 
-            var context = new ProjectSnapshotUpdateContext(Project);
-
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
+            var context = new ProjectSnapshotUpdateContext(HostProject.FilePath, HostProject, WorkspaceProject, VersionStamp.Default);
 
             // Act 1 -- We want to verify that this doesn't block the main thread
             var task = worker.ProcessUpdateAsync(context);
 
             // Assert 1
             //
-            // We haven't let the background task proceed yet, so this is still null.
-            Assert.Null(context.Configuration);
+            // The background task has started when this event is set.
+            worker.ProcessingStarted.Wait(50);
+            Assert.Equal(TaskStatus.Running, task.Status);
 
             // Act 2 - Ok let's go
-            CompletionSource.SetResult(configuration);
+            worker.ProcessingCompleted.Set();
             await task;
+        }
 
-            // Assert 2
-            Assert.Same(configuration, context.Configuration);
+        private class TestProjectSnapshotWorker : DefaultProjectSnapshotWorker
+        {
+            public TestProjectSnapshotWorker(ForegroundDispatcher dispatcher)
+                : base(dispatcher)
+            {
+            }
+
+            public ManualResetEventSlim ProcessingStarted { get; } = new ManualResetEventSlim(initialState: false);
+
+            public ManualResetEventSlim ProcessingCompleted { get; } = new ManualResetEventSlim(initialState: false);
+
+            protected override void OnProcessingUpdate()
+            {
+                ProcessingStarted.Set();
+
+                base.OnProcessingUpdate();
+
+                ProcessingCompleted.Wait();
+            }
         }
     }
 }

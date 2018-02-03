@@ -7,6 +7,8 @@
     <InternalAspNetCoreSdkPackageVersion>2.1.0-preview1-15651</InternalAspNetCoreSdkPackageVersion>
     <MicrosoftAspNetCoreHtmlAbstractionsPackageVersion>2.1.0-preview1-27965</MicrosoftAspNetCoreHtmlAbstractionsPackageVersion>
     <MicrosoftAspNetCoreTestingPackageVersion>2.1.0-preview1-27965</MicrosoftAspNetCoreTestingPackageVersion>
+    <MicrosoftBuildFrameworkPackageVersion>15.3.409</MicrosoftBuildFrameworkPackageVersion>
+    <MicrosoftBuildPackageVersion>15.3.409</MicrosoftBuildPackageVersion>
     <MicrosoftCodeAnalysisCommonPackageVersion>2.3.1</MicrosoftCodeAnalysisCommonPackageVersion>
     <MicrosoftCodeAnalysisCSharpPackageVersion>2.3.1</MicrosoftCodeAnalysisCSharpPackageVersion>
     <MicrosoftExtensionsCommandLineUtilsSourcesPackageVersion>2.1.0-preview1-27965</MicrosoftExtensionsCommandLineUtilsSourcesPackageVersion>
@@ -45,6 +47,7 @@
     <VSIX_MicrosoftCodeAnalysisCSharpWorkspacesPackageVersion>2.6.0-beta1-62023-02</VSIX_MicrosoftCodeAnalysisCSharpWorkspacesPackageVersion>
     <VSIX_MicrosoftCodeAnalysisEditorFeaturesTextPackageVersion>2.6.0-beta1-62023-02</VSIX_MicrosoftCodeAnalysisEditorFeaturesTextPackageVersion>
     <VSIX_MicrosoftCodeAnalysisRemoteRazorServiceHubPackageVersion>2.6.0-beta1-62023-02</VSIX_MicrosoftCodeAnalysisRemoteRazorServiceHubPackageVersion>
+    <VSIX_MicrosoftCodeAnalysisVisualBasicWorkspacesPackageVersion>2.6.0-beta1-62023-02</VSIX_MicrosoftCodeAnalysisVisualBasicWorkspacesPackageVersion>
     <VSIX_MicrosoftCodeAnalysisWorkspacesCommonPackageVersion>2.6.0-beta1-62023-02</VSIX_MicrosoftCodeAnalysisWorkspacesCommonPackageVersion>
     <VSIX_MicrosoftVisualStudioLanguageServicesPackageVersion>2.6.0-beta1-62023-02</VSIX_MicrosoftVisualStudioLanguageServicesPackageVersion>
     <VSIX_MicrosoftVisualStudioLanguageServicesRazorRemoteClientPackageVersion>2.6.0-beta1-62023-02</VSIX_MicrosoftVisualStudioLanguageServicesRazorRemoteClientPackageVersion>

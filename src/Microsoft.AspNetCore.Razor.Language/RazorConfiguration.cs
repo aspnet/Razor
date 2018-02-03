@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
-    public sealed class RazorConfiguration
+    public abstract class RazorConfiguration
     {
-        public static readonly RazorConfiguration Default = new RazorConfiguration(
+        public static readonly RazorConfiguration Default = new DefaultRazorConfiguration(
             RazorLanguageVersion.Latest, 
             "unnamed",
             Array.Empty<RazorExtension>(),
@@ -17,14 +17,14 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         // This is used only in some back-compat scenarios. We don't expose it because there's no
         // use case for anyone else to use it.
-        internal static readonly RazorConfiguration DefaultDesignTime = new RazorConfiguration(
+        internal static readonly RazorConfiguration DefaultDesignTime = new DefaultRazorConfiguration(
             RazorLanguageVersion.Latest,
             "unnamed",
             Array.Empty<RazorExtension>(),
             designTime: true);
 
-        public RazorConfiguration(
-            RazorLanguageVersion languageVersion, 
+        public static RazorConfiguration Create(
+            RazorLanguageVersion languageVersion,
             string configurationName,
             IEnumerable<RazorExtension> extensions,
             bool designTime)
@@ -44,18 +44,38 @@ namespace Microsoft.AspNetCore.Razor.Language
                 throw new ArgumentNullException(nameof(extensions));
             }
 
-            LanguageVersion = languageVersion;
-            ConfigurationName = configurationName;
-            Extensions = extensions.ToArray();
-            DesignTime = designTime;
+            return new DefaultRazorConfiguration(languageVersion, configurationName, extensions.ToArray(), designTime);
         }
 
-        public string ConfigurationName { get; }
+        public abstract string ConfigurationName { get; }
 
-        public IReadOnlyList<RazorExtension> Extensions { get; }
+        public abstract IReadOnlyList<RazorExtension> Extensions { get; }
 
-        public RazorLanguageVersion LanguageVersion { get; }
+        public abstract RazorLanguageVersion LanguageVersion { get; }
 
-        public bool DesignTime { get; }
+        public abstract bool DesignTime { get; }
+
+        private class DefaultRazorConfiguration : RazorConfiguration
+        {
+            public DefaultRazorConfiguration(
+                RazorLanguageVersion languageVersion,
+                string configurationName,
+                RazorExtension[] extensions,
+                bool designTime)
+            {
+                LanguageVersion = languageVersion;
+                ConfigurationName = configurationName;
+                Extensions = extensions;
+                DesignTime = designTime;
+            }
+
+            public override string ConfigurationName { get; }
+
+            public override IReadOnlyList<RazorExtension> Extensions { get; }
+
+            public override RazorLanguageVersion LanguageVersion { get; }
+
+            public override bool DesignTime { get; }
+        }
     }
 }
