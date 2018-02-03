@@ -10,7 +10,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     internal class VirtualRazorProjectFileSystem : RazorProjectFileSystem
     {
-        private readonly DirectoryNode Root = new DirectoryNode("/", "/");
+        private readonly DirectoryNode Root = new DirectoryNode("/");
 
         public override IEnumerable<RazorProjectItem> EnumerateItems(string basePath)
         {
@@ -28,26 +28,23 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Add(RazorProjectItem projectItem)
         {
             var filePath = NormalizeAndEnsureValidPath(projectItem.FilePath);
-            Root.AddItem(new FileNode(filePath, projectItem));
+            Root.AddFile(new FileNode(filePath, projectItem));
         }
 
-        private class DirectoryNode
+        internal class DirectoryNode
         {
-            public DirectoryNode(string path, string name)
+            public DirectoryNode(string path)
             {
                 Path = path;
-                Name = name;
             }
 
             public string Path { get; }
 
-            public string Name { get; }
+            public List<DirectoryNode> Directories => new List<DirectoryNode>();
 
-            public List<DirectoryNode> Directories { get; } = new List<DirectoryNode>();
+            public List<FileNode> Files => new List<FileNode>();
 
-            public List<FileNode> Files { get; } = new List<FileNode>();
-
-            public void AddItem(FileNode fileNode)
+            public void AddFile(FileNode fileNode)
             {
                 var filePath = fileNode.FilePath;
                 if (!filePath.StartsWith(Path, StringComparison.OrdinalIgnoreCase))
@@ -109,6 +106,9 @@ namespace Microsoft.AspNetCore.Razor.Language
                     var filePath = file.FilePath;
                     var directoryLength = directory.Path.Length;
 
+                    // path, filePath -> /Views/Home/Index.cshtml
+                    // directory.Path -> /Views/Home/
+                    // We only need to match the file name portion since we've already matched the directory segment.
                     if (string.Compare(path, directoryLength, filePath, directoryLength, path.Length - directoryLength, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         return file.ProjectItem;
@@ -118,7 +118,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 return null;
             }
 
-            private string GetDirectoryPath(string path)
+            private static string GetDirectoryPath(string path)
             {
                 // /dir1/dir2/file.cshtml -> /dir1/dir2/
                 var fileNameIndex = path.LastIndexOf('/');
@@ -151,10 +151,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                         if (createIfNotExists)
                         {
                             var directoryPath = path.Substring(0, index + 1); // + 1 to include trailing slash
-                            var directoryName = directoryPath.Substring(directory.Path.Length, directoryPath.Length - directory.Path.Length - 1);
-                            subDirectory = new DirectoryNode(directoryPath, directoryName);
+                            subDirectory = new DirectoryNode(directoryPath);
                             directory.Directories.Add(subDirectory);
-
                         }
                         else
                         {
@@ -172,9 +170,17 @@ namespace Microsoft.AspNetCore.Razor.Language
             {
                 for (var i = 0; i < parentDirectory.Directories.Count; i++)
                 {
+                    // ParentDirectory.Path -> /Views/Home/
+                    // CurrentDirectory.Path -> /Views/Home/SubDir/
+                    // Path -> /Views/Home/SubDir/MorePath/File.cshtml
+                    // Each invocation of FindSubDirectory returns the immediate subdirectory along the path to the file.
+
                     var currentDirectory = parentDirectory.Directories[i];
-                    var directoryName = currentDirectory.Name;
-                    if (string.Compare(path, parentDirectory.Path.Length, directoryName, 0, directoryName.Length, StringComparison.OrdinalIgnoreCase) == 0)
+                    var directoryPath = currentDirectory.Path;
+                    var startIndex = parentDirectory.Path.Length;
+                    var directoryNameLength = directoryPath.Length - startIndex;
+
+                    if (string.Compare(path, startIndex, directoryPath, startIndex, directoryPath.Length - startIndex, StringComparison.OrdinalIgnoreCase) == 0)
                     {
                         return currentDirectory;
                     }
@@ -184,7 +190,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
         }
 
-        private struct FileNode
+        internal struct FileNode
         {
             public FileNode(string filePath, RazorProjectItem projectItem)
             {

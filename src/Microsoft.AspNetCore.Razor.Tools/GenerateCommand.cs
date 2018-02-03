@@ -104,7 +104,7 @@ namespace Microsoft.AspNetCore.Razor.Tools
                 new[]
                 {
                     GetVirtualRazorProjectSystem(inputItems),
-                    (RazorProjectFileSystem)RazorProject.Create(projectDirectory),
+                    RazorProjectFileSystem.Create(projectDirectory),
                 });
 
             var templateEngine = new MvcRazorTemplateEngine(engine, compositeProject);
