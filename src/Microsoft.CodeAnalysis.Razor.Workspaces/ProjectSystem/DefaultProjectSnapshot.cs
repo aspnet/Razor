@@ -128,6 +128,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public override bool IsUnloaded => HostProject == null && WorkspaceProject == null;
 
+        public override string LanguageVersion => HostProject?.LanguageVersion;
+
         public override VersionStamp Version { get; }
 
         public override Project WorkspaceProject { get; }
