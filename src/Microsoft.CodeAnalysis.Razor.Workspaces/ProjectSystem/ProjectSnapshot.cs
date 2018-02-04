@@ -13,6 +13,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public abstract bool IsUnloaded { get; }
 
+        public abstract string LanguageVersion { get; }
+
         public abstract VersionStamp Version { get; }
 
         public abstract Project WorkspaceProject { get; }
