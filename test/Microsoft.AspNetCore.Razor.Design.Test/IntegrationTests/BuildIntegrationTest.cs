@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Testing.xunit;
-using Microsoft.DotNet.PlatformAbstractions;
 using Xunit;
 
 namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, OutputPath, "SimpleMvc.PrecompiledViews.dll");
             Assert.FileExists(result, OutputPath, "SimpleMvc.PrecompiledViews.pdb");
 
-            if (RuntimeEnvironment.OperatingSystemPlatform != Platform.Darwin)
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 // GetFullPath on OSX doesn't work well in travis. We end up computing a different path than will
                 // end up in the MSBuild logs.
