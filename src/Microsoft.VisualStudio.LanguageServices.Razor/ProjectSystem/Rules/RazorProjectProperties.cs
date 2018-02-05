@@ -5,7 +5,7 @@ using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.Properties;
 
-namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
+namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules
 {
     [Export]
     internal partial class RazorProjectProperties : StronglyTypedPropertyAccess

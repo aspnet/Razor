@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
@@ -66,7 +67,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             HostProject = hostProject;
 
             ComputedVersion = other.ComputedVersion;
-            Configuration = other.Configuration;
             FilePath = other.FilePath;
             WorkspaceProject = other.WorkspaceProject;
 
@@ -88,7 +88,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             WorkspaceProject = workspaceProject;
 
             ComputedVersion = other.ComputedVersion;
-            Configuration = other.Configuration;
             FilePath = other.FilePath;
             HostProject = other.HostProject;
 
@@ -108,7 +107,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
 
             ComputedVersion = update.Version;
-            Configuration = update.Configuration;
 
             FilePath = other.FilePath;
             HostProject = other.HostProject;
@@ -118,7 +116,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             Version = other.Version;
         }
 
-        public override ProjectExtensibilityConfiguration Configuration { get; }
+        public override RazorConfiguration Configuration => HostProject?.Configuration;
 
         public override string FilePath { get; }
 
@@ -127,8 +125,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public override bool IsInitialized => HostProject != null && WorkspaceProject != null;
 
         public override bool IsUnloaded => HostProject == null && WorkspaceProject == null;
-
-        public override string LanguageVersion => HostProject?.LanguageVersion;
 
         public override VersionStamp Version { get; }
 
@@ -204,14 +200,16 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             return new DefaultProjectSnapshot(update, this);
         }
 
-        public bool HasChangesComparedTo(ProjectSnapshot original)
+        public bool HasChangesComparedTo(DefaultProjectSnapshot original)
         {
             if (original == null)
             {
                 throw new ArgumentNullException(nameof(original));
             }
 
-            return !object.Equals(Configuration, original.Configuration);
+            // We don't have any computed state right now, so treat all background updates as
+            // significant.
+            return !object.Equals(ComputedVersion, original.ComputedVersion);
         }
     }
 }

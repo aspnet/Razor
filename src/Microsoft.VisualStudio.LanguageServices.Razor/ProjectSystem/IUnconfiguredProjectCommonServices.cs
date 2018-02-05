@@ -14,7 +14,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
         private readonly ActiveConfiguredProject<IAssemblyReferencesService> _activeConfiguredProjectAssemblyReferences;
         private readonly ActiveConfiguredProject<IPackageReferencesService> _activeConfiguredProjectPackageReferences;
-        private readonly ActiveConfiguredProject<RazorProjectProperties> _activeConfiguredProjectProperties;
+        private readonly ActiveConfiguredProject<Rules.RazorProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
         public UnconfiguredProjectCommonServices(
@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
             ActiveConfiguredProject<IAssemblyReferencesService> activeConfiguredProjectAssemblyReferences,
             ActiveConfiguredProject<IPackageReferencesService> activeConfiguredProjectPackageReferences,
-            ActiveConfiguredProject<RazorProjectProperties> activeConfiguredProjectRazorProperties)
+            ActiveConfiguredProject<Rules.RazorProjectProperties> activeConfiguredProjectRazorProperties)
         {
             if (threadingService == null)
             {
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public IPackageReferencesService ActiveConfiguredProjectPackageReferences => _activeConfiguredProjectPackageReferences.Value;
 
-        public RazorProjectProperties ActiveConfiguredProjectRazorProperties => _activeConfiguredProjectProperties.Value;
+        public Rules.RazorProjectProperties ActiveConfiguredProjectRazorProperties => _activeConfiguredProjectProperties.Value;
         
         public IActiveConfiguredProjectSubscriptionService ActiveConfiguredProjectSubscription { get; }
 

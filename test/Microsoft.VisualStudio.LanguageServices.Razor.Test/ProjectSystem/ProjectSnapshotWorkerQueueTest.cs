@@ -16,8 +16,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         public ProjectSnapshotWorkerQueueTest()
         {
-            HostProject1 = new HostProject("Test1.csproj", "2.1");
-            HostProject2 = new HostProject("Test2.csproj", "2.1");
+            HostProject1 = new HostProject("Test1.csproj", FallbackRazorConfiguration.MVC_1_0);
+            HostProject2 = new HostProject("Test2.csproj", FallbackRazorConfiguration.MVC_1_0);
 
             Workspace = new AdhocWorkspace();
 

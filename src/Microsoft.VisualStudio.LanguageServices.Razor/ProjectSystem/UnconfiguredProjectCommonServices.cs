@@ -19,7 +19,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         IPackageReferencesService ActiveConfiguredProjectPackageReferences { get; }
 
-        RazorProjectProperties ActiveConfiguredProjectRazorProperties { get; }
+        Rules.RazorProjectProperties ActiveConfiguredProjectRazorProperties { get; }
 
         IActiveConfiguredProjectSubscriptionService ActiveConfiguredProjectSubscription { get; }
         

@@ -107,9 +107,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     return;
                 }
 
-                var languageVersion = version.Major + "." + version.Minor;
-
-                var hostProject = new HostProject(CommonServices.UnconfiguredProject.FullPath, languageVersion);
+                var configuration = FallbackRazorConfiguration.SelectConfiguration(version);
+                var hostProject = new HostProject(CommonServices.UnconfiguredProject.FullPath, configuration);
                 await UpdateProjectUnsafeAsync(hostProject).ConfigureAwait(false);
             });
         }

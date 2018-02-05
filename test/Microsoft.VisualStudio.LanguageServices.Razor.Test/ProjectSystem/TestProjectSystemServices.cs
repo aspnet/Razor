@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             UnconfiguredProject.LoadedConfiguredProjects.Add(ActiveConfiguredProject);
 
             ActiveConfiguredProjectAssemblyReferences = new TestAssemblyReferencesService();
-            ActiveConfiguredProjectRazorProperties = new RazorProjectProperties(ActiveConfiguredProject, UnconfiguredProject);
+            ActiveConfiguredProjectRazorProperties = new Rules.RazorProjectProperties(ActiveConfiguredProject, UnconfiguredProject);
             ActiveConfiguredProjectSubscription = new TestActiveConfiguredProjectSubscriptionService();
         }
 
@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public TestAssemblyReferencesService ActiveConfiguredProjectAssemblyReferences { get; }
 
-        public RazorProjectProperties ActiveConfiguredProjectRazorProperties { get; }
+        public Rules.RazorProjectProperties ActiveConfiguredProjectRazorProperties { get; }
 
         public TestActiveConfiguredProjectSubscriptionService ActiveConfiguredProjectSubscription { get; }
 
@@ -64,7 +64,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         IPackageReferencesService IUnconfiguredProjectCommonServices.ActiveConfiguredProjectPackageReferences => throw new NotImplementedException();
 
-        RazorProjectProperties IUnconfiguredProjectCommonServices.ActiveConfiguredProjectRazorProperties => ActiveConfiguredProjectRazorProperties;
+        Rules.RazorProjectProperties IUnconfiguredProjectCommonServices.ActiveConfiguredProjectRazorProperties => ActiveConfiguredProjectRazorProperties;
 
         IActiveConfiguredProjectSubscriptionService IUnconfiguredProjectCommonServices.ActiveConfiguredProjectSubscription => ActiveConfiguredProjectSubscription;
 

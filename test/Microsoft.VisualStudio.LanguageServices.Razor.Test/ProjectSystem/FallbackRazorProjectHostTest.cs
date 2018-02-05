@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             var host = new TestFallbackRazorProjectHost(services, Workspace, ProjectManager)
             {
-                AssemblyVersion = new Version(2, 1), // Mock for reading the assembly's version
+                AssemblyVersion = new Version(2, 0), // Mock for reading the assembly's version
             };
 
             await Task.Run(async () => await host.LoadAsync());
@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             var snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.1", snapshot.LanguageVersion);
+            Assert.Same(FallbackRazorConfiguration.MVC_2_0, snapshot.Configuration);
 
             await Task.Run(async () => await host.DisposeAsync());
             Assert.Empty(ProjectManager.Projects);
@@ -164,7 +164,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         }
 
         [ForegroundFact]
-        public async Task RazorProjectHost_UpdateProject_Succeeds()
+        public async Task OnProjectChanged_UpdateProject_Succeeds()
         {
             // Arrange
             var changes = new TestProjectChangeDescription[]
@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             var host = new TestFallbackRazorProjectHost(services, Workspace, ProjectManager)
             {
-                AssemblyVersion = new Version(2, 1),
+                AssemblyVersion = new Version(2, 0),
             };
 
             await Task.Run(async () => await host.LoadAsync());
@@ -195,16 +195,16 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert - 1
             var snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.1", snapshot.LanguageVersion);
+            Assert.Same(FallbackRazorConfiguration.MVC_2_0, snapshot.Configuration);
 
             // Act - 2
-            host.AssemblyVersion = new Version(2, 0);
+            host.AssemblyVersion = new Version(1, 0);
             await Task.Run(async () => await host.OnProjectChanged(services.CreateUpdate(changes)));
 
             // Assert - 2
             snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.0", snapshot.LanguageVersion);
+            Assert.Same(FallbackRazorConfiguration.MVC_1_0, snapshot.Configuration);
 
             await Task.Run(async () => await host.DisposeAsync());
             Assert.Empty(ProjectManager.Projects);
@@ -230,7 +230,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             var host = new TestFallbackRazorProjectHost(services, Workspace, ProjectManager)
             {
-                AssemblyVersion = new Version(2, 1),
+                AssemblyVersion = new Version(2, 0),
             };
 
             await Task.Run(async () => await host.LoadAsync());
@@ -242,7 +242,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert - 1
             var snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.1", snapshot.LanguageVersion);
+            Assert.Same(FallbackRazorConfiguration.MVC_2_0, snapshot.Configuration);
 
             // Act - 2
             host.AssemblyVersion= null;
@@ -256,7 +256,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         }
 
         [ForegroundFact]
-        public async Task RazorProjectHost_AfterDispose_IgnoresUpdate()
+        public async Task OnProjectChanged_AfterDispose_IgnoresUpdate()
         {
             // Arrange
             var changes = new TestProjectChangeDescription[]
@@ -275,7 +275,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             var host = new TestFallbackRazorProjectHost(services, Workspace, ProjectManager)
             {
-                AssemblyVersion = new Version(2, 1),
+                AssemblyVersion = new Version(2, 0),
             };
 
             await Task.Run(async () => await host.LoadAsync());
@@ -287,7 +287,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert - 1
             var snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.1", snapshot.LanguageVersion);
+            Assert.Same(FallbackRazorConfiguration.MVC_2_0, snapshot.Configuration);
 
             // Act - 2
             await Task.Run(async () => await host.DisposeAsync());
@@ -296,7 +296,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             Assert.Empty(ProjectManager.Projects);
 
             // Act - 3
-            host.AssemblyVersion= new Version(2, 0);
+            host.AssemblyVersion = new Version(1, 1);
             await Task.Run(async () => await host.OnProjectChanged(services.CreateUpdate(changes)));
 
             // Assert - 3

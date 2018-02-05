@@ -3,9 +3,11 @@
 
 using System;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem;
 
@@ -46,12 +48,16 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // to the UI thread to push our updates.
             //
             // Just subscribe and handle the notification later.
+            // Don't try to evaluate any properties here since the project is still loading and we require access
+            // to the UI thread to push our updates.
+            //
+            // Just subscribe and handle the notification later.
             var receiver = new ActionBlock<IProjectVersionedValue<IProjectSubscriptionUpdate>>(OnProjectChanged);
             _subscription = CommonServices.ActiveConfiguredProjectSubscription.JointRuleSource.SourceBlock.LinkTo(
                 receiver,
                 initialDataAsNew: true,
                 suppressVersionOnlyUpdates: true,
-                ruleNames: new string[] { RazorGeneral.SchemaName, });
+                ruleNames: new string[] { Rules.RazorGeneral.SchemaName, Rules.RazorConfiguration.SchemaName, Rules.RazorExtension.SchemaName });
         }
 
         protected override async Task DisposeCoreAsync(bool initialized)
@@ -74,16 +80,44 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     return;
                 }
 
-                var languageVersion = update.Value.CurrentState[RazorGeneral.SchemaName].Properties[RazorGeneral.RazorLangVersionProperty];
+                var languageVersion = update.Value.CurrentState[Rules.RazorGeneral.SchemaName].Properties[Rules.RazorGeneral.RazorLangVersionProperty];
+                var defaultConfiguration = update.Value.CurrentState[Rules.RazorGeneral.SchemaName].Properties[Rules.RazorGeneral.RazorDefaultConfigurationProperty];
 
-                if (string.IsNullOrEmpty(languageVersion))
+                RazorConfiguration configuration = null;
+                if (!string.IsNullOrEmpty(languageVersion) && !string.IsNullOrEmpty(defaultConfiguration))
+                {
+                    if (!RazorLanguageVersion.TryParse(languageVersion, out var parsedVersion))
+                    {
+                        parsedVersion = RazorLanguageVersion.Latest;
+                    }
+
+                    var extensions = update.Value.CurrentState[Rules.RazorExtension.PrimaryDataSourceItemType].Items.Select(e =>
+                    {
+                        return new ProjectSystemRazorExtension(e.Key);
+                    }).ToArray();
+
+                    var configurations = update.Value.CurrentState[Rules.RazorConfiguration.PrimaryDataSourceItemType].Items.Select(c =>
+                    {
+                        var includedExtensions = c.Value[Rules.RazorConfiguration.ExtensionsProperty]
+                            .Split(';')
+                            .Select(name => extensions.Where(e => e.ExtensionName == name).FirstOrDefault())
+                            .Where(e => e != null)
+                            .ToArray();
+
+                        return new ProjectSystemRazorConfiguration(parsedVersion, c.Key, includedExtensions);
+                    }).ToArray();
+
+                    configuration = configurations.Where(c => c.ConfigurationName == defaultConfiguration).FirstOrDefault();
+                }
+
+                if (configuration == null)
                 {
                     // Ok we can't find a language version. Let's assume this project isn't using Razor then.
                     await UpdateProjectUnsafeAsync(null).ConfigureAwait(false);
                     return;
                 }
 
-                var hostProject = new HostProject(CommonServices.UnconfiguredProject.FullPath, languageVersion);
+                var hostProject = new HostProject(CommonServices.UnconfiguredProject.FullPath, configuration);
                 await UpdateProjectUnsafeAsync(hostProject).ConfigureAwait(false);
             });
         }

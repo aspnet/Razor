@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.VisualStudio.LanguageServices.Razor;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.ProjectSystem.References;
@@ -67,12 +68,30 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 new TestProjectChangeDescription()
                 {
-                    RuleName = RazorGeneral.SchemaName,
-                    After = TestProjectRuleSnapshot.CreateProperties(RazorGeneral.SchemaName, new Dictionary<string, string>()
+                    RuleName = Rules.RazorGeneral.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateProperties(Rules.RazorGeneral.SchemaName, new Dictionary<string, string>()
                     {
-                        { RazorGeneral.RazorLangVersionProperty, "2.1" },
+                        { Rules.RazorGeneral.RazorLangVersionProperty, "2.1" },
+                        { Rules.RazorGeneral.RazorDefaultConfigurationProperty, "MVC-2.1" },
                     }),
                 },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorConfiguration.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorConfiguration.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                        { "MVC-2.1", new Dictionary<string, string>() { { "Extensions", "MVC-2.1;Another-Thing" }, } },
+                    })
+                },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorExtension.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorExtension.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                        { "MVC-2.1", new Dictionary<string, string>(){ } },
+                        { "Another-Thing", new Dictionary<string, string>(){ } },
+                    })
+                }
             };
 
             var services = new TestProjectSystemServices("Test.csproj");
@@ -88,7 +107,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             var snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.1", snapshot.LanguageVersion);
+
+            Assert.Equal(RazorLanguageVersion.Version_2_1, snapshot.Configuration.LanguageVersion);
+            Assert.Equal("MVC-2.1", snapshot.Configuration.ConfigurationName);
+            Assert.Collection(
+                snapshot.Configuration.Extensions,
+                e => Assert.Equal("MVC-2.1", e.ExtensionName),
+                e => Assert.Equal("Another-Thing", e.ExtensionName));
 
             await Task.Run(async () => await host.DisposeAsync());
             Assert.Empty(ProjectManager.Projects);
@@ -102,17 +127,32 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 new TestProjectChangeDescription()
                 {
-                    RuleName = RazorGeneral.SchemaName,
-                    After = TestProjectRuleSnapshot.CreateProperties(RazorGeneral.SchemaName, new Dictionary<string, string>()
+                    RuleName = Rules.RazorGeneral.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateProperties(Rules.RazorGeneral.SchemaName, new Dictionary<string, string>()
                     {
-                        { RazorGeneral.RazorLangVersionProperty, "" },
+                        { Rules.RazorGeneral.RazorLangVersionProperty, "" },
+                        { Rules.RazorGeneral.RazorDefaultConfigurationProperty, "" },
                     }),
                 },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorConfiguration.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorConfiguration.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                    })
+                },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorExtension.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorExtension.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                    })
+                }
             };
 
             var services = new TestProjectSystemServices("Test.csproj");
 
-            var host = new DefaultRazorProjectHost(services, Workspace, ProjectManager);
+            var host = new RazorProjectHost(services, Workspace, ProjectManager);
 
             await Task.Run(async () => await host.LoadAsync());
             Assert.Empty(ProjectManager.Projects);
@@ -128,19 +168,37 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         }
 
         [ForegroundFact]
-        public async Task RazorProjectHost_UpdateProject_Succeeds()
+        public async Task OnProjectChanged_UpdateProject_Succeeds()
         {
             // Arrange
             var changes = new TestProjectChangeDescription[]
             {
                 new TestProjectChangeDescription()
                 {
-                    RuleName = RazorGeneral.SchemaName,
-                    After = TestProjectRuleSnapshot.CreateProperties(RazorGeneral.SchemaName, new Dictionary<string, string>()
+                    RuleName = Rules.RazorGeneral.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateProperties(Rules.RazorGeneral.SchemaName, new Dictionary<string, string>()
                     {
-                        { RazorGeneral.RazorLangVersionProperty, "2.1" },
+                        { Rules.RazorGeneral.RazorLangVersionProperty, "2.1" },
+                        { Rules.RazorGeneral.RazorDefaultConfigurationProperty, "MVC-2.1" },
                     }),
                 },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorConfiguration.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorConfiguration.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                        { "MVC-2.1", new Dictionary<string, string>() { { "Extensions", "MVC-2.1;Another-Thing" }, } },
+                    })
+                },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorExtension.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorExtension.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                        { "MVC-2.1", new Dictionary<string, string>(){ } },
+                        { "Another-Thing", new Dictionary<string, string>(){ } },
+                    })
+                }
             };
 
             var services = new TestProjectSystemServices("Test.csproj");
@@ -156,16 +214,32 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert - 1
             var snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.1", snapshot.LanguageVersion);
+
+            Assert.Equal(RazorLanguageVersion.Version_2_1, snapshot.Configuration.LanguageVersion);
+            Assert.Equal("MVC-2.1", snapshot.Configuration.ConfigurationName);
+            Assert.Collection(
+                snapshot.Configuration.Extensions,
+                e => Assert.Equal("MVC-2.1", e.ExtensionName),
+                e => Assert.Equal("Another-Thing", e.ExtensionName));
 
             // Act - 2
-            changes[0].After.SetProperty(RazorGeneral.RazorLangVersionProperty, "2.0");
+            changes[0].After.SetProperty(Rules.RazorGeneral.RazorLangVersionProperty, "2.0");
+            changes[0].After.SetProperty(Rules.RazorGeneral.RazorDefaultConfigurationProperty, "MVC-2.0");
+            changes[1].After.SetItem("MVC-2.0", new Dictionary<string, string>() { { "Extensions", "MVC-2.0;Another-Thing" }, });
+            changes[2].After.SetItem("MVC-2.0", new Dictionary<string, string>());
+
             await Task.Run(async () => await host.OnProjectChanged(services.CreateUpdate(changes)));
 
             // Assert - 2
             snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.0", snapshot.LanguageVersion);
+
+            Assert.Equal(RazorLanguageVersion.Version_2_0, snapshot.Configuration.LanguageVersion);
+            Assert.Equal("MVC-2.0", snapshot.Configuration.ConfigurationName);
+            Assert.Collection(
+                snapshot.Configuration.Extensions,
+                e => Assert.Equal("MVC-2.0", e.ExtensionName),
+                e => Assert.Equal("Another-Thing", e.ExtensionName));
 
             await Task.Run(async () => await host.DisposeAsync());
             Assert.Empty(ProjectManager.Projects);
@@ -179,12 +253,30 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 new TestProjectChangeDescription()
                 {
-                    RuleName = RazorGeneral.SchemaName,
-                    After = TestProjectRuleSnapshot.CreateProperties(RazorGeneral.SchemaName, new Dictionary<string, string>()
+                    RuleName = Rules.RazorGeneral.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateProperties(Rules.RazorGeneral.SchemaName, new Dictionary<string, string>()
                     {
-                        { RazorGeneral.RazorLangVersionProperty, "2.1" },
+                        { Rules.RazorGeneral.RazorLangVersionProperty, "2.1" },
+                        { Rules.RazorGeneral.RazorDefaultConfigurationProperty, "MVC-2.1" },
                     }),
                 },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorConfiguration.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorConfiguration.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                        { "MVC-2.1", new Dictionary<string, string>() { { "Extensions", "MVC-2.1;Another-Thing" }, } },
+                    })
+                },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorExtension.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorExtension.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                        { "MVC-2.1", new Dictionary<string, string>(){ } },
+                        { "Another-Thing", new Dictionary<string, string>(){ } },
+                    })
+                }
             };
 
             var services = new TestProjectSystemServices("Test.csproj");
@@ -200,10 +292,18 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert - 1
             var snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.1", snapshot.LanguageVersion);
+
+            Assert.Equal(RazorLanguageVersion.Version_2_1, snapshot.Configuration.LanguageVersion);
+            Assert.Equal("MVC-2.1", snapshot.Configuration.ConfigurationName);
+            Assert.Collection(
+                snapshot.Configuration.Extensions,
+                e => Assert.Equal("MVC-2.1", e.ExtensionName),
+                e => Assert.Equal("Another-Thing", e.ExtensionName));
 
             // Act - 2
-            changes[0].After.SetProperty(RazorGeneral.RazorLangVersionProperty, "");
+            changes[0].After.SetProperty(Rules.RazorGeneral.RazorLangVersionProperty, "");
+            changes[0].After.SetProperty(Rules.RazorGeneral.RazorDefaultConfigurationProperty, "");
+
             await Task.Run(async () => await host.OnProjectChanged(services.CreateUpdate(changes)));
 
             // Assert - 2
@@ -214,19 +314,37 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         }
 
         [ForegroundFact]
-        public async Task RazorProjectHost_AfterDispose_IgnoresUpdate()
+        public async Task OnProjectChanged_AfterDispose_IgnoresUpdate()
         {
             // Arrange
             var changes = new TestProjectChangeDescription[]
             {
                 new TestProjectChangeDescription()
                 {
-                    RuleName = RazorGeneral.SchemaName,
-                    After = TestProjectRuleSnapshot.CreateProperties(RazorGeneral.SchemaName, new Dictionary<string, string>()
+                    RuleName = Rules.RazorGeneral.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateProperties(Rules.RazorGeneral.SchemaName, new Dictionary<string, string>()
                     {
-                        { RazorGeneral.RazorLangVersionProperty, "2.1" },
+                        { Rules.RazorGeneral.RazorLangVersionProperty, "2.1" },
+                        { Rules.RazorGeneral.RazorDefaultConfigurationProperty, "MVC-2.1" },
                     }),
                 },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorConfiguration.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorConfiguration.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                        { "MVC-2.1", new Dictionary<string, string>() { { "Extensions", "MVC-2.1;Another-Thing" }, } },
+                    })
+                },
+                new TestProjectChangeDescription()
+                {
+                    RuleName = Rules.RazorExtension.SchemaName,
+                    After = TestProjectRuleSnapshot.CreateItems(Rules.RazorExtension.SchemaName, new Dictionary<string, Dictionary<string, string>>()
+                    {
+                        { "MVC-2.1", new Dictionary<string, string>(){ } },
+                        { "Another-Thing", new Dictionary<string, string>(){ } },
+                    })
+                }
             };
 
             var services = new TestProjectSystemServices("Test.csproj");
@@ -242,7 +360,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert - 1
             var snapshot = Assert.Single(ProjectManager.Projects);
             Assert.Equal("Test.csproj", snapshot.FilePath);
-            Assert.Equal("2.1", snapshot.LanguageVersion);
+
+            Assert.Equal(RazorLanguageVersion.Version_2_1, snapshot.Configuration.LanguageVersion);
+            Assert.Equal("MVC-2.1", snapshot.Configuration.ConfigurationName);
+            Assert.Collection(
+                snapshot.Configuration.Extensions,
+                e => Assert.Equal("MVC-2.1", e.ExtensionName),
+                e => Assert.Equal("Another-Thing", e.ExtensionName));
 
             // Act - 2
             await Task.Run(async () => await host.DisposeAsync());
@@ -251,7 +375,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             Assert.Empty(ProjectManager.Projects);
 
             // Act - 3
-            changes[0].After.SetProperty(RazorGeneral.RazorLangVersionProperty, "2.0");
+            changes[0].After.SetProperty(Rules.RazorGeneral.RazorLangVersionProperty, "2.0");
+            changes[0].After.SetProperty(Rules.RazorGeneral.RazorDefaultConfigurationProperty, "MVC-2.0");
+            changes[1].After.SetItem("MVC-2.0", new Dictionary<string, string>() { { "Extensions", "MVC-2.0;Another-Thing" }, });
+
             await Task.Run(async () => await host.OnProjectChanged(services.CreateUpdate(changes)));
 
             // Assert - 3

@@ -28,7 +28,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.8.0" Version="$(MicrosoftVisualStudioShellInterop80PackageVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop.9.0" Version="$(MicrosoftVisualStudioShellInterop90PackageVersion)" />
     <PackageReference Include="Microsoft.VisualStudio.Shell.Interop" Version="$(MicrosoftVisualStudioShellInteropPackageVersion)" />
-    
+
     <!-- We need to use this version of Json.Net to maintain consistency with Visual Studio. -->
     <PackageReference Include="Newtonsoft.Json" Version="$(VisualStudio_NewtonsoftJsonPackageVersion)" />
   </ItemGroup>
@@ -50,22 +50,57 @@
     If you make changes to the rule files, then you need to update them using Desktop MSBuild :(
   -->
   <ItemGroup Condition="'$(MSBuildRuntimeType)'=='Core'">
+    <None Include="ProjectSystem\Rules\RazorConfiguration.xaml" />
+    <None Include="ProjectSystem\Rules\RazorExtension.xaml" />
     <None Include="ProjectSystem\Rules\RazorGeneral.xaml" />
+    <Compile Update="ProjectSystem\Rules\RazorConfiguration.cs">
+      <DependentUpon>RazorConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\RazorExtension.cs">
+      <DependentUpon>RazorExtension.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\RazorGeneral.cs">
       <DependentUpon>RazorGeneral.xaml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ProjectSystem\Rules\RazorConfiguration.xaml">
+      <LogicalName>XamlRuleToCode:RazorConfiguration.xaml</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectSystem\Rules\RazorExtension.xaml">
+      <LogicalName>XamlRuleToCode:RazorExtension.xaml</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProjectSystem\Rules\RazorGeneral.xaml">
       <LogicalName>XamlRuleToCode:RazorGeneral.xaml</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup Condition="'$(MSBuildRuntimeType)'!='Core'">
-    <XamlPropertyRule Include="ProjectSystem\Rules\RazorGeneral.xaml">
+    <XamlPropertyRule Include="ProjectSystem\Rules\RazorConfiguration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
-      <Namespace>Microsoft.CodeAnalysis.Razor.ProjectSystem</Namespace>
+      <Namespace>Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules</Namespace>
+      <RuleInjectionClassName>RazorProjectProperties</RuleInjectionClassName>
+      <Context></Context>
+      <OutputPath>ProjectSystem\Rules\</OutputPath>
+    </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\RazorExtension.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <Namespace>Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules</Namespace>
       <RuleInjectionClassName>RazorProjectProperties</RuleInjectionClassName>
       <OutputPath>ProjectSystem\Rules\</OutputPath>
     </XamlPropertyRule>
+    <XamlPropertyRule Include="ProjectSystem\Rules\RazorGeneral.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:GenerateRuleSourceFromXaml</Generator>
+      <Namespace>Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules</Namespace>
+      <RuleInjectionClassName>RazorProjectProperties</RuleInjectionClassName>
+      <OutputPath>ProjectSystem\Rules\</OutputPath>
+    </XamlPropertyRule>
+    <Compile Update="ProjectSystem\Rules\RazorConfiguration.cs">
+      <DependentUpon>RazorGeneral.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectSystem\Rules\RazorExtension.cs">
+      <DependentUpon>RazorGeneral.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ProjectSystem\Rules\RazorGeneral.cs">
       <DependentUpon>RazorGeneral.xaml</DependentUpon>
     </Compile>

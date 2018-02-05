@@ -37,7 +37,5 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public Project WorkspaceProject { get; }
 
         public VersionStamp Version { get; }
-
-        public ProjectExtensibilityConfiguration Configuration { get; set; }
     }
 }

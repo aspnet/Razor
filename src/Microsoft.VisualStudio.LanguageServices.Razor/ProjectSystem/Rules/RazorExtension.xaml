@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Rule
-  Description="Razor Properties"
-  DisplayName="Razor Properties"
-  Name="RazorGeneral"
+  Description="Extension Properties"
+  DisplayName="Extension Properties"
+  Name="RazorExtension"
   PageTemplate="generic"
   xmlns="http://schemas.microsoft.com/build/2009/properties">
   <Rule.DataSource>
     <DataSource
       Persistence="ProjectFile"
-      HasConfigurationCondition="True" />
+      HasConfigurationCondition="True"
+      ItemType="RazorExtension" />
   </Rule.DataSource>
 
   <Rule.Categories>
@@ -19,17 +20,17 @@
 
   <StringProperty
     Category="General"
-    Description="Razor Language Version"
-    DisplayName="Razor Language Version"
-    Name="RazorLangVersion"
+    Description="Razor Extension Assembly Name"
+    DisplayName="Razor Extension Assembly Name"
+    Name="AssemblyName"
     ReadOnly="True"
     Visible="True" />
 
   <StringProperty
     Category="General"
-    Description="Razor Configuration Name"
-    DisplayName="Razor Configuration Name"
-    Name="RazorDefaultConfiguration"
+    Description="Razor Extension Assembly File Path"
+    DisplayName="Razor Extension Assembly File Path"
+    Name="AssemblyFilePath"
     ReadOnly="True"
     Visible="True" />
 

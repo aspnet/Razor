@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         public DefaultProjectSnapshotManagerTest()
         {
-            HostProject = new HostProject("Test.csproj", "2.1");
+            HostProject = new HostProject("Test.csproj", FallbackRazorConfiguration.MVC_1_1);
 
             Workspace = new AdhocWorkspace();
             ProjectManager = new TestProjectSnapshotManager(Enumerable.Empty<ProjectSnapshotChangeTrigger>(), Workspace);
@@ -116,7 +116,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             ProjectManager.HostProjectAdded(HostProject);
             ProjectManager.Reset();
 
-            var project = new HostProject(HostProject.FilePath, "2.0"); // Simulate a project change
+            var project = new HostProject(HostProject.FilePath, FallbackRazorConfiguration.MVC_1_0); // Simulate a project change
 
             // Act
             ProjectManager.HostProjectChanged(project);
@@ -141,12 +141,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Adding some computed state
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
             ProjectManager.ProjectUpdated(updateContext);
             ProjectManager.Reset();
 
-            var project = new HostProject(HostProject.FilePath, "2.0"); // Simulate a project change
+            var project = new HostProject(HostProject.FilePath, FallbackRazorConfiguration.MVC_1_0); // Simulate a project change
 
             // Act
             ProjectManager.HostProjectChanged(project);
@@ -154,7 +152,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(project);
             Assert.True(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.False(ProjectManager.ListenersNotified);
             Assert.True(ProjectManager.WorkerStarted);
@@ -236,15 +233,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             ProjectManager.WorkspaceProjectAdded(WorkspaceProject);
             ProjectManager.Reset();
 
-            var project = new HostProject(HostProject.FilePath, "2.0"); // Simulate a project change
+            var project = new HostProject(HostProject.FilePath, FallbackRazorConfiguration.MVC_1_0); // Simulate a project change
             ProjectManager.HostProjectChanged(project);
             ProjectManager.Reset();
 
             // Generate the update
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
 
             // Act
             ProjectManager.ProjectUpdated(updateContext);
@@ -252,7 +247,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(project);
             Assert.False(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.True(ProjectManager.ListenersNotified);
             Assert.False(ProjectManager.WorkerStarted);
@@ -273,8 +267,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate the update
             var snapshot = ProjectManager.GetSnapshot(WorkspaceProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
 
             // Act
             ProjectManager.ProjectUpdated(updateContext);
@@ -282,7 +274,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(project);
             Assert.False(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.True(ProjectManager.ListenersNotified);
             Assert.False(ProjectManager.WorkerStarted);
@@ -299,10 +290,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate the update
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
 
-            var project = new HostProject(HostProject.FilePath, "2.0"); // Simulate a project change
+            var project = new HostProject(HostProject.FilePath, FallbackRazorConfiguration.MVC_1_0); // Simulate a project change
             ProjectManager.HostProjectChanged(project);
             ProjectManager.Reset();
 
@@ -312,7 +301,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(project);
             Assert.True(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.True(ProjectManager.ListenersNotified);
             Assert.True(ProjectManager.WorkerStarted);
@@ -329,8 +317,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate the update
             var snapshot = ProjectManager.GetSnapshot(WorkspaceProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
 
             var project = WorkspaceProject.WithAssemblyName("Test1"); // Simulate a project change
             ProjectManager.WorkspaceProjectChanged(project);
@@ -342,13 +328,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(project);
             Assert.True(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.True(ProjectManager.ListenersNotified);
             Assert.True(ProjectManager.WorkerStarted);
         }
 
-        [Fact]
+        [Fact(Skip = "We no longer have any background-computed state")]
         public void ProjectUpdated_WhenHostProjectChanged_StillDirty_WithoutSignificantChanges_DoesNotNotifyListeners_AndStartsBackgroundWorker()
         {
             // Arrange
@@ -359,21 +344,18 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate an update based on the original state
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
             ProjectManager.ProjectUpdated(updateContext);
             ProjectManager.Reset();
 
-            var project = new HostProject(HostProject.FilePath, "2.0"); // Simulate a project change
+            var project = new HostProject(HostProject.FilePath, FallbackRazorConfiguration.MVC_1_0); // Simulate a project change
             ProjectManager.HostProjectChanged(project);
             ProjectManager.Reset();
 
             // Now start computing another update
             snapshot = ProjectManager.GetSnapshot(HostProject);
             updateContext = snapshot.CreateUpdateContext();
-            updateContext.Configuration = configuration; // Reuse previous configuration
 
-            project = new HostProject(HostProject.FilePath, "1.1"); // Simulate a project change
+            project = new HostProject(HostProject.FilePath, FallbackRazorConfiguration.MVC_1_1); // Simulate a project change
             ProjectManager.HostProjectChanged(project);
             ProjectManager.Reset();
 
@@ -383,13 +365,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(project);
             Assert.True(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.False(ProjectManager.ListenersNotified);
             Assert.True(ProjectManager.WorkerStarted);
         }
 
-        [Fact]
+        [Fact(Skip = "We no longer have any background-computed state")]
         public void ProjectUpdated_WhenWorkspaceProjectChanged_StillDirty_WithoutSignificantChanges_DoesNotNotifyListeners_AndStartsBackgroundWorker()
         {
             // Arrange
@@ -400,8 +381,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate an update based on the original state
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
             ProjectManager.ProjectUpdated(updateContext);
             ProjectManager.Reset();
 
@@ -412,7 +391,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Now start computing another update
             snapshot = ProjectManager.GetSnapshot(HostProject);
             updateContext = snapshot.CreateUpdateContext();
-            updateContext.Configuration = configuration; // Reuse previous configuration
 
             project = project.WithAssemblyName("Test2"); // Simulate a project change
             ProjectManager.WorkspaceProjectChanged(project);
@@ -424,7 +402,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(project);
             Assert.True(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.False(ProjectManager.ListenersNotified);
             Assert.True(ProjectManager.WorkerStarted);
@@ -441,8 +418,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate the update
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
             
             ProjectManager.HostProjectRemoved(HostProject);
             ProjectManager.Reset();
@@ -470,8 +445,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate the update
             var snapshot = ProjectManager.GetSnapshot(WorkspaceProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
 
             ProjectManager.WorkspaceProjectRemoved(WorkspaceProject);
             ProjectManager.Reset();
@@ -482,7 +455,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(WorkspaceProject);
             Assert.True(snapshot.IsDirty);
-            Assert.Null(snapshot.Configuration);
 
             Assert.False(ProjectManager.ListenersNotified);
             Assert.False(ProjectManager.WorkerStarted);
@@ -499,8 +471,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate the update
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
 
             // Act
             ProjectManager.ProjectUpdated(updateContext);
@@ -508,7 +478,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(WorkspaceProject);
             Assert.False(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.True(ProjectManager.ListenersNotified);
             Assert.False(ProjectManager.WorkerStarted);
@@ -630,8 +599,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Generate the update
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             var updateContext = snapshot.CreateUpdateContext();
-            var configuration = Mock.Of<ProjectExtensibilityConfiguration>();
-            updateContext.Configuration = configuration;
             ProjectManager.ProjectUpdated(updateContext);
             ProjectManager.Reset();
 
@@ -643,7 +610,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             snapshot = ProjectManager.GetSnapshot(project);
             Assert.True(snapshot.IsDirty);
-            Assert.Same(configuration, snapshot.Configuration);
 
             Assert.False(ProjectManager.ListenersNotified);
             Assert.True(ProjectManager.WorkerStarted);
@@ -727,7 +693,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var snapshot = ProjectManager.GetSnapshot(WorkspaceProject);
             Assert.True(snapshot.IsDirty);
             Assert.False(snapshot.IsInitialized);
-            Assert.Null(snapshot.Configuration);
 
             Assert.False(ProjectManager.ListenersNotified);
             Assert.False(ProjectManager.WorkerStarted);

@@ -11,25 +11,25 @@
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 	
 	
-	internal partial class RazorGeneral {
+	internal partial class RazorExtension {
 		
 		/// <summary>Backing field for deserialized rule.<see cref='Microsoft.Build.Framework.XamlTypes.Rule'/>.</summary>
 		private static Microsoft.Build.Framework.XamlTypes.Rule deserializedFallbackRule;
 		
 		/// <summary>The name of the schema to look for at runtime to fulfill property access.</summary>
-		internal const string SchemaName = "RazorGeneral";
+		internal const string SchemaName = "RazorExtension";
 		
 		/// <summary>The ItemType given in the Rule.DataSource property.  May not apply to every Property's individual DataSource.</summary>
-		internal const string PrimaryDataSourceItemType = null;
+		internal const string PrimaryDataSourceItemType = "RazorExtension";
 		
 		/// <summary>The Label given in the Rule.DataSource property.  May not apply to every Property's individual DataSource.</summary>
 		internal const string PrimaryDataSourceLabel = "";
 		
-		/// <summary>Razor Language Version (The "RazorLangVersion" property).</summary>
-		internal const string RazorLangVersionProperty = "RazorLangVersion";
+		/// <summary>Razor Extension Assembly Name (The "AssemblyName" property).</summary>
+		internal const string AssemblyNameProperty = "AssemblyName";
 		
-		/// <summary>Razor Configuration Name (The "RazorDefaultConfiguration" property).</summary>
-		internal const string RazorDefaultConfigurationProperty = "RazorDefaultConfiguration";
+		/// <summary>Razor Extension Assembly File Path (The "AssemblyFilePath" property).</summary>
+		internal const string AssemblyFilePathProperty = "AssemblyFilePath";
 		
 		/// <summary>Backing field for the <see cref='Microsoft.Build.Framework.XamlTypes.Rule'/> property.</summary>
 		private Microsoft.VisualStudio.ProjectSystem.Properties.IRule rule;
@@ -55,13 +55,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 		/// <summary>Thread locking object</summary>
 		private object locker = new object();
 		
-		/// <summary>Initializes a new instance of the RazorGeneral class.</summary>
-		internal RazorGeneral(Microsoft.VisualStudio.ProjectSystem.Properties.IRule rule) {
+		/// <summary>Initializes a new instance of the RazorExtension class.</summary>
+		internal RazorExtension(Microsoft.VisualStudio.ProjectSystem.Properties.IRule rule) {
 			this.rule = rule;
 		}
 		
-		/// <summary>Initializes a new instance of the RazorGeneral class.</summary>
-		internal RazorGeneral(Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject, System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog> catalogs, string context, string file, string itemType, string itemName) : 
+		/// <summary>Initializes a new instance of the RazorExtension class.</summary>
+		internal RazorExtension(Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject, System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog> catalogs, string context, string file, string itemType, string itemName) : 
 				this(GetRule(System.Collections.Immutable.ImmutableDictionary.GetValueOrDefault(catalogs, context), file, itemType, itemName)) {
 			if ((configuredProject == null)) {
 				throw new System.ArgumentNullException("configuredProject");
@@ -73,8 +73,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 			this.itemName = itemName;
 		}
 		
-		/// <summary>Initializes a new instance of the RazorGeneral class.</summary>
-		internal RazorGeneral(Microsoft.VisualStudio.ProjectSystem.Properties.IRule rule, Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject) : 
+		/// <summary>Initializes a new instance of the RazorExtension class.</summary>
+		internal RazorExtension(Microsoft.VisualStudio.ProjectSystem.Properties.IRule rule, Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject) : 
 				this(rule) {
 			if ((rule == null)) {
 				throw new System.ArgumentNullException("rule");
@@ -89,13 +89,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 			this.itemName = this.rule.ItemName;
 		}
 		
-		/// <summary>Initializes a new instance of the RazorGeneral class.</summary>
-		internal RazorGeneral(Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject, System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog> catalogs, string context, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectPropertiesContext propertyContext) : 
+		/// <summary>Initializes a new instance of the RazorExtension class.</summary>
+		internal RazorExtension(Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject, System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog> catalogs, string context, Microsoft.VisualStudio.ProjectSystem.Properties.IProjectPropertiesContext propertyContext) : 
 				this(configuredProject, catalogs, context, GetContextFile(propertyContext), propertyContext.ItemType, propertyContext.ItemName) {
 		}
 		
-		/// <summary>Initializes a new instance of the RazorGeneral class that assumes a project context (neither property sheet nor items).</summary>
-		internal RazorGeneral(Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject, System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog> catalogs) : 
+		/// <summary>Initializes a new instance of the RazorExtension class that assumes a project context (neither property sheet nor items).</summary>
+		internal RazorExtension(Microsoft.VisualStudio.ProjectSystem.ConfiguredProject configuredProject, System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog> catalogs) : 
 				this(configuredProject, catalogs, "Project", null, null, null) {
 		}
 		
@@ -106,8 +106,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 			}
 		}
 		
-		/// <summary>Razor Language Version</summary>
-		internal Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty RazorLangVersion {
+		/// <summary>Razor Extension Assembly Name</summary>
+		internal Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty AssemblyName {
 			get {
 				Microsoft.VisualStudio.ProjectSystem.Properties.IRule localRule = this.rule;
 				if ((localRule == null)) {
@@ -116,18 +116,18 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 				if ((localRule == null)) {
 					return null;
 				}
-				Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty property = ((Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty)(localRule.GetProperty(RazorLangVersionProperty)));
+				Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty property = ((Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty)(localRule.GetProperty(AssemblyNameProperty)));
 				if (((property == null) 
 							&& (this.GeneratedFallbackRule != null))) {
 					localRule = this.GeneratedFallbackRule;
-					property = ((Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty)(localRule.GetProperty(RazorLangVersionProperty)));
+					property = ((Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty)(localRule.GetProperty(AssemblyNameProperty)));
 				}
 				return property;
 			}
 		}
 		
-		/// <summary>Razor Configuration Name</summary>
-		internal Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty RazorDefaultConfiguration {
+		/// <summary>Razor Extension Assembly File Path</summary>
+		internal Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty AssemblyFilePath {
 			get {
 				Microsoft.VisualStudio.ProjectSystem.Properties.IRule localRule = this.rule;
 				if ((localRule == null)) {
@@ -136,11 +136,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 				if ((localRule == null)) {
 					return null;
 				}
-				Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty property = ((Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty)(localRule.GetProperty(RazorDefaultConfigurationProperty)));
+				Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty property = ((Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty)(localRule.GetProperty(AssemblyFilePathProperty)));
 				if (((property == null) 
 							&& (this.GeneratedFallbackRule != null))) {
 					localRule = this.GeneratedFallbackRule;
-					property = ((Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty)(localRule.GetProperty(RazorDefaultConfigurationProperty)));
+					property = ((Microsoft.VisualStudio.ProjectSystem.Properties.IEvaluatedProperty)(localRule.GetProperty(AssemblyFilePathProperty)));
 				}
 				return property;
 			}
@@ -185,12 +185,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 			if ((this.configuredProject == null)) {
 				return;
 			}
-			Microsoft.Build.Framework.XamlTypes.Rule unboundRule = RazorGeneral.deserializedFallbackRule;
+			Microsoft.Build.Framework.XamlTypes.Rule unboundRule = RazorExtension.deserializedFallbackRule;
 			if ((unboundRule == null)) {
 				System.IO.Stream xamlStream = null;
 				System.Reflection.Assembly thisAssembly = System.Reflection.Assembly.GetExecutingAssembly();
 				try {
-					xamlStream = thisAssembly.GetManifestResourceStream("XamlRuleToCode:RazorGeneral.xaml");
+					xamlStream = thisAssembly.GetManifestResourceStream("XamlRuleToCode:RazorExtension.xaml");
 					Microsoft.Build.Framework.XamlTypes.IProjectSchemaNode root = ((Microsoft.Build.Framework.XamlTypes.IProjectSchemaNode)(System.Xaml.XamlServices.Load(xamlStream)));
 					System.Collections.Generic.IEnumerator<System.Object> ruleEnumerator = root.GetSchemaObjects(typeof(Microsoft.Build.Framework.XamlTypes.Rule)).GetEnumerator();
 					for (
@@ -200,8 +200,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 						Microsoft.Build.Framework.XamlTypes.Rule t = ((Microsoft.Build.Framework.XamlTypes.Rule)(ruleEnumerator.Current));
 						if (System.StringComparer.OrdinalIgnoreCase.Equals(t.Name, SchemaName)) {
 							unboundRule = t;
-							unboundRule.Name = "8bfc6c06-2bce-4572-8a3e-8e5f6067e9df";
-							RazorGeneral.deserializedFallbackRule = unboundRule;
+							unboundRule.Name = "7d412687-8022-48e9-891a-775e1e4cb89e";
+							RazorExtension.deserializedFallbackRule = unboundRule;
 						}
 					}
 				}
@@ -219,17 +219,17 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem.Rules {
 	
 	internal partial class RazorProjectProperties {
 		
-		private static System.Func<System.Threading.Tasks.Task<System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog>>, object, RazorGeneral> CreateRazorGeneralPropertiesDelegate = new System.Func<System.Threading.Tasks.Task<System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog>>, object, RazorGeneral>(CreateRazorGeneralProperties);
+		private static System.Func<System.Threading.Tasks.Task<System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog>>, object, RazorExtension> CreateRazorExtensionPropertiesDelegate = new System.Func<System.Threading.Tasks.Task<System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog>>, object, RazorExtension>(CreateRazorExtensionProperties);
 		
-		private static RazorGeneral CreateRazorGeneralProperties(System.Threading.Tasks.Task<System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog>> namedCatalogs, object state) {
+		private static RazorExtension CreateRazorExtensionProperties(System.Threading.Tasks.Task<System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog>> namedCatalogs, object state) {
 			RazorProjectProperties that = ((RazorProjectProperties)(state));
-			return new RazorGeneral(that.ConfiguredProject, namedCatalogs.Result, "Project", that.File, that.ItemType, that.ItemName);
+			return new RazorExtension(that.ConfiguredProject, namedCatalogs.Result, "Project", that.File, that.ItemType, that.ItemName);
 		}
 		
-		/// <summary>Gets the strongly-typed property accessor used to get and set Razor Properties properties.</summary>
-		internal System.Threading.Tasks.Task<RazorGeneral> GetRazorGeneralPropertiesAsync() {
+		/// <summary>Gets the strongly-typed property accessor used to get and set Extension Properties properties.</summary>
+		internal System.Threading.Tasks.Task<RazorExtension> GetRazorExtensionPropertiesAsync() {
 			System.Threading.Tasks.Task<System.Collections.Immutable.IImmutableDictionary<string, Microsoft.VisualStudio.ProjectSystem.Properties.IPropertyPagesCatalog>> namedCatalogsTask = this.GetNamedCatalogsAsync();
-			return namedCatalogsTask.ContinueWith(CreateRazorGeneralPropertiesDelegate, this, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskContinuationOptions.ExecuteSynchronously, System.Threading.Tasks.TaskScheduler.Default);
+			return namedCatalogsTask.ContinueWith(CreateRazorExtensionPropertiesDelegate, this, System.Threading.CancellationToken.None, System.Threading.Tasks.TaskContinuationOptions.ExecuteSynchronously, System.Threading.Tasks.TaskScheduler.Default);
 		}
 	}
 }

@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             _textViews = new List<ITextView>();
         }
 
-        internal override ProjectExtensibilityConfiguration Configuration => _project.Configuration;
+        public override RazorConfiguration Configuration => _project.Configuration;
 
         public override EditorSettings EditorSettings => _editorSettingsManager.Current;
 

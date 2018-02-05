@@ -13,9 +13,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         public ILanguageService CreateLanguageService(HostLanguageServices languageServices)
         {
-            return new DefaultProjectSnapshotWorker(
-                languageServices.WorkspaceServices.GetRequiredService<ForegroundDispatcher>(),
-                languageServices.GetRequiredService<ProjectExtensibilityConfigurationFactory>());
+            return new DefaultProjectSnapshotWorker(languageServices.WorkspaceServices.GetRequiredService<ForegroundDispatcher>());
         }
     }
 }
