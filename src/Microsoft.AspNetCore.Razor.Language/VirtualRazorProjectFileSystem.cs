@@ -14,6 +14,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override IEnumerable<RazorProjectItem> EnumerateItems(string basePath)
         {
+
             basePath = NormalizeAndEnsureValidPath(basePath);
             var directory = Root.GetDirectory(basePath);
             return directory?.EnumerateItems() ?? Enumerable.Empty<RazorProjectItem>();
@@ -27,10 +28,16 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public void Add(RazorProjectItem projectItem)
         {
+            if (projectItem == null)
+            {
+                throw new ArgumentNullException(nameof(projectItem));
+            }
+
             var filePath = NormalizeAndEnsureValidPath(projectItem.FilePath);
             Root.AddFile(new FileNode(filePath, projectItem));
         }
 
+        [DebuggerDisplay("{Path}")]
         internal class DirectoryNode
         {
             public DirectoryNode(string path)
@@ -40,16 +47,16 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public string Path { get; }
 
-            public List<DirectoryNode> Directories => new List<DirectoryNode>();
+            public List<DirectoryNode> Directories { get; } = new List<DirectoryNode>();
 
-            public List<FileNode> Files => new List<FileNode>();
+            public List<FileNode> Files { get; } = new List<FileNode>();
 
             public void AddFile(FileNode fileNode)
             {
-                var filePath = fileNode.FilePath;
+                var filePath = fileNode.Path;
                 if (!filePath.StartsWith(Path, StringComparison.OrdinalIgnoreCase))
                 {
-                    var message = Resources.FormatVirtualFileSystem_FileDoesNotBelongToDirectory(fileNode.FilePath, Path);
+                    var message = Resources.FormatVirtualFileSystem_FileDoesNotBelongToDirectory(fileNode.Path, Path);
                     throw new InvalidOperationException(message);
                 }
 
@@ -103,7 +110,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
                 foreach (var file in directory.Files)
                 {
-                    var filePath = file.FilePath;
+                    var filePath = file.Path;
                     var directoryLength = directory.Path.Length;
 
                     // path, filePath -> /Views/Home/Index.cshtml
@@ -190,15 +197,16 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
         }
 
+        [DebuggerDisplay("{Path}")]
         internal struct FileNode
         {
-            public FileNode(string filePath, RazorProjectItem projectItem)
+            public FileNode(string path, RazorProjectItem projectItem)
             {
-                FilePath = filePath;
+                Path = path;
                 ProjectItem = projectItem;
             }
 
-            public string FilePath { get; }
+            public string Path { get; }
 
             public RazorProjectItem ProjectItem { get; }
         }

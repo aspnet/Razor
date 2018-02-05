@@ -9,9 +9,9 @@ namespace Microsoft.AspNetCore.Razor.Tasks
 {
     public class RazorGenerate : DotNetToolTask
     {
-        private const string GeneratedOutput = nameof(GeneratedOutput);
-        private const string TargetPath = nameof(TargetPath);
-        private const string FullPath = nameof(FullPath);
+        private const string GeneratedOutput = "GeneratedOutput";
+        private const string TargetPath = "TargetPath";
+        private const string FullPath = "FullPath";
 
         [Required]
         public ITaskItem[] Sources { get; set; }

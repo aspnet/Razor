@@ -216,7 +216,9 @@ namespace Microsoft.AspNetCore.Razor.Tools
                 SourcePath = sourcePath;
                 OutputPath = outputPath;
                 RelativePhysicalPath = physicalRelativePath;
-                FilePath = '/' + physicalRelativePath.Replace(Path.DirectorySeparatorChar, '/');
+                FilePath = '/' + physicalRelativePath
+                    .Replace(Path.DirectorySeparatorChar, '/')
+                    .Replace("//", "/");
             }
 
             public string SourcePath { get; }
