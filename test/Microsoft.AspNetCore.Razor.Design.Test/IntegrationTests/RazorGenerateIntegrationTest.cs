@@ -263,9 +263,9 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, RazorIntermediateOutputPath, "LinkedFileOut", "LinkedFile2.cs");
             Assert.FileExists(result, RazorIntermediateOutputPath, "LinkedFileOut", "LinkedFileWithRename.cs");
 
-            Assert.BuildOutputContainsLine(result, $@"RazorGenerateWithTargetPath: ..\LinkedDir\LinkedFile.cshtml LinkedFile.cshtml {RazorIntermediateOutputPath}\LinkedFile.cs");
-            Assert.BuildOutputContainsLine(result, $@"RazorGenerateWithTargetPath: ..\LinkedDir\LinkedFile2.cshtml LinkedFileOut\LinkedFile2.cshtml {RazorIntermediateOutputPath}\LinkedFileOut\LinkedFile2.cs");
-            Assert.BuildOutputContainsLine(result, $@"RazorGenerateWithTargetPath: ..\LinkedDir\LinkedFile3.cshtml LinkedFileOut\LinkedFileWithRename.cshtml {RazorIntermediateOutputPath}\LinkedFileOut\LinkedFileWithRename.cs");
+            Assert.BuildOutputContainsLine(result, $@"RazorGenerateWithTargetPath: {Path.Combine("..", "LinkedDir", "LinkedFile.cshtml")} LinkedFile.cshtml {Path.Combine(RazorIntermediateOutputPath, "LinkedFile.cs")}");
+            Assert.BuildOutputContainsLine(result, $@"RazorGenerateWithTargetPath: {Path.Combine("..", "LinkedDir", "LinkedFile2.cshtml")} LinkedFileOut\LinkedFile2.cshtml {Path.Combine(RazorIntermediateOutputPath, "LinkedFileOut", "LinkedFile2.cs")}");
+            Assert.BuildOutputContainsLine(result, $@"RazorGenerateWithTargetPath: {Path.Combine("..", "LinkedDir", "LinkedFile3.cshtml")} LinkedFileOut\LinkedFileWithRename.cshtml {Path.Combine(RazorIntermediateOutputPath, "LinkedFileOut", "LinkedFileWithRename.cs")}");
         }
 
         [Fact]
@@ -284,7 +284,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             var result = await DotnetMSBuild(RazorGenerateTarget);
 
             Assert.BuildFailed(result);
-            var errorLocation = Path.GetFullPath(Path.Combine(Project.DirectoryPath, file)) + "(1,2)";
+            var errorLocation = Path.GetFullPath(Path.Combine(Project.DirectoryPath, "..", "LinkedDir", "LinkedErrorFile.cshtml")) + "(1,2)";
             Assert.BuildError(result, "RZ1006", errorLocation);
         }
 
@@ -320,7 +320,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Shared", "Error.cs");
             Assert.FileExists(result, RazorIntermediateOutputPath, "temp.cs");
             Assert.FileCountEquals(result, 9, RazorIntermediateOutputPath, "*.cs");
-            Assert.BuildOutputContainsLine(result, $@"RazorGenerateWithTargetPath: {filePath} temp.cshtml {RazorIntermediateOutputPath}\temp.cs");
+            Assert.BuildOutputContainsLine(result, $@"RazorGenerateWithTargetPath: {filePath} temp.cshtml {Path.Combine(RazorIntermediateOutputPath, "temp.cs")}");
         }
     }
 }

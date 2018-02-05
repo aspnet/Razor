@@ -200,10 +200,9 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
         public async Task Build_SetsUpEmbeddedResourcesWithLogicalName()
         {
             // Arrange
-            var file = @"..\LinkedDir\LinkedFile.cshtml";
-            var additionalProjectContent = $@"
+            var additionalProjectContent = @"
 <ItemGroup>
-  <Content Include=""{file}"" Link=""LinkedFileOut\LinkedFile.cshtml"" />
+  <Content Include=""..\LinkedDir\LinkedFile.cshtml"" Link=""LinkedFileOut\LinkedFile.cshtml"" />
 </ItemGroup>
 ";
             AddProjectFileContent(additionalProjectContent);
@@ -213,9 +212,9 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
             Assert.BuildPassed(result);
 
-            Assert.BuildOutputContainsLine(result, @"CompileResource: Pages\Index.cshtml /Pages/Index.cshtml");
-            Assert.BuildOutputContainsLine(result, @"CompileResource: Areas\Products\Pages\_ViewStart.cshtml /Areas/Products/Pages/_ViewStart.cshtml");
-            Assert.BuildOutputContainsLine(result, @"CompileResource: ..\LinkedDir\LinkedFile.cshtml /LinkedFileOut/LinkedFile.cshtml");
+            Assert.BuildOutputContainsLine(result, $@"CompileResource: {Path.Combine("Pages", "Index.cshtml")} /Pages/Index.cshtml");
+            Assert.BuildOutputContainsLine(result, $@"CompileResource: {Path.Combine("Areas", "Products", "Pages", "_ViewStart.cshtml")} /Areas/Products/Pages/_ViewStart.cshtml");
+            Assert.BuildOutputContainsLine(result, $@"CompileResource: {Path.Combine("..", "LinkedDir", "LinkedFile.cshtml")} /LinkedFileOut/LinkedFile.cshtml");
         }
     }
 }
