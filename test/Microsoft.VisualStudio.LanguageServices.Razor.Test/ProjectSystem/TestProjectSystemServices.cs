@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,8 +37,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             ActiveConfiguredProject = new TestConfiguredProject(UnconfiguredProject, data);
             UnconfiguredProject.LoadedConfiguredProjects.Add(ActiveConfiguredProject);
 
+            ActiveConfiguredProjectAssemblyReferences = new TestAssemblyReferencesService();
             ActiveConfiguredProjectRazorProperties = new RazorProjectProperties(ActiveConfiguredProject, UnconfiguredProject);
-
             ActiveConfiguredProjectSubscription = new TestActiveConfiguredProjectSubscriptionService();
         }
 
@@ -48,14 +49,20 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public TestUnconfiguredProject UnconfiguredProject { get; }
 
         public TestConfiguredProject ActiveConfiguredProject { get; }
-        
+
+        public TestAssemblyReferencesService ActiveConfiguredProjectAssemblyReferences { get; }
+
         public RazorProjectProperties ActiveConfiguredProjectRazorProperties { get; }
 
         public TestActiveConfiguredProjectSubscriptionService ActiveConfiguredProjectSubscription { get; }
 
         public TestThreadingService ThreadingService { get; }
-        
+
         ConfiguredProject IUnconfiguredProjectCommonServices.ActiveConfiguredProject => ActiveConfiguredProject;
+
+        IAssemblyReferencesService IUnconfiguredProjectCommonServices.ActiveConfiguredProjectAssemblyReferences => ActiveConfiguredProjectAssemblyReferences;
+
+        IPackageReferencesService IUnconfiguredProjectCommonServices.ActiveConfiguredProjectPackageReferences => throw new NotImplementedException();
 
         RazorProjectProperties IUnconfiguredProjectCommonServices.ActiveConfiguredProjectRazorProperties => ActiveConfiguredProjectRazorProperties;
 
@@ -65,12 +72,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         UnconfiguredProject IUnconfiguredProjectCommonServices.UnconfiguredProject => UnconfiguredProject;
 
-        // We don't actually read the updates, which is why it's ok for this to be empty.
-        public IProjectVersionedValue<IProjectSubscriptionUpdate> CreateUpdate()
+        public IProjectVersionedValue<IProjectSubscriptionUpdate> CreateUpdate(params TestProjectChangeDescription[] descriptions)
         {
             return new ProjectVersionedValue<IProjectSubscriptionUpdate>(
                 value: new ProjectSubscriptionUpdate(
-                    projectChanges: ImmutableDictionary<string, IProjectChangeDescription>.Empty,
+                    projectChanges: descriptions.ToImmutableDictionary(d => d.RuleName, d => (IProjectChangeDescription)d),
                     projectConfiguration: ActiveConfiguredProject.ProjectConfiguration),
                 dataSourceVersions: ImmutableDictionary<NamedIdentity, IComparable>.Empty);
         }
@@ -593,7 +599,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 var rule = new Mock<IRule>();
                 rule
                     .Setup(o => o.GetProperty(It.IsAny<string>()))
-                    .Returns((string propertyName) => {
+                    .Returns((string propertyName) =>
+                    {
 
                         return properties.FirstOrDefault(p => p.Name == propertyName);
                     });
@@ -671,6 +678,76 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
         }
 
+        public class TestAssemblyReferencesService : IAssemblyReferencesService
+        {
+            public TestAssemblyReferencesService()
+            {
+                ResolvedReferences = new List<IAssemblyReference>();
+            }
+
+            public List<IAssemblyReference> ResolvedReferences { get; }
+
+            Task<AddReferenceResult<IUnresolvedAssemblyReference>> IAssemblyReferencesService.AddAsync(AssemblyName assemblyName, string assemblyPath)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<bool> IAssemblyReferencesService.CanResolveAsync(AssemblyName assemblyName, string assemblyPath)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<bool> IAssemblyReferencesService.ContainsAsync(AssemblyName assemblyName, string assemblyPath)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<IAssemblyReference> IAssemblyReferencesService.GetResolvedReferenceAsync(AssemblyName assemblyName, string assemblyPath)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<IAssemblyReference> IResolvableReferencesService<IUnresolvedAssemblyReference, IAssemblyReference>.GetResolvedReferenceAsync(IUnresolvedAssemblyReference unresolvedReference)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<IImmutableSet<IAssemblyReference>> IResolvableReferencesService<IUnresolvedAssemblyReference, IAssemblyReference>.GetResolvedReferencesAsync()
+            {
+                return Task.FromResult<IImmutableSet<IAssemblyReference>>(ResolvedReferences.ToImmutableHashSet());
+            }
+
+            Task<IUnresolvedAssemblyReference> IAssemblyReferencesService.GetUnresolvedReferenceAsync(AssemblyName assemblyName, string assemblyPath)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<IUnresolvedAssemblyReference> IResolvableReferencesService<IUnresolvedAssemblyReference, IAssemblyReference>.GetUnresolvedReferenceAsync(IAssemblyReference resolvedReference)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task<IImmutableSet<IUnresolvedAssemblyReference>> IResolvableReferencesService<IUnresolvedAssemblyReference, IAssemblyReference>.GetUnresolvedReferencesAsync()
+            {
+                throw new NotImplementedException();
+            }
+
+            Task IAssemblyReferencesService.RemoveAsync(AssemblyName assemblyName, string assemblyPath)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task IResolvableReferencesService<IUnresolvedAssemblyReference, IAssemblyReference>.RemoveAsync(IUnresolvedAssemblyReference reference)
+            {
+                throw new NotImplementedException();
+            }
+
+            Task IResolvableReferencesService<IUnresolvedAssemblyReference, IAssemblyReference>.RemoveAsync(IEnumerable<IUnresolvedAssemblyReference> references)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public class TestThreadingService : IProjectThreadingService
         {
             public TestThreadingService()
@@ -696,12 +773,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
 
             public void Fork(
-                Func<Task> asyncAction, 
-                JoinableTaskFactory factory = null, 
-                UnconfiguredProject unconfiguredProject = null, 
-                ConfiguredProject configuredProject = null, 
-                ErrorReportSettings watsonReportSettings = null, 
-                ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable, 
+                Func<Task> asyncAction,
+                JoinableTaskFactory factory = null,
+                UnconfiguredProject unconfiguredProject = null,
+                ConfiguredProject configuredProject = null,
+                ErrorReportSettings watsonReportSettings = null,
+                ProjectFaultSeverity faultSeverity = ProjectFaultSeverity.Recoverable,
                 ForkOptions options = ForkOptions.Default)
             {
                 throw new NotImplementedException();
