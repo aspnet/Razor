@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel.Composition;
 using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.References;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
@@ -11,6 +12,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     internal class UnconfiguredProjectCommonServices : IUnconfiguredProjectCommonServices
     {
         private readonly ActiveConfiguredProject<ConfiguredProject> _activeConfiguredProject;
+        private readonly ActiveConfiguredProject<IAssemblyReferencesService> _activeConfiguredProjectAssemblyReferences;
+        private readonly ActiveConfiguredProject<IPackageReferencesService> _activeConfiguredProjectPackageReferences;
         private readonly ActiveConfiguredProject<RazorProjectProperties> _activeConfiguredProjectProperties;
 
         [ImportingConstructor]
@@ -19,6 +22,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             UnconfiguredProject unconfiguredProject,
             IActiveConfiguredProjectSubscriptionService activeConfiguredProjectSubscription,
             ActiveConfiguredProject<ConfiguredProject> activeConfiguredProject,
+            ActiveConfiguredProject<IAssemblyReferencesService> activeConfiguredProjectAssemblyReferences,
+            ActiveConfiguredProject<IPackageReferencesService> activeConfiguredProjectPackageReferences,
             ActiveConfiguredProject<RazorProjectProperties> activeConfiguredProjectRazorProperties)
         {
             if (threadingService == null)
@@ -41,6 +46,16 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(activeConfiguredProject));
             }
 
+            if (activeConfiguredProjectAssemblyReferences == null)
+            {
+                throw new ArgumentNullException(nameof(activeConfiguredProjectAssemblyReferences));
+            }
+
+            if (activeConfiguredProjectPackageReferences == null)
+            {
+                throw new ArgumentNullException(nameof(activeConfiguredProjectPackageReferences));
+            }
+
             if (activeConfiguredProjectRazorProperties == null)
             {
                 throw new ArgumentNullException(nameof(activeConfiguredProjectRazorProperties));
@@ -50,14 +65,21 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             UnconfiguredProject = unconfiguredProject;
             ActiveConfiguredProjectSubscription = activeConfiguredProjectSubscription;
             _activeConfiguredProject = activeConfiguredProject;
+            _activeConfiguredProjectAssemblyReferences = activeConfiguredProjectAssemblyReferences;
+            _activeConfiguredProjectPackageReferences = activeConfiguredProjectPackageReferences;
             _activeConfiguredProjectProperties = activeConfiguredProjectRazorProperties;
         }
 
         public ConfiguredProject ActiveConfiguredProject => _activeConfiguredProject.Value;
 
+        public IAssemblyReferencesService ActiveConfiguredProjectAssemblyReferences => _activeConfiguredProjectAssemblyReferences.Value;
+
+        public IPackageReferencesService ActiveConfiguredProjectPackageReferences => _activeConfiguredProjectPackageReferences.Value;
+
         public RazorProjectProperties ActiveConfiguredProjectRazorProperties => _activeConfiguredProjectProperties.Value;
         
         public IActiveConfiguredProjectSubscriptionService ActiveConfiguredProjectSubscription { get; }
+
 
         public IProjectThreadingService ThreadingService { get; }
 

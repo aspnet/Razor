@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.VisualStudio.ProjectSystem;
+using Microsoft.VisualStudio.ProjectSystem.References;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
@@ -14,10 +15,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         ConfiguredProject ActiveConfiguredProject { get; }
 
+        IAssemblyReferencesService ActiveConfiguredProjectAssemblyReferences { get; }
+
+        IPackageReferencesService ActiveConfiguredProjectPackageReferences { get; }
+
         RazorProjectProperties ActiveConfiguredProjectRazorProperties { get; }
 
         IActiveConfiguredProjectSubscriptionService ActiveConfiguredProjectSubscription { get; }
-
+        
         IProjectThreadingService ThreadingService { get; }
 
         UnconfiguredProject UnconfiguredProject { get; }
