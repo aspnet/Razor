@@ -1,3 +1,4 @@
 <Project>
   <Import Project="RazorTest.Introspection.targets" />
+  <Import Project="$(SolutionRoot)src\Microsoft.Net.Sdk.Razor\build\netstandard2.0\Microsoft.Net.Sdk.Razor.targets" />
 </Project>

@@ -129,7 +129,7 @@ Copyright (c) .NET Foundation. All rights reserved.
   </PropertyGroup>
 
   <!-- Resolve the toolset to use -->
-  <PropertyGroup Condition="'$(_WebSdkHeartsRazorSdk)' == 'true'">
+  <PropertyGroup>
     <!-- Default value for the property 'MvcRazorCompileOnPublish' is empty. If it has been explicitly enabled, continue using precompilation. -->
     <ResolvedRazorCompileToolset Condition="'$(MvcRazorCompileOnPublish)' == 'true'">PrecompilationTool</ResolvedRazorCompileToolset>
 

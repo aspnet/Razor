@@ -6,6 +6,20 @@
     <SolutionRoot>$([MSBuild]::EnsureTrailingSlash('$(SolutionRoot)'))</SolutionRoot>
   </PropertyGroup>
 
+  <!--
+  The order of MSBuild files being imported in the default case looks like this:
+  * Microsoft.Common.props
+  * Directory.Build.props
+  * obj/{ProjName}.nuget.g.props <--
+  * Microsoft.NET.Sdk.props
+  * Microsoft.NET.Sdk.Razor.props
+  * Microsoft.NET.Sdk.Web.props
+
+  When Microsoft.Net.Sdk.Razor is referenced as an package, the props file from the package is imported prior to the Razor Sdk 
+  denoted by '<--' and will preempt the Sdk.
+  We will simulate this behavior in our test apps using the next best thing which is this file.
+  -->
+
   <ItemGroup Condition="'$(BinariesRoot)'==''">
     <!-- In test scenarios $(BinariesRoot) is defined in a generated Directory.Build.props file -->
     <ProjectReference Include="..\..\Microsoft.AspNetCore.Razor.Test.MvcShim\Microsoft.AspNetCore.Razor.Test.MvcShim.csproj"/>
@@ -19,6 +33,8 @@
     <Reference Include="$(BinariesRoot)\Microsoft.AspNetCore.Razor.Runtime.dll"/>
     <Reference Include="$(BinariesRoot)\Microsoft.AspNetCore.Razor.Test.MvcShim.dll"/>
   </ItemGroup>
+
+  <Import Project="$(SolutionRoot)src\Microsoft.Net.Sdk.Razor\build\netstandard2.0\Microsoft.Net.Sdk.Razor.props" />
 
   <Import Project="After.Directory.Build.props" Condition="Exists('After.Directory.Build.props')" />
 
