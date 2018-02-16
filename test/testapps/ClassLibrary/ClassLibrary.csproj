@@ -1,7 +1,5 @@
-<Project>
+<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
-  
   <PropertyGroup>
     <_RazorMSBuildRoot>$(SolutionRoot)src\Microsoft.AspNetCore.Razor.Design\bin\$(Configuration)\netstandard2.0\</_RazorMSBuildRoot>
   </PropertyGroup>
@@ -31,8 +29,4 @@
   </ItemGroup>
 
   <Import Project="$(SolutionRoot)src\Microsoft.AspNetCore.Mvc.Razor.Extensions\build\netstandard2.0\Microsoft.AspNetCore.Mvc.Razor.targets" />
-
-  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
-  <Import Project="$(SolutionRoot)src\Microsoft.NET.Sdk.Razor\Sdk\Sdk.targets" />
-
 </Project>
