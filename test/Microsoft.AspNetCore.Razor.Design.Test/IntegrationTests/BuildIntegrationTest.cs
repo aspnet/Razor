@@ -39,11 +39,6 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 // end up in the MSBuild logs.
                 Assert.BuildOutputContainsLine(result, $"SimpleMvc -> {Path.Combine(Path.GetFullPath(Project.DirectoryPath), OutputPath, "SimpleMvc.Views.dll")}");
             }
-
-            result = await DotnetMSBuild("_IntrospectPreserveCompilationContext");
-
-            Assert.BuildPassed(result);
-            Assert.BuildOutputContainsLine(result, "PreserveCompilationContext: true");
         }
 
         [Fact]
@@ -59,13 +54,6 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, OutputPath, "SimpleMvc.pdb");
             Assert.FileDoesNotExist(result, OutputPath, "SimpleMvc.Views.dll");
             Assert.FileDoesNotExist(result, OutputPath, "SimpleMvc.Views.pdb");
-
-            result = await DotnetMSBuild("_IntrospectPreserveCompilationContext");
-
-            Assert.BuildPassed(result);
-            // An app with no cshtml files should not have PreserveCompilationContext.
-            // This expectation should get resolved once we address https://github.com/aspnet/Razor/issues/2077
-            Assert.BuildOutputContainsLine(result, "PreserveCompilationContext: true");
         }
 
         [Fact]
