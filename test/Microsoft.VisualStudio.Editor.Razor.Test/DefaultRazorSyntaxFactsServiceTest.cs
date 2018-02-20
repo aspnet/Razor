@@ -87,16 +87,22 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 .TagMatchingRuleDescriptor(rule => rule.RequireTagName("taghelper"))
                 .TypeName("TestTagHelper")
                 .Build();
-            var engine = RazorEngine.CreateDesignTime(builder =>
+            var engine = RazorProjectEngine.Create(RazorConfiguration.Default, RazorProjectFileSystem.Empty, builder =>
             {
                 builder.AddTagHelpers(taghelper);
+                var importProjectItem = new TestRazorProjectItem("import.cshtml")
+                {
+                    Content = "@addTagHelper *, TestAssembly"
+                };
+                builder.AddDefaultImports(importProjectItem);
             });
 
-            var sourceDocument = RazorSourceDocument.Create(source, "test.cshtml");
-            var addTagHelperImport = RazorSourceDocument.Create("@addTagHelper *, TestAssembly", "import.cshtml");
-            var codeDocument = RazorCodeDocument.Create(sourceDocument, new[] { addTagHelperImport });
+            var sourceProjectItem = new TestRazorProjectItem("test.cshtml")
+            {
+                Content = source
+            };
 
-            engine.Process(codeDocument);
+            var codeDocument = engine.ProcessDesignTime(sourceProjectItem);
 
             return codeDocument;
         }

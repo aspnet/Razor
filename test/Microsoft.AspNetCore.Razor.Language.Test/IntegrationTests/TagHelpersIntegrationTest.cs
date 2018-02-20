@@ -21,7 +21,10 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
                     assemblyName: "TestAssembly")
             };
 
-            var engine = RazorEngine.Create(builder => builder.AddTagHelpers(descriptors));
+            var engine = RazorProjectEngine.Create(
+                RazorConfiguration.Default,
+                RazorProjectFileSystem.Empty,
+                builder => builder.AddTagHelpers(descriptors));
             var document = CreateCodeDocument();
 
             // Act

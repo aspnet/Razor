@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
 {
+#pragma warning disable CS0618 // Type or member is obsolete
     public class MvcRazorTemplateEngineTest
     {
         [Fact]
@@ -91,4 +92,5 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             return new string(contentChars);
         }
     }
+#pragma warning restore CS0618 // Type or member is obsolete
 }

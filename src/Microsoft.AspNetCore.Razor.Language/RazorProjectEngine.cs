@@ -53,6 +53,10 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         protected abstract void ProcessCore(RazorCodeDocument codeDocument);
 
+        internal static RazorProjectEngine Create() => Create(configure: null);
+
+        internal static RazorProjectEngine Create(Action<RazorProjectEngineBuilder> configure) => Create(RazorConfiguration.Default, RazorProjectFileSystem.Empty, configure);
+
         public static RazorProjectEngine Create(RazorConfiguration configuration, RazorProjectFileSystem fileSystem) => Create(configuration, fileSystem, configure: null);
 
         public static RazorProjectEngine Create(

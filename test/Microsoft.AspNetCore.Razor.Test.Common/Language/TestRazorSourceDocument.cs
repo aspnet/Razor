@@ -11,6 +11,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     public static class TestRazorSourceDocument
     {
+        // TODO: DO WE STILL NEED THESE????
         public static RazorSourceDocument CreateResource(string resourcePath, Type type, Encoding encoding = null, bool normalizeNewLines = false)
         {
             return CreateResource(resourcePath, type.GetTypeInfo().Assembly, encoding, normalizeNewLines);

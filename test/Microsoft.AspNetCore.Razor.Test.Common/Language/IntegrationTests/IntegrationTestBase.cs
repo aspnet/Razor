@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Xunit;
 using Xunit.Sdk;
+using System.Text.RegularExpressions;
 
 namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
 {
@@ -59,7 +60,72 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
 #endif
         }
 
-        protected virtual RazorCodeDocument CreateCodeDocument()
+        protected virtual RazorProjectEngine CreateProjectEngine() => CreateProjectEngine(configure: null);
+
+        protected virtual RazorProjectEngine CreateProjectEngine(Action<RazorProjectEngineBuilder> configure)
+        {
+            if (FileName == null)
+            {
+                var message = $"{nameof(CreateProjectEngine)} should only be called from an integration test, ({nameof(FileName)} is null).";
+                throw new InvalidOperationException(message);
+            }
+
+            // TODO: See what fails then add imports
+            //var suffixIndex = FileName.LastIndexOf("_");
+            //var normalizedFileName = suffixIndex == -1 ? FileName : FileName.Substring(0, suffixIndex);
+            //var imports = new List<RazorProjectItem>();
+            //var importIdentifiers = new List<string>();
+            //while (true)
+            //{
+            //    var importsFileName = Path.ChangeExtension(normalizedFileName + "_Imports" + imports.Count.ToString(), ".cshtml");
+            //    if (!TestFile.Create(importsFileName, GetType().GetTypeInfo().Assembly).Exists())
+            //    {
+            //        break;
+            //    }
+
+            //    importIdentifiers.Add(normalizedFileName + "_Imports" + imports.Count.ToString());
+            //    imports.Add(TestRazorSourceDocument.CreateResource(importsFileName, GetType(), normalizeNewLines: true));
+            //}
+
+            var projectEngine = RazorProjectEngine.Create(configure);
+            var testProjectEngine = new IntegrationTestProjectEngine(projectEngine);
+
+            return testProjectEngine;
+        }
+
+        protected virtual RazorProjectItem CreateProjectItem()
+        {
+            if (FileName == null)
+            {
+                var message = $"{nameof(CreateProjectItem)} should only be called from an integration test, ({nameof(FileName)} is null).";
+                throw new InvalidOperationException(message);
+            }
+
+            var suffixIndex = FileName.LastIndexOf("_");
+            var normalizedFileName = suffixIndex == -1 ? FileName : FileName.Substring(0, suffixIndex);
+            var sourceFileName = Path.ChangeExtension(normalizedFileName, ".cshtml");
+            var testFile = TestFile.Create(sourceFileName, GetType().GetTypeInfo().Assembly);
+            if (!testFile.Exists())
+            {
+                throw new XunitException($"The resource {sourceFileName} was not found.");
+            }
+            var fileContent = testFile.ReadAllText();
+            var normalizedContent = Regex.Replace(fileContent, "(?<!\r)\n", "\r\n", RegexOptions.None, TimeSpan.FromSeconds(10));
+
+            var projectItem = new TestRazorProjectItem(sourceFileName)
+            {
+                Content = normalizedContent,
+            };
+
+            return projectItem;
+        }
+
+        private static string NormalizeNewLines(string content)
+        {
+            return Regex.Replace(content, "(?<!\r)\n", "\r\n", RegexOptions.None, TimeSpan.FromSeconds(10));
+        }
+
+        protected virtual RazorCodeDocument CreateCodeDocument_FOOO()
         {
             if (FileName == null)
             {
@@ -92,8 +158,6 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
                 imports.Add(TestRazorSourceDocument.CreateResource(importsFileName, GetType(), normalizeNewLines: true));
             }
 
-            OnCreatingCodeDocument(ref source, imports);
-
             var codeDocument = RazorCodeDocument.Create(source, imports);
 
             // This will ensure that we're not putting any randomly generated data in a baseline.
@@ -102,17 +166,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             // This is to make tests work cross platform.
             codeDocument.Items[CodeRenderingContext.NewLineString] = "\r\n";
 
-            OnCreatedCodeDocument(ref codeDocument);
-
             return codeDocument;
-        }
-
-        protected virtual void OnCreatingCodeDocument(ref RazorSourceDocument source, IList<RazorSourceDocument> imports)
-        {
-        }
-
-        protected virtual void OnCreatedCodeDocument(ref RazorCodeDocument codeDocument)
-        {
         }
 
         protected void AssertDocumentNodeMatchesBaseline(DocumentIntermediateNode document)
@@ -228,6 +282,26 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             var actual = serializedMappings.Replace("\r", "").Replace("\n", "\r\n");
 
             Assert.Equal(baseline, actual);
+        }
+
+        private class IntegrationTestProjectEngine : DefaultRazorProjectEngine
+        {
+            public IntegrationTestProjectEngine(
+                RazorProjectEngine innerEngine)
+                : base(innerEngine.Configuration, innerEngine.Engine, innerEngine.FileSystem, innerEngine.ProjectFeatures)
+            {
+            }
+
+            protected override void ProcessCore(RazorCodeDocument codeDocument)
+            {
+                // This will ensure that we're not putting any randomly generated data in a baseline.
+                codeDocument.Items[CodeRenderingContext.SuppressUniqueIds] = "test";
+
+                // This is to make tests work cross platform.
+                codeDocument.Items[CodeRenderingContext.NewLineString] = "\r\n";
+
+                base.ProcessCore(codeDocument);
+            }
         }
     }
 }

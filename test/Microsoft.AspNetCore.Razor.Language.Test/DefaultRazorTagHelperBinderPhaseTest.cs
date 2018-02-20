@@ -16,14 +16,14 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_CanHandleSingleLengthAddTagHelperDirective()
         {
             // Arrange
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.AddTagHelpers(new TagHelperDescriptor[0]);
             });
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
             var expectedDiagnostics = new[]
             {
@@ -55,14 +55,14 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_CanHandleSingleLengthRemoveTagHelperDirective()
         {
             // Arrange
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.AddTagHelpers(new TagHelperDescriptor[0]);
             });
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
             var expectedDiagnostics = new[]
             {
@@ -94,14 +94,14 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_CanHandleSingleLengthTagHelperPrefix()
         {
             // Arrange
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.AddTagHelpers(new TagHelperDescriptor[0]);
             });
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
             var expectedDiagnostics = new[]
             {
@@ -133,7 +133,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_RewritesTagHelpers()
         {
             // Arrange
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.AddTagHelpers(new[]
                 {
@@ -150,7 +150,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
 
             var sourceDocument = CreateTestSourceDocument();
@@ -192,14 +192,14 @@ namespace Microsoft.AspNetCore.Razor.Language
                             .NameComparisonMode(RequiredAttributeDescriptor.NameComparisonMode.FullMatch)),
                 });
 
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.AddTagHelpers(new[] { descriptor });
             });
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
 
             var content = @"
@@ -245,14 +245,14 @@ namespace Microsoft.AspNetCore.Razor.Language
                             .NameComparisonMode(RequiredAttributeDescriptor.NameComparisonMode.FullMatch)),
                 });
 
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.AddTagHelpers(new[] { descriptor });
             });
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
 
             var content = @"
@@ -282,10 +282,10 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_NoopsWhenNoTagHelperFeature()
         {
             // Arrange
-            var engine = RazorEngine.Create();
+            var projectEngine = RazorProjectEngine.Create();
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
             var sourceDocument = CreateTestSourceDocument();
             var codeDocument = RazorCodeDocument.Create(sourceDocument);
@@ -305,12 +305,12 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_NoopsWhenNoFeature()
         {
             // Arrange
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
             });
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
             var sourceDocument = CreateTestSourceDocument();
             var codeDocument = RazorCodeDocument.Create(sourceDocument);
@@ -330,14 +330,14 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_NoopsWhenNoTagHelperDescriptorsAreResolved()
         {
             // Arrange
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.Features.Add(new TestTagHelperFeature());
             });
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
 
             // No taghelper directives here so nothing is resolved.
@@ -359,14 +359,14 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_SetsTagHelperDocumentContext()
         {
             // Arrange
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.Features.Add(new TestTagHelperFeature());
             });
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
 
             // No taghelper directives here so nothing is resolved.
@@ -388,7 +388,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         public void Execute_CombinesErrorsOnRewritingErrors()
         {
             // Arrange
-            var engine = RazorEngine.Create(builder =>
+            var projectEngine = RazorProjectEngine.Create(builder =>
             {
                 builder.AddTagHelpers(new[]
                 {
@@ -405,7 +405,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             var phase = new DefaultRazorTagHelperBinderPhase()
             {
-                Engine = engine,
+                Engine = projectEngine.Engine,
             };
 
             var content =

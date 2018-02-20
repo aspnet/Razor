@@ -12,26 +12,18 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     public abstract class RazorEngine
     {
-        public static RazorEngine Create()
-        {
-            return Create(configure: null);
-        }
-
-        public static RazorEngine Create(Action<IRazorEngineBuilder> configure) => CreateCore(RazorConfiguration.Default, false, configure);
-
-        public static RazorEngine CreateDesignTime()
-        {
-            return CreateDesignTime(configure: null);
-        }
-
-        public static RazorEngine CreateDesignTime(Action<IRazorEngineBuilder> configure) => CreateCore(RazorConfiguration.Default, true, configure);
-
-        // Internal since RazorEngine APIs are going to be obsolete.
-        internal static RazorEngine CreateCore(RazorConfiguration configuration, bool designTime, Action<IRazorEngineBuilder> configure)
+#pragma warning disable CS0618 // Type or member is obsolete
+        private static RazorEngine CreateCore(RazorConfiguration configuration, bool designTime, Action<IRazorEngineBuilder> configure)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
+            }
+
+            if (configure == null)
+            {
+                throw new ArgumentNullException(nameof(configure));
             }
 
             var builder = new DefaultRazorEngineBuilder(designTime);
@@ -50,31 +42,9 @@ namespace Microsoft.AspNetCore.Razor.Language
             return builder.Build();
         }
 
-        public static RazorEngine CreateEmpty(Action<IRazorEngineBuilder> configure)
-        {
-            if (configure == null)
-            {
-                throw new ArgumentNullException(nameof(configure));
-            }
-
-            var builder = new DefaultRazorEngineBuilder(designTime: false);
-            configure(builder);
-            return builder.Build();
-        }
-
-        public static RazorEngine CreateDesignTimeEmpty(Action<IRazorEngineBuilder> configure)
-        {
-            if (configure == null)
-            {
-                throw new ArgumentNullException(nameof(configure));
-            }
-
-            var builder = new DefaultRazorEngineBuilder(designTime: true);
-            configure(builder);
-            return builder.Build();
-        }
-
-        internal static void AddDefaults(IRazorEngineBuilder builder)
+#pragma warning disable CS0618 // Type or member is obsolete
+        private static void AddDefaults(IRazorEngineBuilder builder)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             AddDefaultPhases(builder.Phases);
             AddDefaultFeatures(builder.Features);
@@ -139,7 +109,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             features.Add(configurationFeature);
         }
 
-        internal static void AddDefaultRuntimeFeatures(RazorConfiguration configuration, ICollection<IRazorEngineFeature> features)
+        private static void AddDefaultRuntimeFeatures(RazorConfiguration configuration, ICollection<IRazorEngineFeature> features)
         {
             // Configure options
             features.Add(new DefaultRazorParserOptionsFeature(designTime: false, version: configuration.LanguageVersion));
@@ -156,7 +126,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             targetExtension.TargetExtensions.Add(new PreallocatedAttributeTargetExtension());
         }
 
-        internal static void AddDefaultDesignTimeFeatures(RazorConfiguration configuration, ICollection<IRazorEngineFeature> features)
+        private static void AddDefaultDesignTimeFeatures(RazorConfiguration configuration, ICollection<IRazorEngineFeature> features)
         {
             // Configure options
             features.Add(new DefaultRazorParserOptionsFeature(designTime: true, version: configuration.LanguageVersion));
@@ -179,6 +149,52 @@ namespace Microsoft.AspNetCore.Razor.Language
         public abstract IReadOnlyList<IRazorEnginePhase> Phases { get; }
 
         public abstract void Process(RazorCodeDocument document);
+
+        #region Obsolete
+        [Obsolete("This method is obsolete and will be removed in a future version. The recommended alternative is " + nameof(RazorProjectEngine) + "." + nameof(RazorProjectEngine.Create))]
+        public static RazorEngine Create()
+        {
+            return Create(configure: null);
+        }
+
+        [Obsolete("This method is obsolete and will be removed in a future version. The recommended alternative is " + nameof(RazorProjectEngine) + "." + nameof(RazorProjectEngine.Create))]
+        public static RazorEngine Create(Action<IRazorEngineBuilder> configure) => CreateCore(RazorConfiguration.Default, false, configure);
+
+        [Obsolete("This method is obsolete and will be removed in a future version. The recommended alternative is " + nameof(RazorProjectEngine) + "." + nameof(RazorProjectEngine.Create))]
+        public static RazorEngine CreateDesignTime()
+        {
+            return CreateDesignTime(configure: null);
+        }
+
+        [Obsolete("This method is obsolete and will be removed in a future version. The recommended alternative is " + nameof(RazorProjectEngine) + "." + nameof(RazorProjectEngine.Create))]
+        public static RazorEngine CreateDesignTime(Action<IRazorEngineBuilder> configure) => CreateCore(RazorConfiguration.Default, true, configure);
+
+        [Obsolete("This method is obsolete and will be removed in a future version.")]
+        public static RazorEngine CreateEmpty(Action<IRazorEngineBuilder> configure)
+        {
+            if (configure == null)
+            {
+                throw new ArgumentNullException(nameof(configure));
+            }
+
+            var builder = new DefaultRazorEngineBuilder(designTime: false);
+            configure(builder);
+            return builder.Build();
+        }
+
+        [Obsolete("This method is obsolete and will be removed in a future version.")]
+        public static RazorEngine CreateDesignTimeEmpty(Action<IRazorEngineBuilder> configure)
+        {
+            if (configure == null)
+            {
+                throw new ArgumentNullException(nameof(configure));
+            }
+
+            var builder = new DefaultRazorEngineBuilder(designTime: true);
+            configure(builder);
+            return builder.Build();
+        }
+        #endregion
     }
 }
 

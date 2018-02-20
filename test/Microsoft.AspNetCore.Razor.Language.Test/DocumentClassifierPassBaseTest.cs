@@ -13,6 +13,15 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     public class DocumentClassifierPassBaseTest
     {
+        public RazorEngine Engine
+        {
+            get
+            {
+                var projectEngine = RazorProjectEngine.Create(RazorConfiguration.Default, RazorProjectFileSystem.Empty);
+                return projectEngine.Engine;
+            }
+        }
+
         [Fact]
         public void Execute_HasDocumentKind_IgnoresDocument()
         {
@@ -24,7 +33,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             };
 
             var pass = new TestDocumentClassifierPass();
-            pass.Engine = RazorEngine.CreateEmpty(b => { });
+            pass.Engine = Engine;
 
             // Act
             pass.Execute(TestRazorCodeDocument.CreateEmpty(), documentNode);
@@ -45,7 +54,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             var pass = new TestDocumentClassifierPass()
             {
-                Engine = RazorEngine.CreateEmpty(b => { }),
+                Engine = Engine,
                 ShouldMatch = false,
             };
 
@@ -73,13 +82,16 @@ namespace Microsoft.AspNetCore.Razor.Language
             };
 
             var pass = new TestDocumentClassifierPass();
-            pass.Engine = RazorEngine.CreateEmpty(b =>
-            {
-                for (var i = 0; i < expected.Length; i++)
+            pass.Engine = RazorProjectEngine.Create(
+                RazorConfiguration.Default,
+                RazorProjectFileSystem.Empty,
+                b =>
                 {
-                    b.AddTargetExtension(expected[i]);
-                }
-            });
+                    for (var i = 0; i < expected.Length; i++)
+                    {
+                        b.AddTargetExtension(expected[i]);
+                    }
+                }).Engine;
 
             ICodeTargetExtension[] extensions = null;
 
@@ -102,7 +114,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             };
 
             var pass = new TestDocumentClassifierPass();
-            pass.Engine = RazorEngine.CreateEmpty(b => { });
+            pass.Engine = Engine;
 
             // Act
             pass.Execute(TestRazorCodeDocument.CreateEmpty(), documentNode);
@@ -130,7 +142,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             builder.Add(new UsingDirectiveIntermediateNode());
 
             var pass = new TestDocumentClassifierPass();
-            pass.Engine = RazorEngine.CreateEmpty(b => { });
+            pass.Engine = Engine;
 
             // Act
             pass.Execute(TestRazorCodeDocument.CreateEmpty(), documentNode);
@@ -157,7 +169,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             builder.Add(new CSharpCodeIntermediateNode());
 
             var pass = new TestDocumentClassifierPass();
-            pass.Engine = RazorEngine.CreateEmpty(b => { });
+            pass.Engine = Engine;
 
             // Act
             pass.Execute(TestRazorCodeDocument.CreateEmpty(), documentNode);
@@ -187,7 +199,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             var pass = new TestDocumentClassifierPass()
             {
-                Engine = RazorEngine.CreateEmpty(b => { }),
+                Engine = Engine,
                 Namespace = "TestNamespace",
                 Class = "TestClass",
                 Method = "TestMethod",
@@ -222,7 +234,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             var pass = new TestDocumentClassifierPass()
             {
-                Engine = RazorEngine.CreateEmpty(b => { }),
+                Engine = Engine,
                 Namespace = "TestNamespace",
                 Class = "TestClass",
                 Method = "TestMethod",
@@ -250,7 +262,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public Action<CodeTargetBuilder> CodeTargetCallback { get; set; }
 
-            public string Namespace { get; set;  }
+            public string Namespace { get; set; }
 
             public string Class { get; set; }
 

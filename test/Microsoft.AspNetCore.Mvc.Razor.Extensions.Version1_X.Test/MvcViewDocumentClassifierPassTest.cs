@@ -15,7 +15,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             // Arrange
             var codeDocument = RazorCodeDocument.Create(RazorSourceDocument.Create("some-content", "Test.cshtml"));
 
-            var engine = CreateEngine();
+            var engine = CreateProjectEngine();
             var irDocument = CreateIRDocument(engine, codeDocument);
             var pass = new MvcViewDocumentClassifierPass
             {
@@ -35,7 +35,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             // Arrange
             var codeDocument = RazorCodeDocument.Create(RazorSourceDocument.Create("some-content", "Test.cshtml"));
 
-            var engine = CreateEngine();
+            var engine = CreateProjectEngine();
             var irDocument = CreateIRDocument(engine, codeDocument);
             irDocument.DocumentKind = "some-value";
             var pass = new MvcViewDocumentClassifierPass
@@ -56,7 +56,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             // Arrange
             var codeDocument = RazorCodeDocument.Create(RazorSourceDocument.Create("some-content", "Test.cshtml"));
 
-            var engine = CreateEngine();
+            var engine = CreateProjectEngine();
             var irDocument = CreateIRDocument(engine, codeDocument);
             var pass = new MvcViewDocumentClassifierPass
             {
@@ -79,7 +79,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             var properties = new RazorSourceDocumentProperties(filePath: "ignored", relativePath: "Test.cshtml");
             var codeDocument = RazorCodeDocument.Create(RazorSourceDocument.Create("some-content", properties));
 
-            var engine = CreateEngine();
+            var engine = CreateProjectEngine();
             var irDocument = CreateIRDocument(engine, codeDocument);
             var pass = new MvcViewDocumentClassifierPass
             {
@@ -106,7 +106,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             var properties = new RazorSourceDocumentProperties(filePath: "ignored", relativePath: relativePath);
             var codeDocument = RazorCodeDocument.Create(RazorSourceDocument.Create("some-content", properties));
 
-            var engine = CreateEngine();
+            var engine = CreateProjectEngine();
             var irDocument = CreateIRDocument(engine, codeDocument);
             var pass = new MvcViewDocumentClassifierPass
             {
@@ -129,7 +129,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             var properties = new RazorSourceDocumentProperties(filePath: @"x::\application\Views\Home\Index.cshtml", relativePath: null);
             var codeDocument = RazorCodeDocument.Create(RazorSourceDocument.Create("some-content", properties));
 
-            var engine = CreateEngine();
+            var engine = CreateProjectEngine();
             var irDocument = CreateIRDocument(engine, codeDocument);
             var pass = new MvcViewDocumentClassifierPass
             {
@@ -152,11 +152,11 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             var properties = new RazorSourceDocumentProperties(filePath: @"x:\Test.cshtml", relativePath: "path.with+invalid-chars");
             var codeDocument = RazorCodeDocument.Create(RazorSourceDocument.Create("@page", properties));
 
-            var engine = CreateEngine();
-            var irDocument = CreateIRDocument(engine, codeDocument);
+            var projectEngine = CreateProjectEngine();
+            var irDocument = CreateIRDocument(projectEngine, codeDocument);
             var pass = new MvcViewDocumentClassifierPass
             {
-                Engine = engine
+                Engine = projectEngine.Engine
             };
 
             // Act
@@ -174,11 +174,11 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             // Arrange
             var codeDocument = RazorCodeDocument.Create(RazorSourceDocument.Create("some-content", "Test.cshtml"));
 
-            var engine = CreateEngine();
-            var irDocument = CreateIRDocument(engine, codeDocument);
+            var projectEngine = CreateProjectEngine();
+            var irDocument = CreateIRDocument(projectEngine, codeDocument);
             var pass = new MvcViewDocumentClassifierPass
             {
-                Engine = engine
+                Engine = projectEngine.Engine
             };
 
             // Act
@@ -192,13 +192,13 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions.Version1_X
             Assert.Equal(new[] { "public", "async", "override" }, visitor.Method.Modifiers);
         }
 
-        private static RazorEngine CreateEngine() => RazorEngine.Create();
+        private static RazorProjectEngine CreateProjectEngine() => RazorProjectEngine.Create(RazorConfiguration.Default, RazorProjectFileSystem.Empty);
 
-        private static DocumentIntermediateNode CreateIRDocument(RazorEngine engine, RazorCodeDocument codeDocument)
+        private static DocumentIntermediateNode CreateIRDocument(RazorProjectEngine projectEngine, RazorCodeDocument codeDocument)
         {
-            for (var i = 0; i < engine.Phases.Count; i++)
+            for (var i = 0; i < projectEngine.Phases.Count; i++)
             {
-                var phase = engine.Phases[i];
+                var phase = projectEngine.Phases[i];
                 phase.Execute(codeDocument);
 
                 if (phase is IRazorIntermediateNodeLoweringPhase)

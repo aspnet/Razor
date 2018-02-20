@@ -432,13 +432,13 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         private DocumentIntermediateNode Lower(
             RazorCodeDocument codeDocument,
-            Action<IRazorEngineBuilder> builder = null,
+            Action<RazorProjectEngineBuilder> builder = null,
             IEnumerable<TagHelperDescriptor> tagHelpers = null,
             bool designTime = false)
         {
             tagHelpers = tagHelpers ?? new TagHelperDescriptor[0];
 
-            Action<IRazorEngineBuilder> configureEngine = b =>
+            Action<RazorProjectEngineBuilder> configureEngine = b =>
             {
                 builder?.Invoke(b);
 
@@ -447,11 +447,13 @@ namespace Microsoft.AspNetCore.Razor.Language
                 b.AddTagHelpers(tagHelpers);
             };
 
-            var engine = designTime ? RazorEngine.CreateDesignTime(configureEngine) : RazorEngine.Create(configureEngine);
+            var projectEngine = RazorProjectEngine.Create(RazorConfiguration.Default, RazorProjectFileSystem.Empty, configureEngine);
+            var parserOptions = RazorParserOptions.CreateDesignTime(b => b.SetDesignTime(designTime));
+            codeDocument.SetParserOptions(parserOptions);
 
-            for (var i = 0; i < engine.Phases.Count; i++)
+            for (var i = 0; i < projectEngine.Phases.Count; i++)
             {
-                var phase = engine.Phases[i];
+                var phase = projectEngine.Phases[i];
                 phase.Execute(codeDocument);
 
                 if (phase is IRazorIntermediateNodeLoweringPhase)
