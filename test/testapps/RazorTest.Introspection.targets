@@ -8,6 +8,10 @@
   </Target>
 
   <Target Name="_IntrospectPreserveCompilationContext">
-    <Message Text="PreserveCompilationContext: $(PreserveCompilationContext)" Importance="High" />
+    <PropertyGroup>
+      <_PreserveCompilationContext Condition="'$(PreserveCompilationContext)' != 'true'">false</_PreserveCompilationContext>
+      <_PreserveCompilationContext Condition="'$(PreserveCompilationContext)' == 'true'">true</_PreserveCompilationContext>
+    </PropertyGroup>
+    <Message Text="PreserveCompilationContext: $(_PreserveCompilationContext)" Importance="High" />
   </Target>
 </Project>
