@@ -345,10 +345,35 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             private RazorCodeDocument ParseChange(ITextSnapshot snapshot, CancellationToken token)
             {
+                const int MaxRetryCount = 5;
+
                 EnsureOnThread();
 
                 var sourceDocument = new TextSnapshotSourceDocument(snapshot, _filePath);
-                var imports = _templateEngine.GetImports(_filePath);
+
+                IEnumerable<RazorSourceDocument> imports = null;
+                var retries = 0;
+                while (retries++ < MaxRetryCount)
+                {
+                    try
+                    {
+                        imports = _templateEngine.GetImports(_filePath);
+                    }
+                    catch (IOException ex) when (ex is DirectoryNotFoundException || ex is FileNotFoundException || ex is PathTooLongException)
+                    {
+                        // No need to retry, we can't read the file.
+                        break;
+                    }
+                    catch (SystemException ex) when (ex is IOException || ex is UnauthorizedAccessException)
+                    {
+                        // File can't currently be read. Another process might be locking it or affecting its permissions.
+                        // We have less context of what's causing the failure so lets retry.
+                        Thread.Sleep(100);
+                    }
+                }
+
+                // If we couldn't resolve imports above then assume only the default imports.
+                imports = imports ?? new[] { _templateEngine.Options.DefaultImports };
 
                 var codeDocument = RazorCodeDocument.Create(sourceDocument, imports);
 
