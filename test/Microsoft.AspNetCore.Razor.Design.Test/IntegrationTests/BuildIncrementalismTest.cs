@@ -59,7 +59,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
         [Fact]
         [InitializeTestProject("SimpleMvc")]
-        public async Task Build_RegeneratesTagHelperInputs_IfFileChanges()
+        public async Task RazorGenerate_RegeneratesTagHelperInputs_IfFileChanges()
         {
             // Act - 1
             var expectedTagHelperCacheContent = @"""Name"":""SimpleMvc.SimpleTagHelper""";
