@@ -23,8 +23,14 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.NuspecContains(
                 result,
                 Path.Combine("obj", Configuration, "ClassLibrary.1.0.0.nuspec"),
-                $"<file src=\"{Path.Combine("bin", Configuration, "netcoreapp2.0", "ClassLibrary.Views.dll")}\" " +
+                $"<file src=\"{Path.Combine(Project.DirectoryPath, "bin", Configuration, "netcoreapp2.0", "ClassLibrary.Views.dll")}\" " +
                 $"target=\"{Path.Combine("lib", "netcoreapp2.0", "ClassLibrary.Views.dll")}\" />");
+
+            Assert.NuspecDoesNotContain(
+                result,
+                Path.Combine("obj", Configuration, "ClassLibrary.1.0.0.nuspec"),
+                $"<file src=\"{Path.Combine(Project.DirectoryPath, "bin", Configuration, "netcoreapp2.0", "ClassLibrary.Views.pdb")}\" " +
+                $"target=\"{Path.Combine("lib", "netcoreapp2.0", "ClassLibrary.Views.pdb")}\" />");
 
             Assert.NuspecDoesNotContain(
                 result,
@@ -35,6 +41,33 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 result,
                 Path.Combine("bin", Configuration, "ClassLibrary.1.0.0.nupkg"),
                 Path.Combine("lib", "netcoreapp2.0", "ClassLibrary.Views.dll"));
+        }
+
+        [Fact]
+        [InitializeTestProject("ClassLibrary")]
+        public async Task Pack_WithIncludeSymbols_IncludesRazorPdb()
+        {
+            var result = await DotnetMSBuild("Pack", "/p:RazorCompileOnBuild=true /p:IncludeSymbols=true");
+
+            Assert.BuildPassed(result);
+
+            Assert.NuspecContains(
+                result,
+                Path.Combine("obj", Configuration, "ClassLibrary.1.0.0.symbols.nuspec"),
+                $"<file src=\"{Path.Combine(Project.DirectoryPath, "bin", Configuration, "netcoreapp2.0", "ClassLibrary.Views.dll")}\" " +
+                $"target=\"{Path.Combine("lib", "netcoreapp2.0", "ClassLibrary.Views.dll")}\" />");
+
+            Assert.NuspecContains(
+                result,
+                Path.Combine("obj", Configuration, "ClassLibrary.1.0.0.symbols.nuspec"),
+                $"<file src=\"{Path.Combine(Project.DirectoryPath, "bin", Configuration, "netcoreapp2.0", "ClassLibrary.Views.pdb")}\" " +
+                $"target=\"{Path.Combine("lib", "netcoreapp2.0", "ClassLibrary.Views.pdb")}\" />");
+
+            Assert.NupkgContains(
+                result,
+                Path.Combine("bin", Configuration, "ClassLibrary.1.0.0.symbols.nupkg"),
+                Path.Combine("lib", "netcoreapp2.0", "ClassLibrary.Views.dll"),
+                Path.Combine("lib", "netcoreapp2.0", "ClassLibrary.Views.pdb"));
         }
 
         [Fact]
@@ -51,7 +84,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.NuspecContains(
                 result,
                 Path.Combine("obj", Configuration, "ClassLibrary.1.0.0.nuspec"),
-                $"<file src=\"{Path.Combine("bin", Configuration, "netcoreapp2.0", "ClassLibrary.Views.dll")}\" " +
+                $"<file src=\"{Path.Combine(Project.DirectoryPath, "bin", Configuration, "netcoreapp2.0", "ClassLibrary.Views.dll")}\" " +
                 $"target=\"{Path.Combine("lib", "netcoreapp2.0", "ClassLibrary.Views.dll")}\" />");
 
             Assert.NuspecContains(
