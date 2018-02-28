@@ -19,5 +19,37 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.BuildOutputContainsLine(result, $"UpToDateCheckInput: {Path.Combine("Views", "Home", "Index.cshtml")}");
             Assert.BuildOutputContainsLine(result, $"UpToDateCheckInput: {Path.Combine("Views", "_ViewStart.cshtml")}");
         }
+
+        [Fact]
+        [InitializeTestProject("SimpleMvc")]
+        public async Task RazorSdk_SetsPreserveCompilationContextForProjectsWithCshtmlFiles()
+        {
+            var result = await DotnetMSBuild("Build", "/t:_IntrospectPreserveCompilationContext");
+
+            Assert.BuildPassed(result);
+            Assert.BuildOutputContainsLine(result, "PreserveCompilationContext: true");
+        }
+
+        [Fact]
+        [InitializeTestProject("SimpleMvc")]
+        public async Task RazorSdk_DoesNotSetPreserveCompilationContextForWebApplicationsWithoutCshtmlFiles()
+        {
+            Directory.Delete(Path.Combine(Project.DirectoryPath, "Views"), recursive: true);
+
+            var result = await DotnetMSBuild("Build", "/t:_IntrospectPreserveCompilationContext");
+
+            Assert.BuildPassed(result);
+            Assert.BuildOutputContainsLine(result, "PreserveCompilationContext: false");
+        }
+
+        [Fact]
+        [InitializeTestProject("ClassLibrary")]
+        public async Task RazorSdk_DoesNotSetPreserveCompilationContextForClassLibraryProjects()
+        {
+            var result = await DotnetMSBuild("Build", "/t:_IntrospectPreserveCompilationContext");
+
+            Assert.BuildPassed(result);
+            Assert.BuildOutputContainsLine(result, "PreserveCompilationContext: false");
+        }
     }
 }
