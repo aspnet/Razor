@@ -9,23 +9,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
     internal class DefaultProjectSnapshotWorker : ProjectSnapshotWorker
     {
-        private readonly ProjectExtensibilityConfigurationFactory _configurationFactory;
         private readonly ForegroundDispatcher _foregroundDispatcher;
         private readonly TagHelperResolver _tagHelperResolver;
 
-        public DefaultProjectSnapshotWorker(
-            ForegroundDispatcher foregroundDispatcher,
-            ProjectExtensibilityConfigurationFactory configurationFactory,
-            TagHelperResolver tagHelperResolver)
+        public DefaultProjectSnapshotWorker(ForegroundDispatcher foregroundDispatcher, TagHelperResolver tagHelperResolver)
         {
             if (foregroundDispatcher == null)
             {
                 throw new ArgumentNullException(nameof(foregroundDispatcher));
-            }
-
-            if (configurationFactory == null)
-            {
-                throw new ArgumentNullException(nameof(configurationFactory));
             }
 
             if (tagHelperResolver == null)
@@ -34,7 +25,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
 
             _foregroundDispatcher = foregroundDispatcher;
-            _configurationFactory = configurationFactory;
             _tagHelperResolver = tagHelperResolver;
         }
 
@@ -54,14 +44,15 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             return ProjectUpdatesCoreAsync(update);
         }
 
-        private async Task ProjectUpdatesCoreAsync(object state)
+        protected virtual void OnProcessingUpdate()
         {
-            var update = (ProjectSnapshotUpdateContext)state;
+        }
 
-            // We'll have more things to process here, but for now we're just hardcoding the configuration.
+        private Task ProjectUpdatesCoreAsync(object state)
+        {
+            OnProcessingUpdate();
 
-            var configuration = await _configurationFactory.GetConfigurationAsync(update.UnderlyingProject);
-            update.Configuration = configuration;
+            return Task.CompletedTask;
 
             var result = await _tagHelperResolver.GetTagHelpersAsync(update.UnderlyingProject, CancellationToken.None);
             update.TagHelpers = result.Descriptors;
