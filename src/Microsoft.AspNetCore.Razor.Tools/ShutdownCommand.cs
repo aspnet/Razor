@@ -37,13 +37,13 @@ namespace Microsoft.AspNetCore.Razor.Tools
             if (!IsServerRunning())
             {
                 // server isn't running right now
-                Out.Write("Server is not running.");
+                Out.WriteLine("Server is not running.");
                 return 0;
             }
 
             try
             {
-                Out.Write($"Trying to shutdown server at pipe {Pipe.Value()}.");
+                Out.WriteLine($"Trying to shutdown server at pipe {Pipe.Value()}.");
                 using (var client = await Client.ConnectAsync(Pipe.Value(), timeout: null, cancellationToken: Cancelled))
                 {
                     var request = ServerRequest.CreateShutdown();
@@ -62,16 +62,18 @@ namespace Microsoft.AspNetCore.Razor.Tools
                         {
                             // There is an inherent race here with the server process.  If it has already shutdown
                             // by the time we try to access it then the operation has succeeded.
+                            Out.WriteLine(ex);
                             Error.Write(ex);
                         }
 
-                        Out.Write("Server pid:{0} shut down", response.ServerProcessId);
+                        Out.WriteLine($"Server pid:{response.ServerProcessId} with pipe {Pipe.Value()} shut down");
                     }
                 }
             }
             catch (Exception ex) when (IsServerRunning())
             {
                 // Ignore an exception that occurred while the server was shutting down.
+                Out.WriteLine(ex);
                 Error.Write(ex);
             }
 

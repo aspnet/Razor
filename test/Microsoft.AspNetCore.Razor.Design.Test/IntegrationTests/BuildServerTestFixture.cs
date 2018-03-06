@@ -17,6 +17,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
         public BuildServerTestFixture()
         {
             PipeName = Guid.NewGuid().ToString();
+            Console.Out.WriteLine($"Creating server with pipe {PipeName}.");
 
             if (!ServerConnection.TryCreateServerCore(Environment.CurrentDirectory, PipeName))
             {

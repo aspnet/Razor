@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -17,6 +18,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
         protected MSBuildIntegrationTestBase(BuildServerTestFixture buildServer)
         {
+            var stackTrace = new StackTrace();
+            Console.Out.WriteLine($"Called from {stackTrace.GetFrame(1).GetMethod().DeclaringType.Name} with pipe {buildServer.PipeName}");
             BuildServer = buildServer;
         }
 
