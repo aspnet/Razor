@@ -17,6 +17,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public abstract void HostProjectRemoved(HostProject hostProject);
 
+        public abstract void HostProjectBuildComplete(HostProject hostProject);
+
         public abstract void WorkspaceProjectAdded(Project workspaceProject);
 
         public abstract void WorkspaceProjectChanged(Project workspaceProject);
@@ -24,7 +26,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public abstract void WorkspaceProjectRemoved(Project workspaceProject);
 
         public abstract void ReportError(Exception exception);
-        
+
         public abstract void ReportError(Exception exception, ProjectSnapshot project);
 
         public abstract void ReportError(Exception exception, HostProject hostProject);

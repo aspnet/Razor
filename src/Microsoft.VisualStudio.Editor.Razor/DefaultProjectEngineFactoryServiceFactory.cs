@@ -40,7 +40,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         public ILanguageService CreateLanguageService(HostLanguageServices languageServices)
         {
             return new DefaultProjectEngineFactoryService(
-                languageServices.GetRequiredService<ProjectSnapshotManager>(),
+                languageServices.WorkspaceServices.Workspace,
                 _fallbackFactory,
                 _customFactories);
         }

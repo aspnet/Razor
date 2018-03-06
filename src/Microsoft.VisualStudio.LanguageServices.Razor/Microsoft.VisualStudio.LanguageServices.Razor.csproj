@@ -114,7 +114,4 @@
       <Compile Remove="@(XamlPropertyRule->'$(IntermediateOutputPath)%(FileName)$(DefaultLanguageSourceExtension)')" />
     </ItemGroup>
   </Target>
-      <Compile Remove="@(XamlPropertyRule->'$(IntermediateOutputPath)%(FileName)$(DefaultLanguageSourceExtension)')" />
-    </ItemGroup>
-  </Target>
 </Project>

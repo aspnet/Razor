@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,7 +48,9 @@ namespace Microsoft.CodeAnalysis.Remote.Razor
             {
                 FilePath = filePath;
                 Configuration = configuration;
+                HostProject = new HostProject(filePath, configuration);
                 WorkspaceProject = workspaceProject;
+                TagHelpers = Array.Empty<TagHelperDescriptor>();
 
                 IsInitialized = true;
                 Version = VersionStamp.Default;
@@ -62,6 +65,10 @@ namespace Microsoft.CodeAnalysis.Remote.Razor
             public override VersionStamp Version { get; }
 
             public override Project WorkspaceProject { get; }
+
+            public override HostProject HostProject { get; }
+
+            public override IReadOnlyList<TagHelperDescriptor> TagHelpers { get; }
         }
     }
 }

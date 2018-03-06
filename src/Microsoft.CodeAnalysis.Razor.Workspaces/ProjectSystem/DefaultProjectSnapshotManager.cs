@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
@@ -103,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
 
             _foregroundDispatcher.AssertForegroundThread();
-            
+
             if (_projects.TryGetValue(update.WorkspaceProject.FilePath, out var original))
             {
                 if (!original.IsInitialized)
@@ -122,12 +121,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     // the background. We need to trigger the background work to asynchronously compute the effect of the updates.
                     NotifyBackgroundWorker(snapshot.CreateUpdateContext());
                 }
-
-                // Now we need to know if the changes that we applied are significant. If that's the case then 
-                // we need to notify listeners.
-                if (snapshot.HasConfigurationChanged(original))
+                
+                if (!object.Equals(snapshot.ComputedVersion, original.ComputedVersion))
                 {
-                    NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Changed));
+                    NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.TagHelpersChanged));
                 }
             }
         }
@@ -210,6 +207,27 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
         }
 
+        public override void HostProjectBuildComplete(HostProject hostProject)
+        {
+            if (hostProject == null)
+            {
+                throw new ArgumentNullException(nameof(hostProject));
+            }
+
+            _foregroundDispatcher.AssertForegroundThread();
+
+            if (_projects.TryGetValue(hostProject.FilePath, out var original))
+            {
+                // Doing an update to the project should keep computed values, but mark the project as dirty if the
+                // underlying project is newer.
+                var snapshot = original.WithHostProject(hostProject);
+                _projects[hostProject.FilePath] = snapshot;
+
+                // Notify the background worker so it can trigger tag helper discovery.
+                NotifyBackgroundWorker(snapshot.CreateUpdateContext());
+            }
+        }
+
         public override void WorkspaceProjectAdded(Project workspaceProject)
         {
             if (workspaceProject == null)
@@ -246,11 +264,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     // Notify listeners right away since WorkspaceProject was just added, the project is now initialized.
                     NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.Changed));
                 }
-
-                if (snapshot.HaveTagHelpersChanged(original))
-                {
-                    NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.TagHelpersChanged));
-                }
             }
         }
 
@@ -285,6 +298,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     // need to trigger the background work to asynchronously compute the effect of the updates.
                     NotifyBackgroundWorker(snapshot.CreateUpdateContext());
                 }
+
+                if (snapshot.HaveTagHelpersChanged(original))
+                {
+                    NotifyListeners(new ProjectChangeEventArgs(snapshot, ProjectChangeKind.TagHelpersChanged));
+                }
             }
         }
 
@@ -310,7 +328,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 {
                     return;
                 }
-
 
                 DefaultProjectSnapshot snapshot;
 
@@ -384,7 +401,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 throw new ArgumentNullException(nameof(exception));
             }
-            
+
             _errorReporter.ReportError(exception, workspaceProject);
         }
 
@@ -417,7 +434,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         protected virtual void NotifyBackgroundWorker(ProjectSnapshotUpdateContext context)
         {
             _foregroundDispatcher.AssertForegroundThread();
-            
+
             _workerQueue.Enqueue(context);
         }
 

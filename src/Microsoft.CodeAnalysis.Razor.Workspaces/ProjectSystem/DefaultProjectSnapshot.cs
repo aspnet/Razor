@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Razor.Language;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
@@ -42,11 +44,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(other));
             }
 
-            HostProject = hostProject;
-
             ComputedVersion = other.ComputedVersion;
+
             FilePath = other.FilePath;
             TagHelpers = other.TagHelpers;
+            HostProject = hostProject;
             WorkspaceProject = other.WorkspaceProject;
 
             Version = other.Version.GetNewerVersion();
@@ -64,11 +66,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(other));
             }
 
-            WorkspaceProject = workspaceProject;
-
             ComputedVersion = other.ComputedVersion;
+
             FilePath = other.FilePath;
+            TagHelpers = other.TagHelpers;
             HostProject = other.HostProject;
+            WorkspaceProject = workspaceProject;
 
             Version = other.Version.GetNewerVersion();
         }
@@ -100,7 +103,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public override string FilePath { get; }
 
-        public HostProject HostProject { get; }
+        public override HostProject HostProject { get; }
 
         public override bool IsInitialized => WorkspaceProject != null;
 

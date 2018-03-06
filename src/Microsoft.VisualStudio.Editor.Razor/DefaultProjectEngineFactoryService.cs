@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Razor;
 using Microsoft.CodeAnalysis.Razor.ProjectSystem;
 
@@ -13,11 +14,38 @@ namespace Microsoft.VisualStudio.Editor.Razor
     {
         private readonly static RazorConfiguration DefaultConfiguration = FallbackRazorConfiguration.MVC_2_0;
 
-        private readonly ProjectSnapshotManager _projectManager;
+        private readonly Workspace _workspace;
         private readonly IFallbackProjectEngineFactory _defaultFactory;
         private readonly Lazy<IProjectEngineFactory, ICustomProjectEngineFactoryMetadata>[] _customFactories;
+        private ProjectSnapshotManager _projectManager;
 
         public DefaultProjectEngineFactoryService(
+           Workspace workspace,
+           IFallbackProjectEngineFactory defaultFactory,
+           Lazy<IProjectEngineFactory, ICustomProjectEngineFactoryMetadata>[] customFactories)
+        {
+            if (workspace == null)
+            {
+                throw new ArgumentNullException(nameof(workspace));
+            }
+
+            if (defaultFactory == null)
+            {
+                throw new ArgumentNullException(nameof(defaultFactory));
+            }
+
+            if (customFactories == null)
+            {
+                throw new ArgumentNullException(nameof(customFactories));
+            }
+
+            _workspace = workspace;
+            _defaultFactory = defaultFactory;
+            _customFactories = customFactories;
+        }
+
+        // Internal for testing
+        internal DefaultProjectEngineFactoryService(
            ProjectSnapshotManager projectManager,
            IFallbackProjectEngineFactory defaultFactory,
            Lazy<IProjectEngineFactory, ICustomProjectEngineFactoryMetadata>[] customFactories)
@@ -137,6 +165,11 @@ namespace Microsoft.VisualStudio.Editor.Razor
         private ProjectSnapshot FindProjectByDirectory(string directory)
         {
             directory = NormalizeDirectoryPath(directory);
+
+            if (_projectManager == null)
+            {
+                _projectManager = _workspace.Services.GetLanguageServices(RazorLanguage.Name).GetRequiredService<ProjectSnapshotManager>();
+            }
 
             var projects = _projectManager.Projects;
             for (var i = 0; i < projects.Count; i++)

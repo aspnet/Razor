@@ -48,13 +48,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
         }
 
-        private Task ProjectUpdatesCoreAsync(object state)
+        private async Task ProjectUpdatesCoreAsync(object state)
         {
+            var update = (ProjectSnapshotUpdateContext)state;
+
             OnProcessingUpdate();
 
-            return Task.CompletedTask;
-
-            var result = await _tagHelperResolver.GetTagHelpersAsync(update.UnderlyingProject, CancellationToken.None);
+            var snapshot = new DefaultProjectSnapshot(update.HostProject, update.WorkspaceProject, update.Version);
+            var result = await _tagHelperResolver.GetTagHelpersAsync(snapshot, CancellationToken.None);
             update.TagHelpers = result.Descriptors;
         }
     }

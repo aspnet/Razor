@@ -1,6 +1,8 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using Microsoft.AspNetCore.Razor.Language;
 using Xunit;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
@@ -36,8 +38,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var original = new DefaultProjectSnapshot(hostProject, workspaceProject);
 
             var anotherProject = GetWorkspaceProject("Test1");
-            var update = new ProjectSnapshotUpdateContext(original.FilePath, hostProject, anotherProject, original.Version);
+            var update = new ProjectSnapshotUpdateContext(original.FilePath, hostProject, anotherProject, original.Version)
+            {
                 TagHelpers = Array.Empty<TagHelperDescriptor>(),
+            };
 
             // Act
             var snapshot = original.WithComputedUpdate(update);
@@ -51,12 +55,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public void HaveTagHelpersChanged_NoUpdatesToTagHelpers_ReturnsFalse()
         {
             // Arrange
-            var underlyingProject = GetProject("Test1");
-            var original = new DefaultProjectSnapshot(underlyingProject);
+            var hostProject = new HostProject("Test1.csproj", RazorConfiguration.Default);
+            var workspaceProject = GetWorkspaceProject("Test1");
+            var original = new DefaultProjectSnapshot(hostProject, workspaceProject);
 
-            var anotherProject = GetProject("Test1");
-            var update = new ProjectSnapshotUpdateContext(anotherProject);
-            var snapshot = original.WithProjectChange(update);
+            var anotherProject = GetWorkspaceProject("Test1");
+            var update = new ProjectSnapshotUpdateContext("Test1.csproj", hostProject, anotherProject, VersionStamp.Default);
+            var snapshot = original.WithComputedUpdate(update);
 
             // Act
             var result = snapshot.HaveTagHelpersChanged(original);
@@ -69,11 +74,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public void HaveTagHelpersChanged_TagHelpersUpdated_ReturnsTrue()
         {
             // Arrange
-            var underlyingProject = GetProject("Test1");
-            var original = new DefaultProjectSnapshot(underlyingProject);
+            var hostProject = new HostProject("Test1.csproj", RazorConfiguration.Default);
+            var workspaceProject = GetWorkspaceProject("Test1");
+            var original = new DefaultProjectSnapshot(hostProject, workspaceProject);
 
-            var anotherProject = GetProject("Test1");
-            var update = new ProjectSnapshotUpdateContext(anotherProject)
+            var anotherProject = GetWorkspaceProject("Test1");
+            var update = new ProjectSnapshotUpdateContext("Test1.csproj", hostProject, anotherProject, VersionStamp.Default)
             {
                 TagHelpers = new[]
                 {
@@ -81,7 +87,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     TagHelperDescriptorBuilder.Create("Two", "TestAssembly").Build(),
                 },
             };
-            var snapshot = original.WithProjectChange(update);
+            var snapshot = original.WithComputedUpdate(update);
 
             // Act
             var result = snapshot.HaveTagHelpersChanged(original);
