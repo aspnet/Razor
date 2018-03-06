@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 {
     public class BuildServerTestFixture : IDisposable
     {
-        private static readonly TimeSpan _defaultShutdownTimeout = TimeSpan.FromSeconds(60);
+        private static readonly TimeSpan _defaultShutdownTimeout = TimeSpan.FromSeconds(30);
 
         public BuildServerTestFixture()
         {
@@ -41,8 +41,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
                 var application = new Application(cts.Token, Mock.Of<ExtensionAssemblyLoader>(), Mock.Of<ExtensionDependencyChecker>(), (path, properties) => Mock.Of<PortableExecutableReference>())
                 {
-                    Out = writer,
-                    Error = writer,
+                    //Out = writer,
+                    //Error = writer,
                 };
                 var exitCode = application.Execute("shutdown", "-w", "-p", PipeName);
                 if (exitCode != 0)

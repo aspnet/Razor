@@ -43,6 +43,7 @@ namespace Microsoft.AspNetCore.Razor.Tools
 
             try
             {
+                Out.Write($"Trying to shutdown server at pipe {Pipe.Value()}.");
                 using (var client = await Client.ConnectAsync(Pipe.Value(), timeout: null, cancellationToken: Cancelled))
                 {
                     var request = ServerRequest.CreateShutdown();
