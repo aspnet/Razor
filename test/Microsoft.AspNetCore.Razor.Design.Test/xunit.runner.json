@@ -1,4 +1,6 @@
 {
   "methodDisplay": "method",
-  "shadowCopy": false
+  "shadowCopy": false,
+  "maxParallelThreads": -1,
+  "diagnosticMessages": true
 }
