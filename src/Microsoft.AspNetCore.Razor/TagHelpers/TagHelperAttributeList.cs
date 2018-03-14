@@ -158,6 +158,46 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             Items.Add(attribute);
         }
 
+        /// <summary>
+        /// Merges the <paramref name="value"/> from <see cref="TagHelperAttribute"/> to an existing attribute based
+        /// <paramref name="name"/>. If attribute is not present, <seealso cref="Add(string,object)"/> is used instead.
+        /// </summary>
+        /// <param name="name">The <see cref="TagHelperAttribute.Name"/> of the attribute to add.</param>
+        /// <param name="value">The <see cref="TagHelperAttribute.Value"/> of the attribute to add.</param>
+        public void Merge(string name, object value)
+        {
+            var attribute = new TagHelperAttribute(name, value);
+            Merge(attribute);
+        }
+
+        public void Merge(TagHelperAttribute attribute)
+        {
+            if (attribute == null)
+            {
+                throw new ArgumentNullException(nameof(attribute));
+            }
+
+            var attributeFound = false;
+
+            // Perf: Avoid allocating enumerator
+            foreach (var tagHelperAttribute in Items)
+            {
+                if (!NameEquals(attribute.Name, tagHelperAttribute)) continue;
+
+                SetAttribute(tagHelperAttribute.Name, tagHelperAttribute.Value == null ?
+                    attribute.Value
+                    : $"{tagHelperAttribute.Value} {attribute.Value}");
+                attributeFound = true;
+                break;
+            }
+
+            // If we didn't replace an attribute value we should add value to the end of the collection.
+            if (!attributeFound)
+            {
+                Add(attribute);
+            }
+        }
+
         /// <inheritdoc />
         public void Insert(int index, TagHelperAttribute attribute)
         {
