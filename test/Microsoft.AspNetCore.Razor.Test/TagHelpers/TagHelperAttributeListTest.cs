@@ -266,6 +266,45 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             Assert.Equal(expectedAttributes, attributes, CaseSensitiveTagHelperAttributeComparer.Default);
         }
 
+        public static TheoryData MergeData
+        {
+            get
+            {
+                var A = new TagHelperAttribute("AName", "AName Value");
+                var A2 = new TagHelperAttribute("AName", "AName Second Value");
+                var A3 = new TagHelperAttribute("AName", "AName Value AName Second Value");
+                var B = new TagHelperAttribute("BName", "BName Value");
+
+
+                return new TheoryData<
+                        IEnumerable<TagHelperAttribute>, // initialAttributes
+                        TagHelperAttribute, // attributeToAdd
+                        IEnumerable<TagHelperAttribute>> // expectedAttributes
+                    {
+                        { Enumerable.Empty<TagHelperAttribute>(), A, new[] { A } },
+                        { new[] { A }, B, new[] { A, B } },
+                        { new[] { A }, A2, new[] { A3 } },
+                    };
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(MergeData))]
+        public void Merge_AppendsAttributes(
+            IEnumerable<TagHelperAttribute> initialAttributes,
+            TagHelperAttribute attributeToAdd,
+            IEnumerable<TagHelperAttribute> expectedAttributes)
+        {
+            // Arrange
+            var attributes = new TagHelperAttributeList(initialAttributes);
+
+            // Act
+            attributes.Merge(attributeToAdd);
+
+            // Assert
+            Assert.Equal(expectedAttributes, attributes, CaseSensitiveTagHelperAttributeComparer.Default);
+        }
+
         public static TheoryData InsertData
         {
             get
