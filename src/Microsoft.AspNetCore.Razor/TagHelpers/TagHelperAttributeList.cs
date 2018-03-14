@@ -179,19 +179,18 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
 
             var attributeFound = false;
 
-            // Perf: Avoid allocating enumerator
             foreach (var tagHelperAttribute in Items)
             {
                 if (!NameEquals(attribute.Name, tagHelperAttribute)) continue;
 
                 SetAttribute(tagHelperAttribute.Name, tagHelperAttribute.Value == null ?
-                    attribute.Value
-                    : $"{tagHelperAttribute.Value} {attribute.Value}");
+                    attribute.Value //if attribute is found but the value is null just use the new value
+                    : $"{tagHelperAttribute.Value} {attribute.Value}"); //otherwise merge current value and new value
                 attributeFound = true;
                 break;
             }
 
-            // If we didn't replace an attribute value we should add value to the end of the collection.
+            // If we didn't find an attribute value we should add value to the end of the collection.
             if (!attributeFound)
             {
                 Add(attribute);
