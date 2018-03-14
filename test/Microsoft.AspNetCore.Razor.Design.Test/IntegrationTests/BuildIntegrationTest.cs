@@ -368,6 +368,32 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
         }
 
         [Fact]
+        [InitializeTestProject("ClassLibrary")]
+        public async Task Build_UsesSpecifiedApplicationPartFactoryTypeName()
+        {
+            var razorAssemblyInfo = Path.Combine(IntermediateOutputPath, "ClassLibrary.RazorAssemblyInfo.cs");
+            var result = await DotnetMSBuild("Build", "/p:ProvideApplicationPartFactoryAttributeTypeName=CustomFactory");
+
+            Assert.BuildPassed(result);
+
+            Assert.FileExists(result, razorAssemblyInfo);
+            Assert.FileContains(result, razorAssemblyInfo, "[assembly: Microsoft.AspNetCore.Mvc.ApplicationParts.ProvideApplicationPartFactoryAttribute(\"CustomFactory\"");
+        }
+
+        [Fact]
+        [InitializeTestProject("ClassLibrary")]
+        public async Task Build_UsesNullFactory_IfEnableDefaultCompiledViewAssemblyLoadBehaviorIsSetToFalse()
+        {
+            var razorAssemblyInfo = Path.Combine(IntermediateOutputPath, "ClassLibrary.RazorAssemblyInfo.cs");
+            var result = await DotnetMSBuild("Build", "/p:EnableDefaultCompiledViewAssemblyLoadBehavior=false");
+
+            Assert.BuildPassed(result);
+
+            Assert.FileExists(result, razorAssemblyInfo);
+            Assert.FileContains(result, razorAssemblyInfo, "[assembly: Microsoft.AspNetCore.Mvc.ApplicationParts.ProvideApplicationPartFactoryAttribute(\"Microsoft.AspNetCore.Mvc.ApplicationParts.NullApplicationPartFactory");
+        }
+
+        [Fact]
         [InitializeTestProject("SimpleMvc")]
         public async Task Build_DoesNotAddRelatedAssemblyPart_IfToolSetIsNotRazorSdk()
         {
