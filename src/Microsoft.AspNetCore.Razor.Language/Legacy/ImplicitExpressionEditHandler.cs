@@ -308,6 +308,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 return HandleInsertionAfterIdPart(target, change);
             }
+            else if (previousChar == '(')
+            {
+                return HandleInsertionAfterOpenParenthesis(target, change);
+            }
             else
             {
                 return PartialParseResultInternal.Rejected;
@@ -319,6 +323,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             // If the insertion is a full identifier part, accept it
             if (ParserHelpers.IsIdentifier(change.NewText, requireIdentifierStart: false))
             {
+                return TryAcceptChange(target, change);
+            }
+            else if (IsDoubleParenthesisInsertion(change) || IsOpenParenthesisInsertion(change))
+            {
+                // Allow inserting parens after an identifier - this is needed to support signature
+                // help intellisense in VS.
                 return TryAcceptChange(target, change);
             }
             else if (EndsWithDot(change.NewText))
@@ -335,6 +345,40 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 return PartialParseResultInternal.Rejected;
             }
+        }
+
+        private PartialParseResultInternal HandleInsertionAfterOpenParenthesis(Span target, SourceChange change)
+        {
+            if (IsCloseParenthesisInsertion(change))
+            {
+                return TryAcceptChange(target, change);
+            }
+
+            return PartialParseResultInternal.Rejected;
+        }
+
+        private static bool IsDoubleParenthesisInsertion(SourceChange change)
+        {
+            return
+                change.IsInsert &&
+                change.NewText.Length == 2 &&
+                change.NewText == "()";
+        }
+
+        private static bool IsOpenParenthesisInsertion(SourceChange change)
+        {
+            return
+                change.IsInsert &&
+                change.NewText.Length == 1 &&
+                change.NewText == "(";
+        }
+
+        private static bool IsCloseParenthesisInsertion(SourceChange change)
+        {
+            return
+                change.IsInsert &&
+                change.NewText.Length == 1 &&
+                change.NewText == ")";
         }
 
         private static bool EndsWithDot(string content)
