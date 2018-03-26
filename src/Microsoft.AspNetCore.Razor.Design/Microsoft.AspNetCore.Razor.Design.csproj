@@ -57,24 +57,34 @@
     -->
     <MSBuild Projects="@(TaskProject)" />
 
-    <MSBuild Projects="@(TaskProject)" Properties="TargetFramework=net46" Targets="GetTargetPath">
+    <MSBuild Projects="@(TaskProject)" Properties="TargetFramework=net46" Targets="BuiltProjectOutputGroup">
       <Output TaskParameter="TargetOutputs" ItemName="TaskAssemblyNet46" />
     </MSBuild>
 
-    <MSBuild Projects="@(TaskProject)" Properties="TargetFramework=netstandard2.0" Targets="GetTargetPath">
+    <MSBuild Projects="@(TaskProject)" Properties="TargetFramework=net46" Targets="DebugSymbolsProjectOutputGroup">
+      <Output TaskParameter="TargetOutputs" ItemName="TaskSymbolNet46" />
+    </MSBuild>
+
+    <MSBuild Projects="@(TaskProject)" Properties="TargetFramework=netstandard2.0" Targets="BuiltProjectOutputGroup">
       <Output TaskParameter="TargetOutputs" ItemName="TaskAssemblyNetStandard" />
     </MSBuild>
 
-    <Copy SourceFiles="@(TaskAssemblyNet46)" DestinationFolder="$(OutputPath)\tasks\net46\">
+    <MSBuild Projects="@(TaskProject)" Properties="TargetFramework=netstandard2.0" Targets="DebugSymbolsProjectOutputGroup">
+      <Output TaskParameter="TargetOutputs" ItemName="TaskSymbolNetStandard" />
+    </MSBuild>
+
+    <Copy SourceFiles="@(TaskAssemblyNet46);@(TaskSymbolNet46)" DestinationFolder="$(OutputPath)\tasks\net46\">
       <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
     </Copy>
-    <Copy SourceFiles="@(TaskAssemblyNetStandard)" DestinationFolder="$(OutputPath)\tasks\netstandard2.0\">
+    <Copy SourceFiles="@(TaskAssemblyNetStandard);@(TaskSymbolNetStandard)" DestinationFolder="$(OutputPath)\tasks\netstandard2.0\">
       <Output TaskParameter="CopiedFiles" ItemName="FileWrites" />
     </Copy>
 
     <ItemGroup>
       <None Include="@(TaskAssemblyNet46)" PackagePath="tasks\net46\" Pack="true" />
+      <None Include="@(TaskSymbolNet46)" PackagePath="tasks\net46\" Pack="true" />
       <None Include="@(TaskAssemblyNetStandard)" PackagePath="tasks\netstandard2.0\" Pack="true" />
+      <None Include="@(TaskSymbolNetStandard)" PackagePath="tasks\netstandard2.0\" Pack="true" />
     </ItemGroup>
 
     <Error Text="TaskAssemblyNet46 is empty. This is a bug" Condition="'@(TaskAssemblyNet46)'==''" />
@@ -89,7 +99,7 @@
     <MSBuild Projects="@(ToolProject)" Properties="PublishDir=$(MSBuildProjectDirectory)\$(OutputPath)tools\" Targets="Publish" />
 
     <ItemGroup>
-      <_RazorTool Include="$(OutputPath)tools\**\*" Exclude="$(OutputPath)tools\**\*.xml;$(OutputPath)tools\**\*.pdb" />
+      <_RazorTool Include="$(OutputPath)tools\**\*" Exclude="$(OutputPath)tools\**\*.xml" />
     </ItemGroup>
 
     <ItemGroup>
