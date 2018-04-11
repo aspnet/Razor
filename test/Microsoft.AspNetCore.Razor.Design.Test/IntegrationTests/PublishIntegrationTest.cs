@@ -28,7 +28,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.Views.pdb");
 
             // By default refs and .cshtml files will not be copied on publish
-            Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
+            // Skipped until we get a new Sdk. See https://github.com/aspnet/Razor/issues/2259
+            // Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
             Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "Views"), "*.cshtml");
         }
 
@@ -51,7 +52,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.Views.pdb");
 
             // By default refs and .cshtml files will not be copied on publish
-            Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
+            // Skipped until we get a new Sdk. See https://github.com/aspnet/Razor/issues/2259
+            // Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
             Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "Views"), "*.cshtml");
         }
 
@@ -69,7 +71,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.Views.pdb");
 
             // By default refs and .cshtml files will not be copied on publish
-            Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
+            // Skipped until we get a new Sdk. See https://github.com/aspnet/Razor/issues/2259
+            // Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
             Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "Views"), "*.cshtml");
         }
 
@@ -91,7 +94,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.Views.pdb");
 
             // By default refs and .cshtml files will not be copied on publish
-            Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
+            // Skipped until we get a new Sdk. See https://github.com/aspnet/Razor/issues/2259
+            // Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
             Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "Views"), "*.cshtml");
         }
 
@@ -123,7 +127,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.Views.pdb");
 
             // By default refs and .cshtml files will not be copied on publish
-            Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
+            // Skipped until we get a new Sdk. See https://github.com/aspnet/Razor/issues/2259
+            // Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "refs"), "*.dll");
             Assert.FileCountEquals(result, 0, Path.Combine(PublishOutputPath, "Views"), "*.cshtml");
         }
 
