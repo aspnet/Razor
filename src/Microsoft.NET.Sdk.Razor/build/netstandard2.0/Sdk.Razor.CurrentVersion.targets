@@ -113,9 +113,6 @@ Copyright (c) .NET Foundation. All rights reserved.
     <CopyRazorGenerateFilesToPublishDirectory Condition="'$(MvcRazorExcludeViewFilesFromPublish)'=='true'">false</CopyRazorGenerateFilesToPublishDirectory>
     <CopyRazorGenerateFilesToPublishDirectory Condition="'$(MvcRazorExcludeViewFilesFromPublish)'=='false'">true</CopyRazorGenerateFilesToPublishDirectory>
 
-    <CopyRefAssembliesToPublishDirectory Condition="'$(MvcRazorExcludeRefAssembliesFromPublish)'=='true'">false</CopyRefAssembliesToPublishDirectory>
-    <CopyRefAssembliesToPublishDirectory Condition="'$(MvcRazorExcludeRefAssembliesFromPublish)'=='false'">true</CopyRefAssembliesToPublishDirectory>
-
     <!-- 
       We can't set the actual default value here due to evaluation order (depends on $(OutDir)).
       
@@ -165,6 +162,22 @@ Copyright (c) .NET Foundation. All rights reserved.
 
     <!-- Previous versions of the precompilation tool still depends on the msbuild property 'MvcRazorCompileOnPublish'. Hence, setting it to the old default value -->
     <MvcRazorCompileOnPublish Condition="'$(MvcRazorCompileOnPublish)' == ''">true</MvcRazorCompileOnPublish>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Back-compat: Set PreserveCompilationReferences=true if MvcRazorExcludeRefAssembliesFromPublish=false. -->
+    <PreserveCompilationReferences Condition="'$(PreserveCompilationReferences)' == '' AND '$(MvcRazorExcludeRefAssembliesFromPublish)' == 'false'">true</PreserveCompilationReferences>
+
+    <!--
+    Alias PreserveCompilationContext if it was expressly set in the user's project.
+    -->
+    <PreserveCompilationReferences Condition="'$(PreserveCompilationContext)'!=''">$(PreserveCompilationContext)</PreserveCompilationReferences>
+
+    <!-- Back-compat: Set PreserveCompilationReferences=true if the RazorSdk is not being used. -->
+    <PreserveCompilationReferences Condition="'$(PreserveCompilationReferences)' == '' AND '$(ResolvedRazorCompileToolset)' != 'RazorSdk'">true</PreserveCompilationReferences>
+
+    <!-- Always require PreserveCompilationContext -->
+    <PreserveCompilationContext Condition="'$(PreserveCompilationContext)' == ''">true</PreserveCompilationContext>
   </PropertyGroup>
 
   <!--
@@ -492,17 +505,6 @@ Copyright (c) .NET Foundation. All rights reserved.
     <ItemGroup Condition="'$(CopyRazorGenerateFilesToPublishDirectory)'=='false'">
       <ResolvedFileToPublish Remove="%(RazorGenerate.FullPath)"/>
     </ItemGroup>
-
-    <!--
-      The ref assemblies are published whenever PreserveCompilationContext is true, which we expect to be true for
-      most usages of Razor. There's no setting that excludes just the ref assemblies, so we do it ourselves. 
-    -->
-    <ItemGroup Condition="'$(CopyRefAssembliesToPublishDirectory)'=='false'">
-      <ResolvedFileToPublish 
-        Remove="%(ResolvedFileToPublish.Identity)"
-        Condition="'%(ResolvedFileToPublish.RelativePath)'=='$(RefAssembliesFolderName)\%(Filename)%(Extension)'"/>
-    </ItemGroup>
-
   </Target>
 
   <Target Name="_CheckForMissingRazorCompiler" Condition="'$(IsRazorCompilerReferenced)' != 'true'">
