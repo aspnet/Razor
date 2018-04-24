@@ -69,6 +69,11 @@ Copyright (c) .NET Foundation. All rights reserved.
       _RazorAddDebugSymbolsProjectOutputGroupOutput
     </DebugSymbolsProjectOutputGroupDependsOn>
 
+    <PrepareForBuildDependsOn>
+      $(PrepareForBuildDependsOn);
+      ResolveRazorGenerateInputs
+    </PrepareForBuildDependsOn>
+
     <PrepareForRunDependsOn>
       _RazorPrepareForRun;
       $(PrepareForRunDependsOn)
@@ -285,6 +290,8 @@ Copyright (c) .NET Foundation. All rights reserved.
   <!--
     Gathers input source files for code generation. This is a separate target so that we can avoid
     lots of work when there are no inputs for code generation.
+    This target runs as part of PrepareForBuild. This gives us an opportunitity to change things like CopyToPublishDirectory
+    for Content items before they are processed by other Build targets.
 
     NOTE: This target is called as part of an incremental build scenario in VS. Do not perform any work
     outside of calculating RazorGenerate items in this target.
@@ -304,6 +311,19 @@ Copyright (c) .NET Foundation. All rights reserved.
 
     <ItemGroup Condition="'$(EnableDefaultRazorGenerateItems)'=='true'">
       <RazorGenerate Include="@(Content)" Condition="'%(Content.Extension)'=='.cshtml'" />
+    </ItemGroup>
+
+    <!-- 
+      If publishing RazorGenerate items is disabled, set CopyToPublishDirectory=Never for all
+      cshtml Content items that are added as RazorGenerate items.
+    -->
+    <ItemGroup Condition="
+      '$(EnableDefaultRazorGenerateItems)'=='true' and 
+      '$(CopyRazorGenerateFilesToPublishDirectory)'=='false' and 
+      '$(ResolvedRazorCompileToolset)'=='RazorSdk' and 
+      '$(RazorCompileOnPublish)'=='true'">
+      
+      <Content Update="@(Content)" CopyToPublishDirectory="Never" Condition="'%(Content.Extension)'=='.cshtml'" />
     </ItemGroup>
   </Target>
 
