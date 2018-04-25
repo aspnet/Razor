@@ -391,7 +391,7 @@ Copyright (c) .NET Foundation. All rights reserved.
       This condition needs to be inside the target because it the itemgroup will be populated after the target's
       condition is evaluated.
     -->
-    <ItemGroup Condition="'@(RazorGenerate)'!=''">
+    <ItemGroup>
       <AllItemsFullPathWithTargetPath Include="@(RazorIntermediateAssembly->'%(FullPath)')">
         <TargetPath>%(Filename)%(Extension)</TargetPath>
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
