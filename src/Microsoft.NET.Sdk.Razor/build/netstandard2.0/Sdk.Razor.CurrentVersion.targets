@@ -266,6 +266,9 @@ Copyright (c) .NET Foundation. All rights reserved.
   <!--
     Gathers input source files for code generation. This is a separate target so that we can avoid
     lots of work when there are no inputs for code generation.
+
+    NOTE: This target is called as part of an incremental build scenario in VS. Do not perform any work
+    outside of calculating RazorGenerate items in this target.
   -->
   <Target Name="ResolveRazorGenerateInputs">
     <!--
@@ -385,6 +388,7 @@ Copyright (c) .NET Foundation. All rights reserved.
   <Target 
     Name="_RazorGetCopyToOutputDirectoryItems"
     BeforeTargets="GetCopyToOutputDirectoryItems"
+    DependsOnTargets="ResolveRazorGenerateInputs"
     Condition="'$(ResolvedRazorCompileToolset)'=='RazorSdk' and '$(RazorCompileOnBuild)'=='true'">
 
     <!-- 
