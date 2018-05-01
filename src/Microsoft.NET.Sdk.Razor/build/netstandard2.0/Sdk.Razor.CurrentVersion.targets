@@ -313,9 +313,10 @@ Copyright (c) .NET Foundation. All rights reserved.
       <RazorGenerate Include="@(Content)" Condition="'%(Content.Extension)'=='.cshtml'" />
     </ItemGroup>
 
-    <!-- 
-      If publishing RazorGenerate items is disabled, set CopyToPublishDirectory=Never for all
-      cshtml Content items that are added as RazorGenerate items.
+    <!--
+      Ideally we want to able to update all Content items that also appear in RazorGenerate to have
+      CopyToPublishDirectory=Never. However, there isn't a simple way to do this (https://github.com/Microsoft/msbuild/issues/1618). 
+      Instead, we'll update all cshtml Content items when EnableDefaultRazorGenerateItems=true and Razor Sdk is used for publishing.
     -->
     <ItemGroup Condition="
       '$(EnableDefaultRazorGenerateItems)'=='true' and 
@@ -323,7 +324,7 @@ Copyright (c) .NET Foundation. All rights reserved.
       '$(ResolvedRazorCompileToolset)'=='RazorSdk' and 
       '$(RazorCompileOnPublish)'=='true'">
       
-      <Content Update="@(Content)" CopyToPublishDirectory="Never" Condition="'%(Content.Extension)'=='.cshtml'" />
+      <Content Condition="'%(Content.Extension)'=='.cshtml'" CopyToPublishDirectory="Never" />
     </ItemGroup>
   </Target>
 
