@@ -26,6 +26,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
         private bool _isSupportedProject;
         private ProjectSnapshot _project;
         private string _projectPath;
+        private int _subscribeCount;
 
         public override event EventHandler<ContextChangeEventArgs> ContextChanged;
 
@@ -146,8 +147,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             return null;
         }
 
-        private void Subscribe()
+        public void Subscribe()
         {
+            if (_subscribeCount++ > 0)
+            {
+                return;
+            }
+
             // Fundamentally we have a Razor half of the world as as soon as the document is open - and then later 
             // the C# half of the world will be initialized. This code is in general pretty tolerant of 
             // unexpected /impossible states.
@@ -181,8 +187,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             OnContextChanged(_project, ContextChangeKind.ProjectChanged);
         }
 
-        private void Unsubscribe()
+        public void Unsubscribe()
         {
+            if (_subscribeCount == 0 || _subscribeCount-- > 1)
+            {
+                return;
+            }
+
             _projectManager.Changed -= ProjectManager_Changed;
             _editorSettingsManager.Changed -= EditorSettingsManager_Changed;
 
