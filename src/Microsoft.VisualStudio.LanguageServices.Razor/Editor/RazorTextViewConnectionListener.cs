@@ -22,25 +22,18 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
     internal class RazorTextViewConnectionListener : IWpfTextViewConnectionListener
     {
         private readonly ForegroundDispatcher _foregroundDispatcher;
-        private readonly TextBufferProjectService _projectService;
         private readonly RazorEditorFactoryService _editorFactoryService;
         private readonly Workspace _workspace;
 
         [ImportingConstructor]
         public RazorTextViewConnectionListener(
             ForegroundDispatcher foregroundDispatcher,
-            TextBufferProjectService projectService,
             RazorEditorFactoryService editorFactoryService,
             [Import(typeof(VisualStudioWorkspace))] Workspace workspace)
         {
             if (foregroundDispatcher == null)
             {
                 throw new ArgumentNullException(nameof(foregroundDispatcher));
-            }
-
-            if (projectService == null)
-            {
-                throw new ArgumentNullException(nameof(projectService));
             }
 
             if (editorFactoryService == null)
@@ -54,7 +47,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             }
 
             _foregroundDispatcher = foregroundDispatcher;
-            _projectService = projectService;
             _editorFactoryService = editorFactoryService;
             _workspace = workspace;
 
@@ -82,12 +74,6 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
                 if (!textBuffer.IsRazorBuffer())
                 {
                     continue;
-                }
-
-                var hostProject = _projectService.GetHostProject(textBuffer);
-                if (!_projectService.IsSupportedProject(hostProject))
-                {
-                    return;
                 }
 
                 if (!_editorFactoryService.TryGetDocumentTracker(textBuffer, out var documentTracker) ||
