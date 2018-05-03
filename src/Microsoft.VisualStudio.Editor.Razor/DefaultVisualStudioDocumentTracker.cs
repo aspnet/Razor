@@ -78,6 +78,61 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             _textViews = new List<ITextView>();
         }
 
+        public DefaultVisualStudioDocumentTracker(
+            string filePath,
+            string projectPath,
+            ProjectSnapshotManager projectManager,
+            TextBufferProjectService projectService,
+            EditorSettingsManager editorSettingsManager,
+            Workspace workspace,
+            ITextBuffer textBuffer)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new ArgumentException(Microsoft.VisualStudio.Editor.Razor.Resources.ArgumentCannotBeNullOrEmpty, nameof(filePath));
+            }
+
+            if (string.IsNullOrEmpty(projectPath))
+            {
+                throw new ArgumentException(Microsoft.VisualStudio.Editor.Razor.Resources.ArgumentCannotBeNullOrEmpty, nameof(projectPath));
+            }
+
+            if (projectManager == null)
+            {
+                throw new ArgumentNullException(nameof(projectManager));
+            }
+
+            if (projectService == null)
+            {
+                throw new ArgumentNullException(nameof(projectService));
+            }
+
+            if (editorSettingsManager == null)
+            {
+                throw new ArgumentNullException(nameof(editorSettingsManager));
+            }
+
+            if (workspace == null)
+            {
+                throw new ArgumentNullException(nameof(workspace));
+            }
+
+            if (textBuffer == null)
+            {
+                throw new ArgumentNullException(nameof(textBuffer));
+            }
+
+            _filePath = filePath;
+            _projectPath = projectPath;
+            _projectManager = projectManager;
+            _projectService = projectService;
+            _editorSettingsManager = editorSettingsManager;
+            _textBuffer = textBuffer;
+            _workspace = workspace; // For now we assume that the workspace is the always default VS workspace.
+
+            _textViews = new List<ITextView>();
+        }
+
         public override RazorConfiguration Configuration => _project.Configuration;
 
         public override EditorSettings EditorSettings => _editorSettingsManager.Current;
@@ -159,28 +214,37 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
             // unexpected /impossible states.
             //
             // We also want to successfully shut down if the buffer is something other than .cshtml.
-            object hierarchy = null;
-            string projectPath = null;
-            var isSupportedProject = false;
 
-            if (_textBuffer.ContentType.IsOfType(RazorLanguage.ContentType) &&
-
-                // We expect the document to have a hierarchy even if it's not a real 'project'.
-                // However the hierarchy can be null when the document is in the process of closing.
-                (hierarchy = _projectService.GetHostProject(_textBuffer)) != null)
+            if (_projectPath == null)
             {
-                projectPath = _projectService.GetProjectPath(hierarchy);
-                isSupportedProject = true;
+                object hierarchy = null;
+                string projectPath = null;
+                var isSupportedProject = false;
+
+                if (_textBuffer.ContentType.IsOfType(RazorLanguage.ContentType) &&
+
+                    // We expect the document to have a hierarchy even if it's not a real 'project'.
+                    // However the hierarchy can be null when the document is in the process of closing.
+                    (hierarchy = _projectService.GetHostProject(_textBuffer)) != null)
+                {
+                    projectPath = _projectService.GetProjectPath(hierarchy);
+                    isSupportedProject = _projectService.IsSupportedProject(hierarchy);
+                }
+
+                if (!isSupportedProject || projectPath == null)
+                {
+                    return;
+                }
+
+                _isSupportedProject = isSupportedProject;
+                _projectPath = projectPath;
+            }
+            else
+            {
+                _isSupportedProject = true;
             }
 
-            if (!isSupportedProject || projectPath == null)
-            {
-                return;
-            }
-
-            _isSupportedProject = isSupportedProject;
-            _projectPath = projectPath;
-            _project = _projectManager.GetProjectWithFilePath(projectPath);
+            _project = _projectManager.GetProjectWithFilePath(_projectPath);
             _projectManager.Changed += ProjectManager_Changed;
             _editorSettingsManager.Changed += EditorSettingsManager_Changed;
 
