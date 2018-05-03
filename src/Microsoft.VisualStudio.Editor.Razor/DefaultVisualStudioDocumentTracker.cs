@@ -170,7 +170,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Editor
                 (hierarchy = _projectService.GetHostProject(_textBuffer)) != null)
             {
                 projectPath = _projectService.GetProjectPath(hierarchy);
-                isSupportedProject = _projectService.IsSupportedProject(hierarchy);
+                isSupportedProject = true;
             }
 
             if (!isSupportedProject || projectPath == null)
