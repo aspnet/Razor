@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.Razor;
 using Microsoft.CodeAnalysis.Razor.Editor;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
+using static Microsoft.VisualStudio.Editor.Razor.BackgroundParser;
 using ITextBuffer = Microsoft.VisualStudio.Text.ITextBuffer;
 using Timer = System.Threading.Timer;
 
@@ -321,8 +322,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             _dispatcher.AssertForegroundThread();
 
-            _latestChangeReference = new ChangeReference(change, snapshot);
-            _parser.QueueChange(change, snapshot);
+            _latestChangeReference = _parser.QueueChange(change, snapshot);
         }
 
         private void OnNotifyForegroundIdle()
@@ -361,7 +361,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             }
         }
 
-        private void OnResultsReady(object sender, DocumentStructureChangedEventArgs args)
+        private void OnResultsReady(object sender, BackgroundParserResultsReadyEventArgs args)
         {
             _dispatcher.AssertBackgroundThread();
 
@@ -379,21 +379,25 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 return;
             }
 
-            var args = (DocumentStructureChangedEventArgs)state;
+            var backgroundParserArgs = (BackgroundParserResultsReadyEventArgs)state;
             if (_latestChangeReference == null || // extra hardening
-                !_latestChangeReference.IsAssociatedWith(args) ||
-                args.Snapshot != TextBuffer.CurrentSnapshot)
+                _latestChangeReference != backgroundParserArgs.ChangeReference ||
+                backgroundParserArgs.ChangeReference.Snapshot != TextBuffer.CurrentSnapshot)
             {
                 // In the middle of parsing a newer change or about to parse a newer change.
                 return;
             }
 
             _latestChangeReference = null;
-            _codeDocument = args.CodeDocument;
-            _snapshot = args.Snapshot;
+            _codeDocument = backgroundParserArgs.CodeDocument;
+            _snapshot = backgroundParserArgs.ChangeReference.Snapshot;
             _partialParser = new RazorSyntaxTreePartialParser(CodeDocument.GetSyntaxTree());
 
-            DocumentStructureChanged?.Invoke(this, args);
+            var documentStructureChangedArgs = new DocumentStructureChangedEventArgs(
+                backgroundParserArgs.ChangeReference.Change, 
+                backgroundParserArgs.ChangeReference.Snapshot, 
+                backgroundParserArgs.CodeDocument);
+            DocumentStructureChanged?.Invoke(this, documentStructureChangedArgs);
         }
 
         private void ConfigureProjectEngine(RazorProjectEngineBuilder builder)
@@ -443,26 +447,6 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 }
 
                 return Array.Empty<TagHelperDescriptor>();
-            }
-        }
-
-        // Internal for testing
-        internal class ChangeReference
-        {
-            public ChangeReference(SourceChange change, ITextSnapshot snapshot)
-            {
-                Change = change;
-                Snapshot = snapshot;
-            }
-
-            public SourceChange Change { get; }
-
-            public ITextSnapshot Snapshot { get; }
-
-            public bool IsAssociatedWith(DocumentStructureChangedEventArgs other)
-            {
-                return Change == other.SourceChange &&
-                    Snapshot == other.Snapshot;
             }
         }
     }
