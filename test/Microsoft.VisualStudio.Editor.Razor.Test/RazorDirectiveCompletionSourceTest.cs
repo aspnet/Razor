@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
 using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion.Data;
 using Microsoft.VisualStudio.Text;
 using Moq;
 using Xunit;
@@ -37,7 +38,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             // Act
             var completionContext = await Task.Run(
-                async () => await completionSource.GetCompletionContextAsync(new CompletionTrigger(), triggerLocation, applicableSpan, CancellationToken.None));
+                async () => await completionSource.GetCompletionContextAsync(new InitialTrigger(), triggerLocation, applicableSpan, CancellationToken.None));
 
             // Assert
             Assert.Empty(completionContext.Items);
@@ -56,7 +57,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             // Act
             var completionContext = await Task.Run(
-                async () => await completionSource.GetCompletionContextAsync(new CompletionTrigger(), triggerLocation, applicableSpan, CancellationToken.None));
+                async () => await completionSource.GetCompletionContextAsync(new InitialTrigger(), triggerLocation, applicableSpan, CancellationToken.None));
 
             // Assert
             Assert.Empty(completionContext.Items);
@@ -76,7 +77,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             // Act
             var completionContext = await Task.Run(
-                async () => await completionSource.GetCompletionContextAsync(new CompletionTrigger(), triggerLocation, applicableSpan, CancellationToken.None));
+                async () => await completionSource.GetCompletionContextAsync(new InitialTrigger(), triggerLocation, applicableSpan, CancellationToken.None));
 
             // Assert
             Assert.Collection(
@@ -333,7 +334,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
         private static void AssertRazorCompletionItemDefaults(CompletionItem item)
         {
-            Assert.Equal(item.Image.Guid, RazorDirectiveCompletionSource.DirectiveImageGlyph.Guid);
+            Assert.Equal(item.Icon.ImageId.Guid, RazorDirectiveCompletionSource.DirectiveImageGlyph.ImageId.Guid);
             var filter = Assert.Single(item.Filters);
             Assert.Same(RazorDirectiveCompletionSource.DirectiveCompletionFilters[0], filter);
             Assert.Equal(string.Empty, item.Suffix);

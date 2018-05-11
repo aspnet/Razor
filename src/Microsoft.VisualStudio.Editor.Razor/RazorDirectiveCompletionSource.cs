@@ -13,7 +13,9 @@ using Microsoft.CodeAnalysis.Razor;
 using Microsoft.VisualStudio.Core.Imaging;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion.Data;
 using Microsoft.VisualStudio.Text;
+using Microsoft.VisualStudio.Text.Adornments;
 
 namespace Microsoft.VisualStudio.Editor.Razor
 {
@@ -21,7 +23,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
     {
         // Internal for testing
         internal static readonly object DescriptionKey = new object();
-        internal static readonly AccessibleImageId DirectiveImageGlyph = new AccessibleImageId(
+        internal static readonly AccessibleImageElement DirectiveImageGlyph = new AccessibleImageElement(
             new ImageId(KnownImageIds.ImageCatalogGuid, KnownImageIds.Type),
             "Razor Directive.");
         internal static readonly ImmutableArray<CompletionFilter> DirectiveCompletionFilters = new[] {
@@ -57,9 +59,9 @@ namespace Microsoft.VisualStudio.Editor.Razor
         }
 
         public Task<CompletionContext> GetCompletionContextAsync(
-            CompletionTrigger trigger, 
-            SnapshotPoint triggerLocation, 
-            SnapshotSpan applicableSpan, 
+            InitialTrigger trigger,
+            SnapshotPoint triggerLocation,
+            SnapshotSpan applicableSpan,
             CancellationToken token)
         {
             _foregroundDispatcher.AssertBackgroundThread();
@@ -85,7 +87,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             return Task.FromResult<object>(directiveDescription);
         }
 
-        public bool TryGetApplicableSpan(char typeChar, SnapshotPoint triggerLocation, out SnapshotSpan applicableSpan)
+        public bool TryGetApplicableSpan(char typeChar, SnapshotPoint triggerLocation, out SnapshotSpan applicableSpan, CancellationToken token)
         {
             // The applicable span for completion is the piece of text a completion is for. For example:
             //      @Date|Time.Now
@@ -108,11 +110,11 @@ namespace Microsoft.VisualStudio.Editor.Razor
                     filterText: completionDisplayText,
                     insertText: directive.Directive,
                     source: this,
-                    image: DirectiveImageGlyph,
+                    icon: DirectiveImageGlyph,
                     filters: DirectiveCompletionFilters,
                     suffix: string.Empty,
                     sortText: "_RazorDirective_", // This groups all Razor directives together
-                    attributeImages: ImmutableArray<AccessibleImageId>.Empty);
+                    attributeIcons: ImmutableArray<ImageElement>.Empty);
                 completionItem.Properties.AddProperty(DescriptionKey, directive.Description);
                 completionItems.Add(completionItem);
             }
