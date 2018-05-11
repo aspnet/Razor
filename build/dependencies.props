@@ -21,8 +21,9 @@
     <MicrosoftNETCoreApp21PackageVersion>2.1.0-preview1-26016-05</MicrosoftNETCoreApp21PackageVersion>
     <MicrosoftNETTestSdkPackageVersion>15.3.0</MicrosoftNETTestSdkPackageVersion>
     <MicrosoftVisualStudioComponentModelHostPackageVersion>15.0.26606</MicrosoftVisualStudioComponentModelHostPackageVersion>
-    <MicrosoftVisualStudioEditorPackageVersion>15.7.272-preview-g0de2faf761</MicrosoftVisualStudioEditorPackageVersion>
-    <MicrosoftVisualStudioLanguageIntellisensePackageVersion>15.7.272-preview-g0de2faf761</MicrosoftVisualStudioLanguageIntellisensePackageVersion>
+    <MicrosoftVisualStudioEditorPackageVersion>15.8.353-preview-gd2e2f69a38</MicrosoftVisualStudioEditorPackageVersion>
+    <MicrosoftVisualStudioLanguageIntellisensePackageVersion>15.8.353-preview-gd2e2f69a38
+</MicrosoftVisualStudioLanguageIntellisensePackageVersion>
     <MicrosoftVisualStudioOLEInteropPackageVersion>7.10.6070</MicrosoftVisualStudioOLEInteropPackageVersion>
     <MicrosoftVisualStudioProjectSystemAnalyzersPackageVersion>15.3.224</MicrosoftVisualStudioProjectSystemAnalyzersPackageVersion>
     <MicrosoftVisualStudioProjectSystemManagedVSPackageVersion>2.0.6142705</MicrosoftVisualStudioProjectSystemManagedVSPackageVersion>
