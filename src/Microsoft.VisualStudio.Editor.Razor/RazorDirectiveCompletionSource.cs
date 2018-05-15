@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
     {
         // Internal for testing
         internal static readonly object DescriptionKey = new object();
-        internal static readonly AccessibleImageElement DirectiveImageGlyph = new AccessibleImageElement(
+        internal static readonly ImageElement DirectiveImageGlyph = new ImageElement(
             new ImageId(KnownImageIds.ImageCatalogGuid, KnownImageIds.Type),
             "Razor Directive.");
         internal static readonly ImmutableArray<CompletionFilter> DirectiveCompletionFilters = new[] {
@@ -87,13 +87,13 @@ namespace Microsoft.VisualStudio.Editor.Razor
             return Task.FromResult<object>(directiveDescription);
         }
 
-        public bool TryGetApplicableSpan(char typeChar, SnapshotPoint triggerLocation, out SnapshotSpan applicableSpan, CancellationToken token)
+        public bool TryGetApplicableToSpan(char typeChar, SnapshotPoint triggerLocation, out SnapshotSpan applicableToSpan, CancellationToken token)
         {
             // The applicable span for completion is the piece of text a completion is for. For example:
             //      @Date|Time.Now
             // If you trigger completion at the | then the applicable span is the region of 'DateTime'; however, Razor
             // doesn't know this information so we rely on Roslyn to define what the applicable span for a completion is.
-            applicableSpan = default(SnapshotSpan);
+            applicableToSpan = default(SnapshotSpan);
             return false;
         }
 
