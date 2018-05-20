@@ -18,10 +18,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(VSIX_MicrosoftCodeAnalysisCSharpPackageVersion)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="$(VSIX_MicrosoftCodeAnalysisCommonPackageVersion)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Remote.Razor.ServiceHub" Version="$(VSIX_MicrosoftCodeAnalysisRemoteRazorServiceHubPackageVersion)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(VSIX_MicrosoftCodeAnalysisWorkspacesCommonPackageVersion)" />
+    <PackageReference Include="System.Composition" Version="$(SystemCompositionPackageVersion)" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis\Microsoft.CodeAnalysis.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.CSharp\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.Features\Microsoft.CodeAnalysis.Features.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.CSharp.Features\Microsoft.CodeAnalysis.CSharp.Features.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.Workspaces\Microsoft.CodeAnalysis.Workspaces.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.EditorFeatures\Microsoft.CodeAnalysis.EditorFeatures.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.EditorFeatures.Text\Microsoft.CodeAnalysis.EditorFeatures.Text.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.VisualStudio.LanguageServices.Razor.RemoteClient\Microsoft.VisualStudio.LanguageServices.Razor.RemoteClient.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.VisualStudio.LanguageServices\Microsoft.VisualStudio.LanguageServices.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.Remote.Razor.ServiceHub\Microsoft.CodeAnalysis.Remote.Razor.ServiceHub.dll" />
+
     <PackageReference Include="StreamJsonRpc" Version="$(StreamJsonRpcPackageVersion)" />
   </ItemGroup>
 

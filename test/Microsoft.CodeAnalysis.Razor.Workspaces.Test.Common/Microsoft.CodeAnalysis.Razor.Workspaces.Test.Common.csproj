@@ -10,7 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(VSIX_MicrosoftCodeAnalysisCSharpWorkspacesPackageVersion)" />
+    <PackageReference Include="System.Composition" Version="$(SystemCompositionPackageVersion)" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis\Microsoft.CodeAnalysis.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.CSharp\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.Features\Microsoft.CodeAnalysis.Features.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.CSharp.Features\Microsoft.CodeAnalysis.CSharp.Features.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.Workspaces\Microsoft.CodeAnalysis.Workspaces.dll" />
   </ItemGroup>
 
 </Project>

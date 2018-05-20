@@ -23,6 +23,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Composition" Version="$(SystemCompositionPackageVersion)" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis\Microsoft.CodeAnalysis.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.CSharp\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.Features\Microsoft.CodeAnalysis.Features.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.CSharp.Features\Microsoft.CodeAnalysis.CSharp.Features.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.Workspaces\Microsoft.CodeAnalysis.Workspaces.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.EditorFeatures\Microsoft.CodeAnalysis.EditorFeatures.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.EditorFeatures.Text\Microsoft.CodeAnalysis.EditorFeatures.Text.dll" />
+    
     <PackageReference Include="Moq" Version="$(MoqPackageVersion)" />
     <PackageReference Include="Newtonsoft.Json" Version="$(NewtonsoftJsonPackageVersion)" />
     <PackageReference Include="xunit.analyzers" Version="$(XunitAnalyzersPackageVersion)" />

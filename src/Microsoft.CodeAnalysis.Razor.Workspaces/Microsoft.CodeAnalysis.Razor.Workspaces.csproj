@@ -12,9 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(VSIX_MicrosoftCodeAnalysisCSharpPackageVersion)" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="$(VSIX_MicrosoftCodeAnalysisWorkspacesCommonPackageVersion)" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis\Microsoft.CodeAnalysis.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.CSharp\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Reference Include="$(RoslynBinariesPath)Microsoft.CodeAnalysis.Workspaces\Microsoft.CodeAnalysis.Workspaces.dll" />
     <PackageReference Include="Microsoft.Extensions.NonCapturingTimer.Sources" Version="$(MicrosoftExtensionsNonCapturingTimerSourcesPackageVersion)" PrivateAssets="all" />
+    <PackageReference Include="System.Collections.Immutable" Version="$(SystemCollectionsImmutablePackageVersion)" />
+    <PackageReference Include="System.Composition" Version="$(SystemCompositionPackageVersion)" />
   </ItemGroup>
 
 </Project>

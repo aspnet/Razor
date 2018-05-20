@@ -2,6 +2,9 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
+  <PropertyGroup>
+    <RoslynBinariesPath>c:\git\dotnet\roslyn\Binaries\Debug\Dlls\</RoslynBinariesPath>
+  </PropertyGroup>
   <PropertyGroup Label="Package Versions">
     <BenchmarkDotNetPackageVersion>0.10.13</BenchmarkDotNetPackageVersion>
     <InternalAspNetCoreSdkPackageVersion>3.0.0-alpha1-20181026.5</InternalAspNetCoreSdkPackageVersion>
@@ -46,6 +49,8 @@
     <MoqPackageVersion>4.10.0</MoqPackageVersion>
     <NETStandardLibrary20PackageVersion>2.0.3</NETStandardLibrary20PackageVersion>
     <NewtonsoftJsonPackageVersion>11.0.2</NewtonsoftJsonPackageVersion>
+    <SystemCompositionPackageVersion>1.2.0</SystemCompositionPackageVersion>
+    <SystemCollectionsImmutablePackageVersion>1.5.0</SystemCollectionsImmutablePackageVersion>
     <StreamJsonRpcPackageVersion>1.3.23</StreamJsonRpcPackageVersion>
     <SystemDiagnosticsDiagnosticSourcePackageVersion>4.6.0-preview1-26907-04</SystemDiagnosticsDiagnosticSourcePackageVersion>
     <SystemRuntimeInteropServicesRuntimeInformationPackageVersion>4.3.0</SystemRuntimeInteropServicesRuntimeInformationPackageVersion>
