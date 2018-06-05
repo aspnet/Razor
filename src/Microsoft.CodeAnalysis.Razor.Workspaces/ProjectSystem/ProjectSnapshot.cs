@@ -9,6 +9,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
     internal abstract class ProjectSnapshot
     {
+        public abstract ProjectId Id { get; }
+
         public abstract RazorConfiguration Configuration { get; }
 
         public abstract IEnumerable<string> DocumentFilePaths { get; }

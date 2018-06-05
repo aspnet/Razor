@@ -27,6 +27,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             _documents = new Dictionary<string, DefaultDocumentSnapshot>(FilePathComparer.Instance);
         }
 
+        public override ProjectId Id => HostProject.Id;
+
         public ProjectState State { get; }
 
         public override RazorConfiguration Configuration => HostProject.Configuration;

@@ -39,20 +39,23 @@ namespace Microsoft.CodeAnalysis.Remote.Razor
             var solution = await GetSolutionAsync(cancellationToken).ConfigureAwait(false);
             var workspaceProject = solution.GetProject(projectHandle.WorkspaceProjectId);
 
-            return new SerializedProjectSnapshot(projectHandle.FilePath, projectHandle.Configuration, workspaceProject);
+            return new SerializedProjectSnapshot(projectHandle.FilePath, projectHandle.HostProjectId, projectHandle.Configuration, workspaceProject);
         }
 
         private class SerializedProjectSnapshot : ProjectSnapshot
         {
-            public SerializedProjectSnapshot(string filePath, RazorConfiguration configuration, Project workspaceProject)
+            public SerializedProjectSnapshot(string filePath, ProjectId id, RazorConfiguration configuration, Project workspaceProject)
             {
                 FilePath = filePath;
+                Id = id;
                 Configuration = configuration;
                 WorkspaceProject = workspaceProject;
 
                 IsInitialized = true;
                 Version = VersionStamp.Default;
             }
+
+            public override ProjectId Id { get; }
 
             public override RazorConfiguration Configuration { get; }
 
@@ -65,6 +68,7 @@ namespace Microsoft.CodeAnalysis.Remote.Razor
             public override VersionStamp Version { get; }
 
             public override Project WorkspaceProject { get; }
+
 
             public override DocumentSnapshot GetDocument(string filePath)
             {

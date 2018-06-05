@@ -59,11 +59,6 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(filePath));
             }
 
-            if (projectPath == null)
-            {
-                throw new ArgumentNullException(nameof(projectPath));
-            }
-
             if (projectManager == null)
             {
                 throw new ArgumentNullException(nameof(projectManager));
@@ -126,6 +121,8 @@ namespace Microsoft.VisualStudio.Editor.Razor
         public override string FilePath => _filePath;
 
         public override string ProjectPath => _projectPath;
+
+        public override ProjectId ProjectId => _projectSnapshot?.Id;
 
         public Task PendingTagHelperTask => _computingTagHelpers.task ?? Task.CompletedTask;
 
@@ -284,11 +281,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             _foregroundDispatcher.AssertForegroundThread();
 
-            if (_projectPath != null &&
-                string.Equals(_projectPath, e.ProjectFilePath, StringComparison.OrdinalIgnoreCase))
+            if (ProjectId == e.ProjectId)
             {
                 // This will be the new snapshot unless the project was removed.
-                _projectSnapshot = _projectManager.GetLoadedProject(e.ProjectFilePath);
+                _projectSnapshot = _projectManager.GetLoadedProject(e.ProjectId);
 
                 switch (e.Kind)
                 {
@@ -309,7 +305,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                     case ProjectChangeKind.ProjectRemoved:
 
                         // Fall back to ephemeral project
-                        _projectSnapshot = _projectManager.GetOrCreateProject(ProjectPath);
+                        _projectSnapshot = _projectManager.GetOrCreateProject(_projectPath);
                         OnContextChanged(ContextChangeKind.ProjectChanged);
                         break;
 

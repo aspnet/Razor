@@ -28,12 +28,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Serialization
 
             var obj = JObject.Load(reader);
             var filePath = obj[nameof(ProjectSnapshotHandle.FilePath)].Value<string>();
+            var id = obj[nameof(ProjectSnapshotHandle.HostProjectId)].Value<string>();
+            var hostProjectId = ProjectId.CreateFromSerialized(Guid.Parse(id));
             var configuration = obj[nameof(ProjectSnapshotHandle.Configuration)].ToObject<RazorConfiguration>(serializer);
-            
-            var id = obj[nameof(ProjectSnapshotHandle.WorkspaceProjectId)].Value<string>();
+
+            id = obj[nameof(ProjectSnapshotHandle.WorkspaceProjectId)].Value<string>();
             var workspaceProjectId = id == null ? null : ProjectId.CreateFromSerialized(Guid.Parse(id));
 
-            return new ProjectSnapshotHandle(filePath, configuration, workspaceProjectId);
+            return new ProjectSnapshotHandle(filePath, hostProjectId, configuration, workspaceProjectId);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
@@ -44,6 +46,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor.Serialization
 
             writer.WritePropertyName(nameof(ProjectSnapshotHandle.FilePath));
             writer.WriteValue(handle.FilePath);
+
+            writer.WritePropertyName(nameof(ProjectSnapshotHandle.HostProjectId));
+            writer.WriteValue(handle.HostProjectId.Id);
 
             if (handle.Configuration == null)
             {

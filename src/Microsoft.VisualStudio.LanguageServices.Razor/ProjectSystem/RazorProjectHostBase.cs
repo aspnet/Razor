@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.Threading;
@@ -16,6 +17,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
     internal abstract class RazorProjectHostBase : OnceInitializedOnceDisposedAsync, IProjectDynamicLoadComponent
     {
+        private readonly ProjectId _hostProjectId;
         private readonly Workspace _workspace;
         private readonly AsyncSemaphore _lock;
 
@@ -43,6 +45,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             _lock = new AsyncSemaphore(initialCount: 1);
             _currentDocuments = new Dictionary<string, HostDocument>(FilePathComparer.Instance);
+            _hostProjectId = ProjectId.CreateNewId();
         }
 
         // Internal for testing
@@ -128,7 +131,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     await UpdateAsync(() =>
                     {
                         var filePath = CommonServices.UnconfiguredProject.FullPath;
-                        UpdateProjectUnsafe(new HostProject(filePath, old.Configuration));
+                        var hostProject = CreateHostProject(filePath, old.Configuration);
+                        UpdateProjectUnsafe(hostProject);
 
                         // This should no-op in the common case, just putting it here for insurance.
                         for (var i = 0; i < oldDocuments.Length; i++)
@@ -167,6 +171,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         protected void UpdateProjectUnsafe(HostProject project)
         {
+            if (project != null && project.Id != _hostProjectId)
+            {
+                Debug.Fail("Host project Id should not change.");
+                return;
+            }
+
             var projectManager = GetProjectManager();
             if (_current == null && project == null)
             {
@@ -234,6 +244,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 }
             }
         }
+
+        protected HostProject CreateHostProject(string filePath, RazorConfiguration configuration) => new HostProject(_hostProjectId, filePath, configuration);
 
         Task IProjectDynamicLoadComponent.LoadAsync()
         {

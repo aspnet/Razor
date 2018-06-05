@@ -9,26 +9,20 @@ using Microsoft.CodeAnalysis.Host;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
-    internal class EphemeralProjectSnapshot : ProjectSnapshot
+    internal class MiscellaneousProjectSnapshot : ProjectSnapshot
     {
         private static readonly Task<IReadOnlyList<TagHelperDescriptor>> EmptyTagHelpers = Task.FromResult<IReadOnlyList<TagHelperDescriptor>>(Array.Empty<TagHelperDescriptor>());
 
         private readonly HostWorkspaceServices _services;
         private readonly Lazy<RazorProjectEngine> _projectEngine;
 
-        public EphemeralProjectSnapshot(HostWorkspaceServices services, string filePath)
+        public MiscellaneousProjectSnapshot(HostWorkspaceServices services)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            if (filePath == null)
-            {
-                throw new ArgumentNullException(nameof(filePath));
-            }
-
-            FilePath = filePath;
             _services = services;
             Id = ProjectId.CreateNewId();
 

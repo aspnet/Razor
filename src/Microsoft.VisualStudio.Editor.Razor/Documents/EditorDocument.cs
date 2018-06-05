@@ -3,6 +3,7 @@
 
 using System;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Razor.ProjectSystem;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Text;
 
@@ -24,7 +25,7 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
 
         public EditorDocument(
             EditorDocumentManager documentManager,
-            string projectFilePath,
+            ProjectId projectId,
             string documentFilePath,
             TextLoader textLoader,
             FileChangeTracker fileTracker,
@@ -39,9 +40,9 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
                 throw new ArgumentNullException(nameof(documentManager));
             }
 
-            if (projectFilePath == null)
+            if (projectId == null)
             {
-                throw new ArgumentNullException(nameof(projectFilePath));
+                throw new ArgumentNullException(nameof(projectId));
             }
 
             if (documentFilePath == null)
@@ -60,7 +61,7 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
             }
 
             _documentManager = documentManager;
-            ProjectFilePath = projectFilePath;
+            ProjectId = projectId;
             DocumentFilePath = documentFilePath;
             TextLoader = textLoader;
             _fileTracker = fileTracker;
@@ -87,7 +88,7 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
             }
         }
 
-        public string ProjectFilePath { get; }
+        public ProjectId ProjectId { get; }
 
         public string DocumentFilePath { get; }
 

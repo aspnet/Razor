@@ -25,6 +25,8 @@ namespace Microsoft.CodeAnalysis.Razor.Workspaces.ProjectSystem
 
         public override Project WorkspaceProject => throw new NotImplementedException();
 
+        public override ProjectId Id => throw new NotImplementedException();
+
         public override DocumentSnapshot GetDocument(string filePath) => throw new NotImplementedException();
 
         public override RazorProjectEngine GetProjectEngine() => throw new NotImplementedException();

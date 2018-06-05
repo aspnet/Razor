@@ -17,6 +17,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public abstract ProjectSnapshot GetLoadedProject(string filePath);
 
+        public abstract ProjectSnapshot GetLoadedProject(ProjectId projectId);
+
         public abstract ProjectSnapshot GetOrCreateProject(string filePath);
     }
 }

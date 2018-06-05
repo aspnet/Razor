@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
             {
                 case ProjectChangeKind.DocumentAdded:
                     {
-                        var key = new DocumentKey(e.ProjectFilePath, e.DocumentFilePath);
+                        var key = new DocumentKey(e.ProjectId, e.DocumentFilePath);
                         var document = _documentManager.GetOrCreateDocument(key, _onChangedOnDisk, _onChangedInEditor, _onOpened, _onClosed);
                         if (document.IsOpenInEditor)
                         {
@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
                 case ProjectChangeKind.DocumentRemoved:
                     {
                         // This class 'owns' the document entry so it's safe for us to dispose it.
-                        if (_documentManager.TryGetDocument(new DocumentKey(e.ProjectFilePath, e.DocumentFilePath), out var document))
+                        if (_documentManager.TryGetDocument(new DocumentKey(e.ProjectId, e.DocumentFilePath), out var document))
                         {
                             document.Dispose();
                         }
@@ -87,25 +87,25 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
         private void Document_ChangedOnDisk(object sender, EventArgs e)
         {
             var document = (EditorDocument)sender;
-            _projectManager.DocumentChanged(document.ProjectFilePath, document.DocumentFilePath, document.TextLoader);
+            _projectManager.DocumentChanged(document.ProjectId, document.DocumentFilePath, document.TextLoader);
         }
 
         private void Document_ChangedInEditor(object sender, EventArgs e)
         {
             var document = (EditorDocument)sender;
-            _projectManager.DocumentChanged(document.ProjectFilePath, document.DocumentFilePath, document.EditorTextContainer.CurrentText);
+            _projectManager.DocumentChanged(document.ProjectId, document.DocumentFilePath, document.EditorTextContainer.CurrentText);
         }
 
         private void Document_Opened(object sender, EventArgs e)
         {
             var document = (EditorDocument)sender;
-            _projectManager.DocumentOpened(document.ProjectFilePath, document.DocumentFilePath, document.EditorTextContainer.CurrentText);
+            _projectManager.DocumentOpened(document.ProjectId, document.DocumentFilePath, document.EditorTextContainer.CurrentText);
         }
 
         private void Document_Closed(object sender, EventArgs e)
         {
             var document = (EditorDocument)sender;
-            _projectManager.DocumentClosed(document.ProjectFilePath, document.DocumentFilePath, document.TextLoader);
+            _projectManager.DocumentClosed(document.ProjectId, document.DocumentFilePath, document.TextLoader);
         }
     }
 }
