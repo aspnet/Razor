@@ -56,6 +56,8 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             var filePath = codeDocument.Source.RelativePath ?? codeDocument.Source.FilePath;
             if (string.IsNullOrEmpty(filePath))
             {
+                // It's possible for a Razor document to not have a file path.
+                // Eg. When we try to generate code for an in memory document like default imports.
                 var checksum = BytesToString(codeDocument.Source.GetChecksum());
                 @class.ClassName = $"AspNetCore_{checksum}";
             }
