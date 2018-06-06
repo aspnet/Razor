@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Razor
         public bool Equals(DocumentKey other)
         {
             return
-                FilePathComparer.Instance.Equals(ProjectId, other.ProjectId) &&
+                ProjectId == other.ProjectId &&
                 FilePathComparer.Instance.Equals(DocumentFilePath, other.DocumentFilePath);
         }
 

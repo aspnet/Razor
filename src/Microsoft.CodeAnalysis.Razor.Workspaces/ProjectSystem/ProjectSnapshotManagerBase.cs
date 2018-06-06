@@ -12,7 +12,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public abstract void DocumentAdded(HostProject hostProject, HostDocument hostDocument, TextLoader textLoader);
 
-        // Yeah this is kinda ugly.
         public abstract void DocumentOpened(ProjectId projectId, string documentFilePath, SourceText sourceText);
 
         public abstract void DocumentClosed(ProjectId projectId, string documentFilePath, TextLoader textLoader);

@@ -20,13 +20,14 @@ namespace Microsoft.VisualStudio.Editor.Razor
     {
         private readonly ForegroundDispatcher _foregroundDispatcher;
         private readonly string _filePath;
-        private readonly string _projectPath;
+        private readonly ProjectPathProvider _projectPathProvider;
         private readonly ProjectSnapshotManager _projectManager;
         private readonly WorkspaceEditorSettings _workspaceEditorSettings;
         private readonly ITextBuffer _textBuffer;
         private readonly ImportDocumentManager _importDocumentManager;
         private readonly List<ITextView> _textViews;
         private readonly Workspace _workspace;
+        private string _projectPath;
         private bool _isSupportedProject;
         private ProjectSnapshot _projectSnapshot;
         private int _subscribeCount;
@@ -42,7 +43,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         public DefaultVisualStudioDocumentTracker(
             ForegroundDispatcher dispatcher,
             string filePath,
-            string projectPath,
+            ProjectPathProvider projectPathProvider,
             ProjectSnapshotManager projectManager,
             WorkspaceEditorSettings workspaceEditorSettings,
             Workspace workspace,
@@ -57,6 +58,11 @@ namespace Microsoft.VisualStudio.Editor.Razor
             if (string.IsNullOrEmpty(filePath))
             {
                 throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, nameof(filePath));
+            }
+
+            if (projectPathProvider == null)
+            {
+                throw new ArgumentNullException(nameof(projectPathProvider));
             }
 
             if (projectManager == null)
@@ -86,7 +92,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             _foregroundDispatcher = dispatcher;
             _filePath = filePath;
-            _projectPath = projectPath;
+            _projectPathProvider = projectPathProvider;
             _projectManager = projectManager;
             _workspaceEditorSettings = workspaceEditorSettings;
             _textBuffer = textBuffer;
@@ -180,6 +186,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 return;
             }
 
+            _projectPathProvider.TryGetProjectPath(TextBuffer, out _projectPath);
             _projectSnapshot = _projectManager.GetOrCreateProject(_projectPath);
             _isSupportedProject = true;
 

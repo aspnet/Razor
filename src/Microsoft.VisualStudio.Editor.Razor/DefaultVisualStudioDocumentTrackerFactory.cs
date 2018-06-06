@@ -87,9 +87,8 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 return null;
             }
 
-            _projectPathProvider.TryGetProjectPath(textBuffer, out var projectPath);
             var filePath = textDocument.FilePath;
-            var tracker = new DefaultVisualStudioDocumentTracker(_foregroundDispatcher, filePath, projectPath, _projectManager, _workspaceEditorSettings, _workspace, textBuffer, _importDocumentManager);
+            var tracker = new DefaultVisualStudioDocumentTracker(_foregroundDispatcher, filePath, _projectPathProvider, _projectManager, _workspaceEditorSettings, _workspace, textBuffer, _importDocumentManager);
 
             return tracker;
         }
