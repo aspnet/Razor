@@ -10,6 +10,9 @@
     <Compile Include="..\Microsoft.AspNetCore.Razor.Language\CodeGeneration\CodeWriterExtensions.cs">
       <Link>Shared\CodeWriterExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\Microsoft.AspNetCore.Razor.Language\Checksum.cs">
+      <Link>Shared\Checksum.cs</Link>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>

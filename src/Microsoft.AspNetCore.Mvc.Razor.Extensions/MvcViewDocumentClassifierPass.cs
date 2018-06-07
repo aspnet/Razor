@@ -1,8 +1,6 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Text;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
@@ -31,7 +29,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             {
                 // It's possible for a Razor document to not have a file path.
                 // Eg. When we try to generate code for an in memory document like default imports.
-                var checksum = BytesToString(codeDocument.Source.GetChecksum());
+                var checksum = Checksum.BytesToString(codeDocument.Source.GetChecksum());
                 @class.ClassName = $"AspNetCore_{checksum}";
             }
             else
@@ -49,23 +47,6 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             method.Modifiers.Add("async");
             method.Modifiers.Add("override");
             method.ReturnType = $"global::{typeof(System.Threading.Tasks.Task).FullName}";
-        }
-
-        private static string BytesToString(byte[] bytes)
-        {
-            if (bytes == null)
-            {
-                throw new ArgumentNullException(nameof(bytes));
-            }
-
-            var result = new StringBuilder(bytes.Length);
-            for (var i = 0; i < bytes.Length; i++)
-            {
-                // The x2 format means lowercase hex, where each byte is a 2-character string.
-                result.Append(bytes[i].ToString("x2"));
-            }
-
-            return result.ToString();
         }
     }
 }
