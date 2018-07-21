@@ -13,7 +13,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
         }
 
-        public SyntaxNode[] TextTokens => new SyntaxNode[] { GetRed(ref _textTokens, 0) };
+        public SyntaxList<SyntaxNode> TextTokens => new SyntaxList<SyntaxNode>(GetRed(ref _textTokens, 0));
 
         public string Value => TextTokens[0]?.ToFullString() ?? string.Empty;
 
@@ -58,6 +58,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                 _value = value;
                 AdjustWidth(value);
             }
+
+            internal InternalSyntaxList<GreenNode> TextTokens => new InternalSyntaxList<GreenNode>(value);
 
             internal override GreenNode GetSlot(int index)
             {

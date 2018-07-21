@@ -21,6 +21,8 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public int Start { get; }
 
+        public SyntaxKind Kind => GreenNode.Kind;
+
         public int FullWidth => GreenNode.FullWidth;
 
         public int Width => GreenNode.Width;
@@ -52,6 +54,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
         }
 
+        internal int SlotCount => GreenNode.SlotCount;
+
+        public bool IsList => GreenNode.IsList;
+
         internal abstract SyntaxNode Accept(SyntaxVisitor visitor);
 
         internal abstract SyntaxNode GetNodeSlot(int index);
@@ -74,6 +80,23 @@ namespace Microsoft.AspNetCore.Razor.Language
                     Interlocked.CompareExchange(ref field, green.CreateRed(this, GetChildPosition(slot)), null);
                     result = field;
                 }
+            }
+
+            return result;
+        }
+
+        internal SyntaxNode GetRedElement(ref SyntaxNode element, int slot)
+        {
+            Debug.Assert(IsList);
+
+            var result = element;
+
+            if (result == null)
+            {
+                var green = GreenNode.GetSlot(slot);
+                // passing list's parent
+                Interlocked.CompareExchange(ref element, green.CreateRed(Parent, GetChildPosition(slot)), null);
+                result = element;
             }
 
             return result;

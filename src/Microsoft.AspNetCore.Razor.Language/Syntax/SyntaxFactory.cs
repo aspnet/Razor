@@ -5,14 +5,19 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     internal static class SyntaxFactory
     {
-        internal static HtmlTextSyntax.Green HtmlText(SyntaxToken.Green textToken)
+        internal static HtmlTextSyntax.Green HtmlText(InternalSyntaxList<SyntaxToken.Green> textTokens)
         {
-            return new HtmlTextSyntax.Green(textToken);
+            return new HtmlTextSyntax.Green(textTokens.Node);
         }
 
-        internal static HtmlTextTokenSyntax.Green HtmlTextToken(string text)
+        internal static HtmlTextTokenSyntax.Green HtmlTextToken(string text, params RazorDiagnostic[] diagnostics)
         {
-            return new HtmlTextTokenSyntax.Green(text, null, null);
+            return new HtmlTextTokenSyntax.Green(text, diagnostics);
+        }
+
+        internal static UnknownTokenSyntax.Green UnknownToken(string text, params RazorDiagnostic[] diagnostics)
+        {
+            return new UnknownTokenSyntax.Green(text, diagnostics);
         }
     }
 }

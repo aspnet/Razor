@@ -25,6 +25,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Span = new SpanBuilder(CurrentLocation);
         }
 
+        protected ParserState ParserState { get; set; }
+
         protected SpanBuilder Span { get; private set; }
 
         protected Action<SpanBuilder> SpanConfig { get; set; }

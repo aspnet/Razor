@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
@@ -28,6 +29,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
+            }
+        }
+
+        internal override SyntaxToken.Green SyntaxToken => GetSyntaxToken();
+
+        private SyntaxToken.Green GetSyntaxToken()
+        {
+            switch (Type)
+            {
+                case HtmlTokenType.Text:
+                    return SyntaxFactory.HtmlTextToken(Content, Errors.ToArray());
+                default:
+                    return SyntaxFactory.UnknownToken(Content, Errors.ToArray());
             }
         }
     }

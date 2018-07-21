@@ -5,9 +5,9 @@ using System;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
-    internal class HtmlTextTokenSyntax : SyntaxToken
+    internal class UnknownTokenSyntax : SyntaxToken
     {
-        internal HtmlTextTokenSyntax(Green green, SyntaxNode parent, int position)
+        internal UnknownTokenSyntax(Green green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
         }
@@ -31,12 +31,12 @@ namespace Microsoft.AspNetCore.Razor.Language
         internal new class Green : SyntaxToken.Green
         {
             internal Green(string text, params RazorDiagnostic[] diagnostics)
-                : base(SyntaxKind.HtmlTextLiteralToken, text, null, null, diagnostics, null)
+                : base(SyntaxKind.Unknown, text, null, null, diagnostics, null)
             {
             }
 
             internal Green(string text, GreenNode leadingTrivia, GreenNode trailingTrivia)
-                : base(SyntaxKind.HtmlTextLiteralToken, text, leadingTrivia, trailingTrivia)
+                : base(SyntaxKind.Unknown, text, leadingTrivia, trailingTrivia)
             {
             }
 
@@ -50,7 +50,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             {
             }
 
-            internal override SyntaxNode CreateRed(SyntaxNode parent, int position) => new HtmlTextTokenSyntax(this, parent, position);
+            internal override SyntaxNode CreateRed(SyntaxNode parent, int position) => new UnknownTokenSyntax(this, parent, position);
 
             public override SyntaxToken.Green WithLeadingTrivia(GreenNode trivia)
             {

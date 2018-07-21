@@ -3,13 +3,11 @@
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
-    internal enum SyntaxKind : byte
+    internal enum ParserState
     {
         Unknown,
-        List,
-        Whitespace,
-        NewLine,
-        HtmlText,
-        HtmlTextLiteralToken,
+        Misc,
+        Content,
+        TagContent,
     }
 }

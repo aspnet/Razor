@@ -58,6 +58,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
+        internal virtual SyntaxKind SyntaxKind => SyntaxToken.Kind;
+
+        internal abstract SyntaxToken.Green SyntaxToken { get; }
+
         public override bool Equals(object obj)
         {
             var other = obj as TokenBase<TType>;
