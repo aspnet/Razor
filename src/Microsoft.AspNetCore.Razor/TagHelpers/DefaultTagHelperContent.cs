@@ -283,20 +283,13 @@ namespace Microsoft.AspNetCore.Razor.TagHelpers
             if (entry is string stringValue)
             {
                 // Do not encode the string because encoded value remains whitespace from user's POV.
-                if (!string.IsNullOrWhiteSpace(stringValue))
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                // Use NullHtmlEncoder to avoid treating encoded whitespace as non-whitespace e.g. "\t" as "&#x9;".
-                ((IHtmlContent)entry).WriteTo(writer, NullHtmlEncoder.Default);
-
-                return writer.IsEmptyOrWhiteSpace;
+                return string.IsNullOrWhiteSpace(stringValue);
             }
 
-            return true;
+            // Use NullHtmlEncoder to avoid treating encoded whitespace as non-whitespace e.g. "\t" as "&#x9;".
+            ((IHtmlContent)entry).WriteTo(writer, NullHtmlEncoder.Default);
+
+            return writer.IsEmptyOrWhiteSpace;
         }
 
         private TagHelperContent AppendCore(object entry)
