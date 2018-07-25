@@ -34,9 +34,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public CSharpKeyword? Keyword { get; set; }
 
-        internal override SyntaxToken.Green SyntaxToken => GetSyntaxToken();
-
-        private SyntaxToken.Green GetSyntaxToken()
+        protected override SyntaxToken.Green GetSyntaxToken()
         {
             switch (Type)
             {

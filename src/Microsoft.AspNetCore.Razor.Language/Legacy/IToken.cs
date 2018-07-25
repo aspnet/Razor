@@ -10,5 +10,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         string Content { get; }
 
         SourceLocation Start { get; }
+
+        SyntaxKind SyntaxKind { get; }
+
+        SyntaxToken.Green SyntaxToken { get; }
     }
 }

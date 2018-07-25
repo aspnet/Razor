@@ -31,6 +31,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public SpanEditHandler EditHandler { get; private set; }
 
+        public HtmlNodeSyntax.Green SyntaxNode { get; private set; }
+
         public override bool IsBlock => false;
 
         public override int Length
@@ -94,6 +96,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             Kind = builder.Kind;
             Tokens = builder.Tokens;
+            SyntaxNode = builder.SyntaxNode;
 
             for (var i = 0; i <Tokens.Count; i++)
             {

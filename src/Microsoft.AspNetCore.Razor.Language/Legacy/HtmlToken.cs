@@ -32,9 +32,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        internal override SyntaxToken.Green SyntaxToken => GetSyntaxToken();
-
-        private SyntaxToken.Green GetSyntaxToken()
+        protected override SyntaxToken.Green GetSyntaxToken()
         {
             switch (Type)
             {

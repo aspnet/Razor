@@ -173,6 +173,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         protected void WriteSpan(Span span)
         {
+            if (span.SyntaxNode != null)
+            {
+                WriteSyntaxNode(span.SyntaxNode);
+                return;
+            }
+
             WriteIndent();
             Write($"{span.Kind} span");
             WriteSeparator();
@@ -193,6 +199,30 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 WriteNewLine();
                 WriteIndent();
                 WriteToken(token);
+            }
+            Depth--;
+        }
+
+        private void WriteSyntaxNode(HtmlNodeSyntax.Green syntaxNode)
+        {
+            var red = syntaxNode.CreateRed();
+            WriteIndent();
+            Write($"SyntaxKind: {red.Kind}");
+            WriteSeparator();
+            Write($"FullWidth: {red.FullWidth} From: {red.Start} To: {red.End}");
+            WriteSeparator();
+            Write($"Slots: {red.SlotCount}");
+
+            // Write tokens
+            Depth++;
+            for (var i = 0; i < red.SlotCount; i++)
+            {
+                var slot = red.GetNodeSlot(i);
+                WriteNewLine();
+                WriteIndent();
+                Write($"SyntaxKind: {slot.Kind}");
+                WriteSeparator();
+                Write($"Content: {slot.ToString()}");
             }
             Depth--;
         }

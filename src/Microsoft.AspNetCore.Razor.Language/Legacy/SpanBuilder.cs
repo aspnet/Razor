@@ -33,6 +33,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Start = location;
         }
 
+        public HtmlNodeSyntax.Green SyntaxNode { get; private set; }
+
         public ISpanChunkGenerator ChunkGenerator { get; set; }
 
         public SourceLocation Start
@@ -76,8 +78,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Start = SourceLocation.Undefined;
         }
 
-        public Span Build()
+        public Span Build(SyntaxKind syntaxKind = SyntaxKind.Unknown)
         {
+            SyntaxNode = GetSyntaxNode(syntaxKind);
+
             var span = new Span(this);
             
             for (var i = 0; i < span.Tokens.Count; i++)
@@ -108,6 +112,27 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             _tokens.Add(token);
             _tracker.UpdateLocation(token.Content);
+        }
+
+        private HtmlNodeSyntax.Green GetSyntaxNode(SyntaxKind syntaxKind)
+        {
+            if (syntaxKind == SyntaxKind.HtmlText)
+            {
+                var textTokens = new InternalSyntaxListBuilder<HtmlTextTokenSyntax.Green>(InternalSyntaxListBuilder.Create());
+                foreach (var token in Tokens)
+                {
+                    if (token.SyntaxKind == SyntaxKind.Unknown)
+                    {
+                        continue;
+                    }
+
+                    textTokens.Add(token.SyntaxToken as HtmlTextTokenSyntax.Green);
+                }
+                var textResult = textTokens.ToList();
+                return SyntaxFactory.HtmlText(new InternalSyntaxList<SyntaxToken.Green>(textResult.Node));
+            }
+
+            return null;
         }
     }
 }

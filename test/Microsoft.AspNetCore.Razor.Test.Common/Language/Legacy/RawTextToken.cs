@@ -18,6 +18,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         public string Content { get; }
         public Span Parent { get; set; }
 
+        public SyntaxKind SyntaxKind => SyntaxToken.Kind;
+
+        public SyntaxToken.Green SyntaxToken => SyntaxFactory.UnknownToken(Content);
+
         public override bool Equals(object obj)
         {
             var other = obj as RawTextToken;

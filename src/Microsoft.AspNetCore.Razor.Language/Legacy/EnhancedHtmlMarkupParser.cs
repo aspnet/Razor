@@ -1,4 +1,4 @@
-// Copyright (c) .NET Foundation. All rights reserved.
+﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
-    internal class LegacyHtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer, HtmlToken, HtmlTokenType>
+    internal class HtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer, HtmlToken, HtmlTokenType>
     {
         private const string ScriptTagName = "script";
 
@@ -40,7 +40,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             "wbr"
         };
 
-        public LegacyHtmlMarkupParser(ParserContext context)
+        public HtmlMarkupParser(ParserContext context)
             : base(context.ParseLeadingDirectives ? FirstDirectiveHtmlLanguageCharacteristics.Instance : HtmlLanguageCharacteristics.Instance, context)
         {
         }
@@ -931,7 +931,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             // First, determine if this is a 'data-' attribute (since those can't use conditional attributes)
             var name = string.Concat(nameTokens.Select(s => s.Content));
-            var attributeCanBeConditional = 
+            var attributeCanBeConditional =
                 Context.FeatureFlags.EXPERIMENTAL_AllowConditionalDataDashAttributes ||
                 !name.StartsWith("data-", StringComparison.OrdinalIgnoreCase);
 
@@ -1636,7 +1636,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     return;
                 }
 
-                Output(SpanKindInternal.Markup);
+                //if (Span.Tokens.Count > 0 && !Span.Tokens.Any(t => (t is HtmlToken tok && (tok.Type == HtmlTokenType.Text || tok.Type == HtmlTokenType.NewLine || tok.Type == HtmlTokenType.WhiteSpace))))
+                //{
+                //    throw new InvalidOperationException(Span.Tokens.Count + ": " + string.Join(", ", Span.Tokens.Select(t => ((HtmlToken)t).Type).ToArray()));
+                //}
+                //Output(SpanKindInternal.Markup);
+                Output(SpanKindInternal.Markup, SyntaxKind.HtmlText);
 
                 // Start tag block
                 var tagBlock = Context.Builder.StartBlock(BlockKindInternal.Tag);
