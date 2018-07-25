@@ -53,7 +53,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             return builder.ToList().Node;
         }
 
-        internal SyntaxNode Node { get; private set; }
+        internal SyntaxNode Node { get; }
 
         /// <summary>
         /// The number of nodes in the list.

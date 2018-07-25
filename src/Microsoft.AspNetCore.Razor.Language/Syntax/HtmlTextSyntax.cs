@@ -59,7 +59,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 AdjustWidth(value);
             }
 
-            internal InternalSyntaxList<GreenNode> TextTokens => new InternalSyntaxList<GreenNode>(value);
+            internal InternalSyntaxList<GreenNode> TextTokens => new InternalSyntaxList<GreenNode>(_value);
 
             internal override GreenNode GetSlot(int index)
             {

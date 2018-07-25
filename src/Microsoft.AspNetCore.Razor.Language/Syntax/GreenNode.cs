@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Microsoft.AspNetCore.Razor.Language
@@ -187,11 +188,11 @@ namespace Microsoft.AspNetCore.Razor.Language
                         return list[0];
                     }
                 case 2:
-                    return SyntaxList.List(list[0], list[1]);
+                    return InternalSyntaxList.List(list[0], list[1]);
                 case 3:
-                    return SyntaxList.List(list[0], list[1], list[2]);
+                    return InternalSyntaxList.List(list[0], list[1], list[2]);
                 default:
-                    return SyntaxList.List(list);
+                    return InternalSyntaxList.List(list);
             }
         }
 
