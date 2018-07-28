@@ -58,6 +58,11 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public bool IsList => GreenNode.IsList;
 
+        protected virtual int GetTextWidth()
+        {
+            return 0;
+        }
+
         internal abstract SyntaxNode Accept(SyntaxVisitor visitor);
 
         internal abstract SyntaxNode GetNodeSlot(int index);
@@ -78,6 +83,23 @@ namespace Microsoft.AspNetCore.Razor.Language
                 if (green != null)
                 {
                     Interlocked.CompareExchange(ref field, green.CreateRed(this, GetChildPosition(slot)), null);
+                    result = field;
+                }
+            }
+
+            return result;
+        }
+
+        protected T GetRed<T>(ref T field, int slot) where T : SyntaxNode
+        {
+            var result = field;
+
+            if (result == null)
+            {
+                var green = this.GreenNode.GetSlot(slot);
+                if (green != null)
+                {
+                    Interlocked.CompareExchange(ref field, (T)green.CreateRed(this, this.GetChildPosition(slot)), null);
                     result = field;
                 }
             }
@@ -122,6 +144,78 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
 
             return Start + offset;
+        }
+
+        // Get the leading trivia a green array, recursively to first token.
+        public virtual SyntaxTriviaList GetLeadingTrivia()
+        {
+            var firstToken = GetFirstToken();
+            return firstToken == null ? default(SyntaxTriviaList) : firstToken.GetLeadingTrivia();
+        }
+
+        // Get the trailing trivia a green array, recursively to first token.
+        public virtual SyntaxTriviaList GetTrailingTrivia()
+        {
+            var lastToken = GetLastToken();
+            return lastToken == null ? default(SyntaxTriviaList) : lastToken.GetTrailingTrivia();
+        }
+
+        internal SyntaxToken GetFirstToken()
+        {
+            return ((SyntaxToken)GetFirstTerminal());
+        }
+
+        internal SyntaxToken GetLastToken()
+        {
+            return ((SyntaxToken)GetLastTerminal());
+        }
+
+        public SyntaxNode GetFirstTerminal()
+        {
+            var node = this;
+
+            do
+            {
+                bool foundChild = false;
+                for (int i = 0, n = node.SlotCount; i < n; i++)
+                {
+                    var child = node.GetNodeSlot(i);
+                    if (child != null)
+                    {
+                        node = child;
+                        foundChild = true;
+                        break;
+                    }
+                }
+
+                if (!foundChild)
+                {
+                    return null;
+                }
+            }
+            while (node.SlotCount != 0);
+
+            return node == this ? this : node;
+        }
+
+        public SyntaxNode GetLastTerminal()
+        {
+            var node = this;
+
+            do
+            {
+                for (int i = node.SlotCount - 1; i >= 0; i--)
+                {
+                    var child = node.GetNodeSlot(i);
+                    if (child != null)
+                    {
+                        node = child;
+                        break;
+                    }
+                }
+            } while (node.SlotCount != 0);
+
+            return node == this ? this : node;
         }
 
         public virtual string ToFullString()

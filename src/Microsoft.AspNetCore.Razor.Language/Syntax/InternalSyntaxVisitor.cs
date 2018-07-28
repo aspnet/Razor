@@ -30,9 +30,29 @@ namespace Microsoft.AspNetCore.Razor.Language
             return VisitHtmlNode(node);
         }
 
+        public virtual GreenNode VisitHtmlDocument(HtmlDocumentSyntax.Green node)
+        {
+            return VisitHtmlNode(node);
+        }
+
+        public virtual GreenNode VisitHtmlDeclaration(HtmlDeclarationSyntax.Green node)
+        {
+            return VisitHtmlNode(node);
+        }
+
         public virtual SyntaxToken.Green VisitSyntaxToken(SyntaxToken.Green token)
         {
             return token;
+        }
+
+        public virtual SyntaxTrivia.Green VisitSyntaxTrivia(SyntaxTrivia.Green trivia)
+        {
+            return trivia;
+        }
+
+        public virtual GreenNode VisitSkippedTokensTrivia(SkippedTokensTriviaSyntax.Green node)
+        {
+            return VisitSyntaxNode(node);
         }
     }
 }

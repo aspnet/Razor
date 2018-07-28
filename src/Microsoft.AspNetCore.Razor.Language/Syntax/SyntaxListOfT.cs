@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Razor.Language
     internal readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<SyntaxList<TNode>>
         where TNode : SyntaxNode
     {
-        internal SyntaxList(SyntaxNode node)
+        public SyntaxList(SyntaxNode node)
         {
             Node = node;
         }

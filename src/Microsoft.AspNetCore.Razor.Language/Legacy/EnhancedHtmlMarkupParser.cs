@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
-    internal class HtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer, HtmlToken, HtmlTokenType>
+    internal partial class MyHtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer, HtmlToken, HtmlTokenType>
     {
         private const string ScriptTagName = "script";
 
@@ -40,7 +40,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             "wbr"
         };
 
-        public HtmlMarkupParser(ParserContext context)
+        public MyHtmlMarkupParser(ParserContext context)
             : base(context.ParseLeadingDirectives ? FirstDirectiveHtmlLanguageCharacteristics.Instance : HtmlLanguageCharacteristics.Instance, context)
         {
         }
@@ -1636,11 +1636,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     return;
                 }
 
-                //if (Span.Tokens.Count > 0 && !Span.Tokens.Any(t => (t is HtmlToken tok && (tok.Type == HtmlTokenType.Text || tok.Type == HtmlTokenType.NewLine || tok.Type == HtmlTokenType.WhiteSpace))))
-                //{
-                //    throw new InvalidOperationException(Span.Tokens.Count + ": " + string.Join(", ", Span.Tokens.Select(t => ((HtmlToken)t).Type).ToArray()));
-                //}
-                //Output(SpanKindInternal.Markup);
                 Output(SpanKindInternal.Markup, SyntaxKind.HtmlText);
 
                 // Start tag block

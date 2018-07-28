@@ -36,6 +36,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             get { return _tokenizer.Current; }
         }
 
+        protected SyntaxToken.Green CurrentSyntaxToken => CurrentToken?.SyntaxToken;
+
         protected TToken PreviousToken { get; private set; }
 
         protected SourceLocation CurrentLocation => _tokenizer.Tokenizer.CurrentLocation;
@@ -387,25 +389,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             if (Span.Tokens.Count == 0 && Context.Builder.LastAcceptedCharacters != AcceptedCharactersInternal.Any)
             {
                 Accept(Language.CreateMarkerToken());
-            }
-        }
-
-        protected internal void BetterOutput()
-        {
-            if (Span.Tokens.Count > 0)
-            {
-                var nextStart = Span.End;
-
-                var builtSpan = Span.Build();
-                Context.Builder.Add(builtSpan);
-                Initialize(Span);
-
-                // Ensure spans are contiguous.
-                //
-                // Note: Using Span.End here to avoid CurrentLocation. CurrentLocation will
-                // vary depending on what tokens have been read. We often read a token and *then*
-                // make a decision about whether to include it in the current span.
-                Span.Start = nextStart;
             }
         }
 

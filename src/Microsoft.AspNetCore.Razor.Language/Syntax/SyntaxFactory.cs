@@ -5,6 +5,17 @@ namespace Microsoft.AspNetCore.Razor.Language
 {
     internal static class SyntaxFactory
     {
+        internal static HtmlDocumentSyntax.Green HtmlDocument(
+            HtmlDeclarationSyntax.Green doctype,
+            InternalSyntaxList<GreenNode> precedingMisc,
+            HtmlNodeSyntax.Green body,
+            InternalSyntaxList<GreenNode> followingMisc,
+            SkippedTokensTriviaSyntax.Green skippedTokens,
+            SyntaxToken.Green eof)
+        {
+            return new HtmlDocumentSyntax.Green(doctype, precedingMisc.Node, body, followingMisc.Node, skippedTokens, eof);
+        }
+
         internal static HtmlTextSyntax.Green HtmlText(InternalSyntaxList<SyntaxToken.Green> textTokens)
         {
             return new HtmlTextSyntax.Green(textTokens.Node);

@@ -11,5 +11,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         NewLine,
         HtmlText,
         HtmlTextLiteralToken,
+        HtmlDocument,
+        HtmlDeclaration,
+        SkippedTokensTrivia,
     }
 }
