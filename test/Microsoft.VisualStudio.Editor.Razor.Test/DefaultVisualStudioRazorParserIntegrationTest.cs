@@ -663,7 +663,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 tracker.TextBuffer == textBuffer &&
                 tracker.TextViews == new[] { focusedTextView } &&
                 tracker.FilePath == TestLinePragmaFileName &&
-                tracker.ProjectPath == TestProjectPath &&
+                tracker.ProjectId == TestProjectPath &&
                 tracker.ProjectSnapshot == ProjectSnapshot &&
                 tracker.IsSupportedProject == true);
             textBuffer.Properties.AddProperty(typeof(VisualStudioDocumentTracker), documentTracker);

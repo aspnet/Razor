@@ -83,6 +83,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             _tagHelpers = older._tagHelpers?.ForkFor(this, difference);
         }
 
+        public ProjectId Id => HostProject.Id;
+
         // Internal set for testing.
         public IReadOnlyDictionary<string, DocumentState> Documents { get; internal set; }
 

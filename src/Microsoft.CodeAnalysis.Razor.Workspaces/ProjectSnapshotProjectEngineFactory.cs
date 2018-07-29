@@ -17,7 +17,17 @@ namespace Microsoft.CodeAnalysis.Razor
 
         public RazorProjectEngine Create(ProjectSnapshot project)
         {
-            return Create(project, RazorProjectFileSystem.Create(Path.GetDirectoryName(project.FilePath)), null);
+            RazorProjectFileSystem fileSystem;
+            if (project.FilePath != null)
+            {
+                fileSystem = RazorProjectFileSystem.Create(Path.GetDirectoryName(project.FilePath));
+            }
+            else
+            {
+                fileSystem = RazorProjectFileSystem.Empty;
+            }
+
+            return Create(project, fileSystem, null);
         }
 
         public RazorProjectEngine Create(ProjectSnapshot project, RazorProjectFileSystem fileSystem)
@@ -42,7 +52,17 @@ namespace Microsoft.CodeAnalysis.Razor
                 throw new ArgumentNullException(nameof(project));
             }
 
-            return Create(project, RazorProjectFileSystem.Create(Path.GetDirectoryName(project.FilePath)), configure);
+            RazorProjectFileSystem fileSystem;
+            if (project.FilePath != null)
+            {
+                fileSystem = RazorProjectFileSystem.Create(Path.GetDirectoryName(project.FilePath));
+            }
+            else
+            {
+                fileSystem = RazorProjectFileSystem.Empty;
+            }
+
+            return Create(project, fileSystem, configure);
         }
 
         public abstract RazorProjectEngine Create(ProjectSnapshot project, RazorProjectFileSystem fileSystem, Action<RazorProjectEngineBuilder> configure);

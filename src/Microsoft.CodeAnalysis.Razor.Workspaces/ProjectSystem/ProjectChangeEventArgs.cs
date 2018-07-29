@@ -7,30 +7,30 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
     internal class ProjectChangeEventArgs : EventArgs
     {
-        public ProjectChangeEventArgs(string projectFilePath, ProjectChangeKind kind)
+        public ProjectChangeEventArgs(ProjectId projectId, ProjectChangeKind kind)
         {
-            if (projectFilePath == null)
+            if (projectId == null)
             {
-                throw new ArgumentNullException(nameof(projectFilePath));
+                throw new ArgumentNullException(nameof(projectId));
             }
 
-            ProjectFilePath = projectFilePath;
+            ProjectId = projectId;
             Kind = kind;
         }
 
-        public ProjectChangeEventArgs(string projectFilePath, string documentFilePath, ProjectChangeKind kind)
+        public ProjectChangeEventArgs(ProjectId projectId, string documentFilePath, ProjectChangeKind kind)
         {
-            if (projectFilePath == null)
+            if (projectId == null)
             {
-                throw new ArgumentNullException(nameof(projectFilePath));
+                throw new ArgumentNullException(nameof(projectId));
             }
 
-            ProjectFilePath = projectFilePath;
+            ProjectId = projectId;
             DocumentFilePath = documentFilePath;
             Kind = kind;
         }
 
-        public string ProjectFilePath { get; }
+        public ProjectId ProjectId { get; }
 
         public string DocumentFilePath { get; }
 

@@ -8,8 +8,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
     internal class HostProject
     {
-        public HostProject(string projectFilePath, RazorConfiguration razorConfiguration)
+        public HostProject(ProjectId projectId, string projectFilePath, RazorConfiguration razorConfiguration)
         {
+            if (projectId == null)
+            {
+                throw new ArgumentNullException(nameof(projectId));
+            }
+
             if (projectFilePath == null)
             {
                 throw new ArgumentNullException(nameof(projectFilePath));
@@ -20,6 +25,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(razorConfiguration));
             }
 
+            Id = projectId;
             FilePath = projectFilePath;
             Configuration = razorConfiguration;
         }
@@ -27,5 +33,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public RazorConfiguration Configuration { get; }
 
         public string FilePath { get; }
+
+        public ProjectId Id { get; }
     }
 }

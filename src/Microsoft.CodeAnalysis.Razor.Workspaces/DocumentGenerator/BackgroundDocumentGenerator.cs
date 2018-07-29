@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.Razor
             {
                 // We only want to store the last 'seen' version of any given document. That way when we pick one to process
                 // it's always the best version to use.
-                _files[new DocumentKey(project.FilePath, document.FilePath)] = document;
+                _files[new DocumentKey(project.Id, document.FilePath)] = document;
 
                 StartWorker();
             }
@@ -231,7 +231,7 @@ namespace Microsoft.CodeAnalysis.Razor
                 case ProjectChangeKind.ProjectAdded:
                 case ProjectChangeKind.ProjectChanged:
                     {
-                        var project = _projectManager.GetLoadedProject(e.ProjectFilePath);
+                        var project = _projectManager.GetLoadedProject(e.ProjectId);
                         foreach (var documentFilePath in project.DocumentFilePaths)
                         {
                             Enqueue(project, project.GetDocument(documentFilePath));
@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.Razor
                 case ProjectChangeKind.DocumentAdded:
                 case ProjectChangeKind.DocumentChanged:
                     {
-                        var project = _projectManager.GetLoadedProject(e.ProjectFilePath);
+                        var project = _projectManager.GetLoadedProject(e.ProjectId);
                         Enqueue(project, project.GetDocument(e.DocumentFilePath));
 
                         break;

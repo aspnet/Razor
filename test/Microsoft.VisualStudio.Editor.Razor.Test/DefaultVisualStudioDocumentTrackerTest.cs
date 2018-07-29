@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 Assert.Equal(ContextChangeKind.ProjectChanged, args.Kind);
                 called = true;
 
-                Assert.Same(ProjectManager.GetLoadedProject(DocumentTracker.ProjectPath), DocumentTracker.ProjectSnapshot);
+                Assert.Same(ProjectManager.GetLoadedProject(DocumentTracker.ProjectId), DocumentTracker.ProjectSnapshot);
             };
 
             // Act
@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 Assert.Equal(ContextChangeKind.ProjectChanged, args.Kind);
                 called = true;
 
-                Assert.Same(ProjectManager.GetLoadedProject(DocumentTracker.ProjectPath), DocumentTracker.ProjectSnapshot);
+                Assert.Same(ProjectManager.GetLoadedProject(DocumentTracker.ProjectId), DocumentTracker.ProjectSnapshot);
             };
 
             // Act

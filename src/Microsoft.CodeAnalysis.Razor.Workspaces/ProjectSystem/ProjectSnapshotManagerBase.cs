@@ -12,14 +12,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         public abstract void DocumentAdded(HostProject hostProject, HostDocument hostDocument, TextLoader textLoader);
 
-        // Yeah this is kinda ugly.
-        public abstract void DocumentOpened(string projectFilePath, string documentFilePath, SourceText sourceText);
+        public abstract void DocumentOpened(ProjectId projectId, string documentFilePath, SourceText sourceText);
 
-        public abstract void DocumentClosed(string projectFilePath, string documentFilePath, TextLoader textLoader);
+        public abstract void DocumentClosed(ProjectId projectId, string documentFilePath, TextLoader textLoader);
 
-        public abstract void DocumentChanged(string projectFilePath, string documentFilePath, TextLoader textLoader);
+        public abstract void DocumentChanged(ProjectId projectId, string documentFilePath, TextLoader textLoader);
 
-        public abstract void DocumentChanged(string projectFilePath, string documentFilePath, SourceText sourceText);
+        public abstract void DocumentChanged(ProjectId projectId, string documentFilePath, SourceText sourceText);
 
         public abstract void DocumentRemoved(HostProject hostProject, HostDocument hostDocument);
 

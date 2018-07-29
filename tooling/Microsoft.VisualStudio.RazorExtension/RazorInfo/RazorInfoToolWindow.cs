@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.RazorExtension.RazorInfo
             
             foreach (var project in _projectManager.Projects)
             {
-                DataContext.Projects.Add(new ProjectViewModel(project.FilePath));
+                DataContext.Projects.Add(new ProjectViewModel(project.FilePath, project.Id));
             }
 
             if (DataContext.Projects.Count > 0)

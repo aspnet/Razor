@@ -3,16 +3,20 @@
 
 #if RAZOR_EXTENSION_DEVELOPER_MODE
 using System.IO;
+using Microsoft.CodeAnalysis;
 
 namespace Microsoft.VisualStudio.RazorExtension.RazorInfo
 {
     public class ProjectViewModel : NotifyPropertyChanged
     {
-        internal ProjectViewModel(string filePath)
+        internal ProjectViewModel(string filePath, ProjectId projectId)
         {
             FilePath = filePath;
+            ProjectId = projectId;
         }
-        
+
+        public ProjectId ProjectId { get; }
+
         public string FilePath { get; }
 
         public string Name => Path.GetFileNameWithoutExtension(FilePath);

@@ -125,7 +125,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     }
 
                     var configuration = FallbackRazorConfiguration.SelectConfiguration(version);
-                    var hostProject = new HostProject(CommonServices.UnconfiguredProject.FullPath, configuration);
+                    var hostProject = CreateHostProject(CommonServices.UnconfiguredProject.FullPath, configuration);
 
                     // We need to deal with the case where the project was uninitialized, but now
                     // is valid for Razor. In that case we might have previously seen all of the documents

@@ -89,13 +89,13 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
             var cookie = _runningDocumentTable.GetDocumentCookie(document.DocumentFilePath);
             if (cookie != VSConstants.VSCOOKIE_NIL)
             {
-                TrackOpenDocument(cookie, new DocumentKey(document.ProjectFilePath, document.DocumentFilePath));
+                TrackOpenDocument(cookie, new DocumentKey(document.ProjectId, document.DocumentFilePath));
             }
         }
 
         protected override void OnDocumentClosed(EditorDocument document)
         {
-            var key = new DocumentKey(document.ProjectFilePath, document.DocumentFilePath);
+            var key = new DocumentKey(document.ProjectId, document.DocumentFilePath);
             if (_cookiesByDocument.TryGetValue(key, out var cookie))
             {
                 UntrackOpenDocument(cookie, key);

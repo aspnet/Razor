@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
                 var textBuffer = GetTextBufferForOpenDocument(key.DocumentFilePath);
                 document = new EditorDocument(
                     this,
-                    key.ProjectFilePath,
+                    key.ProjectId,
                     key.DocumentFilePath,
                     new FileTextLoader(key.DocumentFilePath, defaultEncoding: null),
                     _fileChangeTrackerFactory.Create(key.DocumentFilePath),
@@ -199,7 +199,7 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
 
             _foregroundDispatcher.AssertForegroundThread();
 
-            var key = new DocumentKey(document.ProjectFilePath, document.DocumentFilePath);
+            var key = new DocumentKey(document.ProjectId, document.DocumentFilePath);
             if (_documentsByFilePath.TryGetValue(document.DocumentFilePath, out var documents))
             {
                 documents.Remove(key);

@@ -180,7 +180,16 @@ namespace Microsoft.VisualStudio.Editor.Razor
             Debug.Assert(_projectEngine.Engine != null);
             Debug.Assert(_projectEngine.FileSystem != null);
 
-            var projectDirectory = Path.GetDirectoryName(_documentTracker.ProjectPath);
+            string projectDirectory;
+            if (_documentTracker.ProjectPath != null)
+            {
+                projectDirectory = Path.GetDirectoryName(_documentTracker.ProjectPath);
+            }
+            else
+            {
+                projectDirectory = "/";
+            }
+
             _parser = new BackgroundParser(_projectEngine, FilePath, projectDirectory);
             _parser.ResultsReady += OnResultsReady;
             _parser.Start();

@@ -103,7 +103,8 @@ namespace Microsoft.VisualStudio.RazorExtension.RazorInfo
             {
                 case ProjectChangeKind.ProjectAdded:
                     {
-                        var added = new ProjectViewModel(e.ProjectFilePath);
+                        var projectSnapshot = _projectManager.GetLoadedProject(e.ProjectId);
+                        var added = new ProjectViewModel(projectSnapshot.FilePath, projectSnapshot.Id);
                         Projects.Add(added);
 
                         if (Projects.Count == 1)
@@ -120,7 +121,7 @@ namespace Microsoft.VisualStudio.RazorExtension.RazorInfo
                         for (var i = Projects.Count - 1; i >= 0; i--)
                         {
                             var project = Projects[i];
-                            if (project.FilePath == e.ProjectFilePath)
+                            if (project.ProjectId == e.ProjectId)
                             {
                                 removed = project;
                                 Projects.RemoveAt(i);
@@ -138,7 +139,7 @@ namespace Microsoft.VisualStudio.RazorExtension.RazorInfo
 
                 case ProjectChangeKind.ProjectChanged:
                     {
-                        if (SelectedProject != null && SelectedProject.FilePath == e.ProjectFilePath)
+                        if (SelectedProject != null && SelectedProject.ProjectId == e.ProjectId)
                         {
                             OnSelectedProjectChanged();
                         }
@@ -150,7 +151,7 @@ namespace Microsoft.VisualStudio.RazorExtension.RazorInfo
                 case ProjectChangeKind.DocumentRemoved:
                 case ProjectChangeKind.DocumentChanged:
                     {
-                        if (SelectedProject != null && SelectedProject.FilePath == e.ProjectFilePath)
+                        if (SelectedProject != null && SelectedProject.ProjectId == e.ProjectId)
                         {
                             Documents?.OnChange(e);
                         }

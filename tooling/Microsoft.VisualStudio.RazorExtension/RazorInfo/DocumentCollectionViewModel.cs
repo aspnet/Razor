@@ -38,14 +38,14 @@ namespace Microsoft.VisualStudio.RazorExtension.RazorInfo
             {
                 case ProjectChangeKind.DocumentAdded:
                     {
-                        _project = _projectManager.GetLoadedProject(e.ProjectFilePath);
+                        _project = _projectManager.GetLoadedProject(e.ProjectId);
                         Documents.Add(new DocumentItemViewModel(_projectManager, _project.GetDocument(e.DocumentFilePath), _errorHandler));
                         break;
                     }
 
                 case ProjectChangeKind.DocumentRemoved:
                     {
-                        _project = _projectManager.GetLoadedProject(e.ProjectFilePath);
+                        _project = _projectManager.GetLoadedProject(e.ProjectId);
 
                         for (var i = Documents.Count - 1; i >= 0; i--)
                         {
@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.RazorExtension.RazorInfo
 
                 case ProjectChangeKind.DocumentChanged:
                     {
-                        _project = _projectManager.GetLoadedProject(e.ProjectFilePath);
+                        _project = _projectManager.GetLoadedProject(e.ProjectId);
                         for (var i = Documents.Count - 1; i >= 0; i--)
                         {
                             if (Documents[i].FilePath == e.DocumentFilePath)
