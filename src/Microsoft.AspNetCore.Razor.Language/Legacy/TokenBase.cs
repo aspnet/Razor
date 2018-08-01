@@ -58,10 +58,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
+        public SyntaxKind SyntaxKind => SyntaxToken.Kind;
+
+        public SyntaxToken.Green SyntaxToken => GetSyntaxToken();
+
+        protected abstract SyntaxToken.Green GetSyntaxToken();
+
         public override bool Equals(object obj)
         {
-            var other = obj as TokenBase<TType>;
-            return other != null &&
+            return obj is TokenBase<TType> other &&
                 string.Equals(Content, other.Content, StringComparison.Ordinal) &&
                 Type.Equals(other.Type);
         }

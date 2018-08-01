@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
@@ -32,6 +33,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         }
 
         public CSharpKeyword? Keyword { get; set; }
+
+        protected override SyntaxToken.Green GetSyntaxToken()
+        {
+            switch (Type)
+            {
+                default:
+                    return SyntaxFactory.UnknownToken(Content, Errors.ToArray());
+            }
+        }
 
         public override bool Equals(object obj)
         {
