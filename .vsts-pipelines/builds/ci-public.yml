@@ -11,7 +11,7 @@ phases:
   steps:
   - checkout: self
     clean: true
-  - script: ./build.sh -ci -bl:artifacts/logs/build.binlog -p:VSTestAutoReporters=true -p:VSTestVerboseOutput=true
+  - script: ./build.sh -ci -bl:artifacts/logs/build.binlog -p:VSTestVerboseOutput=true -p:VSTestBlame=true 
     displayName: Run build.sh
     timeoutInMinutes: 20
   - script: "ps -ef"
