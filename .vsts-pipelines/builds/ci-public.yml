@@ -13,7 +13,7 @@ phases:
     clean: true
   - script: ./build.sh -ci -bl:artifacts/logs/build.binlog
     displayName: Run build.sh
-    timeoutInMinutes: 15
+    timeoutInMinutes: 25
   - script: "ps -ef"
     condition: always()
     displayName: List orphaned processes
