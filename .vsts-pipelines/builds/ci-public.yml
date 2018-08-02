@@ -19,7 +19,7 @@ phases:
   - script: ./build.sh -ci -p:Configuration=$(_Config)
     displayName: Run build.sh
     timeoutInMinutes: 30
-  - script: "ps -ef | awk '$3 ==1{print $0}'"
+  - script: "ps -ef"
     condition: always()
     displayName: List orphaned processes
   - task: PublishTestResults@2
