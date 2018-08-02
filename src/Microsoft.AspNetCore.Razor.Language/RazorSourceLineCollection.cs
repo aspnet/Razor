@@ -9,6 +9,8 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public abstract int GetLineLength(int index);
 
+        public abstract int GetLineStart(int lineIndex);
+
         internal abstract SourceLocation GetLocation(int position);
     }
 }

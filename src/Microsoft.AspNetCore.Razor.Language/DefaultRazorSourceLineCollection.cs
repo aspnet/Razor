@@ -36,6 +36,16 @@ namespace Microsoft.AspNetCore.Razor.Language
             return _lineStarts[index + 1] - _lineStarts[index];
         }
 
+        public override int GetLineStart(int lineIndex)
+        {
+            if (lineIndex == _lineStarts.Length)
+            {
+                return _document.Length;
+            }
+
+            return _lineStarts[lineIndex];
+        }
+
         internal override SourceLocation GetLocation(int position)
         {
             if (position < 0 || position >= _document.Length)
