@@ -6,22 +6,24 @@ phases:
 - phase: Linux
   queue:
     name: Hosted Linux Preview
-    matrix:
-      Debug:
-        _Config: Debug
-      Release:
-        _Config: Release
   variables:
     DOTNET_HOME: $(Agent.WorkFolder)/.dotnet
   steps:
   - checkout: self
     clean: true
-  - script: ./build.sh -ci -p:Configuration=$(_Config)
+  - script: ./build.sh -ci -bl:artifacts/logs/build.binlog
     displayName: Run build.sh
-    timeoutInMinutes: 30
+    timeoutInMinutes: 15
   - script: "ps -ef"
     condition: always()
     displayName: List orphaned processes
+  - task: PublishBuildArtifacts@1
+    displayName: Upload binlog
+    condition: always()
+    inputs:
+      artifactName: binlog
+      artifactType: Container
+      pathtoPublish: artifacts/logs/build.binlog
   - task: PublishTestResults@2
     displayName: Publish test results
     condition: always()
