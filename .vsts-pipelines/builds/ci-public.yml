@@ -13,7 +13,7 @@ phases:
     clean: true
   - script: ./build.sh -ci -bl:artifacts/logs/build.binlog -p:VSTestVerboseOutput=true -p:VSTestBlame=true 
     displayName: Run build.sh
-    timeoutInMinutes: 20
+    timeoutInMinutes: 10
   - script: "ps -ef"
     condition: always()
     displayName: List orphaned processes
