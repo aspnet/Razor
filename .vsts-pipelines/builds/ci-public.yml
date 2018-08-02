@@ -2,32 +2,29 @@ trigger:
 - master
 - release/*
 
-# See https://github.com/aspnet/BuildTools
-resources:
-  repositories:
-  - repository: buildtools
-    type: github
-    endpoint: DotNet-Bot GitHub Connection
-    name: aspnet/BuildTools
-    ref: refs/heads/master
-    
-# Workaround https://dotnet.visualstudio.com/internal/_workitems/edit/28.
-# When this is fixed, we can simplify the build to just this
-#
-# phases:
-# - template: .vsts-pipelines/templates/project-ci.yml@buildtools
-#
-
 phases:
-- template: .vsts-pipelines/templates/phases/default-build.yml@buildtools
-  parameters:
-    agentOs: macOS
-- template: .vsts-pipelines/templates/phases/default-build.yml@buildtools
-  parameters:
-    agentOs: Windows
-- template: .vsts-pipelines/templates/phases/default-build.yml@buildtools
-  parameters:
-    agentOs: Linux
-    # Workaround https://dotnet.visualstudio.com/internal/_workitems/edit/28
-    # VSTS hangs indefinitely when running Razor tests.
-    buildArgs: "-p:SkipTests=true"
+- phase: Linux
+  queue:
+    name: Hosted Linux Preview
+    matrix:
+      Debug:
+        _Config: Debug
+      Release:
+        _Config: Release
+  variables:
+    DOTNET_HOME: $(Agent.WorkFolder)/.dotnet
+  steps:
+  - checkout: self
+    clean: true
+  - script: ./build.sh -ci -p:Configuration=$(_Config)
+    displayName: Run build.sh
+    timeoutInMinutes: 30
+  - script: "ps -ef | awk '$3 ==1{print $0}'"
+    condition: always()
+    displayName: List orphaned processes
+  - task: PublishTestResults@2
+    displayName: Publish test results
+    condition: always()
+    inputs:
+      testRunner: vstest
+      testResultsFiles: 'artifacts/logs/**/*.trx'
