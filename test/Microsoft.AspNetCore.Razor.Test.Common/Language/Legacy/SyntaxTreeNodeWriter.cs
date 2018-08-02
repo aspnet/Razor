@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Razor.Language.Syntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
@@ -211,7 +212,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             WriteSeparator();
             Write($"[{syntaxNode.ToFullString()}]");
             WriteSeparator();
-            Write($"[{syntaxNode.Start}..{syntaxNode.End})");
+            Write($"[{syntaxNode.Position}..{syntaxNode.EndPosition})");
             WriteSeparator();
             Write($"FullWidth: {syntaxNode.FullWidth}");
             WriteSeparator();

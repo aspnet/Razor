@@ -9,13 +9,16 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal abstract class GreenNode
     {
         private static readonly RazorDiagnostic[] EmptyDiagnostics = Array.Empty<RazorDiagnostic>();
-        private static readonly ConditionalWeakTable<GreenNode, RazorDiagnostic[]> diagnosticsTable =
+        private static readonly SyntaxAnnotation[] EmptyAnnotations = Array.Empty<SyntaxAnnotation>();
+        private static readonly ConditionalWeakTable<GreenNode, RazorDiagnostic[]> DiagnosticsTable =
             new ConditionalWeakTable<GreenNode, RazorDiagnostic[]>();
+        private static readonly ConditionalWeakTable<GreenNode, SyntaxAnnotation[]> AnnotationsTable =
+            new ConditionalWeakTable<GreenNode, SyntaxAnnotation[]>();
 
         private NodeFlags _flags;
         private byte _slotCount;
@@ -28,11 +31,6 @@ namespace Microsoft.AspNetCore.Razor.Language
         protected GreenNode(SyntaxKind kind, int fullWidth)
             : this(kind)
         {
-            if (fullWidth == -1)
-            {
-                throw new InvalidOperationException($"Can't create {typeof(GreenNode).Name} with {nameof(fullWidth)} {fullWidth}.");
-            }
-
             FullWidth = fullWidth;
         }
 
@@ -47,65 +45,46 @@ namespace Microsoft.AspNetCore.Razor.Language
             if (diagnostics?.Length > 0)
             {
                 _flags |= NodeFlags.ContainsDiagnostics;
-                diagnosticsTable.Add(this, diagnostics);
+                DiagnosticsTable.Add(this, diagnostics);
             }
+
             if (annotations?.Length > 0)
             {
                 foreach (var annotation in annotations)
+                {
                     if (annotation == null)
-                        throw new ArgumentException(paramName: nameof(annotations), message: "Annotation cannot be null");
+                    {
+                        throw new ArgumentException(nameof(annotations), "Annotation cannot be null");
+                    }
+                }
+
                 _flags |= NodeFlags.ContainsAnnotations;
-                //annotationsTable.Add(this, annotations);
+                AnnotationsTable.Add(this, annotations);
             }
         }
 
-        public virtual int Width
+        protected void AdjustFlagsAndWidth(GreenNode node)
         {
-            get
+            if (node == null)
             {
-                return FullWidth - (GetLeadingTriviaWidth() + GetTrailingTriviaWidth());
+                return;
             }
+
+            _flags |= (node.Flags & NodeFlags.InheritMask);
+            FullWidth += node.FullWidth;
         }
+
+        #region Kind
+        internal SyntaxKind Kind { get; }
 
         internal virtual bool IsList => false;
 
         internal virtual bool IsToken => false;
 
-        internal virtual bool IsMissing => (_flags & NodeFlags.IsMissing) != 0;
+        internal virtual bool IsTrivia => false;
+        #endregion
 
-        internal int FullWidth { get; private set; }
-
-        internal SyntaxKind Kind { get; }
-
-        protected void AdjustWidth(GreenNode node)
-        {
-            FullWidth += node == null ? 0 : node.FullWidth;
-        }
-
-        internal virtual GreenNode GetLeadingTrivia()
-        {
-            // TODO
-            return null;
-        }
-
-        public virtual int GetLeadingTriviaWidth()
-        {
-            // TODO
-            return 0;
-        }
-
-        internal virtual GreenNode GetTrailingTrivia()
-        {
-            // TODO
-            return null;
-        }
-
-        public virtual int GetTrailingTriviaWidth()
-        {
-            // TODO
-            return 0;
-        }
-
+        #region Slots
         public int SlotCount
         {
             get
@@ -168,7 +147,237 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             return i;
         }
+        #endregion
 
+        #region Flags
+        internal NodeFlags Flags => _flags;
+
+        internal void SetFlags(NodeFlags flags)
+        {
+            _flags |= flags;
+        }
+
+        internal void ClearFlags(NodeFlags flags)
+        {
+            _flags &= ~flags;
+        }
+
+        internal virtual bool IsMissing => (_flags & NodeFlags.IsMissing) != 0;
+
+        public bool ContainsDiagnostics
+        {
+            get
+            {
+                return (_flags & NodeFlags.ContainsDiagnostics) != 0;
+            }
+        }
+
+        public bool ContainsAnnotations
+        {
+            get
+            {
+                return (_flags & NodeFlags.ContainsAnnotations) != 0;
+            }
+        }
+        #endregion
+
+        #region Spans
+        internal int FullWidth { get; private set; }
+
+        public virtual int Width
+        {
+            get
+            {
+                return FullWidth - GetLeadingTriviaWidth() - GetTrailingTriviaWidth();
+            }
+        }
+
+        public virtual int GetLeadingTriviaWidth()
+        {
+            return FullWidth != 0 ? GetFirstTerminal().GetLeadingTriviaWidth() : 0;
+        }
+
+        public virtual int GetTrailingTriviaWidth()
+        {
+            return FullWidth != 0 ? GetLastTerminal().GetTrailingTriviaWidth() : 0;
+        }
+
+        public bool HasLeadingTrivia
+        {
+            get
+            {
+                return GetLeadingTriviaWidth() != 0;
+            }
+        }
+
+        public bool HasTrailingTrivia
+        {
+            get
+            {
+                return GetTrailingTriviaWidth() != 0;
+            }
+        }
+        #endregion
+
+        #region Diagnostics
+        internal abstract GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics);
+
+        internal RazorDiagnostic[] GetDiagnostics()
+        {
+            if (ContainsDiagnostics)
+            {
+                if (DiagnosticsTable.TryGetValue(this, out var diagnostics))
+                {
+                    return diagnostics;
+                }
+            }
+
+            return EmptyDiagnostics;
+        }
+        #endregion
+
+        #region Annotations
+        internal abstract GreenNode SetAnnotations(SyntaxAnnotation[] annotations);
+
+        internal SyntaxAnnotation[] GetAnnotations()
+        {
+            if (ContainsAnnotations)
+            {
+                if (AnnotationsTable.TryGetValue(this, out var annotations))
+                {
+                    Debug.Assert(annotations.Length != 0, "There cannot be an empty annotation entry.");
+                    return annotations;
+                }
+            }
+
+            return EmptyAnnotations;
+        }
+        #endregion
+
+        #region Text
+        public virtual string ToFullString()
+        {
+            var builder = new StringBuilder();
+            var writer = new StringWriter(builder, System.Globalization.CultureInfo.InvariantCulture);
+            WriteTo(writer);
+            return builder.ToString();
+        }
+
+        public virtual void WriteTo(TextWriter writer)
+        {
+            WriteTo(writer, leading: true, trailing: true);
+        }
+
+        protected internal void WriteTo(TextWriter writer, bool leading, bool trailing)
+        {
+            // Use an actual Stack so we can write out deeply recursive structures without overflowing.
+            var stack = new Stack<StackEntry>();
+            stack.Push(new StackEntry(this, leading, trailing));
+
+            // Separated out stack processing logic so that it does not unintentionally refer to 
+            // "this", "leading" or "trailing.
+            ProcessStack(writer, stack);
+        }
+
+        protected virtual void WriteTriviaTo(TextWriter writer)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual void WriteTokenTo(TextWriter writer, bool leading, bool trailing)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region Tokens 
+
+        public virtual object GetValue()
+        {
+            return null;
+        }
+
+        public virtual string GetValueText()
+        {
+            return string.Empty;
+        }
+
+        public virtual GreenNode GetLeadingTrivia()
+        {
+            return null;
+        }
+
+        public virtual GreenNode GetTrailingTrivia()
+        {
+            return null;
+        }
+
+        public virtual GreenNode WithLeadingTrivia(GreenNode trivia)
+        {
+            return this;
+        }
+
+        public virtual GreenNode WithTrailingTrivia(GreenNode trivia)
+        {
+            return this;
+        }
+
+        public InternalSyntax.SyntaxToken GetFirstToken()
+        {
+            return (InternalSyntax.SyntaxToken)GetFirstTerminal();
+        }
+
+        public InternalSyntax.SyntaxToken GetLastToken()
+        {
+            return (InternalSyntax.SyntaxToken)GetLastTerminal();
+        }
+
+        internal GreenNode GetFirstTerminal()
+        {
+            var node = this;
+
+            do
+            {
+                GreenNode firstChild = null;
+                for (int i = 0, n = node.SlotCount; i < n; i++)
+                {
+                    var child = node.GetSlot(i);
+                    if (child != null)
+                    {
+                        firstChild = child;
+                        break;
+                    }
+                }
+                node = firstChild;
+            } while (node?._slotCount > 0);
+
+            return node;
+        }
+
+        internal GreenNode GetLastTerminal()
+        {
+            var node = this;
+
+            do
+            {
+                GreenNode lastChild = null;
+                for (var i = node.SlotCount - 1; i >= 0; i--)
+                {
+                    var child = node.GetSlot(i);
+                    if (child != null)
+                    {
+                        lastChild = child;
+                        break;
+                    }
+                }
+                node = lastChild;
+            } while (node?._slotCount > 0);
+
+            return node;
+        }
+        #endregion
+
+        #region Factories
         public virtual GreenNode CreateList(IEnumerable<GreenNode> nodes, bool alwaysCreateListNode = false)
         {
             if (nodes == null)
@@ -192,11 +401,11 @@ namespace Microsoft.AspNetCore.Razor.Language
                         return list[0];
                     }
                 case 2:
-                    return InternalSyntaxList.List(list[0], list[1]);
+                    return InternalSyntax.SyntaxList.List(list[0], list[1]);
                 case 3:
-                    return InternalSyntaxList.List(list[0], list[1], list[2]);
+                    return InternalSyntax.SyntaxList.List(list[0], list[1], list[2]);
                 default:
-                    return InternalSyntaxList.List(list);
+                    return InternalSyntax.SyntaxList.List(list);
             }
         }
 
@@ -206,84 +415,100 @@ namespace Microsoft.AspNetCore.Razor.Language
         }
 
         internal abstract SyntaxNode CreateRed(SyntaxNode parent, int position);
+        #endregion
 
-        public bool ContainsDiagnostics
-        {
-            get
-            {
-                return (_flags & NodeFlags.ContainsDiagnostics) != 0;
-            }
-        }
-
-        public bool ContainsAnnotations
-        {
-            get
-            {
-                return (_flags & NodeFlags.ContainsAnnotations) != 0;
-            }
-        }
-
-        internal RazorDiagnostic[] GetDiagnostics()
-        {
-            if (ContainsDiagnostics)
-            {
-                if (diagnosticsTable.TryGetValue(this, out var diagnostics))
-                {
-                    return diagnostics;
-                }
-            }
-
-            return EmptyDiagnostics;
-        }
-
-        internal abstract GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics);
-
-        internal SyntaxAnnotation[] GetAnnotations()
-        {
-            // TODO
-            return Array.Empty<SyntaxAnnotation>();
-        }
-
-        internal abstract GreenNode SetAnnotations(SyntaxAnnotation[] annotations);
-
-        public virtual string ToFullString()
-        {
-            var builder = new StringBuilder();
-            var writer = new StringWriter(builder, System.Globalization.CultureInfo.InvariantCulture);
-            WriteTo(writer);
-            return builder.ToString();
-        }
-
-        public virtual void WriteTo(TextWriter writer)
-        {
-            var stack = new Stack<GreenNode>();
-            stack.Push(this);
-            while (stack.Count > 0)
-            {
-                stack.Pop().WriteToOrFlatten(writer, stack);
-            }
-        }
-
-        /*  <summary>
-        ''' NOTE: the method should write OR push children, but never do both
-        ''' </summary>
-        */
-        internal virtual void WriteToOrFlatten(TextWriter writer, Stack<GreenNode> stack)
-        {
-            // By default just push children to the stack
-            for (var i = SlotCount - 1; i >= 0; i--)
-            {
-                var node = GetSlot(i);
-                if (node != null)
-                {
-                    stack.Push(GetSlot(i));
-                }
-            }
-        }
-
-        internal virtual GreenNode Accept(InternalSyntaxVisitor visitor)
+        internal virtual GreenNode Accept(InternalSyntax.SyntaxVisitor visitor)
         {
             return visitor.Visit(this);
         }
+
+        #region StaticMethods
+
+        private static void ProcessStack(TextWriter writer,
+            Stack<StackEntry> stack)
+        {
+            while (stack.Count > 0)
+            {
+                var current = stack.Pop();
+                var currentNode = current.Node;
+                var currentLeading = current.Leading;
+                var currentTrailing = current.Trailing;
+
+                if (currentNode.IsToken)
+                {
+                    currentNode.WriteTokenTo(writer, currentLeading, currentTrailing);
+                    continue;
+                }
+
+                if (currentNode.IsTrivia)
+                {
+                    currentNode.WriteTriviaTo(writer);
+                    continue;
+                }
+
+                var firstIndex = GetFirstNonNullChildIndex(currentNode);
+                var lastIndex = GetLastNonNullChildIndex(currentNode);
+
+                for (var i = lastIndex; i >= firstIndex; i--)
+                {
+                    var child = currentNode.GetSlot(i);
+                    if (child != null)
+                    {
+                        var first = i == firstIndex;
+                        var last = i == lastIndex;
+                        stack.Push(new StackEntry(child, currentLeading | !first, currentTrailing | !last));
+                    }
+                }
+            }
+        }
+
+        private static int GetFirstNonNullChildIndex(GreenNode node)
+        {
+            int n = node.SlotCount;
+            int firstIndex = 0;
+            for (; firstIndex < n; firstIndex++)
+            {
+                var child = node.GetSlot(firstIndex);
+                if (child != null)
+                {
+                    break;
+                }
+            }
+
+            return firstIndex;
+        }
+
+        private static int GetLastNonNullChildIndex(GreenNode node)
+        {
+            int n = node.SlotCount;
+            int lastIndex = n - 1;
+            for (; lastIndex >= 0; lastIndex--)
+            {
+                var child = node.GetSlot(lastIndex);
+                if (child != null)
+                {
+                    break;
+                }
+            }
+
+            return lastIndex;
+        }
+
+        private struct StackEntry
+        {
+            public StackEntry(GreenNode node, bool leading, bool trailing)
+            {
+                Node = node;
+                Leading = leading;
+                Trailing = trailing;
+            }
+
+            public GreenNode Node { get; }
+
+            public bool Leading { get; }
+
+            public bool Trailing { get; }
+        }
+        #endregion
     }
 }

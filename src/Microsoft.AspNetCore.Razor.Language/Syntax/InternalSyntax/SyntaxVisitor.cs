@@ -1,9 +1,9 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 {
-    internal abstract class InternalSyntaxVisitor
+    internal abstract class SyntaxVisitor
     {
         public virtual GreenNode Visit(GreenNode node)
         {
@@ -20,22 +20,22 @@ namespace Microsoft.AspNetCore.Razor.Language
             return node;
         }
 
-        public virtual GreenNode VisitHtmlNode(HtmlNodeSyntax.Green node)
+        public virtual GreenNode VisitHtmlNode(HtmlNodeSyntax node)
         {
             return VisitSyntaxNode(node);
         }
 
-        public virtual GreenNode VisitHtmlText(HtmlTextSyntax.Green node)
+        public virtual GreenNode VisitHtmlText(HtmlTextSyntax node)
         {
             return VisitHtmlNode(node);
         }
 
-        public virtual SyntaxToken.Green VisitSyntaxToken(SyntaxToken.Green token)
+        public virtual SyntaxToken VisitSyntaxToken(SyntaxToken token)
         {
             return token;
         }
 
-        public virtual SyntaxTrivia.Green VisitSyntaxTrivia(SyntaxTrivia.Green trivia)
+        public virtual SyntaxTrivia VisitSyntaxTrivia(SyntaxTrivia trivia)
         {
             return trivia;
         }

@@ -1,14 +1,11 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
-
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal abstract class SyntaxList : SyntaxNode
     {
-        internal SyntaxList(InternalSyntaxList green, SyntaxNode parent, int position)
+        internal SyntaxList(InternalSyntax.SyntaxList green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
         }
@@ -18,18 +15,12 @@ namespace Microsoft.AspNetCore.Razor.Language
             return visitor.Visit(this);
         }
 
-        // TODO
-        //protected internal override SyntaxNode ReplaceCore<TNode>(IEnumerable<TNode> nodes = null, Func<TNode, TNode, SyntaxNode> computeReplacementNode = null, IEnumerable<SyntaxToken> tokens = null, Func<SyntaxToken, SyntaxToken, SyntaxToken> computeReplacementToken = null, IEnumerable<SyntaxTrivia> trivia = null, Func<SyntaxTrivia, SyntaxTrivia, SyntaxTrivia> computeReplacementTrivia = null)
-        //{
-        //    throw new InvalidOperationException();
-        //}
-
         internal class WithTwoChildren : SyntaxList
         {
             private SyntaxNode _child0;
             private SyntaxNode _child1;
 
-            internal WithTwoChildren(InternalSyntaxList green, SyntaxNode parent, int position)
+            internal WithTwoChildren(InternalSyntax.SyntaxList green, SyntaxNode parent, int position)
                 : base(green, parent, position)
             {
             }
@@ -39,9 +30,9 @@ namespace Microsoft.AspNetCore.Razor.Language
                 switch (index)
                 {
                     case 0:
-                        return this.GetRedElement(ref _child0, 0);
+                        return GetRedElement(ref _child0, 0);
                     case 1:
-                        return this.GetRedElement(ref _child1, 1);
+                        return GetRedElement(ref _child1, 1);
                     default:
                         return null;
                 }
@@ -67,7 +58,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             private SyntaxNode _child1;
             private SyntaxNode _child2;
 
-            internal WithThreeChildren(InternalSyntaxList green, SyntaxNode parent, int position)
+            internal WithThreeChildren(InternalSyntax.SyntaxList green, SyntaxNode parent, int position)
                 : base(green, parent, position)
             {
             }
@@ -77,11 +68,11 @@ namespace Microsoft.AspNetCore.Razor.Language
                 switch (index)
                 {
                     case 0:
-                        return this.GetRedElement(ref _child0, 0);
+                        return GetRedElement(ref _child0, 0);
                     case 1:
-                        return this.GetRedElement(ref _child1, 1);
+                        return GetRedElement(ref _child1, 1);
                     case 2:
-                        return this.GetRedElement(ref _child2, 2);
+                        return GetRedElement(ref _child2, 2);
                     default:
                         return null;
                 }
@@ -107,7 +98,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             private readonly ArrayElement<SyntaxNode>[] _children;
 
-            internal WithManyChildren(InternalSyntaxList green, SyntaxNode parent, int position)
+            internal WithManyChildren(InternalSyntax.SyntaxList green, SyntaxNode parent, int position)
                 : base(green, parent, position)
             {
                 _children = new ArrayElement<SyntaxNode>[green.SlotCount];

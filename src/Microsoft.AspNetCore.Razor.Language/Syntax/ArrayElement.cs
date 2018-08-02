@@ -1,7 +1,7 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal struct ArrayElement<T>
     {
@@ -31,7 +31,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
 
             var array = new ArrayElement<T>[items.Length];
-            for (int i = 0; i < items.Length; i++)
+            for (var i = 0; i < items.Length; i++)
             {
                 array[i].Value = items[i];
             }
@@ -47,7 +47,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
 
             var array = new T[items.Length];
-            for (int i = 0; i < items.Length; i++)
+            for (var i = 0; i < items.Length; i++)
             {
                 array[i] = items[i].Value;
             }

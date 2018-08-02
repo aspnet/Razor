@@ -9,7 +9,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Internal;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     [StructLayout(LayoutKind.Auto)]
     internal readonly struct SyntaxTriviaList : IEquatable<SyntaxTriviaList>, IReadOnlyList<SyntaxTrivia>
@@ -26,7 +26,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         internal SyntaxTriviaList(SyntaxNode node)
         {
             Node = node;
-            Position = node.Start;
+            Position = node.Position;
             Index = 0;
         }
 
@@ -141,8 +141,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                     return default(TextSpan);
                 }
 
-                return TextSpan.FromBounds(Position + Node.GreenNode.GetLeadingTriviaWidth(),
-                    Position + Node.FullWidth - Node.GreenNode.GetTrailingTriviaWidth());
+                return TextSpan.FromBounds(Position + Node.Green.GetLeadingTriviaWidth(),
+                    Position + Node.FullWidth - Node.Green.GetTrailingTriviaWidth());
             }
         }
 
@@ -297,8 +297,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
 
             // Just return ourselves if we're not being asked to add anything.
-            var triviaCollection = trivia as ICollection<SyntaxTrivia>;
-            if (triviaCollection != null && triviaCollection.Count == 0)
+            if (trivia is ICollection<SyntaxTrivia> triviaCollection && triviaCollection.Count == 0)
             {
                 return this;
             }
@@ -306,14 +305,14 @@ namespace Microsoft.AspNetCore.Razor.Language
             var builder = GetBuilder();
             try
             {
-                for (int i = 0; i < index; i++)
+                for (var i = 0; i < index; i++)
                 {
                     builder.Add(this[i]);
                 }
 
                 builder.AddRange(trivia);
 
-                for (int i = index; i < thisCount; i++)
+                for (var i = index; i < thisCount; i++)
                 {
                     builder.Add(this[i]);
                 }
@@ -348,10 +347,10 @@ namespace Microsoft.AspNetCore.Razor.Language
         /// <param name="triviaInList">The trivia element to remove.</param>
         public SyntaxTriviaList Remove(SyntaxTrivia triviaInList)
         {
-            var index = this.IndexOf(triviaInList);
+            var index = IndexOf(triviaInList);
             if (index >= 0 && index < Count)
             {
-                return this.RemoveAt(index);
+                return RemoveAt(index);
             }
 
             return this;
@@ -379,7 +378,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         /// <param name="newTrivia">The trivia to replace the element with.</param>
         public SyntaxTriviaList ReplaceRange(SyntaxTrivia triviaInList, IEnumerable<SyntaxTrivia> newTrivia)
         {
-            var index = this.IndexOf(triviaInList);
+            var index = IndexOf(triviaInList);
             if (index >= 0 && index < Count)
             {
                 var list = this.ToList();
@@ -476,10 +475,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             array[arrayOffset] = first;
 
             // calculate trivia position from the first ourselves from now on
-            var position = first.Start;
+            var position = first.Position;
             var current = first;
 
-            for (int i = 1; i < count; i++)
+            for (var i = 1; i < count; i++)
             {
                 position += current.FullWidth;
                 current = GetNodeAt(offset + i) as SyntaxTrivia;
@@ -580,7 +579,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                         _current = null;
 
                         var last = list.Last();
-                        _position = last.Start + last.FullWidth;
+                        _position = last.Position + last.FullWidth;
                     }
                 }
 
@@ -682,7 +681,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             // by ref since it's a non-trivial struct
             internal void InitializeFromLeadingTrivia(in SyntaxToken token)
             {
-                InitializeFrom(token.GetLeadingTrivia().Node, 0, token.Start);
+                InitializeFrom(token.GetLeadingTrivia().Node, 0, token.Position);
             }
 
             // PERF: Used to initialize an enumerator for trailing trivia directly from a token.
@@ -691,14 +690,14 @@ namespace Microsoft.AspNetCore.Razor.Language
             internal void InitializeFromTrailingTrivia(in SyntaxToken token)
             {
                 var leading = token.GetLeadingTrivia().Node;
-                int index = 0;
+                var index = 0;
                 if (leading != null)
                 {
                     index = leading.IsList ? leading.SlotCount : 1;
                 }
 
                 var trailing = token.GetTrailingTrivia().Node;
-                int trailingPosition = token.Start + token.FullWidth;
+                var trailingPosition = token.Position + token.FullWidth;
                 if (trailing != null)
                 {
                     trailingPosition -= trailing.FullWidth;
@@ -709,7 +708,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public bool MoveNext()
             {
-                int newIndex = _index + 1;
+                var newIndex = _index + 1;
                 if (newIndex >= _count)
                 {
                     // invalidate iterator

@@ -4,7 +4,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal class SyntaxListBuilder
     {
@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public void Add(SyntaxNode item)
         {
-            AddInternal(item.GreenNode);
+            AddInternal(item.Green);
         }
 
         internal void AddInternal(GreenNode item)
@@ -56,10 +56,10 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             for (int i = offset, j = Count; i < offset + length; ++i, ++j)
             {
-                _nodes[j].Value = items[i].GreenNode;
+                _nodes[j].Value = items[i].Green;
             }
 
-            int start = Count;
+            var start = Count;
             Count += length;
             Validate(start, Count);
         }
@@ -91,7 +91,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             var dst = Count;
             for (int i = offset, limit = offset + count; i < limit; i++)
             {
-                _nodes[dst].Value = list.ItemInternal(i).GreenNode;
+                _nodes[dst].Value = list.ItemInternal(i).Green;
                 dst++;
             }
 
@@ -139,17 +139,17 @@ namespace Microsoft.AspNetCore.Razor.Language
                 case 1:
                     return _nodes[0].Value;
                 case 2:
-                    return InternalSyntaxList.List(_nodes[0].Value, _nodes[1].Value);
+                    return InternalSyntax.SyntaxList.List(_nodes[0].Value, _nodes[1].Value);
                 case 3:
-                    return InternalSyntaxList.List(_nodes[0].Value, _nodes[1].Value, _nodes[2].Value);
+                    return InternalSyntax.SyntaxList.List(_nodes[0].Value, _nodes[1].Value, _nodes[2].Value);
                 default:
                     var tmp = new ArrayElement<GreenNode>[Count];
-                    for (int i = 0; i < Count; i++)
+                    for (var i = 0; i < Count; i++)
                     {
                         tmp[i].Value = _nodes[i].Value;
                     }
 
-                    return InternalSyntaxList.List(tmp);
+                    return InternalSyntax.SyntaxList.List(tmp);
             }
         }
 

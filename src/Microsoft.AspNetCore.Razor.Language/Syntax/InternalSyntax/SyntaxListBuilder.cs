@@ -4,22 +4,22 @@
 using System;
 using System.Diagnostics;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 {
-    internal class InternalSyntaxListBuilder
+    internal class SyntaxListBuilder
     {
         private ArrayElement<GreenNode>[] _nodes;
 
         public int Count { get; private set; }
 
-        public InternalSyntaxListBuilder(int size)
+        public SyntaxListBuilder(int size)
         {
             _nodes = new ArrayElement<GreenNode>[size];
         }
 
-        public static InternalSyntaxListBuilder Create()
+        public static SyntaxListBuilder Create()
         {
-            return new InternalSyntaxListBuilder(8);
+            return new SyntaxListBuilder(8);
         }
 
         public void Clear()
@@ -46,14 +46,14 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             if (item.IsList)
             {
-                int slotCount = item.SlotCount;
+                var slotCount = item.SlotCount;
 
                 // Necessary, but not sufficient (e.g. for nested lists).
                 EnsureAdditionalCapacity(slotCount);
 
-                for (int i = 0; i < slotCount; i++)
+                for (var i = 0; i < slotCount; i++)
                 {
-                    this.Add(item.GetSlot(i));
+                    Add(item.GetSlot(i));
                 }
             }
             else
@@ -66,7 +66,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public void AddRange(GreenNode[] items)
         {
-            this.AddRange(items, 0, items.Length);
+            AddRange(items, 0, items.Length);
         }
 
         public void AddRange(GreenNode[] items, int offset, int length)
@@ -74,9 +74,9 @@ namespace Microsoft.AspNetCore.Razor.Language
             // Necessary, but not sufficient (e.g. for nested lists).
             EnsureAdditionalCapacity(length - offset);
 
-            int oldCount = Count;
+            var oldCount = Count;
 
-            for (int i = offset; i < length; i++)
+            for (var i = offset; i < length; i++)
             {
                 Add(items[i]);
             }
@@ -87,25 +87,25 @@ namespace Microsoft.AspNetCore.Razor.Language
         [Conditional("DEBUG")]
         private void Validate(int start, int end)
         {
-            for (int i = start; i < end; i++)
+            for (var i = start; i < end; i++)
             {
                 Debug.Assert(_nodes[i].Value != null);
             }
         }
 
-        public void AddRange(InternalSyntaxList<GreenNode> list)
+        public void AddRange(SyntaxList<GreenNode> list)
         {
             this.AddRange(list, 0, list.Count);
         }
 
-        public void AddRange(InternalSyntaxList<GreenNode> list, int offset, int length)
+        public void AddRange(SyntaxList<GreenNode> list, int offset, int length)
         {
             // Necessary, but not sufficient (e.g. for nested lists).
             EnsureAdditionalCapacity(length - offset);
 
-            int oldCount = Count;
+            var oldCount = Count;
 
-            for (int i = offset; i < length; i++)
+            for (var i = offset; i < length; i++)
             {
                 Add(list[i]);
             }
@@ -113,14 +113,14 @@ namespace Microsoft.AspNetCore.Razor.Language
             Validate(oldCount, Count);
         }
 
-        public void AddRange<TNode>(InternalSyntaxList<TNode> list) where TNode : GreenNode
+        public void AddRange<TNode>(SyntaxList<TNode> list) where TNode : GreenNode
         {
             this.AddRange(list, 0, list.Count);
         }
 
-        public void AddRange<TNode>(InternalSyntaxList<TNode> list, int offset, int length) where TNode : GreenNode
+        public void AddRange<TNode>(SyntaxList<TNode> list, int offset, int length) where TNode : GreenNode
         {
-            this.AddRange(new InternalSyntaxList<GreenNode>(list.Node), offset, length);
+            AddRange(new SyntaxList<GreenNode>(list.Node), offset, length);
         }
 
         public void RemoveLast()
@@ -131,12 +131,12 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         private void EnsureAdditionalCapacity(int additionalCount)
         {
-            int currentSize = _nodes.Length;
-            int requiredSize = Count + additionalCount;
+            var currentSize = _nodes.Length;
+            var requiredSize = Count + additionalCount;
 
             if (requiredSize <= currentSize) return;
 
-            int newSize =
+            var newSize =
                 requiredSize < 8 ? 8 :
                 requiredSize >= (int.MaxValue / 2) ? int.MaxValue :
                 Math.Max(requiredSize, currentSize * 2); // NB: Size will *at least* double.
@@ -147,7 +147,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public bool Any(SyntaxKind kind)
         {
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 if (_nodes[i].Value.Kind == kind)
                 {
@@ -161,7 +161,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         public GreenNode[] ToArray()
         {
             var array = new GreenNode[Count];
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 array[i] = _nodes[i];
             }
@@ -178,24 +178,24 @@ namespace Microsoft.AspNetCore.Razor.Language
                 case 1:
                     return _nodes[0];
                 case 2:
-                    return InternalSyntaxList.List(_nodes[0], _nodes[1]);
+                    return SyntaxList.List(_nodes[0], _nodes[1]);
                 case 3:
-                    return InternalSyntaxList.List(_nodes[0], _nodes[1], _nodes[2]);
+                    return SyntaxList.List(_nodes[0], _nodes[1], _nodes[2]);
                 default:
                     var tmp = new ArrayElement<GreenNode>[Count];
                     Array.Copy(_nodes, tmp, Count);
-                    return InternalSyntaxList.List(tmp);
+                    return SyntaxList.List(tmp);
             }
         }
 
-        public InternalSyntaxList<GreenNode> ToList()
+        public SyntaxList<GreenNode> ToList()
         {
-            return new InternalSyntaxList<GreenNode>(ToListNode());
+            return new SyntaxList<GreenNode>(ToListNode());
         }
 
-        public InternalSyntaxList<TNode> ToList<TNode>() where TNode : GreenNode
+        public SyntaxList<TNode> ToList<TNode>() where TNode : GreenNode
         {
-            return new InternalSyntaxList<TNode>(ToListNode());
+            return new SyntaxList<TNode>(ToListNode());
         }
     }
 }

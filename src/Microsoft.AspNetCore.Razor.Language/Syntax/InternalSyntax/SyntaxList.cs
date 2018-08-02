@@ -4,16 +4,16 @@
 using System;
 using System.Diagnostics;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 {
-    internal abstract class InternalSyntaxList : GreenNode
+    internal abstract class SyntaxList : GreenNode
     {
-        internal InternalSyntaxList()
+        internal SyntaxList()
             : base(SyntaxKind.List)
         {
         }
 
-        internal InternalSyntaxList(RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+        internal SyntaxList(RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
             : base(SyntaxKind.List, diagnostics, annotations)
         {
         }
@@ -61,7 +61,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             return List(array);
         }
 
-        internal static InternalSyntaxList List(ArrayElement<GreenNode>[] children)
+        internal static SyntaxList List(ArrayElement<GreenNode>[] children)
         {
             // "WithLotsOfChildren" list will allocate a separate array to hold
             // precomputed node offsets. It may not be worth it for smallish lists.
@@ -89,8 +89,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                 return left;
             }
 
-            var leftList = left as InternalSyntaxList;
-            var rightList = right as InternalSyntaxList;
+            var leftList = left as SyntaxList;
+            var rightList = right as SyntaxList;
             if (leftList != null)
             {
                 if (rightList != null)
@@ -121,26 +121,26 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
         }
 
-        internal class WithTwoChildren : InternalSyntaxList
+        internal class WithTwoChildren : SyntaxList
         {
             private readonly GreenNode _child0;
             private readonly GreenNode _child1;
 
             internal WithTwoChildren(GreenNode child0, GreenNode child1)
             {
-                this.SlotCount = 2;
-                this.AdjustWidth(child0);
+                SlotCount = 2;
+                AdjustFlagsAndWidth(child0);
                 _child0 = child0;
-                this.AdjustWidth(child1);
+                AdjustFlagsAndWidth(child1);
                 _child1 = child1;
             }
 
             internal WithTwoChildren(RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations, GreenNode child0, GreenNode child1)
             {
-                this.SlotCount = 2;
-                this.AdjustWidth(child0);
+                SlotCount = 2;
+                AdjustFlagsAndWidth(child0);
                 _child0 = child0;
-                this.AdjustWidth(child1);
+                AdjustFlagsAndWidth(child1);
                 _child1 = child1;
             }
 
@@ -165,7 +165,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
             {
-                return new SyntaxList.WithTwoChildren(this, parent, position);
+                return new Syntax.SyntaxList.WithTwoChildren(this, parent, position);
             }
 
             internal override GreenNode SetDiagnostics(RazorDiagnostic[] errors)
@@ -179,7 +179,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
         }
 
-        internal class WithThreeChildren : InternalSyntaxList
+        internal class WithThreeChildren : SyntaxList
         {
             private readonly GreenNode _child0;
             private readonly GreenNode _child1;
@@ -187,24 +187,24 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             internal WithThreeChildren(GreenNode child0, GreenNode child1, GreenNode child2)
             {
-                this.SlotCount = 3;
-                this.AdjustWidth(child0);
+                SlotCount = 3;
+                AdjustFlagsAndWidth(child0);
                 _child0 = child0;
-                this.AdjustWidth(child1);
+                AdjustFlagsAndWidth(child1);
                 _child1 = child1;
-                this.AdjustWidth(child2);
+                AdjustFlagsAndWidth(child2);
                 _child2 = child2;
             }
 
             internal WithThreeChildren(RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations, GreenNode child0, GreenNode child1, GreenNode child2)
                 : base(diagnostics, annotations)
             {
-                this.SlotCount = 3;
-                this.AdjustWidth(child0);
+                SlotCount = 3;
+                AdjustFlagsAndWidth(child0);
                 _child0 = child0;
-                this.AdjustWidth(child1);
+                AdjustFlagsAndWidth(child1);
                 _child1 = child1;
-                this.AdjustWidth(child2);
+                AdjustFlagsAndWidth(child2);
                 _child2 = child2;
             }
 
@@ -232,12 +232,12 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
             {
-                return new SyntaxList.WithThreeChildren(this, parent, position);
+                return new Syntax.SyntaxList.WithThreeChildren(this, parent, position);
             }
 
             internal override GreenNode SetDiagnostics(RazorDiagnostic[] errors)
             {
-                return new WithThreeChildren(errors, this.GetAnnotations(), _child0, _child1, _child2);
+                return new WithThreeChildren(errors, GetAnnotations(), _child0, _child1, _child2);
             }
 
             internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
@@ -246,7 +246,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
         }
 
-        internal abstract class WithManyChildrenBase : InternalSyntaxList
+        internal abstract class WithManyChildrenBase : SyntaxList
         {
             internal readonly ArrayElement<GreenNode>[] children;
 
@@ -265,19 +265,19 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             private void InitializeChildren()
             {
-                int n = children.Length;
+                var n = children.Length;
                 if (n < byte.MaxValue)
                 {
-                    this.SlotCount = (byte)n;
+                    SlotCount = (byte)n;
                 }
                 else
                 {
-                    this.SlotCount = byte.MaxValue;
+                    SlotCount = byte.MaxValue;
                 }
 
-                for (int i = 0; i < children.Length; i++)
+                for (var i = 0; i < children.Length; i++)
                 {
-                    this.AdjustWidth(children[i]);
+                    AdjustFlagsAndWidth(children[i]);
                 }
             }
 
@@ -288,17 +288,17 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             internal override GreenNode GetSlot(int index)
             {
-                return this.children[index];
+                return children[index];
             }
 
             internal override void CopyTo(ArrayElement<GreenNode>[] array, int offset)
             {
-                Array.Copy(this.children, 0, array, offset, this.children.Length);
+                Array.Copy(children, 0, array, offset, children.Length);
             }
 
             internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
             {
-                return new SyntaxList.WithManyChildren(this, parent, position);
+                return new Syntax.SyntaxList.WithManyChildren(this, parent, position);
             }
         }
 
@@ -316,7 +316,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             internal override GreenNode SetDiagnostics(RazorDiagnostic[] errors)
             {
-                return new WithManyChildren(errors, this.GetAnnotations(), children);
+                return new WithManyChildren(errors, GetAnnotations(), children);
             }
 
             internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
@@ -358,15 +358,15 @@ namespace Microsoft.AspNetCore.Razor.Language
             public override int FindSlotIndexContainingOffset(int offset)
             {
                 Debug.Assert(offset >= 0 && offset < FullWidth);
-                return _childOffsets.BinarySearchUpperBound(offset) - 1;
+                return BinarySearchUpperBound(_childOffsets, offset) - 1;
             }
 
             private static int[] CalculateOffsets(ArrayElement<GreenNode>[] children)
             {
-                int n = children.Length;
+                var n = children.Length;
                 var childOffsets = new int[n];
-                int offset = 0;
-                for (int i = 0; i < n; i++)
+                var offset = 0;
+                for (var i = 0; i < n; i++)
                 {
                     childOffsets[i] = offset;
                     offset += children[i].Value.FullWidth;
@@ -382,6 +382,36 @@ namespace Microsoft.AspNetCore.Razor.Language
             internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
             {
                 return new WithLotsOfChildren(GetDiagnostics(), annotations, children, _childOffsets);
+            }
+
+            /// <summary>
+            /// Search a sorted integer array for the target value in O(log N) time.
+            /// </summary>
+            /// <param name="array">The array of integers which must be sorted in ascending order.</param>
+            /// <param name="value">The target value.</param>
+            /// <returns>An index in the array pointing to the position where <paramref name="value"/> should be
+            /// inserted in order to maintain the sorted order. All values to the right of this position will be
+            /// strictly greater than <paramref name="value"/>. Note that this may return a position off the end
+            /// of the array if all elements are less than or equal to <paramref name="value"/>.</returns>
+            private static int BinarySearchUpperBound(int[] array, int value)
+            {
+                var low = 0;
+                var high = array.Length - 1;
+
+                while (low <= high)
+                {
+                    var middle = low + ((high - low) >> 1);
+                    if (array[middle] > value)
+                    {
+                        high = middle - 1;
+                    }
+                    else
+                    {
+                        low = middle + 1;
+                    }
+                }
+
+                return low;
             }
         }
     }

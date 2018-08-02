@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
@@ -34,7 +35,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public CSharpKeyword? Keyword { get; set; }
 
-        protected override SyntaxToken.Green GetSyntaxToken()
+        protected override SyntaxToken GetSyntaxToken()
         {
             switch (Type)
             {

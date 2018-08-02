@@ -4,7 +4,7 @@
 using System;
 using Microsoft.Extensions.Internal;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     /// <summary>
     /// Immutable abstract representation of a span of text.  For example, in an error diagnostic that reports a
@@ -50,7 +50,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         /// <summary>
         /// Determines whether or not the span is empty.
         /// </summary>
-        public bool IsEmpty => this.Length == 0;
+        public bool IsEmpty => Length == 0;
 
         /// <summary>
         /// Determines whether the position lies within the span.
@@ -78,7 +78,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         /// </returns>
         public bool Contains(TextSpan span)
         {
-            return span.Start >= Start && span.End <= this.End;
+            return span.Start >= Start && span.End <= End;
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         public bool OverlapsWith(TextSpan span)
         {
             var overlapStart = Math.Max(Start, span.Start);
-            var overlapEnd = Math.Min(this.End, span.End);
+            var overlapEnd = Math.Min(End, span.End);
 
             return overlapStart < overlapEnd;
         }
@@ -112,10 +112,10 @@ namespace Microsoft.AspNetCore.Razor.Language
         public TextSpan? Overlap(TextSpan span)
         {
             var overlapStart = Math.Max(Start, span.Start);
-            var overlapEnd = Math.Min(this.End, span.End);
+            var overlapEnd = Math.Min(End, span.End);
 
             return overlapStart < overlapEnd
-                ? TextSpan.FromBounds(overlapStart, overlapEnd)
+                ? FromBounds(overlapStart, overlapEnd)
                 : (TextSpan?)null;
         }
 
@@ -132,7 +132,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         /// </returns>
         public bool IntersectsWith(TextSpan span)
         {
-            return span.Start <= this.End && span.End >= Start;
+            return span.Start <= End && span.End >= Start;
         }
 
         /// <summary>
@@ -163,10 +163,10 @@ namespace Microsoft.AspNetCore.Razor.Language
         public TextSpan? Intersection(TextSpan span)
         {
             var intersectStart = Math.Max(Start, span.Start);
-            var intersectEnd = Math.Min(this.End, span.End);
+            var intersectEnd = Math.Min(End, span.End);
 
             return intersectStart <= intersectEnd
-                ? TextSpan.FromBounds(intersectStart, intersectEnd)
+                ? FromBounds(intersectStart, intersectEnd)
                 : (TextSpan?)null;
         }
 

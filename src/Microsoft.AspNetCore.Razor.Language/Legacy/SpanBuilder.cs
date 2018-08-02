@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
@@ -34,7 +35,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Start = location;
         }
 
-        public HtmlNodeSyntax.Green SyntaxNode { get; private set; }
+        public HtmlNodeSyntax SyntaxNode { get; private set; }
 
         public ISpanChunkGenerator ChunkGenerator { get; set; }
 
@@ -115,11 +116,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             _tracker.UpdateLocation(token.Content);
         }
 
-        private HtmlNodeSyntax.Green GetSyntaxNode(SyntaxKind syntaxKind)
+        private HtmlNodeSyntax GetSyntaxNode(SyntaxKind syntaxKind)
         {
             if (syntaxKind == SyntaxKind.HtmlText)
             {
-                var textTokens = new InternalSyntaxListBuilder<SyntaxToken.Green>(InternalSyntaxListBuilder.Create());
+                var textTokens = new SyntaxListBuilder<SyntaxToken>(SyntaxListBuilder.Create());
                 foreach (var token in Tokens)
                 {
                     if (token.SyntaxKind == SyntaxKind.Unknown)
@@ -131,7 +132,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     textTokens.Add(token.SyntaxToken);
                 }
                 var textResult = textTokens.ToList();
-                return SyntaxFactory.HtmlText(new InternalSyntaxList<SyntaxToken.Green>(textResult.Node));
+                return SyntaxFactory.HtmlText(new SyntaxList<SyntaxToken>(textResult.Node));
             }
 
             return null;

@@ -4,73 +4,86 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal abstract class SyntaxNode
     {
         public SyntaxNode(GreenNode green, SyntaxNode parent, int position)
         {
-            GreenNode = green;
+            Green = green;
             Parent = parent;
-            Start = position;
+            Position = position;
         }
 
-        internal GreenNode GreenNode { get; }
+        internal GreenNode Green { get; }
 
         public SyntaxNode Parent { get; }
 
-        public int Start { get; }
+        public int Position { get; }
 
-        public SyntaxKind Kind => GreenNode.Kind;
+        public int EndPosition => Position + FullWidth;
 
-        public int FullWidth => GreenNode.FullWidth;
+        public SyntaxKind Kind => Green.Kind;
 
-        public int Width => GreenNode.Width;
+        public int Width => Green.Width;
 
-        public int SpanStart => Start + GreenNode.GetLeadingTriviaWidth();
+        public int FullWidth => Green.FullWidth;
 
-        public TextSpan FullSpan => new TextSpan(Start, GreenNode.FullWidth);
+        public int SpanStart => Position + Green.GetLeadingTriviaWidth();
 
-        public int End => Start + FullWidth;
+        public TextSpan FullSpan => new TextSpan(Position, Green.FullWidth);
 
         public TextSpan Span
         {
             get
             {
                 // Start with the full span.
-                var start = Start;
-                var width = GreenNode.FullWidth;
+                var start = Position;
+                var width = Green.FullWidth;
 
                 // adjust for preceding trivia (avoid calling this twice, do not call Green.Width)
-                var precedingWidth = GreenNode.GetLeadingTriviaWidth();
+                var precedingWidth = Green.GetLeadingTriviaWidth();
                 start += precedingWidth;
                 width -= precedingWidth;
 
                 // adjust for following trivia width
-                width -= GreenNode.GetTrailingTriviaWidth();
+                width -= Green.GetTrailingTriviaWidth();
 
                 Debug.Assert(width >= 0);
                 return new TextSpan(start, width);
             }
         }
 
-        internal int SlotCount => GreenNode.SlotCount;
+        internal int SlotCount => Green.SlotCount;
 
-        public bool IsList => GreenNode.IsList;
+        public bool IsList => Green.IsList;
 
-        protected virtual int GetTextWidth()
+        public bool IsMissing => Green.IsMissing;
+
+        public bool HasLeadingTrivia
         {
-            return 0;
+            get
+            {
+                return GetLeadingTrivia().Count > 0;
+            }
         }
+
+        public bool HasTrailingTrivia
+        {
+            get
+            {
+                return GetTrailingTrivia().Count > 0;
+            }
+        }
+
+        public bool ContainsDiagnostics => Green.ContainsDiagnostics;
+
+        public bool ContainsAnnotations => Green.ContainsAnnotations;
 
         internal abstract SyntaxNode Accept(SyntaxVisitor visitor);
 
         internal abstract SyntaxNode GetNodeSlot(int index);
 
-        /// <summary>
-        /// Gets a node at given node index without forcing its creation.
-        /// If node was not created it would return null.
-        /// </summary>
         internal abstract SyntaxNode GetCachedSlot(int index);
 
         internal SyntaxNode GetRed(ref SyntaxNode field, int slot)
@@ -79,7 +92,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             if (result == null)
             {
-                var green = GreenNode.GetSlot(slot);
+                var green = Green.GetSlot(slot);
                 if (green != null)
                 {
                     Interlocked.CompareExchange(ref field, green.CreateRed(this, GetChildPosition(slot)), null);
@@ -96,7 +109,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             if (result == null)
             {
-                var green = this.GreenNode.GetSlot(slot);
+                var green = Green.GetSlot(slot);
                 if (green != null)
                 {
                     Interlocked.CompareExchange(ref field, (T)green.CreateRed(this, this.GetChildPosition(slot)), null);
@@ -115,7 +128,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             if (result == null)
             {
-                var green = GreenNode.GetSlot(slot);
+                var green = Green.GetSlot(slot);
                 // passing list's parent
                 Interlocked.CompareExchange(ref element, green.CreateRed(Parent, GetChildPosition(slot)), null);
                 result = element;
@@ -127,14 +140,14 @@ namespace Microsoft.AspNetCore.Razor.Language
         internal virtual int GetChildPosition(int index)
         {
             var offset = 0;
-            var green = GreenNode;
+            var green = Green;
             while (index > 0)
             {
                 index--;
                 var prevSibling = GetCachedSlot(index);
                 if (prevSibling != null)
                 {
-                    return prevSibling.End + offset;
+                    return prevSibling.EndPosition + offset;
                 }
                 var greenChild = green.GetSlot(index);
                 if (greenChild != null)
@@ -143,21 +156,19 @@ namespace Microsoft.AspNetCore.Razor.Language
                 }
             }
 
-            return Start + offset;
+            return Position + offset;
         }
 
-        // Get the leading trivia a green array, recursively to first token.
         public virtual SyntaxTriviaList GetLeadingTrivia()
         {
             var firstToken = GetFirstToken();
-            return firstToken == null ? default(SyntaxTriviaList) : firstToken.GetLeadingTrivia();
+            return firstToken != null ? firstToken.GetLeadingTrivia() : default(SyntaxTriviaList);
         }
 
-        // Get the trailing trivia a green array, recursively to first token.
         public virtual SyntaxTriviaList GetTrailingTrivia()
         {
             var lastToken = GetLastToken();
-            return lastToken == null ? default(SyntaxTriviaList) : lastToken.GetTrailingTrivia();
+            return lastToken != null ? lastToken.GetTrailingTrivia() : default(SyntaxTriviaList);
         }
 
         internal SyntaxToken GetFirstToken()
@@ -176,7 +187,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             do
             {
-                bool foundChild = false;
+                var foundChild = false;
                 for (int i = 0, n = node.SlotCount; i < n; i++)
                 {
                     var child = node.GetNodeSlot(i);
@@ -204,7 +215,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             do
             {
-                for (int i = node.SlotCount - 1; i >= 0; i--)
+                for (var i = node.SlotCount - 1; i >= 0; i--)
                 {
                     var child = node.GetNodeSlot(i);
                     if (child != null)
@@ -218,13 +229,24 @@ namespace Microsoft.AspNetCore.Razor.Language
             return node == this ? this : node;
         }
 
-        public bool ContainsDiagnostics => GreenNode.ContainsAnnotations;
+        public RazorDiagnostic[] GetDiagnostics()
+        {
+            return Green.GetDiagnostics();
+        }
 
-        public RazorDiagnostic[] GetDiagnostics() => GreenNode.GetDiagnostics();
+        public SyntaxAnnotation[] GetAnnotations()
+        {
+            return Green.GetAnnotations();
+        }
+
+        public override string ToString()
+        {
+            return Green.ToString();
+        }
 
         public virtual string ToFullString()
         {
-            return GreenNode.ToFullString();
+            return Green.ToFullString();
         }
     }
 }

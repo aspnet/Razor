@@ -1,23 +1,23 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 {
-    internal readonly struct InternalSyntaxListBuilder<TNode> where TNode : GreenNode
+    internal readonly struct SyntaxListBuilder<TNode> where TNode : GreenNode
     {
-        private readonly InternalSyntaxListBuilder _builder;
+        private readonly SyntaxListBuilder _builder;
 
-        public InternalSyntaxListBuilder(int size)
-            : this(new InternalSyntaxListBuilder(size))
+        public SyntaxListBuilder(int size)
+            : this(new SyntaxListBuilder(size))
         {
         }
 
-        public static InternalSyntaxListBuilder<TNode> Create()
+        public static SyntaxListBuilder<TNode> Create()
         {
-            return new InternalSyntaxListBuilder<TNode>(8);
+            return new SyntaxListBuilder<TNode>(8);
         }
 
-        internal InternalSyntaxListBuilder(InternalSyntaxListBuilder builder)
+        internal SyntaxListBuilder(SyntaxListBuilder builder)
         {
             _builder = builder;
         }
@@ -56,7 +56,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             _builder.Clear();
         }
 
-        public InternalSyntaxListBuilder<TNode> Add(TNode node)
+        public SyntaxListBuilder<TNode> Add(TNode node)
         {
             _builder.Add(node);
             return this;
@@ -67,12 +67,12 @@ namespace Microsoft.AspNetCore.Razor.Language
             _builder.AddRange(items, offset, length);
         }
 
-        public void AddRange(InternalSyntaxList<TNode> nodes)
+        public void AddRange(SyntaxList<TNode> nodes)
         {
             _builder.AddRange(nodes);
         }
 
-        public void AddRange(InternalSyntaxList<TNode> nodes, int offset, int length)
+        public void AddRange(SyntaxList<TNode> nodes, int offset, int length)
         {
             _builder.AddRange(nodes, offset, length);
         }
@@ -82,7 +82,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             return _builder.Any(kind);
         }
 
-        public InternalSyntaxList<TNode> ToList()
+        public SyntaxList<TNode> ToList()
         {
             return _builder.ToList<TNode>();
         }
@@ -92,24 +92,24 @@ namespace Microsoft.AspNetCore.Razor.Language
             return _builder.ToListNode();
         }
 
-        public static implicit operator InternalSyntaxListBuilder(InternalSyntaxListBuilder<TNode> builder)
+        public static implicit operator SyntaxListBuilder(SyntaxListBuilder<TNode> builder)
         {
             return builder._builder;
         }
 
-        public static implicit operator InternalSyntaxList<TNode>(InternalSyntaxListBuilder<TNode> builder)
+        public static implicit operator SyntaxList<TNode>(SyntaxListBuilder<TNode> builder)
         {
             if (builder._builder != null)
             {
                 return builder.ToList();
             }
 
-            return default(InternalSyntaxList<TNode>);
+            return default(SyntaxList<TNode>);
         }
 
-        public InternalSyntaxList<TDerived> ToList<TDerived>() where TDerived : GreenNode
+        public SyntaxList<TDerived> ToList<TDerived>() where TDerived : GreenNode
         {
-            return new InternalSyntaxList<TDerived>(ToListNode());
+            return new SyntaxList<TDerived>(ToListNode());
         }
     }
 }

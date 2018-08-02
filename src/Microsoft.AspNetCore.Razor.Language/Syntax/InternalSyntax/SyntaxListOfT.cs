@@ -3,14 +3,14 @@
 
 using System.Diagnostics;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 {
-    internal readonly struct InternalSyntaxList<TNode>
+    internal readonly struct SyntaxList<TNode>
         where TNode : GreenNode
     {
         private readonly GreenNode _node;
 
-        public InternalSyntaxList(GreenNode node)
+        public SyntaxList(GreenNode node)
         {
             _node = node;
         }
@@ -80,9 +80,9 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public bool Any(SyntaxKind kind)
         {
-            for (var i = 0; i < this.Count; i++)
+            for (var i = 0; i < Count; i++)
             {
-                var element = this.ItemUntyped(i);
+                var element = ItemUntyped(i);
                 if ((element.Kind == kind))
                 {
                     return true;
@@ -96,8 +96,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             get
             {
-                var arr = new TNode[this.Count];
-                for (var i = 0; i < this.Count; i++)
+                var arr = new TNode[Count];
+                for (var i = 0; i < Count; i++)
                 {
                     arr[i] = this[i];
                 }
@@ -106,19 +106,19 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
         }
 
-        public static bool operator ==(InternalSyntaxList<TNode> left, InternalSyntaxList<TNode> right)
+        public static bool operator ==(SyntaxList<TNode> left, SyntaxList<TNode> right)
         {
             return (left._node == right._node);
         }
 
-        public static bool operator !=(InternalSyntaxList<TNode> left, InternalSyntaxList<TNode> right)
+        public static bool operator !=(SyntaxList<TNode> left, SyntaxList<TNode> right)
         {
             return !(left._node == right._node);
         }
 
         public override bool Equals(object obj)
         {
-            return (obj is InternalSyntaxList<TNode> && (_node == ((InternalSyntaxList<TNode>)obj)._node));
+            return (obj is SyntaxList<TNode> && (_node == ((SyntaxList<TNode>)obj)._node));
         }
 
         public override int GetHashCode()
@@ -131,14 +131,14 @@ namespace Microsoft.AspNetCore.Razor.Language
             return new SeparatedSyntaxList<TOther>(new SyntaxList<TOther>(_node));
         }*/
 
-        public static implicit operator InternalSyntaxList<TNode>(TNode node)
+        public static implicit operator SyntaxList<TNode>(TNode node)
         {
-            return new InternalSyntaxList<TNode>(node);
+            return new SyntaxList<TNode>(node);
         }
 
-        public static implicit operator InternalSyntaxList<GreenNode>(InternalSyntaxList<TNode> nodes)
+        public static implicit operator SyntaxList<GreenNode>(SyntaxList<TNode> nodes)
         {
-            return new InternalSyntaxList<GreenNode>(nodes._node);
+            return new SyntaxList<GreenNode>(nodes._node);
         }
     }
 }

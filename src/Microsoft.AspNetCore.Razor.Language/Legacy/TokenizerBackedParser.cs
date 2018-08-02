@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
@@ -36,7 +37,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             get { return _tokenizer.Current; }
         }
 
-        protected SyntaxToken.Green CurrentSyntaxToken => CurrentToken?.SyntaxToken;
+        protected SyntaxToken CurrentSyntaxToken => CurrentToken?.SyntaxToken;
 
         protected TToken PreviousToken { get; private set; }
 

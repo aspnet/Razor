@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax;
 using Microsoft.Extensions.Internal;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
@@ -60,9 +61,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public SyntaxKind SyntaxKind => SyntaxToken.Kind;
 
-        public SyntaxToken.Green SyntaxToken => GetSyntaxToken();
+        public SyntaxToken SyntaxToken => GetSyntaxToken();
 
-        protected abstract SyntaxToken.Green GetSyntaxToken();
+        protected abstract SyntaxToken GetSyntaxToken();
 
         public override bool Equals(object obj)
         {

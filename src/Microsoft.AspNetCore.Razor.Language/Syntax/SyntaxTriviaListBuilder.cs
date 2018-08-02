@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal class SyntaxTriviaListBuilder
     {
@@ -27,7 +27,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 return new SyntaxTriviaList();
             }
 
-            var builder = SyntaxTriviaListBuilder.Create();
+            var builder = Create();
             builder.AddRange(trivia);
             return builder.ToList();
         }
@@ -123,11 +123,11 @@ namespace Microsoft.AspNetCore.Razor.Language
             if (Count > 0)
             {
                 var tmp = new ArrayElement<GreenNode>[Count];
-                for (int i = 0; i < Count; i++)
+                for (var i = 0; i < Count; i++)
                 {
-                    tmp[i].Value = _nodes[i].GreenNode;
+                    tmp[i].Value = _nodes[i].Green;
                 }
-                return new SyntaxTriviaList(InternalSyntaxList.List(tmp).CreateRed(), position: 0, index: 0);
+                return new SyntaxTriviaList(InternalSyntax.SyntaxList.List(tmp).CreateRed(), position: 0, index: 0);
             }
             else
             {

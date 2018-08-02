@@ -2,21 +2,19 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.IO;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal class SyntaxTrivia : SyntaxNode
     {
-        internal SyntaxTrivia(Green green, SyntaxNode parent, int position)
+        internal SyntaxTrivia(GreenNode green, SyntaxNode parent, int position)
             : base(green, parent, position)
         {
         }
 
-        internal new Green GreenNode => (Green)base.GreenNode;
+        internal new InternalSyntax.SyntaxTrivia Green => (InternalSyntax.SyntaxTrivia)base.Green;
 
-        public string Text => GreenNode.Text;
+        public string Text => Green.Text;
 
         internal override sealed SyntaxNode GetCachedSlot(int index)
         {
@@ -33,11 +31,6 @@ namespace Microsoft.AspNetCore.Razor.Language
             return visitor.VisitSyntaxTrivia(this);
         }
 
-        protected override int GetTextWidth()
-        {
-            return Text.Length;
-        }
-
         public sealed override SyntaxTriviaList GetTrailingTrivia()
         {
             return default(SyntaxTriviaList);
@@ -48,61 +41,14 @@ namespace Microsoft.AspNetCore.Razor.Language
             return default(SyntaxTriviaList);
         }
 
-        public override string ToString() => Text;
-
-        public sealed override string ToFullString() => Text;
-
-        internal class Green : GreenNode
+        public override string ToString()
         {
-            internal Green(SyntaxKind kind, string text)
-                : base(kind, text.Length)
-            {
-                Text = text;
-            }
+            return Text;
+        }
 
-            internal Green(SyntaxKind kind, string text, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
-                : base(kind, text.Length, diagnostics, annotations)
-            {
-                Text = text;
-            }
-
-            public string Text { get; }
-
-            public override int Width => Text.Length;
-
-            internal override void WriteToOrFlatten(TextWriter writer, Stack<GreenNode> stack)
-            {
-                writer.Write(Text);
-            }
-
-            public sealed override string ToFullString() => Text;
-
-            public sealed override int GetLeadingTriviaWidth() => 0;
-            public sealed override int GetTrailingTriviaWidth() => 0;
-
-            protected override sealed int GetSlotCount() => 0;
-
-            internal override sealed GreenNode GetSlot(int index)
-            {
-                throw new InvalidOperationException();
-            }
-
-            internal override SyntaxNode CreateRed(SyntaxNode parent, int position) => new SyntaxTrivia(this, parent, position);
-
-            internal override GreenNode Accept(InternalSyntaxVisitor visitor)
-            {
-                return visitor.VisitSyntaxTrivia(this);
-            }
-
-            internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
-            {
-                return new Green(Kind, Text, diagnostics, GetAnnotations());
-            }
-
-            internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
-            {
-                return new Green(Kind, Text, GetDiagnostics(), annotations);
-            }
+        public sealed override string ToFullString()
+        {
+            return Text;
         }
     }
 }

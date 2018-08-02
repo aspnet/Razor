@@ -20,7 +20,7 @@ using System.Runtime.CompilerServices;
 // #define DETECT_LEAKS  //for now always enable DETECT_LEAKS in debug.
 // #endif
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     /// <summary>
     /// Generic implementation of object pooling pattern with predefined pool size limit. The main
@@ -53,12 +53,12 @@ namespace Microsoft.AspNetCore.Razor.Language
         internal delegate T Factory();
 
         // storage for the pool objects.
-        private readonly Element[] items;
+        private readonly Element[] _items;
 
         // factory is stored for the lifetime of the pool. We will call this only when pool needs to
         // expand. compared to "new T()", Func gives more flexibility to implementers and faster
         // than "new T()".
-        private readonly Factory factory;
+        private readonly Factory _factory;
 
 #if DETECT_LEAKS
         private static readonly ConditionalWeakTable<T, LeakTracker> leakTrackers = new ConditionalWeakTable<T, LeakTracker>();
@@ -111,13 +111,13 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         internal ObjectPool(Factory factory, int size)
         {
-            this.factory = factory;
-            this.items = new Element[size];
+            _factory = factory;
+            _items = new Element[size];
         }
 
         private T CreateInstance()
         {
-            var inst = factory();
+            var inst = _factory();
             return inst;
         }
 
@@ -131,10 +131,10 @@ namespace Microsoft.AspNetCore.Razor.Language
         /// </remarks>
         internal T Allocate()
         {
-            var items = this.items;
+            var items = _items;
             T inst;
 
-            for (int i = 0; i < items.Length; i++)
+            for (var i = 0; i < items.Length; i++)
             {
                 // Note that the read is optimistically not synchronized. That is intentional.
                 // We will interlock only when we have a candidate. in a worst case we may miss some
@@ -178,8 +178,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             Validate(obj);
             ForgetTrackedObject(obj);
 
-            var items = this.items;
-            for (int i = 0; i < items.Length; i++)
+            var items = _items;
+            for (var i = 0; i < items.Length; i++)
             {
                 if (items[i].Value == null)
                 {
@@ -232,8 +232,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             Debug.Assert(obj != null, "freeing null?");
 
-            var items = this.items;
-            for (int i = 0; i < items.Length; i++)
+            var items = _items;
+            for (var i = 0; i < items.Length; i++)
             {
                 var value = items[i].Value;
                 if (value == null)

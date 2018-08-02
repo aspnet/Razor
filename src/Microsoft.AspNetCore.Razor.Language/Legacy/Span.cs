@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
@@ -31,7 +32,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public SpanEditHandler EditHandler { get; private set; }
 
-        public HtmlNodeSyntax.Green SyntaxNode { get; private set; }
+        public HtmlNodeSyntax SyntaxNode { get; private set; }
 
         public override bool IsBlock => false;
 

@@ -7,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal readonly struct SyntaxList<TNode> : IReadOnlyList<TNode>, IEquatable<SyntaxList<TNode>>
         where TNode : SyntaxNode
@@ -42,10 +42,9 @@ namespace Microsoft.AspNetCore.Razor.Language
                 return null;
             }
 
-            var collection = nodes as ICollection<TNode>;
-            var builder = (collection != null) ? new SyntaxListBuilder<TNode>(collection.Count) : SyntaxListBuilder<TNode>.Create();
+            var builder = (nodes is ICollection<TNode> collection) ? new SyntaxListBuilder<TNode>(collection.Count) : SyntaxListBuilder<TNode>.Create();
 
-            foreach (TNode node in nodes)
+            foreach (var node in nodes)
             {
                 builder.Add(node);
             }
@@ -225,7 +224,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
             else
             {
-                return CreateList(list[0].GreenNode, list);
+                return CreateList(list[0].Green, list);
             }
         }
 
@@ -301,7 +300,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
             else
             {
-                return CreateList(items[0].GreenNode, items);
+                return CreateList(items[0].Green, items);
             }
         }
 
@@ -312,7 +311,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 return default(SyntaxList<TNode>);
             }
 
-            var newGreen = creator.CreateList(items.Select(n => n.GreenNode));
+            var newGreen = creator.CreateList(items.Select(n => n.Green));
             return new SyntaxList<TNode>(newGreen.CreateRed());
         }
 
@@ -493,7 +492,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public int LastIndexOf(TNode node)
         {
-            for (int i = Count - 1; i >= 0; i--)
+            for (var i = Count - 1; i >= 0; i--)
             {
                 if (object.Equals(this[i], node))
                 {
@@ -506,7 +505,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public int LastIndexOf(Func<TNode, bool> predicate)
         {
-            for (int i = Count - 1; i >= 0; i--)
+            for (var i = Count - 1; i >= 0; i--)
             {
                 if (predicate(this[i]))
                 {
@@ -530,7 +529,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public bool MoveNext()
             {
-                int newIndex = _index + 1;
+                var newIndex = _index + 1;
                 if (newIndex < _list.Count)
                 {
                     _index = newIndex;

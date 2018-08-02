@@ -4,7 +4,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Microsoft.AspNetCore.Razor.Language
+namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     /// <summary>
     /// A SyntaxAnnotation is used to annotate syntax elements with additional information. 
@@ -31,13 +31,13 @@ namespace Microsoft.AspNetCore.Razor.Language
         public SyntaxAnnotation(string kind)
             : this()
         {
-            this.Kind = kind;
+            Kind = kind;
         }
 
         public SyntaxAnnotation(string kind, string data)
             : this(kind)
         {
-            this.Data = data;
+            Data = data;
         }
 
         private string GetDebuggerDisplay()
@@ -82,7 +82,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as SyntaxAnnotation);
+            return Equals(obj as SyntaxAnnotation);
         }
 
         public override int GetHashCode()
