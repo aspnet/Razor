@@ -11,19 +11,19 @@ phases:
   steps:
   - checkout: self
     clean: true
-  - script: ./build.sh -ci -bl:artifacts/logs/build.binlog
+  - script: ./build.sh -ci -bl:artifacts/logs/build.binlog -p:VSTestAutoReporters=true -p:VSTestVerboseOutput=true
     displayName: Run build.sh
-    timeoutInMinutes: 25
+    timeoutInMinutes: 20
   - script: "ps -ef"
     condition: always()
     displayName: List orphaned processes
   - task: PublishBuildArtifacts@1
-    displayName: Upload binlog
+    displayName: Upload logs
     condition: always()
     inputs:
-      artifactName: binlog
+      artifactName: logs
       artifactType: Container
-      pathtoPublish: artifacts/logs/build.binlog
+      pathtoPublish: artifacts/logs/
   - task: PublishTestResults@2
     displayName: Publish test results
     condition: always()
