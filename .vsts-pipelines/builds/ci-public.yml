@@ -16,7 +16,7 @@ phases:
     timeoutInMinutes: 15
   - script: "ps -ef"
     condition: always()
-    displayName: List orphaned processes
+    displayName: List processes
   - task: PublishBuildArtifacts@1
     displayName: Upload logs
     condition: always()
