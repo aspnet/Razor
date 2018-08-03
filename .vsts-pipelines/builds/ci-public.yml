@@ -5,7 +5,7 @@ trigger:
 phases:
 - phase: Linux
   queue:
-    name: DotNetCore-Linux
+    name: Hosted Linux Preview
   variables:
     DOTNET_HOME: $(Agent.WorkFolder)/.dotnet
   steps:
