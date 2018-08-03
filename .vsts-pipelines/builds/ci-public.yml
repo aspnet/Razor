@@ -1,32 +1,13 @@
-trigger:
-- master
-- release/*
 
 phases:
-- phase: Linux
+- phase: LinuxNonHosted
   queue:
     name: DotNetCore-Linux
-  variables:
-    DOTNET_HOME: $(Agent.WorkFolder)/.dotnet
   steps:
-  - checkout: self
-    clean: true
-  - script: ./build.sh -ci -bl:artifacts/logs/build.binlog -p:VSTestVerboseOutput=true -p:VSTestBlame=true 
-    displayName: Run build.sh
-    timeoutInMinutes: 10
-  - script: "ps -ef"
-    condition: always()
-    displayName: List orphaned processes
-  - task: PublishBuildArtifacts@1
-    displayName: Upload logs
-    condition: always()
-    inputs:
-      artifactName: logs
-      artifactType: Container
-      pathtoPublish: artifacts/logs/
-  - task: PublishTestResults@2
-    displayName: Publish test results
-    condition: always()
-    inputs:
-      testRunner: vstest
-      testResultsFiles: 'artifacts/logs/**/*.trx'
+  - script: cat /proc/cpuinfo
+- phase: Hosted
+  queue:
+    name: Hosted Linux Preview
+  steps:
+  - script: cat /proc/cpuinfo
+  
