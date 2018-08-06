@@ -1,8 +1,6 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-
 namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal class PunctuationSyntax : SyntaxToken
@@ -18,14 +16,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
         internal override SyntaxToken WithLeadingTriviaCore(SyntaxNode trivia)
         {
-            //return (PunctuationSyntax)new Green(Kind, Text, trivia?.Green, GetTrailingTrivia().Node?.GreenNode).CreateRed(Parent, Start);
-            throw new NotImplementedException();
+            return new InternalSyntax.PunctuationSyntax(Kind, Text, trivia?.Green, GetTrailingTrivia().Node?.Green).CreateRed(Parent, Position) as PunctuationSyntax;
         }
 
         internal override SyntaxToken WithTrailingTriviaCore(SyntaxNode trivia)
         {
-            //return (PunctuationSyntax)new Green(Kind, Text, GetLeadingTrivia().Node?.Green, trivia?.Green).CreateRed(Parent, Start);
-            throw new NotImplementedException();
+            return new InternalSyntax.PunctuationSyntax(Kind, Text, GetLeadingTrivia().Node?.Green, trivia?.Green).CreateRed(Parent, Position) as PunctuationSyntax;
         }
     }
 }

@@ -126,11 +126,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
             return _node != null ? _node.GetHashCode() : 0;
         }
 
-        /*public SeparatedSyntaxList<TOther> AsSeparatedList<TOther>() where TOther : GreenNode
-        {
-            return new SeparatedSyntaxList<TOther>(new SyntaxList<TOther>(_node));
-        }*/
-
         public static implicit operator SyntaxList<TNode>(TNode node)
         {
             return new SyntaxList<TNode>(node);
