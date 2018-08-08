@@ -1,0 +1,31 @@
+Markup block - Gen<None> - 47 - (0:0,0)
+    Tag block - Gen<None> - 40 - (0:0,0)
+        Markup span - Gen<Markup> - [<text] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:2
+            HtmlTokenType.OpenAngle;[<];
+            HtmlTokenType.Text;[text];
+        Markup block - Gen<Attr:value, value='@(5:0,5),'@(38:0,38)> - 34 - (5:0,5)
+            Markup span - Gen<None> - [ value='] - SpanEditHandler;Accepts:Any - (5:0,5) - Tokens:4
+                HtmlTokenType.WhiteSpace;[ ];
+                HtmlTokenType.Text;[value];
+                HtmlTokenType.Equals;[=];
+                HtmlTokenType.SingleQuote;['];
+            Markup span - Gen<LitAttr: @(13:0,13)> - [ @* razor comment *@] - SpanEditHandler;Accepts:Any - (13:0,13) - Tokens:6
+                HtmlTokenType.WhiteSpace;[ ];
+                HtmlTokenType.RazorCommentTransition;[@];
+                HtmlTokenType.RazorCommentStar;[*];
+                HtmlTokenType.RazorComment;[ razor comment ];
+                HtmlTokenType.RazorCommentStar;[*];
+                HtmlTokenType.RazorCommentTransition;[@];
+            Markup span - Gen<LitAttr: @(33:0,33)> - [ here] - SpanEditHandler;Accepts:Any - (33:0,33) - Tokens:2
+                HtmlTokenType.WhiteSpace;[ ];
+                HtmlTokenType.Text;[here];
+            Markup span - Gen<None> - ['] - SpanEditHandler;Accepts:Any - (38:0,38) - Tokens:1
+                HtmlTokenType.SingleQuote;['];
+        Markup span - Gen<Markup> - [>] - SpanEditHandler;Accepts:Any - (39:0,39) - Tokens:1
+            HtmlTokenType.CloseAngle;[>];
+    Tag block - Gen<None> - 7 - (40:0,40)
+        Markup span - Gen<Markup> - [</text>] - SpanEditHandler;Accepts:Any - (40:0,40) - Tokens:4
+            HtmlTokenType.OpenAngle;[<];
+            HtmlTokenType.ForwardSlash;[/];
+            HtmlTokenType.Text;[text];
+            HtmlTokenType.CloseAngle;[>];
