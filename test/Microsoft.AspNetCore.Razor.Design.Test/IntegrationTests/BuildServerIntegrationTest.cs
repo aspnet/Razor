@@ -25,127 +25,128 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             _buildServer = buildServer;
         }
 
-        [Fact]
-        [InitializeTestProject("SimpleMvc")]
-        public Task Build_SimpleMvc_WithServer_UsingDotnetMSBuild_CanBuildSuccessfully()
-            => Build_SimpleMvc_CanBuildSuccessfully(MSBuildProcessKind.Dotnet);
+        //[Fact]
+        //[InitializeTestProject("SimpleMvc")]
+        //public Task Build_SimpleMvc_WithServer_UsingDotnetMSBuild_CanBuildSuccessfully()
+        //    => Build_SimpleMvc_CanBuildSuccessfully(MSBuildProcessKind.Dotnet);
 
-        [ConditionalFact]
-        [OSSkipCondition(OperatingSystems.Linux | OperatingSystems.MacOSX)]
-        [InitializeTestProject("SimpleMvc")]
-        public Task Build_SimpleMvc_WithServer_UsingDesktopMSBuild_CanBuildSuccessfully()
-            => Build_SimpleMvc_CanBuildSuccessfully(MSBuildProcessKind.Desktop);
+        //[ConditionalFact]
+        //[OSSkipCondition(OperatingSystems.Linux | OperatingSystems.MacOSX)]
+        //[InitializeTestProject("SimpleMvc")]
+        //public Task Build_SimpleMvc_WithServer_UsingDesktopMSBuild_CanBuildSuccessfully()
+        //    => Build_SimpleMvc_CanBuildSuccessfully(MSBuildProcessKind.Desktop);
 
-        private async Task Build_SimpleMvc_CanBuildSuccessfully(MSBuildProcessKind msBuildProcessKind)
-        {
-            var result = await DotnetMSBuild(
-                "Build", 
-                "/p:_RazorForceBuildServer=true",
-                msBuildProcessKind: msBuildProcessKind);
+        //private async Task Build_SimpleMvc_CanBuildSuccessfully(MSBuildProcessKind msBuildProcessKind)
+        //{
+        //    var result = await DotnetMSBuild(
+        //        "Build", 
+        //        "/p:_RazorForceBuildServer=true",
+        //        msBuildProcessKind: msBuildProcessKind);
 
-            Assert.BuildPassed(result);
-            Assert.FileExists(result, OutputPath, "SimpleMvc.dll");
-            Assert.FileExists(result, OutputPath, "SimpleMvc.pdb");
-            Assert.FileExists(result, OutputPath, "SimpleMvc.Views.dll");
-            Assert.FileExists(result, OutputPath, "SimpleMvc.Views.pdb");
+        //    Assert.BuildPassed(result);
+        //    Assert.FileExists(result, OutputPath, "SimpleMvc.dll");
+        //    Assert.FileExists(result, OutputPath, "SimpleMvc.pdb");
+        //    Assert.FileExists(result, OutputPath, "SimpleMvc.Views.dll");
+        //    Assert.FileExists(result, OutputPath, "SimpleMvc.Views.pdb");
 
-            // Verify RazorTagHelper works
-            Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.TagHelpers.input.cache");
-            Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.TagHelpers.output.cache");
-            Assert.FileContains(
-                result,
-                Path.Combine(IntermediateOutputPath, "SimpleMvc.TagHelpers.output.cache"),
-                @"""Name"":""SimpleMvc.SimpleTagHelper""");
+        //    // Verify RazorTagHelper works
+        //    Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.TagHelpers.input.cache");
+        //    Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.TagHelpers.output.cache");
+        //    Assert.FileContains(
+        //        result,
+        //        Path.Combine(IntermediateOutputPath, "SimpleMvc.TagHelpers.output.cache"),
+        //        @"""Name"":""SimpleMvc.SimpleTagHelper""");
 
-            // Verify RazorGenerate works
-            Assert.FileCountEquals(result, 8, RazorIntermediateOutputPath, "*.cs");
-        }
+        //    // Verify RazorGenerate works
+        //    Assert.FileCountEquals(result, 8, RazorIntermediateOutputPath, "*.cs");
+        //}
 
-        [Fact]
-        [InitializeTestProject(originalProjectName: "SimpleMvc", targetProjectName: "SimpleMvc", baseDirectory: "Whitespace in path")]
-        public async Task Build_AppWithWhitespaceInPath_CanBuildSuccessfully()
-        {
-            var result = await DotnetMSBuild(
-                "Build",
-                "/p:_RazorForceBuildServer=true");
+        //[Fact]
+        //[InitializeTestProject(originalProjectName: "SimpleMvc", targetProjectName: "SimpleMvc", baseDirectory: "Whitespace in path")]
+        //public async Task Build_AppWithWhitespaceInPath_CanBuildSuccessfully()
+        //{
+        //    var result = await DotnetMSBuild(
+        //        "Build",
+        //        "/p:_RazorForceBuildServer=true");
 
-            Assert.BuildPassed(result);
-            Assert.FileExists(result, OutputPath, "SimpleMvc.dll");
-            Assert.FileExists(result, OutputPath, "SimpleMvc.pdb");
-            Assert.FileExists(result, OutputPath, "SimpleMvc.Views.dll");
-            Assert.FileExists(result, OutputPath, "SimpleMvc.Views.pdb");
-        }
+        //    Assert.BuildPassed(result);
+        //    Assert.FileExists(result, OutputPath, "SimpleMvc.dll");
+        //    Assert.FileExists(result, OutputPath, "SimpleMvc.pdb");
+        //    Assert.FileExists(result, OutputPath, "SimpleMvc.Views.dll");
+        //    Assert.FileExists(result, OutputPath, "SimpleMvc.Views.pdb");
+        //}
 
-        [Fact]
-        [InitializeTestProject(originalProjectName: "SimpleMvc", targetProjectName: "Whitespace in name", baseDirectory: "")]
-        public async Task Build_AppWithWhitespaceInName_CanBuildSuccessfully()
-        {
-            var result = await DotnetMSBuild(
-                "Build",
-                "/p:_RazorForceBuildServer=true");
+        //[Fact]
+        //[InitializeTestProject(originalProjectName: "SimpleMvc", targetProjectName: "Whitespace in name", baseDirectory: "")]
+        //public async Task Build_AppWithWhitespaceInName_CanBuildSuccessfully()
+        //{
+        //    var result = await DotnetMSBuild(
+        //        "Build",
+        //        "/p:_RazorForceBuildServer=true");
 
-            Assert.BuildPassed(result);
-            Assert.FileExists(result, OutputPath, "Whitespace in name.dll");
-            Assert.FileExists(result, OutputPath, "Whitespace in name.pdb");
-            Assert.FileExists(result, OutputPath, "Whitespace in name.Views.dll");
-            Assert.FileExists(result, OutputPath, "Whitespace in name.Views.pdb");
+        //    Assert.BuildPassed(result);
+        //    Assert.FileExists(result, OutputPath, "Whitespace in name.dll");
+        //    Assert.FileExists(result, OutputPath, "Whitespace in name.pdb");
+        //    Assert.FileExists(result, OutputPath, "Whitespace in name.Views.dll");
+        //    Assert.FileExists(result, OutputPath, "Whitespace in name.Views.pdb");
 
-            Assert.FileExists(result, IntermediateOutputPath, "Whitespace in name.Views.dll");
-            Assert.FileExists(result, IntermediateOutputPath, "Whitespace in name.RazorCoreGenerate.cache");
-            Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Home", "Index.g.cshtml.cs");
-        }
+        //    Assert.FileExists(result, IntermediateOutputPath, "Whitespace in name.Views.dll");
+        //    Assert.FileExists(result, IntermediateOutputPath, "Whitespace in name.RazorCoreGenerate.cache");
+        //    Assert.FileExists(result, RazorIntermediateOutputPath, "Views", "Home", "Index.g.cshtml.cs");
+        //}
 
-        [Fact]
-        [InitializeTestProject("SimpleMvc")]
-        public async Task Build_ErrorInServer_DisplaysErrorInMsBuildOutput()
-        {
-            var result = await DotnetMSBuild(
-                "Build",
-                "/p:_RazorForceBuildServer=true /p:RazorLangVersion=5.0");
+        //[Fact]
+        //[InitializeTestProject("SimpleMvc")]
+        //public async Task Build_ErrorInServer_DisplaysErrorInMsBuildOutput()
+        //{
+        //    var result = await DotnetMSBuild(
+        //        "Build",
+        //        "/p:_RazorForceBuildServer=true /p:RazorLangVersion=5.0");
 
-            Assert.BuildFailed(result);
-            Assert.BuildOutputContainsLine(
-                result,
-                $"Invalid option 5.0 for Razor language version --version; must be Latest or a valid version in range {RazorLanguageVersion.Version_1_0} to {RazorLanguageVersion.Latest}.");
+        //    Assert.BuildFailed(result);
+        //    Assert.BuildOutputContainsLine(
+        //        result,
+        //        $"Invalid option 5.0 for Razor language version --version; must be Latest or a valid version in range {RazorLanguageVersion.Version_1_0} to {RazorLanguageVersion.Latest}.");
 
-            // Compilation failed without creating the views assembly
-            Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.dll");
-            Assert.FileDoesNotExist(result, IntermediateOutputPath, "SimpleMvc.Views.dll");
-        }
+        //    // Compilation failed without creating the views assembly
+        //    Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.dll");
+        //    Assert.FileDoesNotExist(result, IntermediateOutputPath, "SimpleMvc.Views.dll");
+        //}
 
-        [Fact]
-        [InitializeTestProject("SimpleMvc")]
-        public async Task Build_ServerConnectionMutexCreationFails_FallsBackToInProcessRzc()
-        {
-            // Use a pipe name longer that 260 characters to make the Mutex constructor throw.
-            var pipeName = new string('P', 261);
-            var result = await DotnetMSBuild(
-                "Build",
-                "/p:_RazorForceBuildServer=true",
-                buildServerPipeName: pipeName);
+        //[Fact]
+        //[InitializeTestProject("SimpleMvc")]
+        //public async Task Build_ServerConnectionMutexCreationFails_FallsBackToInProcessRzc()
+        //{
+        //    // Use a pipe name longer that 260 characters to make the Mutex constructor throw.
+        //    var pipeName = new string('P', 261);
+        //    var result = await DotnetMSBuild(
+        //        "Build",
+        //        "/p:_RazorForceBuildServer=true",
+        //        buildServerPipeName: pipeName);
 
-            // We expect this to fail because we don't allow it to fallback to in process execution.
-            Assert.BuildFailed(result);
-            Assert.FileDoesNotExist(result, IntermediateOutputPath, "SimpleMvc.Views.dll");
+        //    // We expect this to fail because we don't allow it to fallback to in process execution.
+        //    Assert.BuildFailed(result);
+        //    Assert.FileDoesNotExist(result, IntermediateOutputPath, "SimpleMvc.Views.dll");
 
-            // Try to build again without forcing it to run on build server.
-            result = await DotnetMSBuild(
-                "Build",
-                "/p:_RazorForceBuildServer=false",
-                buildServerPipeName: pipeName);
+        //    // Try to build again without forcing it to run on build server.
+        //    result = await DotnetMSBuild(
+        //        "Build",
+        //        "/p:_RazorForceBuildServer=false",
+        //        buildServerPipeName: pipeName);
 
-            Assert.BuildPassed(result);
+        //    Assert.BuildPassed(result);
 
-            Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.dll");
-            Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.Views.dll");
+        //    Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.dll");
+        //    Assert.FileExists(result, IntermediateOutputPath, "SimpleMvc.Views.dll");
 
-            // Note: We don't need to handle server clean up here because it will fail before
-            // it reaches server creation part.
-        }
+        //    // Note: We don't need to handle server clean up here because it will fail before
+        //    // it reaches server creation part.
+        //}
 
         // Skipping on linux/mac because of https://github.com/aspnet/Razor/issues/2507.
-        [ConditionalFact]
-        [OSSkipCondition(OperatingSystems.Linux | OperatingSystems.MacOSX)]
+        //[ConditionalFact]
+        //[OSSkipCondition(OperatingSystems.Linux | OperatingSystems.MacOSX)]
+        [Fact]
         [InitializeTestProject("SimpleMvc")]
         public async Task ManualServerShutdown_NoPipeName_ShutsDownServer()
         {
@@ -167,33 +168,33 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.Contains("shut down completed", output.ToString());
         }
 
-        [Fact]
-        [InitializeTestProject("SimpleMvc")]
-        public async Task Build_WithWhiteSpaceInPipeName_BuildsSuccessfully()
-        {
-            // Start the server
-            var pipeName = "pipe with whitespace";
-            var fixture = new BuildServerTestFixture(pipeName);
+        //[Fact]
+        //[InitializeTestProject("SimpleMvc")]
+        //public async Task Build_WithWhiteSpaceInPipeName_BuildsSuccessfully()
+        //{
+        //    // Start the server
+        //    var pipeName = "pipe with whitespace";
+        //    var fixture = new BuildServerTestFixture(pipeName);
 
-            try
-            {
-                // Run a build
-                var result = await DotnetMSBuild(
-                    "Build",
-                    "/p:_RazorForceBuildServer=true",
-                    buildServerPipeName: pipeName);
+        //    try
+        //    {
+        //        // Run a build
+        //        var result = await DotnetMSBuild(
+        //            "Build",
+        //            "/p:_RazorForceBuildServer=true",
+        //            buildServerPipeName: pipeName);
 
-                Assert.BuildPassed(result);
-                Assert.FileExists(result, OutputPath, "SimpleMvc.dll");
-                Assert.FileExists(result, OutputPath, "SimpleMvc.pdb");
-                Assert.FileExists(result, OutputPath, "SimpleMvc.Views.dll");
-                Assert.FileExists(result, OutputPath, "SimpleMvc.Views.pdb");
-            }
-            finally
-            {
-                // Shutdown the server
-                fixture.Dispose();
-            }
-        }
+        //        Assert.BuildPassed(result);
+        //        Assert.FileExists(result, OutputPath, "SimpleMvc.dll");
+        //        Assert.FileExists(result, OutputPath, "SimpleMvc.pdb");
+        //        Assert.FileExists(result, OutputPath, "SimpleMvc.Views.dll");
+        //        Assert.FileExists(result, OutputPath, "SimpleMvc.Views.pdb");
+        //    }
+        //    finally
+        //    {
+        //        // Shutdown the server
+        //        fixture.Dispose();
+        //    }
+        //}
     }
 }
