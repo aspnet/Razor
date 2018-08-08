@@ -35,6 +35,7 @@ namespace Microsoft.AspNetCore.Razor.Tools
 
         protected async override Task<int> ExecuteCoreAsync()
         {
+            Console.WriteLine($"Request to shutdown server with pipe {Pipe.Value()} received.");
             if (!IsServerRunning())
             {
                 // server isn't running right now
@@ -71,6 +72,8 @@ namespace Microsoft.AspNetCore.Razor.Tools
                         }
 
                         Out.Write("Server pid:{0} shut down completed.", response.ServerProcessId);
+
+                        Console.WriteLine("Server pid:{0} shut down completed.", response.ServerProcessId);
                     }
                 }
             }
@@ -78,6 +81,7 @@ namespace Microsoft.AspNetCore.Razor.Tools
             {
                 // Ignore an exception that occurred while the server was shutting down.
                 Error.Write(ex);
+                Console.WriteLine($"Some exception occured {ex.Message}");
             }
 
             return 0;
