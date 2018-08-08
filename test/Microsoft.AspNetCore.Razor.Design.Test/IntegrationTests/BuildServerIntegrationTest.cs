@@ -156,6 +156,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 $"/p:_RazorForceBuildServer=true /p:_RazorToolAssembly={toolAssembly}",
                 suppressBuildServer: true); // We don't want to specify a pipe name
 
+            Console.WriteLine($"Exitcode: {result.ExitCode} Output: {result.Output}");
             Assert.BuildPassed(result);
 
             // Shutdown the server

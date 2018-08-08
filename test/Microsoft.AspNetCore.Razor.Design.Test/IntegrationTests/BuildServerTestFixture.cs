@@ -28,6 +28,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             }
 
             ProcessId = processId;
+            Console.WriteLine($"Starting build server with pipe {PipeName} at PID {ProcessId}");
         }
 
         public string PipeName { get; }
@@ -36,6 +37,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
         public void Dispose()
         {
+            Console.WriteLine($"Disposing build server with pipe {PipeName} at PID {ProcessId}");
             // Shutdown the build server.
             using (var cts = new CancellationTokenSource(_defaultShutdownTimeout))
             {

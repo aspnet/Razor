@@ -298,6 +298,7 @@ namespace Microsoft.AspNetCore.Razor.Tools
                 pipeName
             };
             var processArguments = ArgumentEscaper.EscapeAndConcatenate(argumentList);
+            Console.WriteLine($"Path: {expectedCompilerPath} Arguments: {processArguments}");
 
             if (!File.Exists(expectedCompilerPath))
             {

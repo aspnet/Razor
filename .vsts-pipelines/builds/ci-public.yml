@@ -2,14 +2,18 @@ trigger:
 - master
 - release/*
 
-# See https://github.com/aspnet/BuildTools
-resources:
-  repositories:
-  - repository: buildtools
-    type: github
-    endpoint: DotNet-Bot GitHub Connection
-    name: aspnet/BuildTools
-    ref: refs/heads/release/2.2
-
 phases:
-- template: .vsts-pipelines/templates/project-ci.yml@buildtools
+- phase: Linux
+  queue:
+    name: Hosted Linux Preview
+  variables:
+    DOTNET_HOME: $(Agent.WorkFolder)/.dotnet
+  steps:
+  - checkout: self
+    clean: true
+  - script: ./build.sh -ci -bl:artifacts/logs/build.binlog -p:VSTestVerboseOutput=true -p:VSTestBlame=true 
+    displayName: Run build.sh
+    timeoutInMinutes: 9
+  - script: "ps -ef"
+    condition: always()
+    displayName: List processes
