@@ -62,9 +62,9 @@ namespace Microsoft.AspNetCore.Razor.Tools
                         try
                         {
                             var process = Process.GetProcessById(response.ServerProcessId);
-                            Console.WriteLine("Start waiting...");
-                            process.WaitForExit(5000);
-                            Console.WriteLine("Done waiting");
+                            //Console.WriteLine("Start waiting...");
+                            process.WaitForExit(15000);
+                            //Console.WriteLine("Done waiting");
                         }
                         catch (Exception ex)
                         {
