@@ -157,7 +157,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 $"/p:_RazorForceBuildServer=true /p:_RazorToolAssembly={toolAssembly}",
                 suppressBuildServer: true); // We don't want to specify a pipe name
 
-            Console.WriteLine($"Exitcode: {result.ExitCode} Output: {result.Output}");
+            //Console.WriteLine($"Exitcode: {result.ExitCode} Output: {result.Output}");
             Assert.BuildPassed(result);
 
             // Shutdown the server
@@ -170,8 +170,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.Contains("shut down completed", output.ToString());
         }
 
-        [Fact]
-        public void ProcessTest()
+        //[Fact]
+        private void ProcessTest()
         {
             var dotnetPath = Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet";
             var solutionRoot = TestPathUtilities.GetSolutionRootDirectory("Razor");

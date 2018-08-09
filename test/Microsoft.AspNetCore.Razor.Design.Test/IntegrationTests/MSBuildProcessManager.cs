@@ -101,6 +101,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                     outputString = output.ToString();
                 }
 
+                Console.WriteLine($"Done running dotnet build on a process with PID {process.Id}");
                 var result = new MSBuildResult(project, process.StartInfo.FileName, process.StartInfo.Arguments, process.ExitCode, outputString);
                 return result;
             });

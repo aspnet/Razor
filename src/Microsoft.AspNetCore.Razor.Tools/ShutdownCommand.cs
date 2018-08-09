@@ -68,11 +68,11 @@ namespace Microsoft.AspNetCore.Razor.Tools
                             // Add a timeout to avoid hang.
                             if (process.WaitForExit(15000))
                             {
-                                Console.WriteLine($"Process {process.Id} exited after timeout Stdout: {process.StandardOutput.ReadToEnd()}");
+                                Console.WriteLine($"Process {process.Id} exited after timeout");
                             }
                             else
                             {
-                                Console.WriteLine($"Process {process.Id} still running after timeout. HasExited: {process.HasExited} Stdout: {process.StandardOutput.ReadToEnd()}");
+                                Console.WriteLine($"Process {process.Id} still running after timeout. HasExited: {process.HasExited}");
                             }
                             //Console.WriteLine("Done waiting");
                         }
@@ -81,7 +81,7 @@ namespace Microsoft.AspNetCore.Razor.Tools
                             // There is an inherent race here with the server process.  If it has already shutdown
                             // by the time we try to access it then the operation has succeeded.
                             Error.Write(ex);
-                            Console.WriteLine($"Inherent race exception {ex} {ex.Message}");
+                            Console.WriteLine($"Some exception occured {ex} {ex.Message}");
                         }
 
                         Out.Write("Server pid:{0} shut down completed.", response.ServerProcessId);
