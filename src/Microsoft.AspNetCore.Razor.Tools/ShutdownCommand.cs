@@ -63,7 +63,17 @@ namespace Microsoft.AspNetCore.Razor.Tools
                         {
                             var process = Process.GetProcessById(response.ServerProcessId);
                             //Console.WriteLine("Start waiting...");
-                            process.WaitForExit(15000);
+
+                            // Sometimes in linux when the process has already exited before we get here, WaitForExit tends to wait indefinitely.
+                            // Add a timeout to avoid hang.
+                            if (process.WaitForExit(15000))
+                            {
+                                Console.WriteLine($"Process {process.Id} exited after timeout");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Process {process.Id} still running after timeout. HasExited: {process.HasExited}");
+                            }
                             //Console.WriteLine("Done waiting");
                         }
                         catch (Exception ex)
