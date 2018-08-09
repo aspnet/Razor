@@ -3,7 +3,6 @@
 
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.CommandLineUtils;
@@ -12,6 +11,8 @@ namespace Microsoft.AspNetCore.Razor.Tools
 {
     internal class ShutdownCommand : CommandBase
     {
+        private const int TimeoutMsProcessShutdown = 30000;
+
         public ShutdownCommand(Application parent)
             : base(parent, "shutdown")
         {
@@ -61,11 +62,14 @@ namespace Microsoft.AspNetCore.Razor.Tools
                         try
                         {
                             var process = Process.GetProcessById(response.ServerProcessId);
-                            process.WaitForExit();
+
+                            // Sometimes in linux when the process has already exited before we get here, WaitForExit tends to wait indefinitely.
+                            // Add a timeout to avoid hang.
+                            process.WaitForExit(TimeoutMsProcessShutdown);
                         }
                         catch (Exception ex)
                         {
-                            // There is an inherent race here with the server process.  If it has already shutdown
+                            // There is an inherent race here with the server process. If it has already shutdown
                             // by the time we try to access it then the operation has succeeded.
                             Error.Write(ex);
                         }
