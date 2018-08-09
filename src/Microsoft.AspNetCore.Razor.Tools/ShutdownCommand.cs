@@ -62,13 +62,16 @@ namespace Microsoft.AspNetCore.Razor.Tools
                         try
                         {
                             var process = Process.GetProcessById(response.ServerProcessId);
-                            process.WaitForExit();
+                            Console.WriteLine("Start waiting...");
+                            process.WaitForExit(5000);
+                            Console.WriteLine("Done waiting");
                         }
                         catch (Exception ex)
                         {
                             // There is an inherent race here with the server process.  If it has already shutdown
                             // by the time we try to access it then the operation has succeeded.
                             Error.Write(ex);
+                            Console.WriteLine($"Inherent race exception {ex} {ex.Message}");
                         }
 
                         Out.Write("Server pid:{0} shut down completed.", response.ServerProcessId);
