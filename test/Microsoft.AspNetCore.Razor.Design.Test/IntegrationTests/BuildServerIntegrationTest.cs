@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.AspNetCore.Razor.Tools;
+using Microsoft.AspNetCore.Testing;
 using Microsoft.AspNetCore.Testing.xunit;
 using Microsoft.CodeAnalysis;
 using Moq;
@@ -167,6 +168,35 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
             Assert.Equal(0, exitCode);
             Assert.Contains("shut down completed", output.ToString());
+        }
+
+        [Fact]
+        public void ProcessTest()
+        {
+            var dotnetPath = Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet";
+            var solutionRoot = TestPathUtilities.GetSolutionRootDirectory("Razor");
+            var appPath = Path.Combine(solutionRoot, "test", "testapps", "ProcessTest");
+            var startInfo = new ProcessStartInfo()
+            {
+                FileName = dotnetPath,
+                Arguments = "run",
+                UseShellExecute = false,
+                WorkingDirectory = appPath,
+                RedirectStandardInput = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true
+            };
+
+            var process = Process.Start(startInfo);
+            if (process.WaitForExit(10000))
+            {
+                Console.WriteLine($"Outer Process {process.Id} exited cleanly Stdout: {process.StandardOutput.ReadToEnd()}");
+            }
+            else
+            {
+                Console.WriteLine($"Outer Process {process.Id} failed to exit. HasExited: {process.HasExited} Stdout: {process.StandardOutput.ReadToEnd()}");
+            }
         }
 
         //[Fact]
