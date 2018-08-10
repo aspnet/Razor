@@ -51,7 +51,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         [Fact]
         public void RazorCommentInClosingTagBlock()
         {
-            ParseDocumentTest("<text value=' @* razor comment *@ here'></text>");
+            ParseDocumentTest("<text></text @* razor comment *@>");
         }
 
         [Fact]
