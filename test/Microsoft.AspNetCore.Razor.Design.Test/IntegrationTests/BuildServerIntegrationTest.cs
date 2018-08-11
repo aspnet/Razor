@@ -189,7 +189,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             };
 
             var process = Process.Start(startInfo);
-            if (process.WaitForExit(10000))
+            if (process.WaitForExit(30000))
             {
                 Console.WriteLine($"Outer Process {process.Id} exited cleanly Stdout: {process.StandardOutput.ReadToEnd()}");
             }
