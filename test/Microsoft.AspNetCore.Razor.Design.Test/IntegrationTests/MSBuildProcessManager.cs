@@ -57,6 +57,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             process.OutputDataReceived += Process_OutputDataReceived;
 
             process.Start();
+            Console.WriteLine($"Started dotnet build at PID {process.Id}");
             process.BeginErrorReadLine();
             process.BeginOutputReadLine();
 

@@ -173,6 +173,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
         [Fact]
         public void ProcessTest()
         {
+            Console.WriteLine($"The test is running in process PID {Process.GetCurrentProcess().Id}");
             var dotnetPath = Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet";
             var solutionRoot = TestPathUtilities.GetSolutionRootDirectory("Razor");
             var appPath = Path.Combine(solutionRoot, "test", "testapps", "ProcessTest");
