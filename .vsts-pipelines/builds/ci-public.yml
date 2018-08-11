@@ -17,3 +17,4 @@ phases:
   - script: "ps -ef"
     condition: always()
     displayName: List processes
+  - script: dotnet --info
