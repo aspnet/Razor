@@ -359,9 +359,9 @@ namespace Microsoft.AspNetCore.Razor.Tools
                         Arguments = processArguments,
                         UseShellExecute = false,
                         WorkingDirectory = clientDir,
-                        //RedirectStandardInput = true,
-                        //RedirectStandardOutput = true,
-                        //RedirectStandardError = true,
+                        RedirectStandardInput = true,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
                         CreateNoWindow = true
                     };
 

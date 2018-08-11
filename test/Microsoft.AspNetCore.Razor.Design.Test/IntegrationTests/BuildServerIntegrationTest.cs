@@ -170,8 +170,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             Assert.Contains("shut down completed", output.ToString());
         }
 
-        //[Fact]
-        private void ProcessTest()
+        [Fact]
+        public void ProcessTest()
         {
             var dotnetPath = Environment.GetEnvironmentVariable("DOTNET_HOST_PATH") ?? "dotnet";
             var solutionRoot = TestPathUtilities.GetSolutionRootDirectory("Razor");
