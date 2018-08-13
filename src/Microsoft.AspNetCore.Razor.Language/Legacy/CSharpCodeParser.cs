@@ -349,7 +349,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     {
                         Context.ErrorSink.OnError(
                             RazorDiagnosticFactory.CreateParsing_UnexpectedEndOfFileAtStartOfCodeBlock(
-                                new SourceSpan(CurrentStart, contentLength: 1 /* end of file */)));
+                                new SourceSpan(CurrentStart, contentLength: 1 // end of file
+                                )));
                     }
                     else
                     {
@@ -630,7 +631,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     AcceptUntil(CSharpTokenType.LessThan);
                     Context.ErrorSink.OnError(
                         RazorDiagnosticFactory.CreateParsing_ExpectedEndOfBlockBeforeEOF(
-                            new SourceSpan(block.Start, contentLength: 1 /* ( */), block.Name, ")", "("));
+                            new SourceSpan(block.Start, contentLength: 1 // (
+
+                            ), block.Name, ")", "("));
                 }
 
                 // If necessary, put an empty-content marker token here
@@ -659,7 +662,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 Context.ErrorSink.OnError(
                     RazorDiagnosticFactory.CreateParsing_InlineMarkupBlocksCannotBeNested(
-                        new SourceSpan(CurrentStart, contentLength: 1 /* @ */)));
+                        new SourceSpan(CurrentStart, contentLength: 1 // @
+                        )));
             }
             Output(SpanKindInternal.Code);
             using (Context.Builder.StartBlock(BlockKindInternal.Template))
@@ -1325,7 +1329,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 {
                     Context.ErrorSink.OnError(
                         RazorDiagnosticFactory.CreateParsing_AtInCodeMustBeFollowedByColonParenOrIdentifierStart(
-                            new SourceSpan(loc, contentLength: 1 /* @ */)));
+                            new SourceSpan(loc, contentLength: 1 // @
+                            )));
                 }
 
                 // Markup block
@@ -1408,7 +1413,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 {
                     Context.ErrorSink.OnError(
                         RazorDiagnosticFactory.CreateParsing_UnexpectedNestedCodeBlock(
-                            new SourceSpan(CurrentStart, contentLength: 1 /* { */)));
+                            new SourceSpan(CurrentStart, contentLength: 1 // {
+                                )));
                 }
 
                 // @( or @foo - Nested expression, parse a child block
@@ -1503,7 +1509,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 Context.ErrorSink.OnError(
                     RazorDiagnosticFactory.CreateParsing_ExpectedEndOfBlockBeforeEOF(
-                        new SourceSpan(block.Start, contentLength: 1 /* { OR } */), block.Name, "}", "{"));
+                        new SourceSpan(block.Start, contentLength: 1 // { OR }
+                        ), block.Name, "}", "{"));
             }
             else if (acceptTerminatingBrace)
             {
@@ -1841,7 +1848,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-
         private void ValidateDirectiveUsage(DirectiveDescriptor descriptor)
         {
             if (descriptor.Usage == DirectiveUsage.FileScopedSinglyOccurring)
@@ -1850,7 +1856,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 {
                     // There will always be at least 1 child because of the `@` transition.
                     var directiveStart = Context.Builder.CurrentBlock.Children.First().Start;
-                    var errorLength = /* @ */ 1 + descriptor.Directive.Length;
+                    var errorLength = // @
+                        1 + descriptor.Directive.Length;
+                    
                     Context.ErrorSink.OnError(
                         RazorDiagnosticFactory.CreateParsing_DuplicateDirective(
                             new SourceSpan(directiveStart, errorLength), descriptor.Directive));
@@ -1866,7 +1874,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 Context.ErrorSink.OnError(
                     RazorDiagnosticFactory.CreateParsing_UnexpectedEOFAfterDirective(
-                        new SourceSpan(CurrentStart, contentLength: 1 /* { */), descriptor.Directive, "{"));
+                        new SourceSpan(CurrentStart, contentLength: 1 // {
+                            ), descriptor.Directive, "{"));
             }
             else if (!At(CSharpTokenType.LeftBrace))
             {
@@ -1891,7 +1900,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     editHandler.AutoCompleteString = "}";
                     Context.ErrorSink.OnError(
                         RazorDiagnosticFactory.CreateParsing_ExpectedEndOfBlockBeforeEOF(
-                            new SourceSpan(startingBraceLocation, contentLength: 1 /* } */), descriptor.Directive, "}", "{"));
+                            new SourceSpan(startingBraceLocation, contentLength: 1 // }
+                            ), descriptor.Directive, "}", "{"));
                 }
                 else
                 {
@@ -1910,7 +1920,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 // There wil always be at least 1 child because of the `@` transition.
                 var directiveStart = Context.Builder.CurrentBlock.Children.First().Start;
-                var errorLength = /* @ */ 1 + SyntaxConstants.CSharp.TagHelperPrefixKeyword.Length;
+                var errorLength = // @
+                    1 + SyntaxConstants.CSharp.TagHelperPrefixKeyword.Length;
+                
                 duplicateDiagnostic = RazorDiagnosticFactory.CreateParsing_DuplicateDirective(
                     new SourceSpan(directiveStart, errorLength),
                     SyntaxConstants.CSharp.TagHelperPrefixKeyword);

@@ -215,7 +215,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 Context.ErrorSink.OnError(
                     RazorDiagnosticFactory.CreateParsing_ExpectedCloseBracketBeforeEOF(
-                        new SourceSpan(start, contentLength: 1 /* { OR } */),
+                        new SourceSpan(start, contentLength: 1 // { OR }
+                        ),
                         Language.GetSample(left),
                         Language.GetSample(right)));
             }
@@ -264,7 +265,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     {
                         Context.ErrorSink.OnError(
                             RazorDiagnosticFactory.CreateParsing_ExpectedCloseBracketBeforeEOF(
-                                new SourceSpan(start, contentLength: 1 /* { OR } */),
+                                new SourceSpan(start, contentLength: 1 // { OR }
+                                ),
                                 Language.GetSample(left),
                                 Language.GetSample(right)));
                     }
@@ -650,7 +652,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         errorReported = true;
                         Context.ErrorSink.OnError(
                             RazorDiagnosticFactory.CreateParsing_RazorCommentNotTerminated(
-                                new SourceSpan(start, contentLength: 2 /* @* */)));
+                                new SourceSpan(start, contentLength: 2 // @*
+                                )));
                     }
                     else
                     {
@@ -664,7 +667,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             errorReported = true;
                             Context.ErrorSink.OnError(
                             RazorDiagnosticFactory.CreateParsing_RazorCommentNotTerminated(
-                                new SourceSpan(start, contentLength: 2 /* @* */)));
+                                new SourceSpan(start, contentLength: 2 // @*
+                                )));
                         }
                     }
                     else
