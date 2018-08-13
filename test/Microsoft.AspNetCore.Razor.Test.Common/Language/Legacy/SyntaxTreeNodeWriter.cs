@@ -177,7 +177,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             if (span.SyntaxNode != null)
             {
-                WriteSyntaxNode(span.SyntaxNode.CreateRed(null, span.Start.AbsoluteIndex));
+                WriteSyntaxNode(span.SyntaxNode);
                 return;
             }
 
@@ -200,7 +200,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 WriteNewLine();
                 WriteIndent();
-                WriteToken(token);
+                WriteSyntaxToken(token);
             }
             Depth--;
         }
@@ -244,7 +244,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             WriteIndent();
             var diagnostics = syntaxToken.GetDiagnostics();
-            var tokenString = $"{typeof(SyntaxKind).Name}.{syntaxToken.Kind};[{syntaxToken.Text}];{string.Join(", ", diagnostics.Select(diagnostic => diagnostic.Id + diagnostic.Span))}";
+            var tokenString = $"{typeof(SyntaxKind).Name}.{syntaxToken.Kind};[{syntaxToken.Content}];{string.Join(", ", diagnostics.Select(diagnostic => diagnostic.Id + diagnostic.Span))}";
             Write(tokenString);
         }
 
