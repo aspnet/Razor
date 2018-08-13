@@ -548,7 +548,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 CurrentErrors.Add(
                     RazorDiagnosticFactory.CreateParsing_UnterminatedStringLiteral(
-                        new SourceSpan(CurrentStart, contentLength: 1 /* end of file */)));
+                        new SourceSpan(CurrentStart, contentLength: 1 // end of file
+                        )));
             }
             return Transition(CSharpTokenizerState.Data, EndToken(CSharpTokenType.StringLiteral));
         }
@@ -575,7 +576,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 CurrentErrors.Add(
                     RazorDiagnosticFactory.CreateParsing_UnterminatedStringLiteral(
-                        new SourceSpan(CurrentStart, contentLength: 1 /* " */)));
+                        new SourceSpan(CurrentStart, contentLength: 1 // "
+                        )));
             }
             else
             {
@@ -592,7 +594,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 CurrentErrors.Add(
                     RazorDiagnosticFactory.CreateParsing_BlockCommentNotTerminated(
-                        new SourceSpan(CurrentStart, contentLength: 1 /* end of file */)));
+                        new SourceSpan(CurrentStart, contentLength: 1 // end of file
+                        )));
                     
                 return Transition(CSharpTokenizerState.Data, EndToken(CSharpTokenType.Comment));
             }

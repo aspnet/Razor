@@ -44,7 +44,9 @@ namespace Microsoft.AspNetCore.Razor.Language
                 if (_nestedLevel > 0)
                 {
                     var directiveStart = block.Children.First(child => !child.IsBlock && ((Span)child).Kind == SpanKindInternal.Transition).Start;
-                    var errorLength = /* @ */ 1 + SectionDirective.Directive.Directive.Length;
+                    var errorLength = // @
+                        1 + SectionDirective.Directive.Directive.Length;
+                    
                     var error = RazorDiagnosticFactory.CreateParsing_SectionsCannotBeNested(new SourceSpan(directiveStart, errorLength));
                     chunkGenerator.Diagnostics.Add(error);
                 }
