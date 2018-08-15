@@ -3,6 +3,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Razor.Language.Experiemental;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Xunit;
 
@@ -252,6 +253,13 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
         }
 
         [Fact]
+        public void Blocks_Utf8_Runtime()
+        {
+            GenerateBaselines = true;
+            RunTimeTest();
+        }
+
+        [Fact]
         public void Await_Runtime()
         {
             RunTimeTest();
@@ -445,6 +453,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
             // Arrange, Act & Assert
             RunRuntimeTagHelpersTest(TestTagHelperDescriptors.SimpleTagHelperDescriptors);
         }
+
         #endregion
 
         #region DesignTime
@@ -920,6 +929,8 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
                 FunctionsDirective.Register(builder);
                 InheritsDirective.Register(builder);
                 SectionDirective.Register(builder);
+
+                Utf8Directive.Register(builder);
             });
 
             var projectItem = CreateProjectItem();

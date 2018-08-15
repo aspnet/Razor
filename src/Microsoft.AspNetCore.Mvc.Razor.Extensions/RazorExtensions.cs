@@ -3,6 +3,7 @@
 
 using System;
 using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.AspNetCore.Razor.Language.Experiemental;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.CodeAnalysis.Razor;
 
@@ -25,6 +26,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
             FunctionsDirective.Register(builder);
             InheritsDirective.Register(builder);
             SectionDirective.Register(builder);
+            Utf8Directive.Register(builder);
 
             builder.Features.Add(new DefaultTagHelperDescriptorProvider());
             builder.Features.Add(new ViewComponentTagHelperDescriptorProvider());
