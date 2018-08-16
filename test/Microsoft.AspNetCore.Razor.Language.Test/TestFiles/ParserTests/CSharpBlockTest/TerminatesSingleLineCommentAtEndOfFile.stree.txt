@@ -13,4 +13,4 @@ Statement block - Gen<None> - 38 - (0:0,0)
         SyntaxKind.Whitespace;[ ];
         SyntaxKind.LeftBrace;[{];
         SyntaxKind.Whitespace;[ ];
-        SyntaxKind.Comment;[// foo bar baz];
+        SyntaxKind.CSharpComment;[// foo bar baz];

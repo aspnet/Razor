@@ -97,7 +97,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         return Resources.CSharpToken_Newline;
                     case SyntaxKind.Whitespace:
                         return Resources.CSharpToken_Whitespace;
-                    case SyntaxKind.Comment:
+                    case SyntaxKind.CSharpComment:
                         return Resources.CSharpToken_Comment;
                     case SyntaxKind.RealLiteral:
                         return Resources.CSharpToken_RealLiteral;

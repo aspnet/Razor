@@ -103,7 +103,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public bool IsNested { get; set; }
 
-        protected override bool TokenTypeEquals(SyntaxKind x, SyntaxKind y) => x == y;
+        protected override bool TokenKindEquals(SyntaxKind x, SyntaxKind y) => x == y;
 
         protected void MapDirectives(Action handler, params string[] directives)
         {
@@ -190,7 +190,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             return token => token.Kind == SyntaxKind.Whitespace ||
                           (includeNewLines && token.Kind == SyntaxKind.NewLine) ||
-                          (includeComments && token.Kind == SyntaxKind.Comment);
+                          (includeComments && token.Kind == SyntaxKind.CSharpComment);
         }
 
         public override void ParseBlock()
@@ -1374,7 +1374,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 case SyntaxKind.RightBrace:
                     // Possible end of Code Block, just run the continuation
                     break;
-                case SyntaxKind.Comment:
+                case SyntaxKind.CSharpComment:
                     AcceptAndMoveNext();
                     break;
                 default:

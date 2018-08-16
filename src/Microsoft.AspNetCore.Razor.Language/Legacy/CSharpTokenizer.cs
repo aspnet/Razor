@@ -595,7 +595,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     RazorDiagnosticFactory.CreateParsing_BlockCommentNotTerminated(
                         new SourceSpan(CurrentStart, contentLength: 1 /* end of file */)));
                     
-                return Transition(CSharpTokenizerState.Data, EndToken(SyntaxKind.Comment));
+                return Transition(CSharpTokenizerState.Data, EndToken(SyntaxKind.CSharpComment));
             }
             if (CurrentCharacter == '*')
             {
@@ -603,7 +603,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 if (CurrentCharacter == '/')
                 {
                     TakeCurrent();
-                    return Transition(CSharpTokenizerState.Data, EndToken(SyntaxKind.Comment));
+                    return Transition(CSharpTokenizerState.Data, EndToken(SyntaxKind.CSharpComment));
                 }
             }
             return Stay();
@@ -613,7 +613,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         private StateResult SingleLineComment()
         {
             TakeUntil(c => ParserHelpers.IsNewLine(c));
-            return Stay(EndToken(SyntaxKind.Comment));
+            return Stay(EndToken(SyntaxKind.CSharpComment));
         }
 
         // CSharp Spec §2.4.4

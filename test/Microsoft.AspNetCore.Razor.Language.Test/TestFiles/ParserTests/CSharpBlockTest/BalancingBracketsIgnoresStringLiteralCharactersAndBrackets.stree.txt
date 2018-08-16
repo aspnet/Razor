@@ -8,7 +8,7 @@ Statement block - Gen<None> - 47 - (0:0,0)
         SyntaxKind.LeftBrace;[{];
         SyntaxKind.NewLine;[LF];
         SyntaxKind.Whitespace;[    ];
-        SyntaxKind.Comment;[// bar } " baz '];
+        SyntaxKind.CSharpComment;[// bar } " baz '];
         SyntaxKind.NewLine;[LF];
         SyntaxKind.Whitespace;[    ];
         SyntaxKind.Identifier;[zoop];

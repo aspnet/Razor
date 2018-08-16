@@ -213,7 +213,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 throw new NotImplementedException();
             }
 
-            protected override bool TokenTypeEquals(SyntaxKind x, SyntaxKind y)
+            protected override bool TokenKindEquals(SyntaxKind x, SyntaxKind y)
             {
                 throw new NotImplementedException();
             }

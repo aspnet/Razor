@@ -29,7 +29,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         private SyntaxToken _bufferedOpenAngle;
 
         //From http://dev.w3.org/html5/spec/Overview.html#elements-0
-        private ISet<string> _voidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        private readonly ISet<string> _voidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "area",
             "base",
@@ -68,7 +68,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             get { return CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase; }
         }
 
-        protected override bool TokenTypeEquals(SyntaxKind x, SyntaxKind y) => x == y;
+        protected override bool TokenKindEquals(SyntaxKind x, SyntaxKind y) => x == y;
 
         public override void BuildSpan(SpanBuilder span, SourceLocation start, string content)
         {
@@ -342,7 +342,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             if (CurrentToken.Kind == SyntaxKind.HtmlTextLiteral && CurrentToken.Content.Length > 0 && CurrentToken.Content[0] == ':')
             {
                 // Split the token
-                Tuple<SyntaxToken, SyntaxToken> split = Language.SplitToken(CurrentToken, 1, SyntaxKind.Colon);
+                var split = Language.SplitToken(CurrentToken, 1, SyntaxKind.Colon);
 
                 // The first part (left) is added to this span and we return a MetaCode span
                 Accept(split.Item1);
@@ -1200,7 +1200,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 tagName = potentialTagNameToken;
             }
 
-            Tuple<SyntaxToken, SourceLocation> tag = Tuple.Create(tagName, _lastTagStart);
+            var tag = Tuple.Create(tagName, _lastTagStart);
 
             if (tags.Count == 0 &&
                 // Note tagName may contain a '!' escape character. This ensures <!text> doesn't match here.
@@ -1217,7 +1217,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 AcceptAndMoveNext();
 
                 var bookmark = CurrentStart.AbsoluteIndex;
-                IEnumerable<SyntaxToken> tokens = ReadWhile(IsSpacingToken(includeNewLines: true));
+                var tokens = ReadWhile(IsSpacingToken(includeNewLines: true));
                 var empty = At(SyntaxKind.ForwardSlash);
                 if (empty)
                 {
@@ -1307,7 +1307,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         var bookmark = CurrentStart.AbsoluteIndex;
 
                         // Skip whitespace
-                        IEnumerable<SyntaxToken> whiteSpace = ReadWhile(IsSpacingToken(includeNewLines: true));
+                        var whiteSpace = ReadWhile(IsSpacingToken(includeNewLines: true));
 
                         // Open Angle
                         if (At(SyntaxKind.OpenAngle) && NextIs(SyntaxKind.ForwardSlash))
@@ -1736,9 +1736,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private static bool IsTypeAttribute(Block block)
         {
-            var span = block.Children.First() as Span;
 
-            if (span == null)
+            if (!(block.Children.First() is Span span))
             {
                 return false;
             }
@@ -1834,7 +1833,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 var bookmark = Context.Source.Position - CurrentToken.Content.Length;
                 try
                 {
-                    foreach (string component in nestingSequenceComponents)
+                    foreach (var component in nestingSequenceComponents)
                     {
                         if (!EndOfFile && !string.Equals(CurrentToken.Content, component, Comparison))
                         {
@@ -1859,7 +1858,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private int ProcessTextToken(Tuple<string, string> nestingSequences, int currentNesting)
         {
-            for (int i = 0; i < CurrentToken.Content.Length; i++)
+            for (var i = 0; i < CurrentToken.Content.Length; i++)
             {
                 var nestingDelta = HandleNestingSequence(nestingSequences.Item1, i, currentNesting, 1);
                 if (nestingDelta == 0)
@@ -1890,7 +1889,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     PutCurrentBack();
 
                     // Carve up the token
-                    Tuple<SyntaxToken, SyntaxToken> pair = Language.SplitToken(token, position, SyntaxKind.HtmlTextLiteral);
+                    var pair = Language.SplitToken(token, position, SyntaxKind.HtmlTextLiteral);
                     var preSequence = pair.Item1;
                     Debug.Assert(pair.Item2 != null);
                     pair = Language.SplitToken(pair.Item2, sequence.Length, SyntaxKind.HtmlTextLiteral);

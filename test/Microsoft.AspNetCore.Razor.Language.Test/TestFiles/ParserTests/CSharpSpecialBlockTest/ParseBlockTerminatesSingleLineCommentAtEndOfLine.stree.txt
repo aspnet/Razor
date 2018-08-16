@@ -9,7 +9,7 @@ Statement block - Gen<None> - 48 - (0:0,0)
         SyntaxKind.LeftBrace;[{];
         SyntaxKind.NewLine;[LF];
         SyntaxKind.Whitespace;[    ];
-        SyntaxKind.Comment;[// Foo];
+        SyntaxKind.CSharpComment;[// Foo];
         SyntaxKind.NewLine;[LF];
     Markup block - Gen<None> - 21 - (26:2,0)
         Markup span - Gen<Markup> - [	] - SpanEditHandler;Accepts:Any - (26:2,0) - Tokens:1

@@ -38,7 +38,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         Identifier,
         Keyword,
         IntegerLiteral,
-        Comment,
+        CSharpComment,
         RealLiteral,
         CharacterLiteral,
         StringLiteral,

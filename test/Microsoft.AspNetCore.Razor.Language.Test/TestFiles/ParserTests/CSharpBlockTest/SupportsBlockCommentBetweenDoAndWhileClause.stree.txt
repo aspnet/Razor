@@ -15,9 +15,9 @@ Statement block - Gen<None> - 54 - (0:0,0)
         SyntaxKind.Whitespace;[ ];
         SyntaxKind.RightBrace;[}];
         SyntaxKind.Whitespace;[ ];
-        SyntaxKind.Comment;[/* Foo */];
+        SyntaxKind.CSharpComment;[/* Foo */];
         SyntaxKind.Whitespace;[ ];
-        SyntaxKind.Comment;[/* Bar */];
+        SyntaxKind.CSharpComment;[/* Bar */];
         SyntaxKind.Whitespace;[ ];
         SyntaxKind.Keyword;[while];
         SyntaxKind.LeftParenthesis;[(];
