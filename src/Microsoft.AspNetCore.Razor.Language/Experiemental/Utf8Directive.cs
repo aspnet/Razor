@@ -3,6 +3,7 @@
 
 using System;
 using System.Text;
+using System.Threading;
 using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 
@@ -129,11 +130,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Experiemental
                 var text = _builder.ToString();
                 var bytes = Encoding.UTF8.GetBytes(text);
 
+                var index = Interlocked.Increment(ref _count);
+
                 context.CodeWriter.WriteVariableDeclaration(
                     "System.ReadOnlyMemory<byte>",
-                    $"__bytes{++_count}",
+                    $"__bytes{index}",
                     $"new byte[]{{{string.Join(", ", bytes)}}}");
-                context.CodeWriter.WriteMethodInvocation("WriteLiteral", $"__bytes{_count}");
+                context.CodeWriter.WriteMethodInvocation("WriteLiteral", $"__bytes{index}");
             }
         }
     }
