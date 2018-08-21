@@ -265,29 +265,29 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new CSharpCodeBlockSyntax instance.</summary>
-    public static CSharpCodeBlockSyntax CSharpCodeBlock(SyntaxList<RazorNodeSyntax> children)
+    public static CSharpCodeBlockSyntax CSharpCodeBlock(SyntaxList<RazorSyntaxNode> children)
     {
-      return (CSharpCodeBlockSyntax)InternalSyntax.SyntaxFactory.CSharpCodeBlock(children.Node.ToGreenList<InternalSyntax.RazorNodeSyntax>()).CreateRed();
+      return (CSharpCodeBlockSyntax)InternalSyntax.SyntaxFactory.CSharpCodeBlock(children.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>()).CreateRed();
     }
 
     /// <summary>Creates a new CSharpCodeBlockSyntax instance.</summary>
     public static CSharpCodeBlockSyntax CSharpCodeBlock()
     {
-      return SyntaxFactory.CSharpCodeBlock(default(SyntaxList<RazorNodeSyntax>));
+      return SyntaxFactory.CSharpCodeBlock(default(SyntaxList<RazorSyntaxNode>));
     }
 
     /// <summary>Creates a new CSharpStatement instance.</summary>
-    public static CSharpStatement CSharpStatement(CSharpTransitionSyntax transition, CSharpNodeSyntax body)
+    public static CSharpStatement CSharpStatement(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
-      return (CSharpStatement)InternalSyntax.SyntaxFactory.CSharpStatement(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpNodeSyntax)body.Green).CreateRed();
+      return (CSharpStatement)InternalSyntax.SyntaxFactory.CSharpStatement(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
     }
 
     /// <summary>Creates a new CSharpStatement instance.</summary>
-    public static CSharpStatement CSharpStatement(CSharpNodeSyntax body)
+    public static CSharpStatement CSharpStatement(CSharpSyntaxNode body)
     {
       return SyntaxFactory.CSharpStatement(SyntaxFactory.CSharpTransition(), body);
     }
@@ -311,17 +311,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new CSharpExpression instance.</summary>
-    public static CSharpExpression CSharpExpression(CSharpTransitionSyntax transition, CSharpNodeSyntax body)
+    public static CSharpExpression CSharpExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
-      return (CSharpExpression)InternalSyntax.SyntaxFactory.CSharpExpression(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpNodeSyntax)body.Green).CreateRed();
+      return (CSharpExpression)InternalSyntax.SyntaxFactory.CSharpExpression(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
     }
 
     /// <summary>Creates a new CSharpExpression instance.</summary>
-    public static CSharpExpression CSharpExpression(CSharpNodeSyntax body)
+    public static CSharpExpression CSharpExpression(CSharpSyntaxNode body)
     {
       return SyntaxFactory.CSharpExpression(SyntaxFactory.CSharpTransition(), body);
     }
@@ -341,17 +341,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new CSharpDirectiveSyntax instance.</summary>
-    public static CSharpDirectiveSyntax CSharpDirective(CSharpTransitionSyntax transition, CSharpNodeSyntax body)
+    public static CSharpDirectiveSyntax CSharpDirective(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
-      return (CSharpDirectiveSyntax)InternalSyntax.SyntaxFactory.CSharpDirective(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpNodeSyntax)body.Green).CreateRed();
+      return (CSharpDirectiveSyntax)InternalSyntax.SyntaxFactory.CSharpDirective(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
     }
 
     /// <summary>Creates a new CSharpDirectiveSyntax instance.</summary>
-    public static CSharpDirectiveSyntax CSharpDirective(CSharpNodeSyntax body)
+    public static CSharpDirectiveSyntax CSharpDirective(CSharpSyntaxNode body)
     {
       return SyntaxFactory.CSharpDirective(SyntaxFactory.CSharpTransition(), body);
     }
