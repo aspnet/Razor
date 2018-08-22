@@ -17,5 +17,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 return writer.ToString();
             }
         }
+
+        internal static string Serialize(RazorSyntaxTree syntaxTree)
+        {
+            return string.Empty;
+        }
     }
 }

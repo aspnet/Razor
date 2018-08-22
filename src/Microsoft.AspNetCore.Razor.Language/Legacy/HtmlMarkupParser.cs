@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
-    internal class HtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer>
+    internal partial class HtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer>
     {
         private const string ScriptTagName = "script";
 
@@ -54,7 +54,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
         }
 
-        public ParserBase CodeParser { get; set; }
+        public CSharpCodeParser CodeParser { get; set; }
 
         public ISet<string> VoidElements
         {
@@ -234,7 +234,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             using (PushSpanConfig())
             {
-                CodeParser.ParseBlock();
+                CodeParser.ParseBlock1();
             }
 
             Span.Start = CurrentLocation;
@@ -275,7 +275,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        public override void ParseBlock()
+        public override void ParseBlock1()
         {
             if (Context == null)
             {
@@ -418,6 +418,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             Accept(_bufferedOpenAngle);
                             EndTagBlock(tags, complete: false);
                         }
+                        else if (atSpecialTag && At(SyntaxKind.Bang))
+                        {
+                            Accept(_bufferedOpenAngle);
+                            complete = BangTag();
+                        }
                         else
                         {
                             complete = AfterTagStart(tagStart, tags, atSpecialTag, tagBlockWrapper);
@@ -460,7 +465,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     case SyntaxKind.ForwardSlash:
                         // End Tag
                         return EndTag(tagStart, tags, tagBlockWrapper);
-                    case SyntaxKind.Bang:
+                    case SyntaxKind.Bang: // Dead code. This case will never be hit.
                         // Comment, CDATA, DOCTYPE, or a parser-escaped HTML tag.
                         if (atSpecialTag)
                         {
@@ -516,7 +521,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         while (!EndOfFile)
                         {
                             SkipToAndParseCode(SyntaxKind.DoubleHyphen);
-                            var lastDoubleHyphen = AcceptAllButLastDoubleHyphens();
+                            var lastDoubleHyphen = AcceptAllButLastDoubleHyphens1();
 
                             if (At(SyntaxKind.CloseAngle))
                             {
@@ -553,7 +558,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return false;
         }
 
-        protected SyntaxToken AcceptAllButLastDoubleHyphens()
+        protected SyntaxToken AcceptAllButLastDoubleHyphens1()
         {
             var lastDoubleHyphen = CurrentToken;
             AcceptWhile(s =>
@@ -732,7 +737,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     tagName = CurrentToken.Content;
                 }
 
-                var matched = RemoveTag(tags, tagName, tagStart);
+                var matched = RemoveTag1(tags, tagName, tagStart);
 
                 if (tags.Count == 0 &&
                     // Note tagName may contain a '!' escape character. This ensures </!text> doesn't match here.
@@ -754,7 +759,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        private void RecoverTextTag()
+        private void RecoverTextTag1()
         {
             // We don't want to skip-to and parse because there shouldn't be anything in the body of text tags.
             AcceptUntil(SyntaxKind.CloseAngle, SyntaxKind.NewLine);
@@ -781,7 +786,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         new SourceSpan(textLocation, contentLength: 4 /* text */)));
 
                 Span.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.Any;
-                RecoverTextTag();
+                RecoverTextTag1();
             }
             else
             {
@@ -833,14 +838,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             else
             {
                 // We are here ($): <tag$ foo="bar" biz="~/Baz" />
-                while (!EndOfFile && !IsEndOfTag())
+                while (!EndOfFile && !IsEndOfTag1())
                 {
                     BeforeAttribute();
                 }
             }
         }
 
-        private bool IsEndOfTag()
+        private bool IsEndOfTag1()
         {
             if (At(SyntaxKind.ForwardSlash))
             {
@@ -1236,7 +1241,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         RazorDiagnosticFactory.CreateParsing_TextTagCannotContainAttributes(
                             new SourceSpan(textLocation, contentLength: 4 /* text */)));
 
-                    RecoverTextTag();
+                    RecoverTextTag1();
                 }
                 else
                 {
@@ -1353,7 +1358,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     }
                     else if (string.Equals(tagName, ScriptTagName, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!CurrentScriptTagExpectsHtml())
+                        if (!CurrentScriptTagExpectsHtml1())
                         {
                             CompleteTagBlockWithSpan(tagBlockWrapper, AcceptedCharactersInternal.None, SpanKindInternal.Markup);
 
@@ -1465,7 +1470,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return false;
         }
 
-        private bool RemoveTag(Stack<Tuple<SyntaxToken, SourceLocation>> tags, string tagName, SourceLocation tagStart)
+        private bool RemoveTag1(Stack<Tuple<SyntaxToken, SourceLocation>> tags, string tagName, SourceLocation tagStart)
         {
             Tuple<SyntaxToken, SourceLocation> currentTag = null;
             while (tags.Count > 0)
@@ -1583,7 +1588,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 tokenType != SyntaxKind.Unknown;
         }
 
-        public void ParseDocument()
+        public void ParseDocument1()
         {
             if (Context == null)
             {
@@ -1674,7 +1679,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                     // If the script tag expects javascript content then we should do minimal parsing until we reach
                     // the end script tag. Don't want to incorrectly parse a "var tag = '<input />';" as an HTML tag.
-                    if (scriptTag && !CurrentScriptTagExpectsHtml())
+                    if (scriptTag && !CurrentScriptTagExpectsHtml1())
                     {
                         Output(SpanKindInternal.Markup);
                         tagBlock.Dispose();
@@ -1705,7 +1710,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        private bool CurrentScriptTagExpectsHtml()
+        private bool CurrentScriptTagExpectsHtml1()
         {
             var blockBuilder = Context.Builder.CurrentBlock;
 
@@ -1753,7 +1758,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return false;
         }
 
-        public void ParseRazorBlock(Tuple<string, string> nestingSequences, bool caseSensitive)
+        public void ParseRazorBlock1(Tuple<string, string> nestingSequences, bool caseSensitive)
         {
             if (Context == null)
             {
@@ -1786,9 +1791,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             do
             {
-                SkipToAndParseCode(token => token.Kind == SyntaxKind.OpenAngle || AtEnd(nestingSequenceComponents));
+                SkipToAndParseCode(token => token.Kind == SyntaxKind.OpenAngle || AtEnd1(nestingSequenceComponents));
                 ScanTagInDocumentContext();
-                if (!EndOfFile && AtEnd(nestingSequenceComponents))
+                if (!EndOfFile && AtEnd1(nestingSequenceComponents))
                 {
                     break;
                 }
@@ -1825,7 +1830,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        private bool AtEnd(string[] nestingSequenceComponents)
+        private bool AtEnd1(string[] nestingSequenceComponents)
         {
             EnsureCurrent();
             if (string.Equals(CurrentToken.Content, nestingSequenceComponents[0], Comparison))

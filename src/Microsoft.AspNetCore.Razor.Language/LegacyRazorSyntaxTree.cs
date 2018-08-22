@@ -1,22 +1,20 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
-using Microsoft.AspNetCore.Razor.Language.Syntax;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
-    internal class DefaultRazorSyntaxTree : RazorSyntaxTree
+    internal class LegacyRazorSyntaxTree : RazorSyntaxTree
     {
-        public DefaultRazorSyntaxTree(
-            SyntaxNode root,
+        public LegacyRazorSyntaxTree(
+            Block root,
             RazorSourceDocument source,
             IReadOnlyList<RazorDiagnostic> diagnostics,
             RazorParserOptions options)
         {
-            NewRoot = root;
+            Root = root;
             Source = source;
             Diagnostics = diagnostics;
             Options = options;
@@ -26,11 +24,8 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override RazorParserOptions Options { get; }
 
-        internal override SyntaxNode NewRoot { get; }
+        internal override Block Root { get; }
 
         public override RazorSourceDocument Source { get; }
-
-        // Temporary
-        internal override Block Root => throw new NotImplementedException();
     }
 }

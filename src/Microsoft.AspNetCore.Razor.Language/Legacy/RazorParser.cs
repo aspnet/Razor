@@ -39,7 +39,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             codeParser.HtmlParser = markupParser;
             markupParser.CodeParser = codeParser;
 
-            markupParser.ParseDocument();
+            markupParser.ParseDocument1();
             
             var root = context.Builder.Build();
 

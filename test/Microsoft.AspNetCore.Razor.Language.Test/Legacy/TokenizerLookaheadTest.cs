@@ -208,7 +208,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
             }
 
-            public override void ParseBlock()
+            public override void ParseBlock1()
             {
                 throw new NotImplementedException();
             }
