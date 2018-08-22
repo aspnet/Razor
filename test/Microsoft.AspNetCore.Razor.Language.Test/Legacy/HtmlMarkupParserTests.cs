@@ -211,7 +211,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Test.Legacy
 
             public new SyntaxToken AcceptAllButLastDoubleHyphens()
             {
-                return base.AcceptAllButLastDoubleHyphens();
+                return base.AcceptAllButLastDoubleHyphens1();
             }
 
             public override void BuildSpan(SpanBuilder span, SourceLocation start, string content)

@@ -9,23 +9,36 @@ namespace Microsoft.AspNetCore.Razor.Language
         // HTML
         HtmlTextLiteral,
         HtmlDocument,
-        HtmlDeclaration,
+        HtmlBlock,
+        HtmlMarkupBlock,
+        HtmlTagBlock,
+        HtmlAttributeBlock,
+        HtmlCommentBlock,
+        HtmlMinimizedAttributeBlock,
+        HtmlLiteralAttributeValue,
+        HtmlDynamicAttributeValue,
+        HtmlTransition,
 
         // CSharp
-        CSharpBlock,
         CSharpStatement,
         CSharpStatementBody,
         CSharpExpression,
         CSharpExpressionBody,
+        CSharpImplicitExpression,
+        CSharpImplicitExpressionBody,
         CSharpDirective,
         CSharpDirectiveBody,
         CSharpCodeBlock,
-        CSharpCodeLiteral,
-        CSharpMetaCode,
+        CSharpTemplateBlock,
+        CSharpStatementLiteral,
+        CSharpExpressionLiteral,
+        CSharpHiddenLiteral,
+        CSharpNoneLiteral,
         CSharpTransition,
 
         // Common
         RazorComment,
+        RazorMetaCode,
         #endregion
 
         #region Tokens

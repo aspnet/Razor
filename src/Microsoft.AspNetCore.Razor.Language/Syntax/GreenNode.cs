@@ -19,8 +19,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             new ConditionalWeakTable<GreenNode, RazorDiagnostic[]>();
         private static readonly ConditionalWeakTable<GreenNode, SyntaxAnnotation[]> AnnotationsTable =
             new ConditionalWeakTable<GreenNode, SyntaxAnnotation[]>();
-
-        private NodeFlags _flags;
         private byte _slotCount;
 
         protected GreenNode(SyntaxKind kind)
@@ -44,7 +42,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         {
             if (diagnostics?.Length > 0)
             {
-                _flags |= NodeFlags.ContainsDiagnostics;
+                Flags |= NodeFlags.ContainsDiagnostics;
                 DiagnosticsTable.Add(this, diagnostics);
             }
 
@@ -58,7 +56,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                     }
                 }
 
-                _flags |= NodeFlags.ContainsAnnotations;
+                Flags |= NodeFlags.ContainsAnnotations;
                 AnnotationsTable.Add(this, annotations);
             }
         }
@@ -70,7 +68,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 return;
             }
 
-            _flags |= (node.Flags & NodeFlags.InheritMask);
+            Flags |= (node.Flags & NodeFlags.InheritMask);
             FullWidth += node.FullWidth;
         }
 
@@ -150,25 +148,25 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         #endregion
 
         #region Flags
-        internal NodeFlags Flags => _flags;
+        public NodeFlags Flags { get; protected set; }
 
         internal void SetFlags(NodeFlags flags)
         {
-            _flags |= flags;
+            Flags |= flags;
         }
 
         internal void ClearFlags(NodeFlags flags)
         {
-            _flags &= ~flags;
+            Flags &= ~flags;
         }
 
-        internal virtual bool IsMissing => (_flags & NodeFlags.IsMissing) != 0;
+        internal virtual bool IsMissing => (Flags & NodeFlags.IsMissing) != 0;
 
         public bool ContainsDiagnostics
         {
             get
             {
-                return (_flags & NodeFlags.ContainsDiagnostics) != 0;
+                return (Flags & NodeFlags.ContainsDiagnostics) != 0;
             }
         }
 
@@ -176,7 +174,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         {
             get
             {
-                return (_flags & NodeFlags.ContainsAnnotations) != 0;
+                return (Flags & NodeFlags.ContainsAnnotations) != 0;
             }
         }
         #endregion

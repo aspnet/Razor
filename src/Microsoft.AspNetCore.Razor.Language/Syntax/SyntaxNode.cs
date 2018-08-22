@@ -60,6 +60,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
         public bool IsMissing => Green.IsMissing;
 
+        public bool IsToken => Green.IsToken;
+
+        public bool IsTrivia => Green.IsTrivia;
+
         public bool HasLeadingTrivia
         {
             get
