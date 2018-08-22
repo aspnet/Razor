@@ -13,3 +13,11 @@ resources:
 
 phases:
 - template: .vsts-pipelines/templates/project-ci.yml@buildtools
+  parameters:
+    afterBuild:
+    - task: PublishBuildArtifacts@1
+      condition: eq(variables['AgentOsName'], 'Windows')
+      inputs:
+        artifactName: logs-$(BuildConfiguration)
+        pathtoPublish: artifacts/logs/
+

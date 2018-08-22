@@ -64,6 +64,7 @@
         $(VSIXProject);
         /t:Restore;
         /v:m;
+        /bl:$(LogOutputDir)vsix-restore.binlog;
         /p:Configuration=$(Configuration);
         /p:BuildNumber=$(BuildNumber);" />
       <MSBuildArguments Include="/p:DotNetPackageVersionPropsPath=$(DotNetPackageVersionPropsPath)" Condition="'$(DotNetPackageVersionPropsPath)' != ''" />
