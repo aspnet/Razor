@@ -50,6 +50,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public bool NullGenerateWhitespaceAndNewLine { get; set; }
 
+        public bool InTemplateContext { get; set; }
+
+        public AcceptedCharactersInternal LastAcceptedCharacters { get; set; } = AcceptedCharactersInternal.None;
+
         public bool EndOfFile
         {
             get { return Source.Peek() == -1; }

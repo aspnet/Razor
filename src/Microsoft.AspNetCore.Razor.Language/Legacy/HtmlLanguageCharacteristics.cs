@@ -113,7 +113,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     return SyntaxKind.NewLine;
                 case KnownTokenType.Transition:
                     return SyntaxKind.Transition;
-                case KnownTokenType.WhiteSpace:
+                case KnownTokenType.Whitespace:
                     return SyntaxKind.Whitespace;
                 default:
                     return SyntaxKind.Unknown;

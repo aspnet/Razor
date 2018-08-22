@@ -3,39 +3,78 @@
 
 using System;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
+using Microsoft.AspNetCore.Razor.Language.Syntax;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
     // Verifies recursively that a syntax tree has no gaps in terms of position/location.
     internal class SyntaxTreeVerifier : ParserVisitor
     {
-        private readonly SourceLocationTracker _tracker = new SourceLocationTracker(SourceLocation.Zero);
-
         private SyntaxTreeVerifier()
         {
         }
 
         public static void Verify(RazorSyntaxTree syntaxTree)
         {
-            Verify(syntaxTree.Root);
+            if (syntaxTree is LegacyRazorSyntaxTree)
+            {
+                Verify(syntaxTree.Root);
+            }
+            else
+            {
+                new Verifier(syntaxTree.Source).Visit(syntaxTree.NewRoot);
+            }
         }
 
         public static void Verify(Block block)
         {
-            new SyntaxTreeVerifier().VisitBlock(block);
+            new LegacyVerifier().VisitBlock(block);
         }
 
-        public override void VisitSpan(Span span)
+        private class Verifier : SyntaxRewriter
         {
-            var start = span.Start;
-            if (!start.Equals(_tracker.CurrentLocation))
+            private readonly SourceLocationTracker _tracker;
+            private readonly RazorSourceDocument _source;
+
+            public Verifier(RazorSourceDocument source)
             {
-                throw new InvalidOperationException($"Span starting at {span.Start} should start at {_tracker.CurrentLocation} - {span} ");
+                _tracker = new SourceLocationTracker(new SourceLocation(source.FilePath, 0, 0, 0));
+                _source = source;
             }
 
-            for (var i = 0; i < span.Tokens.Count; i++)
+            public override SyntaxNode VisitToken(SyntaxToken token)
             {
-                _tracker.UpdateLocation(span.Tokens[i].Content);
+                if (!token.IsMissing && token.Kind != SyntaxKind.Unknown)
+                {
+                    var start = token.GetSourceLocation(_source);
+                    if (!start.Equals(_tracker.CurrentLocation))
+                    {
+                        throw new InvalidOperationException($"Token starting at {start} should start at {_tracker.CurrentLocation} - {token} ");
+                    }
+
+                    _tracker.UpdateLocation(token.Content);
+                }
+
+                return base.VisitToken(token);
+            }
+        }
+
+        private class LegacyVerifier : ParserVisitor
+        {
+            private readonly SourceLocationTracker _tracker = new SourceLocationTracker(SourceLocation.Zero);
+
+            public override void VisitSpan(Span span)
+            {
+                var start = span.Start;
+                if (!start.Equals(_tracker.CurrentLocation))
+                {
+                    throw new InvalidOperationException($"Span starting at {span.Start} should start at {_tracker.CurrentLocation} - {span} ");
+                }
+
+                for (var i = 0; i < span.Tokens.Count; i++)
+                {
+                    _tracker.UpdateLocation(span.Tokens[i].Content);
+                }
             }
         }
     }

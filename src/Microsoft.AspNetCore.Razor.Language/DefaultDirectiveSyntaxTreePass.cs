@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
+using Microsoft.AspNetCore.Razor.Language.Syntax;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
@@ -24,13 +25,52 @@ namespace Microsoft.AspNetCore.Razor.Language
                 throw new ArgumentNullException(nameof(syntaxTree));
             }
 
-            var sectionVerifier = new NestedSectionVerifier();
-            sectionVerifier.Verify(syntaxTree);
-
-            return syntaxTree;
+            if (syntaxTree is LegacyRazorSyntaxTree)
+            {
+                var legacySectionVerifier = new LegacyNestedSectionVerifier();
+                legacySectionVerifier.Verify(syntaxTree);
+                return syntaxTree;
+            }
+            
+            var sectionVerifier = new NestedSectionVerifier(syntaxTree);
+            return sectionVerifier.Verify();
         }
 
-        private class NestedSectionVerifier : ParserVisitor
+        private class NestedSectionVerifier : SyntaxRewriter
+        {
+            private int _nestedLevel;
+            private RazorSyntaxTree _syntaxTree;
+
+            public NestedSectionVerifier(RazorSyntaxTree syntaxTree)
+            {
+                _syntaxTree = syntaxTree;
+            }
+
+            public RazorSyntaxTree Verify()
+            {
+                var root = Visit(_syntaxTree.NewRoot);
+                var rewrittenTree = new DefaultRazorSyntaxTree(root, _syntaxTree.Source, _syntaxTree.Diagnostics, _syntaxTree.Options);
+                return rewrittenTree;
+            }
+
+            public override SyntaxNode VisitCSharpDirective(CSharpDirectiveSyntax node)
+            {
+                if (_nestedLevel > 0)
+                {
+                    var directiveStart = node.Transition.GetSourceLocation(_syntaxTree.Source);
+                    var errorLength = /* @ */ 1 + SectionDirective.Directive.Directive.Length;
+                    var error = RazorDiagnosticFactory.CreateParsing_SectionsCannotBeNested(new SourceSpan(directiveStart, errorLength));
+                    node = node.AppendDiagnostic(error);
+                }
+                _nestedLevel++;
+                var result = base.VisitCSharpDirective(node);
+                _nestedLevel--;
+
+                return result;
+            }
+        }
+
+        private class LegacyNestedSectionVerifier : ParserVisitor
         {
             private int _nestedLevel;
 
