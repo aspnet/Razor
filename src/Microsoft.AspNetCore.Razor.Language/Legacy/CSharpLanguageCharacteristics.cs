@@ -127,7 +127,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     return SyntaxKind.Keyword;
                 case KnownTokenType.NewLine:
                     return SyntaxKind.NewLine;
-                case KnownTokenType.WhiteSpace:
+                case KnownTokenType.Whitespace:
                     return SyntaxKind.Whitespace;
                 case KnownTokenType.Transition:
                     return SyntaxKind.Transition;

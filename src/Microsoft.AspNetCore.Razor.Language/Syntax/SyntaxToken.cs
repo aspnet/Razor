@@ -107,32 +107,33 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
         public override SyntaxTriviaList GetLeadingTrivia()
         {
-            if (Green.LeadingTrivia == null)
+            var leading = Green.GetLeadingTrivia();
+            if (leading == null)
             {
                 return default(SyntaxTriviaList);
             }
 
-            return new SyntaxTriviaList(Green.LeadingTrivia.CreateRed(this, Position), Position);
+            return new SyntaxTriviaList(leading.CreateRed(this, Position), Position);
         }
 
         public override SyntaxTriviaList GetTrailingTrivia()
         {
-            var trailingGreen = Green.TrailingTrivia;
-            if (trailingGreen == null)
+            var trailing = Green.GetTrailingTrivia();
+            if (trailing == null)
             {
                 return default(SyntaxTriviaList);
             }
 
-            var leading = Green.LeadingTrivia;
-            int index = 0;
+            var leading = Green.GetLeadingTrivia();
+            var index = 0;
             if (leading != null)
             {
                 index = leading.IsList ? leading.SlotCount : 1;
             }
             int trailingPosition = Position + FullWidth;
-            trailingPosition -= trailingGreen.FullWidth;
+            trailingPosition -= trailing.FullWidth;
 
-            return new SyntaxTriviaList(trailingGreen.CreateRed(this, trailingPosition), trailingPosition, index);
+            return new SyntaxTriviaList(trailing.CreateRed(this, trailingPosition), trailingPosition, index);
         }
 
         public override string ToString()

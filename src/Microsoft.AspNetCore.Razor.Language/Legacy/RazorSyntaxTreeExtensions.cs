@@ -16,6 +16,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 throw new ArgumentNullException(nameof(syntaxTree));
             }
 
+            if (syntaxTree is LegacyRazorSyntaxTree tree)
+            {
+                return GetClassifiedSpansLegacy(tree);
+            }
+
+
+            var visitor = new ClassifiedSpanVisitor(syntaxTree.Source);
+            visitor.Visit(syntaxTree.NewRoot);
+
+            return visitor.ClassifiedSpans;
+        }
+
+        private static IReadOnlyList<ClassifiedSpanInternal> GetClassifiedSpansLegacy(LegacyRazorSyntaxTree syntaxTree)
+        {
             var spans = Flatten(syntaxTree);
 
             var result = new ClassifiedSpanInternal[spans.Count];

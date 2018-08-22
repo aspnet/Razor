@@ -17,8 +17,74 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return DefaultVisit(node);
     }
 
+    /// <summary>Called when the visitor visits a RazorMetaCodeSyntax node.</summary>
+    public virtual TResult VisitRazorMetaCode(RazorMetaCodeSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlTransitionSyntax node.</summary>
+    public virtual TResult VisitHtmlTransition(HtmlTransitionSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
     /// <summary>Called when the visitor visits a HtmlTextLiteralSyntax node.</summary>
     public virtual TResult VisitHtmlTextLiteral(HtmlTextLiteralSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlDocumentSyntax node.</summary>
+    public virtual TResult VisitHtmlDocument(HtmlDocumentSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlBlockSyntax node.</summary>
+    public virtual TResult VisitHtmlBlock(HtmlBlockSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlMarkupBlockSyntax node.</summary>
+    public virtual TResult VisitHtmlMarkupBlock(HtmlMarkupBlockSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlCommentBlockSyntax node.</summary>
+    public virtual TResult VisitHtmlCommentBlock(HtmlCommentBlockSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlTagBlockSyntax node.</summary>
+    public virtual TResult VisitHtmlTagBlock(HtmlTagBlockSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlMinimizedAttributeBlockSyntax node.</summary>
+    public virtual TResult VisitHtmlMinimizedAttributeBlock(HtmlMinimizedAttributeBlockSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlAttributeBlockSyntax node.</summary>
+    public virtual TResult VisitHtmlAttributeBlock(HtmlAttributeBlockSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlLiteralAttributeValueSyntax node.</summary>
+    public virtual TResult VisitHtmlLiteralAttributeValue(HtmlLiteralAttributeValueSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlDynamicAttributeValueSyntax node.</summary>
+    public virtual TResult VisitHtmlDynamicAttributeValue(HtmlDynamicAttributeValueSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -29,20 +95,38 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpMetaCodeSyntax node.</summary>
-    public virtual TResult VisitCSharpMetaCode(CSharpMetaCodeSyntax node)
+    /// <summary>Called when the visitor visits a CSharpStatementLiteralSyntax node.</summary>
+    public virtual TResult VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
     {
       return DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpCodeLiteralSyntax node.</summary>
-    public virtual TResult VisitCSharpCodeLiteral(CSharpCodeLiteralSyntax node)
+    /// <summary>Called when the visitor visits a CSharpExpressionLiteralSyntax node.</summary>
+    public virtual TResult VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a CSharpHiddenLiteralSyntax node.</summary>
+    public virtual TResult VisitCSharpHiddenLiteral(CSharpHiddenLiteralSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a CSharpNoneLiteralSyntax node.</summary>
+    public virtual TResult VisitCSharpNoneLiteral(CSharpNoneLiteralSyntax node)
     {
       return DefaultVisit(node);
     }
 
     /// <summary>Called when the visitor visits a CSharpCodeBlockSyntax node.</summary>
     public virtual TResult VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a CSharpTemplateBlockSyntax node.</summary>
+    public virtual TResult VisitCSharpTemplateBlock(CSharpTemplateBlockSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -71,6 +155,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return DefaultVisit(node);
     }
 
+    /// <summary>Called when the visitor visits a CSharpImplicitExpression node.</summary>
+    public virtual TResult VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a CSharpImplicitExpressionBodySyntax node.</summary>
+    public virtual TResult VisitCSharpImplicitExpressionBody(CSharpImplicitExpressionBodySyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
     /// <summary>Called when the visitor visits a CSharpDirectiveSyntax node.</summary>
     public virtual TResult VisitCSharpDirective(CSharpDirectiveSyntax node)
     {
@@ -92,8 +188,74 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       DefaultVisit(node);
     }
 
+    /// <summary>Called when the visitor visits a RazorMetaCodeSyntax node.</summary>
+    public virtual void VisitRazorMetaCode(RazorMetaCodeSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlTransitionSyntax node.</summary>
+    public virtual void VisitHtmlTransition(HtmlTransitionSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
     /// <summary>Called when the visitor visits a HtmlTextLiteralSyntax node.</summary>
     public virtual void VisitHtmlTextLiteral(HtmlTextLiteralSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlDocumentSyntax node.</summary>
+    public virtual void VisitHtmlDocument(HtmlDocumentSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlBlockSyntax node.</summary>
+    public virtual void VisitHtmlBlock(HtmlBlockSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlMarkupBlockSyntax node.</summary>
+    public virtual void VisitHtmlMarkupBlock(HtmlMarkupBlockSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlCommentBlockSyntax node.</summary>
+    public virtual void VisitHtmlCommentBlock(HtmlCommentBlockSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlTagBlockSyntax node.</summary>
+    public virtual void VisitHtmlTagBlock(HtmlTagBlockSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlMinimizedAttributeBlockSyntax node.</summary>
+    public virtual void VisitHtmlMinimizedAttributeBlock(HtmlMinimizedAttributeBlockSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlAttributeBlockSyntax node.</summary>
+    public virtual void VisitHtmlAttributeBlock(HtmlAttributeBlockSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlLiteralAttributeValueSyntax node.</summary>
+    public virtual void VisitHtmlLiteralAttributeValue(HtmlLiteralAttributeValueSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a HtmlDynamicAttributeValueSyntax node.</summary>
+    public virtual void VisitHtmlDynamicAttributeValue(HtmlDynamicAttributeValueSyntax node)
     {
       DefaultVisit(node);
     }
@@ -104,20 +266,38 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpMetaCodeSyntax node.</summary>
-    public virtual void VisitCSharpMetaCode(CSharpMetaCodeSyntax node)
+    /// <summary>Called when the visitor visits a CSharpStatementLiteralSyntax node.</summary>
+    public virtual void VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
     {
       DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpCodeLiteralSyntax node.</summary>
-    public virtual void VisitCSharpCodeLiteral(CSharpCodeLiteralSyntax node)
+    /// <summary>Called when the visitor visits a CSharpExpressionLiteralSyntax node.</summary>
+    public virtual void VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a CSharpHiddenLiteralSyntax node.</summary>
+    public virtual void VisitCSharpHiddenLiteral(CSharpHiddenLiteralSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a CSharpNoneLiteralSyntax node.</summary>
+    public virtual void VisitCSharpNoneLiteral(CSharpNoneLiteralSyntax node)
     {
       DefaultVisit(node);
     }
 
     /// <summary>Called when the visitor visits a CSharpCodeBlockSyntax node.</summary>
     public virtual void VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a CSharpTemplateBlockSyntax node.</summary>
+    public virtual void VisitCSharpTemplateBlock(CSharpTemplateBlockSyntax node)
     {
       DefaultVisit(node);
     }
@@ -146,6 +326,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       DefaultVisit(node);
     }
 
+    /// <summary>Called when the visitor visits a CSharpImplicitExpression node.</summary>
+    public virtual void VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a CSharpImplicitExpressionBodySyntax node.</summary>
+    public virtual void VisitCSharpImplicitExpressionBody(CSharpImplicitExpressionBodySyntax node)
+    {
+      DefaultVisit(node);
+    }
+
     /// <summary>Called when the visitor visits a CSharpDirectiveSyntax node.</summary>
     public virtual void VisitCSharpDirective(CSharpDirectiveSyntax node)
     {
@@ -156,6 +348,199 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     public virtual void VisitCSharpDirectiveBody(CSharpDirectiveBodySyntax node)
     {
       DefaultVisit(node);
+    }
+  }
+
+  internal partial class SyntaxRewriter : SyntaxVisitor<SyntaxNode>
+  {
+    public override SyntaxNode VisitRazorCommentBlock(RazorCommentBlockSyntax node)
+    {
+      var startCommentTransition = (SyntaxToken)VisitToken(node.StartCommentTransition);
+      var startCommentStar = (SyntaxToken)VisitToken(node.StartCommentStar);
+      var comment = (SyntaxToken)VisitToken(node.Comment);
+      var endCommentStar = (SyntaxToken)VisitToken(node.EndCommentStar);
+      var endCommentTransition = (SyntaxToken)VisitToken(node.EndCommentTransition);
+      return node.Update(startCommentTransition, startCommentStar, comment, endCommentStar, endCommentTransition);
+    }
+
+    public override SyntaxNode VisitRazorMetaCode(RazorMetaCodeSyntax node)
+    {
+      var metaCode = VisitList(node.MetaCode);
+      return node.Update(metaCode);
+    }
+
+    public override SyntaxNode VisitHtmlTransition(HtmlTransitionSyntax node)
+    {
+      var transitionTokens = VisitList(node.TransitionTokens);
+      return node.Update(transitionTokens);
+    }
+
+    public override SyntaxNode VisitHtmlTextLiteral(HtmlTextLiteralSyntax node)
+    {
+      var textTokens = VisitList(node.TextTokens);
+      return node.Update(textTokens);
+    }
+
+    public override SyntaxNode VisitHtmlDocument(HtmlDocumentSyntax node)
+    {
+      var document = (HtmlMarkupBlockSyntax)Visit(node.Document);
+      return node.Update(document);
+    }
+
+    public override SyntaxNode VisitHtmlBlock(HtmlBlockSyntax node)
+    {
+      var children = VisitList(node.Children);
+      return node.Update(children);
+    }
+
+    public override SyntaxNode VisitHtmlMarkupBlock(HtmlMarkupBlockSyntax node)
+    {
+      var children = VisitList(node.Children);
+      return node.Update(children);
+    }
+
+    public override SyntaxNode VisitHtmlCommentBlock(HtmlCommentBlockSyntax node)
+    {
+      var children = VisitList(node.Children);
+      return node.Update(children);
+    }
+
+    public override SyntaxNode VisitHtmlTagBlock(HtmlTagBlockSyntax node)
+    {
+      var children = VisitList(node.Children);
+      return node.Update(children);
+    }
+
+    public override SyntaxNode VisitHtmlMinimizedAttributeBlock(HtmlMinimizedAttributeBlockSyntax node)
+    {
+      var namePrefix = (HtmlTextLiteralSyntax)Visit(node.NamePrefix);
+      var name = (HtmlTextLiteralSyntax)Visit(node.Name);
+      return node.Update(namePrefix, name);
+    }
+
+    public override SyntaxNode VisitHtmlAttributeBlock(HtmlAttributeBlockSyntax node)
+    {
+      var namePrefix = (HtmlTextLiteralSyntax)Visit(node.NamePrefix);
+      var name = (HtmlTextLiteralSyntax)Visit(node.Name);
+      var nameSuffix = (HtmlTextLiteralSyntax)Visit(node.NameSuffix);
+      var equalsToken = (SyntaxToken)VisitToken(node.EqualsToken);
+      var valuePrefix = (HtmlTextLiteralSyntax)Visit(node.ValuePrefix);
+      var value = (HtmlBlockSyntax)Visit(node.Value);
+      var valueSuffix = (HtmlTextLiteralSyntax)Visit(node.ValueSuffix);
+      return node.Update(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
+    }
+
+    public override SyntaxNode VisitHtmlLiteralAttributeValue(HtmlLiteralAttributeValueSyntax node)
+    {
+      var prefix = (HtmlTextLiteralSyntax)Visit(node.Prefix);
+      var value = (HtmlTextLiteralSyntax)Visit(node.Value);
+      return node.Update(prefix, value);
+    }
+
+    public override SyntaxNode VisitHtmlDynamicAttributeValue(HtmlDynamicAttributeValueSyntax node)
+    {
+      var prefix = (HtmlTextLiteralSyntax)Visit(node.Prefix);
+      var value = (HtmlBlockSyntax)Visit(node.Value);
+      return node.Update(prefix, value);
+    }
+
+    public override SyntaxNode VisitCSharpTransition(CSharpTransitionSyntax node)
+    {
+      var transition = (SyntaxToken)VisitToken(node.Transition);
+      return node.Update(transition);
+    }
+
+    public override SyntaxNode VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
+    {
+      var cSharpTokens = VisitList(node.CSharpTokens);
+      return node.Update(cSharpTokens);
+    }
+
+    public override SyntaxNode VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
+    {
+      var cSharpTokens = VisitList(node.CSharpTokens);
+      return node.Update(cSharpTokens);
+    }
+
+    public override SyntaxNode VisitCSharpHiddenLiteral(CSharpHiddenLiteralSyntax node)
+    {
+      var cSharpTokens = VisitList(node.CSharpTokens);
+      return node.Update(cSharpTokens);
+    }
+
+    public override SyntaxNode VisitCSharpNoneLiteral(CSharpNoneLiteralSyntax node)
+    {
+      var cSharpTokens = VisitList(node.CSharpTokens);
+      return node.Update(cSharpTokens);
+    }
+
+    public override SyntaxNode VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
+    {
+      var children = VisitList(node.Children);
+      return node.Update(children);
+    }
+
+    public override SyntaxNode VisitCSharpTemplateBlock(CSharpTemplateBlockSyntax node)
+    {
+      var children = VisitList(node.Children);
+      return node.Update(children);
+    }
+
+    public override SyntaxNode VisitCSharpStatement(CSharpStatement node)
+    {
+      var transition = (CSharpTransitionSyntax)Visit(node.Transition);
+      var body = (CSharpSyntaxNode)Visit(node.Body);
+      return node.Update(transition, body);
+    }
+
+    public override SyntaxNode VisitCSharpStatementBody(CSharpStatementBodySyntax node)
+    {
+      var openBrace = (RazorMetaCodeSyntax)Visit(node.OpenBrace);
+      var cSharpCode = (CSharpCodeBlockSyntax)Visit(node.CSharpCode);
+      var closeBrace = (RazorMetaCodeSyntax)Visit(node.CloseBrace);
+      return node.Update(openBrace, cSharpCode, closeBrace);
+    }
+
+    public override SyntaxNode VisitCSharpExpression(CSharpExpression node)
+    {
+      var transition = (CSharpTransitionSyntax)Visit(node.Transition);
+      var body = (CSharpSyntaxNode)Visit(node.Body);
+      return node.Update(transition, body);
+    }
+
+    public override SyntaxNode VisitCSharpExpressionBody(CSharpExpressionBodySyntax node)
+    {
+      var openParen = (RazorMetaCodeSyntax)Visit(node.OpenParen);
+      var cSharpCode = (CSharpCodeBlockSyntax)Visit(node.CSharpCode);
+      var closeParen = (RazorMetaCodeSyntax)Visit(node.CloseParen);
+      return node.Update(openParen, cSharpCode, closeParen);
+    }
+
+    public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    {
+      var transition = (CSharpTransitionSyntax)Visit(node.Transition);
+      var body = (CSharpSyntaxNode)Visit(node.Body);
+      return node.Update(transition, body);
+    }
+
+    public override SyntaxNode VisitCSharpImplicitExpressionBody(CSharpImplicitExpressionBodySyntax node)
+    {
+      var cSharpCode = (CSharpCodeBlockSyntax)Visit(node.CSharpCode);
+      return node.Update(cSharpCode);
+    }
+
+    public override SyntaxNode VisitCSharpDirective(CSharpDirectiveSyntax node)
+    {
+      var transition = (CSharpTransitionSyntax)Visit(node.Transition);
+      var body = (CSharpSyntaxNode)Visit(node.Body);
+      return node.Update(transition, body);
+    }
+
+    public override SyntaxNode VisitCSharpDirectiveBody(CSharpDirectiveBodySyntax node)
+    {
+      var keyword = (RazorSyntaxNode)Visit(node.Keyword);
+      var cSharpCode = (CSharpCodeBlockSyntax)Visit(node.CSharpCode);
+      return node.Update(keyword, cSharpCode);
     }
   }
 
@@ -180,7 +565,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       }
       switch (comment.Kind)
       {
-        case SyntaxKind.RazorComment:
+        case SyntaxKind.RazorCommentLiteral:
         case SyntaxKind.Unknown:
           break;
         default:
@@ -209,6 +594,30 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return SyntaxFactory.RazorCommentBlock(SyntaxFactory.Token(SyntaxKind.RazorCommentTransition), SyntaxFactory.Token(SyntaxKind.RazorCommentStar), default(SyntaxToken), SyntaxFactory.Token(SyntaxKind.RazorCommentStar), SyntaxFactory.Token(SyntaxKind.RazorCommentTransition));
     }
 
+    /// <summary>Creates a new RazorMetaCodeSyntax instance.</summary>
+    public static RazorMetaCodeSyntax RazorMetaCode(SyntaxList<SyntaxToken> metaCode)
+    {
+      return (RazorMetaCodeSyntax)InternalSyntax.SyntaxFactory.RazorMetaCode(metaCode.Node.ToGreenList<InternalSyntax.SyntaxToken>()).CreateRed();
+    }
+
+    /// <summary>Creates a new RazorMetaCodeSyntax instance.</summary>
+    public static RazorMetaCodeSyntax RazorMetaCode()
+    {
+      return SyntaxFactory.RazorMetaCode(default(SyntaxList<SyntaxToken>));
+    }
+
+    /// <summary>Creates a new HtmlTransitionSyntax instance.</summary>
+    public static HtmlTransitionSyntax HtmlTransition(SyntaxList<SyntaxToken> transitionTokens)
+    {
+      return (HtmlTransitionSyntax)InternalSyntax.SyntaxFactory.HtmlTransition(transitionTokens.Node.ToGreenList<InternalSyntax.SyntaxToken>()).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlTransitionSyntax instance.</summary>
+    public static HtmlTransitionSyntax HtmlTransition()
+    {
+      return SyntaxFactory.HtmlTransition(default(SyntaxList<SyntaxToken>));
+    }
+
     /// <summary>Creates a new HtmlTextLiteralSyntax instance.</summary>
     public static HtmlTextLiteralSyntax HtmlTextLiteral(SyntaxList<SyntaxToken> textTokens)
     {
@@ -219,6 +628,139 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     public static HtmlTextLiteralSyntax HtmlTextLiteral()
     {
       return SyntaxFactory.HtmlTextLiteral(default(SyntaxList<SyntaxToken>));
+    }
+
+    /// <summary>Creates a new HtmlDocumentSyntax instance.</summary>
+    public static HtmlDocumentSyntax HtmlDocument(HtmlMarkupBlockSyntax document)
+    {
+      if (document == null)
+        throw new ArgumentNullException(nameof(document));
+      return (HtmlDocumentSyntax)InternalSyntax.SyntaxFactory.HtmlDocument(document == null ? null : (InternalSyntax.HtmlMarkupBlockSyntax)document.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlDocumentSyntax instance.</summary>
+    public static HtmlDocumentSyntax HtmlDocument()
+    {
+      return SyntaxFactory.HtmlDocument(SyntaxFactory.HtmlMarkupBlock());
+    }
+
+    /// <summary>Creates a new HtmlBlockSyntax instance.</summary>
+    public static HtmlBlockSyntax HtmlBlock(SyntaxList<RazorSyntaxNode> children)
+    {
+      return (HtmlBlockSyntax)InternalSyntax.SyntaxFactory.HtmlBlock(children.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>()).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlBlockSyntax instance.</summary>
+    public static HtmlBlockSyntax HtmlBlock()
+    {
+      return SyntaxFactory.HtmlBlock(default(SyntaxList<RazorSyntaxNode>));
+    }
+
+    /// <summary>Creates a new HtmlMarkupBlockSyntax instance.</summary>
+    public static HtmlMarkupBlockSyntax HtmlMarkupBlock(SyntaxList<RazorSyntaxNode> children)
+    {
+      return (HtmlMarkupBlockSyntax)InternalSyntax.SyntaxFactory.HtmlMarkupBlock(children.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>()).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlMarkupBlockSyntax instance.</summary>
+    public static HtmlMarkupBlockSyntax HtmlMarkupBlock()
+    {
+      return SyntaxFactory.HtmlMarkupBlock(default(SyntaxList<RazorSyntaxNode>));
+    }
+
+    /// <summary>Creates a new HtmlCommentBlockSyntax instance.</summary>
+    public static HtmlCommentBlockSyntax HtmlCommentBlock(SyntaxList<RazorSyntaxNode> children)
+    {
+      return (HtmlCommentBlockSyntax)InternalSyntax.SyntaxFactory.HtmlCommentBlock(children.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>()).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlCommentBlockSyntax instance.</summary>
+    public static HtmlCommentBlockSyntax HtmlCommentBlock()
+    {
+      return SyntaxFactory.HtmlCommentBlock(default(SyntaxList<RazorSyntaxNode>));
+    }
+
+    /// <summary>Creates a new HtmlTagBlockSyntax instance.</summary>
+    public static HtmlTagBlockSyntax HtmlTagBlock(SyntaxList<RazorSyntaxNode> children)
+    {
+      return (HtmlTagBlockSyntax)InternalSyntax.SyntaxFactory.HtmlTagBlock(children.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>()).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlTagBlockSyntax instance.</summary>
+    public static HtmlTagBlockSyntax HtmlTagBlock()
+    {
+      return SyntaxFactory.HtmlTagBlock(default(SyntaxList<RazorSyntaxNode>));
+    }
+
+    /// <summary>Creates a new HtmlMinimizedAttributeBlockSyntax instance.</summary>
+    public static HtmlMinimizedAttributeBlockSyntax HtmlMinimizedAttributeBlock(HtmlTextLiteralSyntax namePrefix, HtmlTextLiteralSyntax name)
+    {
+      if (name == null)
+        throw new ArgumentNullException(nameof(name));
+      return (HtmlMinimizedAttributeBlockSyntax)InternalSyntax.SyntaxFactory.HtmlMinimizedAttributeBlock(namePrefix == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)namePrefix.Green, name == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)name.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlMinimizedAttributeBlockSyntax instance.</summary>
+    public static HtmlMinimizedAttributeBlockSyntax HtmlMinimizedAttributeBlock()
+    {
+      return SyntaxFactory.HtmlMinimizedAttributeBlock(default(HtmlTextLiteralSyntax), SyntaxFactory.HtmlTextLiteral());
+    }
+
+    /// <summary>Creates a new HtmlAttributeBlockSyntax instance.</summary>
+    public static HtmlAttributeBlockSyntax HtmlAttributeBlock(HtmlTextLiteralSyntax namePrefix, HtmlTextLiteralSyntax name, HtmlTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, HtmlTextLiteralSyntax valuePrefix, HtmlBlockSyntax value, HtmlTextLiteralSyntax valueSuffix)
+    {
+      if (name == null)
+        throw new ArgumentNullException(nameof(name));
+      switch (equalsToken.Kind)
+      {
+        case SyntaxKind.Equals:
+          break;
+        default:
+          throw new ArgumentException("equalsToken");
+      }
+      if (value == null)
+        throw new ArgumentNullException(nameof(value));
+      return (HtmlAttributeBlockSyntax)InternalSyntax.SyntaxFactory.HtmlAttributeBlock(namePrefix == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)namePrefix.Green, name == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)name.Green, nameSuffix == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)nameSuffix.Green, (Syntax.InternalSyntax.SyntaxToken)equalsToken.Green, valuePrefix == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)valuePrefix.Green, value == null ? null : (InternalSyntax.HtmlBlockSyntax)value.Green, valueSuffix == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)valueSuffix.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlAttributeBlockSyntax instance.</summary>
+    public static HtmlAttributeBlockSyntax HtmlAttributeBlock(HtmlTextLiteralSyntax _namePrefix, HtmlTextLiteralSyntax _name, HtmlTextLiteralSyntax _nameSuffix, HtmlTextLiteralSyntax _valuePrefix, HtmlBlockSyntax _value, HtmlTextLiteralSyntax _valueSuffix)
+    {
+      return SyntaxFactory.HtmlAttributeBlock(_namePrefix, _name, _nameSuffix, SyntaxFactory.Token(SyntaxKind.Equals), _valuePrefix, _value, _valueSuffix);
+    }
+
+    /// <summary>Creates a new HtmlAttributeBlockSyntax instance.</summary>
+    public static HtmlAttributeBlockSyntax HtmlAttributeBlock()
+    {
+      return SyntaxFactory.HtmlAttributeBlock(default(HtmlTextLiteralSyntax), SyntaxFactory.HtmlTextLiteral(), default(HtmlTextLiteralSyntax), SyntaxFactory.Token(SyntaxKind.Equals), default(HtmlTextLiteralSyntax), SyntaxFactory.HtmlBlock(), default(HtmlTextLiteralSyntax));
+    }
+
+    /// <summary>Creates a new HtmlLiteralAttributeValueSyntax instance.</summary>
+    public static HtmlLiteralAttributeValueSyntax HtmlLiteralAttributeValue(HtmlTextLiteralSyntax prefix, HtmlTextLiteralSyntax value)
+    {
+      if (value == null)
+        throw new ArgumentNullException(nameof(value));
+      return (HtmlLiteralAttributeValueSyntax)InternalSyntax.SyntaxFactory.HtmlLiteralAttributeValue(prefix == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)prefix.Green, value == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)value.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlLiteralAttributeValueSyntax instance.</summary>
+    public static HtmlLiteralAttributeValueSyntax HtmlLiteralAttributeValue()
+    {
+      return SyntaxFactory.HtmlLiteralAttributeValue(default(HtmlTextLiteralSyntax), SyntaxFactory.HtmlTextLiteral());
+    }
+
+    /// <summary>Creates a new HtmlDynamicAttributeValueSyntax instance.</summary>
+    public static HtmlDynamicAttributeValueSyntax HtmlDynamicAttributeValue(HtmlTextLiteralSyntax prefix, HtmlBlockSyntax value)
+    {
+      if (value == null)
+        throw new ArgumentNullException(nameof(value));
+      return (HtmlDynamicAttributeValueSyntax)InternalSyntax.SyntaxFactory.HtmlDynamicAttributeValue(prefix == null ? null : (InternalSyntax.HtmlTextLiteralSyntax)prefix.Green, value == null ? null : (InternalSyntax.HtmlBlockSyntax)value.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new HtmlDynamicAttributeValueSyntax instance.</summary>
+    public static HtmlDynamicAttributeValueSyntax HtmlDynamicAttributeValue()
+    {
+      return SyntaxFactory.HtmlDynamicAttributeValue(default(HtmlTextLiteralSyntax), SyntaxFactory.HtmlBlock());
     }
 
     /// <summary>Creates a new CSharpTransitionSyntax instance.</summary>
@@ -240,28 +782,52 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return SyntaxFactory.CSharpTransition(SyntaxFactory.Token(SyntaxKind.Transition));
     }
 
-    /// <summary>Creates a new CSharpMetaCodeSyntax instance.</summary>
-    public static CSharpMetaCodeSyntax CSharpMetaCode(SyntaxList<SyntaxToken> metaCode)
+    /// <summary>Creates a new CSharpStatementLiteralSyntax instance.</summary>
+    public static CSharpStatementLiteralSyntax CSharpStatementLiteral(SyntaxList<SyntaxToken> cSharpTokens)
     {
-      return (CSharpMetaCodeSyntax)InternalSyntax.SyntaxFactory.CSharpMetaCode(metaCode.Node.ToGreenList<InternalSyntax.SyntaxToken>()).CreateRed();
+      return (CSharpStatementLiteralSyntax)InternalSyntax.SyntaxFactory.CSharpStatementLiteral(cSharpTokens.Node.ToGreenList<InternalSyntax.SyntaxToken>()).CreateRed();
     }
 
-    /// <summary>Creates a new CSharpMetaCodeSyntax instance.</summary>
-    public static CSharpMetaCodeSyntax CSharpMetaCode()
+    /// <summary>Creates a new CSharpStatementLiteralSyntax instance.</summary>
+    public static CSharpStatementLiteralSyntax CSharpStatementLiteral()
     {
-      return SyntaxFactory.CSharpMetaCode(default(SyntaxList<SyntaxToken>));
+      return SyntaxFactory.CSharpStatementLiteral(default(SyntaxList<SyntaxToken>));
     }
 
-    /// <summary>Creates a new CSharpCodeLiteralSyntax instance.</summary>
-    public static CSharpCodeLiteralSyntax CSharpCodeLiteral(SyntaxList<SyntaxToken> cSharpTokens)
+    /// <summary>Creates a new CSharpExpressionLiteralSyntax instance.</summary>
+    public static CSharpExpressionLiteralSyntax CSharpExpressionLiteral(SyntaxList<SyntaxToken> cSharpTokens)
     {
-      return (CSharpCodeLiteralSyntax)InternalSyntax.SyntaxFactory.CSharpCodeLiteral(cSharpTokens.Node.ToGreenList<InternalSyntax.SyntaxToken>()).CreateRed();
+      return (CSharpExpressionLiteralSyntax)InternalSyntax.SyntaxFactory.CSharpExpressionLiteral(cSharpTokens.Node.ToGreenList<InternalSyntax.SyntaxToken>()).CreateRed();
     }
 
-    /// <summary>Creates a new CSharpCodeLiteralSyntax instance.</summary>
-    public static CSharpCodeLiteralSyntax CSharpCodeLiteral()
+    /// <summary>Creates a new CSharpExpressionLiteralSyntax instance.</summary>
+    public static CSharpExpressionLiteralSyntax CSharpExpressionLiteral()
     {
-      return SyntaxFactory.CSharpCodeLiteral(default(SyntaxList<SyntaxToken>));
+      return SyntaxFactory.CSharpExpressionLiteral(default(SyntaxList<SyntaxToken>));
+    }
+
+    /// <summary>Creates a new CSharpHiddenLiteralSyntax instance.</summary>
+    public static CSharpHiddenLiteralSyntax CSharpHiddenLiteral(SyntaxList<SyntaxToken> cSharpTokens)
+    {
+      return (CSharpHiddenLiteralSyntax)InternalSyntax.SyntaxFactory.CSharpHiddenLiteral(cSharpTokens.Node.ToGreenList<InternalSyntax.SyntaxToken>()).CreateRed();
+    }
+
+    /// <summary>Creates a new CSharpHiddenLiteralSyntax instance.</summary>
+    public static CSharpHiddenLiteralSyntax CSharpHiddenLiteral()
+    {
+      return SyntaxFactory.CSharpHiddenLiteral(default(SyntaxList<SyntaxToken>));
+    }
+
+    /// <summary>Creates a new CSharpNoneLiteralSyntax instance.</summary>
+    public static CSharpNoneLiteralSyntax CSharpNoneLiteral(SyntaxList<SyntaxToken> cSharpTokens)
+    {
+      return (CSharpNoneLiteralSyntax)InternalSyntax.SyntaxFactory.CSharpNoneLiteral(cSharpTokens.Node.ToGreenList<InternalSyntax.SyntaxToken>()).CreateRed();
+    }
+
+    /// <summary>Creates a new CSharpNoneLiteralSyntax instance.</summary>
+    public static CSharpNoneLiteralSyntax CSharpNoneLiteral()
+    {
+      return SyntaxFactory.CSharpNoneLiteral(default(SyntaxList<SyntaxToken>));
     }
 
     /// <summary>Creates a new CSharpCodeBlockSyntax instance.</summary>
@@ -274,6 +840,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     public static CSharpCodeBlockSyntax CSharpCodeBlock()
     {
       return SyntaxFactory.CSharpCodeBlock(default(SyntaxList<RazorSyntaxNode>));
+    }
+
+    /// <summary>Creates a new CSharpTemplateBlockSyntax instance.</summary>
+    public static CSharpTemplateBlockSyntax CSharpTemplateBlock(SyntaxList<RazorSyntaxNode> children)
+    {
+      return (CSharpTemplateBlockSyntax)InternalSyntax.SyntaxFactory.CSharpTemplateBlock(children.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>()).CreateRed();
+    }
+
+    /// <summary>Creates a new CSharpTemplateBlockSyntax instance.</summary>
+    public static CSharpTemplateBlockSyntax CSharpTemplateBlock()
+    {
+      return SyntaxFactory.CSharpTemplateBlock(default(SyntaxList<RazorSyntaxNode>));
     }
 
     /// <summary>Creates a new CSharpStatement instance.</summary>
@@ -293,7 +871,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new CSharpStatementBodySyntax instance.</summary>
-    public static CSharpStatementBodySyntax CSharpStatementBody(CSharpMetaCodeSyntax openBrace, CSharpCodeBlockSyntax cSharpCode, CSharpMetaCodeSyntax closeBrace)
+    public static CSharpStatementBodySyntax CSharpStatementBody(RazorMetaCodeSyntax openBrace, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeBrace)
     {
       if (openBrace == null)
         throw new ArgumentNullException(nameof(openBrace));
@@ -301,13 +879,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         throw new ArgumentNullException(nameof(cSharpCode));
       if (closeBrace == null)
         throw new ArgumentNullException(nameof(closeBrace));
-      return (CSharpStatementBodySyntax)InternalSyntax.SyntaxFactory.CSharpStatementBody(openBrace == null ? null : (InternalSyntax.CSharpMetaCodeSyntax)openBrace.Green, cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green, closeBrace == null ? null : (InternalSyntax.CSharpMetaCodeSyntax)closeBrace.Green).CreateRed();
+      return (CSharpStatementBodySyntax)InternalSyntax.SyntaxFactory.CSharpStatementBody(openBrace == null ? null : (InternalSyntax.RazorMetaCodeSyntax)openBrace.Green, cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green, closeBrace == null ? null : (InternalSyntax.RazorMetaCodeSyntax)closeBrace.Green).CreateRed();
     }
 
     /// <summary>Creates a new CSharpStatementBodySyntax instance.</summary>
     public static CSharpStatementBodySyntax CSharpStatementBody()
     {
-      return SyntaxFactory.CSharpStatementBody(SyntaxFactory.CSharpMetaCode(), SyntaxFactory.CSharpCodeBlock(), SyntaxFactory.CSharpMetaCode());
+      return SyntaxFactory.CSharpStatementBody(SyntaxFactory.RazorMetaCode(), SyntaxFactory.CSharpCodeBlock(), SyntaxFactory.RazorMetaCode());
     }
 
     /// <summary>Creates a new CSharpExpression instance.</summary>
@@ -327,17 +905,51 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new CSharpExpressionBodySyntax instance.</summary>
-    public static CSharpExpressionBodySyntax CSharpExpressionBody(CSharpMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, CSharpMetaCodeSyntax closeParen)
+    public static CSharpExpressionBodySyntax CSharpExpressionBody(RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
     {
+      if (openParen == null)
+        throw new ArgumentNullException(nameof(openParen));
       if (cSharpCode == null)
         throw new ArgumentNullException(nameof(cSharpCode));
-      return (CSharpExpressionBodySyntax)InternalSyntax.SyntaxFactory.CSharpExpressionBody(openParen == null ? null : (InternalSyntax.CSharpMetaCodeSyntax)openParen.Green, cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green, closeParen == null ? null : (InternalSyntax.CSharpMetaCodeSyntax)closeParen.Green).CreateRed();
+      if (closeParen == null)
+        throw new ArgumentNullException(nameof(closeParen));
+      return (CSharpExpressionBodySyntax)InternalSyntax.SyntaxFactory.CSharpExpressionBody(openParen == null ? null : (InternalSyntax.RazorMetaCodeSyntax)openParen.Green, cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green, closeParen == null ? null : (InternalSyntax.RazorMetaCodeSyntax)closeParen.Green).CreateRed();
     }
 
     /// <summary>Creates a new CSharpExpressionBodySyntax instance.</summary>
     public static CSharpExpressionBodySyntax CSharpExpressionBody()
     {
-      return SyntaxFactory.CSharpExpressionBody(default(CSharpMetaCodeSyntax), SyntaxFactory.CSharpCodeBlock(), default(CSharpMetaCodeSyntax));
+      return SyntaxFactory.CSharpExpressionBody(SyntaxFactory.RazorMetaCode(), SyntaxFactory.CSharpCodeBlock(), SyntaxFactory.RazorMetaCode());
+    }
+
+    /// <summary>Creates a new CSharpImplicitExpression instance.</summary>
+    public static CSharpImplicitExpression CSharpImplicitExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    {
+      if (transition == null)
+        throw new ArgumentNullException(nameof(transition));
+      if (body == null)
+        throw new ArgumentNullException(nameof(body));
+      return (CSharpImplicitExpression)InternalSyntax.SyntaxFactory.CSharpImplicitExpression(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new CSharpImplicitExpression instance.</summary>
+    public static CSharpImplicitExpression CSharpImplicitExpression(CSharpSyntaxNode body)
+    {
+      return SyntaxFactory.CSharpImplicitExpression(SyntaxFactory.CSharpTransition(), body);
+    }
+
+    /// <summary>Creates a new CSharpImplicitExpressionBodySyntax instance.</summary>
+    public static CSharpImplicitExpressionBodySyntax CSharpImplicitExpressionBody(CSharpCodeBlockSyntax cSharpCode)
+    {
+      if (cSharpCode == null)
+        throw new ArgumentNullException(nameof(cSharpCode));
+      return (CSharpImplicitExpressionBodySyntax)InternalSyntax.SyntaxFactory.CSharpImplicitExpressionBody(cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new CSharpImplicitExpressionBodySyntax instance.</summary>
+    public static CSharpImplicitExpressionBodySyntax CSharpImplicitExpressionBody()
+    {
+      return SyntaxFactory.CSharpImplicitExpressionBody(SyntaxFactory.CSharpCodeBlock());
     }
 
     /// <summary>Creates a new CSharpDirectiveSyntax instance.</summary>
@@ -357,19 +969,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new CSharpDirectiveBodySyntax instance.</summary>
-    public static CSharpDirectiveBodySyntax CSharpDirectiveBody(CSharpMetaCodeSyntax keyword, CSharpCodeBlockSyntax cSharpCode)
+    public static CSharpDirectiveBodySyntax CSharpDirectiveBody(RazorSyntaxNode keyword, CSharpCodeBlockSyntax cSharpCode)
     {
       if (keyword == null)
         throw new ArgumentNullException(nameof(keyword));
-      if (cSharpCode == null)
-        throw new ArgumentNullException(nameof(cSharpCode));
-      return (CSharpDirectiveBodySyntax)InternalSyntax.SyntaxFactory.CSharpDirectiveBody(keyword == null ? null : (InternalSyntax.CSharpMetaCodeSyntax)keyword.Green, cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green).CreateRed();
+      return (CSharpDirectiveBodySyntax)InternalSyntax.SyntaxFactory.CSharpDirectiveBody(keyword == null ? null : (InternalSyntax.RazorSyntaxNode)keyword.Green, cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green).CreateRed();
     }
 
     /// <summary>Creates a new CSharpDirectiveBodySyntax instance.</summary>
-    public static CSharpDirectiveBodySyntax CSharpDirectiveBody()
+    public static CSharpDirectiveBodySyntax CSharpDirectiveBody(RazorSyntaxNode keyword)
     {
-      return SyntaxFactory.CSharpDirectiveBody(SyntaxFactory.CSharpMetaCode(), SyntaxFactory.CSharpCodeBlock());
+      return SyntaxFactory.CSharpDirectiveBody(keyword, default(CSharpCodeBlockSyntax));
     }
   }
 }

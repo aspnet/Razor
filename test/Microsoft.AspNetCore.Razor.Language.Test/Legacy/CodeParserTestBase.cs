@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
-    public abstract class CodeParserTestBase : ParserTestBase
+    public abstract class CodeParserTestBase : SyntaxNodeParserTestBase
     {
         internal abstract ISet<string> KeywordSet { get; }
 

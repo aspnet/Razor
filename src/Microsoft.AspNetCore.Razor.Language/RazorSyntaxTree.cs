@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
+using Microsoft.AspNetCore.Razor.Language.Syntax;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
@@ -11,6 +12,35 @@ namespace Microsoft.AspNetCore.Razor.Language
     {
         internal static RazorSyntaxTree Create(
             Block root,
+            RazorSourceDocument source,
+            IEnumerable<RazorDiagnostic> diagnostics,
+            RazorParserOptions options)
+        {
+            if (root == null)
+            {
+                throw new ArgumentNullException(nameof(root));
+            }
+
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (diagnostics == null)
+            {
+                throw new ArgumentNullException(nameof(diagnostics));
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            return new LegacyRazorSyntaxTree(root, source, new List<RazorDiagnostic>(diagnostics), options);
+        }
+
+        internal static RazorSyntaxTree Create(
+            SyntaxNode root,
             RazorSourceDocument source,
             IEnumerable<RazorDiagnostic> diagnostics,
             RazorParserOptions options)
@@ -64,6 +94,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         public abstract RazorParserOptions Options { get; }
 
         internal abstract Block Root { get; }
+
+        internal virtual SyntaxNode NewRoot { get; }
 
         public abstract RazorSourceDocument Source { get; }
     }

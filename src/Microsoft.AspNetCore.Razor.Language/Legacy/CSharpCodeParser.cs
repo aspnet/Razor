@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
-    internal class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
+    internal partial class CSharpCodeParser : TokenizerBackedParser<CSharpTokenizer>
     {
         private static HashSet<char> InvalidNonWhitespaceNameCharacters = new HashSet<char>(new[]
         {
@@ -95,6 +95,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             SetUpKeywords();
             SetupDirectives(directives);
             SetUpExpressions();
+
+            SetupKeywordParsers();
+            SetupExpressionParsers();
+            SetupDirectiveParsers(directives);
         }
 
         public HtmlMarkupParser HtmlParser { get; set; }
@@ -193,7 +197,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                           (includeComments && token.Kind == SyntaxKind.CSharpComment);
         }
 
-        public override void ParseBlock()
+        public override void ParseBlock1()
         {
             using (PushSpanConfig(DefaultSpanConfig))
             {
@@ -268,8 +272,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private void AfterTransition()
         {
-            using (PushSpanConfig(DefaultSpanConfig))
-            {
+            //using (PushSpanConfig(DefaultSpanConfig))
+            //{
                 EnsureCurrent();
                 try
                 {
@@ -367,7 +371,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     // Always put current character back in the buffer for the next parser.
                     PutCurrentBack();
                 }
-            }
+            //}
         }
 
         private void VerbatimBlock()
@@ -553,17 +557,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return false;
         }
 
-        protected void CompleteBlock()
+        protected void CompleteBlock1()
         {
-            CompleteBlock(insertMarkerIfNecessary: true);
+            CompleteBlock1(insertMarkerIfNecessary: true);
         }
 
-        protected void CompleteBlock(bool insertMarkerIfNecessary)
+        protected void CompleteBlock1(bool insertMarkerIfNecessary)
         {
-            CompleteBlock(insertMarkerIfNecessary, captureWhitespaceToEndOfLine: insertMarkerIfNecessary);
+            CompleteBlock1(insertMarkerIfNecessary, captureWhitespaceToEndOfLine: insertMarkerIfNecessary);
         }
 
-        protected void CompleteBlock(bool insertMarkerIfNecessary, bool captureWhitespaceToEndOfLine)
+        protected void CompleteBlock1(bool insertMarkerIfNecessary, bool captureWhitespaceToEndOfLine)
         {
             if (insertMarkerIfNecessary && Context.Builder.LastAcceptedCharacters != AcceptedCharactersInternal.Any)
             {
@@ -580,7 +584,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 !Context.DesignTimeMode &&
                 !IsNested)
             {
-                CaptureWhitespaceAtEndOfCodeOnlyLine();
+                CaptureWhitespaceAtEndOfCodeOnlyLine1();
             }
             else
             {
@@ -588,7 +592,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        private void CaptureWhitespaceAtEndOfCodeOnlyLine()
+        private void CaptureWhitespaceAtEndOfCodeOnlyLine1()
         {
             var whitespace = ReadWhile(token => token.Kind == SyntaxKind.Whitespace);
             if (At(SyntaxKind.NewLine))
@@ -652,7 +656,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
             Span.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
             Span.ChunkGenerator = SpanChunkGenerator.Null;
-            CompleteBlock(insertMarkerIfNecessary: false);
+            CompleteBlock1(insertMarkerIfNecessary: false); // This is unnecessary
             Output(SpanKindInternal.MetaCode);
         }
 
@@ -675,12 +679,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private void OtherParserBlock()
         {
-            ParseWithOtherParser(p => p.ParseBlock());
+            ParseWithOtherParser(p => p.ParseBlock1());
         }
 
         private void SectionBlock(string left, string right, bool caseSensitive)
         {
-            ParseWithOtherParser(p => p.ParseRazorBlock(Tuple.Create(left, right), caseSensitive));
+            ParseWithOtherParser(p => p.ParseRazorBlock1(Tuple.Create(left, right), caseSensitive));
         }
 
         private void NestedBlock()
@@ -691,22 +695,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             IsNested = true;
             using (PushSpanConfig())
             {
-                ParseBlock();
+                ParseBlock1();
             }
 
             Span.Start = CurrentLocation;
             Initialize(Span);
             IsNested = wasNested;
             NextToken();
-        }
-
-        protected override bool IsAtEmbeddedTransition(bool allowTemplatesAndComments, bool allowTransitions)
-        {
-            // No embedded transitions in C#, so ignore that param
-            return allowTemplatesAndComments
-                   && ((Language.IsTransition(CurrentToken)
-                        && NextIs(SyntaxKind.LessThan, SyntaxKind.Colon, SyntaxKind.DoubleColon))
-                       || Language.IsCommentStart(CurrentToken));
         }
 
         protected override void HandleEmbeddedTransition()
@@ -770,7 +765,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Span.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
             Span.ChunkGenerator = SpanChunkGenerator.Null;
             Context.Builder.CurrentBlock.Type = BlockKindInternal.Directive;
-            CompleteBlock();
+            CompleteBlock1();
             Output(SpanKindInternal.MetaCode);
         }
 
@@ -802,7 +797,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             WhileClause();
             if (topLevel)
             {
-                CompleteBlock();
+                CompleteBlock1();
             }
         }
 
@@ -859,7 +854,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             if (topLevel)
             {
-                CompleteBlock();
+                CompleteBlock1();
             }
         }
 
@@ -1070,7 +1065,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             AfterTryClause();
             if (topLevel)
             {
-                CompleteBlock();
+                CompleteBlock1();
             }
         }
 
@@ -1081,7 +1076,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             AfterIfClause();
             if (topLevel)
             {
-                CompleteBlock();
+                CompleteBlock1();
             }
         }
 
@@ -1228,7 +1223,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             ConditionalBlock(block);
             if (topLevel)
             {
-                CompleteBlock();
+                CompleteBlock1();
             }
         }
 
@@ -1353,7 +1348,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             switch (type)
             {
                 case SyntaxKind.RazorCommentTransition:
-                    Output(SpanKindInternal.Code);
+                    Output(SpanKindInternal.Code); // Not needed
                     RazorComment();
                     Statement(block);
                     break;
@@ -1645,7 +1640,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 Output(SpanKindInternal.MetaCode, AcceptedCharactersInternal.None);
 
                 // Even if an error was logged do not bail out early. If a directive was used incorrectly it doesn't mean it can't be parsed.
-                ValidateDirectiveUsage(descriptor);
+                ValidateDirectiveUsage1(descriptor);
 
                 for (var i = 0; i < descriptor.Tokens.Count; i++)
                 {
@@ -1803,7 +1798,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                             using (PushSpanConfig())
                             {
-                                HtmlParser.ParseRazorBlock(Tuple.Create("{", "}"), caseSensitive: true);
+                                HtmlParser.ParseRazorBlock1(Tuple.Create("{", "}"), caseSensitive: true);
                             }
 
                             Span.Start = CurrentLocation;
@@ -1847,7 +1842,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         }
 
 
-        private void ValidateDirectiveUsage(DirectiveDescriptor descriptor)
+        private void ValidateDirectiveUsage1(DirectiveDescriptor descriptor)
         {
             if (descriptor.Usage == DirectiveUsage.FileScopedSinglyOccurring)
             {
@@ -1902,7 +1897,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 {
                     Span.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
                 }
-                CompleteBlock(insertMarkerIfNecessary: false, captureWhitespaceToEndOfLine: true);
+                CompleteBlock1(insertMarkerIfNecessary: false, captureWhitespaceToEndOfLine: true);
                 Span.ChunkGenerator = SpanChunkGenerator.Null;
                 Output(SpanKindInternal.MetaCode, AcceptedCharactersInternal.None);
             }
@@ -1930,7 +1925,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         errors.Add(duplicateDiagnostic);
                     }
 
-                    var parsedDirective = ParseDirective(prefix, Span.Start, TagHelperDirectiveType.TagHelperPrefix, errors);
+                    var parsedDirective = ParseDirective1(prefix, Span.Start, TagHelperDirectiveType.TagHelperPrefix, errors);
 
                     return new TagHelperPrefixDirectiveChunkGenerator(
                         prefix,
@@ -1962,7 +1957,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        private ParsedDirective ParseDirective(
+        private ParsedDirective ParseDirective1(
             string directiveText,
             SourceLocation directiveLocation,
             TagHelperDirectiveType directiveType,
@@ -2055,7 +2050,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 SyntaxConstants.CSharp.AddTagHelperKeyword,
                 (lookupText, errors) =>
                 {
-                    var parsedDirective = ParseDirective(lookupText, Span.Start, TagHelperDirectiveType.AddTagHelper, errors);
+                    var parsedDirective = ParseDirective1(lookupText, Span.Start, TagHelperDirectiveType.AddTagHelper, errors);
 
                     return new AddTagHelperChunkGenerator(
                         lookupText,
@@ -2072,7 +2067,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 SyntaxConstants.CSharp.RemoveTagHelperKeyword,
                 (lookupText, errors) =>
                 {
-                    var parsedDirective = ParseDirective(lookupText, Span.Start, TagHelperDirectiveType.RemoveTagHelper, errors);
+                    var parsedDirective = ParseDirective1(lookupText, Span.Start, TagHelperDirectiveType.RemoveTagHelper, errors);
 
                     return new RemoveTagHelperChunkGenerator(
                         lookupText,
@@ -2163,7 +2158,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             // Output the span and finish the block
-            CompleteBlock();
+            CompleteBlock1();
             Output(SpanKindInternal.Code, AcceptedCharactersInternal.AnyExceptNewline);
         }
 
