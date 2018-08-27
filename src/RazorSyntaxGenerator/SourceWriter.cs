@@ -43,7 +43,7 @@ namespace RazorSyntaxGenerator
             WriteLine();
             WriteGreenTypes();
             WriteGreenVisitors();
-            //WriteGreenRewriter();
+            WriteGreenRewriter();
             WriteStaticGreenFactories();
             WriteLine("}");
         }
@@ -70,7 +70,7 @@ namespace RazorSyntaxGenerator
             //WriteLine("    using Microsoft.AspNetCore.Razor.Language.Syntax;");
             //WriteLine();
             WriteRedVisitors();
-            //WriteRedRewriter();
+            WriteRedRewriter();
             WriteRedFactories();
             WriteLine("}");
         }
@@ -615,11 +615,11 @@ namespace RazorSyntaxGenerator
                         var field = nodeFields[f];
                         if (IsAnyList(field.Type))
                         {
-                            WriteLine("      var {0} = VisitList(node.{1});", UnderscoreCamelCase(field.Name), field.Name);
+                            WriteLine("      var {0} = VisitList(node.{1});", CamelCase(field.Name), field.Name);
                         }
                         else
                         {
-                            WriteLine("      var {0} = ({1})Visit(node.{2});", UnderscoreCamelCase(field.Name), field.Type, field.Name);
+                            WriteLine("      var {0} = ({1})Visit(node.{2});", CamelCase(field.Name), field.Type, field.Name);
                         }
                     }
                     if (nodeFields.Count > 0)
@@ -632,7 +632,7 @@ namespace RazorSyntaxGenerator
                                 Write(", ");
                             if (IsNodeOrNodeList(field.Type))
                             {
-                                Write(UnderscoreCamelCase(field.Name));
+                                Write(CamelCase(field.Name));
                             }
                             else
                             {
@@ -746,7 +746,7 @@ namespace RazorSyntaxGenerator
             }
 
             // validate parameters
-            WriteLine("#if DEBUG");
+            //WriteLine("#if DEBUG");
             for (int i = 0, n = nodeFields.Count; i < n; i++)
             {
                 var field = nodeFields[i];
@@ -786,7 +786,7 @@ namespace RazorSyntaxGenerator
                 }
             }
 
-            WriteLine("#endif");
+            //WriteLine("#endif");
 
             if (nd.Name != "SkippedTokensTriviaSyntax" &&
                 nd.Name != "DocumentationCommentTriviaSyntax" &&
@@ -1602,15 +1602,15 @@ namespace RazorSyntaxGenerator
                         var field = nodeFields[f];
                         if (IsAnyList(field.Type))
                         {
-                            WriteLine("      var {0} = VisitList(node.{1});", UnderscoreCamelCase(field.Name), field.Name);
+                            WriteLine("      var {0} = VisitList(node.{1});", CamelCase(field.Name), field.Name);
                         }
                         else if (field.Type == "SyntaxToken")
                         {
-                            WriteLine("      var {0} = VisitToken(node.{1});", UnderscoreCamelCase(field.Name), field.Name);
+                            WriteLine("      var {0} = ({1})VisitToken(node.{2});", CamelCase(field.Name), field.Type, field.Name);
                         }
                         else
                         {
-                            WriteLine("      var {0} = ({1})Visit(node.{2});", UnderscoreCamelCase(field.Name), field.Type, field.Name);
+                            WriteLine("      var {0} = ({1})Visit(node.{2});", CamelCase(field.Name), field.Type, field.Name);
                         }
                     }
                     if (nodeFields.Count > 0)
@@ -1623,7 +1623,7 @@ namespace RazorSyntaxGenerator
                                 Write(", ");
                             if (IsNodeOrNodeList(field.Type))
                             {
-                                Write(UnderscoreCamelCase(field.Name));
+                                Write(CamelCase(field.Name));
                             }
                             else
                             {
