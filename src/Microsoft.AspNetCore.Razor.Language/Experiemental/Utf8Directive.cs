@@ -133,7 +133,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Experiemental
                 var index = Interlocked.Increment(ref _count);
 
                 context.CodeWriter.WriteVariableDeclaration(
-                    "System.ReadOnlyMemory<byte>",
+                    "System.ReadOnlySpan<byte>",
                     $"__bytes{index}",
                     $"new byte[]{{{string.Join(", ", bytes)}}}");
                 context.CodeWriter.WriteMethodInvocation("WriteLiteral", $"__bytes{index}");
