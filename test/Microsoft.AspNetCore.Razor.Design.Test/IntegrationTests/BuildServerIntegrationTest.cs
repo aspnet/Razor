@@ -180,7 +180,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             var startInfo = new ProcessStartInfo()
             {
                 FileName = dotnetPath,
-                Arguments = "run",
+                Arguments = "msbuild /t:Build",
                 UseShellExecute = false,
                 WorkingDirectory = appPath,
                 RedirectStandardInput = true,
