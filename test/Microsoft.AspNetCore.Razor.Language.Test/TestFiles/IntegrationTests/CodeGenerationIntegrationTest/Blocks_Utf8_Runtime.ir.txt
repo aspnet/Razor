@@ -7,106 +7,68 @@ Document -
                 CSharpCode - (13:1,2 [18] Blocks_Utf8.cshtml)
                     IntermediateToken - (13:1,2 [18] Blocks_Utf8.cshtml) - CSharp - \n    int i = 1;\n
                 Utf8Node - 
-                    IntermediateToken - (34:4,0 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (37:5,1 [18] Blocks_Utf8.cshtml)
                     IntermediateToken - (37:5,1 [18] Blocks_Utf8.cshtml) - CSharp - while(i <= 10) {\n
                 Utf8Node - 
-                    IntermediateToken - (55:6,0 [4] Blocks_Utf8.cshtml) - Html -     
-                    IntermediateToken - (59:6,4 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (62:6,7 [16] Blocks_Utf8.cshtml) - Html - Hello from C#, #
                 CSharpExpression - (80:6,25 [1] Blocks_Utf8.cshtml)
                     IntermediateToken - (80:6,25 [1] Blocks_Utf8.cshtml) - CSharp - i
                 Utf8Node - 
-                    IntermediateToken - (82:6,27 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (86:6,31 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (88:7,0 [16] Blocks_Utf8.cshtml)
                     IntermediateToken - (88:7,0 [16] Blocks_Utf8.cshtml) - CSharp -     i += 1;\n}\n
                 Utf8Node - 
-                    IntermediateToken - (104:9,0 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (107:10,1 [15] Blocks_Utf8.cshtml)
                     IntermediateToken - (107:10,1 [15] Blocks_Utf8.cshtml) - CSharp - if(i == 11) {\n
                 Utf8Node - 
-                    IntermediateToken - (122:11,0 [4] Blocks_Utf8.cshtml) - Html -     
-                    IntermediateToken - (126:11,4 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (129:11,7 [18] Blocks_Utf8.cshtml) - Html - We wrote 10 lines!
-                    IntermediateToken - (147:11,25 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (151:11,29 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (153:12,0 [3] Blocks_Utf8.cshtml)
                     IntermediateToken - (153:12,0 [3] Blocks_Utf8.cshtml) - CSharp - }\n
                 Utf8Node - 
-                    IntermediateToken - (156:13,0 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (159:14,1 [27] Blocks_Utf8.cshtml)
                     IntermediateToken - (159:14,1 [27] Blocks_Utf8.cshtml) - CSharp - switch(i) {\n    case 11:\n
                 Utf8Node - 
-                    IntermediateToken - (186:16,0 [8] Blocks_Utf8.cshtml) - Html -         
-                    IntermediateToken - (194:16,8 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (197:16,11 [29] Blocks_Utf8.cshtml) - Html - No really, we wrote 10 lines!
-                    IntermediateToken - (226:16,40 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (230:16,44 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (232:17,0 [30] Blocks_Utf8.cshtml)
                     IntermediateToken - (232:17,0 [30] Blocks_Utf8.cshtml) - CSharp -         break;\n    default:\n
                 Utf8Node - 
-                    IntermediateToken - (262:19,0 [8] Blocks_Utf8.cshtml) - Html -         
-                    IntermediateToken - (270:19,8 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (273:19,11 [22] Blocks_Utf8.cshtml) - Html - Actually, we didn't...
-                    IntermediateToken - (295:19,33 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (299:19,37 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (301:20,0 [19] Blocks_Utf8.cshtml)
                     IntermediateToken - (301:20,0 [19] Blocks_Utf8.cshtml) - CSharp -         break;\n}\n
                 Utf8Node - 
-                    IntermediateToken - (320:22,0 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (323:23,1 [35] Blocks_Utf8.cshtml)
                     IntermediateToken - (323:23,1 [35] Blocks_Utf8.cshtml) - CSharp - for(int j = 1; j <= 10; j += 2) {\n
                 Utf8Node - 
-                    IntermediateToken - (358:24,0 [4] Blocks_Utf8.cshtml) - Html -     
-                    IntermediateToken - (362:24,4 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (365:24,7 [22] Blocks_Utf8.cshtml) - Html - Hello again from C#, #
                 CSharpExpression - (389:24,31 [1] Blocks_Utf8.cshtml)
                     IntermediateToken - (389:24,31 [1] Blocks_Utf8.cshtml) - CSharp - j
                 Utf8Node - 
-                    IntermediateToken - (391:24,33 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (395:24,37 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (397:25,0 [3] Blocks_Utf8.cshtml)
                     IntermediateToken - (397:25,0 [3] Blocks_Utf8.cshtml) - CSharp - }\n
                 Utf8Node - 
-                    IntermediateToken - (400:26,0 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (403:27,1 [7] Blocks_Utf8.cshtml)
                     IntermediateToken - (403:27,1 [7] Blocks_Utf8.cshtml) - CSharp - try {\n
                 Utf8Node - 
-                    IntermediateToken - (410:28,0 [4] Blocks_Utf8.cshtml) - Html -     
-                    IntermediateToken - (414:28,4 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (417:28,7 [28] Blocks_Utf8.cshtml) - Html - That time, we wrote 5 lines!
-                    IntermediateToken - (445:28,35 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (449:28,39 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (451:29,0 [25] Blocks_Utf8.cshtml)
                     IntermediateToken - (451:29,0 [25] Blocks_Utf8.cshtml) - CSharp - } catch(Exception ex) {\n
                 Utf8Node - 
-                    IntermediateToken - (476:30,0 [4] Blocks_Utf8.cshtml) - Html -     
-                    IntermediateToken - (480:30,4 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (483:30,7 [26] Blocks_Utf8.cshtml) - Html - Oh no! An error occurred: 
                 CSharpExpression - (511:30,35 [10] Blocks_Utf8.cshtml)
                     IntermediateToken - (511:30,35 [10] Blocks_Utf8.cshtml) - CSharp - ex.Message
                 Utf8Node - 
-                    IntermediateToken - (522:30,46 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (526:30,50 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (528:31,0 [3] Blocks_Utf8.cshtml)
                     IntermediateToken - (528:31,0 [3] Blocks_Utf8.cshtml) - CSharp - }\n
                 Utf8Node - 
-                    IntermediateToken - (531:32,0 [2] Blocks_Utf8.cshtml) - Html - \n
-                    IntermediateToken - (533:33,0 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (536:33,3 [9] Blocks_Utf8.cshtml) - Html - i is now 
                 CSharpExpression - (546:33,13 [1] Blocks_Utf8.cshtml)
                     IntermediateToken - (546:33,13 [1] Blocks_Utf8.cshtml) - CSharp - i
                 Utf8Node - 
-                    IntermediateToken - (547:33,14 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (551:33,18 [4] Blocks_Utf8.cshtml) - Html - \n\n
                 CSharpCode - (556:35,1 [22] Blocks_Utf8.cshtml)
                     IntermediateToken - (556:35,1 [22] Blocks_Utf8.cshtml) - CSharp - lock(new object()) {\n
                 Utf8Node - 
-                    IntermediateToken - (578:36,0 [4] Blocks_Utf8.cshtml) - Html -     
-                    IntermediateToken - (582:36,4 [3] Blocks_Utf8.cshtml) - Html - <p>
-                    IntermediateToken - (585:36,7 [40] Blocks_Utf8.cshtml) - Html - This block is locked, for your security!
-                    IntermediateToken - (625:36,47 [4] Blocks_Utf8.cshtml) - Html - </p>
-                    IntermediateToken - (629:36,51 [2] Blocks_Utf8.cshtml) - Html - \n
                 CSharpCode - (631:37,0 [1] Blocks_Utf8.cshtml)
                     IntermediateToken - (631:37,0 [1] Blocks_Utf8.cshtml) - CSharp - }
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 
+            Utf8FieldNode - 

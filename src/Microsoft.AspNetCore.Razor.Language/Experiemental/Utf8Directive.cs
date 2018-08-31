@@ -2,6 +2,8 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.AspNetCore.Razor.Language.CodeGeneration;
@@ -35,15 +37,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Experiemental
 
         private class Utf8Node : ExtensionIntermediateNode
         {
-            public Utf8Node(HtmlContentIntermediateNode node)
-            {
-                for (var i = 0; i < node.Children.Count; i++)
-                {
-                    Children.Add(node.Children[i]);
-                }
-            }
+            public override IntermediateNodeCollection Children { get; } = IntermediateNodeCollection.ReadOnly;
 
-            public override IntermediateNodeCollection Children { get; } = new IntermediateNodeCollection();
+            public string FieldName { get; set; }
 
             public override void Accept(IntermediateNodeVisitor visitor)
             {
@@ -78,6 +74,47 @@ namespace Microsoft.AspNetCore.Razor.Language.Experiemental
             }
         }
 
+        private class Utf8FieldNode : ExtensionIntermediateNode
+        {
+            public override IntermediateNodeCollection Children { get; } = IntermediateNodeCollection.ReadOnly;
+
+            public string Content { get; set; }
+
+            public string FieldName { get; set; }
+
+            public override void Accept(IntermediateNodeVisitor visitor)
+            {
+                if (visitor == null)
+                {
+                    throw new ArgumentNullException(nameof(visitor));
+                }
+
+                AcceptExtensionNode<Utf8FieldNode>(this, visitor);
+            }
+
+            public override void WriteNode(CodeTarget target, CodeRenderingContext context)
+            {
+                if (target == null)
+                {
+                    throw new ArgumentNullException(nameof(target));
+                }
+
+                if (context == null)
+                {
+                    throw new ArgumentNullException(nameof(context));
+                }
+
+                var extension = target.GetExtension<TargetExtension>();
+                if (extension == null)
+                {
+                    ReportMissingCodeTargetExtension<TargetExtension>(context);
+                    return;
+                }
+
+                extension.WriteUtf8Field(context, this);
+            }
+        }
+
         private class Pass : IntermediateNodePassBase, IRazorOptimizationPass
         {
             // Runs before directive removal
@@ -97,46 +134,78 @@ namespace Microsoft.AspNetCore.Razor.Language.Experiemental
                     return;
                 }
 
+                var @class = documentNode.FindPrimaryClass();
+                if (@class == null)
+                {
+                    return;
+                }
+
                 // OK, rewrite all of the static content
-                var visitor = new Visitor();
+                var visitor = new Visitor(@class);
                 visitor.Visit(documentNode);
             }
         }
 
         private class Visitor : IntermediateNodeWalker
         {
+            private readonly ClassDeclarationIntermediateNode _class;
+            private readonly Dictionary<string, Utf8FieldNode> _fields;
+
+            public Visitor(ClassDeclarationIntermediateNode @class)
+            {
+                _class = @class;
+
+                _fields = new Dictionary<string, Utf8FieldNode>();
+            }
+
             public override void VisitHtml(HtmlContentIntermediateNode node)
             {
+                var content = string.Join(string.Empty, node.Children.Cast<IntermediateToken>().Select(t => t.Content));
+                if (!_fields.TryGetValue(content, out var field))
+                {
+                    field = new Utf8FieldNode()
+                    {
+                        Content = content,
+                        FieldName = $"__bytes{_fields.Count}",
+                    };
+
+                    _fields.Add(content, field);
+
+                    // Just adding these at the end for now. #YOLO
+                    _class.Children.Add(field);
+                }
+
                 var index = Parent.Children.IndexOf(node);
-                Parent.Children[index] = new Utf8Node(node);
+                Parent.Children[index] = new Utf8Node()
+                {
+                    FieldName = field.FieldName,
+                };
             }
         }
 
         private class TargetExtension : ICodeTargetExtension
         {
-            private readonly StringBuilder _builder = new StringBuilder();
-            private int _count;
-
             public void WriteUtf8(CodeRenderingContext context, Utf8Node node)
             {
-                _builder.Clear();
+                context.CodeWriter.WriteMethodInvocation("WriteLiteral", node.FieldName);
+            }
 
-                for (var i = 0; i < node.Children.Count; i++)
+            public void WriteUtf8Field(CodeRenderingContext context, Utf8FieldNode node)
+            {
+                context.CodeWriter.Write("private static readonly global::System.ReadOnlyMemory<byte> ");
+                context.CodeWriter.Write(node.FieldName);
+                context.CodeWriter.Write(" ");
+                context.CodeWriter.Write(" = new byte[] { ");
+
+                var bytes = Encoding.UTF8.GetBytes(node.Content);
+                for (var i = 0; i < bytes.Length; i++)
                 {
-                    var token = (IntermediateToken)node.Children[i];
-                    _builder.Append(token.Content);
+                    context.CodeWriter.Write(bytes[i].ToString());
+                    context.CodeWriter.Write(", ");
                 }
 
-                var text = _builder.ToString();
-                var bytes = Encoding.UTF8.GetBytes(text);
-
-                var index = Interlocked.Increment(ref _count);
-
-                context.CodeWriter.WriteVariableDeclaration(
-                    "System.ReadOnlySpan<byte>",
-                    $"__bytes{index}",
-                    $"new byte[]{{{string.Join(", ", bytes)}}}");
-                context.CodeWriter.WriteMethodInvocation("WriteLiteral", $"__bytes{index}");
+                context.CodeWriter.Write(" };");
+                context.CodeWriter.WriteLine();
             }
         }
     }

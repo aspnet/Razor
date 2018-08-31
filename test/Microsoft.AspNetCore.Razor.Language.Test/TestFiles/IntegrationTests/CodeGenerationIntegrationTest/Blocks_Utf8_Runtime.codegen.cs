@@ -17,131 +17,113 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes1 = new byte[]{13, 10};
-            WriteLiteral(__bytes1);
+            WriteLiteral(__bytes0);
 #line 6 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
  while(i <= 10) {
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes2 = new byte[]{32, 32, 32, 32, 60, 112, 62, 72, 101, 108, 108, 111, 32, 102, 114, 111, 109, 32, 67, 35, 44, 32, 35};
-            WriteLiteral(__bytes2);
+            WriteLiteral(__bytes1);
 #line 7 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
                    Write(i);
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes3 = new byte[]{60, 47, 112, 62, 13, 10};
-            WriteLiteral(__bytes3);
+            WriteLiteral(__bytes2);
 #line 8 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
     i += 1;
 }
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes4 = new byte[]{13, 10};
-            WriteLiteral(__bytes4);
+            WriteLiteral(__bytes0);
 #line 11 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
  if(i == 11) {
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes5 = new byte[]{32, 32, 32, 32, 60, 112, 62, 87, 101, 32, 119, 114, 111, 116, 101, 32, 49, 48, 32, 108, 105, 110, 101, 115, 33, 60, 47, 112, 62, 13, 10};
-            WriteLiteral(__bytes5);
+            WriteLiteral(__bytes3);
 #line 13 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
 }
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes6 = new byte[]{13, 10};
-            WriteLiteral(__bytes6);
+            WriteLiteral(__bytes0);
 #line 15 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
  switch(i) {
     case 11:
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes7 = new byte[]{32, 32, 32, 32, 32, 32, 32, 32, 60, 112, 62, 78, 111, 32, 114, 101, 97, 108, 108, 121, 44, 32, 119, 101, 32, 119, 114, 111, 116, 101, 32, 49, 48, 32, 108, 105, 110, 101, 115, 33, 60, 47, 112, 62, 13, 10};
-            WriteLiteral(__bytes7);
+            WriteLiteral(__bytes4);
 #line 18 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
         break;
     default:
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes8 = new byte[]{32, 32, 32, 32, 32, 32, 32, 32, 60, 112, 62, 65, 99, 116, 117, 97, 108, 108, 121, 44, 32, 119, 101, 32, 100, 105, 100, 110, 39, 116, 46, 46, 46, 60, 47, 112, 62, 13, 10};
-            WriteLiteral(__bytes8);
+            WriteLiteral(__bytes5);
 #line 21 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
         break;
 }
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes9 = new byte[]{13, 10};
-            WriteLiteral(__bytes9);
+            WriteLiteral(__bytes0);
 #line 24 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
  for(int j = 1; j <= 10; j += 2) {
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes10 = new byte[]{32, 32, 32, 32, 60, 112, 62, 72, 101, 108, 108, 111, 32, 97, 103, 97, 105, 110, 32, 102, 114, 111, 109, 32, 67, 35, 44, 32, 35};
-            WriteLiteral(__bytes10);
+            WriteLiteral(__bytes6);
 #line 25 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
                          Write(j);
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes11 = new byte[]{60, 47, 112, 62, 13, 10};
-            WriteLiteral(__bytes11);
+            WriteLiteral(__bytes2);
 #line 26 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
 }
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes12 = new byte[]{13, 10};
-            WriteLiteral(__bytes12);
+            WriteLiteral(__bytes0);
 #line 28 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
  try {
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes13 = new byte[]{32, 32, 32, 32, 60, 112, 62, 84, 104, 97, 116, 32, 116, 105, 109, 101, 44, 32, 119, 101, 32, 119, 114, 111, 116, 101, 32, 53, 32, 108, 105, 110, 101, 115, 33, 60, 47, 112, 62, 13, 10};
-            WriteLiteral(__bytes13);
+            WriteLiteral(__bytes7);
 #line 30 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
 } catch(Exception ex) {
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes14 = new byte[]{32, 32, 32, 32, 60, 112, 62, 79, 104, 32, 110, 111, 33, 32, 65, 110, 32, 101, 114, 114, 111, 114, 32, 111, 99, 99, 117, 114, 114, 101, 100, 58, 32};
-            WriteLiteral(__bytes14);
+            WriteLiteral(__bytes8);
 #line 31 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
                              Write(ex.Message);
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes15 = new byte[]{60, 47, 112, 62, 13, 10};
-            WriteLiteral(__bytes15);
+            WriteLiteral(__bytes2);
 #line 32 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
 }
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes16 = new byte[]{13, 10, 60, 112, 62, 105, 32, 105, 115, 32, 110, 111, 119, 32};
-            WriteLiteral(__bytes16);
+            WriteLiteral(__bytes9);
 #line 34 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
        Write(i);
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes17 = new byte[]{60, 47, 112, 62, 13, 10, 13, 10};
-            WriteLiteral(__bytes17);
+            WriteLiteral(__bytes10);
 #line 36 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
  lock(new object()) {
 
 #line default
 #line hidden
-            System.ReadOnlySpan<byte> __bytes18 = new byte[]{32, 32, 32, 32, 60, 112, 62, 84, 104, 105, 115, 32, 98, 108, 111, 99, 107, 32, 105, 115, 32, 108, 111, 99, 107, 101, 100, 44, 32, 102, 111, 114, 32, 121, 111, 117, 114, 32, 115, 101, 99, 117, 114, 105, 116, 121, 33, 60, 47, 112, 62, 13, 10};
-            WriteLiteral(__bytes18);
+            WriteLiteral(__bytes11);
 #line 38 "TestFiles/IntegrationTests/CodeGenerationIntegrationTest/Blocks_Utf8.cshtml"
 }
 
@@ -149,6 +131,18 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests.TestFiles
 #line hidden
         }
         #pragma warning restore 1998
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes0  = new byte[] { 13, 10,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes1  = new byte[] { 32, 32, 32, 32, 60, 112, 62, 72, 101, 108, 108, 111, 32, 102, 114, 111, 109, 32, 67, 35, 44, 32, 35,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes2  = new byte[] { 60, 47, 112, 62, 13, 10,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes3  = new byte[] { 32, 32, 32, 32, 60, 112, 62, 87, 101, 32, 119, 114, 111, 116, 101, 32, 49, 48, 32, 108, 105, 110, 101, 115, 33, 60, 47, 112, 62, 13, 10,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes4  = new byte[] { 32, 32, 32, 32, 32, 32, 32, 32, 60, 112, 62, 78, 111, 32, 114, 101, 97, 108, 108, 121, 44, 32, 119, 101, 32, 119, 114, 111, 116, 101, 32, 49, 48, 32, 108, 105, 110, 101, 115, 33, 60, 47, 112, 62, 13, 10,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes5  = new byte[] { 32, 32, 32, 32, 32, 32, 32, 32, 60, 112, 62, 65, 99, 116, 117, 97, 108, 108, 121, 44, 32, 119, 101, 32, 100, 105, 100, 110, 39, 116, 46, 46, 46, 60, 47, 112, 62, 13, 10,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes6  = new byte[] { 32, 32, 32, 32, 60, 112, 62, 72, 101, 108, 108, 111, 32, 97, 103, 97, 105, 110, 32, 102, 114, 111, 109, 32, 67, 35, 44, 32, 35,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes7  = new byte[] { 32, 32, 32, 32, 60, 112, 62, 84, 104, 97, 116, 32, 116, 105, 109, 101, 44, 32, 119, 101, 32, 119, 114, 111, 116, 101, 32, 53, 32, 108, 105, 110, 101, 115, 33, 60, 47, 112, 62, 13, 10,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes8  = new byte[] { 32, 32, 32, 32, 60, 112, 62, 79, 104, 32, 110, 111, 33, 32, 65, 110, 32, 101, 114, 114, 111, 114, 32, 111, 99, 99, 117, 114, 114, 101, 100, 58, 32,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes9  = new byte[] { 13, 10, 60, 112, 62, 105, 32, 105, 115, 32, 110, 111, 119, 32,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes10  = new byte[] { 60, 47, 112, 62, 13, 10, 13, 10,  };
+        private static readonly global::System.ReadOnlyMemory<byte> __bytes11  = new byte[] { 32, 32, 32, 32, 60, 112, 62, 84, 104, 105, 115, 32, 98, 108, 111, 99, 107, 32, 105, 115, 32, 108, 111, 99, 107, 101, 100, 44, 32, 102, 111, 114, 32, 121, 111, 117, 114, 32, 115, 101, 99, 117, 114, 105, 116, 121, 33, 60, 47, 112, 62, 13, 10,  };
     }
 }
 #pragma warning restore 1591
