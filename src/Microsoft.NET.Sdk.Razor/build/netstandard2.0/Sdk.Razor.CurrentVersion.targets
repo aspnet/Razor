@@ -9,17 +9,31 @@ WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and
 Copyright (c) .NET Foundation. All rights reserved.
 ***********************************************************************************************
 -->
-<Project ToolsVersion="14.0">
+<Project ToolsVersion="14.0" TreatAsLocalProperty="_RazorTaskFolder;_RazorTaskAssembly;_RazorToolAssembly">
   <!-- 
     Targets supporting Razor MSBuild integration. Contain support for generating C# code using Razor
     and including the generated code in the project lifecycle, including compiling, publishing and producing
     nuget packages.
   -->
 
+  <Import Project="$(CustomBeforeRazorSdkTargets)" Condition="'$(CustomBeforeRazorSdkTargets)' != '' and Exists('$(CustomBeforeRazorSdkTargets)')"/>
+
   <!--
     This is a hook to import a set of targets before the Razor targets. By default this is unused.
   -->
-  <Import Project="$(CustomBeforeRazorSdkTargets)" Condition="'$(CustomBeforeRazorSdkTargets)' != '' and Exists('$(CustomBeforeRazorSdkTargets)')"/>
+  <PropertyGroup>
+    <!-- Override this to hijack the tasks and targets. Used by tests. -->
+    <_RazorMSBuildRoot Condition="'$(_RazorMSBuildRoot)'==''">$(MSBuildThisFileDirectory)..\..\</_RazorMSBuildRoot>
+
+    <_RazorTaskFolder Condition=" '$(MSBuildRuntimeType)' == 'Core' ">netstandard2.0</_RazorTaskFolder>
+    <_RazorTaskFolder Condition=" '$(MSBuildRuntimeType)' != 'Core' ">net46</_RazorTaskFolder>
+
+    <_RazorTaskAssembly Condition="'$(_RazorTaskAssembly)'==''">$(_RazorMSBuildRoot)tasks\$(_RazorTaskFolder)\Microsoft.AspNetCore.Razor.Tasks.dll</_RazorTaskAssembly>
+    <_RazorToolAssembly Condition="'$(_RazorToolAssembly)'==''">$(_RazorMSBuildRoot)tools\rzc.dll</_RazorToolAssembly>
+  </PropertyGroup>
+
+  <UsingTask TaskName="Microsoft.AspNetCore.Razor.Tasks.RazorGenerate" AssemblyFile="$(_RazorTaskAssembly)" />
+  <UsingTask TaskName="Microsoft.AspNetCore.Razor.Tasks.RazorTagHelper" AssemblyFile="$(_RazorTaskAssembly)" />
 
   <!--
     Razor defines two primary targets:
@@ -34,13 +48,11 @@ Copyright (c) .NET Foundation. All rights reserved.
       ResolveRazorGenerateInputs;
       AssignRazorGenerateTargetPaths;
       ResolveAssemblyReferenceRazorGenerateInputs;
-      _CheckForMissingRazorCompiler;
       ResolveTagHelperRazorGenerateInputs
     </PrepareForRazorGenerateDependsOn>
 
     <RazorGenerateDependsOn>
       PrepareForRazorGenerate;
-      _CheckForMissingRazorCompiler;
       RazorCoreGenerate
     </RazorGenerateDependsOn>
   
@@ -180,9 +192,6 @@ Copyright (c) .NET Foundation. All rights reserved.
     <ResolvedRazorCompileToolset Condition="'$(MvcRazorCompileOnPublish)' == '' AND '$(RazorCompileToolset)' == 'PrecompilationTool'">$(RazorCompileToolset)</ResolvedRazorCompileToolset>
     <ResolvedRazorCompileToolset Condition="'$(MvcRazorCompileOnPublish)' == '' AND '$(RazorCompileToolset)' == 'RazorSdk'">$(RazorCompileToolset)</ResolvedRazorCompileToolset>
 
-    <!-- If RazorSdk is not referenced, fall-back to Precompilation tool -->
-    <ResolvedRazorCompileToolset Condition="'$(ResolvedRazorCompileToolset)' == 'RazorSdk' And '$(IsRazorCompilerReferenced)' != 'true'">PrecompilationTool</ResolvedRazorCompileToolset>
-
     <!-- Previous versions of the precompilation tool still depends on the msbuild property 'MvcRazorCompileOnPublish'. Hence, setting it to the old default value -->
     <MvcRazorCompileOnPublish Condition="'$(MvcRazorCompileOnPublish)' == ''">true</MvcRazorCompileOnPublish>
   </PropertyGroup>
@@ -217,8 +226,7 @@ Copyright (c) .NET Foundation. All rights reserved.
     These are the targets that generate code using Razor, separated from the main file for ease of maintenance.
     Most targets related to Razor code generation are defined there.
   -->
-  <Import Project="$(RazorCodeGenerationTargetsPath)"
-    Condition="'$(RazorCodeGenerationTargetsPath)' != '' AND Exists('$(RazorCodeGenerationTargetsPath)')" />
+  <Import Project="Microsoft.NET.Sdk.Razor.CodeGeneration.targets" />
 
   <Import Project="Microsoft.NET.Sdk.Razor.GenerateAssemblyInfo.targets" />
 
@@ -587,13 +595,6 @@ Copyright (c) .NET Foundation. All rights reserved.
         Remove="%(ResolvedFileToPublish.Identity)"
         Condition="'%(ResolvedFileToPublish.RelativePath)'=='$(RefAssembliesFolderName)\%(Filename)%(Extension)'"/>
     </ItemGroup>
-  </Target>
-
-  <Target Name="_CheckForMissingRazorCompiler" Condition="'$(IsRazorCompilerReferenced)' != 'true'">
-    <Error
-      Text="A PackageReference for 'Microsoft.AspNetCore.Razor.Design' was not included in your project. This package is required to compile Razor files. Typically, a
-      transitive reference to 'Microsoft.AspNetCore.Razor.Design' and references required to compile Razor files are obtained by adding a PackageReference
-      for 'Microsoft.AspNetCore.Mvc' in your project. For more information, see https://go.microsoft.com/fwlink/?linkid=868374." />
   </Target>
 
   <Target Name="_ResolveRazorTargetPath">

@@ -17,7 +17,7 @@
       "DefaultCompositeRule"
     ],
     "packages": {
-      "Microsoft.AspNetCore.Razor.Design": {
+      "Microsoft.NET.Sdk.Razor": {
         "exclusions": {
           "ASSEMBLY_DESCRIPTION": {
             "tools/Microsoft.CodeAnalysis.CSharp.dll": "This assembly is not owned by us and does not follow our conventions.",
@@ -25,17 +25,13 @@
           },
           "NEUTRAL_RESOURCES_LANGUAGE": {
             "tools/Microsoft.CodeAnalysis.CSharp.dll": "This assembly is not owned by us and does not follow our conventions.",
-            "tools/Microsoft.CodeAnalysis.dll": "This assembly is not owned by us and does not follow our conventions.",
-            "tools/Newtonsoft.Json.dll": "This assembly is not owned by us and does not follow our conventions."
+            "tools/Microsoft.CodeAnalysis.dll": "This assembly is not owned by us and does not follow our conventions."
           },
           "ASSEMBLY_PRODUCT": {
             "tools/Microsoft.CodeAnalysis.CSharp.dll": "This assembly is not owned by us and does not follow our conventions.",
             "tools/Microsoft.CodeAnalysis.dll": "This assembly is not owned by us and does not follow our conventions."
           },
           "SERVICING_ATTRIBUTE": {
-            "tools/Newtonsoft.Json.dll": "This assembly is not owned by us and does not follow our conventions."
-          },
-          "VERSION_INFORMATIONALVERSION": {
             "tools/Newtonsoft.Json.dll": "This assembly is not owned by us and does not follow our conventions."
           },
           "WRONG_PUBLICKEYTOKEN": {

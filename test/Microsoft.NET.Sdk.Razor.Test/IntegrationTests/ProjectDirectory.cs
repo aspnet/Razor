@@ -75,7 +75,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 CopyGlobalJson(solutionRoot, destinationPath);
 
                 return new ProjectDirectory(
-                    destinationPath, 
+                    destinationPath,
                     directoryPath,
                     newProjectFilePath);
             }

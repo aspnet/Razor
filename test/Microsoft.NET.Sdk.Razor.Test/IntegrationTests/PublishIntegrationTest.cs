@@ -142,7 +142,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
             Assert.BuildPassed(result);
 
-            // Everything we do should noop - including building the app. 
+            // Everything we do should noop - including building the app.
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.dll");
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.pdb");
             Assert.FileDoesNotExist(result, PublishOutputPath, "SimpleMvc.Views.dll");
@@ -160,7 +160,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
             Assert.BuildPassed(result);
 
-            // Everything we do should noop - including building the app. 
+            // Everything we do should noop - including building the app.
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.dll");
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.pdb");
             Assert.FileDoesNotExist(result, PublishOutputPath, "SimpleMvc.Views.dll");
@@ -177,7 +177,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
             Assert.BuildPassed(result);
 
-            // Everything we do should noop - including building the app. 
+            // Everything we do should noop - including building the app.
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.dll");
             Assert.FileExists(result, PublishOutputPath, "SimpleMvc.pdb");
             Assert.FileDoesNotExist(result, PublishOutputPath, "SimpleMvc.Views.dll");

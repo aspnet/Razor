@@ -18,6 +18,8 @@
   </metadata>
 
   <files>
+    <file src="Sdk\*.props" target="Sdk\" />
+    <file src="Sdk\*.targets" target="Sdk\" />
     <file src="build\**\*.props" target="build\" />
     <file src="build\**\*.targets" target="build\" />
     <file src="buildMultiTargeting\**\*.props" target="buildMultiTargeting\" />

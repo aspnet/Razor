@@ -10,7 +10,7 @@
     <IsPackable>false</IsPackable>
     <EnableApiCheck>false</EnableApiCheck>
 
-    <OutputPath>..\Microsoft.AspNetCore.Razor.Design\bin\$(Configuration)\tasks\</OutputPath>
+    <OutputPath>..\Microsoft.NET.Sdk.Razor\bin\$(Configuration)\tasks\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

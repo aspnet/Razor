@@ -41,7 +41,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
             Assert.BuildPassed(result);
 
-            // Everything we do should noop - including building the app. 
+            // Everything we do should noop - including building the app.
             Assert.FileDoesNotExist(result, IntermediateOutputPath, "SimpleMvc.dll");
             Assert.FileDoesNotExist(result, IntermediateOutputPath, "SimpleMvc.pdb");
             Assert.FileDoesNotExist(result, IntermediateOutputPath, "SimpleMvc.Views.dll");
@@ -49,7 +49,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
         }
 
         [Fact]
-        [InitializeTestProject("SimpleMvc")] 
+        [InitializeTestProject("SimpleMvc")]
         public async Task RazorCompile_EmbedRazorGenerateSources_EmbedsCshtmlFiles()
         {
             var result = await DotnetMSBuild("RazorCompile", "/p:EmbedRazorGenerateSources=true");

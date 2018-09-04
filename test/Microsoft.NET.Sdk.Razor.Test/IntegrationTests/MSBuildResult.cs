@@ -21,7 +21,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
         public string FileName { get; }
 
         public int ExitCode { get; }
-        
+
         public string Output { get; }
     }
 }
