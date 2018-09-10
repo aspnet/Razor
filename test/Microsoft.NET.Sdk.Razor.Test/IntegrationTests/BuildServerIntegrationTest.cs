@@ -39,7 +39,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
         private async Task Build_SimpleMvc_CanBuildSuccessfully(MSBuildProcessKind msBuildProcessKind)
         {
             var result = await DotnetMSBuild(
-                "Build", 
+                "Build",
                 "/p:_RazorForceBuildServer=true",
                 msBuildProcessKind: msBuildProcessKind);
 

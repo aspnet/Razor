@@ -186,7 +186,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
             filePath = Path.Combine(result.Project.DirectoryPath, filePath);
             FileExists(result, filePath);
-            
+
             var lines = File.ReadAllLines(filePath);
             for (var i = 0; i < lines.Length; i++)
             {
@@ -651,7 +651,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
             {
                 get
                 {
-                    return 
+                    return
                         $"nuspec: '{FilePath}' did not contain the expected content." + Environment.NewLine +
                         Environment.NewLine +
                         $"expected: {Expected}" + Environment.NewLine +

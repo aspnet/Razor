@@ -38,7 +38,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
         public bool Equals(FileThumbPrint other)
         {
-            return 
+            return
                 string.Equals(Path, other.Path, StringComparison.Ordinal) &&
                 LastWriteTimeUtc == other.LastWriteTimeUtc &&
                 string.Equals(Hash, other.Hash, StringComparison.Ordinal);

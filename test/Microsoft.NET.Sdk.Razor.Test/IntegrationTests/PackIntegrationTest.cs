@@ -86,7 +86,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
 
             Assert.FileExists(result, OutputPath, "ClassLibrary.dll");
             Assert.FileExists(result, OutputPath, "ClassLibrary.Views.dll");
-            
+
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 // Travis on OSX produces different full paths in C# and MSBuild

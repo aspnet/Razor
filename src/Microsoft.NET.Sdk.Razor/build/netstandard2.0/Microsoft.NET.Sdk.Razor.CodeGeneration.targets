@@ -4,15 +4,15 @@
     This target is explicitly imported by Razor SDK.
   -->
 
-  <!-- 
+  <!--
     Consider these properties to be private to this targets file. The main Razor SDK should define all of the properties
-    that we use to pass data back and forth. 
+    that we use to pass data back and forth.
   -->
   <PropertyGroup>
     <!-- Used for tag helper discovery -->
     <_RazorTagHelperInputCache>$(IntermediateOutputPath)$(TargetName).TagHelpers.input.cache</_RazorTagHelperInputCache>
     <_RazorTagHelperOutputCache>$(IntermediateOutputPath)$(TargetName).TagHelpers.output.cache</_RazorTagHelperOutputCache>
-    
+
     <!-- Used to hash file inputs for RazorGenerate -->
     <_RazorGenerateInputsHash></_RazorGenerateInputsHash>
     <_RazorGenerateInputsHashFile>$(IntermediateOutputPath)$(MSBuildProjectName).RazorCoreGenerate.cache</_RazorGenerateInputsHashFile>
@@ -23,8 +23,8 @@
 
     This is part of the chain of targets that are called once we've actually committed to generating code.
   -->
-  <Target 
-    Name="_HashRazorGenerateInputs" 
+  <Target
+    Name="_HashRazorGenerateInputs"
     Condition="'@(RazorGenerateWithTargetPath)' != ''">
 
     <Hash ItemsToHash="@(RazorGenerateWithTargetPath)">
@@ -53,7 +53,7 @@
     Outputs="$(_RazorTagHelperInputCache)"
     Condition="'@(RazorGenerateWithTargetPath)' != ''">
 
-    <!-- 
+    <!--
       We're manipulating our output directly here because we want to separate the actual up-to-date check
       of RazorCoreGenerate from the output of this target. Many times the set of tag helpers doesn't change
       so we don't need to regenerate the code.
