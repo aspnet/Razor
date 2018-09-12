@@ -1,42 +1,46 @@
-Markup block - Gen<None> - 37 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Statement block - Gen<None> - 31 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [{] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.LeftBrace;[{];
-        Markup block - Gen<None> - 19 - (2:0,2)
-            Tag block - Gen<None> - 6 - (2:0,2)
-                Transition span - Gen<None> - [<text>] - SpanEditHandler;Accepts:None - (2:0,2) - Tokens:3
-                    SyntaxKind.OpenAngle;[<];
-                    SyntaxKind.Text;[text];
-                    SyntaxKind.CloseAngle;[>];
-            Markup span - Gen<Markup> - [Blah] - SpanEditHandler;Accepts:None - (8:0,8) - Tokens:1
-                SyntaxKind.Text;[Blah];
-            Tag block - Gen<None> - 7 - (12:0,12)
-                Transition span - Gen<None> - [</text>] - SpanEditHandler;Accepts:None - (12:0,12) - Tokens:4
-                    SyntaxKind.OpenAngle;[<];
-                    SyntaxKind.ForwardSlash;[/];
-                    SyntaxKind.Text;[text];
-                    SyntaxKind.CloseAngle;[>];
-            Markup span - Gen<Markup> - [LF] - SpanEditHandler;Accepts:None - (19:0,19) - Tokens:1
-                SyntaxKind.NewLine;[LF];
-        Markup block - Gen<None> - 9 - (21:1,0)
-            Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (21:1,0) - Tokens:1
-                SyntaxKind.Transition;[@];
-            MetaCode span - Gen<None> - [:] - SpanEditHandler;Accepts:Any - (22:1,1) - Tokens:1
-                SyntaxKind.Colon;[:];
-            Markup span - Gen<Markup> - [ BlehLF] - SpanEditHandler;Accepts:None - (23:1,2) - Tokens:3
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.Text;[Bleh];
-                SyntaxKind.NewLine;[LF];
-        Code span - Gen<Stmt> - [] - SpanEditHandler;Accepts:Any - (30:2,0) - Tokens:1
+SyntaxKind.HtmlDocument - [0..37) - FullWidth: 37 - Slots: 1 - [@{<text>Blah</text>LF@: BlehLF}<html>]
+    SyntaxKind.HtmlMarkupBlock - [0..37) - FullWidth: 37 - Slots: 1
+        SyntaxKind.HtmlTextLiteral - [0..0) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
             SyntaxKind.Unknown;[];
-        MetaCode span - Gen<None> - [}] - SpanEditHandler;Accepts:None - (30:2,0) - Tokens:1
-            SyntaxKind.RightBrace;[}];
-    Tag block - Gen<None> - 6 - (31:2,1)
-        Markup span - Gen<Markup> - [<html>] - SpanEditHandler;Accepts:Any - (31:2,1) - Tokens:3
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Text;[html];
-            SyntaxKind.CloseAngle;[>];
+        SyntaxKind.CSharpCodeBlock - [0..31) - FullWidth: 31 - Slots: 1
+            SyntaxKind.CSharpStatement - [0..31) - FullWidth: 31 - Slots: 2
+                SyntaxKind.CSharpTransition - [0..1) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                    SyntaxKind.Transition;[@];
+                SyntaxKind.CSharpStatementBody - [1..31) - FullWidth: 30 - Slots: 3
+                    SyntaxKind.RazorMetaCode - [1..2) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        SyntaxKind.LeftBrace;[{];
+                    SyntaxKind.CSharpCodeBlock - [2..30) - FullWidth: 28 - Slots: 1
+                        SyntaxKind.HtmlMarkupBlock - [2..21) - FullWidth: 19 - Slots: 1
+                            SyntaxKind.HtmlTagBlock - [2..8) - FullWidth: 6 - Slots: 1
+                                SyntaxKind.HtmlTransition - [2..8) - FullWidth: 6 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                    SyntaxKind.OpenAngle;[<];
+                                    SyntaxKind.Text;[text];
+                                    SyntaxKind.CloseAngle;[>];
+                            SyntaxKind.HtmlTextLiteral - [8..12) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
+                                SyntaxKind.Text;[Blah];
+                            SyntaxKind.HtmlTagBlock - [12..19) - FullWidth: 7 - Slots: 1
+                                SyntaxKind.HtmlTransition - [12..19) - FullWidth: 7 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                    SyntaxKind.OpenAngle;[<];
+                                    SyntaxKind.ForwardSlash;[/];
+                                    SyntaxKind.Text;[text];
+                                    SyntaxKind.CloseAngle;[>];
+                            SyntaxKind.HtmlTextLiteral - [19..21) - FullWidth: 2 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
+                                SyntaxKind.NewLine;[LF];
+                        SyntaxKind.HtmlMarkupBlock - [21..30) - FullWidth: 9 - Slots: 1
+                            SyntaxKind.HtmlTransition - [21..22) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                SyntaxKind.Transition;[@];
+                            SyntaxKind.RazorMetaCode - [22..23) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                                SyntaxKind.Colon;[:];
+                            SyntaxKind.HtmlTextLiteral - [23..30) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
+                                SyntaxKind.Whitespace;[ ];
+                                SyntaxKind.Text;[Bleh];
+                                SyntaxKind.NewLine;[LF];
+                        SyntaxKind.CSharpStatementLiteral - [30..30) - FullWidth: 0 - Slots: 1 - Gen<Stmt> - AutoCompleteEditHandler;Accepts:Any,AutoComplete:[<null>];AtEOL
+                            SyntaxKind.Unknown;[];
+                    SyntaxKind.RazorMetaCode - [30..31) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        SyntaxKind.RightBrace;[}];
+        SyntaxKind.HtmlTagBlock - [31..37) - FullWidth: 6 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [31..37) - FullWidth: 6 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.Text;[html];
+                SyntaxKind.CloseAngle;[>];

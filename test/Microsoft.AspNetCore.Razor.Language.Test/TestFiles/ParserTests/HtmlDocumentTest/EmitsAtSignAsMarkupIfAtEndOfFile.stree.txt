@@ -1,11 +1,15 @@
-Markup block - Gen<None> - 5 - (0:0,0)
-    Markup span - Gen<Markup> - [foo ] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:2
-        SyntaxKind.Text;[foo];
-        SyntaxKind.Whitespace;[ ];
-    Expression block - Gen<Expr> - 1 - (4:0,4)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (4:0,4) - Tokens:1
-            SyntaxKind.Transition;[@];
-        Code span - Gen<Expr> - [] - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14 - (5:0,5) - Tokens:1
+SyntaxKind.HtmlDocument - [0..5) - FullWidth: 5 - Slots: 1 - [foo @]
+    SyntaxKind.HtmlMarkupBlock - [0..5) - FullWidth: 5 - Slots: 1
+        SyntaxKind.HtmlTextLiteral - [0..4) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Text;[foo];
+            SyntaxKind.Whitespace;[ ];
+        SyntaxKind.CSharpCodeBlock - [4..5) - FullWidth: 1 - Slots: 1
+            SyntaxKind.CSharpImplicitExpression - [4..5) - FullWidth: 1 - Slots: 2
+                SyntaxKind.CSharpTransition - [4..5) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                    SyntaxKind.Transition;[@];
+                SyntaxKind.CSharpImplicitExpressionBody - [5..5) - FullWidth: 0 - Slots: 1
+                    SyntaxKind.CSharpCodeBlock - [5..5) - FullWidth: 0 - Slots: 1
+                        SyntaxKind.CSharpExpressionLiteral - [5..5) - FullWidth: 0 - Slots: 1 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                            SyntaxKind.Unknown;[];
+        SyntaxKind.HtmlTextLiteral - [5..5) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
             SyntaxKind.Unknown;[];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (5:0,5) - Tokens:1
-        SyntaxKind.Unknown;[];

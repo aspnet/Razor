@@ -1,29 +1,30 @@
-Markup block - Gen<None> - 24 - (0:0,0)
-    Markup span - Gen<Markup> - [Foo ] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:2
-        SyntaxKind.Text;[Foo];
-        SyntaxKind.Whitespace;[ ];
-    Tag block - Gen<None> - 5 - (4:0,4)
-        Markup span - Gen<Markup> - [<div>] - SpanEditHandler;Accepts:Any - (4:0,4) - Tokens:3
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Text;[div];
-            SyntaxKind.CloseAngle;[>];
-    Tag block - Gen<None> - 3 - (9:0,9)
-        Markup span - Gen<Markup> - [<p>] - SpanEditHandler;Accepts:Any - (9:0,9) - Tokens:3
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Text;[p];
-            SyntaxKind.CloseAngle;[>];
-    Tag block - Gen<None> - 4 - (12:0,12)
-        Markup span - Gen<Markup> - [</p>] - SpanEditHandler;Accepts:Any - (12:0,12) - Tokens:4
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.ForwardSlash;[/];
-            SyntaxKind.Text;[p];
-            SyntaxKind.CloseAngle;[>];
-    Tag block - Gen<None> - 4 - (16:0,16)
-        Markup span - Gen<Markup> - [</p>] - SpanEditHandler;Accepts:Any - (16:0,16) - Tokens:4
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.ForwardSlash;[/];
-            SyntaxKind.Text;[p];
-            SyntaxKind.CloseAngle;[>];
-    Markup span - Gen<Markup> - [ Baz] - SpanEditHandler;Accepts:Any - (20:0,20) - Tokens:2
-        SyntaxKind.Whitespace;[ ];
-        SyntaxKind.Text;[Baz];
+SyntaxKind.HtmlDocument - [0..24) - FullWidth: 24 - Slots: 1 - [Foo <div><p></p></p> Baz]
+    SyntaxKind.HtmlMarkupBlock - [0..24) - FullWidth: 24 - Slots: 1
+        SyntaxKind.HtmlTextLiteral - [0..4) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Text;[Foo];
+            SyntaxKind.Whitespace;[ ];
+        SyntaxKind.HtmlTagBlock - [4..9) - FullWidth: 5 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [4..9) - FullWidth: 5 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.Text;[div];
+                SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTagBlock - [9..12) - FullWidth: 3 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [9..12) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.Text;[p];
+                SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTagBlock - [12..16) - FullWidth: 4 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [12..16) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.ForwardSlash;[/];
+                SyntaxKind.Text;[p];
+                SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTagBlock - [16..20) - FullWidth: 4 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [16..20) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.ForwardSlash;[/];
+                SyntaxKind.Text;[p];
+                SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTextLiteral - [20..24) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Whitespace;[ ];
+            SyntaxKind.Text;[Baz];

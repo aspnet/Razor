@@ -1,52 +1,59 @@
-Markup block - Gen<None> - 53 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<Directive:{section;RazorBlock;Unrestricted}> - 53 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [section] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[section];
-        Code span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (8:0,8) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {SectionName;Member;Opt:False}> - [Foo] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (9:0,9) - Tokens:1
-            SyntaxKind.Identifier;[Foo];
-        Markup span - Gen<None> - [ ] - SpanEditHandler;Accepts:AllWhitespace - (12:0,12) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        MetaCode span - Gen<None> - [{] - AutoCompleteEditHandler;Accepts:None,AutoComplete:[<null>];AtEnd - (13:0,13) - Tokens:1
-            SyntaxKind.LeftBrace;[{];
-        Markup block - Gen<None> - 38 - (14:0,14)
-            Markup span - Gen<Markup> - [ ] - SpanEditHandler;Accepts:Any - (14:0,14) - Tokens:1
-                SyntaxKind.Whitespace;[ ];
-            Tag block - Gen<None> - 8 - (15:0,15)
-                Markup span - Gen<Markup> - [<script>] - SpanEditHandler;Accepts:Any - (15:0,15) - Tokens:3
-                    SyntaxKind.OpenAngle;[<];
-                    SyntaxKind.Text;[script];
-                    SyntaxKind.CloseAngle;[>];
-            Markup span - Gen<Markup> - [foo<bar baz='] - SpanEditHandler;Accepts:Any - (23:0,23) - Tokens:7
-                SyntaxKind.Text;[foo];
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.Text;[bar];
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.Text;[baz];
-                SyntaxKind.Equals;[=];
-                SyntaxKind.SingleQuote;['];
-            Expression block - Gen<Expr> - 4 - (36:0,36)
-                Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (36:0,36) - Tokens:1
+SyntaxKind.HtmlDocument - [0..53) - FullWidth: 53 - Slots: 1 - [@section Foo { <script>foo<bar baz='@boz'></script> }]
+    SyntaxKind.HtmlMarkupBlock - [0..53) - FullWidth: 53 - Slots: 1
+        SyntaxKind.HtmlTextLiteral - [0..0) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Unknown;[];
+        SyntaxKind.CSharpCodeBlock - [0..53) - FullWidth: 53 - Slots: 1
+            SyntaxKind.CSharpDirective - [0..53) - FullWidth: 53 - Slots: 2
+                SyntaxKind.CSharpTransition - [0..1) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
                     SyntaxKind.Transition;[@];
-                Code span - Gen<Expr> - [boz] - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K15 - (37:0,37) - Tokens:1
-                    SyntaxKind.Identifier;[boz];
-            Markup span - Gen<Markup> - ['>] - SpanEditHandler;Accepts:Any - (40:0,40) - Tokens:2
-                SyntaxKind.SingleQuote;['];
-                SyntaxKind.CloseAngle;[>];
-            Tag block - Gen<None> - 9 - (42:0,42)
-                Markup span - Gen<Markup> - [</script>] - SpanEditHandler;Accepts:Any - (42:0,42) - Tokens:4
-                    SyntaxKind.OpenAngle;[<];
-                    SyntaxKind.ForwardSlash;[/];
-                    SyntaxKind.Text;[script];
-                    SyntaxKind.CloseAngle;[>];
-            Markup span - Gen<Markup> - [ ] - SpanEditHandler;Accepts:Any - (51:0,51) - Tokens:1
-                SyntaxKind.Whitespace;[ ];
-        MetaCode span - Gen<None> - [}] - SpanEditHandler;Accepts:None - (52:0,52) - Tokens:1
-            SyntaxKind.RightBrace;[}];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (53:0,53) - Tokens:1
-        SyntaxKind.Unknown;[];
+                SyntaxKind.CSharpDirectiveBody - [1..53) - FullWidth: 52 - Slots: 2
+                    SyntaxKind.RazorMetaCode - [1..8) - FullWidth: 7 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        SyntaxKind.Identifier;[section];
+                    SyntaxKind.CSharpCodeBlock - [8..53) - FullWidth: 45 - Slots: 1
+                        SyntaxKind.CSharpStatementLiteral - [8..9) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            SyntaxKind.Whitespace;[ ];
+                        SyntaxKind.CSharpStatementLiteral - [9..12) - FullWidth: 3 - Slots: 1 - Gen<DirectiveToken {SectionName;Member;Opt:False}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            SyntaxKind.Identifier;[Foo];
+                        SyntaxKind.HtmlTextLiteral - [12..13) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:AllWhitespace
+                            SyntaxKind.Whitespace;[ ];
+                        SyntaxKind.RazorMetaCode - [13..14) - FullWidth: 1 - Slots: 1 - Gen<None> - AutoCompleteEditHandler;Accepts:None,AutoComplete:[<null>];AtEnd
+                            SyntaxKind.LeftBrace;[{];
+                        SyntaxKind.HtmlMarkupBlock - [14..52) - FullWidth: 38 - Slots: 1
+                            SyntaxKind.HtmlTextLiteral - [14..15) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                                SyntaxKind.Whitespace;[ ];
+                            SyntaxKind.HtmlTagBlock - [15..23) - FullWidth: 8 - Slots: 1
+                                SyntaxKind.HtmlTextLiteral - [15..23) - FullWidth: 8 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                                    SyntaxKind.OpenAngle;[<];
+                                    SyntaxKind.Text;[script];
+                                    SyntaxKind.CloseAngle;[>];
+                            SyntaxKind.HtmlTextLiteral - [23..36) - FullWidth: 13 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                                SyntaxKind.Text;[foo];
+                                SyntaxKind.OpenAngle;[<];
+                                SyntaxKind.Text;[bar];
+                                SyntaxKind.Whitespace;[ ];
+                                SyntaxKind.Text;[baz];
+                                SyntaxKind.Equals;[=];
+                                SyntaxKind.SingleQuote;['];
+                            SyntaxKind.CSharpCodeBlock - [36..40) - FullWidth: 4 - Slots: 1
+                                SyntaxKind.CSharpImplicitExpression - [36..40) - FullWidth: 4 - Slots: 2
+                                    SyntaxKind.CSharpTransition - [36..37) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        SyntaxKind.Transition;[@];
+                                    SyntaxKind.CSharpImplicitExpressionBody - [37..40) - FullWidth: 3 - Slots: 1
+                                        SyntaxKind.CSharpCodeBlock - [37..40) - FullWidth: 3 - Slots: 1
+                                            SyntaxKind.CSharpExpressionLiteral - [37..40) - FullWidth: 3 - Slots: 1 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K15
+                                                SyntaxKind.Identifier;[boz];
+                            SyntaxKind.HtmlTextLiteral - [40..42) - FullWidth: 2 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                                SyntaxKind.SingleQuote;['];
+                                SyntaxKind.CloseAngle;[>];
+                            SyntaxKind.HtmlTagBlock - [42..51) - FullWidth: 9 - Slots: 1
+                                SyntaxKind.HtmlTextLiteral - [42..51) - FullWidth: 9 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                                    SyntaxKind.OpenAngle;[<];
+                                    SyntaxKind.ForwardSlash;[/];
+                                    SyntaxKind.Text;[script];
+                                    SyntaxKind.CloseAngle;[>];
+                            SyntaxKind.HtmlTextLiteral - [51..52) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                                SyntaxKind.Whitespace;[ ];
+                        SyntaxKind.RazorMetaCode - [52..53) - FullWidth: 1 - Slots: 1 - Gen<None> - ImplicitExpressionEditHandler;Accepts:None;ImplicitExpression[RTD];K15
+                            SyntaxKind.RightBrace;[}];
+        SyntaxKind.HtmlTextLiteral - [53..53) - FullWidth: 0 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Unknown;[];

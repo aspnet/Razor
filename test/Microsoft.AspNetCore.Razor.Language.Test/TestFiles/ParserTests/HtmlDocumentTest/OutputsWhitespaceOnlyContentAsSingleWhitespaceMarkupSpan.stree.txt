@@ -1,3 +1,4 @@
-Markup block - Gen<None> - 10 - (0:0,0)
-    Markup span - Gen<Markup> - [          ] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Whitespace;[          ];
+SyntaxKind.HtmlDocument - [0..10) - FullWidth: 10 - Slots: 1 - [          ]
+    SyntaxKind.HtmlMarkupBlock - [0..10) - FullWidth: 10 - Slots: 1
+        SyntaxKind.HtmlTextLiteral - [0..10) - FullWidth: 10 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Whitespace;[          ];

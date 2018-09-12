@@ -1,43 +1,48 @@
-Markup block - Gen<None> - 39 - (0:0,0)
-    Tag block - Gen<None> - 6 - (0:0,0)
-        Markup span - Gen<Markup> - [<div >] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:4
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Text;[div];
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.CloseAngle;[>];
-    Tag block - Gen<None> - 17 - (6:0,6)
-        Markup span - Gen<Markup> - [<p] - SpanEditHandler;Accepts:Any - (6:0,6) - Tokens:2
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Text;[p];
-        Markup block - Gen<Attr:class, class = '@(8:0,8),'@(21:0,21)> - 14 - (8:0,8)
-            Markup span - Gen<None> - [ class = '] - SpanEditHandler;Accepts:Any - (8:0,8) - Tokens:6
+SyntaxKind.HtmlDocument - [0..39) - FullWidth: 39 - Slots: 1 - [<div ><p class = 'bar'> Foo </p></div >]
+    SyntaxKind.HtmlMarkupBlock - [0..39) - FullWidth: 39 - Slots: 1
+        SyntaxKind.HtmlTagBlock - [0..6) - FullWidth: 6 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [0..6) - FullWidth: 6 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.Text;[div];
                 SyntaxKind.Whitespace;[ ];
-                SyntaxKind.Text;[class];
-                SyntaxKind.Whitespace;[ ];
+                SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTagBlock - [6..23) - FullWidth: 17 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [6..8) - FullWidth: 2 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.Text;[p];
+            SyntaxKind.HtmlAttributeBlock - [8..22) - FullWidth: 14 - Slots: 7
+                SyntaxKind.HtmlTextLiteral - [8..9) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    SyntaxKind.Whitespace;[ ];
+                SyntaxKind.HtmlTextLiteral - [9..14) - FullWidth: 5 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    SyntaxKind.Text;[class];
+                SyntaxKind.HtmlTextLiteral - [14..15) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    SyntaxKind.Whitespace;[ ];
                 SyntaxKind.Equals;[=];
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.SingleQuote;['];
-            Markup span - Gen<LitAttr:@(18:0,18)> - [bar] - SpanEditHandler;Accepts:Any - (18:0,18) - Tokens:1
-                SyntaxKind.Text;[bar];
-            Markup span - Gen<None> - ['] - SpanEditHandler;Accepts:Any - (21:0,21) - Tokens:1
-                SyntaxKind.SingleQuote;['];
-        Markup span - Gen<Markup> - [>] - SpanEditHandler;Accepts:Any - (22:0,22) - Tokens:1
-            SyntaxKind.CloseAngle;[>];
-    SyntaxKind.HtmlTextLiteral - [ Foo ] - [23..28) - FullWidth: 5 - Slots: 1
-        SyntaxKind.List - [ Foo ] - [23..28) - FullWidth: 5 - Slots: 3
+                SyntaxKind.HtmlTextLiteral - [16..18) - FullWidth: 2 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SyntaxKind.Whitespace;[ ];
+                    SyntaxKind.SingleQuote;['];
+                SyntaxKind.HtmlBlock - [18..21) - FullWidth: 3 - Slots: 1
+                    SyntaxKind.HtmlLiteralAttributeValue - [18..21) - FullWidth: 3 - Slots: 2
+                        SyntaxKind.HtmlTextLiteral - [18..21) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            SyntaxKind.Text;[bar];
+                SyntaxKind.HtmlTextLiteral - [21..22) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SyntaxKind.SingleQuote;['];
+            SyntaxKind.HtmlTextLiteral - [22..23) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTextLiteral - [23..28) - FullWidth: 5 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
             SyntaxKind.Whitespace;[ ];
             SyntaxKind.Text;[Foo];
             SyntaxKind.Whitespace;[ ];
-    Tag block - Gen<None> - 4 - (28:0,28)
-        Markup span - Gen<Markup> - [</p>] - SpanEditHandler;Accepts:Any - (28:0,28) - Tokens:4
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.ForwardSlash;[/];
-            SyntaxKind.Text;[p];
-            SyntaxKind.CloseAngle;[>];
-    Tag block - Gen<None> - 7 - (32:0,32)
-        Markup span - Gen<Markup> - [</div >] - SpanEditHandler;Accepts:Any - (32:0,32) - Tokens:5
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.ForwardSlash;[/];
-            SyntaxKind.Text;[div];
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTagBlock - [28..32) - FullWidth: 4 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [28..32) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.ForwardSlash;[/];
+                SyntaxKind.Text;[p];
+                SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTagBlock - [32..39) - FullWidth: 7 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [32..39) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.ForwardSlash;[/];
+                SyntaxKind.Text;[div];
+                SyntaxKind.Whitespace;[ ];
+                SyntaxKind.CloseAngle;[>];

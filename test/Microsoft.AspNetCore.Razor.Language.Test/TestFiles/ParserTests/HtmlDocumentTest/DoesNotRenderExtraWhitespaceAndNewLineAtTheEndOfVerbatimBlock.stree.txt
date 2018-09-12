@@ -1,20 +1,24 @@
-Markup block - Gen<None> - 15 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Statement block - Gen<None> - 5 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [{] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.LeftBrace;[{];
-        Code span - Gen<Stmt> - [LF] - AutoCompleteEditHandler;Accepts:Any,AutoComplete:[<null>];AtEOL - (2:0,2) - Tokens:1
+SyntaxKind.HtmlDocument - [0..15) - FullWidth: 15 - Slots: 1 - [@{LF} 	LF<html>]
+    SyntaxKind.HtmlMarkupBlock - [0..15) - FullWidth: 15 - Slots: 1
+        SyntaxKind.HtmlTextLiteral - [0..0) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Unknown;[];
+        SyntaxKind.CSharpCodeBlock - [0..5) - FullWidth: 5 - Slots: 1
+            SyntaxKind.CSharpStatement - [0..5) - FullWidth: 5 - Slots: 2
+                SyntaxKind.CSharpTransition - [0..1) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                    SyntaxKind.Transition;[@];
+                SyntaxKind.CSharpStatementBody - [1..5) - FullWidth: 4 - Slots: 3
+                    SyntaxKind.RazorMetaCode - [1..2) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        SyntaxKind.LeftBrace;[{];
+                    SyntaxKind.CSharpCodeBlock - [2..4) - FullWidth: 2 - Slots: 1
+                        SyntaxKind.CSharpStatementLiteral - [2..4) - FullWidth: 2 - Slots: 1 - Gen<Stmt> - AutoCompleteEditHandler;Accepts:Any,AutoComplete:[<null>];AtEOL
+                            SyntaxKind.NewLine;[LF];
+                    SyntaxKind.RazorMetaCode - [4..5) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        SyntaxKind.RightBrace;[}];
+        SyntaxKind.HtmlTextLiteral - [5..9) - FullWidth: 4 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Whitespace;[ 	];
             SyntaxKind.NewLine;[LF];
-        MetaCode span - Gen<None> - [}] - SpanEditHandler;Accepts:None - (4:1,0) - Tokens:1
-            SyntaxKind.RightBrace;[}];
-    Markup span - Gen<None> - [ 	LF] - SpanEditHandler;Accepts:Any - (5:1,1) - Tokens:2
-        SyntaxKind.Whitespace;[ 	];
-        SyntaxKind.NewLine;[LF];
-    Tag block - Gen<None> - 6 - (9:2,0)
-        Markup span - Gen<Markup> - [<html>] - SpanEditHandler;Accepts:Any - (9:2,0) - Tokens:3
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Text;[html];
-            SyntaxKind.CloseAngle;[>];
+        SyntaxKind.HtmlTagBlock - [9..15) - FullWidth: 6 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [9..15) - FullWidth: 6 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.Text;[html];
+                SyntaxKind.CloseAngle;[>];

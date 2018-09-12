@@ -1,42 +1,46 @@
-Markup block - Gen<None> - 37 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Statement block - Gen<None> - 31 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [{] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.LeftBrace;[{];
-        Code span - Gen<Stmt> - [LF] - AutoCompleteEditHandler;Accepts:Any,AutoComplete:[<null>];AtEOL - (2:0,2) - Tokens:1
-            SyntaxKind.NewLine;[LF];
-        Statement block - Gen<None> - 13 - (4:1,0)
-            Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (4:1,0) - Tokens:1
-                SyntaxKind.Transition;[@];
-            Code span - Gen<Stmt> - [if(true){LF}] - SpanEditHandler;Accepts:Any - (5:1,1) - Tokens:7
-                SyntaxKind.Keyword;[if];
-                SyntaxKind.LeftParenthesis;[(];
-                SyntaxKind.Keyword;[true];
-                SyntaxKind.RightParenthesis;[)];
-                SyntaxKind.LeftBrace;[{];
-                SyntaxKind.NewLine;[LF];
-                SyntaxKind.RightBrace;[}];
-        Code span - Gen<Stmt> - [ LF] - SpanEditHandler;Accepts:Any - (17:2,1) - Tokens:2
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.NewLine;[LF];
-        Markup block - Gen<None> - 10 - (20:3,0)
-            Tag block - Gen<None> - 7 - (20:3,0)
-                Markup span - Gen<Markup> - [<input>] - SpanEditHandler;Accepts:None - (20:3,0) - Tokens:3
-                    SyntaxKind.OpenAngle;[<];
-                    SyntaxKind.Text;[input];
-                    SyntaxKind.CloseAngle;[>];
-            Markup span - Gen<Markup> - [ LF] - SpanEditHandler;Accepts:None - (27:3,7) - Tokens:2
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.NewLine;[LF];
-        Code span - Gen<Stmt> - [] - SpanEditHandler;Accepts:Any - (30:4,0) - Tokens:1
+SyntaxKind.HtmlDocument - [0..37) - FullWidth: 37 - Slots: 1 - [@{LF@if(true){LF} LF<input> LF}<html>]
+    SyntaxKind.HtmlMarkupBlock - [0..37) - FullWidth: 37 - Slots: 1
+        SyntaxKind.HtmlTextLiteral - [0..0) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
             SyntaxKind.Unknown;[];
-        MetaCode span - Gen<None> - [}] - SpanEditHandler;Accepts:None - (30:4,0) - Tokens:1
-            SyntaxKind.RightBrace;[}];
-    Tag block - Gen<None> - 6 - (31:4,1)
-        Markup span - Gen<Markup> - [<html>] - SpanEditHandler;Accepts:Any - (31:4,1) - Tokens:3
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Text;[html];
-            SyntaxKind.CloseAngle;[>];
+        SyntaxKind.CSharpCodeBlock - [0..31) - FullWidth: 31 - Slots: 1
+            SyntaxKind.CSharpStatement - [0..31) - FullWidth: 31 - Slots: 2
+                SyntaxKind.CSharpTransition - [0..1) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                    SyntaxKind.Transition;[@];
+                SyntaxKind.CSharpStatementBody - [1..31) - FullWidth: 30 - Slots: 3
+                    SyntaxKind.RazorMetaCode - [1..2) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        SyntaxKind.LeftBrace;[{];
+                    SyntaxKind.CSharpCodeBlock - [2..30) - FullWidth: 28 - Slots: 1
+                        SyntaxKind.CSharpStatementLiteral - [2..4) - FullWidth: 2 - Slots: 1 - Gen<Stmt> - AutoCompleteEditHandler;Accepts:Any,AutoComplete:[<null>];AtEOL
+                            SyntaxKind.NewLine;[LF];
+                        SyntaxKind.CSharpCodeBlock - [4..17) - FullWidth: 13 - Slots: 1
+                            SyntaxKind.CSharpTransition - [4..5) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                SyntaxKind.Transition;[@];
+                            SyntaxKind.CSharpStatementLiteral - [5..17) - FullWidth: 12 - Slots: 1 - Gen<Stmt> - SpanEditHandler;Accepts:Any
+                                SyntaxKind.Keyword;[if];
+                                SyntaxKind.LeftParenthesis;[(];
+                                SyntaxKind.Keyword;[true];
+                                SyntaxKind.RightParenthesis;[)];
+                                SyntaxKind.LeftBrace;[{];
+                                SyntaxKind.NewLine;[LF];
+                                SyntaxKind.RightBrace;[}];
+                        SyntaxKind.CSharpStatementLiteral - [17..20) - FullWidth: 3 - Slots: 1 - Gen<Stmt> - SpanEditHandler;Accepts:Any
+                            SyntaxKind.Whitespace;[ ];
+                            SyntaxKind.NewLine;[LF];
+                        SyntaxKind.HtmlMarkupBlock - [20..30) - FullWidth: 10 - Slots: 1
+                            SyntaxKind.HtmlTagBlock - [20..27) - FullWidth: 7 - Slots: 1
+                                SyntaxKind.HtmlTextLiteral - [20..27) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
+                                    SyntaxKind.OpenAngle;[<];
+                                    SyntaxKind.Text;[input];
+                                    SyntaxKind.CloseAngle;[>];
+                            SyntaxKind.HtmlTextLiteral - [27..30) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
+                                SyntaxKind.Whitespace;[ ];
+                                SyntaxKind.NewLine;[LF];
+                        SyntaxKind.CSharpStatementLiteral - [30..30) - FullWidth: 0 - Slots: 1 - Gen<Stmt> - SpanEditHandler;Accepts:Any
+                            SyntaxKind.Unknown;[];
+                    SyntaxKind.RazorMetaCode - [30..31) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        SyntaxKind.RightBrace;[}];
+        SyntaxKind.HtmlTagBlock - [31..37) - FullWidth: 6 - Slots: 1
+            SyntaxKind.HtmlTextLiteral - [31..37) - FullWidth: 6 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                SyntaxKind.OpenAngle;[<];
+                SyntaxKind.Text;[html];
+                SyntaxKind.CloseAngle;[>];

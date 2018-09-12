@@ -1,5 +1,6 @@
-Markup block - Gen<None> - 7 - (0:0,0)
-    Markup span - Gen<Markup> - [foo baz] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:3
-        SyntaxKind.Text;[foo];
-        SyntaxKind.Whitespace;[ ];
-        SyntaxKind.Text;[baz];
+SyntaxKind.HtmlDocument - [0..7) - FullWidth: 7 - Slots: 1 - [foo baz]
+    SyntaxKind.HtmlMarkupBlock - [0..7) - FullWidth: 7 - Slots: 1
+        SyntaxKind.HtmlTextLiteral - [0..7) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            SyntaxKind.Text;[foo];
+            SyntaxKind.Whitespace;[ ];
+            SyntaxKind.Text;[baz];
