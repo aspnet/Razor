@@ -17,6 +17,7 @@
     <MicrosoftExtensionsCopyOnWriteDictionarySourcesPackageVersion>3.0.0-alpha1-10393</MicrosoftExtensionsCopyOnWriteDictionarySourcesPackageVersion>
     <MicrosoftExtensionsDependencyModelPackageVersion>3.0.0-preview1-26830-01</MicrosoftExtensionsDependencyModelPackageVersion>
     <MicrosoftExtensionsHashCodeCombinerSourcesPackageVersion>3.0.0-alpha1-10393</MicrosoftExtensionsHashCodeCombinerSourcesPackageVersion>
+    <MicrosoftExtensionsNonCapturingTimerSourcesPackageVersion>3.0.0-alpha1-10440</MicrosoftExtensionsNonCapturingTimerSourcesPackageVersion>
     <MicrosoftExtensionsWebEncodersPackageVersion>3.0.0-alpha1-10393</MicrosoftExtensionsWebEncodersPackageVersion>
     <MicrosoftNETCoreApp20PackageVersion>2.0.9</MicrosoftNETCoreApp20PackageVersion>
     <MicrosoftNETCoreApp21PackageVersion>2.1.2</MicrosoftNETCoreApp21PackageVersion>
