@@ -1,41 +1,41 @@
-SyntaxKind.HtmlDocument - [0..27) - FullWidth: 27 - Slots: 1 - [@{LF@if(true){LF} <input> }]
-    SyntaxKind.HtmlMarkupBlock - [0..27) - FullWidth: 27 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..0) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Unknown;[];
-        SyntaxKind.CSharpCodeBlock - [0..27) - FullWidth: 27 - Slots: 1
-            SyntaxKind.CSharpStatement - [0..27) - FullWidth: 27 - Slots: 2
-                SyntaxKind.CSharpTransition - [0..1) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                    SyntaxKind.Transition;[@];
-                SyntaxKind.CSharpStatementBody - [1..27) - FullWidth: 26 - Slots: 3
-                    SyntaxKind.RazorMetaCode - [1..2) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                        SyntaxKind.LeftBrace;[{];
-                    SyntaxKind.CSharpCodeBlock - [2..26) - FullWidth: 24 - Slots: 1
-                        SyntaxKind.CSharpStatementLiteral - [2..4) - FullWidth: 2 - Slots: 1 - Gen<Stmt> - AutoCompleteEditHandler;Accepts:Any,AutoComplete:[<null>];AtEOL
-                            SyntaxKind.NewLine;[LF];
-                        SyntaxKind.CSharpCodeBlock - [4..17) - FullWidth: 13 - Slots: 1
-                            SyntaxKind.CSharpTransition - [4..5) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                                SyntaxKind.Transition;[@];
-                            SyntaxKind.CSharpStatementLiteral - [5..17) - FullWidth: 12 - Slots: 1 - Gen<Stmt> - SpanEditHandler;Accepts:Any
-                                SyntaxKind.Keyword;[if];
-                                SyntaxKind.LeftParenthesis;[(];
-                                SyntaxKind.Keyword;[true];
-                                SyntaxKind.RightParenthesis;[)];
-                                SyntaxKind.LeftBrace;[{];
-                                SyntaxKind.NewLine;[LF];
-                                SyntaxKind.RightBrace;[}];
-                        SyntaxKind.HtmlMarkupBlock - [17..26) - FullWidth: 9 - Slots: 1
-                            SyntaxKind.HtmlTextLiteral - [17..18) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                SyntaxKind.Whitespace;[ ];
-                            SyntaxKind.HtmlTagBlock - [18..25) - FullWidth: 7 - Slots: 1
-                                SyntaxKind.HtmlTextLiteral - [18..25) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
-                                    SyntaxKind.OpenAngle;[<];
-                                    SyntaxKind.Text;[input];
-                                    SyntaxKind.CloseAngle;[>];
-                            SyntaxKind.HtmlTextLiteral - [25..26) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
-                                SyntaxKind.Whitespace;[ ];
-                        SyntaxKind.CSharpStatementLiteral - [26..26) - FullWidth: 0 - Slots: 1 - Gen<Stmt> - SpanEditHandler;Accepts:Any
-                            SyntaxKind.Unknown;[];
-                    SyntaxKind.RazorMetaCode - [26..27) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                        SyntaxKind.RightBrace;[}];
-        SyntaxKind.HtmlTextLiteral - [27..27) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Unknown;[];
+RazorDocument - [0..27) - FullWidth: 27 - [@{LF@if(true){LF} <input> }]
+    MarkupBlock - [0..27) - FullWidth: 27
+        MarkupTextLiteral - [0..0) - FullWidth: 0 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..27) - FullWidth: 27
+            CSharpStatement - [0..27) - FullWidth: 27
+                CSharpTransition - [0..1) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                CSharpStatementBody - [1..27) - FullWidth: 26
+                    RazorMetaCode - [1..2) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        LeftBrace;[{];
+                    CSharpCodeBlock - [2..26) - FullWidth: 24
+                        CSharpStatementLiteral - [2..4) - FullWidth: 2 - Gen<Stmt> - AutoCompleteEditHandler;Accepts:Any,AutoComplete:[<null>];AtEOL
+                            NewLine;[LF];
+                        CSharpCodeBlock - [4..17) - FullWidth: 13
+                            CSharpTransition - [4..5) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                Transition;[@];
+                            CSharpStatementLiteral - [5..17) - FullWidth: 12 - Gen<Stmt> - SpanEditHandler;Accepts:Any
+                                Keyword;[if];
+                                LeftParenthesis;[(];
+                                Keyword;[true];
+                                RightParenthesis;[)];
+                                LeftBrace;[{];
+                                NewLine;[LF];
+                                RightBrace;[}];
+                        MarkupBlock - [17..26) - FullWidth: 9
+                            MarkupTextLiteral - [17..18) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                                Whitespace;[ ];
+                            MarkupTagBlock - [18..25) - FullWidth: 7
+                                MarkupTextLiteral - [18..25) - FullWidth: 7 - Gen<Markup> - SpanEditHandler;Accepts:None
+                                    OpenAngle;[<];
+                                    Text;[input];
+                                    CloseAngle;[>];
+                            MarkupTextLiteral - [25..26) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
+                                Whitespace;[ ];
+                        CSharpStatementLiteral - [26..26) - FullWidth: 0 - Gen<Stmt> - SpanEditHandler;Accepts:Any
+                            Marker;[];
+                    RazorMetaCode - [26..27) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        RightBrace;[}];
+        MarkupTextLiteral - [27..27) - FullWidth: 0 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

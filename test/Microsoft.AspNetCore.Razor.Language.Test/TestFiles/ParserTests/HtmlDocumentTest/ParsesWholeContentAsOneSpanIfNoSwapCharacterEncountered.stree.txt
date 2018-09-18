@@ -1,6 +1,6 @@
-SyntaxKind.HtmlDocument - [0..7) - FullWidth: 7 - Slots: 1 - [foo baz]
-    SyntaxKind.HtmlMarkupBlock - [0..7) - FullWidth: 7 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..7) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[foo];
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.Text;[baz];
+RazorDocument - [0..7) - FullWidth: 7 - [foo baz]
+    MarkupBlock - [0..7) - FullWidth: 7
+        MarkupTextLiteral - [0..7) - FullWidth: 7 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[foo];
+            Whitespace;[ ];
+            Text;[baz];

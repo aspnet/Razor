@@ -1,47 +1,47 @@
-SyntaxKind.HtmlDocument - [0..44) - FullWidth: 44 - Slots: 1 - [{<span foo='abc@def.com abc@@def.com @@' />}]
-    SyntaxKind.HtmlMarkupBlock - [0..44) - FullWidth: 44 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..1) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[{];
-        SyntaxKind.HtmlTagBlock - [1..43) - FullWidth: 42 - Slots: 1
-            SyntaxKind.HtmlTextLiteral - [1..6) - FullWidth: 5 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.Text;[span];
-            SyntaxKind.HtmlAttributeBlock - [6..40) - FullWidth: 34 - Slots: 7
-                SyntaxKind.HtmlTextLiteral - [6..7) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                    SyntaxKind.Whitespace;[ ];
-                SyntaxKind.HtmlTextLiteral - [7..10) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                    SyntaxKind.Text;[foo];
-                SyntaxKind.Equals;[=];
-                SyntaxKind.HtmlTextLiteral - [11..12) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
-                    SyntaxKind.SingleQuote;['];
-                SyntaxKind.HtmlBlock - [12..39) - FullWidth: 27 - Slots: 1
-                    SyntaxKind.HtmlLiteralAttributeValue - [12..23) - FullWidth: 11 - Slots: 2
-                        SyntaxKind.HtmlTextLiteral - [12..23) - FullWidth: 11 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                            SyntaxKind.Text;[abc@def.com];
-                    SyntaxKind.HtmlLiteralAttributeValue - [23..27) - FullWidth: 4 - Slots: 2
-                        SyntaxKind.HtmlTextLiteral - [23..24) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                            SyntaxKind.Whitespace;[ ];
-                        SyntaxKind.HtmlTextLiteral - [24..27) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                            SyntaxKind.Text;[abc];
-                    SyntaxKind.HtmlMarkupBlock - [27..29) - FullWidth: 2 - Slots: 1
-                        SyntaxKind.HtmlTextLiteral - [27..28) - FullWidth: 1 - Slots: 1 - Gen<LitAttr:@(27:0,27)> - SpanEditHandler;Accepts:None
-                            SyntaxKind.Transition;[@];
-                        SyntaxKind.HtmlTextLiteral - [28..29) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                            SyntaxKind.Transition;[@];
-                    SyntaxKind.HtmlLiteralAttributeValue - [29..36) - FullWidth: 7 - Slots: 2
-                        SyntaxKind.HtmlTextLiteral - [29..36) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                            SyntaxKind.Text;[def.com];
-                    SyntaxKind.HtmlMarkupBlock - [36..39) - FullWidth: 3 - Slots: 1
-                        SyntaxKind.HtmlTextLiteral - [36..38) - FullWidth: 2 - Slots: 1 - Gen<LitAttr: @(36:0,36)> - SpanEditHandler;Accepts:None
-                            SyntaxKind.Whitespace;[ ];
-                            SyntaxKind.Transition;[@];
-                        SyntaxKind.HtmlTextLiteral - [38..39) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                            SyntaxKind.Transition;[@];
-                SyntaxKind.HtmlTextLiteral - [39..40) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
-                    SyntaxKind.SingleQuote;['];
-            SyntaxKind.HtmlTextLiteral - [40..43) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.ForwardSlash;[/];
-                SyntaxKind.CloseAngle;[>];
-        SyntaxKind.HtmlTextLiteral - [43..44) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[}];
+RazorDocument - [0..44) - FullWidth: 44 - [{<span foo='abc@def.com abc@@def.com @@' />}]
+    MarkupBlock - [0..44) - FullWidth: 44
+        MarkupTextLiteral - [0..1) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[{];
+        MarkupTagBlock - [1..43) - FullWidth: 42
+            MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                OpenAngle;[<];
+                Text;[span];
+            HtmlAttributeBlock - [6..40) - FullWidth: 34
+                MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    Whitespace;[ ];
+                MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    Text;[foo];
+                Equals;[=];
+                MarkupTextLiteral - [11..12) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+                GenericBlock - [12..39) - FullWidth: 27
+                    HtmlLiteralAttributeValue - [12..23) - FullWidth: 11
+                        MarkupTextLiteral - [12..23) - FullWidth: 11 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Text;[abc@def.com];
+                    HtmlLiteralAttributeValue - [23..27) - FullWidth: 4
+                        MarkupTextLiteral - [23..24) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Whitespace;[ ];
+                        MarkupTextLiteral - [24..27) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Text;[abc];
+                    MarkupBlock - [27..29) - FullWidth: 2
+                        MarkupTextLiteral - [27..28) - FullWidth: 1 - Gen<LitAttr:@(27:0,27)> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                        MarkupTextLiteral - [28..29) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                    HtmlLiteralAttributeValue - [29..36) - FullWidth: 7
+                        MarkupTextLiteral - [29..36) - FullWidth: 7 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Text;[def.com];
+                    MarkupBlock - [36..39) - FullWidth: 3
+                        MarkupTextLiteral - [36..38) - FullWidth: 2 - Gen<LitAttr: @(36:0,36)> - SpanEditHandler;Accepts:None
+                            Whitespace;[ ];
+                            Transition;[@];
+                        MarkupTextLiteral - [38..39) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                MarkupTextLiteral - [39..40) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+            MarkupTextLiteral - [40..43) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                Whitespace;[ ];
+                ForwardSlash;[/];
+                CloseAngle;[>];
+        MarkupTextLiteral - [43..44) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[}];

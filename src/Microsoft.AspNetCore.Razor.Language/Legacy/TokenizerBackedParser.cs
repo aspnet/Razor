@@ -409,19 +409,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        protected internal void Output(SpanKindInternal kind, SyntaxKind syntaxKind = SyntaxKind.Unknown)
+        protected internal void Output(SpanKindInternal kind, SyntaxKind syntaxKind = SyntaxKind.Marker)
         {
             Configure(kind, null);
             Output(syntaxKind);
         }
 
-        protected internal void Output(SpanKindInternal kind, AcceptedCharactersInternal accepts, SyntaxKind syntaxKind = SyntaxKind.Unknown)
+        protected internal void Output(SpanKindInternal kind, AcceptedCharactersInternal accepts, SyntaxKind syntaxKind = SyntaxKind.Marker)
         {
             Configure(kind, accepts);
             Output(syntaxKind);
         }
 
-        protected internal void Output(AcceptedCharactersInternal accepts, SyntaxKind syntaxKind = SyntaxKind.Unknown)
+        protected internal void Output(AcceptedCharactersInternal accepts, SyntaxKind syntaxKind = SyntaxKind.Marker)
         {
             Configure(null, accepts);
             Output(syntaxKind);
@@ -1000,7 +1000,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        protected HtmlTextLiteralSyntax OutputTokensAsHtmlLiteral()
+        protected MarkupTextLiteralSyntax OutputTokensAsMarkupLiteral()
         {
             var tokens = OutputTokens();
             if (tokens.Count == 0)
@@ -1008,7 +1008,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 return null;
             }
 
-            return GetNodeWithSpanContext(SyntaxFactory.HtmlTextLiteral(tokens));
+            return GetNodeWithSpanContext(SyntaxFactory.MarkupTextLiteral(tokens));
+        }
+
+        protected MarkupEscapedTextLiteralSyntax OutputTokensAsMarkupEscapedTextLiteral()
+        {
+            var tokens = OutputTokens();
+            if (tokens.Count == 0)
+            {
+                return null;
+            }
+
+            return GetNodeWithSpanContext(SyntaxFactory.MarkupEscapedTextLiteral(tokens));
         }
 
         protected RazorMetaCodeSyntax OutputAsMetaCode(SyntaxList<SyntaxToken> tokens, AcceptedCharactersInternal? accepted = null)

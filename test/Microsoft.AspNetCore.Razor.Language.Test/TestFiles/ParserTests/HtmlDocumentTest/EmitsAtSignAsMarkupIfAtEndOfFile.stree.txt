@@ -1,15 +1,15 @@
-SyntaxKind.HtmlDocument - [0..5) - FullWidth: 5 - Slots: 1 - [foo @]
-    SyntaxKind.HtmlMarkupBlock - [0..5) - FullWidth: 5 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..4) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[foo];
-            SyntaxKind.Whitespace;[ ];
-        SyntaxKind.CSharpCodeBlock - [4..5) - FullWidth: 1 - Slots: 1
-            SyntaxKind.CSharpImplicitExpression - [4..5) - FullWidth: 1 - Slots: 2
-                SyntaxKind.CSharpTransition - [4..5) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                    SyntaxKind.Transition;[@];
-                SyntaxKind.CSharpImplicitExpressionBody - [5..5) - FullWidth: 0 - Slots: 1
-                    SyntaxKind.CSharpCodeBlock - [5..5) - FullWidth: 0 - Slots: 1
-                        SyntaxKind.CSharpExpressionLiteral - [5..5) - FullWidth: 0 - Slots: 1 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
-                            SyntaxKind.Unknown;[];
-        SyntaxKind.HtmlTextLiteral - [5..5) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Unknown;[];
+RazorDocument - [0..5) - FullWidth: 5 - [foo @]
+    MarkupBlock - [0..5) - FullWidth: 5
+        MarkupTextLiteral - [0..4) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[foo];
+            Whitespace;[ ];
+        CSharpCodeBlock - [4..5) - FullWidth: 1
+            CSharpImplicitExpression - [4..5) - FullWidth: 1
+                CSharpTransition - [4..5) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                CSharpImplicitExpressionBody - [5..5) - FullWidth: 0
+                    CSharpCodeBlock - [5..5) - FullWidth: 0
+                        CSharpExpressionLiteral - [5..5) - FullWidth: 0 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                            Marker;[];
+        MarkupTextLiteral - [5..5) - FullWidth: 0 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

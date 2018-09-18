@@ -1,15 +1,15 @@
-SyntaxKind.HtmlDocument - [0..17) - FullWidth: 17 - Slots: 1 - [<foo>${bar}</foo>]
-    SyntaxKind.HtmlMarkupBlock - [0..17) - FullWidth: 17 - Slots: 1
-        SyntaxKind.HtmlTagBlock - [0..5) - FullWidth: 5 - Slots: 1
-            SyntaxKind.HtmlTextLiteral - [0..5) - FullWidth: 5 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.Text;[foo];
-                SyntaxKind.CloseAngle;[>];
-        SyntaxKind.HtmlTextLiteral - [5..11) - FullWidth: 6 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[${bar}];
-        SyntaxKind.HtmlTagBlock - [11..17) - FullWidth: 6 - Slots: 1
-            SyntaxKind.HtmlTextLiteral - [11..17) - FullWidth: 6 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.ForwardSlash;[/];
-                SyntaxKind.Text;[foo];
-                SyntaxKind.CloseAngle;[>];
+RazorDocument - [0..17) - FullWidth: 17 - [<foo>${bar}</foo>]
+    MarkupBlock - [0..17) - FullWidth: 17
+        MarkupTagBlock - [0..5) - FullWidth: 5
+            MarkupTextLiteral - [0..5) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                OpenAngle;[<];
+                Text;[foo];
+                CloseAngle;[>];
+        MarkupTextLiteral - [5..11) - FullWidth: 6 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[${bar}];
+        MarkupTagBlock - [11..17) - FullWidth: 6
+            MarkupTextLiteral - [11..17) - FullWidth: 6 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                OpenAngle;[<];
+                ForwardSlash;[/];
+                Text;[foo];
+                CloseAngle;[>];

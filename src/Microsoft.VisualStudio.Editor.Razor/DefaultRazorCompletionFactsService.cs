@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         {
             return token.Kind == SyntaxKind.Identifier ||
                 // Marker symbol
-                token.Kind == SyntaxKind.Unknown;
+                token.Kind == SyntaxKind.Marker;
         }
     }
 }

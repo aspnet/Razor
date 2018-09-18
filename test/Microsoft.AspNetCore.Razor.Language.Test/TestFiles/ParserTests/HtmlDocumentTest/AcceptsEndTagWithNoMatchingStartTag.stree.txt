@@ -1,14 +1,14 @@
-SyntaxKind.HtmlDocument - [0..14) - FullWidth: 14 - Slots: 1 - [Foo </div> Bar]
-    SyntaxKind.HtmlMarkupBlock - [0..14) - FullWidth: 14 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..4) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[Foo];
-            SyntaxKind.Whitespace;[ ];
-        SyntaxKind.HtmlTagBlock - [4..10) - FullWidth: 6 - Slots: 1
-            SyntaxKind.HtmlTextLiteral - [4..10) - FullWidth: 6 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.ForwardSlash;[/];
-                SyntaxKind.Text;[div];
-                SyntaxKind.CloseAngle;[>];
-        SyntaxKind.HtmlTextLiteral - [10..14) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.Text;[Bar];
+RazorDocument - [0..14) - FullWidth: 14 - [Foo </div> Bar]
+    MarkupBlock - [0..14) - FullWidth: 14
+        MarkupTextLiteral - [0..4) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[Foo];
+            Whitespace;[ ];
+        MarkupTagBlock - [4..10) - FullWidth: 6
+            MarkupTextLiteral - [4..10) - FullWidth: 6 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                OpenAngle;[<];
+                ForwardSlash;[/];
+                Text;[div];
+                CloseAngle;[>];
+        MarkupTextLiteral - [10..14) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Whitespace;[ ];
+            Text;[Bar];

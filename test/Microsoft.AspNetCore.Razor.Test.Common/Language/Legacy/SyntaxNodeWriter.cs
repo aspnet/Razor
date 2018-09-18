@@ -46,13 +46,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         private void WriteNode(SyntaxNode node)
         {
             WriteIndent();
-            Write($"{typeof(SyntaxKind).Name}.{node.Kind}");
+            Write(node.Kind);
             WriteSeparator();
             Write($"[{node.Position}..{node.EndPosition})");
             WriteSeparator();
             Write($"FullWidth: {node.FullWidth}");
-            WriteSeparator();
-            Write($"Slots: {node.SlotCount}");
 
             var annotation = node.GetAnnotations().FirstOrDefault(a => a.Kind == SyntaxConstants.SpanContextKind);
             if (annotation != null && annotation.Data is SpanContext context)
@@ -73,7 +71,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             WriteIndent();
             var content = token.IsMissing ? "<Missing>" : token.Content;
             var diagnostics = token.GetDiagnostics();
-            var tokenString = $"{typeof(SyntaxKind).Name}.{token.Kind};[{content}];{string.Join(", ", diagnostics.Select(diagnostic => diagnostic.Id + diagnostic.Span))}";
+            var tokenString = $"{token.Kind};[{content}];{string.Join(", ", diagnostics.Select(diagnostic => diagnostic.Id + diagnostic.Span))}";
             Write(tokenString);
         }
 

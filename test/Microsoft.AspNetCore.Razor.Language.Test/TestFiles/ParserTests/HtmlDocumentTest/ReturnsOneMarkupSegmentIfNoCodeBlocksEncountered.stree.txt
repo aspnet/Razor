@@ -1,26 +1,26 @@
-SyntaxKind.HtmlDocument - [0..30) - FullWidth: 30 - Slots: 1 - [Foo Baz<!--Foo-->Bar<!--F> Qux]
-    SyntaxKind.HtmlMarkupBlock - [0..30) - FullWidth: 30 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..7) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[Foo];
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.Text;[Baz];
-        SyntaxKind.HtmlCommentBlock - [7..17) - FullWidth: 10 - Slots: 1
-            SyntaxKind.HtmlTextLiteral - [7..11) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.Bang;[!];
-                SyntaxKind.DoubleHyphen;[--];
-            SyntaxKind.HtmlTextLiteral - [11..14) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
-                SyntaxKind.Text;[Foo];
-            SyntaxKind.HtmlTextLiteral - [14..17) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:None
-                SyntaxKind.DoubleHyphen;[--];
-                SyntaxKind.CloseAngle;[>];
-        SyntaxKind.HtmlTextLiteral - [17..20) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[Bar];
-        SyntaxKind.HtmlTextLiteral - [20..30) - FullWidth: 10 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Bang;[!];
-            SyntaxKind.DoubleHyphen;[--];
-            SyntaxKind.Text;[F];
-            SyntaxKind.CloseAngle;[>];
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.Text;[Qux];
+RazorDocument - [0..30) - FullWidth: 30 - [Foo Baz<!--Foo-->Bar<!--F> Qux]
+    MarkupBlock - [0..30) - FullWidth: 30
+        MarkupTextLiteral - [0..7) - FullWidth: 7 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[Foo];
+            Whitespace;[ ];
+            Text;[Baz];
+        HtmlCommentBlock - [7..17) - FullWidth: 10
+            MarkupTextLiteral - [7..11) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:None
+                OpenAngle;[<];
+                Bang;[!];
+                DoubleHyphen;[--];
+            MarkupTextLiteral - [11..14) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
+                Text;[Foo];
+            MarkupTextLiteral - [14..17) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:None
+                DoubleHyphen;[--];
+                CloseAngle;[>];
+        MarkupTextLiteral - [17..20) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[Bar];
+        MarkupTextLiteral - [20..30) - FullWidth: 10 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            OpenAngle;[<];
+            Bang;[!];
+            DoubleHyphen;[--];
+            Text;[F];
+            CloseAngle;[>];
+            Whitespace;[ ];
+            Text;[Qux];

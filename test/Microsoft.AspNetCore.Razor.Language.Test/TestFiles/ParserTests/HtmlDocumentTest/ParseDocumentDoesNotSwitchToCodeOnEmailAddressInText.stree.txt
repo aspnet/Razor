@@ -1,4 +1,4 @@
-SyntaxKind.HtmlDocument - [0..21) - FullWidth: 21 - Slots: 1 - [example@microsoft.com]
-    SyntaxKind.HtmlMarkupBlock - [0..21) - FullWidth: 21 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..21) - FullWidth: 21 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[example@microsoft.com];
+RazorDocument - [0..21) - FullWidth: 21 - [example@microsoft.com]
+    MarkupBlock - [0..21) - FullWidth: 21
+        MarkupTextLiteral - [0..21) - FullWidth: 21 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[example@microsoft.com];

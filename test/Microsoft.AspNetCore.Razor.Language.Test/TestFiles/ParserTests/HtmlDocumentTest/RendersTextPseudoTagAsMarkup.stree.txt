@@ -1,18 +1,18 @@
-SyntaxKind.HtmlDocument - [0..20) - FullWidth: 20 - Slots: 1 - [Foo <text>Foo</text>]
-    SyntaxKind.HtmlMarkupBlock - [0..20) - FullWidth: 20 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..4) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[Foo];
-            SyntaxKind.Whitespace;[ ];
-        SyntaxKind.HtmlTagBlock - [4..10) - FullWidth: 6 - Slots: 1
-            SyntaxKind.HtmlTextLiteral - [4..10) - FullWidth: 6 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.Text;[text];
-                SyntaxKind.CloseAngle;[>];
-        SyntaxKind.HtmlTextLiteral - [10..13) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[Foo];
-        SyntaxKind.HtmlTagBlock - [13..20) - FullWidth: 7 - Slots: 1
-            SyntaxKind.HtmlTextLiteral - [13..20) - FullWidth: 7 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.ForwardSlash;[/];
-                SyntaxKind.Text;[text];
-                SyntaxKind.CloseAngle;[>];
+RazorDocument - [0..20) - FullWidth: 20 - [Foo <text>Foo</text>]
+    MarkupBlock - [0..20) - FullWidth: 20
+        MarkupTextLiteral - [0..4) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[Foo];
+            Whitespace;[ ];
+        MarkupTagBlock - [4..10) - FullWidth: 6
+            MarkupTextLiteral - [4..10) - FullWidth: 6 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                OpenAngle;[<];
+                Text;[text];
+                CloseAngle;[>];
+        MarkupTextLiteral - [10..13) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[Foo];
+        MarkupTagBlock - [13..20) - FullWidth: 7
+            MarkupTextLiteral - [13..20) - FullWidth: 7 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                OpenAngle;[<];
+                ForwardSlash;[/];
+                Text;[text];
+                CloseAngle;[>];

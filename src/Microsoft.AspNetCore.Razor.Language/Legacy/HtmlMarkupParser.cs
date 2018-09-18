@@ -956,7 +956,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             AcceptAndMoveNext();
 
             var whitespaceAfterEquals = ReadWhile(token => token.Kind == SyntaxKind.Whitespace || token.Kind == SyntaxKind.NewLine);
-            var quote = SyntaxKind.Unknown;
+            var quote = SyntaxKind.Marker;
             if (At(SyntaxKind.SingleQuote) || At(SyntaxKind.DoubleQuote))
             {
                 // Found a quote, the whitespace belongs to this attribute.
@@ -981,7 +981,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                 // Read the attribute value only if the value is quoted
                 // or if there is no whitespace between '=' and the unquoted value.
-                if (quote != SyntaxKind.Unknown || !whitespaceAfterEquals.Any())
+                if (quote != SyntaxKind.Marker || !whitespaceAfterEquals.Any())
                 {
                     // Read the attribute value.
                     while (!EndOfFile && !IsEndOfAttributeValue(quote, CurrentToken))
@@ -992,7 +992,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                 // Capture the suffix
                 var suffix = new LocationTagged<string>(string.Empty, CurrentStart);
-                if (quote != SyntaxKind.Unknown && At(quote))
+                if (quote != SyntaxKind.Marker && At(quote))
                 {
                     suffix = new LocationTagged<string>(CurrentToken.Content, CurrentStart);
                     AcceptAndMoveNext();
@@ -1014,7 +1014,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // Output the attribute name, the equals and optional quote. Ex: foo="
                 Output(SpanKindInternal.Markup);
 
-                if (quote == SyntaxKind.Unknown && whitespaceAfterEquals.Any())
+                if (quote == SyntaxKind.Marker && whitespaceAfterEquals.Any())
                 {
                     return;
                 }
@@ -1025,7 +1025,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // Output the attribute value (will include everything in-between the attribute's quotes).
                 Output(SpanKindInternal.Markup);
 
-                if (quote != SyntaxKind.Unknown)
+                if (quote != SyntaxKind.Marker)
                 {
                     Optional(quote);
                 }
@@ -1107,7 +1107,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         private bool IsEndOfAttributeValue(SyntaxKind quote, SyntaxToken token)
         {
             return EndOfFile || token == null ||
-                   (quote != SyntaxKind.Unknown
+                   (quote != SyntaxKind.Marker
                         ? token.Kind == quote // If quoted, just wait for the quote
                         : IsUnquotedEndOfAttributeValue(token));
         }
@@ -1194,7 +1194,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             if (potentialTagNameToken == null || potentialTagNameToken.Kind != SyntaxKind.Text)
             {
-                tagName = SyntaxFactory.Token(SyntaxKind.Unknown, string.Empty);
+                tagName = SyntaxFactory.Token(SyntaxKind.Marker, string.Empty);
             }
             else if (bangToken != null)
             {
@@ -1585,7 +1585,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 tokenType != SyntaxKind.DoubleQuote &&
                 tokenType != SyntaxKind.SingleQuote &&
                 tokenType != SyntaxKind.Equals &&
-                tokenType != SyntaxKind.Unknown;
+                tokenType != SyntaxKind.Marker;
         }
 
         public void ParseDocument1()
@@ -1650,7 +1650,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                 if (ParserState == ParserState.Content)
                 {
-                    Output(SpanKindInternal.Markup, SyntaxKind.HtmlTextLiteral);
+                    Output(SpanKindInternal.Markup, SyntaxKind.MarkupTextLiteral);
                 }
                 else
                 {

@@ -1,14 +1,14 @@
-SyntaxKind.HtmlDocument - [0..1) - FullWidth: 1 - Slots: 1 - [@]
-    SyntaxKind.HtmlMarkupBlock - [0..1) - FullWidth: 1 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..0) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Unknown;[];
-        SyntaxKind.CSharpCodeBlock - [0..1) - FullWidth: 1 - Slots: 1
-            SyntaxKind.CSharpImplicitExpression - [0..1) - FullWidth: 1 - Slots: 2
-                SyntaxKind.CSharpTransition - [0..1) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                    SyntaxKind.Transition;[@];
-                SyntaxKind.CSharpImplicitExpressionBody - [1..1) - FullWidth: 0 - Slots: 1
-                    SyntaxKind.CSharpCodeBlock - [1..1) - FullWidth: 0 - Slots: 1
-                        SyntaxKind.CSharpExpressionLiteral - [1..1) - FullWidth: 0 - Slots: 1 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
-                            SyntaxKind.Unknown;[];
-        SyntaxKind.HtmlTextLiteral - [1..1) - FullWidth: 0 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Unknown;[];
+RazorDocument - [0..1) - FullWidth: 1 - [@]
+    MarkupBlock - [0..1) - FullWidth: 1
+        MarkupTextLiteral - [0..0) - FullWidth: 0 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..1) - FullWidth: 1
+            CSharpImplicitExpression - [0..1) - FullWidth: 1
+                CSharpTransition - [0..1) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                CSharpImplicitExpressionBody - [1..1) - FullWidth: 0
+                    CSharpCodeBlock - [1..1) - FullWidth: 0
+                        CSharpExpressionLiteral - [1..1) - FullWidth: 0 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                            Marker;[];
+        MarkupTextLiteral - [1..1) - FullWidth: 0 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

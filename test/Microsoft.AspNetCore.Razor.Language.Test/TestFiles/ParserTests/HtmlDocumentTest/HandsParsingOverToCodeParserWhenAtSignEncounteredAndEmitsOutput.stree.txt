@@ -1,16 +1,16 @@
-SyntaxKind.HtmlDocument - [0..12) - FullWidth: 12 - Slots: 1 - [foo @bar baz]
-    SyntaxKind.HtmlMarkupBlock - [0..12) - FullWidth: 12 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..4) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[foo];
-            SyntaxKind.Whitespace;[ ];
-        SyntaxKind.CSharpCodeBlock - [4..8) - FullWidth: 4 - Slots: 1
-            SyntaxKind.CSharpImplicitExpression - [4..8) - FullWidth: 4 - Slots: 2
-                SyntaxKind.CSharpTransition - [4..5) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                    SyntaxKind.Transition;[@];
-                SyntaxKind.CSharpImplicitExpressionBody - [5..8) - FullWidth: 3 - Slots: 1
-                    SyntaxKind.CSharpCodeBlock - [5..8) - FullWidth: 3 - Slots: 1
-                        SyntaxKind.CSharpExpressionLiteral - [5..8) - FullWidth: 3 - Slots: 1 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
-                            SyntaxKind.Identifier;[bar];
-        SyntaxKind.HtmlTextLiteral - [8..12) - FullWidth: 4 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.Text;[baz];
+RazorDocument - [0..12) - FullWidth: 12 - [foo @bar baz]
+    MarkupBlock - [0..12) - FullWidth: 12
+        MarkupTextLiteral - [0..4) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[foo];
+            Whitespace;[ ];
+        CSharpCodeBlock - [4..8) - FullWidth: 4
+            CSharpImplicitExpression - [4..8) - FullWidth: 4
+                CSharpTransition - [4..5) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                CSharpImplicitExpressionBody - [5..8) - FullWidth: 3
+                    CSharpCodeBlock - [5..8) - FullWidth: 3
+                        CSharpExpressionLiteral - [5..8) - FullWidth: 3 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                            Identifier;[bar];
+        MarkupTextLiteral - [8..12) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Whitespace;[ ];
+            Text;[baz];

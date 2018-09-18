@@ -1,78 +1,78 @@
-SyntaxKind.HtmlDocument - [0..117) - FullWidth: 117 - Slots: 1 - [{<span foo="/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@@[a-z0-9]([a-z0-9-]*[a-z0-9])?\.([a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i" />}]
-    SyntaxKind.HtmlMarkupBlock - [0..117) - FullWidth: 117 - Slots: 1
-        SyntaxKind.HtmlTextLiteral - [0..1) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[{];
-        SyntaxKind.HtmlTagBlock - [1..116) - FullWidth: 115 - Slots: 1
-            SyntaxKind.HtmlTextLiteral - [1..6) - FullWidth: 5 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.OpenAngle;[<];
-                SyntaxKind.Text;[span];
-            SyntaxKind.HtmlAttributeBlock - [6..113) - FullWidth: 107 - Slots: 7
-                SyntaxKind.HtmlTextLiteral - [6..7) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                    SyntaxKind.Whitespace;[ ];
-                SyntaxKind.HtmlTextLiteral - [7..10) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                    SyntaxKind.Text;[foo];
-                SyntaxKind.Equals;[=];
-                SyntaxKind.HtmlTextLiteral - [11..12) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
-                    SyntaxKind.DoubleQuote;["];
-                SyntaxKind.HtmlBlock - [12..112) - FullWidth: 100 - Slots: 1
-                    SyntaxKind.HtmlLiteralAttributeValue - [12..44) - FullWidth: 32 - Slots: 2
-                        SyntaxKind.HtmlTextLiteral - [12..44) - FullWidth: 32 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                            SyntaxKind.ForwardSlash;[/];
-                            SyntaxKind.Text;[^];
-                            SyntaxKind.LeftBracket;[[];
-                            SyntaxKind.Text;[a-z0-9];
-                            SyntaxKind.Bang;[!];
-                            SyntaxKind.Text;[#$%&];
-                            SyntaxKind.SingleQuote;['];
-                            SyntaxKind.Text;[*+\];
-                            SyntaxKind.ForwardSlash;[/];
-                            SyntaxKind.Equals;[=];
-                            SyntaxKind.QuestionMark;[?];
-                            SyntaxKind.Text;[^_`{|}~.-];
-                            SyntaxKind.RightBracket;[]];
-                            SyntaxKind.Text;[+];
-                    SyntaxKind.HtmlMarkupBlock - [44..46) - FullWidth: 2 - Slots: 1
-                        SyntaxKind.HtmlTextLiteral - [44..45) - FullWidth: 1 - Slots: 1 - Gen<LitAttr:@(44:0,44)> - SpanEditHandler;Accepts:None
-                            SyntaxKind.Transition;[@];
-                        SyntaxKind.HtmlTextLiteral - [45..46) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:None
-                            SyntaxKind.Transition;[@];
-                    SyntaxKind.HtmlLiteralAttributeValue - [46..112) - FullWidth: 66 - Slots: 2
-                        SyntaxKind.HtmlTextLiteral - [46..112) - FullWidth: 66 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                            SyntaxKind.LeftBracket;[[];
-                            SyntaxKind.Text;[a-z0-9];
-                            SyntaxKind.RightBracket;[]];
-                            SyntaxKind.Text;[(];
-                            SyntaxKind.LeftBracket;[[];
-                            SyntaxKind.Text;[a-z0-9-];
-                            SyntaxKind.RightBracket;[]];
-                            SyntaxKind.Text;[*];
-                            SyntaxKind.LeftBracket;[[];
-                            SyntaxKind.Text;[a-z0-9];
-                            SyntaxKind.RightBracket;[]];
-                            SyntaxKind.Text;[)];
-                            SyntaxKind.QuestionMark;[?];
-                            SyntaxKind.Text;[\.(];
-                            SyntaxKind.LeftBracket;[[];
-                            SyntaxKind.Text;[a-z0-9];
-                            SyntaxKind.RightBracket;[]];
-                            SyntaxKind.Text;[(];
-                            SyntaxKind.LeftBracket;[[];
-                            SyntaxKind.Text;[a-z0-9-];
-                            SyntaxKind.RightBracket;[]];
-                            SyntaxKind.Text;[*];
-                            SyntaxKind.LeftBracket;[[];
-                            SyntaxKind.Text;[a-z0-9];
-                            SyntaxKind.RightBracket;[]];
-                            SyntaxKind.Text;[)];
-                            SyntaxKind.QuestionMark;[?];
-                            SyntaxKind.Text;[)*$];
-                            SyntaxKind.ForwardSlash;[/];
-                            SyntaxKind.Text;[i];
-                SyntaxKind.HtmlTextLiteral - [112..113) - FullWidth: 1 - Slots: 1 - Gen<None> - SpanEditHandler;Accepts:Any
-                    SyntaxKind.DoubleQuote;["];
-            SyntaxKind.HtmlTextLiteral - [113..116) - FullWidth: 3 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.ForwardSlash;[/];
-                SyntaxKind.CloseAngle;[>];
-        SyntaxKind.HtmlTextLiteral - [116..117) - FullWidth: 1 - Slots: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
-            SyntaxKind.Text;[}];
+RazorDocument - [0..117) - FullWidth: 117 - [{<span foo="/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@@[a-z0-9]([a-z0-9-]*[a-z0-9])?\.([a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i" />}]
+    MarkupBlock - [0..117) - FullWidth: 117
+        MarkupTextLiteral - [0..1) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[{];
+        MarkupTagBlock - [1..116) - FullWidth: 115
+            MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                OpenAngle;[<];
+                Text;[span];
+            HtmlAttributeBlock - [6..113) - FullWidth: 107
+                MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    Whitespace;[ ];
+                MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    Text;[foo];
+                Equals;[=];
+                MarkupTextLiteral - [11..12) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    DoubleQuote;["];
+                GenericBlock - [12..112) - FullWidth: 100
+                    HtmlLiteralAttributeValue - [12..44) - FullWidth: 32
+                        MarkupTextLiteral - [12..44) - FullWidth: 32 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            ForwardSlash;[/];
+                            Text;[^];
+                            LeftBracket;[[];
+                            Text;[a-z0-9];
+                            Bang;[!];
+                            Text;[#$%&];
+                            SingleQuote;['];
+                            Text;[*+\];
+                            ForwardSlash;[/];
+                            Equals;[=];
+                            QuestionMark;[?];
+                            Text;[^_`{|}~.-];
+                            RightBracket;[]];
+                            Text;[+];
+                    MarkupBlock - [44..46) - FullWidth: 2
+                        MarkupTextLiteral - [44..45) - FullWidth: 1 - Gen<LitAttr:@(44:0,44)> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                        MarkupTextLiteral - [45..46) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                    HtmlLiteralAttributeValue - [46..112) - FullWidth: 66
+                        MarkupTextLiteral - [46..112) - FullWidth: 66 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            LeftBracket;[[];
+                            Text;[a-z0-9];
+                            RightBracket;[]];
+                            Text;[(];
+                            LeftBracket;[[];
+                            Text;[a-z0-9-];
+                            RightBracket;[]];
+                            Text;[*];
+                            LeftBracket;[[];
+                            Text;[a-z0-9];
+                            RightBracket;[]];
+                            Text;[)];
+                            QuestionMark;[?];
+                            Text;[\.(];
+                            LeftBracket;[[];
+                            Text;[a-z0-9];
+                            RightBracket;[]];
+                            Text;[(];
+                            LeftBracket;[[];
+                            Text;[a-z0-9-];
+                            RightBracket;[]];
+                            Text;[*];
+                            LeftBracket;[[];
+                            Text;[a-z0-9];
+                            RightBracket;[]];
+                            Text;[)];
+                            QuestionMark;[?];
+                            Text;[)*$];
+                            ForwardSlash;[/];
+                            Text;[i];
+                MarkupTextLiteral - [112..113) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    DoubleQuote;["];
+            MarkupTextLiteral - [113..116) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                Whitespace;[ ];
+                ForwardSlash;[/];
+                CloseAngle;[>];
+        MarkupTextLiteral - [116..117) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[}];

@@ -105,8 +105,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             // Arrange
             var builder = new SpanBuilder(new SourceLocation(0, 0, 0));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "Hello, "));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "World"));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "Hello, "));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "World"));
 
             var span = new Span(builder);
 
@@ -124,8 +124,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             // Arrange
             var builder = new SpanBuilder(new SourceLocation(13, 0, 0));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "Hello, "));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "World"));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "Hello, "));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "World"));
 
             var span = new Span(builder);
 
@@ -143,8 +143,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             // Arrange
             var builder = new SpanBuilder(new SourceLocation(13, 0, 0));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "Hello, "));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "World"));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "Hello, "));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "World"));
 
             var span = new Span(builder);
 
@@ -162,8 +162,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             // Arrange
             var builder = new SpanBuilder(new SourceLocation(13, 0, 0));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "Hello, "));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "World"));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "Hello, "));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "World"));
 
             var span = new Span(builder);
 
@@ -181,8 +181,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             // Arrange
             var builder = new SpanBuilder(new SourceLocation(13, 0, 0));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "Hello, "));
-            builder.Accept(SyntaxFactory.Token(SyntaxKind.Unknown, "World"));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "Hello, "));
+            builder.Accept(SyntaxFactory.Token(SyntaxKind.Marker, "World"));
 
             var span = new Span(builder);
 

@@ -86,13 +86,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     return SyntaxKind.OpenAngle;
                 default:
                     Debug.Fail("FlipBracket must be called with a bracket character");
-                    return SyntaxKind.Unknown;
+                    return SyntaxKind.Marker;
             }
         }
 
         public override SyntaxToken CreateMarkerToken()
         {
-            return SyntaxFactory.Token(SyntaxKind.Unknown, string.Empty);
+            return SyntaxFactory.Token(SyntaxKind.Marker, string.Empty);
         }
 
         public override SyntaxKind GetKnownTokenType(KnownTokenType type)
@@ -116,7 +116,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 case KnownTokenType.Whitespace:
                     return SyntaxKind.Whitespace;
                 default:
-                    return SyntaxKind.Unknown;
+                    return SyntaxKind.Marker;
             }
         }
 
