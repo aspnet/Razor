@@ -35,7 +35,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             if (node.Parent is CSharpStatementBodySyntax ||
                 node.Parent is CSharpExpressionBodySyntax ||
                 node.Parent is CSharpImplicitExpressionBodySyntax ||
-                node.Parent is CSharpDirectiveBodySyntax)
+                node.Parent is RazorDirectiveBodySyntax)
             {
                 return base.VisitCSharpCodeBlock(node);
             }
@@ -58,9 +58,9 @@ namespace Microsoft.AspNetCore.Razor.Language
             return WriteBlock(node, BlockKindInternal.Expression, base.VisitCSharpImplicitExpression);
         }
 
-        public override SyntaxNode VisitCSharpDirective(CSharpDirectiveSyntax node)
+        public override SyntaxNode VisitRazorDirective(RazorDirectiveSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Directive, base.VisitCSharpDirective);
+            return WriteBlock(node, BlockKindInternal.Directive, base.VisitRazorDirective);
         }
 
         public override SyntaxNode VisitCSharpTemplateBlock(CSharpTemplateBlockSyntax node)
@@ -68,21 +68,21 @@ namespace Microsoft.AspNetCore.Razor.Language
             return WriteBlock(node, BlockKindInternal.Template, base.VisitCSharpTemplateBlock);
         }
 
-        public override SyntaxNode VisitHtmlMarkupBlock(HtmlMarkupBlockSyntax node)
+        public override SyntaxNode VisitMarkupBlock(MarkupBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Markup, base.VisitHtmlMarkupBlock);
+            return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupBlock);
         }
 
-        public override SyntaxNode VisitHtmlTagBlock(HtmlTagBlockSyntax node)
+        public override SyntaxNode VisitMarkupTagBlock(MarkupTagBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Tag, base.VisitHtmlTagBlock);
+            return WriteBlock(node, BlockKindInternal.Tag, base.VisitMarkupTagBlock);
         }
 
-        public override SyntaxNode VisitHtmlAttributeBlock(HtmlAttributeBlockSyntax node)
+        public override SyntaxNode VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
         {
             return WriteBlock(node, BlockKindInternal.Markup, n =>
             {
-                var equalsSyntax = SyntaxFactory.HtmlTextLiteral(new SyntaxList<SyntaxToken>(node.EqualsToken));
+                var equalsSyntax = SyntaxFactory.MarkupTextLiteral(new SyntaxList<SyntaxToken>(node.EqualsToken));
                 var mergedAttributePrefix = MergeTextLiteralSpans(node.NamePrefix, node.Name, node.NameSuffix, equalsSyntax, node.ValuePrefix);
                 Visit(mergedAttributePrefix);
                 Visit(node.Value);
@@ -92,7 +92,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             });
         }
 
-        public override SyntaxNode VisitHtmlMinimizedAttributeBlock(HtmlMinimizedAttributeBlockSyntax node)
+        public override SyntaxNode VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)
         {
             return WriteBlock(node, BlockKindInternal.Markup, n =>
             {
@@ -103,14 +103,14 @@ namespace Microsoft.AspNetCore.Razor.Language
             });
         }
 
-        public override SyntaxNode VisitHtmlCommentBlock(HtmlCommentBlockSyntax node)
+        public override SyntaxNode VisitMarkupCommentBlock(MarkupCommentBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.HtmlComment, base.VisitHtmlCommentBlock);
+            return WriteBlock(node, BlockKindInternal.HtmlComment, base.VisitMarkupCommentBlock);
         }
 
-        public override SyntaxNode VisitHtmlDynamicAttributeValue(HtmlDynamicAttributeValueSyntax node)
+        public override SyntaxNode VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Markup, base.VisitHtmlDynamicAttributeValue);
+            return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupDynamicAttributeValue);
         }
 
         public override SyntaxNode VisitRazorMetaCode(RazorMetaCodeSyntax node)
@@ -125,10 +125,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             return base.VisitCSharpTransition(node);
         }
 
-        public override SyntaxNode VisitHtmlTransition(HtmlTransitionSyntax node)
+        public override SyntaxNode VisitMarkupTransition(MarkupTransitionSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Transition);
-            return base.VisitHtmlTransition(node);
+            return base.VisitMarkupTransition(node);
         }
 
         public override SyntaxNode VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
@@ -143,33 +143,39 @@ namespace Microsoft.AspNetCore.Razor.Language
             return base.VisitCSharpExpressionLiteral(node);
         }
 
-        public override SyntaxNode VisitCSharpHiddenLiteral(CSharpHiddenLiteralSyntax node)
+        public override SyntaxNode VisitCSharpEphemeralTextLiteral(CSharpEphemeralTextLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Code);
-            return base.VisitCSharpHiddenLiteral(node);
+            return base.VisitCSharpEphemeralTextLiteral(node);
         }
 
-        public override SyntaxNode VisitCSharpNoneLiteral(CSharpNoneLiteralSyntax node)
+        public override SyntaxNode VisitUnclassifiedTextLiteral(UnclassifiedTextLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.None);
-            return base.VisitCSharpNoneLiteral(node);
+            return base.VisitUnclassifiedTextLiteral(node);
         }
 
-        public override SyntaxNode VisitHtmlLiteralAttributeValue(HtmlLiteralAttributeValueSyntax node)
+        public override SyntaxNode VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Markup);
-            return base.VisitHtmlLiteralAttributeValue(node);
+            return base.VisitMarkupLiteralAttributeValue(node);
         }
 
-        public override SyntaxNode VisitHtmlTextLiteral(HtmlTextLiteralSyntax node)
+        public override SyntaxNode VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
         {
-            if (node.Parent is HtmlLiteralAttributeValueSyntax)
+            if (node.Parent is MarkupLiteralAttributeValueSyntax)
             {
-                return base.VisitHtmlTextLiteral(node);
+                return base.VisitMarkupTextLiteral(node);
             }
 
             WriteSpan(node, SpanKindInternal.Markup);
-            return base.VisitHtmlTextLiteral(node);
+            return base.VisitMarkupTextLiteral(node);
+        }
+
+        public override SyntaxNode VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
+        {
+            WriteSpan(node, SpanKindInternal.Markup);
+            return base.VisitMarkupEphemeralTextLiteral(node);
         }
 
         private SyntaxNode WriteBlock<TNode>(TNode node, BlockKindInternal kind, Func<TNode, SyntaxNode> handler) where TNode : SyntaxNode
@@ -208,7 +214,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             _spans.Add(span);
         }
 
-        private HtmlTextLiteralSyntax MergeTextLiteralSpans(params HtmlTextLiteralSyntax[] literalSyntaxes)
+        private MarkupTextLiteralSyntax MergeTextLiteralSpans(params MarkupTextLiteralSyntax[] literalSyntaxes)
         {
             if (literalSyntaxes == null || literalSyntaxes.Length == 0)
             {
@@ -234,16 +240,16 @@ namespace Microsoft.AspNetCore.Razor.Language
                     seenFirstLiteral = true;
                 }
 
-                foreach (var token in syntax.TextTokens)
+                foreach (var token in syntax.LiteralTokens)
                 {
                     builder.Add(token.Green);
                 }
             }
 
-            var mergedLiteralSyntax = Syntax.InternalSyntax.SyntaxFactory.HtmlTextLiteral(
+            var mergedLiteralSyntax = Syntax.InternalSyntax.SyntaxFactory.MarkupTextLiteral(
                 builder.ToList<Syntax.InternalSyntax.SyntaxToken>());
 
-            return (HtmlTextLiteralSyntax)mergedLiteralSyntax.CreateRed(parent, position);
+            return (MarkupTextLiteralSyntax)mergedLiteralSyntax.CreateRed(parent, position);
         }
 
         private SourceSpan GetSourceSpanForNode(SyntaxNode node)

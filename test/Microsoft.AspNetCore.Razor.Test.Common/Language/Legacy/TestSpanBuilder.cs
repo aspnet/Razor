@@ -16,7 +16,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 self.Span(
                     SpanKindInternal.Code,
                     string.Empty, 
-                    SyntaxKind.Unknown));
+                    SyntaxKind.Marker));
         }
 
         public static SpanConstructor EmptyHtml(this SpanFactory self)
@@ -25,7 +25,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 .Span(
                     SpanKindInternal.Markup,
                     string.Empty,
-                    SyntaxKind.Unknown)
+                    SyntaxKind.Marker)
                 .With(new MarkupChunkGenerator());
         }
 
@@ -378,7 +378,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         internal static IEnumerable<SyntaxToken> TestTokenizer(string str)
         {
-            yield return SyntaxFactory.Token(SyntaxKind.Unknown, str);
+            yield return SyntaxFactory.Token(SyntaxKind.Marker, str);
         }
 
         public SpanConstructor(SpanKindInternal kind, SourceLocation location, IEnumerable<SyntaxToken> tokens)

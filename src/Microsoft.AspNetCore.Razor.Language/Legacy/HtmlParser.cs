@@ -11,7 +11,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     internal partial class HtmlMarkupParser
     {
-        public HtmlDocumentSyntax ParseDocument()
+        public RazorDocumentSyntax ParseDocument()
         {
             if (Context == null)
             {
@@ -29,11 +29,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     ParseTagInDocumentContext(builder);
                 }
                 AcceptMarkerTokenIfNecessary();
-                builder.Add(OutputTokensAsHtmlLiteral());
+                builder.Add(OutputTokensAsMarkupLiteral());
 
-                var markup = SyntaxFactory.HtmlMarkupBlock(builder.ToList());
+                var markup = SyntaxFactory.MarkupBlock(builder.ToList());
 
-                return SyntaxFactory.HtmlDocument(markup);
+                return SyntaxFactory.RazorDocument(markup);
             }
         }
 
@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         AcceptTokenAndMoveNext();
                     }
 
-                    builder.Add(OutputTokensAsHtmlLiteral());
+                    builder.Add(OutputTokensAsMarkupEphemeralLiteral());
                 }
                 else if (At(SyntaxKind.NewLine))
                 {
@@ -83,10 +83,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             AcceptToken(last);
                             last = null;
                         }
-                        builder.Add(OutputTokensAsHtmlLiteral());
+                        builder.Add(OutputTokensAsMarkupLiteral());
                         AcceptToken(transition);
                         SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                        builder.Add(OutputTokensAsHtmlLiteral());
+                        builder.Add(OutputTokensAsMarkupEphemeralLiteral());
                         AcceptTokenAndMoveNext();
                         continue; // while
                     }
@@ -121,6 +121,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
                 else if (At(SyntaxKind.RazorCommentTransition))
                 {
+                    var shouldRenderWhitespace = true;
                     if (last != null)
                     {
                         // Don't render the whitespace between the start of the line and the razor comment.
@@ -128,9 +129,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         {
                             AcceptMarkerTokenIfNecessary();
                             // Output the tokens that may have been accepted prior to the whitespace.
-                            builder.Add(OutputTokensAsHtmlLiteral());
+                            builder.Add(OutputTokensAsMarkupLiteral());
 
                             SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
+                            shouldRenderWhitespace = false;
                         }
 
                         AcceptToken(last);
@@ -138,7 +140,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     }
 
                     AcceptMarkerTokenIfNecessary();
-                    builder.Add(OutputTokensAsHtmlLiteral());
+                    if (shouldRenderWhitespace)
+                    {
+                        builder.Add(OutputTokensAsMarkupLiteral());
+                    }
+                    else
+                    {
+                        builder.Add(OutputTokensAsMarkupEphemeralLiteral());
+                    }
 
                     var comment = ParseRazorComment();
                     builder.Add(comment);
@@ -151,7 +160,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         AcceptTokenWhile(IsSpacingToken(includeNewLines: false));
                         AcceptTokenAndMoveNext();
                         SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                        builder.Add(OutputTokensAsHtmlLiteral());
+                        builder.Add(OutputTokensAsMarkupEphemeralLiteral());
                     }
                 }
                 else
@@ -193,7 +202,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     {
                         if (Lookahead(2)?.Kind == SyntaxKind.DoubleHyphen)
                         {
-                            builder.Add(OutputTokensAsHtmlLiteral());
+                            builder.Add(OutputTokensAsMarkupLiteral());
                         }
 
                         AcceptTokenAndMoveNext(); // Accept '<'
@@ -212,7 +221,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     return;
                 }
 
-                builder.Add(OutputTokensAsHtmlLiteral());
+                builder.Add(OutputTokensAsMarkupLiteral());
 
                 // Start tag block
                 using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
@@ -236,8 +245,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         // the end script tag. Don't want to incorrectly parse a "var tag = '<input />';" as an HTML tag.
                         if (scriptTag && !CurrentScriptTagExpectsHtml(builder))
                         {
-                            tagBuilder.Add(OutputTokensAsHtmlLiteral());
-                            var block = SyntaxFactory.HtmlTagBlock(tagBuilder.ToList());
+                            tagBuilder.Add(OutputTokensAsMarkupLiteral());
+                            var block = SyntaxFactory.MarkupTagBlock(tagBuilder.ToList());
                             builder.Add(block);
 
                             SkipToEndScriptAndParseCode(builder);
@@ -259,10 +268,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         ParserState = ParserState.Content;
                     }
 
-                    tagBuilder.Add(OutputTokensAsHtmlLiteral());
+                    tagBuilder.Add(OutputTokensAsMarkupLiteral());
 
                     // End tag block
-                    var tagBlock = SyntaxFactory.HtmlTagBlock(tagBuilder.ToList());
+                    var tagBlock = SyntaxFactory.MarkupTagBlock(tagBuilder.ToList());
                     builder.Add(tagBlock);
                 }
             }
@@ -352,14 +361,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // Output anything prior to the attribute, in most cases this will be the tag name:
                 // |<input| checked />. If in-between other attributes this will noop or output malformed attribute
                 // content (if the previous attribute was malformed).
-                builder.Add(OutputTokensAsHtmlLiteral());
+                builder.Add(OutputTokensAsMarkupLiteral());
 
                 AcceptToken(whitespace);
-                var namePrefix = OutputTokensAsHtmlLiteral();
+                var namePrefix = OutputTokensAsMarkupLiteral();
                 AcceptToken(nameTokens);
-                var name = OutputTokensAsHtmlLiteral();
+                var name = OutputTokensAsMarkupLiteral();
 
-                var minimizedAttributeBlock = SyntaxFactory.HtmlMinimizedAttributeBlock(namePrefix, name);
+                var minimizedAttributeBlock = SyntaxFactory.MarkupMinimizedAttributeBlock(namePrefix, name);
                 builder.Add(minimizedAttributeBlock);
 
                 return;
@@ -367,14 +376,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             // Not a minimized attribute, parse as if it were well-formed (if attribute turns out to be malformed we
             // will go into recovery).
-            builder.Add(OutputTokensAsHtmlLiteral());
+            builder.Add(OutputTokensAsMarkupLiteral());
 
             var attributeBlock = ParseAttributePrefix(whitespace, nameTokens, whitespaceAfterAttributeName);
 
             builder.Add(attributeBlock);
         }
 
-        private HtmlAttributeBlockSyntax ParseAttributePrefix(
+        private MarkupAttributeBlockSyntax ParseAttributePrefix(
             IEnumerable<SyntaxToken> whitespace,
             IEnumerable<SyntaxToken> nameTokens,
             IEnumerable<SyntaxToken> whitespaceAfterAttributeName)
@@ -387,18 +396,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             // Accept the whitespace and name
             AcceptToken(whitespace);
-            var namePrefix = OutputTokensAsHtmlLiteral();
+            var namePrefix = OutputTokensAsMarkupLiteral();
             AcceptToken(nameTokens);
-            var name = OutputTokensAsHtmlLiteral();
+            var name = OutputTokensAsMarkupLiteral();
 
             // Since this is not a minimized attribute, the whitespace after attribute name belongs to this attribute.
             AcceptToken(whitespaceAfterAttributeName);
-            var nameSuffix = OutputTokensAsHtmlLiteral();
+            var nameSuffix = OutputTokensAsMarkupLiteral();
             Assert(SyntaxKind.Equals); // We should be at "="
             var equalsToken = EatCurrentToken();
 
             var whitespaceAfterEquals = ReadWhile(token => token.Kind == SyntaxKind.Whitespace || token.Kind == SyntaxKind.NewLine);
-            var quote = SyntaxKind.Unknown;
+            var quote = SyntaxKind.Marker;
             if (At(SyntaxKind.SingleQuote) || At(SyntaxKind.DoubleQuote))
             {
                 // Found a quote, the whitespace belongs to this attribute.
@@ -413,20 +422,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 PutBack(whitespaceAfterEquals);
             }
 
-            HtmlTextLiteralSyntax valuePrefix = null;
-            HtmlBlockSyntax attributeValue = null;
-            HtmlTextLiteralSyntax valueSuffix = null;
+            MarkupTextLiteralSyntax valuePrefix = null;
+            RazorBlockSyntax attributeValue = null;
+            MarkupTextLiteralSyntax valueSuffix = null;
 
             if (attributeCanBeConditional)
             {
                 SpanContext.ChunkGenerator = SpanChunkGenerator.Null; // The block chunk generator will render the prefix
 
                 // We now have the value prefix which is usually whitespace and/or a quote
-                valuePrefix = OutputTokensAsHtmlLiteral();
+                valuePrefix = OutputTokensAsMarkupLiteral();
 
                 // Read the attribute value only if the value is quoted
                 // or if there is no whitespace between '=' and the unquoted value.
-                if (quote != SyntaxKind.Unknown || !whitespaceAfterEquals.Any())
+                if (quote != SyntaxKind.Marker || !whitespaceAfterEquals.Any())
                 {
                     using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
                     {
@@ -437,22 +446,22 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             ParseAttributeValue(attributeValueBuilder, quote);
                         }
 
-                        attributeValue = SyntaxFactory.HtmlBlock(attributeValueBuilder.ToList());
+                        attributeValue = SyntaxFactory.GenericBlock(attributeValueBuilder.ToList());
                     }
                 }
 
                 // Capture the suffix
-                if (quote != SyntaxKind.Unknown && At(quote))
+                if (quote != SyntaxKind.Marker && At(quote))
                 {
                     AcceptTokenAndMoveNext();
                     // Again, block chunk generator will render the suffix
                     SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                    valueSuffix = OutputTokensAsHtmlLiteral();
+                    valueSuffix = OutputTokensAsMarkupLiteral();
                 }
             }
-            else if (quote != SyntaxKind.Unknown || !whitespaceAfterEquals.Any())
+            else if (quote != SyntaxKind.Marker || !whitespaceAfterEquals.Any())
             {
-                valuePrefix = OutputTokensAsHtmlLiteral();
+                valuePrefix = OutputTokensAsMarkupLiteral();
 
                 using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
                 {
@@ -461,13 +470,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     SkipToAndParseCode(attributeValueBuilder, token => IsEndOfAttributeValue(quote, token));
 
                     // Capture the attribute value (will include everything in-between the attribute's quotes).
-                    attributeValue = SyntaxFactory.HtmlBlock(attributeValueBuilder.ToList());
+                    attributeValue = SyntaxFactory.GenericBlock(attributeValueBuilder.ToList());
                 }
 
-                if (quote != SyntaxKind.Unknown)
+                if (quote != SyntaxKind.Marker)
                 {
                     OptionalToken(quote);
-                    valueSuffix = OutputTokensAsHtmlLiteral();
+                    valueSuffix = OutputTokensAsMarkupLiteral();
                 }
             }
             else
@@ -475,7 +484,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // There is no quote and there is whitespace after equals. There is no attribute value.
             }
 
-            return SyntaxFactory.HtmlAttributeBlock(namePrefix, name, nameSuffix, equalsToken, valuePrefix, attributeValue, valueSuffix);
+            return SyntaxFactory.MarkupAttributeBlock(namePrefix, name, nameSuffix, equalsToken, valuePrefix, attributeValue, valueSuffix);
         }
 
         private void ParseAttributeValue(in SyntaxListBuilder<RazorSyntaxNode> builder, SyntaxKind quote)
@@ -499,14 +508,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             new LocationTagged<string>(CurrentToken.Content, CurrentStart));
                         AcceptTokenAndMoveNext();
                         SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
-                        markupBuilder.Add(OutputTokensAsHtmlLiteral());
+                        markupBuilder.Add(OutputTokensAsMarkupLiteral());
 
                         SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
                         AcceptTokenAndMoveNext();
                         SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
-                        markupBuilder.Add(OutputTokensAsHtmlLiteral());
+                        markupBuilder.Add(OutputTokensAsMarkupEphemeralLiteral());
 
-                        var markupBlock = SyntaxFactory.HtmlMarkupBlock(markupBuilder.ToList());
+                        var markupBlock = SyntaxFactory.MarkupBlock(markupBuilder.ToList());
                         builder.Add(markupBlock);
                     }
                 }
@@ -516,7 +525,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     var valueStart = CurrentStart;
                     PutCurrentBack();
 
-                    var prefix = OutputTokensAsHtmlLiteral();
+                    var prefix = OutputTokensAsMarkupLiteral();
 
                     // Dynamic value, start a new block and set the chunk generator
                     using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
@@ -524,7 +533,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         var dynamicAttributeValueBuilder = pooledResult.Builder;
 
                         OtherParserBlock(dynamicAttributeValueBuilder);
-                        var value = SyntaxFactory.HtmlDynamicAttributeValue(prefix, SyntaxFactory.HtmlBlock(dynamicAttributeValueBuilder.ToList()));
+                        var value = SyntaxFactory.MarkupDynamicAttributeValue(prefix, SyntaxFactory.GenericBlock(dynamicAttributeValueBuilder.ToList()));
                         builder.Add(value);
                     }
                 }
@@ -532,7 +541,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             else
             {
                 AcceptToken(prefixTokens);
-                var prefix = OutputTokensAsHtmlLiteral();
+                var prefix = OutputTokensAsMarkupLiteral();
 
                 // Literal value
                 // 'quote' should be "Unknown" if not quoted and tokens coming from the tokenizer should never have
@@ -546,9 +555,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     // but for now that's ok)
                     !IsEndOfAttributeValue(quote, token));
                 AcceptToken(valueTokens);
-                var value = OutputTokensAsHtmlLiteral();
+                var value = OutputTokensAsMarkupLiteral();
 
-                var literalAttributeValue = SyntaxFactory.HtmlLiteralAttributeValue(prefix, value);
+                var literalAttributeValue = SyntaxFactory.MarkupLiteralAttributeValue(prefix, value);
                 builder.Add(literalAttributeValue);
             }
         }
@@ -616,7 +625,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         // Accept the double-hyphen token at the beginning of the comment block.
                         AcceptTokenAndMoveNext();
                         SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
-                        htmlCommentBuilder.Add(OutputTokensAsHtmlLiteral());
+                        htmlCommentBuilder.Add(OutputTokensAsMarkupLiteral());
 
                         SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.Whitespace;
                         while (!EndOfFile)
@@ -628,14 +637,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             {
                                 // Output the content in the comment block as a separate markup
                                 SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.Whitespace;
-                                htmlCommentBuilder.Add(OutputTokensAsHtmlLiteral());
+                                htmlCommentBuilder.Add(OutputTokensAsMarkupLiteral());
 
                                 // This is the end of a comment block
                                 AcceptToken(lastDoubleHyphen);
                                 AcceptTokenAndMoveNext();
                                 SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
-                                htmlCommentBuilder.Add(OutputTokensAsHtmlLiteral());
-                                var commentBlock = SyntaxFactory.HtmlCommentBlock(htmlCommentBuilder.ToList());
+                                htmlCommentBuilder.Add(OutputTokensAsMarkupLiteral());
+                                var commentBlock = SyntaxFactory.MarkupCommentBlock(htmlCommentBuilder.ToList());
                                 builder.Add(commentBlock);
                                 return true;
                             }
@@ -691,7 +700,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             if (IsBangEscape(lookahead: 0))
             {
-                builder.Add(OutputTokensAsHtmlLiteral());
+                builder.Add(OutputTokensAsMarkupLiteral());
 
                 // Accept the parser escape character '!'.
                 Assert(SyntaxKind.Bang);
@@ -738,7 +747,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                 if (seenEndScript)
                 {
-                    builder.Add(OutputTokensAsHtmlLiteral());
+                    builder.Add(OutputTokensAsMarkupLiteral());
 
                     using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
                     {
@@ -757,8 +766,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             var closeAngle = SyntaxFactory.MissingToken(SyntaxKind.CloseAngle);
                             AcceptToken(closeAngle);
                         }
-                        tagBuilder.Add(OutputTokensAsHtmlLiteral());
-                        builder.Add(SyntaxFactory.HtmlTagBlock(tagBuilder.ToList()));
+                        tagBuilder.Add(OutputTokensAsMarkupLiteral());
+                        builder.Add(SyntaxFactory.MarkupTagBlock(tagBuilder.ToList()));
                     }
                 }
                 else
@@ -772,7 +781,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             Debug.Assert(!builder.IsNull);
 
-            HtmlAttributeBlockSyntax typeAttribute = null;
+            MarkupAttributeBlockSyntax typeAttribute = null;
             for (var i = 0; i < builder.Count; i++)
             {
                 var node = builder[i];
@@ -781,7 +790,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     continue;
                 }
                 
-                if (node is HtmlAttributeBlockSyntax attributeBlock &&
+                if (node is MarkupAttributeBlockSyntax attributeBlock &&
                     attributeBlock.Value.Children.Count > 0 &&
                     IsTypeAttribute(attributeBlock))
                 {
@@ -792,7 +801,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             if (typeAttribute != null)
             {
                 var contentValues = typeAttribute.Value.Children.Nodes
-                    .OfType<HtmlTextLiteralSyntax>()
+                    .OfType<MarkupTextLiteralSyntax>()
                     .Select(textLiteral => textLiteral.ToFullString());
 
                 var scriptType = string.Concat(contentValues).Trim();
@@ -804,9 +813,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return false;
         }
 
-        private static bool IsTypeAttribute(HtmlAttributeBlockSyntax attributeBlock)
+        private static bool IsTypeAttribute(MarkupAttributeBlockSyntax attributeBlock)
         {
-            if (attributeBlock.Name.TextTokens.Count == 0)
+            if (attributeBlock.Name.LiteralTokens.Count == 0)
             {
                 return false;
             }
@@ -868,7 +877,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return false;
         }
 
-        public HtmlMarkupBlockSyntax ParseBlock()
+        public MarkupBlockSyntax ParseBlock()
         {
             if (Context == null)
             {
@@ -896,14 +905,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     // "@" => Explicit Tag/Single Line Block OR Template
 
                     // Output whitespace
-                    builder.Add(OutputTokensAsHtmlLiteral());
+                    builder.Add(OutputTokensAsMarkupLiteral());
 
                     // Definitely have a transition span
                     Assert(SyntaxKind.Transition);
                     AcceptTokenAndMoveNext();
                     SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
                     SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                    var transition = GetNodeWithSpanContext(SyntaxFactory.HtmlTransition(OutputTokens()));
+                    var transition = GetNodeWithSpanContext(SyntaxFactory.MarkupTransition(OutputTokens()));
                     builder.Add(transition);
                     if (At(SyntaxKind.Transition))
                     {
@@ -919,11 +928,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         RazorDiagnosticFactory.CreateParsing_MarkupBlockMustStartWithTag(
                             new SourceSpan(CurrentStart, CurrentToken.Content.Length)));
                 }
-                builder.Add(OutputTokensAsHtmlLiteral());
+                builder.Add(OutputTokensAsMarkupLiteral());
 
                 var markupBlock = builder.ToList();
 
-                return SyntaxFactory.HtmlMarkupBlock(markupBlock);
+                return SyntaxFactory.MarkupBlock(markupBlock);
             }
         }
 
@@ -967,7 +976,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
             PutCurrentBack();
             Context.WhiteSpaceIsSignificantToAncestorBlock = old;
-            builder.Add(OutputTokensAsHtmlLiteral());
+            builder.Add(OutputTokensAsMarkupLiteral());
         }
 
         private void ParseTagBlock(in SyntaxListBuilder<RazorSyntaxNode> builder, Stack<Tuple<SyntaxToken, SourceLocation>> tags)
@@ -980,7 +989,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 SkipToAndParseCode(builder, SyntaxKind.OpenAngle);
 
                 // Output everything prior to the OpenAngle into a markup span
-                builder.Add(OutputTokensAsHtmlLiteral());
+                builder.Add(OutputTokensAsMarkupLiteral());
 
                 // Do not want to start a new tag block if we're at the end of the file.
                 var tagBuilder = builder;
@@ -1032,13 +1041,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     if (blockAlreadyBuilt)
                     {
                         // Output the contents of the tag into its own markup span.
-                        builder.Add(OutputTokensAsHtmlLiteral());
+                        builder.Add(OutputTokensAsMarkupLiteral());
                     }
                     else
                     {
                         // Output the contents of the tag into its own markup span.
-                        tagBuilder.Add(OutputTokensAsHtmlLiteral());
-                        var tagBlock = SyntaxFactory.HtmlTagBlock(tagBuilder.ToList());
+                        tagBuilder.Add(OutputTokensAsMarkupLiteral());
+                        var tagBlock = SyntaxFactory.MarkupTagBlock(tagBuilder.ToList());
                         builder.Add(tagBlock);
                     }
                 }
@@ -1113,7 +1122,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             if (potentialTagNameToken == null || potentialTagNameToken.Kind != SyntaxKind.Text)
             {
-                tagName = SyntaxFactory.Token(SyntaxKind.Unknown, string.Empty);
+                tagName = SyntaxFactory.Token(SyntaxKind.Marker, string.Empty);
             }
             else if (bangToken != null)
             {
@@ -1131,7 +1140,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // <!text> tags are treated like any other escaped HTML start tag.
                 string.Equals(tag.Item1.Content, SyntaxConstants.TextTagName, StringComparison.OrdinalIgnoreCase))
             {
-                builder.Add(OutputTokensAsHtmlLiteral());
+                builder.Add(OutputTokensAsMarkupLiteral());
                 SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
 
                 AcceptToken(_bufferedOpenAngle);
@@ -1173,9 +1182,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     tags.Push(tag);
                 }
 
-                var transition = GetNodeWithSpanContext(SyntaxFactory.HtmlTransition(OutputTokens()));
+                var transition = GetNodeWithSpanContext(SyntaxFactory.MarkupTransition(OutputTokens()));
                 builder.Add(transition);
-                var tagBlock = SyntaxFactory.HtmlTagBlock(builder.ToList());
+                var tagBlock = SyntaxFactory.MarkupTagBlock(builder.ToList());
                 parentBuilder.Add(tagBlock);
 
                 return Tuple.Create(true, true);
@@ -1230,8 +1239,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     if (VoidElements.Contains(tagName))
                     {
                         SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
-                        builder.Add(OutputTokensAsHtmlLiteral());
-                        var tagBlock = SyntaxFactory.HtmlTagBlock(builder.ToList());
+                        builder.Add(OutputTokensAsMarkupLiteral());
+                        var tagBlock = SyntaxFactory.MarkupTagBlock(builder.ToList());
                         parentBuilder.Add(tagBlock);
                         blockAlreadyBuilt = true;
 
@@ -1255,7 +1264,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             {
                                 // Accept up to here
                                 AcceptToken(whiteSpace);
-                                parentBuilder.Add(OutputTokensAsHtmlLiteral()); // Output the whitespace
+                                parentBuilder.Add(OutputTokensAsMarkupLiteral()); // Output the whitespace
 
                                 using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
                                 {
@@ -1275,8 +1284,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                     }
 
                                     // Output the closing void element
-                                    tagBuilder.Add(OutputTokensAsHtmlLiteral());
-                                    parentBuilder.Add(SyntaxFactory.HtmlTagBlock(tagBuilder.ToList()));
+                                    tagBuilder.Add(OutputTokensAsMarkupLiteral());
+                                    parentBuilder.Add(SyntaxFactory.MarkupTagBlock(tagBuilder.ToList()));
 
                                     return Tuple.Create(complete, blockAlreadyBuilt);
                                 }
@@ -1292,8 +1301,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         if (!CurrentScriptTagExpectsHtml(builder))
                         {
                             SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
-                            builder.Add(OutputTokensAsHtmlLiteral());
-                            var tagBlock = SyntaxFactory.HtmlTagBlock(builder.ToList());
+                            builder.Add(OutputTokensAsMarkupLiteral());
+                            var tagBlock = SyntaxFactory.MarkupTagBlock(builder.ToList());
                             parentBuilder.Add(tagBlock);
                             blockAlreadyBuilt = true;
 
@@ -1403,9 +1412,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
 
-            var transition = GetNodeWithSpanContext(SyntaxFactory.HtmlTransition(OutputTokens()));
+            var transition = GetNodeWithSpanContext(SyntaxFactory.MarkupTransition(OutputTokens()));
             builder.Add(transition);
-            var tagBlock = SyntaxFactory.HtmlTagBlock(builder.ToList());
+            var tagBlock = SyntaxFactory.MarkupTagBlock(builder.ToList());
             parentBuilder.Add(tagBlock);
 
             return Tuple.Create(seenCloseAngle, true);
@@ -1481,7 +1490,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                 // Check if the previous span was a transition.
                 var previousSpan = GetLastSpan(builder[builder.Count - 1]);
-                if (previousSpan != null && previousSpan.Kind == SyntaxKind.HtmlTransition)
+                if (previousSpan != null && previousSpan.Kind == SyntaxKind.MarkupTransition)
                 {
                     var tokens = ReadWhile(
                         f => (f.Kind == SyntaxKind.Whitespace) || (f.Kind == SyntaxKind.NewLine));
@@ -1518,10 +1527,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 AddMarkerTokenIfNecessary();
             }
 
-            builder.Add(OutputTokensAsHtmlLiteral());
+            builder.Add(OutputTokensAsMarkupLiteral());
         }
 
-        public HtmlMarkupBlockSyntax ParseRazorBlock(Tuple<string, string> nestingSequences, bool caseSensitive)
+        public MarkupBlockSyntax ParseRazorBlock(Tuple<string, string> nestingSequences, bool caseSensitive)
         {
             if (Context == null)
             {
@@ -1544,9 +1553,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     NestingSection(builder, nestingSequences);
                 }
                 AcceptMarkerTokenIfNecessary();
-                builder.Add(OutputTokensAsHtmlLiteral());
+                builder.Add(OutputTokensAsMarkupLiteral());
 
-                return SyntaxFactory.HtmlMarkupBlock(builder.ToList());
+                return SyntaxFactory.MarkupBlock(builder.ToList());
             }
         }
 
@@ -1725,7 +1734,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         private void OtherParserBlock(in SyntaxListBuilder<RazorSyntaxNode> builder)
         {
             AcceptMarkerTokenIfNecessary();
-            builder.Add(OutputTokensAsHtmlLiteral());
+            builder.Add(OutputTokensAsMarkupLiteral());
 
             RazorSyntaxNode codeBlock;
             using (PushSpanContextConfig())

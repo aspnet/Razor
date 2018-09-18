@@ -597,7 +597,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 {
                     var token = span.Tokens[0];
                     if (token != null &&
-                        token.Kind == SyntaxKind.Unknown &&
+                        token.Kind == SyntaxKind.Marker &&
                         token.Content.Length == 0)
                     {
                         // We don't want to create IR nodes for marker tokens.

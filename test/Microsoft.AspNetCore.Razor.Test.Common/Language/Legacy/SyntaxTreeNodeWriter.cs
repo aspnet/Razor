@@ -207,7 +207,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         private void WriteSyntaxNode(SyntaxNode syntaxNode)
         {
             WriteIndent();
-            Write($"{typeof(SyntaxKind).Name}.{syntaxNode.Kind}");
+            Write($"{typeof(SyntaxKind).Name}.{GetSyntaxKindForDisplay(syntaxNode.Kind)}");
             WriteSeparator();
             Write($"[{syntaxNode.ToFullString()}]");
             WriteSeparator();
@@ -243,8 +243,25 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             WriteIndent();
             var diagnostics = syntaxToken.GetDiagnostics();
-            var tokenString = $"{typeof(SyntaxKind).Name}.{syntaxToken.Kind};[{syntaxToken.Content}];{string.Join(", ", diagnostics.Select(diagnostic => diagnostic.Id + diagnostic.Span))}";
+            var kind = GetSyntaxKindForDisplay(syntaxToken.Kind);
+            var tokenString = $"{typeof(SyntaxKind).Name}.{kind};[{syntaxToken.Content}];{string.Join(", ", diagnostics.Select(diagnostic => diagnostic.Id + diagnostic.Span))}";
             Write(tokenString);
+        }
+
+        private string GetSyntaxKindForDisplay(SyntaxKind kind)
+        {
+            // Temporary workaround to not rewrite the baselines for the old tree.
+            var result = kind.ToString();
+            if (kind == SyntaxKind.Marker)
+            {
+                return "Unknown";
+            }
+            else if (kind == SyntaxKind.MarkupTextLiteral)
+            {
+                return "HtmlTextLiteral";
+            }
+
+            return result;
         }
 
         protected void WriteSourceLocation(SourceLocation location)
