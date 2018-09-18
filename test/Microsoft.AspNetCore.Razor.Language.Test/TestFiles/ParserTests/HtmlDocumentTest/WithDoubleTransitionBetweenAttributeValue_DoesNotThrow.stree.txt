@@ -6,7 +6,7 @@ RazorDocument - [0..27) - FullWidth: 27 - [{<span foo='abc @@ def' />}]
             MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[span];
-            HtmlAttributeBlock - [6..23) - FullWidth: 17
+            MarkupAttributeBlock - [6..23) - FullWidth: 17
                 MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -15,7 +15,7 @@ RazorDocument - [0..27) - FullWidth: 27 - [{<span foo='abc @@ def' />}]
                 MarkupTextLiteral - [11..12) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
                 GenericBlock - [12..22) - FullWidth: 10
-                    HtmlLiteralAttributeValue - [12..15) - FullWidth: 3
+                    MarkupLiteralAttributeValue - [12..15) - FullWidth: 3
                         MarkupTextLiteral - [12..15) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Text;[abc];
                     MarkupBlock - [15..18) - FullWidth: 3
@@ -24,7 +24,7 @@ RazorDocument - [0..27) - FullWidth: 27 - [{<span foo='abc @@ def' />}]
                             Transition;[@];
                         MarkupEphemeralTextLiteral - [17..18) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                    HtmlLiteralAttributeValue - [18..22) - FullWidth: 4
+                    MarkupLiteralAttributeValue - [18..22) - FullWidth: 4
                         MarkupTextLiteral - [18..19) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Whitespace;[ ];
                         MarkupTextLiteral - [19..22) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any

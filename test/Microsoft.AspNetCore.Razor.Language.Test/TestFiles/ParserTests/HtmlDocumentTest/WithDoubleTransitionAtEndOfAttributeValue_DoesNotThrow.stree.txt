@@ -6,7 +6,7 @@ RazorDocument - [0..22) - FullWidth: 22 - [{<span foo='abc@@' />}]
             MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[span];
-            HtmlAttributeBlock - [6..18) - FullWidth: 12
+            MarkupAttributeBlock - [6..18) - FullWidth: 12
                 MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -15,7 +15,7 @@ RazorDocument - [0..22) - FullWidth: 22 - [{<span foo='abc@@' />}]
                 MarkupTextLiteral - [11..12) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
                 GenericBlock - [12..17) - FullWidth: 5
-                    HtmlLiteralAttributeValue - [12..15) - FullWidth: 3
+                    MarkupLiteralAttributeValue - [12..15) - FullWidth: 3
                         MarkupTextLiteral - [12..15) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Text;[abc];
                     MarkupBlock - [15..17) - FullWidth: 2

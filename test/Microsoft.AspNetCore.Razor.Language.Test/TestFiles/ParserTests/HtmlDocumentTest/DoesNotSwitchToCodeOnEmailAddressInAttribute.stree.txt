@@ -4,7 +4,7 @@ RazorDocument - [0..51) - FullWidth: 51 - [<a href="mailto:example@microsoft.com
             MarkupTextLiteral - [0..2) - FullWidth: 2 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[a];
-            HtmlAttributeBlock - [2..38) - FullWidth: 36
+            MarkupAttributeBlock - [2..38) - FullWidth: 36
                 MarkupTextLiteral - [2..3) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [3..7) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -13,7 +13,7 @@ RazorDocument - [0..51) - FullWidth: 51 - [<a href="mailto:example@microsoft.com
                 MarkupTextLiteral - [8..9) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     DoubleQuote;["];
                 GenericBlock - [9..37) - FullWidth: 28
-                    HtmlLiteralAttributeValue - [9..37) - FullWidth: 28
+                    MarkupLiteralAttributeValue - [9..37) - FullWidth: 28
                         MarkupTextLiteral - [9..37) - FullWidth: 28 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Text;[mailto:example@microsoft.com];
                 MarkupTextLiteral - [37..38) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any

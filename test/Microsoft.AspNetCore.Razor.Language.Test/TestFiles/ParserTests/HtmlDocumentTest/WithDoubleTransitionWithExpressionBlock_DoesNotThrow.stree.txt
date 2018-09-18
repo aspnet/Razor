@@ -6,7 +6,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
             MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[span];
-            HtmlAttributeBlock - [6..21) - FullWidth: 15
+            MarkupAttributeBlock - [6..21) - FullWidth: 15
                 MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -20,7 +20,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                             Transition;[@];
                         MarkupEphemeralTextLiteral - [13..14) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                    HtmlDynamicAttributeValue - [14..20) - FullWidth: 6
+                    MarkupDynamicAttributeValue - [14..20) - FullWidth: 6
                         GenericBlock - [14..20) - FullWidth: 6
                             MarkupTextLiteral - [14..14) - FullWidth: 0 - Gen<Markup> - SpanEditHandler;Accepts:Any
                                 Marker;[];
@@ -40,7 +40,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                                             RightParenthesis;[)];
                 MarkupTextLiteral - [20..21) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
-            HtmlAttributeBlock - [21..49) - FullWidth: 28
+            MarkupAttributeBlock - [21..49) - FullWidth: 28
                 MarkupTextLiteral - [21..22) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [22..25) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
@@ -49,7 +49,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                 MarkupTextLiteral - [26..27) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
                 GenericBlock - [27..48) - FullWidth: 21
-                    HtmlDynamicAttributeValue - [27..33) - FullWidth: 6
+                    MarkupDynamicAttributeValue - [27..33) - FullWidth: 6
                         GenericBlock - [27..33) - FullWidth: 6
                             CSharpCodeBlock - [27..33) - FullWidth: 6
                                 CSharpExpression - [27..33) - FullWidth: 6
@@ -70,7 +70,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                             Transition;[@];
                         MarkupEphemeralTextLiteral - [34..35) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                    HtmlDynamicAttributeValue - [35..48) - FullWidth: 13
+                    MarkupDynamicAttributeValue - [35..48) - FullWidth: 13
                         GenericBlock - [35..48) - FullWidth: 13
                             MarkupTextLiteral - [35..35) - FullWidth: 0 - Gen<None> - SpanEditHandler;Accepts:Any
                                 Marker;[];
@@ -86,7 +86,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                                                 Identifier;[Now];
                 MarkupTextLiteral - [48..49) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
-            HtmlAttributeBlock - [49..71) - FullWidth: 22
+            MarkupAttributeBlock - [49..71) - FullWidth: 22
                 MarkupTextLiteral - [49..50) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [50..53) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
@@ -95,7 +95,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                 MarkupTextLiteral - [54..55) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
                 GenericBlock - [55..70) - FullWidth: 15
-                    HtmlDynamicAttributeValue - [55..68) - FullWidth: 13
+                    MarkupDynamicAttributeValue - [55..68) - FullWidth: 13
                         GenericBlock - [55..68) - FullWidth: 13
                             CSharpCodeBlock - [55..68) - FullWidth: 13
                                 CSharpImplicitExpression - [55..68) - FullWidth: 13
@@ -114,7 +114,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                             Transition;[@];
                 MarkupTextLiteral - [70..71) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
-            HtmlAttributeBlock - [71..94) - FullWidth: 23
+            MarkupAttributeBlock - [71..94) - FullWidth: 23
                 MarkupTextLiteral - [71..72) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [72..75) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
@@ -123,7 +123,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                 MarkupTextLiteral - [76..77) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
                 GenericBlock - [77..93) - FullWidth: 16
-                    HtmlDynamicAttributeValue - [77..90) - FullWidth: 13
+                    MarkupDynamicAttributeValue - [77..90) - FullWidth: 13
                         GenericBlock - [77..90) - FullWidth: 13
                             CSharpCodeBlock - [77..90) - FullWidth: 13
                                 CSharpImplicitExpression - [77..90) - FullWidth: 13
@@ -143,7 +143,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                             Transition;[@];
                 MarkupTextLiteral - [93..94) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
-            HtmlAttributeBlock - [94..116) - FullWidth: 22
+            MarkupAttributeBlock - [94..116) - FullWidth: 22
                 MarkupTextLiteral - [94..95) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [95..98) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
@@ -157,7 +157,7 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                             Transition;[@];
                         MarkupEphemeralTextLiteral - [101..102) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                    HtmlDynamicAttributeValue - [102..115) - FullWidth: 13
+                    MarkupDynamicAttributeValue - [102..115) - FullWidth: 13
                         GenericBlock - [102..115) - FullWidth: 13
                             MarkupTextLiteral - [102..102) - FullWidth: 0 - Gen<None> - SpanEditHandler;Accepts:Any
                                 Marker;[];

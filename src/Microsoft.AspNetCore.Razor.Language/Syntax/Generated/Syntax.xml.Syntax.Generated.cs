@@ -719,11 +719,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
   }
 
-  internal sealed partial class HtmlCommentBlockSyntax : RazorBlockSyntax
+  internal sealed partial class MarkupCommentBlockSyntax : RazorBlockSyntax
   {
     private SyntaxNode _children;
 
-    internal HtmlCommentBlockSyntax(GreenNode green, SyntaxNode parent, int position)
+    internal MarkupCommentBlockSyntax(GreenNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
@@ -755,19 +755,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlCommentBlock(this);
+        return visitor.VisitMarkupCommentBlock(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlCommentBlock(this);
+        visitor.VisitMarkupCommentBlock(this);
     }
 
-    public HtmlCommentBlockSyntax Update(SyntaxList<RazorSyntaxNode> children)
+    public MarkupCommentBlockSyntax Update(SyntaxList<RazorSyntaxNode> children)
     {
         if (children != Children)
         {
-            var newNode = SyntaxFactory.HtmlCommentBlock(children);
+            var newNode = SyntaxFactory.MarkupCommentBlock(children);
             var annotations = GetAnnotations();
             if (annotations != null && annotations.Length > 0)
                return newNode.WithAnnotations(annotations);
@@ -778,13 +778,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     internal override RazorBlockSyntax WithChildrenCore(SyntaxList<RazorSyntaxNode> children) => WithChildren(children);
-    public new HtmlCommentBlockSyntax WithChildren(SyntaxList<RazorSyntaxNode> children)
+    public new MarkupCommentBlockSyntax WithChildren(SyntaxList<RazorSyntaxNode> children)
     {
         return Update(children);
     }
     internal override RazorBlockSyntax AddChildrenCore(params RazorSyntaxNode[] items) => AddChildren(items);
 
-    public new HtmlCommentBlockSyntax AddChildren(params RazorSyntaxNode[] items)
+    public new MarkupCommentBlockSyntax AddChildren(params RazorSyntaxNode[] items)
     {
         return WithChildren(this.Children.AddRange(items));
     }
@@ -861,12 +861,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
   }
 
-  internal sealed partial class HtmlMinimizedAttributeBlockSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupMinimizedAttributeBlockSyntax : MarkupSyntaxNode
   {
     private MarkupTextLiteralSyntax _namePrefix;
     private MarkupTextLiteralSyntax _name;
 
-    internal HtmlMinimizedAttributeBlockSyntax(GreenNode green, SyntaxNode parent, int position)
+    internal MarkupMinimizedAttributeBlockSyntax(GreenNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
@@ -908,19 +908,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlMinimizedAttributeBlock(this);
+        return visitor.VisitMarkupMinimizedAttributeBlock(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlMinimizedAttributeBlock(this);
+        visitor.VisitMarkupMinimizedAttributeBlock(this);
     }
 
-    public HtmlMinimizedAttributeBlockSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
+    public MarkupMinimizedAttributeBlockSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
     {
         if (namePrefix != NamePrefix || name != Name)
         {
-            var newNode = SyntaxFactory.HtmlMinimizedAttributeBlock(namePrefix, name);
+            var newNode = SyntaxFactory.MarkupMinimizedAttributeBlock(namePrefix, name);
             var annotations = GetAnnotations();
             if (annotations != null && annotations.Length > 0)
                return newNode.WithAnnotations(annotations);
@@ -930,29 +930,29 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this;
     }
 
-    public HtmlMinimizedAttributeBlockSyntax WithNamePrefix(MarkupTextLiteralSyntax namePrefix)
+    public MarkupMinimizedAttributeBlockSyntax WithNamePrefix(MarkupTextLiteralSyntax namePrefix)
     {
         return Update(namePrefix, Name);
     }
 
-    public HtmlMinimizedAttributeBlockSyntax WithName(MarkupTextLiteralSyntax name)
+    public MarkupMinimizedAttributeBlockSyntax WithName(MarkupTextLiteralSyntax name)
     {
         return Update(NamePrefix, name);
     }
 
-    public HtmlMinimizedAttributeBlockSyntax AddNamePrefixLiteralTokens(params SyntaxToken[] items)
+    public MarkupMinimizedAttributeBlockSyntax AddNamePrefixLiteralTokens(params SyntaxToken[] items)
     {
         var _namePrefix = this.NamePrefix ?? SyntaxFactory.MarkupTextLiteral();
         return this.WithNamePrefix(_namePrefix.WithLiteralTokens(_namePrefix.LiteralTokens.AddRange(items)));
     }
 
-    public HtmlMinimizedAttributeBlockSyntax AddNameLiteralTokens(params SyntaxToken[] items)
+    public MarkupMinimizedAttributeBlockSyntax AddNameLiteralTokens(params SyntaxToken[] items)
     {
         return this.WithName(this.Name.WithLiteralTokens(this.Name.LiteralTokens.AddRange(items)));
     }
   }
 
-  internal sealed partial class HtmlAttributeBlockSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupAttributeBlockSyntax : MarkupSyntaxNode
   {
     private MarkupTextLiteralSyntax _namePrefix;
     private MarkupTextLiteralSyntax _name;
@@ -962,7 +962,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     private RazorBlockSyntax _value;
     private MarkupTextLiteralSyntax _valueSuffix;
 
-    internal HtmlAttributeBlockSyntax(GreenNode green, SyntaxNode parent, int position)
+    internal MarkupAttributeBlockSyntax(GreenNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
@@ -1054,19 +1054,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlAttributeBlock(this);
+        return visitor.VisitMarkupAttributeBlock(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlAttributeBlock(this);
+        visitor.VisitMarkupAttributeBlock(this);
     }
 
-    public HtmlAttributeBlockSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
+    public MarkupAttributeBlockSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
         if (namePrefix != NamePrefix || name != Name || nameSuffix != NameSuffix || equalsToken != EqualsToken || valuePrefix != ValuePrefix || value != Value || valueSuffix != ValueSuffix)
         {
-            var newNode = SyntaxFactory.HtmlAttributeBlock(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
+            var newNode = SyntaxFactory.MarkupAttributeBlock(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
             var annotations = GetAnnotations();
             if (annotations != null && annotations.Length > 0)
                return newNode.WithAnnotations(annotations);
@@ -1076,77 +1076,77 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this;
     }
 
-    public HtmlAttributeBlockSyntax WithNamePrefix(MarkupTextLiteralSyntax namePrefix)
+    public MarkupAttributeBlockSyntax WithNamePrefix(MarkupTextLiteralSyntax namePrefix)
     {
         return Update(namePrefix, Name, NameSuffix, EqualsToken, ValuePrefix, Value, ValueSuffix);
     }
 
-    public HtmlAttributeBlockSyntax WithName(MarkupTextLiteralSyntax name)
+    public MarkupAttributeBlockSyntax WithName(MarkupTextLiteralSyntax name)
     {
         return Update(NamePrefix, name, NameSuffix, EqualsToken, ValuePrefix, Value, ValueSuffix);
     }
 
-    public HtmlAttributeBlockSyntax WithNameSuffix(MarkupTextLiteralSyntax nameSuffix)
+    public MarkupAttributeBlockSyntax WithNameSuffix(MarkupTextLiteralSyntax nameSuffix)
     {
         return Update(NamePrefix, Name, nameSuffix, EqualsToken, ValuePrefix, Value, ValueSuffix);
     }
 
-    public HtmlAttributeBlockSyntax WithEqualsToken(SyntaxToken equalsToken)
+    public MarkupAttributeBlockSyntax WithEqualsToken(SyntaxToken equalsToken)
     {
         return Update(NamePrefix, Name, NameSuffix, equalsToken, ValuePrefix, Value, ValueSuffix);
     }
 
-    public HtmlAttributeBlockSyntax WithValuePrefix(MarkupTextLiteralSyntax valuePrefix)
+    public MarkupAttributeBlockSyntax WithValuePrefix(MarkupTextLiteralSyntax valuePrefix)
     {
         return Update(NamePrefix, Name, NameSuffix, EqualsToken, valuePrefix, Value, ValueSuffix);
     }
 
-    public HtmlAttributeBlockSyntax WithValue(RazorBlockSyntax value)
+    public MarkupAttributeBlockSyntax WithValue(RazorBlockSyntax value)
     {
         return Update(NamePrefix, Name, NameSuffix, EqualsToken, ValuePrefix, value, ValueSuffix);
     }
 
-    public HtmlAttributeBlockSyntax WithValueSuffix(MarkupTextLiteralSyntax valueSuffix)
+    public MarkupAttributeBlockSyntax WithValueSuffix(MarkupTextLiteralSyntax valueSuffix)
     {
         return Update(NamePrefix, Name, NameSuffix, EqualsToken, ValuePrefix, Value, valueSuffix);
     }
 
-    public HtmlAttributeBlockSyntax AddNamePrefixLiteralTokens(params SyntaxToken[] items)
+    public MarkupAttributeBlockSyntax AddNamePrefixLiteralTokens(params SyntaxToken[] items)
     {
         var _namePrefix = this.NamePrefix ?? SyntaxFactory.MarkupTextLiteral();
         return this.WithNamePrefix(_namePrefix.WithLiteralTokens(_namePrefix.LiteralTokens.AddRange(items)));
     }
 
-    public HtmlAttributeBlockSyntax AddNameLiteralTokens(params SyntaxToken[] items)
+    public MarkupAttributeBlockSyntax AddNameLiteralTokens(params SyntaxToken[] items)
     {
         return this.WithName(this.Name.WithLiteralTokens(this.Name.LiteralTokens.AddRange(items)));
     }
 
-    public HtmlAttributeBlockSyntax AddNameSuffixLiteralTokens(params SyntaxToken[] items)
+    public MarkupAttributeBlockSyntax AddNameSuffixLiteralTokens(params SyntaxToken[] items)
     {
         var _nameSuffix = this.NameSuffix ?? SyntaxFactory.MarkupTextLiteral();
         return this.WithNameSuffix(_nameSuffix.WithLiteralTokens(_nameSuffix.LiteralTokens.AddRange(items)));
     }
 
-    public HtmlAttributeBlockSyntax AddValuePrefixLiteralTokens(params SyntaxToken[] items)
+    public MarkupAttributeBlockSyntax AddValuePrefixLiteralTokens(params SyntaxToken[] items)
     {
         var _valuePrefix = this.ValuePrefix ?? SyntaxFactory.MarkupTextLiteral();
         return this.WithValuePrefix(_valuePrefix.WithLiteralTokens(_valuePrefix.LiteralTokens.AddRange(items)));
     }
 
-    public HtmlAttributeBlockSyntax AddValueSuffixLiteralTokens(params SyntaxToken[] items)
+    public MarkupAttributeBlockSyntax AddValueSuffixLiteralTokens(params SyntaxToken[] items)
     {
         var _valueSuffix = this.ValueSuffix ?? SyntaxFactory.MarkupTextLiteral();
         return this.WithValueSuffix(_valueSuffix.WithLiteralTokens(_valueSuffix.LiteralTokens.AddRange(items)));
     }
   }
 
-  internal sealed partial class HtmlLiteralAttributeValueSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupLiteralAttributeValueSyntax : MarkupSyntaxNode
   {
     private MarkupTextLiteralSyntax _prefix;
     private MarkupTextLiteralSyntax _value;
 
-    internal HtmlLiteralAttributeValueSyntax(GreenNode green, SyntaxNode parent, int position)
+    internal MarkupLiteralAttributeValueSyntax(GreenNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
@@ -1188,19 +1188,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlLiteralAttributeValue(this);
+        return visitor.VisitMarkupLiteralAttributeValue(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlLiteralAttributeValue(this);
+        visitor.VisitMarkupLiteralAttributeValue(this);
     }
 
-    public HtmlLiteralAttributeValueSyntax Update(MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
+    public MarkupLiteralAttributeValueSyntax Update(MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
     {
         if (prefix != Prefix || value != Value)
         {
-            var newNode = SyntaxFactory.HtmlLiteralAttributeValue(prefix, value);
+            var newNode = SyntaxFactory.MarkupLiteralAttributeValue(prefix, value);
             var annotations = GetAnnotations();
             if (annotations != null && annotations.Length > 0)
                return newNode.WithAnnotations(annotations);
@@ -1210,34 +1210,34 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this;
     }
 
-    public HtmlLiteralAttributeValueSyntax WithPrefix(MarkupTextLiteralSyntax prefix)
+    public MarkupLiteralAttributeValueSyntax WithPrefix(MarkupTextLiteralSyntax prefix)
     {
         return Update(prefix, Value);
     }
 
-    public HtmlLiteralAttributeValueSyntax WithValue(MarkupTextLiteralSyntax value)
+    public MarkupLiteralAttributeValueSyntax WithValue(MarkupTextLiteralSyntax value)
     {
         return Update(Prefix, value);
     }
 
-    public HtmlLiteralAttributeValueSyntax AddPrefixLiteralTokens(params SyntaxToken[] items)
+    public MarkupLiteralAttributeValueSyntax AddPrefixLiteralTokens(params SyntaxToken[] items)
     {
         var _prefix = this.Prefix ?? SyntaxFactory.MarkupTextLiteral();
         return this.WithPrefix(_prefix.WithLiteralTokens(_prefix.LiteralTokens.AddRange(items)));
     }
 
-    public HtmlLiteralAttributeValueSyntax AddValueLiteralTokens(params SyntaxToken[] items)
+    public MarkupLiteralAttributeValueSyntax AddValueLiteralTokens(params SyntaxToken[] items)
     {
         return this.WithValue(this.Value.WithLiteralTokens(this.Value.LiteralTokens.AddRange(items)));
     }
   }
 
-  internal sealed partial class HtmlDynamicAttributeValueSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupDynamicAttributeValueSyntax : MarkupSyntaxNode
   {
     private MarkupTextLiteralSyntax _prefix;
     private RazorBlockSyntax _value;
 
-    internal HtmlDynamicAttributeValueSyntax(GreenNode green, SyntaxNode parent, int position)
+    internal MarkupDynamicAttributeValueSyntax(GreenNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
@@ -1279,19 +1279,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlDynamicAttributeValue(this);
+        return visitor.VisitMarkupDynamicAttributeValue(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlDynamicAttributeValue(this);
+        visitor.VisitMarkupDynamicAttributeValue(this);
     }
 
-    public HtmlDynamicAttributeValueSyntax Update(MarkupTextLiteralSyntax prefix, RazorBlockSyntax value)
+    public MarkupDynamicAttributeValueSyntax Update(MarkupTextLiteralSyntax prefix, RazorBlockSyntax value)
     {
         if (prefix != Prefix || value != Value)
         {
-            var newNode = SyntaxFactory.HtmlDynamicAttributeValue(prefix, value);
+            var newNode = SyntaxFactory.MarkupDynamicAttributeValue(prefix, value);
             var annotations = GetAnnotations();
             if (annotations != null && annotations.Length > 0)
                return newNode.WithAnnotations(annotations);
@@ -1301,17 +1301,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this;
     }
 
-    public HtmlDynamicAttributeValueSyntax WithPrefix(MarkupTextLiteralSyntax prefix)
+    public MarkupDynamicAttributeValueSyntax WithPrefix(MarkupTextLiteralSyntax prefix)
     {
         return Update(prefix, Value);
     }
 
-    public HtmlDynamicAttributeValueSyntax WithValue(RazorBlockSyntax value)
+    public MarkupDynamicAttributeValueSyntax WithValue(RazorBlockSyntax value)
     {
         return Update(Prefix, value);
     }
 
-    public HtmlDynamicAttributeValueSyntax AddPrefixLiteralTokens(params SyntaxToken[] items)
+    public MarkupDynamicAttributeValueSyntax AddPrefixLiteralTokens(params SyntaxToken[] items)
     {
         var _prefix = this.Prefix ?? SyntaxFactory.MarkupTextLiteral();
         return this.WithPrefix(_prefix.WithLiteralTokens(_prefix.LiteralTokens.AddRange(items)));

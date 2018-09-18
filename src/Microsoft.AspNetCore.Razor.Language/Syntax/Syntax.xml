@@ -61,21 +61,21 @@
     <Kind Name="MarkupEphemeralTextLiteral" />
     <Field Name="LiteralTokens" Type="SyntaxList&lt;SyntaxToken&gt;" />
   </Node>
-  <Node Name="HtmlCommentBlockSyntax" Base="RazorBlockSyntax">
-    <Kind Name="HtmlCommentBlock" />
+  <Node Name="MarkupCommentBlockSyntax" Base="RazorBlockSyntax">
+    <Kind Name="MarkupCommentBlock" />
     <Field Name="Children" Type="SyntaxList&lt;RazorSyntaxNode&gt;" Override="true" />
   </Node>
   <Node Name="MarkupTagBlockSyntax" Base="RazorBlockSyntax">
     <Kind Name="MarkupTagBlock" />
     <Field Name="Children" Type="SyntaxList&lt;RazorSyntaxNode&gt;" Override="true" />
   </Node>
-  <Node Name="HtmlMinimizedAttributeBlockSyntax" Base="MarkupSyntaxNode">
-    <Kind Name="HtmlMinimizedAttributeBlock" />
+  <Node Name="MarkupMinimizedAttributeBlockSyntax" Base="MarkupSyntaxNode">
+    <Kind Name="MarkupMinimizedAttributeBlock" />
     <Field Name="NamePrefix" Type="MarkupTextLiteralSyntax" Optional="true" />
     <Field Name="Name" Type="MarkupTextLiteralSyntax" />
   </Node>
-  <Node Name="HtmlAttributeBlockSyntax" Base="MarkupSyntaxNode">
-    <Kind Name="HtmlAttributeBlock" />
+  <Node Name="MarkupAttributeBlockSyntax" Base="MarkupSyntaxNode">
+    <Kind Name="MarkupAttributeBlock" />
     <Field Name="NamePrefix" Type="MarkupTextLiteralSyntax" Optional="true" />
     <Field Name="Name" Type="MarkupTextLiteralSyntax" />
     <Field Name="NameSuffix" Type="MarkupTextLiteralSyntax" Optional="true" />
@@ -86,13 +86,13 @@
     <Field Name="Value" Type="RazorBlockSyntax" />
     <Field Name="ValueSuffix" Type="MarkupTextLiteralSyntax" Optional="true" />
   </Node>
-  <Node Name="HtmlLiteralAttributeValueSyntax" Base="MarkupSyntaxNode">
-    <Kind Name="HtmlLiteralAttributeValue" />
+  <Node Name="MarkupLiteralAttributeValueSyntax" Base="MarkupSyntaxNode">
+    <Kind Name="MarkupLiteralAttributeValue" />
     <Field Name="Prefix" Type="MarkupTextLiteralSyntax" Optional="true" />
     <Field Name="Value" Type="MarkupTextLiteralSyntax" />
   </Node>
-  <Node Name="HtmlDynamicAttributeValueSyntax" Base="MarkupSyntaxNode">
-    <Kind Name="HtmlDynamicAttributeValue" />
+  <Node Name="MarkupDynamicAttributeValueSyntax" Base="MarkupSyntaxNode">
+    <Kind Name="MarkupDynamicAttributeValue" />
     <Field Name="Prefix" Type="MarkupTextLiteralSyntax" Optional="true" />
     <Field Name="Value" Type="RazorBlockSyntax" />
   </Node>

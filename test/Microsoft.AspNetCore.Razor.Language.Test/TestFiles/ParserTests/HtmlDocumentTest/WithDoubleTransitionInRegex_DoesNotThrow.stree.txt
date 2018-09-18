@@ -6,7 +6,7 @@ RazorDocument - [0..117) - FullWidth: 117 - [{<span foo="/^[a-z0-9!#$%&'*+\/=?^_
             MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[span];
-            HtmlAttributeBlock - [6..113) - FullWidth: 107
+            MarkupAttributeBlock - [6..113) - FullWidth: 107
                 MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -15,7 +15,7 @@ RazorDocument - [0..117) - FullWidth: 117 - [{<span foo="/^[a-z0-9!#$%&'*+\/=?^_
                 MarkupTextLiteral - [11..12) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     DoubleQuote;["];
                 GenericBlock - [12..112) - FullWidth: 100
-                    HtmlLiteralAttributeValue - [12..44) - FullWidth: 32
+                    MarkupLiteralAttributeValue - [12..44) - FullWidth: 32
                         MarkupTextLiteral - [12..44) - FullWidth: 32 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             ForwardSlash;[/];
                             Text;[^];
@@ -36,7 +36,7 @@ RazorDocument - [0..117) - FullWidth: 117 - [{<span foo="/^[a-z0-9!#$%&'*+\/=?^_
                             Transition;[@];
                         MarkupEphemeralTextLiteral - [45..46) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                    HtmlLiteralAttributeValue - [46..112) - FullWidth: 66
+                    MarkupLiteralAttributeValue - [46..112) - FullWidth: 66
                         MarkupTextLiteral - [46..112) - FullWidth: 66 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             LeftBracket;[[];
                             Text;[a-z0-9];

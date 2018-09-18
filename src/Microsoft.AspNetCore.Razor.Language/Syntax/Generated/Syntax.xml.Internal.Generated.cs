@@ -797,11 +797,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
   }
 
-  internal sealed partial class HtmlCommentBlockSyntax : RazorBlockSyntax
+  internal sealed partial class MarkupCommentBlockSyntax : RazorBlockSyntax
   {
     private readonly GreenNode _children;
 
-    internal HtmlCommentBlockSyntax(SyntaxKind kind, GreenNode children, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal MarkupCommentBlockSyntax(SyntaxKind kind, GreenNode children, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 1;
@@ -813,7 +813,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal HtmlCommentBlockSyntax(SyntaxKind kind, GreenNode children)
+    internal MarkupCommentBlockSyntax(SyntaxKind kind, GreenNode children)
         : base(kind)
     {
         SlotCount = 1;
@@ -837,24 +837,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.HtmlCommentBlockSyntax(this, parent, position);
+      return new Syntax.MarkupCommentBlockSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlCommentBlock(this);
+        return visitor.VisitMarkupCommentBlock(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlCommentBlock(this);
+        visitor.VisitMarkupCommentBlock(this);
     }
 
-    public HtmlCommentBlockSyntax Update(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<RazorSyntaxNode> children)
+    public MarkupCommentBlockSyntax Update(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<RazorSyntaxNode> children)
     {
         if (children != Children)
         {
-            var newNode = SyntaxFactory.HtmlCommentBlock(children);
+            var newNode = SyntaxFactory.MarkupCommentBlock(children);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -869,12 +869,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new HtmlCommentBlockSyntax(Kind, _children, diagnostics, GetAnnotations());
+         return new MarkupCommentBlockSyntax(Kind, _children, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new HtmlCommentBlockSyntax(Kind, _children, GetDiagnostics(), annotations);
+         return new MarkupCommentBlockSyntax(Kind, _children, GetDiagnostics(), annotations);
     }
   }
 
@@ -959,12 +959,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
   }
 
-  internal sealed partial class HtmlMinimizedAttributeBlockSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupMinimizedAttributeBlockSyntax : MarkupSyntaxNode
   {
     private readonly MarkupTextLiteralSyntax _namePrefix;
     private readonly MarkupTextLiteralSyntax _name;
 
-    internal HtmlMinimizedAttributeBlockSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal MarkupMinimizedAttributeBlockSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 2;
@@ -978,7 +978,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal HtmlMinimizedAttributeBlockSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
+    internal MarkupMinimizedAttributeBlockSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
         : base(kind)
     {
         SlotCount = 2;
@@ -1006,24 +1006,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.HtmlMinimizedAttributeBlockSyntax(this, parent, position);
+      return new Syntax.MarkupMinimizedAttributeBlockSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlMinimizedAttributeBlock(this);
+        return visitor.VisitMarkupMinimizedAttributeBlock(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlMinimizedAttributeBlock(this);
+        visitor.VisitMarkupMinimizedAttributeBlock(this);
     }
 
-    public HtmlMinimizedAttributeBlockSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
+    public MarkupMinimizedAttributeBlockSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
     {
         if (namePrefix != NamePrefix || name != Name)
         {
-            var newNode = SyntaxFactory.HtmlMinimizedAttributeBlock(namePrefix, name);
+            var newNode = SyntaxFactory.MarkupMinimizedAttributeBlock(namePrefix, name);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -1038,16 +1038,16 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new HtmlMinimizedAttributeBlockSyntax(Kind, _namePrefix, _name, diagnostics, GetAnnotations());
+         return new MarkupMinimizedAttributeBlockSyntax(Kind, _namePrefix, _name, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new HtmlMinimizedAttributeBlockSyntax(Kind, _namePrefix, _name, GetDiagnostics(), annotations);
+         return new MarkupMinimizedAttributeBlockSyntax(Kind, _namePrefix, _name, GetDiagnostics(), annotations);
     }
   }
 
-  internal sealed partial class HtmlAttributeBlockSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupAttributeBlockSyntax : MarkupSyntaxNode
   {
     private readonly MarkupTextLiteralSyntax _namePrefix;
     private readonly MarkupTextLiteralSyntax _name;
@@ -1057,7 +1057,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     private readonly RazorBlockSyntax _value;
     private readonly MarkupTextLiteralSyntax _valueSuffix;
 
-    internal HtmlAttributeBlockSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal MarkupAttributeBlockSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 7;
@@ -1090,7 +1090,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal HtmlAttributeBlockSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
+    internal MarkupAttributeBlockSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
         : base(kind)
     {
         SlotCount = 7;
@@ -1147,24 +1147,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.HtmlAttributeBlockSyntax(this, parent, position);
+      return new Syntax.MarkupAttributeBlockSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlAttributeBlock(this);
+        return visitor.VisitMarkupAttributeBlock(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlAttributeBlock(this);
+        visitor.VisitMarkupAttributeBlock(this);
     }
 
-    public HtmlAttributeBlockSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
+    public MarkupAttributeBlockSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
         if (namePrefix != NamePrefix || name != Name || nameSuffix != NameSuffix || equalsToken != EqualsToken || valuePrefix != ValuePrefix || value != Value || valueSuffix != ValueSuffix)
         {
-            var newNode = SyntaxFactory.HtmlAttributeBlock(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
+            var newNode = SyntaxFactory.MarkupAttributeBlock(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -1179,21 +1179,21 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new HtmlAttributeBlockSyntax(Kind, _namePrefix, _name, _nameSuffix, _equalsToken, _valuePrefix, _value, _valueSuffix, diagnostics, GetAnnotations());
+         return new MarkupAttributeBlockSyntax(Kind, _namePrefix, _name, _nameSuffix, _equalsToken, _valuePrefix, _value, _valueSuffix, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new HtmlAttributeBlockSyntax(Kind, _namePrefix, _name, _nameSuffix, _equalsToken, _valuePrefix, _value, _valueSuffix, GetDiagnostics(), annotations);
+         return new MarkupAttributeBlockSyntax(Kind, _namePrefix, _name, _nameSuffix, _equalsToken, _valuePrefix, _value, _valueSuffix, GetDiagnostics(), annotations);
     }
   }
 
-  internal sealed partial class HtmlLiteralAttributeValueSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupLiteralAttributeValueSyntax : MarkupSyntaxNode
   {
     private readonly MarkupTextLiteralSyntax _prefix;
     private readonly MarkupTextLiteralSyntax _value;
 
-    internal HtmlLiteralAttributeValueSyntax(SyntaxKind kind, MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal MarkupLiteralAttributeValueSyntax(SyntaxKind kind, MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 2;
@@ -1207,7 +1207,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal HtmlLiteralAttributeValueSyntax(SyntaxKind kind, MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
+    internal MarkupLiteralAttributeValueSyntax(SyntaxKind kind, MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
         : base(kind)
     {
         SlotCount = 2;
@@ -1235,24 +1235,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.HtmlLiteralAttributeValueSyntax(this, parent, position);
+      return new Syntax.MarkupLiteralAttributeValueSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlLiteralAttributeValue(this);
+        return visitor.VisitMarkupLiteralAttributeValue(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlLiteralAttributeValue(this);
+        visitor.VisitMarkupLiteralAttributeValue(this);
     }
 
-    public HtmlLiteralAttributeValueSyntax Update(MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
+    public MarkupLiteralAttributeValueSyntax Update(MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
     {
         if (prefix != Prefix || value != Value)
         {
-            var newNode = SyntaxFactory.HtmlLiteralAttributeValue(prefix, value);
+            var newNode = SyntaxFactory.MarkupLiteralAttributeValue(prefix, value);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -1267,21 +1267,21 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new HtmlLiteralAttributeValueSyntax(Kind, _prefix, _value, diagnostics, GetAnnotations());
+         return new MarkupLiteralAttributeValueSyntax(Kind, _prefix, _value, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new HtmlLiteralAttributeValueSyntax(Kind, _prefix, _value, GetDiagnostics(), annotations);
+         return new MarkupLiteralAttributeValueSyntax(Kind, _prefix, _value, GetDiagnostics(), annotations);
     }
   }
 
-  internal sealed partial class HtmlDynamicAttributeValueSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupDynamicAttributeValueSyntax : MarkupSyntaxNode
   {
     private readonly MarkupTextLiteralSyntax _prefix;
     private readonly RazorBlockSyntax _value;
 
-    internal HtmlDynamicAttributeValueSyntax(SyntaxKind kind, MarkupTextLiteralSyntax prefix, RazorBlockSyntax value, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal MarkupDynamicAttributeValueSyntax(SyntaxKind kind, MarkupTextLiteralSyntax prefix, RazorBlockSyntax value, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 2;
@@ -1295,7 +1295,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal HtmlDynamicAttributeValueSyntax(SyntaxKind kind, MarkupTextLiteralSyntax prefix, RazorBlockSyntax value)
+    internal MarkupDynamicAttributeValueSyntax(SyntaxKind kind, MarkupTextLiteralSyntax prefix, RazorBlockSyntax value)
         : base(kind)
     {
         SlotCount = 2;
@@ -1323,24 +1323,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.HtmlDynamicAttributeValueSyntax(this, parent, position);
+      return new Syntax.MarkupDynamicAttributeValueSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitHtmlDynamicAttributeValue(this);
+        return visitor.VisitMarkupDynamicAttributeValue(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitHtmlDynamicAttributeValue(this);
+        visitor.VisitMarkupDynamicAttributeValue(this);
     }
 
-    public HtmlDynamicAttributeValueSyntax Update(MarkupTextLiteralSyntax prefix, RazorBlockSyntax value)
+    public MarkupDynamicAttributeValueSyntax Update(MarkupTextLiteralSyntax prefix, RazorBlockSyntax value)
     {
         if (prefix != Prefix || value != Value)
         {
-            var newNode = SyntaxFactory.HtmlDynamicAttributeValue(prefix, value);
+            var newNode = SyntaxFactory.MarkupDynamicAttributeValue(prefix, value);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -1355,12 +1355,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new HtmlDynamicAttributeValueSyntax(Kind, _prefix, _value, diagnostics, GetAnnotations());
+         return new MarkupDynamicAttributeValueSyntax(Kind, _prefix, _value, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new HtmlDynamicAttributeValueSyntax(Kind, _prefix, _value, GetDiagnostics(), annotations);
+         return new MarkupDynamicAttributeValueSyntax(Kind, _prefix, _value, GetDiagnostics(), annotations);
     }
   }
 
@@ -2588,7 +2588,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitHtmlCommentBlock(HtmlCommentBlockSyntax node)
+    public virtual TResult VisitMarkupCommentBlock(MarkupCommentBlockSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -2598,22 +2598,22 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitHtmlMinimizedAttributeBlock(HtmlMinimizedAttributeBlockSyntax node)
+    public virtual TResult VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)
     {
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitHtmlAttributeBlock(HtmlAttributeBlockSyntax node)
+    public virtual TResult VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
     {
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitHtmlLiteralAttributeValue(HtmlLiteralAttributeValueSyntax node)
+    public virtual TResult VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
     {
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitHtmlDynamicAttributeValue(HtmlDynamicAttributeValueSyntax node)
+    public virtual TResult VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -2737,7 +2737,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       DefaultVisit(node);
     }
 
-    public virtual void VisitHtmlCommentBlock(HtmlCommentBlockSyntax node)
+    public virtual void VisitMarkupCommentBlock(MarkupCommentBlockSyntax node)
     {
       DefaultVisit(node);
     }
@@ -2747,22 +2747,22 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       DefaultVisit(node);
     }
 
-    public virtual void VisitHtmlMinimizedAttributeBlock(HtmlMinimizedAttributeBlockSyntax node)
+    public virtual void VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)
     {
       DefaultVisit(node);
     }
 
-    public virtual void VisitHtmlAttributeBlock(HtmlAttributeBlockSyntax node)
+    public virtual void VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
     {
       DefaultVisit(node);
     }
 
-    public virtual void VisitHtmlLiteralAttributeValue(HtmlLiteralAttributeValueSyntax node)
+    public virtual void VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
     {
       DefaultVisit(node);
     }
 
-    public virtual void VisitHtmlDynamicAttributeValue(HtmlDynamicAttributeValueSyntax node)
+    public virtual void VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
     {
       DefaultVisit(node);
     }
@@ -2898,7 +2898,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return node.Update(literalTokens);
     }
 
-    public override GreenNode VisitHtmlCommentBlock(HtmlCommentBlockSyntax node)
+    public override GreenNode VisitMarkupCommentBlock(MarkupCommentBlockSyntax node)
     {
       var children = VisitList(node.Children);
       return node.Update(children);
@@ -2910,14 +2910,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return node.Update(children);
     }
 
-    public override GreenNode VisitHtmlMinimizedAttributeBlock(HtmlMinimizedAttributeBlockSyntax node)
+    public override GreenNode VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)
     {
       var namePrefix = (MarkupTextLiteralSyntax)Visit(node.NamePrefix);
       var name = (MarkupTextLiteralSyntax)Visit(node.Name);
       return node.Update(namePrefix, name);
     }
 
-    public override GreenNode VisitHtmlAttributeBlock(HtmlAttributeBlockSyntax node)
+    public override GreenNode VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
     {
       var namePrefix = (MarkupTextLiteralSyntax)Visit(node.NamePrefix);
       var name = (MarkupTextLiteralSyntax)Visit(node.Name);
@@ -2929,14 +2929,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return node.Update(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
     }
 
-    public override GreenNode VisitHtmlLiteralAttributeValue(HtmlLiteralAttributeValueSyntax node)
+    public override GreenNode VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
     {
       var prefix = (MarkupTextLiteralSyntax)Visit(node.Prefix);
       var value = (MarkupTextLiteralSyntax)Visit(node.Value);
       return node.Update(prefix, value);
     }
 
-    public override GreenNode VisitHtmlDynamicAttributeValue(HtmlDynamicAttributeValueSyntax node)
+    public override GreenNode VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
     {
       var prefix = (MarkupTextLiteralSyntax)Visit(node.Prefix);
       var value = (RazorBlockSyntax)Visit(node.Value);
@@ -3151,9 +3151,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return result;
     }
 
-    public static HtmlCommentBlockSyntax HtmlCommentBlock(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<RazorSyntaxNode> children)
+    public static MarkupCommentBlockSyntax MarkupCommentBlock(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<RazorSyntaxNode> children)
     {
-      var result = new HtmlCommentBlockSyntax(SyntaxKind.HtmlCommentBlock, children.Node);
+      var result = new MarkupCommentBlockSyntax(SyntaxKind.MarkupCommentBlock, children.Node);
 
       return result;
     }
@@ -3165,17 +3165,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return result;
     }
 
-    public static HtmlMinimizedAttributeBlockSyntax HtmlMinimizedAttributeBlock(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
+    public static MarkupMinimizedAttributeBlockSyntax MarkupMinimizedAttributeBlock(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
     {
       if (name == null)
         throw new ArgumentNullException(nameof(name));
 
-      var result = new HtmlMinimizedAttributeBlockSyntax(SyntaxKind.HtmlMinimizedAttributeBlock, namePrefix, name);
+      var result = new MarkupMinimizedAttributeBlockSyntax(SyntaxKind.MarkupMinimizedAttributeBlock, namePrefix, name);
 
       return result;
     }
 
-    public static HtmlAttributeBlockSyntax HtmlAttributeBlock(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
+    public static MarkupAttributeBlockSyntax MarkupAttributeBlock(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
       if (name == null)
         throw new ArgumentNullException(nameof(name));
@@ -3191,25 +3191,25 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       if (value == null)
         throw new ArgumentNullException(nameof(value));
 
-      return new HtmlAttributeBlockSyntax(SyntaxKind.HtmlAttributeBlock, namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
+      return new MarkupAttributeBlockSyntax(SyntaxKind.MarkupAttributeBlock, namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
     }
 
-    public static HtmlLiteralAttributeValueSyntax HtmlLiteralAttributeValue(MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
+    public static MarkupLiteralAttributeValueSyntax MarkupLiteralAttributeValue(MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
     {
       if (value == null)
         throw new ArgumentNullException(nameof(value));
 
-      var result = new HtmlLiteralAttributeValueSyntax(SyntaxKind.HtmlLiteralAttributeValue, prefix, value);
+      var result = new MarkupLiteralAttributeValueSyntax(SyntaxKind.MarkupLiteralAttributeValue, prefix, value);
 
       return result;
     }
 
-    public static HtmlDynamicAttributeValueSyntax HtmlDynamicAttributeValue(MarkupTextLiteralSyntax prefix, RazorBlockSyntax value)
+    public static MarkupDynamicAttributeValueSyntax MarkupDynamicAttributeValue(MarkupTextLiteralSyntax prefix, RazorBlockSyntax value)
     {
       if (value == null)
         throw new ArgumentNullException(nameof(value));
 
-      var result = new HtmlDynamicAttributeValueSyntax(SyntaxKind.HtmlDynamicAttributeValue, prefix, value);
+      var result = new MarkupDynamicAttributeValueSyntax(SyntaxKind.MarkupDynamicAttributeValue, prefix, value);
 
       return result;
     }
@@ -3374,12 +3374,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
            typeof(MarkupTransitionSyntax),
            typeof(MarkupTextLiteralSyntax),
            typeof(MarkupEphemeralTextLiteralSyntax),
-           typeof(HtmlCommentBlockSyntax),
+           typeof(MarkupCommentBlockSyntax),
            typeof(MarkupTagBlockSyntax),
-           typeof(HtmlMinimizedAttributeBlockSyntax),
-           typeof(HtmlAttributeBlockSyntax),
-           typeof(HtmlLiteralAttributeValueSyntax),
-           typeof(HtmlDynamicAttributeValueSyntax),
+           typeof(MarkupMinimizedAttributeBlockSyntax),
+           typeof(MarkupAttributeBlockSyntax),
+           typeof(MarkupLiteralAttributeValueSyntax),
+           typeof(MarkupDynamicAttributeValueSyntax),
            typeof(CSharpCodeBlockSyntax),
            typeof(CSharpTransitionSyntax),
            typeof(CSharpStatementLiteralSyntax),

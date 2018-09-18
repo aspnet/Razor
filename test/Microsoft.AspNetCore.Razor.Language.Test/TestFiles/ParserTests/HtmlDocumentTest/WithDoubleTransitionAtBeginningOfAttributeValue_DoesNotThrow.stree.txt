@@ -6,7 +6,7 @@ RazorDocument - [0..22) - FullWidth: 22 - [{<span foo='@@def' />}]
             MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[span];
-            HtmlAttributeBlock - [6..18) - FullWidth: 12
+            MarkupAttributeBlock - [6..18) - FullWidth: 12
                 MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -20,7 +20,7 @@ RazorDocument - [0..22) - FullWidth: 22 - [{<span foo='@@def' />}]
                             Transition;[@];
                         MarkupEphemeralTextLiteral - [13..14) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                    HtmlLiteralAttributeValue - [14..17) - FullWidth: 3
+                    MarkupLiteralAttributeValue - [14..17) - FullWidth: 3
                         MarkupTextLiteral - [14..17) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Text;[def];
                 MarkupTextLiteral - [17..18) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any

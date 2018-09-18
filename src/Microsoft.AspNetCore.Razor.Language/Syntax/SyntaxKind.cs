@@ -21,11 +21,11 @@ namespace Microsoft.AspNetCore.Razor.Language
         MarkupTagBlock,
         MarkupTextLiteral,
         MarkupEphemeralTextLiteral,
-        HtmlCommentBlock,
-        HtmlAttributeBlock,
-        HtmlMinimizedAttributeBlock,
-        HtmlLiteralAttributeValue,
-        HtmlDynamicAttributeValue,
+        MarkupCommentBlock,
+        MarkupAttributeBlock,
+        MarkupMinimizedAttributeBlock,
+        MarkupLiteralAttributeValue,
+        MarkupDynamicAttributeValue,
 
         // CSharp
         CSharpStatement,

@@ -10,7 +10,7 @@ RazorDocument - [0..39) - FullWidth: 39 - [<div ><p class = 'bar'> Foo </p></div
             MarkupTextLiteral - [6..8) - FullWidth: 2 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[p];
-            HtmlAttributeBlock - [8..22) - FullWidth: 14
+            MarkupAttributeBlock - [8..22) - FullWidth: 14
                 MarkupTextLiteral - [8..9) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [9..14) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -22,7 +22,7 @@ RazorDocument - [0..39) - FullWidth: 39 - [<div ><p class = 'bar'> Foo </p></div
                     Whitespace;[ ];
                     SingleQuote;['];
                 GenericBlock - [18..21) - FullWidth: 3
-                    HtmlLiteralAttributeValue - [18..21) - FullWidth: 3
+                    MarkupLiteralAttributeValue - [18..21) - FullWidth: 3
                         MarkupTextLiteral - [18..21) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Text;[bar];
                 MarkupTextLiteral - [21..22) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any

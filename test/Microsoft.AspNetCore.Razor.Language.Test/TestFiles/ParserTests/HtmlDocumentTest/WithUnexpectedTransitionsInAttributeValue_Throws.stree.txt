@@ -4,7 +4,7 @@ RazorDocument - [0..18) - FullWidth: 18 - [<span foo='@ @' />]
             MarkupTextLiteral - [0..5) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[span];
-            HtmlAttributeBlock - [5..15) - FullWidth: 10
+            MarkupAttributeBlock - [5..15) - FullWidth: 10
                 MarkupTextLiteral - [5..6) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [6..9) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -13,7 +13,7 @@ RazorDocument - [0..18) - FullWidth: 18 - [<span foo='@ @' />]
                 MarkupTextLiteral - [10..11) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
                 GenericBlock - [11..14) - FullWidth: 3
-                    HtmlDynamicAttributeValue - [11..12) - FullWidth: 1
+                    MarkupDynamicAttributeValue - [11..12) - FullWidth: 1
                         GenericBlock - [11..12) - FullWidth: 1
                             CSharpCodeBlock - [11..12) - FullWidth: 1
                                 CSharpImplicitExpression - [11..12) - FullWidth: 1
@@ -23,7 +23,7 @@ RazorDocument - [0..18) - FullWidth: 18 - [<span foo='@ @' />]
                                         CSharpCodeBlock - [12..12) - FullWidth: 0
                                             CSharpExpressionLiteral - [12..12) - FullWidth: 0 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
                                                 Marker;[];
-                    HtmlDynamicAttributeValue - [12..14) - FullWidth: 2
+                    MarkupDynamicAttributeValue - [12..14) - FullWidth: 2
                         MarkupTextLiteral - [12..13) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Whitespace;[ ];
                         GenericBlock - [13..14) - FullWidth: 1

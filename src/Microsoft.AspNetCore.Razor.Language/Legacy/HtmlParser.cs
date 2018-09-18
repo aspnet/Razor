@@ -368,7 +368,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 AcceptToken(nameTokens);
                 var name = OutputTokensAsMarkupLiteral();
 
-                var minimizedAttributeBlock = SyntaxFactory.HtmlMinimizedAttributeBlock(namePrefix, name);
+                var minimizedAttributeBlock = SyntaxFactory.MarkupMinimizedAttributeBlock(namePrefix, name);
                 builder.Add(minimizedAttributeBlock);
 
                 return;
@@ -383,7 +383,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             builder.Add(attributeBlock);
         }
 
-        private HtmlAttributeBlockSyntax ParseAttributePrefix(
+        private MarkupAttributeBlockSyntax ParseAttributePrefix(
             IEnumerable<SyntaxToken> whitespace,
             IEnumerable<SyntaxToken> nameTokens,
             IEnumerable<SyntaxToken> whitespaceAfterAttributeName)
@@ -484,7 +484,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // There is no quote and there is whitespace after equals. There is no attribute value.
             }
 
-            return SyntaxFactory.HtmlAttributeBlock(namePrefix, name, nameSuffix, equalsToken, valuePrefix, attributeValue, valueSuffix);
+            return SyntaxFactory.MarkupAttributeBlock(namePrefix, name, nameSuffix, equalsToken, valuePrefix, attributeValue, valueSuffix);
         }
 
         private void ParseAttributeValue(in SyntaxListBuilder<RazorSyntaxNode> builder, SyntaxKind quote)
@@ -533,7 +533,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         var dynamicAttributeValueBuilder = pooledResult.Builder;
 
                         OtherParserBlock(dynamicAttributeValueBuilder);
-                        var value = SyntaxFactory.HtmlDynamicAttributeValue(prefix, SyntaxFactory.GenericBlock(dynamicAttributeValueBuilder.ToList()));
+                        var value = SyntaxFactory.MarkupDynamicAttributeValue(prefix, SyntaxFactory.GenericBlock(dynamicAttributeValueBuilder.ToList()));
                         builder.Add(value);
                     }
                 }
@@ -557,7 +557,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 AcceptToken(valueTokens);
                 var value = OutputTokensAsMarkupLiteral();
 
-                var literalAttributeValue = SyntaxFactory.HtmlLiteralAttributeValue(prefix, value);
+                var literalAttributeValue = SyntaxFactory.MarkupLiteralAttributeValue(prefix, value);
                 builder.Add(literalAttributeValue);
             }
         }
@@ -644,7 +644,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                 AcceptTokenAndMoveNext();
                                 SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
                                 htmlCommentBuilder.Add(OutputTokensAsMarkupLiteral());
-                                var commentBlock = SyntaxFactory.HtmlCommentBlock(htmlCommentBuilder.ToList());
+                                var commentBlock = SyntaxFactory.MarkupCommentBlock(htmlCommentBuilder.ToList());
                                 builder.Add(commentBlock);
                                 return true;
                             }
@@ -781,7 +781,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             Debug.Assert(!builder.IsNull);
 
-            HtmlAttributeBlockSyntax typeAttribute = null;
+            MarkupAttributeBlockSyntax typeAttribute = null;
             for (var i = 0; i < builder.Count; i++)
             {
                 var node = builder[i];
@@ -790,7 +790,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     continue;
                 }
                 
-                if (node is HtmlAttributeBlockSyntax attributeBlock &&
+                if (node is MarkupAttributeBlockSyntax attributeBlock &&
                     attributeBlock.Value.Children.Count > 0 &&
                     IsTypeAttribute(attributeBlock))
                 {
@@ -813,7 +813,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return false;
         }
 
-        private static bool IsTypeAttribute(HtmlAttributeBlockSyntax attributeBlock)
+        private static bool IsTypeAttribute(MarkupAttributeBlockSyntax attributeBlock)
         {
             if (attributeBlock.Name.LiteralTokens.Count == 0)
             {

@@ -6,7 +6,7 @@ RazorDocument - [0..44) - FullWidth: 44 - [{<span foo='abc@def.com abc@@def.com 
             MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[span];
-            HtmlAttributeBlock - [6..40) - FullWidth: 34
+            MarkupAttributeBlock - [6..40) - FullWidth: 34
                 MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                     Whitespace;[ ];
                 MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -15,10 +15,10 @@ RazorDocument - [0..44) - FullWidth: 44 - [{<span foo='abc@def.com abc@@def.com 
                 MarkupTextLiteral - [11..12) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
                 GenericBlock - [12..39) - FullWidth: 27
-                    HtmlLiteralAttributeValue - [12..23) - FullWidth: 11
+                    MarkupLiteralAttributeValue - [12..23) - FullWidth: 11
                         MarkupTextLiteral - [12..23) - FullWidth: 11 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Text;[abc@def.com];
-                    HtmlLiteralAttributeValue - [23..27) - FullWidth: 4
+                    MarkupLiteralAttributeValue - [23..27) - FullWidth: 4
                         MarkupTextLiteral - [23..24) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Whitespace;[ ];
                         MarkupTextLiteral - [24..27) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -28,7 +28,7 @@ RazorDocument - [0..44) - FullWidth: 44 - [{<span foo='abc@def.com abc@@def.com 
                             Transition;[@];
                         MarkupEphemeralTextLiteral - [28..29) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                    HtmlLiteralAttributeValue - [29..36) - FullWidth: 7
+                    MarkupLiteralAttributeValue - [29..36) - FullWidth: 7
                         MarkupTextLiteral - [29..36) - FullWidth: 7 - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Text;[def.com];
                     MarkupBlock - [36..39) - FullWidth: 3
