@@ -143,10 +143,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             return base.VisitCSharpExpressionLiteral(node);
         }
 
-        public override SyntaxNode VisitCSharpEscapedTextLiteral(CSharpEscapedTextLiteralSyntax node)
+        public override SyntaxNode VisitCSharpEphemeralTextLiteral(CSharpEphemeralTextLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Code);
-            return base.VisitCSharpEscapedTextLiteral(node);
+            return base.VisitCSharpEphemeralTextLiteral(node);
         }
 
         public override SyntaxNode VisitUnclassifiedTextLiteral(UnclassifiedTextLiteralSyntax node)
@@ -172,10 +172,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             return base.VisitMarkupTextLiteral(node);
         }
 
-        public override SyntaxNode VisitMarkupEscapedTextLiteral(MarkupEscapedTextLiteralSyntax node)
+        public override SyntaxNode VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Markup);
-            return base.VisitMarkupEscapedTextLiteral(node);
+            return base.VisitMarkupEphemeralTextLiteral(node);
         }
 
         private SyntaxNode WriteBlock<TNode>(TNode node, BlockKindInternal kind, Func<TNode, SyntaxNode> handler) where TNode : SyntaxNode

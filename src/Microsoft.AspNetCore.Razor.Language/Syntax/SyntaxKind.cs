@@ -20,7 +20,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         MarkupTransition,
         MarkupTagBlock,
         MarkupTextLiteral,
-        MarkupEscapedTextLiteral,
+        MarkupEphemeralTextLiteral,
         HtmlCommentBlock,
         HtmlAttributeBlock,
         HtmlMinimizedAttributeBlock,
@@ -38,7 +38,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         CSharpTemplateBlock,
         CSharpStatementLiteral,
         CSharpExpressionLiteral,
-        CSharpEscapedTextLiteral,
+        CSharpEphemeralTextLiteral,
         CSharpTransition,
         #endregion
 

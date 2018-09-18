@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         AcceptTokenAndMoveNext();
                     }
 
-                    builder.Add(OutputTokensAsMarkupLiteral());
+                    builder.Add(OutputTokensAsMarkupEphemeralLiteral());
                 }
                 else if (At(SyntaxKind.NewLine))
                 {
@@ -86,7 +86,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         builder.Add(OutputTokensAsMarkupLiteral());
                         AcceptToken(transition);
                         SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                        builder.Add(OutputTokensAsMarkupEscapedTextLiteral());
+                        builder.Add(OutputTokensAsMarkupEphemeralLiteral());
                         AcceptTokenAndMoveNext();
                         continue; // while
                     }
@@ -121,6 +121,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
                 else if (At(SyntaxKind.RazorCommentTransition))
                 {
+                    var shouldRenderWhitespace = true;
                     if (last != null)
                     {
                         // Don't render the whitespace between the start of the line and the razor comment.
@@ -131,6 +132,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             builder.Add(OutputTokensAsMarkupLiteral());
 
                             SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
+                            shouldRenderWhitespace = false;
                         }
 
                         AcceptToken(last);
@@ -138,7 +140,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     }
 
                     AcceptMarkerTokenIfNecessary();
-                    builder.Add(OutputTokensAsMarkupLiteral());
+                    if (shouldRenderWhitespace)
+                    {
+                        builder.Add(OutputTokensAsMarkupLiteral());
+                    }
+                    else
+                    {
+                        builder.Add(OutputTokensAsMarkupEphemeralLiteral());
+                    }
 
                     var comment = ParseRazorComment();
                     builder.Add(comment);
@@ -151,7 +160,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         AcceptTokenWhile(IsSpacingToken(includeNewLines: false));
                         AcceptTokenAndMoveNext();
                         SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                        builder.Add(OutputTokensAsMarkupEscapedTextLiteral());
+                        builder.Add(OutputTokensAsMarkupEphemeralLiteral());
                     }
                 }
                 else
@@ -504,7 +513,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
                         AcceptTokenAndMoveNext();
                         SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
-                        markupBuilder.Add(OutputTokensAsMarkupLiteral());
+                        markupBuilder.Add(OutputTokensAsMarkupEphemeralLiteral());
 
                         var markupBlock = SyntaxFactory.MarkupBlock(markupBuilder.ToList());
                         builder.Add(markupBlock);

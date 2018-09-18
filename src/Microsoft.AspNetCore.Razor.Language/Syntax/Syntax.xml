@@ -57,8 +57,8 @@
     <Kind Name="MarkupTextLiteral" />
     <Field Name="LiteralTokens" Type="SyntaxList&lt;SyntaxToken&gt;" />
   </Node>
-  <Node Name="MarkupEscapedTextLiteralSyntax" Base="MarkupSyntaxNode">
-    <Kind Name="MarkupEscapedTextLiteral" />
+  <Node Name="MarkupEphemeralTextLiteralSyntax" Base="MarkupSyntaxNode">
+    <Kind Name="MarkupEphemeralTextLiteral" />
     <Field Name="LiteralTokens" Type="SyntaxList&lt;SyntaxToken&gt;" />
   </Node>
   <Node Name="HtmlCommentBlockSyntax" Base="RazorBlockSyntax">
@@ -117,8 +117,8 @@
     <Kind Name="CSharpExpressionLiteral" />
     <Field Name="LiteralTokens" Type="SyntaxList&lt;SyntaxToken&gt;" />
   </Node>
-  <Node Name="CSharpEscapedTextLiteralSyntax" Base="CSharpSyntaxNode">
-    <Kind Name="CSharpEscapedTextLiteral" />
+  <Node Name="CSharpEphemeralTextLiteralSyntax" Base="CSharpSyntaxNode">
+    <Kind Name="CSharpEphemeralTextLiteral" />
     <Field Name="LiteralTokens" Type="SyntaxList&lt;SyntaxToken&gt;" />
   </Node>
   <Node Name="CSharpTemplateBlockSyntax" Base="RazorBlockSyntax">

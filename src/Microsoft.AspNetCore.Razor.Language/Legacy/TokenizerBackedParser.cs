@@ -1011,7 +1011,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return GetNodeWithSpanContext(SyntaxFactory.MarkupTextLiteral(tokens));
         }
 
-        protected MarkupEscapedTextLiteralSyntax OutputTokensAsMarkupEscapedTextLiteral()
+        protected MarkupEphemeralTextLiteralSyntax OutputTokensAsMarkupEphemeralLiteral()
         {
             var tokens = OutputTokens();
             if (tokens.Count == 0)
@@ -1019,7 +1019,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 return null;
             }
 
-            return GetNodeWithSpanContext(SyntaxFactory.MarkupEscapedTextLiteral(tokens));
+            return GetNodeWithSpanContext(SyntaxFactory.MarkupEphemeralTextLiteral(tokens));
         }
 
         protected RazorMetaCodeSyntax OutputAsMetaCode(SyntaxList<SyntaxToken> tokens, AcceptedCharactersInternal? accepted = null)

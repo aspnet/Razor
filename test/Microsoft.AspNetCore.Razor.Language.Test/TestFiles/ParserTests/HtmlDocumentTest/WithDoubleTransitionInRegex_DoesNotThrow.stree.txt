@@ -34,7 +34,7 @@ RazorDocument - [0..117) - FullWidth: 117 - [{<span foo="/^[a-z0-9!#$%&'*+\/=?^_
                     MarkupBlock - [44..46) - FullWidth: 2
                         MarkupTextLiteral - [44..45) - FullWidth: 1 - Gen<LitAttr:@(44:0,44)> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                        MarkupTextLiteral - [45..46) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        MarkupEphemeralTextLiteral - [45..46) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
                     HtmlLiteralAttributeValue - [46..112) - FullWidth: 66
                         MarkupTextLiteral - [46..112) - FullWidth: 66 - Gen<Markup> - SpanEditHandler;Accepts:Any

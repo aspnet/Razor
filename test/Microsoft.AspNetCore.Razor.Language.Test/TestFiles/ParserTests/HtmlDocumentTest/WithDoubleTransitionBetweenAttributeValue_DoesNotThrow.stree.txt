@@ -22,7 +22,7 @@ RazorDocument - [0..27) - FullWidth: 27 - [{<span foo='abc @@ def' />}]
                         MarkupTextLiteral - [15..17) - FullWidth: 2 - Gen<LitAttr: @(15:0,15)> - SpanEditHandler;Accepts:None
                             Whitespace;[ ];
                             Transition;[@];
-                        MarkupTextLiteral - [17..18) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        MarkupEphemeralTextLiteral - [17..18) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
                     HtmlLiteralAttributeValue - [18..22) - FullWidth: 4
                         MarkupTextLiteral - [18..19) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any

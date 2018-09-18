@@ -716,11 +716,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
   }
 
-  internal sealed partial class MarkupEscapedTextLiteralSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupEphemeralTextLiteralSyntax : MarkupSyntaxNode
   {
     private readonly GreenNode _literalTokens;
 
-    internal MarkupEscapedTextLiteralSyntax(SyntaxKind kind, GreenNode literalTokens, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal MarkupEphemeralTextLiteralSyntax(SyntaxKind kind, GreenNode literalTokens, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 1;
@@ -732,7 +732,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal MarkupEscapedTextLiteralSyntax(SyntaxKind kind, GreenNode literalTokens)
+    internal MarkupEphemeralTextLiteralSyntax(SyntaxKind kind, GreenNode literalTokens)
         : base(kind)
     {
         SlotCount = 1;
@@ -756,24 +756,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.MarkupEscapedTextLiteralSyntax(this, parent, position);
+      return new Syntax.MarkupEphemeralTextLiteralSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitMarkupEscapedTextLiteral(this);
+        return visitor.VisitMarkupEphemeralTextLiteral(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitMarkupEscapedTextLiteral(this);
+        visitor.VisitMarkupEphemeralTextLiteral(this);
     }
 
-    public MarkupEscapedTextLiteralSyntax Update(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<SyntaxToken> literalTokens)
+    public MarkupEphemeralTextLiteralSyntax Update(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<SyntaxToken> literalTokens)
     {
         if (literalTokens != LiteralTokens)
         {
-            var newNode = SyntaxFactory.MarkupEscapedTextLiteral(literalTokens);
+            var newNode = SyntaxFactory.MarkupEphemeralTextLiteral(literalTokens);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -788,12 +788,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new MarkupEscapedTextLiteralSyntax(Kind, _literalTokens, diagnostics, GetAnnotations());
+         return new MarkupEphemeralTextLiteralSyntax(Kind, _literalTokens, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new MarkupEscapedTextLiteralSyntax(Kind, _literalTokens, GetDiagnostics(), annotations);
+         return new MarkupEphemeralTextLiteralSyntax(Kind, _literalTokens, GetDiagnostics(), annotations);
     }
   }
 
@@ -1694,11 +1694,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
   }
 
-  internal sealed partial class CSharpEscapedTextLiteralSyntax : CSharpSyntaxNode
+  internal sealed partial class CSharpEphemeralTextLiteralSyntax : CSharpSyntaxNode
   {
     private readonly GreenNode _literalTokens;
 
-    internal CSharpEscapedTextLiteralSyntax(SyntaxKind kind, GreenNode literalTokens, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal CSharpEphemeralTextLiteralSyntax(SyntaxKind kind, GreenNode literalTokens, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 1;
@@ -1710,7 +1710,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal CSharpEscapedTextLiteralSyntax(SyntaxKind kind, GreenNode literalTokens)
+    internal CSharpEphemeralTextLiteralSyntax(SyntaxKind kind, GreenNode literalTokens)
         : base(kind)
     {
         SlotCount = 1;
@@ -1734,24 +1734,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.CSharpEscapedTextLiteralSyntax(this, parent, position);
+      return new Syntax.CSharpEphemeralTextLiteralSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitCSharpEscapedTextLiteral(this);
+        return visitor.VisitCSharpEphemeralTextLiteral(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitCSharpEscapedTextLiteral(this);
+        visitor.VisitCSharpEphemeralTextLiteral(this);
     }
 
-    public CSharpEscapedTextLiteralSyntax Update(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<SyntaxToken> literalTokens)
+    public CSharpEphemeralTextLiteralSyntax Update(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<SyntaxToken> literalTokens)
     {
         if (literalTokens != LiteralTokens)
         {
-            var newNode = SyntaxFactory.CSharpEscapedTextLiteral(literalTokens);
+            var newNode = SyntaxFactory.CSharpEphemeralTextLiteral(literalTokens);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -1766,12 +1766,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new CSharpEscapedTextLiteralSyntax(Kind, _literalTokens, diagnostics, GetAnnotations());
+         return new CSharpEphemeralTextLiteralSyntax(Kind, _literalTokens, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new CSharpEscapedTextLiteralSyntax(Kind, _literalTokens, GetDiagnostics(), annotations);
+         return new CSharpEphemeralTextLiteralSyntax(Kind, _literalTokens, GetDiagnostics(), annotations);
     }
   }
 
@@ -2583,7 +2583,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitMarkupEscapedTextLiteral(MarkupEscapedTextLiteralSyntax node)
+    public virtual TResult VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -2638,7 +2638,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitCSharpEscapedTextLiteral(CSharpEscapedTextLiteralSyntax node)
+    public virtual TResult VisitCSharpEphemeralTextLiteral(CSharpEphemeralTextLiteralSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -2732,7 +2732,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       DefaultVisit(node);
     }
 
-    public virtual void VisitMarkupEscapedTextLiteral(MarkupEscapedTextLiteralSyntax node)
+    public virtual void VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
     {
       DefaultVisit(node);
     }
@@ -2787,7 +2787,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       DefaultVisit(node);
     }
 
-    public virtual void VisitCSharpEscapedTextLiteral(CSharpEscapedTextLiteralSyntax node)
+    public virtual void VisitCSharpEphemeralTextLiteral(CSharpEphemeralTextLiteralSyntax node)
     {
       DefaultVisit(node);
     }
@@ -2892,7 +2892,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return node.Update(literalTokens);
     }
 
-    public override GreenNode VisitMarkupEscapedTextLiteral(MarkupEscapedTextLiteralSyntax node)
+    public override GreenNode VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
     {
       var literalTokens = VisitList(node.LiteralTokens);
       return node.Update(literalTokens);
@@ -2967,7 +2967,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return node.Update(literalTokens);
     }
 
-    public override GreenNode VisitCSharpEscapedTextLiteral(CSharpEscapedTextLiteralSyntax node)
+    public override GreenNode VisitCSharpEphemeralTextLiteral(CSharpEphemeralTextLiteralSyntax node)
     {
       var literalTokens = VisitList(node.LiteralTokens);
       return node.Update(literalTokens);
@@ -3144,9 +3144,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return result;
     }
 
-    public static MarkupEscapedTextLiteralSyntax MarkupEscapedTextLiteral(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<SyntaxToken> literalTokens)
+    public static MarkupEphemeralTextLiteralSyntax MarkupEphemeralTextLiteral(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<SyntaxToken> literalTokens)
     {
-      var result = new MarkupEscapedTextLiteralSyntax(SyntaxKind.MarkupEscapedTextLiteral, literalTokens.Node);
+      var result = new MarkupEphemeralTextLiteralSyntax(SyntaxKind.MarkupEphemeralTextLiteral, literalTokens.Node);
 
       return result;
     }
@@ -3252,9 +3252,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return result;
     }
 
-    public static CSharpEscapedTextLiteralSyntax CSharpEscapedTextLiteral(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<SyntaxToken> literalTokens)
+    public static CSharpEphemeralTextLiteralSyntax CSharpEphemeralTextLiteral(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<SyntaxToken> literalTokens)
     {
-      var result = new CSharpEscapedTextLiteralSyntax(SyntaxKind.CSharpEscapedTextLiteral, literalTokens.Node);
+      var result = new CSharpEphemeralTextLiteralSyntax(SyntaxKind.CSharpEphemeralTextLiteral, literalTokens.Node);
 
       return result;
     }
@@ -3373,7 +3373,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
            typeof(MarkupBlockSyntax),
            typeof(MarkupTransitionSyntax),
            typeof(MarkupTextLiteralSyntax),
-           typeof(MarkupEscapedTextLiteralSyntax),
+           typeof(MarkupEphemeralTextLiteralSyntax),
            typeof(HtmlCommentBlockSyntax),
            typeof(MarkupTagBlockSyntax),
            typeof(HtmlMinimizedAttributeBlockSyntax),
@@ -3384,7 +3384,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
            typeof(CSharpTransitionSyntax),
            typeof(CSharpStatementLiteralSyntax),
            typeof(CSharpExpressionLiteralSyntax),
-           typeof(CSharpEscapedTextLiteralSyntax),
+           typeof(CSharpEphemeralTextLiteralSyntax),
            typeof(CSharpTemplateBlockSyntax),
            typeof(CSharpStatement),
            typeof(CSharpStatementBodySyntax),

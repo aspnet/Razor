@@ -14,7 +14,7 @@ RazorDocument - [0..15) - FullWidth: 15 - [@{LF} 	LF<html>]
                             NewLine;[LF];
                     RazorMetaCode - [4..5) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                         RightBrace;[}];
-        MarkupTextLiteral - [5..9) - FullWidth: 4 - Gen<None> - SpanEditHandler;Accepts:Any
+        MarkupEphemeralTextLiteral - [5..9) - FullWidth: 4 - Gen<None> - SpanEditHandler;Accepts:Any
             Whitespace;[ 	];
             NewLine;[LF];
         MarkupTagBlock - [9..15) - FullWidth: 6

@@ -650,11 +650,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
   }
 
-  internal sealed partial class MarkupEscapedTextLiteralSyntax : MarkupSyntaxNode
+  internal sealed partial class MarkupEphemeralTextLiteralSyntax : MarkupSyntaxNode
   {
     private SyntaxNode _literalTokens;
 
-    internal MarkupEscapedTextLiteralSyntax(GreenNode green, SyntaxNode parent, int position)
+    internal MarkupEphemeralTextLiteralSyntax(GreenNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
@@ -686,19 +686,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitMarkupEscapedTextLiteral(this);
+        return visitor.VisitMarkupEphemeralTextLiteral(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitMarkupEscapedTextLiteral(this);
+        visitor.VisitMarkupEphemeralTextLiteral(this);
     }
 
-    public MarkupEscapedTextLiteralSyntax Update(SyntaxList<SyntaxToken> literalTokens)
+    public MarkupEphemeralTextLiteralSyntax Update(SyntaxList<SyntaxToken> literalTokens)
     {
         if (literalTokens != LiteralTokens)
         {
-            var newNode = SyntaxFactory.MarkupEscapedTextLiteral(literalTokens);
+            var newNode = SyntaxFactory.MarkupEphemeralTextLiteral(literalTokens);
             var annotations = GetAnnotations();
             if (annotations != null && annotations.Length > 0)
                return newNode.WithAnnotations(annotations);
@@ -708,12 +708,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this;
     }
 
-    public MarkupEscapedTextLiteralSyntax WithLiteralTokens(SyntaxList<SyntaxToken> literalTokens)
+    public MarkupEphemeralTextLiteralSyntax WithLiteralTokens(SyntaxList<SyntaxToken> literalTokens)
     {
         return Update(literalTokens);
     }
 
-    public MarkupEscapedTextLiteralSyntax AddLiteralTokens(params SyntaxToken[] items)
+    public MarkupEphemeralTextLiteralSyntax AddLiteralTokens(params SyntaxToken[] items)
     {
         return WithLiteralTokens(this.LiteralTokens.AddRange(items));
     }
@@ -1599,11 +1599,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
   }
 
-  internal sealed partial class CSharpEscapedTextLiteralSyntax : CSharpSyntaxNode
+  internal sealed partial class CSharpEphemeralTextLiteralSyntax : CSharpSyntaxNode
   {
     private SyntaxNode _literalTokens;
 
-    internal CSharpEscapedTextLiteralSyntax(GreenNode green, SyntaxNode parent, int position)
+    internal CSharpEphemeralTextLiteralSyntax(GreenNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
@@ -1635,19 +1635,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitCSharpEscapedTextLiteral(this);
+        return visitor.VisitCSharpEphemeralTextLiteral(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitCSharpEscapedTextLiteral(this);
+        visitor.VisitCSharpEphemeralTextLiteral(this);
     }
 
-    public CSharpEscapedTextLiteralSyntax Update(SyntaxList<SyntaxToken> literalTokens)
+    public CSharpEphemeralTextLiteralSyntax Update(SyntaxList<SyntaxToken> literalTokens)
     {
         if (literalTokens != LiteralTokens)
         {
-            var newNode = SyntaxFactory.CSharpEscapedTextLiteral(literalTokens);
+            var newNode = SyntaxFactory.CSharpEphemeralTextLiteral(literalTokens);
             var annotations = GetAnnotations();
             if (annotations != null && annotations.Length > 0)
                return newNode.WithAnnotations(annotations);
@@ -1657,12 +1657,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this;
     }
 
-    public CSharpEscapedTextLiteralSyntax WithLiteralTokens(SyntaxList<SyntaxToken> literalTokens)
+    public CSharpEphemeralTextLiteralSyntax WithLiteralTokens(SyntaxList<SyntaxToken> literalTokens)
     {
         return Update(literalTokens);
     }
 
-    public CSharpEscapedTextLiteralSyntax AddLiteralTokens(params SyntaxToken[] items)
+    public CSharpEphemeralTextLiteralSyntax AddLiteralTokens(params SyntaxToken[] items)
     {
         return WithLiteralTokens(this.LiteralTokens.AddRange(items));
     }

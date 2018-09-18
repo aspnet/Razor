@@ -26,7 +26,7 @@ RazorDocument - [0..44) - FullWidth: 44 - [{<span foo='abc@def.com abc@@def.com 
                     MarkupBlock - [27..29) - FullWidth: 2
                         MarkupTextLiteral - [27..28) - FullWidth: 1 - Gen<LitAttr:@(27:0,27)> - SpanEditHandler;Accepts:None
                             Transition;[@];
-                        MarkupTextLiteral - [28..29) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        MarkupEphemeralTextLiteral - [28..29) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
                     HtmlLiteralAttributeValue - [29..36) - FullWidth: 7
                         MarkupTextLiteral - [29..36) - FullWidth: 7 - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -35,7 +35,7 @@ RazorDocument - [0..44) - FullWidth: 44 - [{<span foo='abc@def.com abc@@def.com 
                         MarkupTextLiteral - [36..38) - FullWidth: 2 - Gen<LitAttr: @(36:0,36)> - SpanEditHandler;Accepts:None
                             Whitespace;[ ];
                             Transition;[@];
-                        MarkupTextLiteral - [38..39) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                        MarkupEphemeralTextLiteral - [38..39) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                             Transition;[@];
                 MarkupTextLiteral - [39..40) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
                     SingleQuote;['];
