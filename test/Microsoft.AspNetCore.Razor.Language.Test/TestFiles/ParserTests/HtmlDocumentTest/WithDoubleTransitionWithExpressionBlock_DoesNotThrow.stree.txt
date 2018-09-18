@@ -1,141 +1,181 @@
-Markup block - Gen<None> - 120 - (0:0,0)
-    Markup span - Gen<Markup> - [{] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Text;[{];
-    Tag block - Gen<None> - 118 - (1:0,1)
-        Markup span - Gen<Markup> - [<span] - SpanEditHandler;Accepts:Any - (1:0,1) - Tokens:2
-            SyntaxKind.OpenAngle;[<];
-            SyntaxKind.Text;[span];
-        Markup block - Gen<Attr:foo, foo='@(6:0,6),'@(20:0,20)> - 15 - (6:0,6)
-            Markup span - Gen<None> - [ foo='] - SpanEditHandler;Accepts:Any - (6:0,6) - Tokens:4
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.Text;[foo];
-                SyntaxKind.Equals;[=];
-                SyntaxKind.SingleQuote;['];
-            Markup block - Gen<None> - 2 - (12:0,12)
-                Markup span - Gen<LitAttr:@(12:0,12)> - [@] - SpanEditHandler;Accepts:None - (12:0,12) - Tokens:1
-                    SyntaxKind.Transition;[@];
-                Markup span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (13:0,13) - Tokens:1
-                    SyntaxKind.Transition;[@];
-            Markup block - Gen<DynAttr:@(14:0,14)> - 6 - (14:0,14)
-                Markup span - Gen<None> - [] - SpanEditHandler;Accepts:Any - (14:0,14) - Tokens:1
-                    SyntaxKind.Unknown;[];
-                Expression block - Gen<Expr> - 6 - (14:0,14)
-                    Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (14:0,14) - Tokens:1
-                        SyntaxKind.Transition;[@];
-                    MetaCode span - Gen<None> - [(] - SpanEditHandler;Accepts:None - (15:0,15) - Tokens:1
-                        SyntaxKind.LeftParenthesis;[(];
-                    Code span - Gen<Expr> - [2+3] - SpanEditHandler;Accepts:Any - (16:0,16) - Tokens:3
-                        SyntaxKind.IntegerLiteral;[2];
-                        SyntaxKind.Plus;[+];
-                        SyntaxKind.IntegerLiteral;[3];
-                    MetaCode span - Gen<None> - [)] - SpanEditHandler;Accepts:None - (19:0,19) - Tokens:1
-                        SyntaxKind.RightParenthesis;[)];
-            Markup span - Gen<None> - ['] - SpanEditHandler;Accepts:Any - (20:0,20) - Tokens:1
-                SyntaxKind.SingleQuote;['];
-        Markup block - Gen<Attr:bar, bar='@(21:0,21),'@(48:0,48)> - 28 - (21:0,21)
-            Markup span - Gen<None> - [ bar='] - SpanEditHandler;Accepts:Any - (21:0,21) - Tokens:4
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.Text;[bar];
-                SyntaxKind.Equals;[=];
-                SyntaxKind.SingleQuote;['];
-            Markup block - Gen<DynAttr:@(27:0,27)> - 6 - (27:0,27)
-                Expression block - Gen<Expr> - 6 - (27:0,27)
-                    Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (27:0,27) - Tokens:1
-                        SyntaxKind.Transition;[@];
-                    MetaCode span - Gen<None> - [(] - SpanEditHandler;Accepts:None - (28:0,28) - Tokens:1
-                        SyntaxKind.LeftParenthesis;[(];
-                    Code span - Gen<Expr> - [2+3] - SpanEditHandler;Accepts:Any - (29:0,29) - Tokens:3
-                        SyntaxKind.IntegerLiteral;[2];
-                        SyntaxKind.Plus;[+];
-                        SyntaxKind.IntegerLiteral;[3];
-                    MetaCode span - Gen<None> - [)] - SpanEditHandler;Accepts:None - (32:0,32) - Tokens:1
-                        SyntaxKind.RightParenthesis;[)];
-            Markup block - Gen<None> - 2 - (33:0,33)
-                Markup span - Gen<LitAttr:@(33:0,33)> - [@] - SpanEditHandler;Accepts:None - (33:0,33) - Tokens:1
-                    SyntaxKind.Transition;[@];
-                Markup span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (34:0,34) - Tokens:1
-                    SyntaxKind.Transition;[@];
-            Markup block - Gen<DynAttr:@(35:0,35)> - 13 - (35:0,35)
-                Markup span - Gen<None> - [] - SpanEditHandler;Accepts:Any - (35:0,35) - Tokens:1
-                    SyntaxKind.Unknown;[];
-                Expression block - Gen<Expr> - 13 - (35:0,35)
-                    Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (35:0,35) - Tokens:1
-                        SyntaxKind.Transition;[@];
-                    Code span - Gen<Expr> - [DateTime.Now] - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14 - (36:0,36) - Tokens:3
-                        SyntaxKind.Identifier;[DateTime];
-                        SyntaxKind.Dot;[.];
-                        SyntaxKind.Identifier;[Now];
-            Markup span - Gen<None> - ['] - SpanEditHandler;Accepts:Any - (48:0,48) - Tokens:1
-                SyntaxKind.SingleQuote;['];
-        Markup block - Gen<Attr:baz, baz='@(49:0,49),'@(70:0,70)> - 22 - (49:0,49)
-            Markup span - Gen<None> - [ baz='] - SpanEditHandler;Accepts:Any - (49:0,49) - Tokens:4
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.Text;[baz];
-                SyntaxKind.Equals;[=];
-                SyntaxKind.SingleQuote;['];
-            Markup block - Gen<DynAttr:@(55:0,55)> - 13 - (55:0,55)
-                Expression block - Gen<Expr> - 13 - (55:0,55)
-                    Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (55:0,55) - Tokens:1
-                        SyntaxKind.Transition;[@];
-                    Code span - Gen<Expr> - [DateTime.Now] - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14 - (56:0,56) - Tokens:3
-                        SyntaxKind.Identifier;[DateTime];
-                        SyntaxKind.Dot;[.];
-                        SyntaxKind.Identifier;[Now];
-            Markup block - Gen<None> - 2 - (68:0,68)
-                Markup span - Gen<LitAttr:@(68:0,68)> - [@] - SpanEditHandler;Accepts:None - (68:0,68) - Tokens:1
-                    SyntaxKind.Transition;[@];
-                Markup span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (69:0,69) - Tokens:1
-                    SyntaxKind.Transition;[@];
-            Markup span - Gen<None> - ['] - SpanEditHandler;Accepts:Any - (70:0,70) - Tokens:1
-                SyntaxKind.SingleQuote;['];
-        Markup block - Gen<Attr:bat, bat='@(71:0,71),'@(93:0,93)> - 23 - (71:0,71)
-            Markup span - Gen<None> - [ bat='] - SpanEditHandler;Accepts:Any - (71:0,71) - Tokens:4
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.Text;[bat];
-                SyntaxKind.Equals;[=];
-                SyntaxKind.SingleQuote;['];
-            Markup block - Gen<DynAttr:@(77:0,77)> - 13 - (77:0,77)
-                Expression block - Gen<Expr> - 13 - (77:0,77)
-                    Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (77:0,77) - Tokens:1
-                        SyntaxKind.Transition;[@];
-                    Code span - Gen<Expr> - [DateTime.Now] - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14 - (78:0,78) - Tokens:3
-                        SyntaxKind.Identifier;[DateTime];
-                        SyntaxKind.Dot;[.];
-                        SyntaxKind.Identifier;[Now];
-            Markup block - Gen<None> - 3 - (90:0,90)
-                Markup span - Gen<LitAttr: @(90:0,90)> - [ @] - SpanEditHandler;Accepts:None - (90:0,90) - Tokens:2
-                    SyntaxKind.Whitespace;[ ];
-                    SyntaxKind.Transition;[@];
-                Markup span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (92:0,92) - Tokens:1
-                    SyntaxKind.Transition;[@];
-            Markup span - Gen<None> - ['] - SpanEditHandler;Accepts:Any - (93:0,93) - Tokens:1
-                SyntaxKind.SingleQuote;['];
-        Markup block - Gen<Attr:zoo, zoo='@(94:0,94),'@(115:0,115)> - 22 - (94:0,94)
-            Markup span - Gen<None> - [ zoo='] - SpanEditHandler;Accepts:Any - (94:0,94) - Tokens:4
-                SyntaxKind.Whitespace;[ ];
-                SyntaxKind.Text;[zoo];
-                SyntaxKind.Equals;[=];
-                SyntaxKind.SingleQuote;['];
-            Markup block - Gen<None> - 2 - (100:0,100)
-                Markup span - Gen<LitAttr:@(100:0,100)> - [@] - SpanEditHandler;Accepts:None - (100:0,100) - Tokens:1
-                    SyntaxKind.Transition;[@];
-                Markup span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (101:0,101) - Tokens:1
-                    SyntaxKind.Transition;[@];
-            Markup block - Gen<DynAttr:@(102:0,102)> - 13 - (102:0,102)
-                Markup span - Gen<None> - [] - SpanEditHandler;Accepts:Any - (102:0,102) - Tokens:1
-                    SyntaxKind.Unknown;[];
-                Expression block - Gen<Expr> - 13 - (102:0,102)
-                    Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (102:0,102) - Tokens:1
-                        SyntaxKind.Transition;[@];
-                    Code span - Gen<Expr> - [DateTime.Now] - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14 - (103:0,103) - Tokens:3
-                        SyntaxKind.Identifier;[DateTime];
-                        SyntaxKind.Dot;[.];
-                        SyntaxKind.Identifier;[Now];
-            Markup span - Gen<None> - ['] - SpanEditHandler;Accepts:Any - (115:0,115) - Tokens:1
-                SyntaxKind.SingleQuote;['];
-        Markup span - Gen<Markup> - [ />] - SpanEditHandler;Accepts:Any - (116:0,116) - Tokens:3
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.ForwardSlash;[/];
-            SyntaxKind.CloseAngle;[>];
-    Markup span - Gen<Markup> - [}] - SpanEditHandler;Accepts:Any - (119:0,119) - Tokens:1
-        SyntaxKind.Text;[}];
+RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@@DateTime.Now' baz='@DateTime.Now@@' bat='@DateTime.Now @@' zoo='@@@DateTime.Now' />}]
+    MarkupBlock - [0..120) - FullWidth: 120
+        MarkupTextLiteral - [0..1) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[{];
+        MarkupTagBlock - [1..119) - FullWidth: 118
+            MarkupTextLiteral - [1..6) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                OpenAngle;[<];
+                Text;[span];
+            MarkupAttributeBlock - [6..21) - FullWidth: 15
+                MarkupTextLiteral - [6..7) - FullWidth: 1 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    Whitespace;[ ];
+                MarkupTextLiteral - [7..10) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                    Text;[foo];
+                Equals;[=];
+                MarkupTextLiteral - [11..12) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+                GenericBlock - [12..20) - FullWidth: 8
+                    MarkupBlock - [12..14) - FullWidth: 2
+                        MarkupTextLiteral - [12..13) - FullWidth: 1 - Gen<LitAttr:@(12:0,12)> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                        MarkupEphemeralTextLiteral - [13..14) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                    MarkupDynamicAttributeValue - [14..20) - FullWidth: 6
+                        GenericBlock - [14..20) - FullWidth: 6
+                            MarkupTextLiteral - [14..14) - FullWidth: 0 - Gen<Markup> - SpanEditHandler;Accepts:Any
+                                Marker;[];
+                            CSharpCodeBlock - [14..20) - FullWidth: 6
+                                CSharpExpression - [14..20) - FullWidth: 6
+                                    CSharpTransition - [14..15) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        Transition;[@];
+                                    CSharpExpressionBody - [15..20) - FullWidth: 5
+                                        RazorMetaCode - [15..16) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                            LeftParenthesis;[(];
+                                        CSharpCodeBlock - [16..19) - FullWidth: 3
+                                            CSharpExpressionLiteral - [16..19) - FullWidth: 3 - Gen<Expr> - SpanEditHandler;Accepts:Any
+                                                IntegerLiteral;[2];
+                                                Plus;[+];
+                                                IntegerLiteral;[3];
+                                        RazorMetaCode - [19..20) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                            RightParenthesis;[)];
+                MarkupTextLiteral - [20..21) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+            MarkupAttributeBlock - [21..49) - FullWidth: 28
+                MarkupTextLiteral - [21..22) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    Whitespace;[ ];
+                MarkupTextLiteral - [22..25) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
+                    Text;[bar];
+                Equals;[=];
+                MarkupTextLiteral - [26..27) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+                GenericBlock - [27..48) - FullWidth: 21
+                    MarkupDynamicAttributeValue - [27..33) - FullWidth: 6
+                        GenericBlock - [27..33) - FullWidth: 6
+                            CSharpCodeBlock - [27..33) - FullWidth: 6
+                                CSharpExpression - [27..33) - FullWidth: 6
+                                    CSharpTransition - [27..28) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        Transition;[@];
+                                    CSharpExpressionBody - [28..33) - FullWidth: 5
+                                        RazorMetaCode - [28..29) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                            LeftParenthesis;[(];
+                                        CSharpCodeBlock - [29..32) - FullWidth: 3
+                                            CSharpExpressionLiteral - [29..32) - FullWidth: 3 - Gen<Expr> - SpanEditHandler;Accepts:Any
+                                                IntegerLiteral;[2];
+                                                Plus;[+];
+                                                IntegerLiteral;[3];
+                                        RazorMetaCode - [32..33) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                            RightParenthesis;[)];
+                    MarkupBlock - [33..35) - FullWidth: 2
+                        MarkupTextLiteral - [33..34) - FullWidth: 1 - Gen<LitAttr:@(33:0,33)> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                        MarkupEphemeralTextLiteral - [34..35) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                    MarkupDynamicAttributeValue - [35..48) - FullWidth: 13
+                        GenericBlock - [35..48) - FullWidth: 13
+                            MarkupTextLiteral - [35..35) - FullWidth: 0 - Gen<None> - SpanEditHandler;Accepts:Any
+                                Marker;[];
+                            CSharpCodeBlock - [35..48) - FullWidth: 13
+                                CSharpImplicitExpression - [35..48) - FullWidth: 13
+                                    CSharpTransition - [35..36) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        Transition;[@];
+                                    CSharpImplicitExpressionBody - [36..48) - FullWidth: 12
+                                        CSharpCodeBlock - [36..48) - FullWidth: 12
+                                            CSharpExpressionLiteral - [36..48) - FullWidth: 12 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                                                Identifier;[DateTime];
+                                                Dot;[.];
+                                                Identifier;[Now];
+                MarkupTextLiteral - [48..49) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+            MarkupAttributeBlock - [49..71) - FullWidth: 22
+                MarkupTextLiteral - [49..50) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    Whitespace;[ ];
+                MarkupTextLiteral - [50..53) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
+                    Text;[baz];
+                Equals;[=];
+                MarkupTextLiteral - [54..55) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+                GenericBlock - [55..70) - FullWidth: 15
+                    MarkupDynamicAttributeValue - [55..68) - FullWidth: 13
+                        GenericBlock - [55..68) - FullWidth: 13
+                            CSharpCodeBlock - [55..68) - FullWidth: 13
+                                CSharpImplicitExpression - [55..68) - FullWidth: 13
+                                    CSharpTransition - [55..56) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        Transition;[@];
+                                    CSharpImplicitExpressionBody - [56..68) - FullWidth: 12
+                                        CSharpCodeBlock - [56..68) - FullWidth: 12
+                                            CSharpExpressionLiteral - [56..68) - FullWidth: 12 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                                                Identifier;[DateTime];
+                                                Dot;[.];
+                                                Identifier;[Now];
+                    MarkupBlock - [68..70) - FullWidth: 2
+                        MarkupTextLiteral - [68..69) - FullWidth: 1 - Gen<LitAttr:@(68:0,68)> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                        MarkupEphemeralTextLiteral - [69..70) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                MarkupTextLiteral - [70..71) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+            MarkupAttributeBlock - [71..94) - FullWidth: 23
+                MarkupTextLiteral - [71..72) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    Whitespace;[ ];
+                MarkupTextLiteral - [72..75) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
+                    Text;[bat];
+                Equals;[=];
+                MarkupTextLiteral - [76..77) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+                GenericBlock - [77..93) - FullWidth: 16
+                    MarkupDynamicAttributeValue - [77..90) - FullWidth: 13
+                        GenericBlock - [77..90) - FullWidth: 13
+                            CSharpCodeBlock - [77..90) - FullWidth: 13
+                                CSharpImplicitExpression - [77..90) - FullWidth: 13
+                                    CSharpTransition - [77..78) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        Transition;[@];
+                                    CSharpImplicitExpressionBody - [78..90) - FullWidth: 12
+                                        CSharpCodeBlock - [78..90) - FullWidth: 12
+                                            CSharpExpressionLiteral - [78..90) - FullWidth: 12 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                                                Identifier;[DateTime];
+                                                Dot;[.];
+                                                Identifier;[Now];
+                    MarkupBlock - [90..93) - FullWidth: 3
+                        MarkupTextLiteral - [90..92) - FullWidth: 2 - Gen<LitAttr: @(90:0,90)> - SpanEditHandler;Accepts:None
+                            Whitespace;[ ];
+                            Transition;[@];
+                        MarkupEphemeralTextLiteral - [92..93) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                MarkupTextLiteral - [93..94) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+            MarkupAttributeBlock - [94..116) - FullWidth: 22
+                MarkupTextLiteral - [94..95) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    Whitespace;[ ];
+                MarkupTextLiteral - [95..98) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
+                    Text;[zoo];
+                Equals;[=];
+                MarkupTextLiteral - [99..100) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+                GenericBlock - [100..115) - FullWidth: 15
+                    MarkupBlock - [100..102) - FullWidth: 2
+                        MarkupTextLiteral - [100..101) - FullWidth: 1 - Gen<LitAttr:@(100:0,100)> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                        MarkupEphemeralTextLiteral - [101..102) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                            Transition;[@];
+                    MarkupDynamicAttributeValue - [102..115) - FullWidth: 13
+                        GenericBlock - [102..115) - FullWidth: 13
+                            MarkupTextLiteral - [102..102) - FullWidth: 0 - Gen<None> - SpanEditHandler;Accepts:Any
+                                Marker;[];
+                            CSharpCodeBlock - [102..115) - FullWidth: 13
+                                CSharpImplicitExpression - [102..115) - FullWidth: 13
+                                    CSharpTransition - [102..103) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        Transition;[@];
+                                    CSharpImplicitExpressionBody - [103..115) - FullWidth: 12
+                                        CSharpCodeBlock - [103..115) - FullWidth: 12
+                                            CSharpExpressionLiteral - [103..115) - FullWidth: 12 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                                                Identifier;[DateTime];
+                                                Dot;[.];
+                                                Identifier;[Now];
+                MarkupTextLiteral - [115..116) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+                    SingleQuote;['];
+            MarkupTextLiteral - [116..119) - FullWidth: 3 - Gen<None> - SpanEditHandler;Accepts:Any
+                Whitespace;[ ];
+                ForwardSlash;[/];
+                CloseAngle;[>];
+        MarkupTextLiteral - [119..120) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+            Text;[}];

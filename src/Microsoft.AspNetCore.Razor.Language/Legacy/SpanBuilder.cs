@@ -80,7 +80,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Start = SourceLocation.Undefined;
         }
 
-        public Span Build(SyntaxKind syntaxKind = SyntaxKind.Unknown)
+        public Span Build(SyntaxKind syntaxKind = SyntaxKind.Marker)
         {
             SyntaxNode = GetSyntaxNode(syntaxKind);
 
@@ -112,12 +112,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private Syntax.GreenNode GetSyntaxNode(SyntaxKind syntaxKind)
         {
-            if (syntaxKind == SyntaxKind.HtmlTextLiteral)
+            if (syntaxKind == SyntaxKind.MarkupTextLiteral)
             {
                 var textTokens = new SyntaxListBuilder<SyntaxToken>(SyntaxListBuilder.Create());
                 foreach (var token in Tokens)
                 {
-                    if (token.Kind == SyntaxKind.Unknown)
+                    if (token.Kind == SyntaxKind.Marker)
                     {
                         Debug.Assert(false, $"Unexpected token {token.Kind}");
                         continue;
@@ -126,7 +126,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     textTokens.Add(token);
                 }
                 var textResult = textTokens.ToList();
-                return SyntaxFactory.HtmlTextLiteral(new SyntaxList<SyntaxToken>(textResult.Node));
+                return SyntaxFactory.MarkupTextLiteral(new SyntaxList<SyntaxToken>(textResult.Node));
             }
 
             return null;

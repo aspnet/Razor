@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using Microsoft.AspNetCore.Razor.Language.Extensions;
 using Xunit;
 
@@ -11,6 +10,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
     public class HtmlDocumentTest : CsHtmlMarkupParserTestBase
     {
         private static readonly TestFile Nested1000 = TestFile.Create("TestFiles/nested-1000.html", typeof(HtmlDocumentTest));
+
+        public HtmlDocumentTest()
+        {
+            UseNewSyntaxTree = true;
+        }
 
         [Fact]
         public void NestedCodeBlockWithMarkupSetsDotAsMarkup()

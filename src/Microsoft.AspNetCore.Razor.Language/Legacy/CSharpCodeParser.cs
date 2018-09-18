@@ -643,7 +643,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // If necessary, put an empty-content marker token here
                 if (Span.Tokens.Count == 0)
                 {
-                    Accept(SyntaxFactory.Token(SyntaxKind.Unknown, string.Empty));
+                    Accept(SyntaxFactory.Token(SyntaxKind.Marker, string.Empty));
                 }
 
                 // Output the content span and then capture the ")"

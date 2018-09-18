@@ -53,7 +53,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 return rewrittenTree;
             }
 
-            public override SyntaxNode VisitCSharpDirective(CSharpDirectiveSyntax node)
+            public override SyntaxNode VisitRazorDirective(RazorDirectiveSyntax node)
             {
                 if (_nestedLevel > 0)
                 {
@@ -63,7 +63,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                     node = node.AppendDiagnostic(error);
                 }
                 _nestedLevel++;
-                var result = base.VisitCSharpDirective(node);
+                var result = base.VisitRazorDirective(node);
                 _nestedLevel--;
 
                 return result;
