@@ -567,7 +567,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // Output "@" as hidden span
                 AcceptToken(transition);
                 SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                builder.Add(OutputTokensAsHiddenLiteral());
+                builder.Add(OutputTokensAsEphemeralLiteral());
 
                 Assert(SyntaxKind.Transition);
                 AcceptTokenAndMoveNext();
@@ -793,7 +793,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         errors);
                 });
 
-            var directive = SyntaxFactory.CSharpDirective(transition, directiveBody);
+            var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
             builder.Add(directive);
         }
 
@@ -813,7 +813,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         errors);
                 });
 
-            var directive = SyntaxFactory.CSharpDirective(transition, directiveBody);
+            var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
             builder.Add(directive);
         }
 
@@ -833,11 +833,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         errors);
                 });
 
-            var directive = SyntaxFactory.CSharpDirective(transition, directiveBody);
+            var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
             builder.Add(directive);
         }
 
-        private CSharpDirectiveBodySyntax ParseTagHelperDirective(
+        private RazorDirectiveBodySyntax ParseTagHelperDirective(
             string keyword,
             Func<string, List<RazorDiagnostic>, ISpanChunkGenerator> chunkGeneratorFactory)
         {
@@ -873,7 +873,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     AcceptTokenWhile(SyntaxKind.Whitespace);
                     SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
                     SpanContext.EditHandler.AcceptedCharacters = acceptedCharacters;
-                    directiveBuilder.Add(OutputTokensAsHtmlLiteral());
+                    directiveBuilder.Add(OutputTokensAsMarkupLiteral());
 
                     if (EndOfFile || At(SyntaxKind.NewLine))
                     {
@@ -920,9 +920,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 directiveBuilder.Add(OutputTokensAsStatementLiteral());
                 var directiveCodeBlock = SyntaxFactory.CSharpCodeBlock(directiveBuilder.ToList());
 
-                return SyntaxFactory.CSharpDirectiveBody(keywordBlock, directiveCodeBlock);
+                return SyntaxFactory.RazorDirectiveBody(keywordBlock, directiveCodeBlock);
             }
-
         }
 
         private ParsedDirective ParseDirective(
@@ -1054,7 +1053,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         {
                             SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
                             SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.Whitespace;
-                            directiveBuilder.Add(OutputTokensAsHtmlLiteral());
+                            directiveBuilder.Add(OutputTokensAsMarkupEphemeralLiteral());
                         }
 
                         if (tokenDescriptor.Optional && (EndOfFile || At(SyntaxKind.NewLine)))
@@ -1137,7 +1136,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     {
                         case DirectiveKind.SingleLine:
                             SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.Whitespace;
-                            directiveBuilder.Add(OutputTokensAsNoneLiteral());
+                            directiveBuilder.Add(OutputTokensAsUnclassifiedLiteral());
 
                             OptionalToken(SyntaxKind.Semicolon);
                             directiveBuilder.Add(OutputAsMetaCode(OutputTokens(), AcceptedCharactersInternal.Whitespace));
@@ -1162,12 +1161,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             // Output as Markup as we want intellisense here.
                             SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
                             SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.Whitespace;
-                            directiveBuilder.Add(OutputTokensAsHtmlLiteral());
+                            directiveBuilder.Add(OutputTokensAsMarkupEphemeralLiteral());
                             break;
                         case DirectiveKind.RazorBlock:
                             AcceptTokenWhile(IsSpacingToken(includeNewLines: true, includeComments: true));
                             SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.AllWhitespace;
-                            directiveBuilder.Add(OutputTokensAsHtmlLiteral());
+                            directiveBuilder.Add(OutputTokensAsMarkupLiteral());
 
                             ParseDirectiveBlock(directiveBuilder, descriptor, parseChildren: (childBuilder, startingBraceLocation) =>
                             {
@@ -1191,7 +1190,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         case DirectiveKind.CodeBlock:
                             AcceptTokenWhile(IsSpacingToken(includeNewLines: true, includeComments: true));
                             SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.AllWhitespace;
-                            directiveBuilder.Add(OutputTokensAsHtmlLiteral());
+                            directiveBuilder.Add(OutputTokensAsMarkupLiteral());
 
                             ParseDirectiveBlock(directiveBuilder, descriptor, parseChildren: (childBuilder, startingBraceLocation) =>
                             {
@@ -1223,9 +1222,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 directiveBuilder.Add(OutputTokensAsStatementLiteral());
                 var directiveCodeBlock = SyntaxFactory.CSharpCodeBlock(directiveBuilder.ToList());
 
-                var directiveBody = SyntaxFactory.CSharpDirectiveBody(keywordBlock, directiveCodeBlock);
-                var directive = SyntaxFactory.CSharpDirective(transition, directiveBody);
-                directive = (CSharpDirectiveSyntax)directive.SetDiagnostics(directiveErrorSink.Errors.ToArray());
+                var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordBlock, directiveCodeBlock);
+                var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
+                directive = (RazorDirectiveSyntax)directive.SetDiagnostics(directiveErrorSink.Errors.ToArray());
                 builder.Add(directive);
             }
         }
@@ -1836,8 +1835,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
 
                 directiveBuilder.Add(OutputTokensAsStatementLiteral());
-                var directiveBody = SyntaxFactory.CSharpDirectiveBody(keywordTokens, SyntaxFactory.CSharpCodeBlock(directiveBuilder.ToList()));
-                builder.Add(SyntaxFactory.CSharpDirective(transition, directiveBody));
+                var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordTokens, SyntaxFactory.CSharpCodeBlock(directiveBuilder.ToList()));
+                builder.Add(SyntaxFactory.RazorDirective(transition, directiveBody));
             }
         }
 
@@ -1939,8 +1938,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
             CompleteBlock();
             var keyword = OutputAsMetaCode(OutputTokens());
-            var directiveBody = SyntaxFactory.CSharpDirectiveBody(keyword, cSharpCode: null);
-            var directive = SyntaxFactory.CSharpDirective(transition, directiveBody);
+            var directiveBody = SyntaxFactory.RazorDirectiveBody(keyword, cSharpCode: null);
+            var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
             builder.Add(directive);
         }
 
@@ -2076,7 +2075,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return GetNodeWithSpanContext(SyntaxFactory.CSharpExpressionLiteral(tokens));
         }
 
-        private CSharpHiddenLiteralSyntax OutputTokensAsHiddenLiteral()
+        private CSharpEphemeralTextLiteralSyntax OutputTokensAsEphemeralLiteral()
         {
             var tokens = OutputTokens();
             if (tokens.Count == 0)
@@ -2084,10 +2083,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 return null;
             }
 
-            return GetNodeWithSpanContext(SyntaxFactory.CSharpHiddenLiteral(tokens));
+            return GetNodeWithSpanContext(SyntaxFactory.CSharpEphemeralTextLiteral(tokens));
         }
 
-        private CSharpNoneLiteralSyntax OutputTokensAsNoneLiteral()
+        private UnclassifiedTextLiteralSyntax OutputTokensAsUnclassifiedLiteral()
         {
             var tokens = OutputTokens();
             if (tokens.Count == 0)
@@ -2096,7 +2095,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
 
-            return GetNodeWithSpanContext(SyntaxFactory.CSharpNoneLiteral(tokens));
+            return GetNodeWithSpanContext(SyntaxFactory.UnclassifiedTextLiteral(tokens));
         }
 
         private void OtherParserBlock(in SyntaxListBuilder<RazorSyntaxNode> builder)

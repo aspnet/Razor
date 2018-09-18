@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.Razor
         {
             return token.Kind == SyntaxKind.Identifier ||
                 // Marker symbol
-                token.Kind == SyntaxKind.Unknown;
+                token.Kind == SyntaxKind.Marker;
         }
     }
 }
