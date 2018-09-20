@@ -20,7 +20,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var rewriter = new WhiteSpaceRewriter();
 
             // Act
-            var rewritten = rewriter.Rewrite(parsed.Root);
+            var rewritten = rewriter.Rewrite(parsed.LegacyRoot);
 
             // Assert
             BaselineTest(parsed);

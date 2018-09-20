@@ -23,7 +23,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
 
             var conditionalAttributeCollapser = new ConditionalAttributeCollapser();
-            var rewritten = conditionalAttributeCollapser.Rewrite(syntaxTree.Root);
+            var rewritten = conditionalAttributeCollapser.Rewrite(syntaxTree.LegacyRoot);
 
             var whitespaceRewriter = new WhiteSpaceRewriter();
             rewritten = whitespaceRewriter.Rewrite(rewritten);

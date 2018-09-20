@@ -86,7 +86,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                     alternate.AddRange(list, 0, i);
                 }
 
-                if (alternate != null)
+                if (alternate != null && visited != null)
                 {
                     alternate.Add(visited);
                 }
@@ -125,7 +125,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                         alternate.Add(list, 0, index);
                     }
 
-                    if (alternate != null)
+                    if (alternate != null && visited != null)
                     {
                         alternate.Add(visited);
                     }

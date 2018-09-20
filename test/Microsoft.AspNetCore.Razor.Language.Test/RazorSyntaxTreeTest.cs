@@ -39,7 +39,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Test
             Assert.NotNull(syntaxTree);
 
             var spans = new List<SyntaxTreeNode>();
-            GetChildren(syntaxTree.Root);
+            GetChildren(syntaxTree.LegacyRoot);
             Assert.All(spans, node => Assert.Equal(filePath, node.Start.FilePath));
 
             void GetChildren(SyntaxTreeNode node)
@@ -70,8 +70,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Test
 
             // Assert
             Assert.NotNull(syntaxTree);
-            Assert.Equal(6, syntaxTree.Root.Children.Count);
-            var block = Assert.IsType<Block>(syntaxTree.Root.Children[4]);
+            Assert.Equal(6, syntaxTree.LegacyRoot.Children.Count);
+            var block = Assert.IsType<Block>(syntaxTree.LegacyRoot.Children[4]);
             Assert.Equal(BlockKindInternal.Directive, block.Type);
             Assert.Empty(syntaxTree.Diagnostics);
         }

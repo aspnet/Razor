@@ -23,7 +23,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
 
             var visitor = new ClassifiedSpanVisitor(syntaxTree.Source);
-            visitor.Visit(syntaxTree.NewRoot);
+            visitor.Visit(syntaxTree.Root);
 
             return visitor.ClassifiedSpans;
         }
@@ -68,7 +68,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             var toProcess = new List<Block>();
             var blockChildren = new List<Block>();
-            toProcess.Add(syntaxTree.Root);
+            toProcess.Add(syntaxTree.LegacyRoot);
 
             for (var i = 0; i < toProcess.Count; i++)
             {
@@ -107,7 +107,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         private static List<Span> Flatten(RazorSyntaxTree syntaxTree)
         {
             var result = new List<Span>();
-            AppendFlattenedSpans(syntaxTree.Root, result);
+            AppendFlattenedSpans(syntaxTree.LegacyRoot, result);
             return result;
 
             void AppendFlattenedSpans(SyntaxTreeNode node, List<Span> foundSpans)

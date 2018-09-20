@@ -93,9 +93,9 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public abstract RazorParserOptions Options { get; }
 
-        internal abstract Block Root { get; }
+        internal abstract Block LegacyRoot { get; }
 
-        internal virtual SyntaxNode NewRoot { get; }
+        internal virtual SyntaxNode Root { get; }
 
         public abstract RazorSourceDocument Source { get; }
     }

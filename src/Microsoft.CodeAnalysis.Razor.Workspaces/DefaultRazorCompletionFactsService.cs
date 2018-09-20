@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis.Razor
             }
 
             var change = new SourceChange(location, string.Empty);
-            var owner = syntaxTree.Root.LocateOwner(change);
+            var owner = syntaxTree.LegacyRoot.LocateOwner(change);
 
             if (owner == null)
             {

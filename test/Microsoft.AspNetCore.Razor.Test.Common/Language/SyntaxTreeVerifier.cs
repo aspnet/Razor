@@ -18,11 +18,11 @@ namespace Microsoft.AspNetCore.Razor.Language
         {
             if (syntaxTree is LegacyRazorSyntaxTree)
             {
-                Verify(syntaxTree.Root);
+                Verify(syntaxTree.LegacyRoot);
             }
             else
             {
-                new Verifier(syntaxTree.Source).Visit(syntaxTree.NewRoot);
+                new Verifier(syntaxTree.Source).Visit(syntaxTree.Root);
             }
         }
 

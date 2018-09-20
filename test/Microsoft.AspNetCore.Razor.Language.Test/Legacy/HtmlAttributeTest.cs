@@ -224,8 +224,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             // Act
             var results = ParseDocument("<span foo='@@' />");
-            var attributeCollapser = new ConditionalAttributeCollapser();
-            var rewritten = attributeCollapser.Rewrite(results.Root);
+            var attributeCollapser = new LegacyConditionalAttributeCollapser();
+            var rewritten = attributeCollapser.Rewrite(results.LegacyRoot);
 
             // Assert
             BaselineTest(rewritten);
@@ -296,11 +296,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             // Act
             var results = ParseDocument(code);
-            var attributeCollapser = new ConditionalAttributeCollapser();
-            var rewritten = attributeCollapser.Rewrite(results.Root);
+            var attributeCollapser = new LegacyConditionalAttributeCollapser();
+            var rewritten = attributeCollapser.Rewrite(results.LegacyRoot);
 
             // Assert
-            Assert.Equal(rewritten.Children.Count(), results.Root.Children.Count());
+            Assert.Equal(rewritten.Children.Count(), results.LegacyRoot.Children.Count());
         }
 
         [Fact]
