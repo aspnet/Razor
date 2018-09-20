@@ -204,8 +204,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             var spanSource = GetSourceSpanForNode(node);
             var blockSource = GetSourceSpanForNode(_currentBlock);
             var acceptedCharacters = AcceptedCharactersInternal.Any;
-            var annotation = node.GetAnnotationValue(SyntaxConstants.SpanContextKind);
-            if (annotation is SpanContext context)
+            var context = node.GetSpanContext();
+            if (context != null)
             {
                 acceptedCharacters = context.EditHandler.AcceptedCharacters;
             }

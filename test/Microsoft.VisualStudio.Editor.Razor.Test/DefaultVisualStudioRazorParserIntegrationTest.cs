@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
                 // Assert
                 Assert.Equal(2, manager.ParseCount);
-                ParserTestBase.EvaluateParseTree(manager.CurrentSyntaxTree.Root, new MarkupBlock(
+                ParserTestBase.EvaluateParseTree(manager.CurrentSyntaxTree.LegacyRoot, new MarkupBlock(
                     factory.Markup("foo "),
                     new ExpressionBlock(
                         factory.CodeTransition(),
@@ -236,7 +236,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 await manager.WaitForReparseAsync();
 
                 Assert.Equal(2, manager.ParseCount);
-                ParserTestBase.EvaluateParseTree(manager.CurrentSyntaxTree.Root, new MarkupBlock(
+                ParserTestBase.EvaluateParseTree(manager.CurrentSyntaxTree.LegacyRoot, new MarkupBlock(
                         factory.Markup("foo "),
                         new ExpressionBlock(
                             factory.CodeTransition(),
@@ -288,7 +288,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 await manager.WaitForReparseAsync();
 
                 Assert.Equal(2, manager.ParseCount);
-                ParserTestBase.EvaluateParseTree(manager.CurrentSyntaxTree.Root, new MarkupBlock(
+                ParserTestBase.EvaluateParseTree(manager.CurrentSyntaxTree.LegacyRoot, new MarkupBlock(
                         factory.Markup("foo "),
                         new ExpressionBlock(
                             factory.CodeTransition(),
@@ -351,7 +351,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                 await manager.WaitForReparseAsync();
 
                 Assert.Equal(2, manager.ParseCount);
-                ParserTestBase.EvaluateParseTree(manager.CurrentSyntaxTree.Root, new MarkupBlock(
+                ParserTestBase.EvaluateParseTree(manager.CurrentSyntaxTree.LegacyRoot, new MarkupBlock(
                     factory.Markup("foo "),
                     new ExpressionBlock(
                         factory.CodeTransition(),

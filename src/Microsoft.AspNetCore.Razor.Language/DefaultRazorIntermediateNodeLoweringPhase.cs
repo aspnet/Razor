@@ -47,7 +47,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                     var import = imports[j];
 
                     importsVisitor.FilePath = import.Source.FilePath;
-                    importsVisitor.VisitBlock(import.Root);
+                    importsVisitor.VisitBlock(import.LegacyRoot);
                 }
 
                 importedUsings = importsVisitor.Usings;
@@ -59,7 +59,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 FilePath = syntaxTree.Source.FilePath,
             };
 
-            visitor.VisitBlock(syntaxTree.Root);
+            visitor.VisitBlock(syntaxTree.LegacyRoot);
 
             // 1. Prioritize non-imported usings over imported ones.
             // 2. Don't import usings that already exist in primary document.

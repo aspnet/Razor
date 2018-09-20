@@ -533,7 +533,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
                     options.Directives.Add(FunctionsDirective.Directive);
                     options.Directives.Add(SectionDirective.Directive);
                 }));
-            syntaxTree.Root.LinkNodes();
+            syntaxTree.LegacyRoot.LinkNodes();
 
             return syntaxTree;
         }
@@ -541,7 +541,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
         private static Span ExtractSpan(int spanLocation, string content)
         {
             var syntaxTree = GetSyntaxTree(content);
-            var span = syntaxTree.Root.LocateOwner(new SourceChange(new SourceSpan(spanLocation, 0), string.Empty));
+            var span = syntaxTree.LegacyRoot.LocateOwner(new SourceChange(new SourceSpan(spanLocation, 0), string.Empty));
             return span;
         }
 

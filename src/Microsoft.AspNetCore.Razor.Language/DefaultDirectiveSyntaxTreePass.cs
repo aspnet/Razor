@@ -48,7 +48,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public RazorSyntaxTree Verify()
             {
-                var root = Visit(_syntaxTree.NewRoot);
+                var root = Visit(_syntaxTree.Root);
                 var rewrittenTree = new DefaultRazorSyntaxTree(root, _syntaxTree.Source, _syntaxTree.Diagnostics, _syntaxTree.Options);
                 return rewrittenTree;
             }
@@ -76,7 +76,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public void Verify(RazorSyntaxTree tree)
             {
-                tree.Root.Accept(this);
+                tree.LegacyRoot.Accept(this);
             }
 
             public override void VisitDirectiveBlock(DirectiveChunkGenerator chunkGenerator, Block block)

@@ -71,19 +71,42 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             var syntaxTree = ParseDocument(documentContent);
             var errorSink = new ErrorSink();
-            var parseTreeRewriter = new TagHelperParseTreeRewriter(
-                tagHelperPrefix,
-                descriptors,
-                featureFlags ?? syntaxTree.Options.FeatureFlags);
 
-            var actualTree = parseTreeRewriter.Rewrite(syntaxTree.Root, errorSink);
+            RazorSyntaxTree rewrittenTree = null;
+            if (UseNewSyntaxTree)
+            {
+                var parseTreeRewriter = new TagHelperParseTreeRewriter(
+                    tagHelperPrefix,
+                    descriptors,
+                    featureFlags ?? syntaxTree.Options.FeatureFlags);
 
-            var allErrors = syntaxTree.Diagnostics.Concat(errorSink.Errors);
-            var actualErrors = allErrors
-                .OrderBy(error => error.Span.AbsoluteIndex)
-                .ToList();
+                var actualTree = parseTreeRewriter.Rewrite(syntaxTree.Root, errorSink);
 
-            BaselineTest(actualTree, filePath: null, verifySyntaxTree: false, actualErrors.ToArray());
+                var allErrors = syntaxTree.Diagnostics.Concat(errorSink.Errors);
+                var actualErrors = allErrors
+                    .OrderBy(error => error.Span.AbsoluteIndex)
+                    .ToList();
+
+                rewrittenTree = RazorSyntaxTree.Create(actualTree, syntaxTree.Source, actualErrors, syntaxTree.Options);
+            }
+            else
+            {
+                var parseTreeRewriter = new LegacyTagHelperParseTreeRewriter(
+                    tagHelperPrefix,
+                    descriptors,
+                    featureFlags ?? syntaxTree.Options.FeatureFlags);
+
+                var actualTree = parseTreeRewriter.Rewrite(syntaxTree.LegacyRoot, errorSink);
+
+                var allErrors = syntaxTree.Diagnostics.Concat(errorSink.Errors);
+                var actualErrors = allErrors
+                    .OrderBy(error => error.Span.AbsoluteIndex)
+                    .ToList();
+
+                rewrittenTree = RazorSyntaxTree.Create(actualTree, syntaxTree.Source, actualErrors, syntaxTree.Options);
+            }
+
+            BaselineTest(rewrittenTree, verifySyntaxTree: false);
         }
     }
 }

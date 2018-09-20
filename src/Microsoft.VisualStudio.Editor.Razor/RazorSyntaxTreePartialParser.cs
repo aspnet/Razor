@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             // We mutate the existing syntax tree so we need to clone the one passed in so our mutations don't
             // impact external state.
-            SyntaxTreeRoot = (Block)syntaxTree.Root.Clone();
+            SyntaxTreeRoot = (Block)syntaxTree.LegacyRoot.Clone();
         }
 
         // Internal for testing

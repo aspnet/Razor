@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Test
             Block commentBlock = new HtmlCommentBlock(content);
 
             // Act
-            bool actualResult = TagHelperParseTreeRewriter.IsComment(content);
+            bool actualResult = LegacyTagHelperParseTreeRewriter.IsComment(content);
 
             // Assert
             Assert.True(actualResult);
