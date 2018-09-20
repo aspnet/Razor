@@ -14,7 +14,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             IReadOnlyList<RazorDiagnostic> diagnostics,
             RazorParserOptions options)
         {
-            Root = root;
+            LegacyRoot = root;
             Source = source;
             Diagnostics = diagnostics;
             Options = options;
@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override RazorParserOptions Options { get; }
 
-        internal override Block Root { get; }
+        internal override Block LegacyRoot { get; }
 
         public override RazorSourceDocument Source { get; }
     }

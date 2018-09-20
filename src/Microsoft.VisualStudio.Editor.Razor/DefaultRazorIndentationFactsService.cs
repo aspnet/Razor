@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             var previousLineEndIndex = GetPreviousLineEndIndex(syntaxTreeSnapshot, line);
             var simulatedChange = new SourceChange(previousLineEndIndex, 0, string.Empty);
-            var owningSpan = syntaxTree.Root.LocateOwner(simulatedChange);
+            var owningSpan = syntaxTree.LegacyRoot.LocateOwner(simulatedChange);
             if (owningSpan == null || owningSpan.Kind == SpanKindInternal.Code)
             {
                 // Example,

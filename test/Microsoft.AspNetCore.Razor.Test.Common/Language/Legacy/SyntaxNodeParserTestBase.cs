@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 return;
             }
 
-            var root = syntaxTree.NewRoot;
+            var root = syntaxTree.Root;
             var diagnostics = syntaxTree.Diagnostics;
             var filePath = syntaxTree.Source.FilePath;
             if (FileName == null)

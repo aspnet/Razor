@@ -252,7 +252,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             // @{ |}
 
             var change = new SourceChange(changePosition, 0, string.Empty);
-            var owner = syntaxTree.Root.LocateOwner(change);
+            var owner = syntaxTree.LegacyRoot.LocateOwner(change);
 
             if (IsUnlinkedSpan(owner))
             {

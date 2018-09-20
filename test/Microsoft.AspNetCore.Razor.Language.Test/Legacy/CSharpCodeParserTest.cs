@@ -205,7 +205,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Test.Legacy
             var document = RazorSyntaxTree.Parse(source);
 
             // Assert
-            var directive = document.Root.Children.OfType<Block>().Last();
+            var directive = document.LegacyRoot.Children.OfType<Block>().Last();
             var erroredSpan = (Span)directive.Children.Last();
             var chunkGenerator = Assert.IsType<TagHelperPrefixDirectiveChunkGenerator>(erroredSpan.ChunkGenerator);
             var diagnostic = Assert.Single(chunkGenerator.Diagnostics);

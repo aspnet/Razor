@@ -16,7 +16,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             IReadOnlyList<RazorDiagnostic> diagnostics,
             RazorParserOptions options)
         {
-            NewRoot = root;
+            Root = root;
             Source = source;
             Diagnostics = diagnostics;
             Options = options;
@@ -26,11 +26,11 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override RazorParserOptions Options { get; }
 
-        internal override SyntaxNode NewRoot { get; }
+        internal override SyntaxNode Root { get; }
 
         public override RazorSourceDocument Source { get; }
 
         // Temporary
-        internal override Block Root => throw new NotImplementedException();
+        internal override Block LegacyRoot => throw new NotImplementedException();
     }
 }

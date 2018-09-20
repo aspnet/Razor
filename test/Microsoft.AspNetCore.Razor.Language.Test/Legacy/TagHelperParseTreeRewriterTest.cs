@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 Func<string, string, KeyValuePair<string, string>> kvp =
                     (key, value) => new KeyValuePair<string, string>(key, value);
                 var empty = Enumerable.Empty<KeyValuePair<string, string>>();
-                var csharp = TagHelperParseTreeRewriter.InvalidAttributeValueMarker;
+                var csharp = LegacyTagHelperParseTreeRewriter.InvalidAttributeValueMarker;
 
                 // documentContent, expectedPairs
                 return new TheoryData<string, IEnumerable<KeyValuePair<string, string>>>
@@ -50,8 +50,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             // Arrange
             var errorSink = new ErrorSink();
             var parseResult = ParseDocument(documentContent);
-            var document = parseResult.Root;
-            var parseTreeRewriter = new TagHelperParseTreeRewriter(null, Enumerable.Empty<TagHelperDescriptor>(), parseResult.Options.FeatureFlags);
+            var document = parseResult.LegacyRoot;
+            var parseTreeRewriter = new LegacyTagHelperParseTreeRewriter(null, Enumerable.Empty<TagHelperDescriptor>(), parseResult.Options.FeatureFlags);
 
             // Assert - Guard
             var rootBlock = Assert.IsType<Block>(document);

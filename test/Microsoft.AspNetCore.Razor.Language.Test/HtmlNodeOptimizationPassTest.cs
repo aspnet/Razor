@@ -24,7 +24,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             var outputTree = pass.Execute(codeDocument, originalTree);
 
             // Assert
-            var tag = Assert.Single(outputTree.Root.Children);
+            var tag = Assert.Single(outputTree.LegacyRoot.Children);
             var tagBlock = Assert.IsType<Block>(tag);
             Assert.Equal(BlockKindInternal.Tag, tagBlock.Type);
             Assert.Equal(3, tagBlock.Children.Count);
@@ -45,8 +45,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             var outputTree = pass.Execute(codeDocument, originalTree);
 
             // Assert
-            Assert.Equal(4, outputTree.Root.Children.Count);
-            var whitespace = Assert.IsType<Span>(outputTree.Root.Children[1]);
+            Assert.Equal(4, outputTree.LegacyRoot.Children.Count);
+            var whitespace = Assert.IsType<Span>(outputTree.LegacyRoot.Children[1]);
             Assert.True(whitespace.Content.All(char.IsWhiteSpace));
         }
     }

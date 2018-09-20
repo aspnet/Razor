@@ -73,7 +73,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var results = parser.Parse(TestRazorSourceDocument.Create("foo @bar baz"));
 
             // Assert
-            var spans = results.Root.Flatten().ToArray();
+            var spans = results.LegacyRoot.Flatten().ToArray();
             for (var i = 0; i < spans.Length - 1; i++)
             {
                 Assert.Same(spans[i + 1], spans[i].Next);

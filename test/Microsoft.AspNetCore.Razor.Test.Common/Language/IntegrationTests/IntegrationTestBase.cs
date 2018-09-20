@@ -460,7 +460,7 @@ namespace Microsoft.AspNetCore.Razor.Language.IntegrationTests
 
             var syntaxTree = codeDocument.GetSyntaxTree();
             var visitor = new CodeSpanVisitor();
-            visitor.VisitBlock(syntaxTree.Root);
+            visitor.VisitBlock(syntaxTree.LegacyRoot);
 
             var charBuffer = new char[codeDocument.Source.Length];
             codeDocument.Source.CopyTo(0, charBuffer, 0, codeDocument.Source.Length);
