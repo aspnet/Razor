@@ -33,7 +33,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         public override SyntaxNode VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
         {
             if (node.Parent is CSharpStatementBodySyntax ||
-                node.Parent is CSharpExpressionBodySyntax ||
+                node.Parent is CSharpExplicitExpressionBodySyntax ||
                 node.Parent is CSharpImplicitExpressionBodySyntax ||
                 node.Parent is RazorDirectiveBodySyntax)
             {
@@ -43,17 +43,17 @@ namespace Microsoft.AspNetCore.Razor.Language
             return WriteBlock(node, BlockKindInternal.Statement, base.VisitCSharpCodeBlock);
         }
 
-        public override SyntaxNode VisitCSharpStatement(CSharpStatement node)
+        public override SyntaxNode VisitCSharpStatement(CSharpStatementSyntax node)
         {
             return WriteBlock(node, BlockKindInternal.Statement, base.VisitCSharpStatement);
         }
 
-        public override SyntaxNode VisitCSharpExpression(CSharpExpression node)
+        public override SyntaxNode VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Expression, base.VisitCSharpExpression);
+            return WriteBlock(node, BlockKindInternal.Expression, base.VisitCSharpExplicitExpression);
         }
 
-        public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+        public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
         {
             return WriteBlock(node, BlockKindInternal.Expression, base.VisitCSharpImplicitExpression);
         }

@@ -129,7 +129,7 @@
     <Field Name="Transition" Type="CSharpTransitionSyntax" />
     <Field Name="Body" Type="CSharpSyntaxNode" />
   </AbstractNode>
-  <Node Name="CSharpStatement" Base="CSharpRazorBlockSyntax">
+  <Node Name="CSharpStatementSyntax" Base="CSharpRazorBlockSyntax">
     <Kind Name="CSharpStatement" />
     <Field Name="Transition" Type="CSharpTransitionSyntax" Override="true">
       <Kind Name="CSharpTransition" />
@@ -144,22 +144,22 @@
     <Field Name="CSharpCode" Type="CSharpCodeBlockSyntax" />
     <Field Name="CloseBrace" Type="RazorMetaCodeSyntax" />
   </Node>
-  <Node Name="CSharpExpression" Base="CSharpRazorBlockSyntax">
-    <Kind Name="CSharpExpression" />
+  <Node Name="CSharpExplicitExpressionSyntax" Base="CSharpRazorBlockSyntax">
+    <Kind Name="CSharpExplicitExpression" />
     <Field Name="Transition" Type="CSharpTransitionSyntax" Override="true">
       <Kind Name="CSharpTransition" />
     </Field>
     <Field Name="Body" Type="CSharpSyntaxNode" Override="true">
-      <Kind Name="CSharpExpressionBody" />
+      <Kind Name="CSharpExplicitExpressionBody" />
     </Field>
   </Node>
-  <Node Name="CSharpExpressionBodySyntax" Base="CSharpSyntaxNode">
-    <Kind Name="CSharpExpressionBody" />
+  <Node Name="CSharpExplicitExpressionBodySyntax" Base="CSharpSyntaxNode">
+    <Kind Name="CSharpExplicitExpressionBody" />
     <Field Name="OpenParen" Type="RazorMetaCodeSyntax" />
     <Field Name="CSharpCode" Type="CSharpCodeBlockSyntax" />
     <Field Name="CloseParen" Type="RazorMetaCodeSyntax" />
   </Node>
-  <Node Name="CSharpImplicitExpression" Base="CSharpRazorBlockSyntax">
+  <Node Name="CSharpImplicitExpressionSyntax" Base="CSharpRazorBlockSyntax">
     <Kind Name="CSharpImplicitExpression" />
     <Field Name="Transition" Type="CSharpTransitionSyntax" Override="true">
       <Kind Name="CSharpTransition" />
