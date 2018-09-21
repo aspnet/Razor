@@ -75,7 +75,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     else if (At(SyntaxKind.LeftParenthesis))
                     {
                         var expressionBody = ParseExplicitExpressionBody();
-                        var expression = SyntaxFactory.CSharpExpression(transition, expressionBody);
+                        var expression = SyntaxFactory.CSharpExplicitExpression(transition, expressionBody);
                         builder.Add(expression);
                     }
                     else if (At(SyntaxKind.Identifier))
@@ -163,7 +163,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        private CSharpExpressionBodySyntax ParseExplicitExpressionBody()
+        private CSharpExplicitExpressionBodySyntax ParseExplicitExpressionBody()
         {
             var block = new Block(Resources.BlockName_ExplicitExpression, CurrentStart);
             Assert(SyntaxKind.LeftParenthesis);
@@ -214,7 +214,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     PutCurrentBack();
                 }
 
-                return SyntaxFactory.CSharpExpressionBody(leftParen, expressionBlock, rightParen);
+                return SyntaxFactory.CSharpExplicitExpressionBody(leftParen, expressionBlock, rightParen);
             }
         }
 

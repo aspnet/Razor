@@ -25,10 +25,10 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                             MarkupTextLiteral - [14..14) - FullWidth: 0 - Gen<Markup> - SpanEditHandler;Accepts:Any
                                 Marker;[];
                             CSharpCodeBlock - [14..20) - FullWidth: 6
-                                CSharpExpression - [14..20) - FullWidth: 6
+                                CSharpExplicitExpression - [14..20) - FullWidth: 6
                                     CSharpTransition - [14..15) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                                         Transition;[@];
-                                    CSharpExpressionBody - [15..20) - FullWidth: 5
+                                    CSharpExplicitExpressionBody - [15..20) - FullWidth: 5
                                         RazorMetaCode - [15..16) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                                             LeftParenthesis;[(];
                                         CSharpCodeBlock - [16..19) - FullWidth: 3
@@ -52,10 +52,10 @@ RazorDocument - [0..120) - FullWidth: 120 - [{<span foo='@@@(2+3)' bar='@(2+3)@@
                     MarkupDynamicAttributeValue - [27..33) - FullWidth: 6
                         GenericBlock - [27..33) - FullWidth: 6
                             CSharpCodeBlock - [27..33) - FullWidth: 6
-                                CSharpExpression - [27..33) - FullWidth: 6
+                                CSharpExplicitExpression - [27..33) - FullWidth: 6
                                     CSharpTransition - [27..28) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                                         Transition;[@];
-                                    CSharpExpressionBody - [28..33) - FullWidth: 5
+                                    CSharpExplicitExpressionBody - [28..33) - FullWidth: 5
                                         RazorMetaCode - [28..29) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
                                             LeftParenthesis;[(];
                                         CSharpCodeBlock - [29..32) - FullWidth: 3
