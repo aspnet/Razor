@@ -40,7 +40,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             if (children[0] is CSharpStatementLiteralSyntax literal &&
-                (children[1] is CSharpExpression || children[1] is CSharpImplicitExpression))
+                (children[1] is CSharpExplicitExpressionSyntax || children[1] is CSharpImplicitExpressionSyntax))
             {
                 var containsNonWhitespace = literal.DescendantNodes()
                     .Where(n => n.IsToken)

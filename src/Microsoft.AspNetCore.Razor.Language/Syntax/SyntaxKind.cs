@@ -30,8 +30,8 @@ namespace Microsoft.AspNetCore.Razor.Language
         // CSharp
         CSharpStatement,
         CSharpStatementBody,
-        CSharpExpression,
-        CSharpExpressionBody,
+        CSharpExplicitExpression,
+        CSharpExplicitExpressionBody,
         CSharpImplicitExpression,
         CSharpImplicitExpressionBody,
         CSharpCodeBlock,
