@@ -8,22 +8,32 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class WhiteSpaceRewriterTest : CsHtmlMarkupParserTestBase
     {
+        public WhiteSpaceRewriterTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void Moves_Whitespace_Preceeding_ExpressionBlock_To_Parent_Block()
         {
             // Arrange
+            var content = @"
+<div>
+    @result
+</div>";
             var parsed = ParseDocument(
                 RazorLanguageVersion.Latest,
-                "test    @foo test",
+                content,
                 Array.Empty<DirectiveDescriptor>());
 
-            var rewriter = new WhiteSpaceRewriter();
+            var rewriter = new WhitespaceRewriter();
 
             // Act
-            var rewritten = rewriter.Rewrite(parsed.LegacyRoot);
+            var rewritten = rewriter.Visit(parsed.Root);
 
             // Assert
-            BaselineTest(parsed);
+            var rewrittenTree = RazorSyntaxTree.Create(rewritten, parsed.Source, parsed.Diagnostics, parsed.Options);
+            BaselineTest(rewrittenTree);
         }
     }
 }

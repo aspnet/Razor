@@ -137,8 +137,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpStatement node.</summary>
-    public virtual TResult VisitCSharpStatement(CSharpStatement node)
+    /// <summary>Called when the visitor visits a CSharpStatementSyntax node.</summary>
+    public virtual TResult VisitCSharpStatement(CSharpStatementSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -149,20 +149,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpExpression node.</summary>
-    public virtual TResult VisitCSharpExpression(CSharpExpression node)
+    /// <summary>Called when the visitor visits a CSharpExplicitExpressionSyntax node.</summary>
+    public virtual TResult VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
     {
       return DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpExpressionBodySyntax node.</summary>
-    public virtual TResult VisitCSharpExpressionBody(CSharpExpressionBodySyntax node)
+    /// <summary>Called when the visitor visits a CSharpExplicitExpressionBodySyntax node.</summary>
+    public virtual TResult VisitCSharpExplicitExpressionBody(CSharpExplicitExpressionBodySyntax node)
     {
       return DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpImplicitExpression node.</summary>
-    public virtual TResult VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    /// <summary>Called when the visitor visits a CSharpImplicitExpressionSyntax node.</summary>
+    public virtual TResult VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -314,8 +314,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpStatement node.</summary>
-    public virtual void VisitCSharpStatement(CSharpStatement node)
+    /// <summary>Called when the visitor visits a CSharpStatementSyntax node.</summary>
+    public virtual void VisitCSharpStatement(CSharpStatementSyntax node)
     {
       DefaultVisit(node);
     }
@@ -326,20 +326,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpExpression node.</summary>
-    public virtual void VisitCSharpExpression(CSharpExpression node)
+    /// <summary>Called when the visitor visits a CSharpExplicitExpressionSyntax node.</summary>
+    public virtual void VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
     {
       DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpExpressionBodySyntax node.</summary>
-    public virtual void VisitCSharpExpressionBody(CSharpExpressionBodySyntax node)
+    /// <summary>Called when the visitor visits a CSharpExplicitExpressionBodySyntax node.</summary>
+    public virtual void VisitCSharpExplicitExpressionBody(CSharpExplicitExpressionBodySyntax node)
     {
       DefaultVisit(node);
     }
 
-    /// <summary>Called when the visitor visits a CSharpImplicitExpression node.</summary>
-    public virtual void VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    /// <summary>Called when the visitor visits a CSharpImplicitExpressionSyntax node.</summary>
+    public virtual void VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
     {
       DefaultVisit(node);
     }
@@ -504,7 +504,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return node.Update(children);
     }
 
-    public override SyntaxNode VisitCSharpStatement(CSharpStatement node)
+    public override SyntaxNode VisitCSharpStatement(CSharpStatementSyntax node)
     {
       var transition = (CSharpTransitionSyntax)Visit(node.Transition);
       var body = (CSharpSyntaxNode)Visit(node.Body);
@@ -519,14 +519,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return node.Update(openBrace, cSharpCode, closeBrace);
     }
 
-    public override SyntaxNode VisitCSharpExpression(CSharpExpression node)
+    public override SyntaxNode VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
     {
       var transition = (CSharpTransitionSyntax)Visit(node.Transition);
       var body = (CSharpSyntaxNode)Visit(node.Body);
       return node.Update(transition, body);
     }
 
-    public override SyntaxNode VisitCSharpExpressionBody(CSharpExpressionBodySyntax node)
+    public override SyntaxNode VisitCSharpExplicitExpressionBody(CSharpExplicitExpressionBodySyntax node)
     {
       var openParen = (RazorMetaCodeSyntax)Visit(node.OpenParen);
       var cSharpCode = (CSharpCodeBlockSyntax)Visit(node.CSharpCode);
@@ -534,7 +534,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return node.Update(openParen, cSharpCode, closeParen);
     }
 
-    public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
     {
       var transition = (CSharpTransitionSyntax)Visit(node.Transition);
       var body = (CSharpSyntaxNode)Visit(node.Body);
@@ -878,18 +878,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return SyntaxFactory.CSharpTemplateBlock(default(SyntaxList<RazorSyntaxNode>));
     }
 
-    /// <summary>Creates a new CSharpStatement instance.</summary>
-    public static CSharpStatement CSharpStatement(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    /// <summary>Creates a new CSharpStatementSyntax instance.</summary>
+    public static CSharpStatementSyntax CSharpStatement(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
-      return (CSharpStatement)InternalSyntax.SyntaxFactory.CSharpStatement(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
+      return (CSharpStatementSyntax)InternalSyntax.SyntaxFactory.CSharpStatement(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
     }
 
-    /// <summary>Creates a new CSharpStatement instance.</summary>
-    public static CSharpStatement CSharpStatement(CSharpSyntaxNode body)
+    /// <summary>Creates a new CSharpStatementSyntax instance.</summary>
+    public static CSharpStatementSyntax CSharpStatement(CSharpSyntaxNode body)
     {
       return SyntaxFactory.CSharpStatement(SyntaxFactory.CSharpTransition(), body);
     }
@@ -912,24 +912,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return SyntaxFactory.CSharpStatementBody(SyntaxFactory.RazorMetaCode(), SyntaxFactory.CSharpCodeBlock(), SyntaxFactory.RazorMetaCode());
     }
 
-    /// <summary>Creates a new CSharpExpression instance.</summary>
-    public static CSharpExpression CSharpExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    /// <summary>Creates a new CSharpExplicitExpressionSyntax instance.</summary>
+    public static CSharpExplicitExpressionSyntax CSharpExplicitExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
-      return (CSharpExpression)InternalSyntax.SyntaxFactory.CSharpExpression(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
+      return (CSharpExplicitExpressionSyntax)InternalSyntax.SyntaxFactory.CSharpExplicitExpression(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
     }
 
-    /// <summary>Creates a new CSharpExpression instance.</summary>
-    public static CSharpExpression CSharpExpression(CSharpSyntaxNode body)
+    /// <summary>Creates a new CSharpExplicitExpressionSyntax instance.</summary>
+    public static CSharpExplicitExpressionSyntax CSharpExplicitExpression(CSharpSyntaxNode body)
     {
-      return SyntaxFactory.CSharpExpression(SyntaxFactory.CSharpTransition(), body);
+      return SyntaxFactory.CSharpExplicitExpression(SyntaxFactory.CSharpTransition(), body);
     }
 
-    /// <summary>Creates a new CSharpExpressionBodySyntax instance.</summary>
-    public static CSharpExpressionBodySyntax CSharpExpressionBody(RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
+    /// <summary>Creates a new CSharpExplicitExpressionBodySyntax instance.</summary>
+    public static CSharpExplicitExpressionBodySyntax CSharpExplicitExpressionBody(RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
     {
       if (openParen == null)
         throw new ArgumentNullException(nameof(openParen));
@@ -937,27 +937,27 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         throw new ArgumentNullException(nameof(cSharpCode));
       if (closeParen == null)
         throw new ArgumentNullException(nameof(closeParen));
-      return (CSharpExpressionBodySyntax)InternalSyntax.SyntaxFactory.CSharpExpressionBody(openParen == null ? null : (InternalSyntax.RazorMetaCodeSyntax)openParen.Green, cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green, closeParen == null ? null : (InternalSyntax.RazorMetaCodeSyntax)closeParen.Green).CreateRed();
+      return (CSharpExplicitExpressionBodySyntax)InternalSyntax.SyntaxFactory.CSharpExplicitExpressionBody(openParen == null ? null : (InternalSyntax.RazorMetaCodeSyntax)openParen.Green, cSharpCode == null ? null : (InternalSyntax.CSharpCodeBlockSyntax)cSharpCode.Green, closeParen == null ? null : (InternalSyntax.RazorMetaCodeSyntax)closeParen.Green).CreateRed();
     }
 
-    /// <summary>Creates a new CSharpExpressionBodySyntax instance.</summary>
-    public static CSharpExpressionBodySyntax CSharpExpressionBody()
+    /// <summary>Creates a new CSharpExplicitExpressionBodySyntax instance.</summary>
+    public static CSharpExplicitExpressionBodySyntax CSharpExplicitExpressionBody()
     {
-      return SyntaxFactory.CSharpExpressionBody(SyntaxFactory.RazorMetaCode(), SyntaxFactory.CSharpCodeBlock(), SyntaxFactory.RazorMetaCode());
+      return SyntaxFactory.CSharpExplicitExpressionBody(SyntaxFactory.RazorMetaCode(), SyntaxFactory.CSharpCodeBlock(), SyntaxFactory.RazorMetaCode());
     }
 
-    /// <summary>Creates a new CSharpImplicitExpression instance.</summary>
-    public static CSharpImplicitExpression CSharpImplicitExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    /// <summary>Creates a new CSharpImplicitExpressionSyntax instance.</summary>
+    public static CSharpImplicitExpressionSyntax CSharpImplicitExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
-      return (CSharpImplicitExpression)InternalSyntax.SyntaxFactory.CSharpImplicitExpression(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
+      return (CSharpImplicitExpressionSyntax)InternalSyntax.SyntaxFactory.CSharpImplicitExpression(transition == null ? null : (InternalSyntax.CSharpTransitionSyntax)transition.Green, body == null ? null : (InternalSyntax.CSharpSyntaxNode)body.Green).CreateRed();
     }
 
-    /// <summary>Creates a new CSharpImplicitExpression instance.</summary>
-    public static CSharpImplicitExpression CSharpImplicitExpression(CSharpSyntaxNode body)
+    /// <summary>Creates a new CSharpImplicitExpressionSyntax instance.</summary>
+    public static CSharpImplicitExpressionSyntax CSharpImplicitExpression(CSharpSyntaxNode body)
     {
       return SyntaxFactory.CSharpImplicitExpression(SyntaxFactory.CSharpTransition(), body);
     }

@@ -1872,12 +1872,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     public abstract CSharpSyntaxNode Body { get; }
   }
 
-  internal sealed partial class CSharpStatement : CSharpRazorBlockSyntax
+  internal sealed partial class CSharpStatementSyntax : CSharpRazorBlockSyntax
   {
     private readonly CSharpTransitionSyntax _transition;
     private readonly CSharpSyntaxNode _body;
 
-    internal CSharpStatement(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal CSharpStatementSyntax(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 2;
@@ -1888,7 +1888,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal CSharpStatement(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    internal CSharpStatementSyntax(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body)
         : base(kind)
     {
         SlotCount = 2;
@@ -1913,7 +1913,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.CSharpStatement(this, parent, position);
+      return new Syntax.CSharpStatementSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
@@ -1926,7 +1926,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         visitor.VisitCSharpStatement(this);
     }
 
-    public CSharpStatement Update(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    public CSharpStatementSyntax Update(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
         if (transition != Transition || body != Body)
         {
@@ -1945,12 +1945,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new CSharpStatement(Kind, _transition, _body, diagnostics, GetAnnotations());
+         return new CSharpStatementSyntax(Kind, _transition, _body, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new CSharpStatement(Kind, _transition, _body, GetDiagnostics(), annotations);
+         return new CSharpStatementSyntax(Kind, _transition, _body, GetDiagnostics(), annotations);
     }
   }
 
@@ -2043,12 +2043,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
   }
 
-  internal sealed partial class CSharpExpression : CSharpRazorBlockSyntax
+  internal sealed partial class CSharpExplicitExpressionSyntax : CSharpRazorBlockSyntax
   {
     private readonly CSharpTransitionSyntax _transition;
     private readonly CSharpSyntaxNode _body;
 
-    internal CSharpExpression(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal CSharpExplicitExpressionSyntax(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 2;
@@ -2059,7 +2059,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal CSharpExpression(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    internal CSharpExplicitExpressionSyntax(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body)
         : base(kind)
     {
         SlotCount = 2;
@@ -2084,24 +2084,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.CSharpExpression(this, parent, position);
+      return new Syntax.CSharpExplicitExpressionSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitCSharpExpression(this);
+        return visitor.VisitCSharpExplicitExpression(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitCSharpExpression(this);
+        visitor.VisitCSharpExplicitExpression(this);
     }
 
-    public CSharpExpression Update(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    public CSharpExplicitExpressionSyntax Update(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
         if (transition != Transition || body != Body)
         {
-            var newNode = SyntaxFactory.CSharpExpression(transition, body);
+            var newNode = SyntaxFactory.CSharpExplicitExpression(transition, body);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -2116,22 +2116,22 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new CSharpExpression(Kind, _transition, _body, diagnostics, GetAnnotations());
+         return new CSharpExplicitExpressionSyntax(Kind, _transition, _body, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new CSharpExpression(Kind, _transition, _body, GetDiagnostics(), annotations);
+         return new CSharpExplicitExpressionSyntax(Kind, _transition, _body, GetDiagnostics(), annotations);
     }
   }
 
-  internal sealed partial class CSharpExpressionBodySyntax : CSharpSyntaxNode
+  internal sealed partial class CSharpExplicitExpressionBodySyntax : CSharpSyntaxNode
   {
     private readonly RazorMetaCodeSyntax _openParen;
     private readonly CSharpCodeBlockSyntax _cSharpCode;
     private readonly RazorMetaCodeSyntax _closeParen;
 
-    internal CSharpExpressionBodySyntax(SyntaxKind kind, RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal CSharpExplicitExpressionBodySyntax(SyntaxKind kind, RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 3;
@@ -2144,7 +2144,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal CSharpExpressionBodySyntax(SyntaxKind kind, RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
+    internal CSharpExplicitExpressionBodySyntax(SyntaxKind kind, RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
         : base(kind)
     {
         SlotCount = 3;
@@ -2173,24 +2173,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.CSharpExpressionBodySyntax(this, parent, position);
+      return new Syntax.CSharpExplicitExpressionBodySyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
     {
-        return visitor.VisitCSharpExpressionBody(this);
+        return visitor.VisitCSharpExplicitExpressionBody(this);
     }
 
     public override void Accept(SyntaxVisitor visitor)
     {
-        visitor.VisitCSharpExpressionBody(this);
+        visitor.VisitCSharpExplicitExpressionBody(this);
     }
 
-    public CSharpExpressionBodySyntax Update(RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
+    public CSharpExplicitExpressionBodySyntax Update(RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
     {
         if (openParen != OpenParen || cSharpCode != CSharpCode || closeParen != CloseParen)
         {
-            var newNode = SyntaxFactory.CSharpExpressionBody(openParen, cSharpCode, closeParen);
+            var newNode = SyntaxFactory.CSharpExplicitExpressionBody(openParen, cSharpCode, closeParen);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -2205,21 +2205,21 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new CSharpExpressionBodySyntax(Kind, _openParen, _cSharpCode, _closeParen, diagnostics, GetAnnotations());
+         return new CSharpExplicitExpressionBodySyntax(Kind, _openParen, _cSharpCode, _closeParen, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new CSharpExpressionBodySyntax(Kind, _openParen, _cSharpCode, _closeParen, GetDiagnostics(), annotations);
+         return new CSharpExplicitExpressionBodySyntax(Kind, _openParen, _cSharpCode, _closeParen, GetDiagnostics(), annotations);
     }
   }
 
-  internal sealed partial class CSharpImplicitExpression : CSharpRazorBlockSyntax
+  internal sealed partial class CSharpImplicitExpressionSyntax : CSharpRazorBlockSyntax
   {
     private readonly CSharpTransitionSyntax _transition;
     private readonly CSharpSyntaxNode _body;
 
-    internal CSharpImplicitExpression(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal CSharpImplicitExpressionSyntax(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 2;
@@ -2230,7 +2230,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal CSharpImplicitExpression(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    internal CSharpImplicitExpressionSyntax(SyntaxKind kind, CSharpTransitionSyntax transition, CSharpSyntaxNode body)
         : base(kind)
     {
         SlotCount = 2;
@@ -2255,7 +2255,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
     {
-      return new Syntax.CSharpImplicitExpression(this, parent, position);
+      return new Syntax.CSharpImplicitExpressionSyntax(this, parent, position);
     }
 
     public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
@@ -2268,7 +2268,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         visitor.VisitCSharpImplicitExpression(this);
     }
 
-    public CSharpImplicitExpression Update(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    public CSharpImplicitExpressionSyntax Update(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
         if (transition != Transition || body != Body)
         {
@@ -2287,12 +2287,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new CSharpImplicitExpression(Kind, _transition, _body, diagnostics, GetAnnotations());
+         return new CSharpImplicitExpressionSyntax(Kind, _transition, _body, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new CSharpImplicitExpression(Kind, _transition, _body, GetDiagnostics(), annotations);
+         return new CSharpImplicitExpressionSyntax(Kind, _transition, _body, GetDiagnostics(), annotations);
     }
   }
 
@@ -2648,7 +2648,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitCSharpStatement(CSharpStatement node)
+    public virtual TResult VisitCSharpStatement(CSharpStatementSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -2658,17 +2658,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitCSharpExpression(CSharpExpression node)
+    public virtual TResult VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
     {
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitCSharpExpressionBody(CSharpExpressionBodySyntax node)
+    public virtual TResult VisitCSharpExplicitExpressionBody(CSharpExplicitExpressionBodySyntax node)
     {
       return DefaultVisit(node);
     }
 
-    public virtual TResult VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    public virtual TResult VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
     {
       return DefaultVisit(node);
     }
@@ -2797,7 +2797,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       DefaultVisit(node);
     }
 
-    public virtual void VisitCSharpStatement(CSharpStatement node)
+    public virtual void VisitCSharpStatement(CSharpStatementSyntax node)
     {
       DefaultVisit(node);
     }
@@ -2807,17 +2807,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       DefaultVisit(node);
     }
 
-    public virtual void VisitCSharpExpression(CSharpExpression node)
+    public virtual void VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
     {
       DefaultVisit(node);
     }
 
-    public virtual void VisitCSharpExpressionBody(CSharpExpressionBodySyntax node)
+    public virtual void VisitCSharpExplicitExpressionBody(CSharpExplicitExpressionBodySyntax node)
     {
       DefaultVisit(node);
     }
 
-    public virtual void VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    public virtual void VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
     {
       DefaultVisit(node);
     }
@@ -2979,7 +2979,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return node.Update(children);
     }
 
-    public override GreenNode VisitCSharpStatement(CSharpStatement node)
+    public override GreenNode VisitCSharpStatement(CSharpStatementSyntax node)
     {
       var transition = (CSharpTransitionSyntax)Visit(node.Transition);
       var body = (CSharpSyntaxNode)Visit(node.Body);
@@ -2994,14 +2994,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return node.Update(openBrace, cSharpCode, closeBrace);
     }
 
-    public override GreenNode VisitCSharpExpression(CSharpExpression node)
+    public override GreenNode VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
     {
       var transition = (CSharpTransitionSyntax)Visit(node.Transition);
       var body = (CSharpSyntaxNode)Visit(node.Body);
       return node.Update(transition, body);
     }
 
-    public override GreenNode VisitCSharpExpressionBody(CSharpExpressionBodySyntax node)
+    public override GreenNode VisitCSharpExplicitExpressionBody(CSharpExplicitExpressionBodySyntax node)
     {
       var openParen = (RazorMetaCodeSyntax)Visit(node.OpenParen);
       var cSharpCode = (CSharpCodeBlockSyntax)Visit(node.CSharpCode);
@@ -3009,7 +3009,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return node.Update(openParen, cSharpCode, closeParen);
     }
 
-    public override GreenNode VisitCSharpImplicitExpression(CSharpImplicitExpression node)
+    public override GreenNode VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
     {
       var transition = (CSharpTransitionSyntax)Visit(node.Transition);
       var body = (CSharpSyntaxNode)Visit(node.Body);
@@ -3266,14 +3266,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return result;
     }
 
-    public static CSharpStatement CSharpStatement(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    public static CSharpStatementSyntax CSharpStatement(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
 
-      var result = new CSharpStatement(SyntaxKind.CSharpStatement, transition, body);
+      var result = new CSharpStatementSyntax(SyntaxKind.CSharpStatement, transition, body);
 
       return result;
     }
@@ -3292,19 +3292,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return result;
     }
 
-    public static CSharpExpression CSharpExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    public static CSharpExplicitExpressionSyntax CSharpExplicitExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
 
-      var result = new CSharpExpression(SyntaxKind.CSharpExpression, transition, body);
+      var result = new CSharpExplicitExpressionSyntax(SyntaxKind.CSharpExplicitExpression, transition, body);
 
       return result;
     }
 
-    public static CSharpExpressionBodySyntax CSharpExpressionBody(RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
+    public static CSharpExplicitExpressionBodySyntax CSharpExplicitExpressionBody(RazorMetaCodeSyntax openParen, CSharpCodeBlockSyntax cSharpCode, RazorMetaCodeSyntax closeParen)
     {
       if (openParen == null)
         throw new ArgumentNullException(nameof(openParen));
@@ -3313,19 +3313,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       if (closeParen == null)
         throw new ArgumentNullException(nameof(closeParen));
 
-      var result = new CSharpExpressionBodySyntax(SyntaxKind.CSharpExpressionBody, openParen, cSharpCode, closeParen);
+      var result = new CSharpExplicitExpressionBodySyntax(SyntaxKind.CSharpExplicitExpressionBody, openParen, cSharpCode, closeParen);
 
       return result;
     }
 
-    public static CSharpImplicitExpression CSharpImplicitExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
+    public static CSharpImplicitExpressionSyntax CSharpImplicitExpression(CSharpTransitionSyntax transition, CSharpSyntaxNode body)
     {
       if (transition == null)
         throw new ArgumentNullException(nameof(transition));
       if (body == null)
         throw new ArgumentNullException(nameof(body));
 
-      var result = new CSharpImplicitExpression(SyntaxKind.CSharpImplicitExpression, transition, body);
+      var result = new CSharpImplicitExpressionSyntax(SyntaxKind.CSharpImplicitExpression, transition, body);
 
       return result;
     }
@@ -3386,11 +3386,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
            typeof(CSharpExpressionLiteralSyntax),
            typeof(CSharpEphemeralTextLiteralSyntax),
            typeof(CSharpTemplateBlockSyntax),
-           typeof(CSharpStatement),
+           typeof(CSharpStatementSyntax),
            typeof(CSharpStatementBodySyntax),
-           typeof(CSharpExpression),
-           typeof(CSharpExpressionBodySyntax),
-           typeof(CSharpImplicitExpression),
+           typeof(CSharpExplicitExpressionSyntax),
+           typeof(CSharpExplicitExpressionBodySyntax),
+           typeof(CSharpImplicitExpressionSyntax),
            typeof(CSharpImplicitExpressionBodySyntax),
            typeof(RazorDirectiveSyntax),
            typeof(RazorDirectiveBodySyntax)
