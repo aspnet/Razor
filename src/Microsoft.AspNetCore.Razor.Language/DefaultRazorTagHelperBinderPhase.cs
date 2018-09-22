@@ -64,21 +64,9 @@ namespace Microsoft.AspNetCore.Razor.Language
                 return;
             }
 
-            var errorSink = new ErrorSink();
-            var rewriter = new TagHelperParseTreeRewriter(tagHelperPrefix, descriptors, syntaxTree.Options.FeatureFlags);
-
-            var root = syntaxTree.Root;
-            root = rewriter.Rewrite(root, errorSink);
-
-            var errorList = new List<RazorDiagnostic>();
-            errorList.AddRange(errorSink.Errors);
-
-            errorList.AddRange(descriptors.SelectMany(d => d.GetAllDiagnostics()));
-
-            var diagnostics = CombineErrors(syntaxTree.Diagnostics, errorList);
-
-            var newSyntaxTree = RazorSyntaxTree.Create(root, syntaxTree.Source, diagnostics, syntaxTree.Options);
-            codeDocument.SetSyntaxTree(newSyntaxTree);
+            var rewrittenSyntaxTree = TagHelperParseTreeRewriter.Rewrite(syntaxTree, tagHelperPrefix, descriptors);
+            
+            codeDocument.SetSyntaxTree(rewrittenSyntaxTree);
         }
 
         private void LegacyExecuteCore(RazorCodeDocument codeDocument)

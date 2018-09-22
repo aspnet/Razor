@@ -26,7 +26,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             TagName = source.TagName;
             Binding = source.BindingResult;
-            Attributes = new List<TagHelperAttributeNode>(source.Attributes);
+            Attributes = new List<LegacyTagHelperAttributeNode>(source.Attributes);
             _start = source.Start;
             TagMode = source.TagMode;
             SourceStartTag = source.SourceStartTag;
@@ -68,7 +68,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         /// <summary>
         /// The HTML attributes.
         /// </summary>
-        public IList<TagHelperAttributeNode> Attributes { get; }
+        public IList<LegacyTagHelperAttributeNode> Attributes { get; }
 
         /// <inheritdoc />
         public override SourceLocation Start
@@ -176,7 +176,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 var existingAttribute = Attributes[i];
                 var clonedValue = existingAttribute.Value != null ? existingAttribute.Value.Clone() : null;
                 tagHelperBlockBuilder.Attributes.Add(
-                    new TagHelperAttributeNode(existingAttribute.Name, clonedValue, existingAttribute.AttributeStructure));
+                    new LegacyTagHelperAttributeNode(existingAttribute.Name, clonedValue, existingAttribute.AttributeStructure));
             }
 
             if (SourceStartTag != null)

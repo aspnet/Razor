@@ -85,7 +85,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var builder = new TagHelperBlockBuilder(
                 tagName,
                 tagMode,
-                attributes: new List<TagHelperAttributeNode>(),
+                attributes: new List<LegacyTagHelperAttributeNode>(),
                 children: children)
             {
                 Start = start,

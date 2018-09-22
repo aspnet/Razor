@@ -4,12 +4,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Razor.Language.Syntax;
 using Xunit;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class TagHelperParseTreeRewriterTest : TagHelperRewritingTestBase
     {
+        [Fact]
+        public void TestTagHelpers()
+        {
+            UseNewSyntaxTree = false;
+            var document = "<p><strong>";
+            EvaluateData(PartialRequiredParentTags_Descriptors, document);
+            UseNewSyntaxTree = false;
+        }
+
         public static TheoryData GetAttributeNameValuePairsData
         {
             get
@@ -29,13 +39,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     { "<a href=\"@true\">", new[] { kvp("href", csharp) } },
                     { "<a href=\"prefix @true suffix\">", new[] { kvp("href", $"prefix{csharp} suffix") } },
                     { "<a href=~/home>", new[] { kvp("href", "~/home") } },
-                    { "<a href=~/home @{ } nothing='something'>", new[] { kvp("href", "~/home"), kvp("", "") } },
+                    { "<a href=~/home @{ } nothing='something'>", new[] { kvp("href", "~/home") } },
                     {
                         "<a href=\"@DateTime.Now::0\" class='btn btn-success' random>",
                         new[] { kvp("href", $"{csharp}::0"), kvp("class", "btn btn-success"), kvp("random", "") }
                     },
                     { "<a href=>", new[] { kvp("href", "") } },
-                    { "<a href='\">  ", new[] { kvp("href", "\">") } },
+                    { "<a href='\">  ", new[] { kvp("href", "\">  ") } },
                     { "<a href'", new[] { kvp("href'", "") } },
                 };
             }
@@ -47,17 +57,23 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             string documentContent,
             IEnumerable<KeyValuePair<string, string>> expectedPairs)
         {
+            UseNewSyntaxTree = true;
             // Arrange
             var errorSink = new ErrorSink();
             var parseResult = ParseDocument(documentContent);
-            var document = parseResult.LegacyRoot;
-            var parseTreeRewriter = new LegacyTagHelperParseTreeRewriter(null, Enumerable.Empty<TagHelperDescriptor>(), parseResult.Options.FeatureFlags);
+            var document = parseResult.Root;
+            var parseTreeRewriter = new TagHelperParseTreeRewriter.Rewriter(
+                parseResult.Source,
+                null,
+                Enumerable.Empty<TagHelperDescriptor>(),
+                parseResult.Options.FeatureFlags,
+                errorSink);
 
             // Assert - Guard
-            var rootBlock = Assert.IsType<Block>(document);
-            var child = Assert.Single(rootBlock.Children);
-            var tagBlock = Assert.IsType<Block>(child);
-            Assert.Equal(BlockKindInternal.Tag, tagBlock.Type);
+            var rootBlock = Assert.IsType<RazorDocumentSyntax>(document);
+            var rootMarkup = Assert.IsType<MarkupBlockSyntax>(rootBlock.Document);
+            var childBlock = Assert.Single(rootMarkup.Children);
+            var tagBlock = Assert.IsType<MarkupTagBlockSyntax>(childBlock);
             Assert.Empty(errorSink.Errors);
 
             // Act
@@ -65,6 +81,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             // Assert
             Assert.Equal(expectedPairs, pairs);
+
+            UseNewSyntaxTree = false;
         }
 
         public static TagHelperDescriptor[] PartialRequiredParentTags_Descriptors = new TagHelperDescriptor[]

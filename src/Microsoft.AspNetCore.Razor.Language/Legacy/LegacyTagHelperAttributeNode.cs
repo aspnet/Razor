@@ -1,13 +1,11 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.AspNetCore.Razor.Language.Syntax;
-
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
-    internal class TagHelperAttributeNode
+    internal class LegacyTagHelperAttributeNode
     {
-        public TagHelperAttributeNode(string name, SyntaxNode value, AttributeStructure attributeStructure)
+        public LegacyTagHelperAttributeNode(string name, SyntaxTreeNode value, AttributeStructure attributeStructure)
         {
             Name = name;
             Value = value;
@@ -15,14 +13,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         }
 
         // Internal for testing
-        internal TagHelperAttributeNode(string name, SyntaxNode value)
+        internal LegacyTagHelperAttributeNode(string name, SyntaxTreeNode value)
             : this(name, value, AttributeStructure.DoubleQuotes)
         {
         }
 
         public string Name { get; }
 
-        public SyntaxNode Value { get; }
+        public SyntaxTreeNode Value { get; }
 
         public AttributeStructure AttributeStructure { get; }
     }

@@ -26,6 +26,10 @@ namespace Microsoft.AspNetCore.Razor.Language
         MarkupMinimizedAttributeBlock,
         MarkupLiteralAttributeValue,
         MarkupDynamicAttributeValue,
+        MarkupTagHelperElement,
+        MarkupTagHelperStartTag,
+        MarkupTagHelperEndTag,
+        MarkupTagHelperAttribute,
 
         // CSharp
         CSharpStatement,

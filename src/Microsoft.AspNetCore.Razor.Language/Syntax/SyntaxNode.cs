@@ -393,7 +393,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             return Green.ToFullString();
         }
 
-        private string GetDebuggerDisplay()
+        protected virtual string GetDebuggerDisplay()
         {
             if (IsToken)
             {

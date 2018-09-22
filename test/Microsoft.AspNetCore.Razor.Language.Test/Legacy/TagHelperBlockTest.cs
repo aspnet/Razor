@@ -16,7 +16,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var tagHelper = new TagHelperBlockBuilder(
                 "p",
                 TagMode.StartTagAndEndTag,
-                attributes: new List<TagHelperAttributeNode>(),
+                attributes: new List<LegacyTagHelperAttributeNode>(),
                 children: new[]
             {
                 new SpanBuilder(SourceLocation.Zero).Build(),
@@ -41,10 +41,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var tagHelper = (TagHelperBlock)new TagHelperBlockBuilder(
                 "p",
                 TagMode.StartTagAndEndTag,
-                attributes: new List<TagHelperAttributeNode>()
+                attributes: new List<LegacyTagHelperAttributeNode>()
                 {
-                    new TagHelperAttributeNode("class", new SpanBuilder(SourceLocation.Zero).Build(), AttributeStructure.NoQuotes),
-                    new TagHelperAttributeNode("checked", new SpanBuilder(SourceLocation.Undefined).Build(), AttributeStructure.NoQuotes)
+                    new LegacyTagHelperAttributeNode("class", new SpanBuilder(SourceLocation.Zero).Build(), AttributeStructure.NoQuotes),
+                    new LegacyTagHelperAttributeNode("checked", new SpanBuilder(SourceLocation.Undefined).Build(), AttributeStructure.NoQuotes)
                 },
                 children: Enumerable.Empty<SyntaxTreeNode>()).Build();
 
@@ -66,7 +66,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var tagHelper = (TagHelperBlock)new TagHelperBlockBuilder(
                 "p",
                 TagMode.StartTagAndEndTag,
-                attributes: new List<TagHelperAttributeNode>(),
+                attributes: new List<LegacyTagHelperAttributeNode>(),
                 children: Enumerable.Empty<SyntaxTreeNode>())
             {
                 SourceStartTag = new BlockBuilder()
@@ -91,7 +91,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var tagHelper = (TagHelperBlock)new TagHelperBlockBuilder(
                 "p",
                 TagMode.StartTagAndEndTag,
-                attributes: new List<TagHelperAttributeNode>(),
+                attributes: new List<LegacyTagHelperAttributeNode>(),
                 children: Enumerable.Empty<SyntaxTreeNode>())
             {
                 SourceEndTag = new BlockBuilder()

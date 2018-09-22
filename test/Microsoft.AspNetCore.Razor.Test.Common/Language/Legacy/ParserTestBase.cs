@@ -675,8 +675,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private static void EvaluateTagHelperAttribute(
             ErrorCollector collector,
-            TagHelperAttributeNode actual,
-            TagHelperAttributeNode expected)
+            LegacyTagHelperAttributeNode actual,
+            LegacyTagHelperAttributeNode expected)
         {
             if (actual.Name != expected.Name)
             {

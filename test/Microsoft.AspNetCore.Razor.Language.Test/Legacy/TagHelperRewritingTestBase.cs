@@ -75,19 +75,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             RazorSyntaxTree rewrittenTree = null;
             if (UseNewSyntaxTree)
             {
-                var parseTreeRewriter = new TagHelperParseTreeRewriter(
-                    tagHelperPrefix,
-                    descriptors,
-                    featureFlags ?? syntaxTree.Options.FeatureFlags);
-
-                var actualTree = parseTreeRewriter.Rewrite(syntaxTree.Root, errorSink);
-
-                var allErrors = syntaxTree.Diagnostics.Concat(errorSink.Errors);
-                var actualErrors = allErrors
-                    .OrderBy(error => error.Span.AbsoluteIndex)
-                    .ToList();
-
-                rewrittenTree = RazorSyntaxTree.Create(actualTree, syntaxTree.Source, actualErrors, syntaxTree.Options);
+                rewrittenTree = TagHelperParseTreeRewriter.Rewrite(syntaxTree, tagHelperPrefix, descriptors);
             }
             else
             {

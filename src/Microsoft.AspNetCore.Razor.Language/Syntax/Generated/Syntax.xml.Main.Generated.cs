@@ -101,6 +101,30 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return DefaultVisit(node);
     }
 
+    /// <summary>Called when the visitor visits a MarkupTagHelperElementSyntax node.</summary>
+    public virtual TResult VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a MarkupTagHelperStartTagSyntax node.</summary>
+    public virtual TResult VisitMarkupTagHelperStartTag(MarkupTagHelperStartTagSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a MarkupTagHelperEndTagSyntax node.</summary>
+    public virtual TResult VisitMarkupTagHelperEndTag(MarkupTagHelperEndTagSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a MarkupTagHelperAttributeSyntax node.</summary>
+    public virtual TResult VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
     /// <summary>Called when the visitor visits a CSharpCodeBlockSyntax node.</summary>
     public virtual TResult VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
     {
@@ -274,6 +298,30 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     /// <summary>Called when the visitor visits a MarkupDynamicAttributeValueSyntax node.</summary>
     public virtual void VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a MarkupTagHelperElementSyntax node.</summary>
+    public virtual void VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a MarkupTagHelperStartTagSyntax node.</summary>
+    public virtual void VisitMarkupTagHelperStartTag(MarkupTagHelperStartTagSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a MarkupTagHelperEndTagSyntax node.</summary>
+    public virtual void VisitMarkupTagHelperEndTag(MarkupTagHelperEndTagSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a MarkupTagHelperAttributeSyntax node.</summary>
+    public virtual void VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
     {
       DefaultVisit(node);
     }
@@ -466,6 +514,32 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       var prefix = (MarkupTextLiteralSyntax)Visit(node.Prefix);
       var value = (RazorBlockSyntax)Visit(node.Value);
       return node.Update(prefix, value);
+    }
+
+    public override SyntaxNode VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
+    {
+      var startTag = (MarkupTagHelperStartTagSyntax)Visit(node.StartTag);
+      var body = (GenericBlockSyntax)Visit(node.Body);
+      var endTag = (MarkupTagHelperEndTagSyntax)Visit(node.EndTag);
+      return node.Update(startTag, body, endTag);
+    }
+
+    public override SyntaxNode VisitMarkupTagHelperStartTag(MarkupTagHelperStartTagSyntax node)
+    {
+      var children = VisitList(node.Children);
+      return node.Update(children);
+    }
+
+    public override SyntaxNode VisitMarkupTagHelperEndTag(MarkupTagHelperEndTagSyntax node)
+    {
+      var children = VisitList(node.Children);
+      return node.Update(children);
+    }
+
+    public override SyntaxNode VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
+    {
+      var value = (RazorSyntaxNode)Visit(node.Value);
+      return node.Update(value);
     }
 
     public override SyntaxNode VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
@@ -774,15 +848,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     /// <summary>Creates a new MarkupLiteralAttributeValueSyntax instance.</summary>
     public static MarkupLiteralAttributeValueSyntax MarkupLiteralAttributeValue(MarkupTextLiteralSyntax prefix, MarkupTextLiteralSyntax value)
     {
-      if (value == null)
-        throw new ArgumentNullException(nameof(value));
       return (MarkupLiteralAttributeValueSyntax)InternalSyntax.SyntaxFactory.MarkupLiteralAttributeValue(prefix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)prefix.Green, value == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)value.Green).CreateRed();
     }
 
     /// <summary>Creates a new MarkupLiteralAttributeValueSyntax instance.</summary>
     public static MarkupLiteralAttributeValueSyntax MarkupLiteralAttributeValue()
     {
-      return SyntaxFactory.MarkupLiteralAttributeValue(default(MarkupTextLiteralSyntax), SyntaxFactory.MarkupTextLiteral());
+      return SyntaxFactory.MarkupLiteralAttributeValue(default(MarkupTextLiteralSyntax), default(MarkupTextLiteralSyntax));
     }
 
     /// <summary>Creates a new MarkupDynamicAttributeValueSyntax instance.</summary>
@@ -797,6 +869,54 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     public static MarkupDynamicAttributeValueSyntax MarkupDynamicAttributeValue(RazorBlockSyntax value)
     {
       return SyntaxFactory.MarkupDynamicAttributeValue(default(MarkupTextLiteralSyntax), value);
+    }
+
+    /// <summary>Creates a new MarkupTagHelperElementSyntax instance.</summary>
+    public static MarkupTagHelperElementSyntax MarkupTagHelperElement(MarkupTagHelperStartTagSyntax startTag, GenericBlockSyntax body, MarkupTagHelperEndTagSyntax endTag)
+    {
+      if (startTag == null)
+        throw new ArgumentNullException(nameof(startTag));
+      if (body == null)
+        throw new ArgumentNullException(nameof(body));
+      return (MarkupTagHelperElementSyntax)InternalSyntax.SyntaxFactory.MarkupTagHelperElement(startTag == null ? null : (InternalSyntax.MarkupTagHelperStartTagSyntax)startTag.Green, body == null ? null : (InternalSyntax.GenericBlockSyntax)body.Green, endTag == null ? null : (InternalSyntax.MarkupTagHelperEndTagSyntax)endTag.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new MarkupTagHelperElementSyntax instance.</summary>
+    public static MarkupTagHelperElementSyntax MarkupTagHelperElement()
+    {
+      return SyntaxFactory.MarkupTagHelperElement(SyntaxFactory.MarkupTagHelperStartTag(), SyntaxFactory.GenericBlock(), default(MarkupTagHelperEndTagSyntax));
+    }
+
+    /// <summary>Creates a new MarkupTagHelperStartTagSyntax instance.</summary>
+    public static MarkupTagHelperStartTagSyntax MarkupTagHelperStartTag(SyntaxList<RazorSyntaxNode> children)
+    {
+      return (MarkupTagHelperStartTagSyntax)InternalSyntax.SyntaxFactory.MarkupTagHelperStartTag(children.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>()).CreateRed();
+    }
+
+    /// <summary>Creates a new MarkupTagHelperStartTagSyntax instance.</summary>
+    public static MarkupTagHelperStartTagSyntax MarkupTagHelperStartTag()
+    {
+      return SyntaxFactory.MarkupTagHelperStartTag(default(SyntaxList<RazorSyntaxNode>));
+    }
+
+    /// <summary>Creates a new MarkupTagHelperEndTagSyntax instance.</summary>
+    public static MarkupTagHelperEndTagSyntax MarkupTagHelperEndTag(SyntaxList<RazorSyntaxNode> children)
+    {
+      return (MarkupTagHelperEndTagSyntax)InternalSyntax.SyntaxFactory.MarkupTagHelperEndTag(children.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>()).CreateRed();
+    }
+
+    /// <summary>Creates a new MarkupTagHelperEndTagSyntax instance.</summary>
+    public static MarkupTagHelperEndTagSyntax MarkupTagHelperEndTag()
+    {
+      return SyntaxFactory.MarkupTagHelperEndTag(default(SyntaxList<RazorSyntaxNode>));
+    }
+
+    /// <summary>Creates a new MarkupTagHelperAttributeSyntax instance.</summary>
+    public static MarkupTagHelperAttributeSyntax MarkupTagHelperAttribute(RazorSyntaxNode value)
+    {
+      if (value == null)
+        throw new ArgumentNullException(nameof(value));
+      return (MarkupTagHelperAttributeSyntax)InternalSyntax.SyntaxFactory.MarkupTagHelperAttribute(value == null ? null : (InternalSyntax.RazorSyntaxNode)value.Green).CreateRed();
     }
 
     /// <summary>Creates a new CSharpCodeBlockSyntax instance.</summary>

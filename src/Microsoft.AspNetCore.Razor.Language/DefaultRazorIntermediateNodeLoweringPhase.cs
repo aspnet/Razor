@@ -704,7 +704,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 }
             }
 
-            private void AddTagHelperAttributes(IList<TagHelperAttributeNode> attributes, TagHelperBinding tagHelperBinding)
+            private void AddTagHelperAttributes(IList<LegacyTagHelperAttributeNode> attributes, TagHelperBinding tagHelperBinding)
             {
                 var descriptors = tagHelperBinding.Descriptors;
                 var renderedBoundAttributeNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
