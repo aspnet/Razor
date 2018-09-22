@@ -825,6 +825,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             foreach (var token in tokens)
             {
+                foreach (var error in token.GetDiagnostics())
+                {
+                    Context.ErrorSink.OnError(error);
+                }
+
                 TokenBuilder.Add(token);
             }
         }

@@ -246,28 +246,28 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         internal abstract RazorSyntaxTree ParseBlock(RazorLanguageVersion version, string document, IEnumerable<DirectiveDescriptor> directives, bool designTime);
 
-        internal RazorSyntaxTree ParseDocument(string document, bool designTime = false)
+        internal RazorSyntaxTree ParseDocument(string document, bool designTime = false, RazorParserFeatureFlags featureFlags = null)
         {
-            return ParseDocument(RazorLanguageVersion.Latest, document, designTime);
+            return ParseDocument(RazorLanguageVersion.Latest, document, designTime, featureFlags);
         }
 
-        internal RazorSyntaxTree ParseDocument(RazorLanguageVersion version, string document, bool designTime = false)
+        internal RazorSyntaxTree ParseDocument(RazorLanguageVersion version, string document, bool designTime = false, RazorParserFeatureFlags featureFlags = null)
         {
-            return ParseDocument(version, document, null, designTime);
+            return ParseDocument(version, document, null, designTime, featureFlags);
         }
 
-        internal RazorSyntaxTree ParseDocument(string document, IEnumerable<DirectiveDescriptor> directives, bool designTime = false)
+        internal RazorSyntaxTree ParseDocument(string document, IEnumerable<DirectiveDescriptor> directives, bool designTime = false, RazorParserFeatureFlags featureFlags = null)
         {
-            return ParseDocument(RazorLanguageVersion.Latest, document, directives, designTime);
+            return ParseDocument(RazorLanguageVersion.Latest, document, directives, designTime, featureFlags);
         }
 
-        internal virtual RazorSyntaxTree ParseDocument(RazorLanguageVersion version, string document, IEnumerable<DirectiveDescriptor> directives, bool designTime = false)
+        internal virtual RazorSyntaxTree ParseDocument(RazorLanguageVersion version, string document, IEnumerable<DirectiveDescriptor> directives, bool designTime = false, RazorParserFeatureFlags featureFlags = null)
         {
             directives = directives ?? Array.Empty<DirectiveDescriptor>();
 
             var source = TestRazorSourceDocument.Create(document, filePath: null, relativePath: null, normalizeNewLines: true);
 
-            var options = CreateParserOptions(version, directives, designTime);
+            var options = CreateParserOptions(version, directives, designTime, featureFlags);
             var context = new ParserContext(source, options);
 
             var codeParser = new CSharpCodeParser(directives, context);
@@ -675,8 +675,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private static void EvaluateTagHelperAttribute(
             ErrorCollector collector,
-            TagHelperAttributeNode actual,
-            TagHelperAttributeNode expected)
+            LegacyTagHelperAttributeNode actual,
+            LegacyTagHelperAttributeNode expected)
         {
             if (actual.Name != expected.Name)
             {
@@ -762,16 +762,45 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Trace.WriteLine(string.Format(format, args));
         }
 
-        protected static RazorParserOptions CreateParserOptions(
+        internal static RazorParserOptions CreateParserOptions(
             RazorLanguageVersion version, 
             IEnumerable<DirectiveDescriptor> directives, 
-            bool designTime)
+            bool designTime,
+            RazorParserFeatureFlags featureFlags = null)
         {
-            return new DefaultRazorParserOptions(
+            return new TestRazorParserOptions(
                 directives.ToArray(),
                 designTime,
                 parseLeadingDirectives: false,
-                version: version);
+                version: version,
+                featureFlags: featureFlags);
+        }
+
+        private class TestRazorParserOptions : RazorParserOptions
+        {
+            public TestRazorParserOptions(DirectiveDescriptor[] directives, bool designTime, bool parseLeadingDirectives, RazorLanguageVersion version, RazorParserFeatureFlags featureFlags = null)
+            {
+                if (directives == null)
+                {
+                    throw new ArgumentNullException(nameof(directives));
+                }
+
+                Directives = directives;
+                DesignTime = designTime;
+                ParseLeadingDirectives = parseLeadingDirectives;
+                Version = version;
+                FeatureFlags = featureFlags ?? RazorParserFeatureFlags.Create(Version);
+            }
+
+            public override bool DesignTime { get; }
+
+            public override IReadOnlyCollection<DirectiveDescriptor> Directives { get; }
+
+            public override bool ParseLeadingDirectives { get; }
+
+            public override RazorLanguageVersion Version { get; }
+
+            internal override RazorParserFeatureFlags FeatureFlags { get; }
         }
     }
 }

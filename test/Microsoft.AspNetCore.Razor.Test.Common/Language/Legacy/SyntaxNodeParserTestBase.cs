@@ -15,7 +15,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
     {
         protected bool UseNewSyntaxTree { get; set; }
 
-        internal override RazorSyntaxTree ParseDocument(RazorLanguageVersion version, string document, IEnumerable<DirectiveDescriptor> directives, bool designTime = false)
+        internal override RazorSyntaxTree ParseDocument(RazorLanguageVersion version, string document, IEnumerable<DirectiveDescriptor> directives, bool designTime = false, RazorParserFeatureFlags featureFlags = null)
         {
             if (!UseNewSyntaxTree)
             {
@@ -26,7 +26,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             var source = TestRazorSourceDocument.Create(document, filePath: null, relativePath: null, normalizeNewLines: true);
 
-            var options = CreateParserOptions(version, directives, designTime);
+            var options = CreateParserOptions(version, directives, designTime, featureFlags);
             var context = new ParserContext(source, options);
 
             var codeParser = new CSharpCodeParser(directives, context);
@@ -213,9 +213,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             if (tagHelperSpanFile.Exists())
             {
                 tagHelperSpanBaseline = tagHelperSpanFile.ReadAllText().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-                // Temporary
-                throw new NotImplementedException("Tag helpers don't use the new syntax tree yet.");
+                TagHelperSpanVerifier.Verify(syntaxTree, tagHelperSpanBaseline);
             }
         }
     }

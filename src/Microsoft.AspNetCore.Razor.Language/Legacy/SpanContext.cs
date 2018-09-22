@@ -26,6 +26,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Reset();
         }
 
+        public SpanContextBuilder(SpanContext context)
+        {
+            EditHandler = context.EditHandler;
+            ChunkGenerator = context.ChunkGenerator;
+        }
+
         public ISpanChunkGenerator ChunkGenerator { get; set; }
 
         public SpanEditHandler EditHandler { get; set; }

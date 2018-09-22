@@ -9,6 +9,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class TagHelperBlockRewriterTest : TagHelperRewritingTestBase
     {
+        public TagHelperBlockRewriterTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         public static TagHelperDescriptor[] SymbolBoundAttributes_Descriptors = new[]
         {
             TagHelperDescriptorBuilder.Create("CatchAllTagHelper", "SomeAssembly")

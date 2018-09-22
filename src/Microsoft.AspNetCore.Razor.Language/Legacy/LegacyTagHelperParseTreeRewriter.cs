@@ -226,7 +226,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // We're in a start TagHelper block.
                 var validTagStructure = ValidateTagSyntax(tagName, tagBlock, errorSink);
 
-                var builder = TagHelperBlockRewriter.Rewrite(
+                var builder = LegacyTagHelperBlockRewriter.Rewrite(
                     tagName,
                     validTagStructure,
                     _featureFlags,

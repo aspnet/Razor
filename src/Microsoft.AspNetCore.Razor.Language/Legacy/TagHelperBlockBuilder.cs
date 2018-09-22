@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             SourceEndTag = original.SourceEndTag;
             TagMode = original.TagMode;
             BindingResult = original.Binding;
-            Attributes = new List<TagHelperAttributeNode>(original.Attributes);
+            Attributes = new List<LegacyTagHelperAttributeNode>(original.Attributes);
             TagName = original.TagName;
         }
 
@@ -39,14 +39,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             string tagName,
             TagMode tagMode,
             SourceLocation start,
-            IList<TagHelperAttributeNode> attributes,
+            IList<LegacyTagHelperAttributeNode> attributes,
             TagHelperBinding bindingResult)
         {
             TagName = tagName;
             TagMode = tagMode;
             Start = start;
             BindingResult = bindingResult;
-            Attributes = new List<TagHelperAttributeNode>(attributes);
+            Attributes = new List<LegacyTagHelperAttributeNode>(attributes);
             Type = BlockKindInternal.Tag;
             ChunkGenerator = new TagHelperChunkGenerator();
         }
@@ -55,7 +55,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         internal TagHelperBlockBuilder(
             string tagName,
             TagMode tagMode,
-            IList<TagHelperAttributeNode> attributes,
+            IList<LegacyTagHelperAttributeNode> attributes,
             IEnumerable<SyntaxTreeNode> children)
         {
             TagName = tagName;
@@ -96,7 +96,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         /// <summary>
         /// The HTML attributes.
         /// </summary>
-        public IList<TagHelperAttributeNode> Attributes { get; }
+        public IList<LegacyTagHelperAttributeNode> Attributes { get; }
 
         /// <summary>
         /// The HTML tag name.

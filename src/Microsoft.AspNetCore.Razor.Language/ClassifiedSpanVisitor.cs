@@ -97,9 +97,61 @@ namespace Microsoft.AspNetCore.Razor.Language
             return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupBlock);
         }
 
+        public override SyntaxNode VisitGenericBlock(GenericBlockSyntax node)
+        {
+            if (!(node.Parent is MarkupDynamicAttributeValueSyntax) &&
+                node.FirstAncestorOrSelf<SyntaxNode>(n => n is MarkupDynamicAttributeValueSyntax) != null)
+            {
+                return WriteBlock(node, BlockKindInternal.Expression, base.VisitGenericBlock);
+            }
+
+            return base.VisitGenericBlock(node);
+        }
+
+        public override SyntaxNode VisitMarkupTagHelperAttributeValue(MarkupTagHelperAttributeValueSyntax node)
+        {
+            // We don't generate a classified span when the attribute value is a simple literal value.
+            if (node.Children.Count > 1 ||
+                (node.Children.Count == 1 && node.Children[0] is MarkupDynamicAttributeValueSyntax))
+            {
+                return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupTagHelperAttributeValue);
+            }
+
+            return base.VisitMarkupTagHelperAttributeValue(node);
+        }
+
         public override SyntaxNode VisitMarkupTagBlock(MarkupTagBlockSyntax node)
         {
             return WriteBlock(node, BlockKindInternal.Tag, base.VisitMarkupTagBlock);
+        }
+
+        public override SyntaxNode VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
+        {
+            return WriteBlock(node, BlockKindInternal.Tag, base.VisitMarkupTagHelperElement);
+        }
+
+        public override SyntaxNode VisitMarkupTagHelperStartTag(MarkupTagHelperStartTagSyntax node)
+        {
+            var rewritten = new List<RazorSyntaxNode>();
+            foreach (var child in node.Children)
+            {
+                if (child is MarkupTagHelperAttributeSyntax attribute)
+                {
+                    var rewrittenAttribute = (MarkupTagHelperAttributeSyntax)Visit(attribute);
+                    rewritten.Add(rewrittenAttribute);
+                }
+                else
+                {
+                    rewritten.Add(child);
+                }
+            }
+
+            return node.Update(new SyntaxList<RazorSyntaxNode>(rewritten));
+        }
+
+        public override SyntaxNode VisitMarkupTagHelperEndTag(MarkupTagHelperEndTagSyntax node)
+        {
+            return node;
         }
 
         public override SyntaxNode VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
@@ -114,6 +166,13 @@ namespace Microsoft.AspNetCore.Razor.Language
 
                 return n;
             });
+        }
+
+        public override SyntaxNode VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
+        {
+            var rewrittenValue = (MarkupTagHelperAttributeValueSyntax)Visit(node.Value);
+
+            return node.Update(node.NamePrefix, node.Name, node.NameSuffix, node.EqualsToken, node.ValuePrefix, rewrittenValue, node.ValueSuffix);
         }
 
         public override SyntaxNode VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)

@@ -108,18 +108,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
     internal class MarkupTagHelperBlock : TagHelperBlock
     {
         public MarkupTagHelperBlock(string tagName)
-            : this(tagName, tagMode: TagMode.StartTagAndEndTag, attributes: new List<TagHelperAttributeNode>())
+            : this(tagName, tagMode: TagMode.StartTagAndEndTag, attributes: new List<LegacyTagHelperAttributeNode>())
         {
         }
 
         public MarkupTagHelperBlock(string tagName, TagMode tagMode)
-            : this(tagName, tagMode, new List<TagHelperAttributeNode>())
+            : this(tagName, tagMode, new List<LegacyTagHelperAttributeNode>())
         {
         }
 
         public MarkupTagHelperBlock(
             string tagName,
-            IList<TagHelperAttributeNode> attributes)
+            IList<LegacyTagHelperAttributeNode> attributes)
             : this(tagName, TagMode.StartTagAndEndTag, attributes, children: new SyntaxTreeNode[0])
         {
         }
@@ -127,7 +127,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         public MarkupTagHelperBlock(
             string tagName,
             TagMode tagMode,
-            IList<TagHelperAttributeNode> attributes)
+            IList<LegacyTagHelperAttributeNode> attributes)
             : this(tagName, tagMode, attributes, new SyntaxTreeNode[0])
         {
         }
@@ -136,19 +136,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             : this(
                   tagName,
                   TagMode.StartTagAndEndTag,
-                  attributes: new List<TagHelperAttributeNode>(),
+                  attributes: new List<LegacyTagHelperAttributeNode>(),
                   children: children)
         {
         }
 
         public MarkupTagHelperBlock(string tagName, TagMode tagMode, params SyntaxTreeNode[] children)
-            : this(tagName, tagMode, new List<TagHelperAttributeNode>(), children)
+            : this(tagName, tagMode, new List<LegacyTagHelperAttributeNode>(), children)
         {
         }
 
         public MarkupTagHelperBlock(
             string tagName,
-            IList<TagHelperAttributeNode> attributes,
+            IList<LegacyTagHelperAttributeNode> attributes,
             params SyntaxTreeNode[] children)
             : base(new TagHelperBlockBuilder(
                 tagName,
@@ -161,7 +161,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         public MarkupTagHelperBlock(
             string tagName,
             TagMode tagMode,
-            IList<TagHelperAttributeNode> attributes,
+            IList<LegacyTagHelperAttributeNode> attributes,
             params SyntaxTreeNode[] children)
             : base(new TagHelperBlockBuilder(tagName, tagMode, attributes, children))
         {

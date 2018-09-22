@@ -28,6 +28,25 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return visitor.ClassifiedSpans;
         }
 
+        public static IReadOnlyList<TagHelperSpanInternal> GetTagHelperSpans(this RazorSyntaxTree syntaxTree)
+        {
+            if (syntaxTree == null)
+            {
+                throw new ArgumentNullException(nameof(syntaxTree));
+            }
+
+            if (syntaxTree is LegacyRazorSyntaxTree tree)
+            {
+                return GetTagHelperSpansLegacy(tree);
+            }
+
+
+            var visitor = new TagHelperSpanVisitor(syntaxTree.Source);
+            visitor.Visit(syntaxTree.Root);
+
+            return visitor.TagHelperSpans;
+        }
+
         private static IReadOnlyList<ClassifiedSpanInternal> GetClassifiedSpansLegacy(LegacyRazorSyntaxTree syntaxTree)
         {
             var spans = Flatten(syntaxTree);
@@ -57,7 +76,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return result;
         }
 
-        public static IReadOnlyList<TagHelperSpanInternal> GetTagHelperSpans(this RazorSyntaxTree syntaxTree)
+        public static IReadOnlyList<TagHelperSpanInternal> GetTagHelperSpansLegacy(LegacyRazorSyntaxTree syntaxTree)
         {
             if (syntaxTree == null)
             {
