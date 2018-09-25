@@ -1629,32 +1629,104 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
   internal sealed partial class MarkupTagHelperAttributeSyntax : MarkupSyntaxNode
   {
-    private readonly RazorSyntaxNode _value;
+    private readonly MarkupTextLiteralSyntax _namePrefix;
+    private readonly MarkupTextLiteralSyntax _name;
+    private readonly MarkupTextLiteralSyntax _nameSuffix;
+    private readonly SyntaxToken _equalsToken;
+    private readonly MarkupTextLiteralSyntax _valuePrefix;
+    private readonly RazorBlockSyntax _value;
+    private readonly MarkupTextLiteralSyntax _valueSuffix;
 
-    internal MarkupTagHelperAttributeSyntax(SyntaxKind kind, RazorSyntaxNode value, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal MarkupTagHelperAttributeSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
-        SlotCount = 1;
+        SlotCount = 7;
+        if (namePrefix != null)
+        {
+            AdjustFlagsAndWidth(namePrefix);
+            _namePrefix = namePrefix;
+        }
+        AdjustFlagsAndWidth(name);
+        _name = name;
+        if (nameSuffix != null)
+        {
+            AdjustFlagsAndWidth(nameSuffix);
+            _nameSuffix = nameSuffix;
+        }
+        if (equalsToken != null)
+        {
+            AdjustFlagsAndWidth(equalsToken);
+            _equalsToken = equalsToken;
+        }
+        if (valuePrefix != null)
+        {
+            AdjustFlagsAndWidth(valuePrefix);
+            _valuePrefix = valuePrefix;
+        }
         AdjustFlagsAndWidth(value);
         _value = value;
+        if (valueSuffix != null)
+        {
+            AdjustFlagsAndWidth(valueSuffix);
+            _valueSuffix = valueSuffix;
+        }
     }
 
 
-    internal MarkupTagHelperAttributeSyntax(SyntaxKind kind, RazorSyntaxNode value)
+    internal MarkupTagHelperAttributeSyntax(SyntaxKind kind, MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
         : base(kind)
     {
-        SlotCount = 1;
+        SlotCount = 7;
+        if (namePrefix != null)
+        {
+            AdjustFlagsAndWidth(namePrefix);
+            _namePrefix = namePrefix;
+        }
+        AdjustFlagsAndWidth(name);
+        _name = name;
+        if (nameSuffix != null)
+        {
+            AdjustFlagsAndWidth(nameSuffix);
+            _nameSuffix = nameSuffix;
+        }
+        if (equalsToken != null)
+        {
+            AdjustFlagsAndWidth(equalsToken);
+            _equalsToken = equalsToken;
+        }
+        if (valuePrefix != null)
+        {
+            AdjustFlagsAndWidth(valuePrefix);
+            _valuePrefix = valuePrefix;
+        }
         AdjustFlagsAndWidth(value);
         _value = value;
+        if (valueSuffix != null)
+        {
+            AdjustFlagsAndWidth(valueSuffix);
+            _valueSuffix = valueSuffix;
+        }
     }
 
-    public RazorSyntaxNode Value { get { return _value; } }
+    public MarkupTextLiteralSyntax NamePrefix { get { return _namePrefix; } }
+    public MarkupTextLiteralSyntax Name { get { return _name; } }
+    public MarkupTextLiteralSyntax NameSuffix { get { return _nameSuffix; } }
+    public SyntaxToken EqualsToken { get { return _equalsToken; } }
+    public MarkupTextLiteralSyntax ValuePrefix { get { return _valuePrefix; } }
+    public RazorBlockSyntax Value { get { return _value; } }
+    public MarkupTextLiteralSyntax ValueSuffix { get { return _valueSuffix; } }
 
     internal override GreenNode GetSlot(int index)
     {
         switch (index)
         {
-            case 0: return _value;
+            case 0: return _namePrefix;
+            case 1: return _name;
+            case 2: return _nameSuffix;
+            case 3: return _equalsToken;
+            case 4: return _valuePrefix;
+            case 5: return _value;
+            case 6: return _valueSuffix;
             default: return null;
         }
     }
@@ -1674,11 +1746,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         visitor.VisitMarkupTagHelperAttribute(this);
     }
 
-    public MarkupTagHelperAttributeSyntax Update(RazorSyntaxNode value)
+    public MarkupTagHelperAttributeSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
-        if (value != Value)
+        if (namePrefix != NamePrefix || name != Name || nameSuffix != NameSuffix || equalsToken != EqualsToken || valuePrefix != ValuePrefix || value != Value || valueSuffix != ValueSuffix)
         {
-            var newNode = SyntaxFactory.MarkupTagHelperAttribute(value);
+            var newNode = SyntaxFactory.MarkupTagHelperAttribute(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
             var diags = GetDiagnostics();
             if (diags != null && diags.Length > 0)
                newNode = newNode.WithDiagnosticsGreen(diags);
@@ -1693,12 +1765,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     internal override GreenNode SetDiagnostics(RazorDiagnostic[] diagnostics)
     {
-         return new MarkupTagHelperAttributeSyntax(Kind, _value, diagnostics, GetAnnotations());
+         return new MarkupTagHelperAttributeSyntax(Kind, _namePrefix, _name, _nameSuffix, _equalsToken, _valuePrefix, _value, _valueSuffix, diagnostics, GetAnnotations());
     }
 
     internal override GreenNode SetAnnotations(SyntaxAnnotation[] annotations)
     {
-         return new MarkupTagHelperAttributeSyntax(Kind, _value, GetDiagnostics(), annotations);
+         return new MarkupTagHelperAttributeSyntax(Kind, _namePrefix, _name, _nameSuffix, _equalsToken, _valuePrefix, _value, _valueSuffix, GetDiagnostics(), annotations);
     }
   }
 
@@ -3343,8 +3415,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 
     public override GreenNode VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
     {
-      var value = (RazorSyntaxNode)Visit(node.Value);
-      return node.Update(value);
+      var namePrefix = (MarkupTextLiteralSyntax)Visit(node.NamePrefix);
+      var name = (MarkupTextLiteralSyntax)Visit(node.Name);
+      var nameSuffix = (MarkupTextLiteralSyntax)Visit(node.NameSuffix);
+      var equalsToken = (SyntaxToken)Visit(node.EqualsToken);
+      var valuePrefix = (MarkupTextLiteralSyntax)Visit(node.ValuePrefix);
+      var value = (RazorBlockSyntax)Visit(node.Value);
+      var valueSuffix = (MarkupTextLiteralSyntax)Visit(node.ValueSuffix);
+      return node.Update(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
     }
 
     public override GreenNode VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
@@ -3641,14 +3719,25 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return result;
     }
 
-    public static MarkupTagHelperAttributeSyntax MarkupTagHelperAttribute(RazorSyntaxNode value)
+    public static MarkupTagHelperAttributeSyntax MarkupTagHelperAttribute(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
+      if (name == null)
+        throw new ArgumentNullException(nameof(name));
+      if (equalsToken != null)
+      {
+      switch (equalsToken.Kind)
+      {
+        case SyntaxKind.Equals:
+        case SyntaxKind.None:
+          break;
+        default:
+          throw new ArgumentException("equalsToken");
+      }
+      }
       if (value == null)
         throw new ArgumentNullException(nameof(value));
 
-      var result = new MarkupTagHelperAttributeSyntax(SyntaxKind.MarkupTagHelperAttribute, value);
-
-      return result;
+      return new MarkupTagHelperAttributeSyntax(SyntaxKind.MarkupTagHelperAttribute, namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
     }
 
     public static CSharpCodeBlockSyntax CSharpCodeBlock(Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<RazorSyntaxNode> children)

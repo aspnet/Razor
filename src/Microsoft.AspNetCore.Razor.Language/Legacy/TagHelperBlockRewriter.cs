@@ -4,8 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Language.Syntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
@@ -14,7 +12,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
     {
         private static readonly string StringTypeName = typeof(string).FullName;
 
-        public static TagHelperBlockBuilder Rewrite(
+        public static MarkupTagHelperStartTagSyntax Rewrite(
             string tagName,
             bool validStructure,
             RazorParserFeatureFlags featureFlags,
@@ -24,27 +22,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             RazorSourceDocument source)
         {
             // There will always be at least one child for the '<'.
-            var start = tag.Children[0].GetSourceLocation(source);
-            var attributes = GetTagAttributes(tagName, validStructure, tag, bindingResult, featureFlags, errorSink, source);
-            var tagMode = GetTagMode(tag, bindingResult, errorSink);
+            var rewrittenChildren = GetRewrittenChildren(tagName, validStructure, tag, bindingResult, featureFlags, errorSink, source);
 
-            return null;
+            return SyntaxFactory.MarkupTagHelperStartTag(rewrittenChildren);
         }
 
-        private static IList<TagHelperAttributeNode> GetTagAttributes(
-            string tagName,
-            bool validStructure,
-            MarkupTagBlockSyntax tagBlock,
-            TagHelperBinding bindingResult,
-            RazorParserFeatureFlags featureFlags,
-            ErrorSink errorSink,
-            RazorSourceDocument source)
-        {
-            var attributes = new List<TagHelperAttributeNode>();
-            return attributes;
-        }
-
-        private static TagMode GetTagMode(
+        public static TagMode GetTagMode(
             MarkupTagBlockSyntax tagBlock,
             TagHelperBinding bindingResult,
             ErrorSink errorSink)
@@ -69,6 +52,301 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             return TagMode.StartTagAndEndTag;
+        }
+
+        private static SyntaxList<RazorSyntaxNode> GetRewrittenChildren(
+            string tagName,
+            bool validStructure,
+            MarkupTagBlockSyntax tagBlock,
+            TagHelperBinding bindingResult,
+            RazorParserFeatureFlags featureFlags,
+            ErrorSink errorSink,
+            RazorSourceDocument source)
+        {
+            var tagHelperBuilder = SyntaxListBuilder<RazorSyntaxNode>.Create();
+            var processedBoundAttributeNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            if (tagBlock.Children.Count > 0)
+            {
+                // Add the tag start
+                tagHelperBuilder.Add(tagBlock.Children.First());
+            }
+
+            // We skip the first child "<tagname" and take everything up to the ending portion of the tag ">" or "/>".
+            // If the tag does not have a valid structure then there's no close angle to ignore.
+            var tokenOffset = validStructure ? 1 : 0;
+            for (var i = 1; i < tagBlock.Children.Count - tokenOffset; i++)
+            {
+                var isMinimized = false;
+                var attributeNameLocation = SourceLocation.Undefined;
+                var child = tagBlock.Children[i];
+                TryParseResult result;
+                if (child is MarkupAttributeBlockSyntax attributeBlock)
+                {
+                    attributeNameLocation = attributeBlock.Name.GetSourceLocation(source);
+                    result = TryParseAttribute(
+                        tagName,
+                        attributeBlock,
+                        bindingResult.Descriptors,
+                        errorSink,
+                        processedBoundAttributeNames);
+                    tagHelperBuilder.Add(result.RewrittenAttribute);
+                }
+                else if (child is MarkupMinimizedAttributeBlockSyntax minimizedAttributeBlock)
+                {
+                    isMinimized = true;
+                    attributeNameLocation = minimizedAttributeBlock.Name.GetSourceLocation(source);
+                    result = TryParseMinimizedAttribute(
+                        tagName,
+                        minimizedAttributeBlock,
+                        bindingResult.Descriptors,
+                        errorSink,
+                        processedBoundAttributeNames);
+                    tagHelperBuilder.Add(result.RewrittenAttribute);
+                }
+                else if (child.Kind == SyntaxKind.CSharpCodeBlock)
+                {
+                    // TODO: Accept more than just Markup attributes: https://github.com/aspnet/Razor/issues/96.
+                    // Something like:
+                    // <input @checked />
+                    var location = new SourceSpan(child.GetSourceLocation(source), child.FullWidth);
+                    var diagnostic = RazorDiagnosticFactory.CreateParsing_TagHelpersCannotHaveCSharpInTagDeclaration(location, tagName);
+                    errorSink.OnError(diagnostic);
+
+                    result = null;
+                }
+                else
+                {
+                    result = null;
+                }
+
+                // Only want to track the attribute if we succeeded in parsing its corresponding Block/Span.
+                if (result == null)
+                {
+                    // Error occurred while parsing the attribute. Don't try parsing the rest to avoid misleading errors.
+                    for (var j = i; j < tagBlock.Children.Count; j++)
+                    {
+                        tagHelperBuilder.Add(tagBlock.Children[j]);
+                    }
+                    break;
+                }
+
+                // Check if it's a non-boolean bound attribute that is minimized or if it's a bound
+                // non-string attribute that has null or whitespace content.
+                var isValidMinimizedAttribute = featureFlags.AllowMinimizedBooleanTagHelperAttributes && result.IsBoundBooleanAttribute;
+                if ((isMinimized &&
+                    result.IsBoundAttribute &&
+                    !isValidMinimizedAttribute) ||
+                    (!isMinimized &&
+                    result.IsBoundNonStringAttribute &&
+                     string.IsNullOrWhiteSpace(GetAttributeValueContent(result.RewrittenAttribute))))
+                {
+                    var errorLocation = new SourceSpan(attributeNameLocation, result.AttributeName.Length);
+                    var propertyTypeName = GetPropertyType(result.AttributeName, bindingResult.Descriptors);
+                    var diagnostic = RazorDiagnosticFactory.CreateTagHelper_EmptyBoundAttribute(errorLocation, result.AttributeName, tagName, propertyTypeName);
+                    errorSink.OnError(diagnostic);
+                }
+
+                // Check if the attribute was a prefix match for a tag helper dictionary property but the
+                // dictionary key would be the empty string.
+                if (result.IsMissingDictionaryKey)
+                {
+                    var errorLocation = new SourceSpan(attributeNameLocation, result.AttributeName.Length);
+                    var diagnostic = RazorDiagnosticFactory.CreateParsing_TagHelperIndexerAttributeNameMustIncludeKey(errorLocation, result.AttributeName, tagName);
+                    errorSink.OnError(diagnostic);
+                }
+            }
+
+            if (validStructure)
+            {
+                // Add the tag end.
+                tagHelperBuilder.Add(tagBlock.Children[tagBlock.Children.Count - 1]);
+            }
+
+            return tagHelperBuilder.ToList();
+        }
+
+        private static TryParseResult TryParseMinimizedAttribute(
+            string tagName,
+            MarkupMinimizedAttributeBlockSyntax attributeBlock,
+            IEnumerable<TagHelperDescriptor> descriptors,
+            ErrorSink errorSink,
+            HashSet<string> processedBoundAttributeNames)
+        {
+            // Have a name now. Able to determine correct isBoundNonStringAttribute value.
+            var result = CreateTryParseResult(attributeBlock.Name.GetContent(), descriptors, processedBoundAttributeNames);
+
+            result.AttributeStructure = AttributeStructure.Minimized;
+            var rewritten = SyntaxFactory.MarkupTagHelperAttribute(
+                attributeBlock.NamePrefix,
+                attributeBlock.Name,
+                nameSuffix: null,
+                valuePrefix: null,
+                value: null,
+                valueSuffix: null);
+
+            rewritten = rewritten.WithTagHelperAttributeInfo(
+                new TagHelperAttributeInfo(result.AttributeName, result.AttributeStructure));
+
+            result.RewrittenAttribute = rewritten;
+
+            return result;
+        }
+
+        private static TryParseResult TryParseAttribute(
+            string tagName,
+            MarkupAttributeBlockSyntax attributeBlock,
+            IEnumerable<TagHelperDescriptor> descriptors,
+            ErrorSink errorSink,
+            HashSet<string> processedBoundAttributeNames)
+        {
+            // Have a name now. Able to determine correct isBoundNonStringAttribute value.
+            var result = CreateTryParseResult(attributeBlock.Name.GetContent(), descriptors, processedBoundAttributeNames);
+
+            if (attributeBlock.ValuePrefix == null)
+            {
+                if (attributeBlock.Value is GenericBlockSyntax wrapper &&
+                    wrapper.Children.Count == 1 &&
+                    wrapper.Children[0] is MarkupLiteralAttributeValueSyntax)
+                {
+                    // Attribute value is a string literal. Eg: <tag my-attribute=foo />.
+                    result.AttributeStructure = AttributeStructure.NoQuotes;
+                }
+                else
+                {
+                    // Could be an expression, treat NoQuotes and DoubleQuotes equivalently. We purposefully do not persist NoQuotes
+                    // ValueStyles at code generation time to protect users from rendering dynamic content with spaces
+                    // that can break attributes.
+                    // Ex: <tag my-attribute=@value /> where @value results in the test "hello world".
+                    // This way, the above code would render <tag my-attribute="hello world" />.
+                    result.AttributeStructure = AttributeStructure.DoubleQuotes;
+                }
+            }
+            else
+            {
+                var lastToken = attributeBlock.ValuePrefix.GetLastToken();
+                switch (lastToken.Kind)
+                {
+                    case SyntaxKind.DoubleQuote:
+                        result.AttributeStructure = AttributeStructure.DoubleQuotes;
+                        break;
+                    case SyntaxKind.SingleQuote:
+                        result.AttributeStructure = AttributeStructure.SingleQuotes;
+                        break;
+                    default:
+                        result.AttributeStructure = AttributeStructure.Minimized;
+                        break;
+                }
+            }
+
+            var rewritten = SyntaxFactory.MarkupTagHelperAttribute(
+                attributeBlock.NamePrefix,
+                attributeBlock.Name,
+                attributeBlock.NameSuffix,
+                attributeBlock.EqualsToken,
+                attributeBlock.ValuePrefix,
+                attributeBlock.Value,
+                attributeBlock.ValueSuffix);
+
+            rewritten = rewritten.WithTagHelperAttributeInfo(
+                new TagHelperAttributeInfo(result.AttributeName, result.AttributeStructure));
+
+            result.RewrittenAttribute = rewritten;
+
+            return result;
+        }
+
+        // Determines the full name of the Type of the property corresponding to an attribute with the given name.
+        private static string GetPropertyType(string name, IEnumerable<TagHelperDescriptor> descriptors)
+        {
+            var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors);
+            var isBoundToIndexer = TagHelperMatchingConventions.SatisfiesBoundAttributeIndexer(name, firstBoundAttribute);
+
+            if (isBoundToIndexer)
+            {
+                return firstBoundAttribute?.IndexerTypeName;
+            }
+            else
+            {
+                return firstBoundAttribute?.TypeName;
+            }
+        }
+
+        // Create a TryParseResult for given name, filling in binding details.
+        private static TryParseResult CreateTryParseResult(
+            string name,
+            IEnumerable<TagHelperDescriptor> descriptors,
+            HashSet<string> processedBoundAttributeNames)
+        {
+            var firstBoundAttribute = FindFirstBoundAttribute(name, descriptors);
+            var isBoundAttribute = firstBoundAttribute != null;
+            var isBoundNonStringAttribute = isBoundAttribute && !firstBoundAttribute.ExpectsStringValue(name);
+            var isBoundBooleanAttribute = isBoundAttribute && firstBoundAttribute.ExpectsBooleanValue(name);
+            var isMissingDictionaryKey = isBoundAttribute &&
+                firstBoundAttribute.IndexerNamePrefix != null &&
+                name.Length == firstBoundAttribute.IndexerNamePrefix.Length;
+
+            var isDuplicateAttribute = false;
+            if (isBoundAttribute && !processedBoundAttributeNames.Add(name))
+            {
+                // A bound attribute with the same name has already been processed.
+                isDuplicateAttribute = true;
+            }
+
+            return new TryParseResult
+            {
+                AttributeName = name,
+                IsBoundAttribute = isBoundAttribute,
+                IsBoundNonStringAttribute = isBoundNonStringAttribute,
+                IsBoundBooleanAttribute = isBoundBooleanAttribute,
+                IsMissingDictionaryKey = isMissingDictionaryKey,
+                IsDuplicateAttribute = isDuplicateAttribute
+            };
+        }
+
+        // Finds first TagHelperAttributeDescriptor matching given name.
+        private static BoundAttributeDescriptor FindFirstBoundAttribute(
+            string name,
+            IEnumerable<TagHelperDescriptor> descriptors)
+        {
+            var firstBoundAttribute = descriptors
+                .SelectMany(descriptor => descriptor.BoundAttributes)
+                .FirstOrDefault(attributeDescriptor => TagHelperMatchingConventions.CanSatisfyBoundAttribute(name, attributeDescriptor));
+
+            return firstBoundAttribute;
+        }
+
+        private static string GetAttributeValueContent(RazorSyntaxNode attributeBlock)
+        {
+            if (attributeBlock is MarkupTagHelperAttributeSyntax tagHelperAttribute)
+            {
+                return tagHelperAttribute.Value?.GetContent();
+            }
+            else if (attributeBlock is MarkupAttributeBlockSyntax attribute)
+            {
+                return attribute.Value?.GetContent();
+            }
+
+            return null;
+        }
+
+        private class TryParseResult
+        {
+            public string AttributeName { get; set; }
+
+            public RazorSyntaxNode RewrittenAttribute { get; set; }
+
+            public AttributeStructure AttributeStructure { get; set; }
+
+            public bool IsBoundAttribute { get; set; }
+
+            public bool IsBoundNonStringAttribute { get; set; }
+
+            public bool IsBoundBooleanAttribute { get; set; }
+
+            public bool IsMissingDictionaryKey { get; set; }
+
+            public bool IsDuplicateAttribute { get; set; }
         }
     }
 }

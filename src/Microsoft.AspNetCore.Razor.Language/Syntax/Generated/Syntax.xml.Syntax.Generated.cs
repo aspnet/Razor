@@ -1575,18 +1575,72 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
   internal sealed partial class MarkupTagHelperAttributeSyntax : MarkupSyntaxNode
   {
-    private RazorSyntaxNode _value;
+    private MarkupTextLiteralSyntax _namePrefix;
+    private MarkupTextLiteralSyntax _name;
+    private MarkupTextLiteralSyntax _nameSuffix;
+    private SyntaxToken _equalsToken;
+    private MarkupTextLiteralSyntax _valuePrefix;
+    private RazorBlockSyntax _value;
+    private MarkupTextLiteralSyntax _valueSuffix;
 
     internal MarkupTagHelperAttributeSyntax(GreenNode green, SyntaxNode parent, int position)
         : base(green, parent, position)
     {
     }
 
-    public RazorSyntaxNode Value 
+    public MarkupTextLiteralSyntax NamePrefix 
     {
         get
         {
-            return GetRedAtZero(ref _value);
+            return GetRedAtZero(ref _namePrefix);
+        }
+    }
+
+    public MarkupTextLiteralSyntax Name 
+    {
+        get
+        {
+            return GetRed(ref _name, 1);
+        }
+    }
+
+    public MarkupTextLiteralSyntax NameSuffix 
+    {
+        get
+        {
+            return GetRed(ref _nameSuffix, 2);
+        }
+    }
+
+    public SyntaxToken EqualsToken 
+    {
+        get
+        {
+            return GetRed(ref _equalsToken, 3);
+        }
+    }
+
+    public MarkupTextLiteralSyntax ValuePrefix 
+    {
+        get
+        {
+            return GetRed(ref _valuePrefix, 4);
+        }
+    }
+
+    public RazorBlockSyntax Value 
+    {
+        get
+        {
+            return GetRed(ref _value, 5);
+        }
+    }
+
+    public MarkupTextLiteralSyntax ValueSuffix 
+    {
+        get
+        {
+            return GetRed(ref _valueSuffix, 6);
         }
     }
 
@@ -1594,7 +1648,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     {
         switch (index)
         {
-            case 0: return GetRedAtZero(ref _value);
+            case 0: return GetRedAtZero(ref _namePrefix);
+            case 1: return GetRed(ref _name, 1);
+            case 2: return GetRed(ref _nameSuffix, 2);
+            case 3: return GetRed(ref _equalsToken, 3);
+            case 4: return GetRed(ref _valuePrefix, 4);
+            case 5: return GetRed(ref _value, 5);
+            case 6: return GetRed(ref _valueSuffix, 6);
             default: return null;
         }
     }
@@ -1602,7 +1662,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     {
         switch (index)
         {
-            case 0: return _value;
+            case 0: return _namePrefix;
+            case 1: return _name;
+            case 2: return _nameSuffix;
+            case 3: return _equalsToken;
+            case 4: return _valuePrefix;
+            case 5: return _value;
+            case 6: return _valueSuffix;
             default: return null;
         }
     }
@@ -1617,11 +1683,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         visitor.VisitMarkupTagHelperAttribute(this);
     }
 
-    public MarkupTagHelperAttributeSyntax Update(RazorSyntaxNode value)
+    public MarkupTagHelperAttributeSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
-        if (value != Value)
+        if (namePrefix != NamePrefix || name != Name || nameSuffix != NameSuffix || equalsToken != EqualsToken || valuePrefix != ValuePrefix || value != Value || valueSuffix != ValueSuffix)
         {
-            var newNode = SyntaxFactory.MarkupTagHelperAttribute(value);
+            var newNode = SyntaxFactory.MarkupTagHelperAttribute(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
             var annotations = GetAnnotations();
             if (annotations != null && annotations.Length > 0)
                return newNode.WithAnnotations(annotations);
@@ -1631,9 +1697,68 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this;
     }
 
-    public MarkupTagHelperAttributeSyntax WithValue(RazorSyntaxNode value)
+    public MarkupTagHelperAttributeSyntax WithNamePrefix(MarkupTextLiteralSyntax namePrefix)
     {
-        return Update(value);
+        return Update(namePrefix, Name, NameSuffix, EqualsToken, ValuePrefix, Value, ValueSuffix);
+    }
+
+    public MarkupTagHelperAttributeSyntax WithName(MarkupTextLiteralSyntax name)
+    {
+        return Update(NamePrefix, name, NameSuffix, EqualsToken, ValuePrefix, Value, ValueSuffix);
+    }
+
+    public MarkupTagHelperAttributeSyntax WithNameSuffix(MarkupTextLiteralSyntax nameSuffix)
+    {
+        return Update(NamePrefix, Name, nameSuffix, EqualsToken, ValuePrefix, Value, ValueSuffix);
+    }
+
+    public MarkupTagHelperAttributeSyntax WithEqualsToken(SyntaxToken equalsToken)
+    {
+        return Update(NamePrefix, Name, NameSuffix, equalsToken, ValuePrefix, Value, ValueSuffix);
+    }
+
+    public MarkupTagHelperAttributeSyntax WithValuePrefix(MarkupTextLiteralSyntax valuePrefix)
+    {
+        return Update(NamePrefix, Name, NameSuffix, EqualsToken, valuePrefix, Value, ValueSuffix);
+    }
+
+    public MarkupTagHelperAttributeSyntax WithValue(RazorBlockSyntax value)
+    {
+        return Update(NamePrefix, Name, NameSuffix, EqualsToken, ValuePrefix, value, ValueSuffix);
+    }
+
+    public MarkupTagHelperAttributeSyntax WithValueSuffix(MarkupTextLiteralSyntax valueSuffix)
+    {
+        return Update(NamePrefix, Name, NameSuffix, EqualsToken, ValuePrefix, Value, valueSuffix);
+    }
+
+    public MarkupTagHelperAttributeSyntax AddNamePrefixLiteralTokens(params SyntaxToken[] items)
+    {
+        var _namePrefix = this.NamePrefix ?? SyntaxFactory.MarkupTextLiteral();
+        return this.WithNamePrefix(_namePrefix.WithLiteralTokens(_namePrefix.LiteralTokens.AddRange(items)));
+    }
+
+    public MarkupTagHelperAttributeSyntax AddNameLiteralTokens(params SyntaxToken[] items)
+    {
+        return this.WithName(this.Name.WithLiteralTokens(this.Name.LiteralTokens.AddRange(items)));
+    }
+
+    public MarkupTagHelperAttributeSyntax AddNameSuffixLiteralTokens(params SyntaxToken[] items)
+    {
+        var _nameSuffix = this.NameSuffix ?? SyntaxFactory.MarkupTextLiteral();
+        return this.WithNameSuffix(_nameSuffix.WithLiteralTokens(_nameSuffix.LiteralTokens.AddRange(items)));
+    }
+
+    public MarkupTagHelperAttributeSyntax AddValuePrefixLiteralTokens(params SyntaxToken[] items)
+    {
+        var _valuePrefix = this.ValuePrefix ?? SyntaxFactory.MarkupTextLiteral();
+        return this.WithValuePrefix(_valuePrefix.WithLiteralTokens(_valuePrefix.LiteralTokens.AddRange(items)));
+    }
+
+    public MarkupTagHelperAttributeSyntax AddValueSuffixLiteralTokens(params SyntaxToken[] items)
+    {
+        var _valueSuffix = this.ValueSuffix ?? SyntaxFactory.MarkupTextLiteral();
+        return this.WithValueSuffix(_valueSuffix.WithLiteralTokens(_valueSuffix.LiteralTokens.AddRange(items)));
     }
   }
 

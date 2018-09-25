@@ -538,8 +538,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public override SyntaxNode VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
     {
-      var value = (RazorSyntaxNode)Visit(node.Value);
-      return node.Update(value);
+      var namePrefix = (MarkupTextLiteralSyntax)Visit(node.NamePrefix);
+      var name = (MarkupTextLiteralSyntax)Visit(node.Name);
+      var nameSuffix = (MarkupTextLiteralSyntax)Visit(node.NameSuffix);
+      var equalsToken = (SyntaxToken)VisitToken(node.EqualsToken);
+      var valuePrefix = (MarkupTextLiteralSyntax)Visit(node.ValuePrefix);
+      var value = (RazorBlockSyntax)Visit(node.Value);
+      var valueSuffix = (MarkupTextLiteralSyntax)Visit(node.ValueSuffix);
+      return node.Update(namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
     }
 
     public override SyntaxNode VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
@@ -834,9 +840,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new MarkupAttributeBlockSyntax instance.</summary>
-    public static MarkupAttributeBlockSyntax MarkupAttributeBlock(MarkupTextLiteralSyntax _namePrefix, MarkupTextLiteralSyntax _name, MarkupTextLiteralSyntax _nameSuffix, MarkupTextLiteralSyntax _valuePrefix, RazorBlockSyntax _value, MarkupTextLiteralSyntax _valueSuffix)
+    public static MarkupAttributeBlockSyntax MarkupAttributeBlock(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
-      return SyntaxFactory.MarkupAttributeBlock(_namePrefix, _name, _nameSuffix, SyntaxFactory.Token(SyntaxKind.Equals), _valuePrefix, _value, _valueSuffix);
+      return SyntaxFactory.MarkupAttributeBlock(namePrefix, name, nameSuffix, SyntaxFactory.Token(SyntaxKind.Equals), valuePrefix, value, valueSuffix);
     }
 
     /// <summary>Creates a new MarkupAttributeBlockSyntax instance.</summary>
@@ -912,11 +918,33 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new MarkupTagHelperAttributeSyntax instance.</summary>
-    public static MarkupTagHelperAttributeSyntax MarkupTagHelperAttribute(RazorSyntaxNode value)
+    public static MarkupTagHelperAttributeSyntax MarkupTagHelperAttribute(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
+      if (name == null)
+        throw new ArgumentNullException(nameof(name));
+      switch (equalsToken.Kind)
+      {
+        case SyntaxKind.Equals:
+        case SyntaxKind.None:
+          break;
+        default:
+          throw new ArgumentException("equalsToken");
+      }
       if (value == null)
         throw new ArgumentNullException(nameof(value));
-      return (MarkupTagHelperAttributeSyntax)InternalSyntax.SyntaxFactory.MarkupTagHelperAttribute(value == null ? null : (InternalSyntax.RazorSyntaxNode)value.Green).CreateRed();
+      return (MarkupTagHelperAttributeSyntax)InternalSyntax.SyntaxFactory.MarkupTagHelperAttribute(namePrefix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)namePrefix.Green, name == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)name.Green, nameSuffix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)nameSuffix.Green, (Syntax.InternalSyntax.SyntaxToken)equalsToken.Green, valuePrefix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)valuePrefix.Green, value == null ? null : (InternalSyntax.RazorBlockSyntax)value.Green, valueSuffix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)valueSuffix.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new MarkupTagHelperAttributeSyntax instance.</summary>
+    public static MarkupTagHelperAttributeSyntax MarkupTagHelperAttribute(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
+    {
+      return SyntaxFactory.MarkupTagHelperAttribute(namePrefix, name, nameSuffix, default(SyntaxToken), valuePrefix, value, valueSuffix);
+    }
+
+    /// <summary>Creates a new MarkupTagHelperAttributeSyntax instance.</summary>
+    public static MarkupTagHelperAttributeSyntax MarkupTagHelperAttribute(RazorBlockSyntax value)
+    {
+      return SyntaxFactory.MarkupTagHelperAttribute(default(MarkupTextLiteralSyntax), SyntaxFactory.MarkupTextLiteral(), default(MarkupTextLiteralSyntax), default(SyntaxToken), default(MarkupTextLiteralSyntax), value, default(MarkupTextLiteralSyntax));
     }
 
     /// <summary>Creates a new CSharpCodeBlockSyntax instance.</summary>

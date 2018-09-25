@@ -112,10 +112,15 @@
   </Node>
   <Node Name="MarkupTagHelperAttributeSyntax" Base="MarkupSyntaxNode">
     <Kind Name="MarkupTagHelperAttribute" />
-    <Field Name="Value" Type="RazorSyntaxNode">
-      <Kind Name="MarkupAttributeBlockSyntax" />
-      <Kind Name="MarkupMinimizedAttributeBlockSyntax" />
+    <Field Name="NamePrefix" Type="MarkupTextLiteralSyntax" Optional="true" />
+    <Field Name="Name" Type="MarkupTextLiteralSyntax" />
+    <Field Name="NameSuffix" Type="MarkupTextLiteralSyntax" Optional="true" />
+    <Field Name="EqualsToken" Type="SyntaxToken" Optional="true">
+      <Kind Name="Equals" />
     </Field>
+    <Field Name="ValuePrefix" Type="MarkupTextLiteralSyntax" Optional="true" />
+    <Field Name="Value" Type="RazorBlockSyntax" />
+    <Field Name="ValueSuffix" Type="MarkupTextLiteralSyntax" Optional="true" />
   </Node>
   
   <!-- CSharp -->

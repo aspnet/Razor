@@ -15,7 +15,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         public void TestTagHelpers()
         {
             UseNewSyntaxTree = false;
-            var document = "<p><strong>";
+            var document = "<p class='asdf'><strong>";
             EvaluateData(PartialRequiredParentTags_Descriptors, document);
             UseNewSyntaxTree = false;
         }

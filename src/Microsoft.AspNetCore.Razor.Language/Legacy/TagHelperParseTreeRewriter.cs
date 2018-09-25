@@ -174,7 +174,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     // We're in a start TagHelper block.
                     var validTagStructure = ValidateTagSyntax(tagName, tagBlock);
 
-                    var builder = TagHelperBlockRewriter.Rewrite(
+                    var startTag = TagHelperBlockRewriter.Rewrite(
                         tagName,
                         validTagStructure,
                         _featureFlags,
@@ -183,19 +183,22 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         _errorSink,
                         _source);
 
+                    var tagMode = TagHelperBlockRewriter.GetTagMode(tagBlock, tagHelperBinding, _errorSink);
+                    var tagHelperInfo = new TagHelperInfo(tagName, tagMode, tagHelperBinding);
+
                     //// Track the original start tag so the editor knows where each piece of the TagHelperBlock lies
                     //// for formatting.
                     //builder.SourceStartTag = tagBlock;
 
-                    //// Found a new tag helper block
-                    //TrackTagHelperBlock(builder);
+                    // Found a new tag helper block
+                    //TrackTagHelperBlock(startTag, tagMode, tagHelperBinding);
 
-                    //// If it's a non-content expecting block then we don't have to worry about nested children within the
-                    //// tag. Complete it.
-                    //if (builder.TagMode == TagMode.SelfClosing || builder.TagMode == TagMode.StartTagOnly)
-                    //{
-                    //    BuildCurrentlyTrackedTagHelperBlock(endTag: null);
-                    //}
+                    // If it's a non-content expecting block then we don't have to worry about nested children within the
+                    // tag. Complete it.
+                    if (tagMode == TagMode.SelfClosing || tagMode == TagMode.StartTagOnly)
+                    {
+                        //BuildCurrentlyTrackedTagHelperBlock(endTag: null);
+                    }
                 }
                 else
                 {
