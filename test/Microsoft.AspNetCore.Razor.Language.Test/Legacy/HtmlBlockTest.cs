@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class HtmlBlockTest : CsHtmlMarkupParserTestBase
     {
+        public HtmlBlockTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void HandlesUnbalancedTripleDashHTMLComments()
         {
