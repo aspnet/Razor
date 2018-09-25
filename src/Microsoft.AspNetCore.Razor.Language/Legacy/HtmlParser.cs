@@ -981,6 +981,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private void ParseTagBlock(in SyntaxListBuilder<RazorSyntaxNode> builder, Stack<Tuple<SyntaxToken, SourceLocation>> tags)
         {
+            // TODO: This is really ugly and needs to be cleaned up.
+
             // Skip Whitespace and Text
             var completeTag = false;
             var blockAlreadyBuilt = false;
@@ -991,22 +993,23 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // Output everything prior to the OpenAngle into a markup span
                 builder.Add(OutputTokensAsMarkupLiteral());
 
-                // Do not want to start a new tag block if we're at the end of the file.
                 var tagBuilder = builder;
-                IDisposable disposableTagBuilder = null;
+                IDisposable tagBuilderDisposable = null;
                 try
                 {
                     if (EndOfFile)
                     {
+                        // Do not want to start a new tag block if we're at the end of the file.
                         EndTagBlock(builder, tags, complete: true);
                     }
                     else
                     {
-                        if (!AtSpecialTag)
+                        var atSpecialTag = AtSpecialTag;
+                        if (!atSpecialTag)
                         {
                             // Start a tag block.  This is used to wrap things like <p> or <a class="btn"> etc.
                             var pooledResult = Pool.Allocate<RazorSyntaxNode>();
-                            disposableTagBuilder = pooledResult;
+                            tagBuilderDisposable = pooledResult;
                             tagBuilder = pooledResult.Builder;
                         }
                         _bufferedOpenAngle = null;
@@ -1019,10 +1022,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             AcceptToken(_bufferedOpenAngle);
                             EndTagBlock(tagBuilder, tags, complete: false);
                         }
-                        else if (AtSpecialTag && At(SyntaxKind.Bang))
+                        else if (atSpecialTag && At(SyntaxKind.Bang))
                         {
                             AcceptToken(_bufferedOpenAngle);
                             completeTag = ParseBangTag(builder);
+                            blockAlreadyBuilt = completeTag;
                         }
                         else
                         {
@@ -1043,8 +1047,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         // Output the contents of the tag into its own markup span.
                         builder.Add(OutputTokensAsMarkupLiteral());
                     }
-                    else
+                    else if (tagBuilderDisposable != null)
                     {
+                        // A new tag block was started. Build it.
                         // Output the contents of the tag into its own markup span.
                         tagBuilder.Add(OutputTokensAsMarkupLiteral());
                         var tagBlock = SyntaxFactory.MarkupTagBlock(tagBuilder.ToList());
@@ -1054,10 +1059,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 finally
                 {
                     // Will be null if we were at end of file or special tag when initially created.
-                    if (disposableTagBuilder != null)
+                    if (tagBuilderDisposable != null)
                     {
                         // End tag block
-                        disposableTagBuilder.Dispose();
+                        tagBuilderDisposable.Dispose();
                     }
                 }
             }
@@ -1083,7 +1088,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     case SyntaxKind.QuestionMark:
                         // XML PI
                         AcceptToken(_bufferedOpenAngle);
-                        return Tuple.Create(TryParseXmlPI(builder), blockAlreadyBuilt);
+                        var complete = TryParseXmlPI(builder);
+                        // No block is created for Xml PI. So return the same value as complete.
+                        blockAlreadyBuilt = complete;
+                        return Tuple.Create(complete, blockAlreadyBuilt);
                     default:
                         // Start Tag
                         return ParseStartTag(builder, parentBuilder, tags);
@@ -1489,7 +1497,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 var shouldAcceptWhitespaceAndNewLine = true;
 
                 // Check if the previous span was a transition.
-                var previousSpan = GetLastSpan(builder[builder.Count - 1]);
+                var previousSpan = builder.Count > 0 ? GetLastSpan(builder[builder.Count - 1]) : null;
                 if (previousSpan != null && previousSpan.Kind == SyntaxKind.MarkupTransition)
                 {
                     var tokens = ReadWhile(
@@ -1710,6 +1718,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 return null;
             }
 
+            // Find the last token of this node and return its immediate non-list parent.
             var red = node.CreateRed();
             var last = red.GetLastTerminal();
             if (last == null)
