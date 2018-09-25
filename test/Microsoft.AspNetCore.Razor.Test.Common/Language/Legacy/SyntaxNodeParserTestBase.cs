@@ -50,6 +50,64 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return syntaxTree;
         }
 
+        internal override RazorSyntaxTree ParseHtmlBlock(RazorLanguageVersion version, string document, IEnumerable<DirectiveDescriptor> directives, bool designTime = false)
+        {
+            if (!UseNewSyntaxTree)
+            {
+                return base.ParseHtmlBlock(version, document, directives, designTime);
+            }
+
+            directives = directives ?? Array.Empty<DirectiveDescriptor>();
+
+            var source = TestRazorSourceDocument.Create(document, filePath: null, relativePath: null, normalizeNewLines: true);
+
+            var options = CreateParserOptions(version, directives, designTime);
+            var context = new ParserContext(source, options);
+
+            var codeParser = new CSharpCodeParser(directives, context);
+            var markupParser = new HtmlMarkupParser(context);
+
+            codeParser.HtmlParser = markupParser;
+            markupParser.CodeParser = codeParser;
+
+            var root = markupParser.ParseBlock().CreateRed();
+
+            var diagnostics = context.ErrorSink.Errors;
+
+            var syntaxTree = RazorSyntaxTree.Create(root, source, diagnostics, options);
+
+            return syntaxTree;
+        }
+
+        internal override RazorSyntaxTree ParseCodeBlock(RazorLanguageVersion version, string document, IEnumerable<DirectiveDescriptor> directives, bool designTime = false)
+        {
+            if (!UseNewSyntaxTree)
+            {
+                return base.ParseCodeBlock(version, document, directives, designTime);
+            }
+
+            directives = directives ?? Array.Empty<DirectiveDescriptor>();
+
+            var source = TestRazorSourceDocument.Create(document, filePath: null, relativePath: null, normalizeNewLines: true);
+
+            var options = CreateParserOptions(version, directives, designTime);
+            var context = new ParserContext(source, options);
+
+            var codeParser = new CSharpCodeParser(directives, context);
+            var markupParser = new HtmlMarkupParser(context);
+
+            codeParser.HtmlParser = markupParser;
+            markupParser.CodeParser = codeParser;
+
+            var root = codeParser.ParseBlock().CreateRed();
+
+            var diagnostics = context.ErrorSink.Errors;
+
+            var syntaxTree = RazorSyntaxTree.Create(root, source, diagnostics, options);
+
+            return syntaxTree;
+        }
+
         internal override void AssertSyntaxTreeNodeMatchesBaseline(RazorSyntaxTree syntaxTree)
         {
             if (!UseNewSyntaxTree)
