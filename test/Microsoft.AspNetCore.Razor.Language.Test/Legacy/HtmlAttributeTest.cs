@@ -9,6 +9,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class HtmlAttributeTest : CsHtmlMarkupParserTestBase
     {
+        public HtmlAttributeTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void SymbolBoundAttributes_BeforeEqualWhitespace1()
         {
@@ -219,7 +224,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             ParseDocumentTest("<input value=@foo />");
         }
 
-        [Fact]
+        [Fact(Skip = "ConditionalAttributeCollapser doesn't exist in the new tree")]
         public void ConditionalAttributeCollapserDoesNotRewriteEscapedTransitions()
         {
             // Act
@@ -231,7 +236,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             BaselineTest(rewritten);
         }
 
-        [Fact]
+        [Fact(Skip = "ConditionalAttributeCollapser doesn't exist in the new tree")]
         public void ConditionalAttributesDoNotCreateExtraDataForEntirelyLiteralAttribute()
         {
             // Arrange
