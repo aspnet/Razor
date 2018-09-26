@@ -1,16 +1,16 @@
-RazorDocument - [0..12) - FullWidth: 12 - [foo @bar baz]
-    MarkupBlock - [0..12) - FullWidth: 12
-        MarkupTextLiteral - [0..4) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+RazorDocument - [0..12)::12 - [foo @bar baz]
+    MarkupBlock - [0..12)::12
+        MarkupTextLiteral - [0..4)::4 - [foo ] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Text;[foo];
             Whitespace;[ ];
-        CSharpCodeBlock - [4..8) - FullWidth: 4
-            CSharpImplicitExpression - [4..8) - FullWidth: 4
-                CSharpTransition - [4..5) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+        CSharpCodeBlock - [4..8)::4
+            CSharpImplicitExpression - [4..8)::4
+                CSharpTransition - [4..5)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
-                CSharpImplicitExpressionBody - [5..8) - FullWidth: 3
-                    CSharpCodeBlock - [5..8) - FullWidth: 3
-                        CSharpExpressionLiteral - [5..8) - FullWidth: 3 - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                CSharpImplicitExpressionBody - [5..8)::3
+                    CSharpCodeBlock - [5..8)::3
+                        CSharpExpressionLiteral - [5..8)::3 - [bar] - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
                             Identifier;[bar];
-        MarkupTextLiteral - [8..12) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTextLiteral - [8..12)::4 - [ baz] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Whitespace;[ ];
             Text;[baz];

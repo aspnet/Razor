@@ -48,9 +48,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             WriteIndent();
             Write(node.Kind);
             WriteSeparator();
-            Write($"[{node.Position}..{node.EndPosition})");
-            WriteSeparator();
-            Write($"FullWidth: {node.FullWidth}");
+            Write($"[{node.Position}..{node.EndPosition})::{node.FullWidth}");
+
+            if (ShouldDisplayNodeContent(node))
+            {
+                WriteSeparator();
+                Write($"[{node.GetContent()}]");
+            }
 
             var annotation = node.GetAnnotations().FirstOrDefault(a => a.Kind == SyntaxConstants.SpanContextKind);
             if (annotation != null && annotation.Data is SpanContext context)
@@ -119,6 +123,21 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             }
 
             _writer.Write(value);
+        }
+
+        private static bool ShouldDisplayNodeContent(SyntaxNode node)
+        {
+            return node.Kind == SyntaxKind.MarkupTextLiteral ||
+                node.Kind == SyntaxKind.MarkupEphemeralTextLiteral ||
+                node.Kind == SyntaxKind.MarkupTagBlock ||
+                node.Kind == SyntaxKind.MarkupAttributeBlock ||
+                node.Kind == SyntaxKind.MarkupMinimizedAttributeBlock ||
+                node.Kind == SyntaxKind.MarkupLiteralAttributeValue ||
+                node.Kind == SyntaxKind.MarkupDynamicAttributeValue ||
+                node.Kind == SyntaxKind.CSharpStatementLiteral ||
+                node.Kind == SyntaxKind.CSharpExpressionLiteral ||
+                node.Kind == SyntaxKind.CSharpEphemeralTextLiteral ||
+                node.Kind == SyntaxKind.UnclassifiedTextLiteral;
         }
     }
 }

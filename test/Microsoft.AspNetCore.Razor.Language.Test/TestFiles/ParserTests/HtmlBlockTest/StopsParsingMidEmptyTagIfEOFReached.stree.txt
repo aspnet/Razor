@@ -1,6 +1,6 @@
-MarkupBlock - [0..4) - FullWidth: 4 - [<br/]
-    MarkupTagBlock - [0..4) - FullWidth: 4
-        MarkupTextLiteral - [0..4) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:Any
+MarkupBlock - [0..4)::4 - [<br/]
+    MarkupTagBlock - [0..4)::4 - [<br/]
+        MarkupTextLiteral - [0..4)::4 - [<br/] - Gen<Markup> - SpanEditHandler;Accepts:Any
             OpenAngle;[<];
             Text;[br];
             ForwardSlash;[/];
