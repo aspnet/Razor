@@ -1,6 +1,6 @@
-MarkupBlock - [0..28) - FullWidth: 28 - [<                      LF   ]
-    MarkupTagBlock - [0..28) - FullWidth: 28
-        MarkupTextLiteral - [0..28) - FullWidth: 28 - Gen<Markup> - SpanEditHandler;Accepts:Any
+MarkupBlock - [0..28)::28 - [<                      LF   ]
+    MarkupTagBlock - [0..28)::28 - [<                      LF   ]
+        MarkupTextLiteral - [0..28)::28 - [<                      LF   ] - Gen<Markup> - SpanEditHandler;Accepts:Any
             OpenAngle;[<];
             Whitespace;[                      ];
             NewLine;[LF];

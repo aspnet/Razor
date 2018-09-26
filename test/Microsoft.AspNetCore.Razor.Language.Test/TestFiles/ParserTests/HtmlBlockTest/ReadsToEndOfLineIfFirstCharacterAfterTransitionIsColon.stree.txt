@@ -1,9 +1,9 @@
-MarkupBlock - [0..19) - FullWidth: 19 - [@:<li>Foo Bar BazLF]
-    MarkupTransition - [0..1) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:None
+MarkupBlock - [0..19)::19 - [@:<li>Foo Bar BazLF]
+    MarkupTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
         Transition;[@];
-    RazorMetaCode - [1..2) - FullWidth: 1 - Gen<None> - SpanEditHandler;Accepts:Any
+    RazorMetaCode - [1..2)::1 - Gen<None> - SpanEditHandler;Accepts:Any
         Colon;[:];
-    MarkupTextLiteral - [2..19) - FullWidth: 17 - Gen<Markup> - SpanEditHandler;Accepts:None
+    MarkupTextLiteral - [2..19)::17 - [<li>Foo Bar BazLF] - Gen<Markup> - SpanEditHandler;Accepts:None
         OpenAngle;[<];
         Text;[li];
         CloseAngle;[>];

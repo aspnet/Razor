@@ -1,16 +1,16 @@
-RazorDocument - [0..165) - FullWidth: 165 - [<div><!--- Hello World ---></div>LF<div><!---- Hello World ----></div>LF<div><!----- Hello World -----></div>LF<div><!----- Hello < --- > World </div> -----></div>LF]
-    MarkupBlock - [0..165) - FullWidth: 165
-        MarkupTagBlock - [0..5) - FullWidth: 5
-            MarkupTextLiteral - [0..5) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
+RazorDocument - [0..165)::165 - [<div><!--- Hello World ---></div>LF<div><!---- Hello World ----></div>LF<div><!----- Hello World -----></div>LF<div><!----- Hello < --- > World </div> -----></div>LF]
+    MarkupBlock - [0..165)::165
+        MarkupTagBlock - [0..5)::5 - [<div>]
+            MarkupTextLiteral - [0..5)::5 - [<div>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[div];
                 CloseAngle;[>];
-        MarkupCommentBlock - [5..27) - FullWidth: 22
-            MarkupTextLiteral - [5..9) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:None
+        MarkupCommentBlock - [5..27)::22
+            MarkupTextLiteral - [5..9)::4 - [<!--] - Gen<Markup> - SpanEditHandler;Accepts:None
                 OpenAngle;[<];
                 Bang;[!];
                 DoubleHyphen;[--];
-            MarkupTextLiteral - [9..24) - FullWidth: 15 - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
+            MarkupTextLiteral - [9..24)::15 - [- Hello World -] - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
                 Text;[-];
                 Whitespace;[ ];
                 Text;[Hello];
@@ -18,28 +18,28 @@ RazorDocument - [0..165) - FullWidth: 165 - [<div><!--- Hello World ---></div>LF
                 Text;[World];
                 Whitespace;[ ];
                 Text;[-];
-            MarkupTextLiteral - [24..27) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:None
+            MarkupTextLiteral - [24..27)::3 - [-->] - Gen<Markup> - SpanEditHandler;Accepts:None
                 DoubleHyphen;[--];
                 CloseAngle;[>];
-        MarkupTagBlock - [27..33) - FullWidth: 6
-            MarkupTextLiteral - [27..33) - FullWidth: 6 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTagBlock - [27..33)::6 - [</div>]
+            MarkupTextLiteral - [27..33)::6 - [</div>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 ForwardSlash;[/];
                 Text;[div];
                 CloseAngle;[>];
-        MarkupTextLiteral - [33..35) - FullWidth: 2 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTextLiteral - [33..35)::2 - [LF] - Gen<Markup> - SpanEditHandler;Accepts:Any
             NewLine;[LF];
-        MarkupTagBlock - [35..40) - FullWidth: 5
-            MarkupTextLiteral - [35..40) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTagBlock - [35..40)::5 - [<div>]
+            MarkupTextLiteral - [35..40)::5 - [<div>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[div];
                 CloseAngle;[>];
-        MarkupCommentBlock - [40..64) - FullWidth: 24
-            MarkupTextLiteral - [40..44) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:None
+        MarkupCommentBlock - [40..64)::24
+            MarkupTextLiteral - [40..44)::4 - [<!--] - Gen<Markup> - SpanEditHandler;Accepts:None
                 OpenAngle;[<];
                 Bang;[!];
                 DoubleHyphen;[--];
-            MarkupTextLiteral - [44..61) - FullWidth: 17 - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
+            MarkupTextLiteral - [44..61)::17 - [-- Hello World --] - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
                 DoubleHyphen;[--];
                 Whitespace;[ ];
                 Text;[Hello];
@@ -47,28 +47,28 @@ RazorDocument - [0..165) - FullWidth: 165 - [<div><!--- Hello World ---></div>LF
                 Text;[World];
                 Whitespace;[ ];
                 DoubleHyphen;[--];
-            MarkupTextLiteral - [61..64) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:None
+            MarkupTextLiteral - [61..64)::3 - [-->] - Gen<Markup> - SpanEditHandler;Accepts:None
                 DoubleHyphen;[--];
                 CloseAngle;[>];
-        MarkupTagBlock - [64..70) - FullWidth: 6
-            MarkupTextLiteral - [64..70) - FullWidth: 6 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTagBlock - [64..70)::6 - [</div>]
+            MarkupTextLiteral - [64..70)::6 - [</div>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 ForwardSlash;[/];
                 Text;[div];
                 CloseAngle;[>];
-        MarkupTextLiteral - [70..72) - FullWidth: 2 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTextLiteral - [70..72)::2 - [LF] - Gen<Markup> - SpanEditHandler;Accepts:Any
             NewLine;[LF];
-        MarkupTagBlock - [72..77) - FullWidth: 5
-            MarkupTextLiteral - [72..77) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTagBlock - [72..77)::5 - [<div>]
+            MarkupTextLiteral - [72..77)::5 - [<div>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[div];
                 CloseAngle;[>];
-        MarkupCommentBlock - [77..103) - FullWidth: 26
-            MarkupTextLiteral - [77..81) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:None
+        MarkupCommentBlock - [77..103)::26
+            MarkupTextLiteral - [77..81)::4 - [<!--] - Gen<Markup> - SpanEditHandler;Accepts:None
                 OpenAngle;[<];
                 Bang;[!];
                 DoubleHyphen;[--];
-            MarkupTextLiteral - [81..100) - FullWidth: 19 - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
+            MarkupTextLiteral - [81..100)::19 - [--- Hello World ---] - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
                 DoubleHyphen;[--];
                 Text;[-];
                 Whitespace;[ ];
@@ -78,28 +78,28 @@ RazorDocument - [0..165) - FullWidth: 165 - [<div><!--- Hello World ---></div>LF
                 Whitespace;[ ];
                 DoubleHyphen;[--];
                 Text;[-];
-            MarkupTextLiteral - [100..103) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:None
+            MarkupTextLiteral - [100..103)::3 - [-->] - Gen<Markup> - SpanEditHandler;Accepts:None
                 DoubleHyphen;[--];
                 CloseAngle;[>];
-        MarkupTagBlock - [103..109) - FullWidth: 6
-            MarkupTextLiteral - [103..109) - FullWidth: 6 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTagBlock - [103..109)::6 - [</div>]
+            MarkupTextLiteral - [103..109)::6 - [</div>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 ForwardSlash;[/];
                 Text;[div];
                 CloseAngle;[>];
-        MarkupTextLiteral - [109..111) - FullWidth: 2 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTextLiteral - [109..111)::2 - [LF] - Gen<Markup> - SpanEditHandler;Accepts:Any
             NewLine;[LF];
-        MarkupTagBlock - [111..116) - FullWidth: 5
-            MarkupTextLiteral - [111..116) - FullWidth: 5 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTagBlock - [111..116)::5 - [<div>]
+            MarkupTextLiteral - [111..116)::5 - [<div>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 Text;[div];
                 CloseAngle;[>];
-        MarkupCommentBlock - [116..157) - FullWidth: 41
-            MarkupTextLiteral - [116..120) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:None
+        MarkupCommentBlock - [116..157)::41
+            MarkupTextLiteral - [116..120)::4 - [<!--] - Gen<Markup> - SpanEditHandler;Accepts:None
                 OpenAngle;[<];
                 Bang;[!];
                 DoubleHyphen;[--];
-            MarkupTextLiteral - [120..154) - FullWidth: 34 - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
+            MarkupTextLiteral - [120..154)::34 - [--- Hello < --- > World </div> ---] - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
                 DoubleHyphen;[--];
                 Text;[-];
                 Whitespace;[ ];
@@ -121,14 +121,14 @@ RazorDocument - [0..165) - FullWidth: 165 - [<div><!--- Hello World ---></div>LF
                 Whitespace;[ ];
                 DoubleHyphen;[--];
                 Text;[-];
-            MarkupTextLiteral - [154..157) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:None
+            MarkupTextLiteral - [154..157)::3 - [-->] - Gen<Markup> - SpanEditHandler;Accepts:None
                 DoubleHyphen;[--];
                 CloseAngle;[>];
-        MarkupTagBlock - [157..163) - FullWidth: 6
-            MarkupTextLiteral - [157..163) - FullWidth: 6 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTagBlock - [157..163)::6 - [</div>]
+            MarkupTextLiteral - [157..163)::6 - [</div>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                 OpenAngle;[<];
                 ForwardSlash;[/];
                 Text;[div];
                 CloseAngle;[>];
-        MarkupTextLiteral - [163..165) - FullWidth: 2 - Gen<Markup> - SpanEditHandler;Accepts:Any
+        MarkupTextLiteral - [163..165)::2 - [LF] - Gen<Markup> - SpanEditHandler;Accepts:Any
             NewLine;[LF];
