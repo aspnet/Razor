@@ -9,6 +9,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class HtmlToCodeSwitchTest : CsHtmlMarkupParserTestBase
     {
+        public HtmlToCodeSwitchTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void SwitchesWhenCharacterBeforeSwapIsNonAlphanumeric()
         {
