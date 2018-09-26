@@ -1,10 +1,10 @@
-MarkupBlock - [0..47) - FullWidth: 47 - [<script>if(foo < bar) { alert("baz");)</script>]
-    MarkupTagBlock - [0..8) - FullWidth: 8
-        MarkupTextLiteral - [0..8) - FullWidth: 8 - Gen<Markup> - SpanEditHandler;Accepts:None
+MarkupBlock - [0..47)::47 - [<script>if(foo < bar) { alert("baz");)</script>]
+    MarkupTagBlock - [0..8)::8 - [<script>]
+        MarkupTextLiteral - [0..8)::8 - [<script>] - Gen<Markup> - SpanEditHandler;Accepts:None
             OpenAngle;[<];
             Text;[script];
             CloseAngle;[>];
-    MarkupTextLiteral - [8..38) - FullWidth: 30 - Gen<Markup> - SpanEditHandler;Accepts:Any
+    MarkupTextLiteral - [8..38)::30 - [if(foo < bar) { alert("baz");)] - Gen<Markup> - SpanEditHandler;Accepts:Any
         Text;[if(foo];
         Whitespace;[ ];
         OpenAngle;[<];
@@ -18,8 +18,8 @@ MarkupBlock - [0..47) - FullWidth: 47 - [<script>if(foo < bar) { alert("baz");)<
         Text;[baz];
         DoubleQuote;["];
         Text;[);)];
-    MarkupTagBlock - [38..47) - FullWidth: 9
-        MarkupTextLiteral - [38..47) - FullWidth: 9 - Gen<Markup> - SpanEditHandler;Accepts:None
+    MarkupTagBlock - [38..47)::9 - [</script>]
+        MarkupTextLiteral - [38..47)::9 - [</script>] - Gen<Markup> - SpanEditHandler;Accepts:None
             OpenAngle;[<];
             ForwardSlash;[/];
             Text;[script];

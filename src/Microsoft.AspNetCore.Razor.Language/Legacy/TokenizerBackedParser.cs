@@ -1058,9 +1058,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         protected IDisposable PushSpanContextConfig(Action<SpanContextBuilder, Action<SpanContextBuilder>> newConfig)
         {
-            var old = SpanConfig;
+            var old = SpanContextConfig;
             ConfigureSpanContext(newConfig);
-            return new DisposableAction(() => SpanConfig = old);
+            return new DisposableAction(() => SpanContextConfig = old);
         }
 
         protected void ConfigureSpanContext(Action<SpanContextBuilder> config)

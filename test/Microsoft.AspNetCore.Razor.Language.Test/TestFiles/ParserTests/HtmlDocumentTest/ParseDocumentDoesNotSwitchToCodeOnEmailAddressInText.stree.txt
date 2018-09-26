@@ -1,4 +1,4 @@
-RazorDocument - [0..21) - FullWidth: 21 - [example@microsoft.com]
-    MarkupBlock - [0..21) - FullWidth: 21
-        MarkupTextLiteral - [0..21) - FullWidth: 21 - Gen<Markup> - SpanEditHandler;Accepts:Any
+RazorDocument - [0..21)::21 - [example@microsoft.com]
+    MarkupBlock - [0..21)::21
+        MarkupTextLiteral - [0..21)::21 - [example@microsoft.com] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Text;[example@microsoft.com];

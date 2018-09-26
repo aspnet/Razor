@@ -1,10 +1,10 @@
-MarkupBlock - [0..18) - FullWidth: 18 - [<!--<foo></bar>-->]
-    MarkupCommentBlock - [0..18) - FullWidth: 18
-        MarkupTextLiteral - [0..4) - FullWidth: 4 - Gen<Markup> - SpanEditHandler;Accepts:None
+MarkupBlock - [0..18)::18 - [<!--<foo></bar>-->]
+    MarkupCommentBlock - [0..18)::18
+        MarkupTextLiteral - [0..4)::4 - [<!--] - Gen<Markup> - SpanEditHandler;Accepts:None
             OpenAngle;[<];
             Bang;[!];
             DoubleHyphen;[--];
-        MarkupTextLiteral - [4..15) - FullWidth: 11 - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
+        MarkupTextLiteral - [4..15)::11 - [<foo></bar>] - Gen<Markup> - SpanEditHandler;Accepts:Whitespace
             OpenAngle;[<];
             Text;[foo];
             CloseAngle;[>];
@@ -12,6 +12,6 @@ MarkupBlock - [0..18) - FullWidth: 18 - [<!--<foo></bar>-->]
             ForwardSlash;[/];
             Text;[bar];
             CloseAngle;[>];
-        MarkupTextLiteral - [15..18) - FullWidth: 3 - Gen<Markup> - SpanEditHandler;Accepts:None
+        MarkupTextLiteral - [15..18)::3 - [-->] - Gen<Markup> - SpanEditHandler;Accepts:None
             DoubleHyphen;[--];
             CloseAngle;[>];

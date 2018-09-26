@@ -188,5 +188,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         {
             return (TRoot)root.InsertNodesInListCore(nodeInList, newNodes, insertBefore: false);
         }
+
+        public static string GetContent<TNode>(this TNode node) where TNode : SyntaxNode
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            var tokens = node.DescendantNodes().Where(n => n.IsToken).Cast<SyntaxToken>();
+            var content = string.Concat(tokens.Select(t => t.Content));
+            return content;
+        }
     }
 }
