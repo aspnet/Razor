@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class HtmlTagsTest : CsHtmlMarkupParserTestBase
     {
+        public HtmlTagsTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         private static readonly string[] VoidElementNames = new[]
         {
             "area",
