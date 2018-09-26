@@ -117,7 +117,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         {
             if (value is string stringValue)
             {
-                stringValue = stringValue.Replace(Environment.NewLine, "LF");
+                stringValue = stringValue.Replace("\r\n", "LF");
                 _writer.Write(stringValue);
                 return;
             }
