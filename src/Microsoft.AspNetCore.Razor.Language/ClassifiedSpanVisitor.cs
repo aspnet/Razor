@@ -56,7 +56,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             if (node.Parent is CSharpStatementBodySyntax ||
                 node.Parent is CSharpExplicitExpressionBodySyntax ||
                 node.Parent is CSharpImplicitExpressionBodySyntax ||
-                node.Parent is RazorDirectiveBodySyntax)
+                node.Parent is RazorDirectiveBodySyntax ||
+                (_currentBlockKind == BlockKindInternal.Directive &&
+                node.Children.Count == 1 &&
+                node.Children[0] is CSharpStatementLiteralSyntax))
             {
                 return base.VisitCSharpCodeBlock(node);
             }
