@@ -30,6 +30,27 @@ namespace Microsoft.AspNetCore.Razor.Language
             return WriteBlock(node, BlockKindInternal.Comment, base.VisitRazorCommentBlock);
         }
 
+        public override SyntaxNode VisitToken(SyntaxToken token)
+        {
+            if (token.Parent is RazorCommentBlockSyntax)
+            {
+                if (token.Kind == SyntaxKind.RazorCommentTransition)
+                {
+                    WriteSpan(token, SpanKindInternal.Transition, AcceptedCharactersInternal.None);
+                }
+                else if (token.Kind == SyntaxKind.RazorCommentStar)
+                {
+                    WriteSpan(token, SpanKindInternal.MetaCode, AcceptedCharactersInternal.None);
+                }
+                else if (token.Kind == SyntaxKind.RazorCommentLiteral)
+                {
+                    WriteSpan(token, SpanKindInternal.Comment, AcceptedCharactersInternal.Any);
+                }
+            }
+
+            return base.VisitToken(token);
+        }
+
         public override SyntaxNode VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
         {
             if (node.Parent is CSharpStatementBodySyntax ||
@@ -194,7 +215,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             return result;
         }
 
-        private void WriteSpan(SyntaxNode node, SpanKindInternal kind)
+        private void WriteSpan(SyntaxNode node, SpanKindInternal kind, AcceptedCharactersInternal? acceptedCharacters = null)
         {
             if (node.IsMissing)
             {
@@ -203,14 +224,17 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             var spanSource = GetSourceSpanForNode(node);
             var blockSource = GetSourceSpanForNode(_currentBlock);
-            var acceptedCharacters = AcceptedCharactersInternal.Any;
-            var context = node.GetSpanContext();
-            if (context != null)
+            if (!acceptedCharacters.HasValue)
             {
-                acceptedCharacters = context.EditHandler.AcceptedCharacters;
+                acceptedCharacters = AcceptedCharactersInternal.Any;
+                var context = node.GetSpanContext();
+                if (context != null)
+                {
+                    acceptedCharacters = context.EditHandler.AcceptedCharacters;
+                }
             }
 
-            var span = new ClassifiedSpanInternal(spanSource, blockSource, kind, _currentBlockKind, acceptedCharacters);
+            var span = new ClassifiedSpanInternal(spanSource, blockSource, kind, _currentBlockKind, acceptedCharacters.Value);
             _spans.Add(span);
         }
 
