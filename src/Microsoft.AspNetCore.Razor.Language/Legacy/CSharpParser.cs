@@ -1024,6 +1024,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                 RazorDiagnosticFactory.CreateParsing_DirectiveTokensMustBeSeparatedByWhitespace(
                                     new SourceSpan(CurrentStart, CurrentToken.Content.Length), descriptor.Directive));
 
+                            builder.Add(BuildDirective());
                             return;
                         }
 
@@ -1066,6 +1067,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                     new SourceSpan(CurrentStart, contentLength: 1),
                                     descriptor.Directive,
                                     tokenDescriptor.Kind.ToString().ToLowerInvariant()));
+                            builder.Add(BuildDirective());
                             return;
                         }
 
@@ -1078,6 +1080,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                         RazorDiagnosticFactory.CreateParsing_DirectiveExpectsTypeName(
                                             new SourceSpan(CurrentStart, CurrentToken.Content.Length), descriptor.Directive));
 
+                                    builder.Add(BuildDirective());
                                     return;
                                 }
                                 break;
@@ -1089,6 +1092,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                         RazorDiagnosticFactory.CreateParsing_DirectiveExpectsNamespace(
                                             new SourceSpan(CurrentStart, identifierLength), descriptor.Directive));
 
+                                    builder.Add(BuildDirective());
                                     return;
                                 }
                                 break;
@@ -1103,6 +1107,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                     Context.ErrorSink.OnError(
                                         RazorDiagnosticFactory.CreateParsing_DirectiveExpectsIdentifier(
                                             new SourceSpan(CurrentStart, CurrentToken.Content.Length), descriptor.Directive));
+                                    builder.Add(BuildDirective());
                                     return;
                                 }
                                 break;
@@ -1117,6 +1122,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                     Context.ErrorSink.OnError(
                                         RazorDiagnosticFactory.CreateParsing_DirectiveExpectsQuotedStringLiteral(
                                             new SourceSpan(CurrentStart, CurrentToken.Content.Length), descriptor.Directive));
+                                    builder.Add(BuildDirective());
                                     return;
                                 }
                                 break;
@@ -1218,13 +1224,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     Context.ErrorSink = savedErrorSink;
                 }
 
-                directiveBuilder.Add(OutputTokensAsStatementLiteral());
-                var directiveCodeBlock = SyntaxFactory.CSharpCodeBlock(directiveBuilder.ToList());
+                builder.Add(BuildDirective());
 
-                var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordBlock, directiveCodeBlock);
-                var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
-                directive = (RazorDirectiveSyntax)directive.SetDiagnostics(directiveErrorSink.Errors.ToArray());
-                builder.Add(directive);
+                RazorDirectiveSyntax BuildDirective()
+                {
+                    directiveBuilder.Add(OutputTokensAsStatementLiteral());
+                    var directiveCodeBlock = SyntaxFactory.CSharpCodeBlock(directiveBuilder.ToList());
+
+                    var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordBlock, directiveCodeBlock);
+                    var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
+                    directive = (RazorDirectiveSyntax)directive.SetDiagnostics(directiveErrorSink.Errors.ToArray());
+                    return directive;
+                }
             }
         }
 
