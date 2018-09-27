@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpBlockTest : CsHtmlCodeParserTestBase
     {
+        public CSharpBlockTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void NestedCodeBlockWithCSharpAt()
         {
