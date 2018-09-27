@@ -428,8 +428,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     RazorDiagnosticFactory.CreateParsing_ExpectedEndOfBlockBeforeEOF(
                         new SourceSpan(block.Start, contentLength: 1 /* { OR } */), block.Name, "}", "{"));
             }
-
-            if (acceptTerminatingBrace)
+            else if (acceptTerminatingBrace)
             {
                 Assert(SyntaxKind.RightBrace);
                 SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
@@ -1719,13 +1718,25 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Assert(CSharpKeyword.Using);
             var topLevel = transition != null;
             var block = new Block(CurrentToken, CurrentStart);
+            var usingToken = EatCurrentToken();
+            var whitespaceOrComments = ReadWhile(IsSpacingToken(includeNewLines: false, includeComments: true));
+            var atLeftParen = At(SyntaxKind.LeftParenthesis);
+            var atIdentifier = At(SyntaxKind.Identifier);
+            var atStatic = At(CSharpKeyword.Static);
+            var insertMarkerIfNecessary = true;
 
-            if (At(SyntaxKind.LeftParenthesis))
+            // Put the read tokens back and let them be handled later.
+            PutCurrentBack();
+            PutBack(whitespaceOrComments);
+            PutBack(usingToken);
+            EnsureCurrent();
+
+            if (atLeftParen)
             {
                 // using ( ==> Using Statement
                 ParseUsingStatement(builder, transition, block);
             }
-            else if (At(SyntaxKind.Identifier) || At(CSharpKeyword.Static))
+            else if (atIdentifier || atStatic)
             {
                 // using Identifier ==> Using Declaration
                 if (!topLevel)
@@ -1744,6 +1755,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 else
                 {
                     ParseUsingDeclaration(builder, transition);
+
+                    // Using declaration is parsed as a directive which is already built. 
+                    insertMarkerIfNecessary = false;
                 }
             }
             else
@@ -1754,7 +1768,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             if (topLevel)
             {
-                CompleteBlock();
+                CompleteBlock(insertMarkerIfNecessary);
             }
         }
 
@@ -1790,7 +1804,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 Assert(CSharpKeyword.Using);
                 AcceptTokenAndMoveNext();
                 AcceptTokenWhile(IsSpacingToken(includeNewLines: false, includeComments: true));
-                var keywordTokens = OutputTokensAsStatementLiteral();
                 var start = CurrentStart;
                 if (At(SyntaxKind.Identifier))
                 {
@@ -1834,8 +1847,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     OptionalToken(SyntaxKind.Semicolon);
                 }
 
-                directiveBuilder.Add(OutputTokensAsStatementLiteral());
-                var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordTokens, SyntaxFactory.CSharpCodeBlock(directiveBuilder.ToList()));
+                Debug.Assert(directiveBuilder.Count == 0, "We should not have built any blocks so far.");
+                var keywordTokens = OutputTokensAsStatementLiteral();
+                var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordTokens, null);
                 builder.Add(SyntaxFactory.RazorDirective(transition, directiveBody));
             }
         }
