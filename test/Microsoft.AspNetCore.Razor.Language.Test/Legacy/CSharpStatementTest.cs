@@ -16,6 +16,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
     public class CSharpStatementTest : CsHtmlCodeParserTestBase
     {
+        public CSharpStatementTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void ForStatement()
         {
