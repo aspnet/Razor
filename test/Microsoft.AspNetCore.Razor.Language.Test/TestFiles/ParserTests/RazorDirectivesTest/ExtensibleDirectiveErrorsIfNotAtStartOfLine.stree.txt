@@ -1,23 +1,27 @@
-Markup block - Gen<None> - 48 - (0:0,0)
-    Markup span - Gen<Markup> - [{  ] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:2
-        SyntaxKind.Text;[{];
-        SyntaxKind.Whitespace;[  ];
-    Directive block - Gen<Directive:{custom;SingleLine;Unrestricted} [RZ2005(4:0,4 [6] )]> - 44 - (3:0,3)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (3:0,3) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [custom] - SpanEditHandler;Accepts:None - (4:0,4) - Tokens:1
-            SyntaxKind.Identifier;[custom];
-        Code span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (10:0,10) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {;Type;Opt:False}> - [System.Text.Encoding.ASCIIEncoding] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (11:0,11) - Tokens:7
-            SyntaxKind.Identifier;[System];
-            SyntaxKind.Dot;[.];
-            SyntaxKind.Identifier;[Text];
-            SyntaxKind.Dot;[.];
-            SyntaxKind.Identifier;[Encoding];
-            SyntaxKind.Dot;[.];
-            SyntaxKind.Identifier;[ASCIIEncoding];
-        Markup span - Gen<None> - [LF] - SpanEditHandler;Accepts:Whitespace - (45:0,45) - Tokens:1
-            SyntaxKind.NewLine;[LF];
-    Markup span - Gen<Markup> - [}] - SpanEditHandler;Accepts:Any - (47:1,0) - Tokens:1
-        SyntaxKind.Text;[}];
+RazorDocument - [0..48)::48 - [{  @custom System.Text.Encoding.ASCIIEncodingLF}]
+    MarkupBlock - [0..48)::48
+        MarkupTextLiteral - [0..3)::3 - [{  ] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[{];
+            Whitespace;[  ];
+        CSharpCodeBlock - [3..47)::44
+            RazorDirective - [3..47)::44
+                CSharpTransition - [3..4)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [4..47)::43
+                    RazorMetaCode - [4..10)::6 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[custom];
+                    CSharpCodeBlock - [10..47)::37
+                        CSharpStatementLiteral - [10..11)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            Whitespace;[ ];
+                        CSharpStatementLiteral - [11..45)::34 - [System.Text.Encoding.ASCIIEncoding] - Gen<DirectiveToken {;Type;Opt:False}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            Identifier;[System];
+                            Dot;[.];
+                            Identifier;[Text];
+                            Dot;[.];
+                            Identifier;[Encoding];
+                            Dot;[.];
+                            Identifier;[ASCIIEncoding];
+                        MarkupEphemeralTextLiteral - [45..47)::2 - [LF] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            NewLine;[LF];
+        MarkupTextLiteral - [47..48)::1 - [}] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[}];

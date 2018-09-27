@@ -1,20 +1,24 @@
-Markup block - Gen<None> - 43 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<Directive:{custom;SingleLine;Unrestricted}> - 43 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [custom] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[custom];
-        Markup span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (7:0,7) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {;String;Opt:True}> - ["{formaction}?/{id}?"] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (8:0,8) - Tokens:1
-            SyntaxKind.StringLiteral;["{formaction}?/{id}?"];
-        Code span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (29:0,29) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {;Type;Opt:True}> - [System.String] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (30:0,30) - Tokens:3
-            SyntaxKind.Identifier;[System];
-            SyntaxKind.Dot;[.];
-            SyntaxKind.Identifier;[String];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (43:0,43) - Tokens:1
-        SyntaxKind.Unknown;[];
+RazorDocument - [0..43)::43 - [@custom "{formaction}?/{id}?" System.String]
+    MarkupBlock - [0..43)::43
+        MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..43)::43
+            RazorDirective - [0..43)::43
+                CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [1..43)::42
+                    RazorMetaCode - [1..7)::6 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[custom];
+                    CSharpCodeBlock - [7..43)::36
+                        MarkupEphemeralTextLiteral - [7..8)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            Whitespace;[ ];
+                        CSharpStatementLiteral - [8..29)::21 - ["{formaction}?/{id}?"] - Gen<DirectiveToken {;String;Opt:True}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            StringLiteral;["{formaction}?/{id}?"];
+                        CSharpStatementLiteral - [29..30)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            Whitespace;[ ];
+                        CSharpStatementLiteral - [30..43)::13 - [System.String] - Gen<DirectiveToken {;Type;Opt:True}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            Identifier;[System];
+                            Dot;[.];
+                            Identifier;[String];
+        MarkupTextLiteral - [43..43)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

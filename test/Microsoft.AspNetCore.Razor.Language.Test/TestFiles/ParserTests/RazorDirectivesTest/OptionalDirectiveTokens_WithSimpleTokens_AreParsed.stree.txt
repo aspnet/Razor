@@ -1,14 +1,18 @@
-Markup block - Gen<None> - 22 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<Directive:{custom;SingleLine;Unrestricted}> - 22 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [custom] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[custom];
-        Markup span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (7:0,7) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {;String;Opt:True}> - ["simple-value"] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (8:0,8) - Tokens:1
-            SyntaxKind.StringLiteral;["simple-value"];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (22:0,22) - Tokens:1
-        SyntaxKind.Unknown;[];
+RazorDocument - [0..22)::22 - [@custom "simple-value"]
+    MarkupBlock - [0..22)::22
+        MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..22)::22
+            RazorDirective - [0..22)::22
+                CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [1..22)::21
+                    RazorMetaCode - [1..7)::6 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[custom];
+                    CSharpCodeBlock - [7..22)::15
+                        MarkupEphemeralTextLiteral - [7..8)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            Whitespace;[ ];
+                        CSharpStatementLiteral - [8..22)::14 - ["simple-value"] - Gen<DirectiveToken {;String;Opt:True}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            StringLiteral;["simple-value"];
+        MarkupTextLiteral - [22..22)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

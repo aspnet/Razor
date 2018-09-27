@@ -1,14 +1,18 @@
-Markup block - Gen<None> - 16 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<Directive:{inherits;SingleLine;FileScopedSinglyOccurring}> - 16 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [inherits] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[inherits];
-        Code span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (9:0,9) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {TypeName;Type;Opt:False}> - [string] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (10:0,10) - Tokens:1
-            SyntaxKind.Keyword;[string];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (16:0,16) - Tokens:1
-        SyntaxKind.Unknown;[];
+RazorDocument - [0..16)::16 - [@inherits string]
+    MarkupBlock - [0..16)::16
+        MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..16)::16
+            RazorDirective - [0..16)::16
+                CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [1..16)::15
+                    RazorMetaCode - [1..9)::8 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[inherits];
+                    CSharpCodeBlock - [9..16)::7
+                        CSharpStatementLiteral - [9..10)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            Whitespace;[ ];
+                        CSharpStatementLiteral - [10..16)::6 - [string] - Gen<DirectiveToken {TypeName;Type;Opt:False}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            Keyword;[string];
+        MarkupTextLiteral - [16..16)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

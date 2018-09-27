@@ -11,6 +11,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class RazorDirectivesTest : CsHtmlCodeParserTestBase
     {
+        public RazorDirectivesTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void DirectiveDescriptor_FileScopedMultipleOccurring_CanHaveDuplicates()
         {

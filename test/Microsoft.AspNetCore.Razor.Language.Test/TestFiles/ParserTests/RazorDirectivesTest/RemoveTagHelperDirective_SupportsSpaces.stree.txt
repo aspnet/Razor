@@ -1,18 +1,22 @@
-Markup block - Gen<None> - 35 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<None> - 35 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [removeTagHelper] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[removeTagHelper];
-        Markup span - Gen<None> - [     ] - SpanEditHandler;Accepts:None - (16:0,16) - Tokens:1
-            SyntaxKind.Whitespace;[     ];
-        Code span - Gen<RemoveTagHelper:{Foo,   Bar;Foo,   Bar;Foo;Bar}> - [Foo,   Bar    ] - SpanEditHandler;Accepts:AnyExceptNewline - (21:0,21) - Tokens:5
-            SyntaxKind.Identifier;[Foo];
-            SyntaxKind.Comma;[,];
-            SyntaxKind.Whitespace;[   ];
-            SyntaxKind.Identifier;[Bar];
-            SyntaxKind.Whitespace;[    ];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (35:0,35) - Tokens:1
-        SyntaxKind.Unknown;[];
+RazorDocument - [0..35)::35 - [@removeTagHelper     Foo,   Bar    ]
+    MarkupBlock - [0..35)::35
+        MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..35)::35
+            RazorDirective - [0..35)::35
+                CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [1..35)::34
+                    RazorMetaCode - [1..16)::15 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[removeTagHelper];
+                    CSharpCodeBlock - [16..35)::19
+                        MarkupTextLiteral - [16..21)::5 - [     ] - Gen<None> - SpanEditHandler;Accepts:None
+                            Whitespace;[     ];
+                        CSharpStatementLiteral - [21..35)::14 - [Foo,   Bar    ] - Gen<RemoveTagHelper:{Foo,   Bar;Foo,   Bar;Foo;Bar}> - SpanEditHandler;Accepts:AnyExceptNewline
+                            Identifier;[Foo];
+                            Comma;[,];
+                            Whitespace;[   ];
+                            Identifier;[Bar];
+                            Whitespace;[    ];
+        MarkupTextLiteral - [35..35)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

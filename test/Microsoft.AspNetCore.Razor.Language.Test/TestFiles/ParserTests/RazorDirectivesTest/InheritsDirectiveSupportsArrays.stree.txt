@@ -1,20 +1,24 @@
-Markup block - Gen<None> - 22 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<Directive:{inherits;SingleLine;FileScopedSinglyOccurring}> - 22 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [inherits] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[inherits];
-        Code span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (9:0,9) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {TypeName;Type;Opt:False}> - [string[[]][]] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (10:0,10) - Tokens:7
-            SyntaxKind.Keyword;[string];
-            SyntaxKind.LeftBracket;[[];
-            SyntaxKind.LeftBracket;[[];
-            SyntaxKind.RightBracket;[]];
-            SyntaxKind.RightBracket;[]];
-            SyntaxKind.LeftBracket;[[];
-            SyntaxKind.RightBracket;[]];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (22:0,22) - Tokens:1
-        SyntaxKind.Unknown;[];
+RazorDocument - [0..22)::22 - [@inherits string[[]][]]
+    MarkupBlock - [0..22)::22
+        MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..22)::22
+            RazorDirective - [0..22)::22
+                CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [1..22)::21
+                    RazorMetaCode - [1..9)::8 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[inherits];
+                    CSharpCodeBlock - [9..22)::13
+                        CSharpStatementLiteral - [9..10)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            Whitespace;[ ];
+                        CSharpStatementLiteral - [10..22)::12 - [string[[]][]] - Gen<DirectiveToken {TypeName;Type;Opt:False}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            Keyword;[string];
+                            LeftBracket;[[];
+                            LeftBracket;[[];
+                            RightBracket;[]];
+                            RightBracket;[]];
+                            LeftBracket;[[];
+                            RightBracket;[]];
+        MarkupTextLiteral - [22..22)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

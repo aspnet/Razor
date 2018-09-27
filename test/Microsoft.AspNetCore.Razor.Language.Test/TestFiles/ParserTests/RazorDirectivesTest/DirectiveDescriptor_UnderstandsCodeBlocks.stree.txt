@@ -1,32 +1,37 @@
-Markup block - Gen<None> - 32 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<Directive:{custom;CodeBlock;Unrestricted}> - 32 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [custom] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[custom];
-        Markup span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (7:0,7) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {;String;Opt:False}> - ["Name"] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (8:0,8) - Tokens:1
-            SyntaxKind.StringLiteral;["Name"];
-        Markup span - Gen<None> - [ ] - SpanEditHandler;Accepts:AllWhitespace - (14:0,14) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        MetaCode span - Gen<None> - [{] - AutoCompleteEditHandler;Accepts:None,AutoComplete:[<null>];AtEnd - (15:0,15) - Tokens:1
-            SyntaxKind.LeftBrace;[{];
-        Code span - Gen<Stmt> - [ foo(); bar(); ] - CodeBlockEditHandler;Accepts:Any;CodeBlock - (16:0,16) - Tokens:11
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.Identifier;[foo];
-            SyntaxKind.LeftParenthesis;[(];
-            SyntaxKind.RightParenthesis;[)];
-            SyntaxKind.Semicolon;[;];
-            SyntaxKind.Whitespace;[ ];
-            SyntaxKind.Identifier;[bar];
-            SyntaxKind.LeftParenthesis;[(];
-            SyntaxKind.RightParenthesis;[)];
-            SyntaxKind.Semicolon;[;];
-            SyntaxKind.Whitespace;[ ];
-        MetaCode span - Gen<None> - [}] - SpanEditHandler;Accepts:None - (31:0,31) - Tokens:1
-            SyntaxKind.RightBrace;[}];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (32:0,32) - Tokens:1
-        SyntaxKind.Unknown;[];
+RazorDocument - [0..32)::32 - [@custom "Name" { foo(); bar(); }]
+    MarkupBlock - [0..32)::32
+        MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..32)::32
+            RazorDirective - [0..32)::32
+                CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [1..32)::31
+                    RazorMetaCode - [1..7)::6 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[custom];
+                    CSharpCodeBlock - [7..32)::25
+                        MarkupEphemeralTextLiteral - [7..8)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            Whitespace;[ ];
+                        CSharpStatementLiteral - [8..14)::6 - ["Name"] - Gen<DirectiveToken {;String;Opt:False}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            StringLiteral;["Name"];
+                        MarkupTextLiteral - [14..15)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:AllWhitespace
+                            Whitespace;[ ];
+                        RazorMetaCode - [15..16)::1 - Gen<None> - AutoCompleteEditHandler;Accepts:None,AutoComplete:[<null>];AtEnd
+                            LeftBrace;[{];
+                        CSharpCodeBlock - [16..31)::15
+                            CSharpStatementLiteral - [16..31)::15 - [ foo(); bar(); ] - Gen<Stmt> - CodeBlockEditHandler;Accepts:Any;CodeBlock
+                                Whitespace;[ ];
+                                Identifier;[foo];
+                                LeftParenthesis;[(];
+                                RightParenthesis;[)];
+                                Semicolon;[;];
+                                Whitespace;[ ];
+                                Identifier;[bar];
+                                LeftParenthesis;[(];
+                                RightParenthesis;[)];
+                                Semicolon;[;];
+                                Whitespace;[ ];
+                        RazorMetaCode - [31..32)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                            RightBrace;[}];
+        MarkupTextLiteral - [32..32)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

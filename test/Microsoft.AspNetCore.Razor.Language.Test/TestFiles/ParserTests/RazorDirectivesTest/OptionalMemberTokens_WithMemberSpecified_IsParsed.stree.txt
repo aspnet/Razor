@@ -1,14 +1,18 @@
-Markup block - Gen<None> - 27 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<Directive:{TestDirective;SingleLine;Unrestricted}> - 27 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [TestDirective] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[TestDirective];
-        Code span - Gen<None> - [ ] - SpanEditHandler;Accepts:Whitespace - (14:0,14) - Tokens:1
-            SyntaxKind.Whitespace;[ ];
-        Code span - Gen<DirectiveToken {;Member;Opt:True}> - [PropertyName] - DirectiveTokenEditHandler;Accepts:NonWhitespace - (15:0,15) - Tokens:1
-            SyntaxKind.Identifier;[PropertyName];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (27:0,27) - Tokens:1
-        SyntaxKind.Unknown;[];
+RazorDocument - [0..27)::27 - [@TestDirective PropertyName]
+    MarkupBlock - [0..27)::27
+        MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..27)::27
+            RazorDirective - [0..27)::27
+                CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [1..27)::26
+                    RazorMetaCode - [1..14)::13 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[TestDirective];
+                    CSharpCodeBlock - [14..27)::13
+                        CSharpStatementLiteral - [14..15)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Whitespace
+                            Whitespace;[ ];
+                        CSharpStatementLiteral - [15..27)::12 - [PropertyName] - Gen<DirectiveToken {;Member;Opt:True}> - DirectiveTokenEditHandler;Accepts:NonWhitespace
+                            Identifier;[PropertyName];
+        MarkupTextLiteral - [27..27)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];

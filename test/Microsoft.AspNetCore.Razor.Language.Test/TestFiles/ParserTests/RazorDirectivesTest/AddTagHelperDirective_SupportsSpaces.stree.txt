@@ -1,18 +1,22 @@
-Markup block - Gen<None> - 32 - (0:0,0)
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (0:0,0) - Tokens:1
-        SyntaxKind.Unknown;[];
-    Directive block - Gen<None> - 32 - (0:0,0)
-        Transition span - Gen<None> - [@] - SpanEditHandler;Accepts:None - (0:0,0) - Tokens:1
-            SyntaxKind.Transition;[@];
-        MetaCode span - Gen<None> - [addTagHelper] - SpanEditHandler;Accepts:None - (1:0,1) - Tokens:1
-            SyntaxKind.Identifier;[addTagHelper];
-        Markup span - Gen<None> - [     ] - SpanEditHandler;Accepts:None - (13:0,13) - Tokens:1
-            SyntaxKind.Whitespace;[     ];
-        Code span - Gen<AddTagHelper:{Foo,   Bar;Foo,   Bar;Foo;Bar}> - [Foo,   Bar    ] - SpanEditHandler;Accepts:AnyExceptNewline - (18:0,18) - Tokens:5
-            SyntaxKind.Identifier;[Foo];
-            SyntaxKind.Comma;[,];
-            SyntaxKind.Whitespace;[   ];
-            SyntaxKind.Identifier;[Bar];
-            SyntaxKind.Whitespace;[    ];
-    Markup span - Gen<Markup> - [] - SpanEditHandler;Accepts:Any - (32:0,32) - Tokens:1
-        SyntaxKind.Unknown;[];
+RazorDocument - [0..32)::32 - [@addTagHelper     Foo,   Bar    ]
+    MarkupBlock - [0..32)::32
+        MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
+        CSharpCodeBlock - [0..32)::32
+            RazorDirective - [0..32)::32
+                CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                RazorDirectiveBody - [1..32)::31
+                    RazorMetaCode - [1..13)::12 - Gen<None> - SpanEditHandler;Accepts:None
+                        Identifier;[addTagHelper];
+                    CSharpCodeBlock - [13..32)::19
+                        MarkupTextLiteral - [13..18)::5 - [     ] - Gen<None> - SpanEditHandler;Accepts:None
+                            Whitespace;[     ];
+                        CSharpStatementLiteral - [18..32)::14 - [Foo,   Bar    ] - Gen<AddTagHelper:{Foo,   Bar;Foo,   Bar;Foo;Bar}> - SpanEditHandler;Accepts:AnyExceptNewline
+                            Identifier;[Foo];
+                            Comma;[,];
+                            Whitespace;[   ];
+                            Identifier;[Bar];
+                            Whitespace;[    ];
+        MarkupTextLiteral - [32..32)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Marker;[];
