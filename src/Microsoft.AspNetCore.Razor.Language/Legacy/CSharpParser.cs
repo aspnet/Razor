@@ -1723,7 +1723,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var atLeftParen = At(SyntaxKind.LeftParenthesis);
             var atIdentifier = At(SyntaxKind.Identifier);
             var atStatic = At(CSharpKeyword.Static);
-            var insertMarkerIfNecessary = true;
 
             // Put the read tokens back and let them be handled later.
             PutCurrentBack();
@@ -1755,9 +1754,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 else
                 {
                     ParseUsingDeclaration(builder, transition);
-
-                    // Using declaration is parsed as a directive which is already built. 
-                    insertMarkerIfNecessary = false;
+                    return;
                 }
             }
             else
@@ -1768,7 +1765,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             if (topLevel)
             {
-                CompleteBlock(insertMarkerIfNecessary);
+                CompleteBlock();
             }
         }
 
@@ -1847,6 +1844,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     OptionalToken(SyntaxKind.Semicolon);
                 }
 
+                CompleteBlock();
                 Debug.Assert(directiveBuilder.Count == 0, "We should not have built any blocks so far.");
                 var keywordTokens = OutputTokensAsStatementLiteral();
                 var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordTokens, null);

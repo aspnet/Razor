@@ -1532,7 +1532,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             if (!complete)
             {
-                AddMarkerTokenIfNecessary();
+                AcceptMarkerTokenIfNecessary();
             }
 
             builder.Add(OutputTokensAsMarkupLiteral());
