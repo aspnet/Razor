@@ -101,6 +101,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       return DefaultVisit(node);
     }
 
+    /// <summary>Called when the visitor visits a MarkupElementSyntax node.</summary>
+    public virtual TResult VisitMarkupElement(MarkupElementSyntax node)
+    {
+      return DefaultVisit(node);
+    }
+
     /// <summary>Called when the visitor visits a MarkupTagHelperElementSyntax node.</summary>
     public virtual TResult VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
     {
@@ -298,6 +304,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     /// <summary>Called when the visitor visits a MarkupDynamicAttributeValueSyntax node.</summary>
     public virtual void VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
+    {
+      DefaultVisit(node);
+    }
+
+    /// <summary>Called when the visitor visits a MarkupElementSyntax node.</summary>
+    public virtual void VisitMarkupElement(MarkupElementSyntax node)
     {
       DefaultVisit(node);
     }
@@ -514,6 +526,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       var prefix = (MarkupTextLiteralSyntax)Visit(node.Prefix);
       var value = (RazorBlockSyntax)Visit(node.Value);
       return node.Update(prefix, value);
+    }
+
+    public override SyntaxNode VisitMarkupElement(MarkupElementSyntax node)
+    {
+      var startTag = (MarkupTagBlockSyntax)Visit(node.StartTag);
+      var body = (RazorSyntaxNode)Visit(node.Body);
+      var endTag = (MarkupTagBlockSyntax)Visit(node.EndTag);
+      return node.Update(startTag, body, endTag);
     }
 
     public override SyntaxNode VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
@@ -875,6 +895,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     public static MarkupDynamicAttributeValueSyntax MarkupDynamicAttributeValue(RazorBlockSyntax value)
     {
       return SyntaxFactory.MarkupDynamicAttributeValue(default(MarkupTextLiteralSyntax), value);
+    }
+
+    /// <summary>Creates a new MarkupElementSyntax instance.</summary>
+    public static MarkupElementSyntax MarkupElement(MarkupTagBlockSyntax startTag, RazorSyntaxNode body, MarkupTagBlockSyntax endTag)
+    {
+      if (startTag == null)
+        throw new ArgumentNullException(nameof(startTag));
+      return (MarkupElementSyntax)InternalSyntax.SyntaxFactory.MarkupElement(startTag == null ? null : (InternalSyntax.MarkupTagBlockSyntax)startTag.Green, body == null ? null : (InternalSyntax.RazorSyntaxNode)body.Green, endTag == null ? null : (InternalSyntax.MarkupTagBlockSyntax)endTag.Green).CreateRed();
+    }
+
+    /// <summary>Creates a new MarkupElementSyntax instance.</summary>
+    public static MarkupElementSyntax MarkupElement()
+    {
+      return SyntaxFactory.MarkupElement(SyntaxFactory.MarkupTagBlock(), default(RazorSyntaxNode), default(MarkupTagBlockSyntax));
     }
 
     /// <summary>Creates a new MarkupTagHelperElementSyntax instance.</summary>

@@ -18,6 +18,7 @@ namespace Microsoft.AspNetCore.Razor.Language
         // Markup
         MarkupBlock,
         MarkupTransition,
+        MarkupElement,
         MarkupTagBlock,
         MarkupTextLiteral,
         MarkupEphemeralTextLiteral,

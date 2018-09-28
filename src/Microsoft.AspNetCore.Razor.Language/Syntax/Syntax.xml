@@ -96,6 +96,12 @@
     <Field Name="Prefix" Type="MarkupTextLiteralSyntax" Optional="true" />
     <Field Name="Value" Type="RazorBlockSyntax" />
   </Node>
+  <Node Name="MarkupElementSyntax" Base="MarkupSyntaxNode">
+    <Kind Name="MarkupElement" />
+    <Field Name="StartTag" Type="MarkupTagBlockSyntax" />
+    <Field Name="Body" Type="RazorSyntaxNode" Optional="true" />
+    <Field Name="EndTag" Type="MarkupTagBlockSyntax" Optional="true" />
+  </Node>
   <Node Name="MarkupTagHelperElementSyntax" Base="MarkupSyntaxNode">
     <Kind Name="MarkupTagHelperElement" />
     <Field Name="StartTag" Type="MarkupTagHelperStartTagSyntax" />
