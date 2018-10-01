@@ -9,14 +9,6 @@ using System.Threading;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
-  internal abstract partial class RazorSyntaxNode : SyntaxNode
-  {
-    internal RazorSyntaxNode(GreenNode green, SyntaxNode parent, int position)
-      : base(green, parent, position)
-    {
-    }
-  }
-
   internal abstract partial class RazorBlockSyntax : RazorSyntaxNode
   {
     internal RazorBlockSyntax(GreenNode green, SyntaxNode parent, int position)
@@ -1322,7 +1314,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
   internal sealed partial class MarkupElementSyntax : MarkupSyntaxNode
   {
     private MarkupTagBlockSyntax _startTag;
-    private RazorSyntaxNode _body;
+    private SyntaxNode _body;
     private MarkupTagBlockSyntax _endTag;
 
     internal MarkupElementSyntax(GreenNode green, SyntaxNode parent, int position)
@@ -1338,11 +1330,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         }
     }
 
-    public RazorSyntaxNode Body 
+    public SyntaxList<RazorSyntaxNode> Body 
     {
         get
         {
-            return GetRed(ref _body, 1);
+            return new SyntaxList<RazorSyntaxNode>(GetRed(ref _body, 1));
         }
     }
 
@@ -1385,7 +1377,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         visitor.VisitMarkupElement(this);
     }
 
-    public MarkupElementSyntax Update(MarkupTagBlockSyntax startTag, RazorSyntaxNode body, MarkupTagBlockSyntax endTag)
+    public MarkupElementSyntax Update(MarkupTagBlockSyntax startTag, SyntaxList<RazorSyntaxNode> body, MarkupTagBlockSyntax endTag)
     {
         if (startTag != StartTag || body != Body || endTag != EndTag)
         {
@@ -1404,7 +1396,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return Update(startTag, Body, EndTag);
     }
 
-    public MarkupElementSyntax WithBody(RazorSyntaxNode body)
+    public MarkupElementSyntax WithBody(SyntaxList<RazorSyntaxNode> body)
     {
         return Update(StartTag, body, EndTag);
     }
@@ -1416,7 +1408,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
     public MarkupElementSyntax AddStartTagChildren(params RazorSyntaxNode[] items)
     {
-        return this.WithStartTag(this.StartTag.WithChildren(this.StartTag.Children.AddRange(items)));
+        var _startTag = this.StartTag ?? SyntaxFactory.MarkupTagBlock();
+        return this.WithStartTag(_startTag.WithChildren(_startTag.Children.AddRange(items)));
+    }
+
+    public MarkupElementSyntax AddBody(params RazorSyntaxNode[] items)
+    {
+        return WithBody(this.Body.AddRange(items));
     }
 
     public MarkupElementSyntax AddEndTagChildren(params RazorSyntaxNode[] items)

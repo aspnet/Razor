@@ -2,13 +2,11 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using Microsoft.AspNetCore.Razor.Language.Legacy;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 {
-    internal class SyntaxToken : GreenNode
+    internal class SyntaxToken : RazorSyntaxNode
     {
         private readonly GreenNode _leadingTrivia;
         private readonly GreenNode _trailingTrivia;

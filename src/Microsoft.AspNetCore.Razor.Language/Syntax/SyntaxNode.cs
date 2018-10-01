@@ -87,7 +87,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
         public bool ContainsAnnotations => Green.ContainsAnnotations;
 
-        private string SerializedValue => SyntaxSerializer.Serialize(this);
+        internal string SerializedValue => SyntaxSerializer.Serialize(this);
 
         public abstract TResult Accept<TResult>(SyntaxVisitor<TResult> visitor);
 

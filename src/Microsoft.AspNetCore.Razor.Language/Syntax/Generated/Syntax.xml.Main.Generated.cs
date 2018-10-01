@@ -531,7 +531,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     public override SyntaxNode VisitMarkupElement(MarkupElementSyntax node)
     {
       var startTag = (MarkupTagBlockSyntax)Visit(node.StartTag);
-      var body = (RazorSyntaxNode)Visit(node.Body);
+      var body = VisitList(node.Body);
       var endTag = (MarkupTagBlockSyntax)Visit(node.EndTag);
       return node.Update(startTag, body, endTag);
     }
@@ -898,17 +898,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new MarkupElementSyntax instance.</summary>
-    public static MarkupElementSyntax MarkupElement(MarkupTagBlockSyntax startTag, RazorSyntaxNode body, MarkupTagBlockSyntax endTag)
+    public static MarkupElementSyntax MarkupElement(MarkupTagBlockSyntax startTag, SyntaxList<RazorSyntaxNode> body, MarkupTagBlockSyntax endTag)
     {
-      if (startTag == null)
-        throw new ArgumentNullException(nameof(startTag));
-      return (MarkupElementSyntax)InternalSyntax.SyntaxFactory.MarkupElement(startTag == null ? null : (InternalSyntax.MarkupTagBlockSyntax)startTag.Green, body == null ? null : (InternalSyntax.RazorSyntaxNode)body.Green, endTag == null ? null : (InternalSyntax.MarkupTagBlockSyntax)endTag.Green).CreateRed();
+      return (MarkupElementSyntax)InternalSyntax.SyntaxFactory.MarkupElement(startTag == null ? null : (InternalSyntax.MarkupTagBlockSyntax)startTag.Green, body.Node.ToGreenList<InternalSyntax.RazorSyntaxNode>(), endTag == null ? null : (InternalSyntax.MarkupTagBlockSyntax)endTag.Green).CreateRed();
     }
 
     /// <summary>Creates a new MarkupElementSyntax instance.</summary>
-    public static MarkupElementSyntax MarkupElement()
+    public static MarkupElementSyntax MarkupElement(SyntaxList<RazorSyntaxNode> body = default(SyntaxList<RazorSyntaxNode>))
     {
-      return SyntaxFactory.MarkupElement(SyntaxFactory.MarkupTagBlock(), default(RazorSyntaxNode), default(MarkupTagBlockSyntax));
+      return SyntaxFactory.MarkupElement(default(MarkupTagBlockSyntax), body, default(MarkupTagBlockSyntax));
     }
 
     /// <summary>Creates a new MarkupTagHelperElementSyntax instance.</summary>

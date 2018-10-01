@@ -8,18 +8,6 @@ using System.Threading;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 {
-  internal abstract partial class RazorSyntaxNode : GreenNode
-  {
-    internal RazorSyntaxNode(SyntaxKind kind, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
-      : base(kind, diagnostics, annotations)
-    {
-    }
-    internal RazorSyntaxNode(SyntaxKind kind)
-      : base(kind)
-    {
-    }
-  }
-
   internal abstract partial class RazorBlockSyntax : RazorSyntaxNode
   {
     internal RazorBlockSyntax(SyntaxKind kind, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
@@ -1373,15 +1361,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
   internal sealed partial class MarkupElementSyntax : MarkupSyntaxNode
   {
     private readonly MarkupTagBlockSyntax _startTag;
-    private readonly RazorSyntaxNode _body;
+    private readonly GreenNode _body;
     private readonly MarkupTagBlockSyntax _endTag;
 
-    internal MarkupElementSyntax(SyntaxKind kind, MarkupTagBlockSyntax startTag, RazorSyntaxNode body, MarkupTagBlockSyntax endTag, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
+    internal MarkupElementSyntax(SyntaxKind kind, MarkupTagBlockSyntax startTag, GreenNode body, MarkupTagBlockSyntax endTag, RazorDiagnostic[] diagnostics, SyntaxAnnotation[] annotations)
         : base(kind, diagnostics, annotations)
     {
         SlotCount = 3;
-        AdjustFlagsAndWidth(startTag);
-        _startTag = startTag;
+        if (startTag != null)
+        {
+            AdjustFlagsAndWidth(startTag);
+            _startTag = startTag;
+        }
         if (body != null)
         {
             AdjustFlagsAndWidth(body);
@@ -1395,12 +1386,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
 
-    internal MarkupElementSyntax(SyntaxKind kind, MarkupTagBlockSyntax startTag, RazorSyntaxNode body, MarkupTagBlockSyntax endTag)
+    internal MarkupElementSyntax(SyntaxKind kind, MarkupTagBlockSyntax startTag, GreenNode body, MarkupTagBlockSyntax endTag)
         : base(kind)
     {
         SlotCount = 3;
-        AdjustFlagsAndWidth(startTag);
-        _startTag = startTag;
+        if (startTag != null)
+        {
+            AdjustFlagsAndWidth(startTag);
+            _startTag = startTag;
+        }
         if (body != null)
         {
             AdjustFlagsAndWidth(body);
@@ -1414,7 +1408,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     }
 
     public MarkupTagBlockSyntax StartTag { get { return _startTag; } }
-    public RazorSyntaxNode Body { get { return _body; } }
+    public SyntaxList<RazorSyntaxNode> Body { get { return new SyntaxList<RazorSyntaxNode>(_body); } }
     public MarkupTagBlockSyntax EndTag { get { return _endTag; } }
 
     internal override GreenNode GetSlot(int index)
@@ -1443,7 +1437,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         visitor.VisitMarkupElement(this);
     }
 
-    public MarkupElementSyntax Update(MarkupTagBlockSyntax startTag, RazorSyntaxNode body, MarkupTagBlockSyntax endTag)
+    public MarkupElementSyntax Update(MarkupTagBlockSyntax startTag, Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<RazorSyntaxNode> body, MarkupTagBlockSyntax endTag)
     {
         if (startTag != StartTag || body != Body || endTag != EndTag)
         {
@@ -3507,7 +3501,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
     public override GreenNode VisitMarkupElement(MarkupElementSyntax node)
     {
       var startTag = (MarkupTagBlockSyntax)Visit(node.StartTag);
-      var body = (RazorSyntaxNode)Visit(node.Body);
+      var body = VisitList(node.Body);
       var endTag = (MarkupTagBlockSyntax)Visit(node.EndTag);
       return node.Update(startTag, body, endTag);
     }
@@ -3812,12 +3806,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
       return result;
     }
 
-    public static MarkupElementSyntax MarkupElement(MarkupTagBlockSyntax startTag, RazorSyntaxNode body, MarkupTagBlockSyntax endTag)
+    public static MarkupElementSyntax MarkupElement(MarkupTagBlockSyntax startTag, Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax.SyntaxList<RazorSyntaxNode> body, MarkupTagBlockSyntax endTag)
     {
-      if (startTag == null)
-        throw new ArgumentNullException(nameof(startTag));
-
-      var result = new MarkupElementSyntax(SyntaxKind.MarkupElement, startTag, body, endTag);
+      var result = new MarkupElementSyntax(SyntaxKind.MarkupElement, startTag, body.Node, endTag);
 
       return result;
     }

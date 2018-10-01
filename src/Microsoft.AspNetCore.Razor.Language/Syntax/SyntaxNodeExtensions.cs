@@ -200,5 +200,41 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             var content = string.Concat(tokens.Select(t => t.Content));
             return content;
         }
+
+        public static string GetTagName(this MarkupTagBlockSyntax tagBlock)
+        {
+            if (tagBlock == null)
+            {
+                throw new ArgumentNullException(nameof(tagBlock));
+            }
+
+            var child = tagBlock.Children[0];
+
+            if (tagBlock.Children.Count == 0 || !(child is MarkupTextLiteralSyntax))
+            {
+                return null;
+            }
+
+            var childLiteral = (MarkupTextLiteralSyntax)child;
+            SyntaxToken textToken = null;
+            for (var i = 0; i < childLiteral.LiteralTokens.Count; i++)
+            {
+                var token = childLiteral.LiteralTokens[i];
+
+                if (token != null &&
+                    (token.Kind == SyntaxKind.Whitespace || token.Kind == SyntaxKind.Text))
+                {
+                    textToken = token;
+                    break;
+                }
+            }
+
+            if (textToken == null)
+            {
+                return null;
+            }
+
+            return textToken.Kind == SyntaxKind.Whitespace ? null : textToken.Content;
+        }
     }
 }

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
 <Tree Root="SyntaxNode">
-  <PredefinedNode Name="SyntaxToken" Base="SyntaxNode" />
+  <PredefinedNode Name="RazorSyntaxNode" Base="SyntaxNode" />
+  <PredefinedNode Name="SyntaxToken" Base="RazorSyntaxNode" />
   
   <!-- Common -->
-  <AbstractNode Name="RazorSyntaxNode" Base="SyntaxNode" />
   <AbstractNode Name="RazorBlockSyntax" Base="RazorSyntaxNode">
     <Field Name="Children" Type="SyntaxList&lt;RazorSyntaxNode&gt;" />
   </AbstractNode>
@@ -98,8 +98,8 @@
   </Node>
   <Node Name="MarkupElementSyntax" Base="MarkupSyntaxNode">
     <Kind Name="MarkupElement" />
-    <Field Name="StartTag" Type="MarkupTagBlockSyntax" />
-    <Field Name="Body" Type="RazorSyntaxNode" Optional="true" />
+    <Field Name="StartTag" Type="MarkupTagBlockSyntax" Optional="true" />
+    <Field Name="Body" Type="SyntaxList&lt;RazorSyntaxNode&gt;" Optional="true" />
     <Field Name="EndTag" Type="MarkupTagBlockSyntax" Optional="true" />
   </Node>
   <Node Name="MarkupTagHelperElementSyntax" Base="MarkupSyntaxNode">

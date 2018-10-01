@@ -22,7 +22,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 syntaxTree.Options.FeatureFlags,
                 errorSink);
 
-            var rewritten = rewriter.Visit(syntaxTree.Root);
+            syntaxTree = MarkupElementRewriter.Rewrite(syntaxTree);
 
             var errorList = new List<RazorDiagnostic>();
             errorList.AddRange(errorSink.Errors);
@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             var diagnostics = CombineErrors(syntaxTree.Diagnostics, errorList).OrderBy(error => error.Span.AbsoluteIndex);
 
-            var newSyntaxTree = RazorSyntaxTree.Create(rewritten, syntaxTree.Source, diagnostics, syntaxTree.Options);
+            var newSyntaxTree = RazorSyntaxTree.Create(syntaxTree.Root, syntaxTree.Source, diagnostics, syntaxTree.Options);
 
             return newSyntaxTree;
         }
@@ -50,27 +50,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             // Internal for testing.
             // Null characters are invalid markup for HTML attribute values.
             internal static readonly string InvalidAttributeValueMarker = "\0";
-
-            // From http://dev.w3.org/html5/spec/Overview.html#elements-0
-            private static readonly HashSet<string> VoidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            "area",
-            "base",
-            "br",
-            "col",
-            "command",
-            "embed",
-            "hr",
-            "img",
-            "input",
-            "keygen",
-            "link",
-            "meta",
-            "param",
-            "source",
-            "track",
-            "wbr"
-        };
 
             private readonly RazorSourceDocument _source;
             private readonly string _tagHelperPrefix;
@@ -123,7 +102,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 rewritten = tagBlock;
 
                 // Get tag name of the current block (doesn't matter if it's an end or start tag)
-                var tagName = GetTagName(tagBlock);
+                var tagName = tagBlock.GetTagName();
 
                 // Could not determine tag name, it can't be a TagHelper, continue on and track the element.
                 if (tagName == null)
@@ -417,7 +396,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             private void ValidateParentAllowsPlainTag(MarkupTagBlockSyntax tagBlock)
             {
-                var tagName = GetTagName(tagBlock);
+                var tagName = tagBlock.GetTagName();
 
                 // Treat partial tags such as '</' which have no tag names as content.
                 if (string.IsNullOrEmpty(tagName))
@@ -467,37 +446,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     n => n is RazorCommentBlockSyntax || n is MarkupCommentBlockSyntax);
 
                 return commentParent != null;
-            }
-
-            private static string GetTagName(MarkupTagBlockSyntax tagBlock)
-            {
-                var child = tagBlock.Children[0];
-
-                if (tagBlock.Children.Count == 0 || !(child is MarkupTextLiteralSyntax))
-                {
-                    return null;
-                }
-
-                var childLiteral = (MarkupTextLiteralSyntax)child;
-                SyntaxToken textToken = null;
-                for (var i = 0; i < childLiteral.LiteralTokens.Count; i++)
-                {
-                    var token = childLiteral.LiteralTokens[i];
-
-                    if (token != null &&
-                        (token.Kind == SyntaxKind.Whitespace || token.Kind == SyntaxKind.Text))
-                    {
-                        textToken = token;
-                        break;
-                    }
-                }
-
-                if (textToken == null)
-                {
-                    return null;
-                }
-
-                return textToken.Kind == SyntaxKind.Whitespace ? null : textToken.Content;
             }
 
             private static void OnAllowedChildrenTagError(
