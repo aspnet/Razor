@@ -1427,7 +1427,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
   internal sealed partial class MarkupTagHelperElementSyntax : MarkupSyntaxNode
   {
     private MarkupTagHelperStartTagSyntax _startTag;
-    private GenericBlockSyntax _body;
+    private SyntaxNode _body;
     private MarkupTagHelperEndTagSyntax _endTag;
 
     internal MarkupTagHelperElementSyntax(GreenNode green, SyntaxNode parent, int position)
@@ -1443,11 +1443,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         }
     }
 
-    public GenericBlockSyntax Body 
+    public SyntaxList<RazorSyntaxNode> Body 
     {
         get
         {
-            return GetRed(ref _body, 1);
+            return new SyntaxList<RazorSyntaxNode>(GetRed(ref _body, 1));
         }
     }
 
@@ -1490,7 +1490,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         visitor.VisitMarkupTagHelperElement(this);
     }
 
-    public MarkupTagHelperElementSyntax Update(MarkupTagHelperStartTagSyntax startTag, GenericBlockSyntax body, MarkupTagHelperEndTagSyntax endTag)
+    public MarkupTagHelperElementSyntax Update(MarkupTagHelperStartTagSyntax startTag, SyntaxList<RazorSyntaxNode> body, MarkupTagHelperEndTagSyntax endTag)
     {
         if (startTag != StartTag || body != Body || endTag != EndTag)
         {
@@ -1509,7 +1509,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return Update(startTag, Body, EndTag);
     }
 
-    public MarkupTagHelperElementSyntax WithBody(GenericBlockSyntax body)
+    public MarkupTagHelperElementSyntax WithBody(SyntaxList<RazorSyntaxNode> body)
     {
         return Update(StartTag, body, EndTag);
     }
@@ -1524,9 +1524,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this.WithStartTag(this.StartTag.WithChildren(this.StartTag.Children.AddRange(items)));
     }
 
-    public MarkupTagHelperElementSyntax AddBodyChildren(params RazorSyntaxNode[] items)
+    public MarkupTagHelperElementSyntax AddBody(params RazorSyntaxNode[] items)
     {
-        return this.WithBody(this.Body.WithChildren(this.Body.Children.AddRange(items)));
+        return WithBody(this.Body.AddRange(items));
     }
 
     public MarkupTagHelperElementSyntax AddEndTagChildren(params RazorSyntaxNode[] items)
@@ -1685,7 +1685,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     private MarkupTextLiteralSyntax _nameSuffix;
     private SyntaxToken _equalsToken;
     private MarkupTextLiteralSyntax _valuePrefix;
-    private RazorBlockSyntax _value;
+    private MarkupTagHelperAttributeValueSyntax _value;
     private MarkupTextLiteralSyntax _valueSuffix;
 
     internal MarkupTagHelperAttributeSyntax(GreenNode green, SyntaxNode parent, int position)
@@ -1733,7 +1733,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         }
     }
 
-    public RazorBlockSyntax Value 
+    public MarkupTagHelperAttributeValueSyntax Value 
     {
         get
         {
@@ -1788,7 +1788,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         visitor.VisitMarkupTagHelperAttribute(this);
     }
 
-    public MarkupTagHelperAttributeSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, RazorBlockSyntax value, MarkupTextLiteralSyntax valueSuffix)
+    public MarkupTagHelperAttributeSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name, MarkupTextLiteralSyntax nameSuffix, SyntaxToken equalsToken, MarkupTextLiteralSyntax valuePrefix, MarkupTagHelperAttributeValueSyntax value, MarkupTextLiteralSyntax valueSuffix)
     {
         if (namePrefix != NamePrefix || name != Name || nameSuffix != NameSuffix || equalsToken != EqualsToken || valuePrefix != ValuePrefix || value != Value || valueSuffix != ValueSuffix)
         {
@@ -1827,7 +1827,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return Update(NamePrefix, Name, NameSuffix, EqualsToken, valuePrefix, Value, ValueSuffix);
     }
 
-    public MarkupTagHelperAttributeSyntax WithValue(RazorBlockSyntax value)
+    public MarkupTagHelperAttributeSyntax WithValue(MarkupTagHelperAttributeValueSyntax value)
     {
         return Update(NamePrefix, Name, NameSuffix, EqualsToken, ValuePrefix, value, ValueSuffix);
     }
@@ -1860,10 +1860,177 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         return this.WithValuePrefix(_valuePrefix.WithLiteralTokens(_valuePrefix.LiteralTokens.AddRange(items)));
     }
 
+    public MarkupTagHelperAttributeSyntax AddValueChildren(params RazorSyntaxNode[] items)
+    {
+        return this.WithValue(this.Value.WithChildren(this.Value.Children.AddRange(items)));
+    }
+
     public MarkupTagHelperAttributeSyntax AddValueSuffixLiteralTokens(params SyntaxToken[] items)
     {
         var _valueSuffix = this.ValueSuffix ?? SyntaxFactory.MarkupTextLiteral();
         return this.WithValueSuffix(_valueSuffix.WithLiteralTokens(_valueSuffix.LiteralTokens.AddRange(items)));
+    }
+  }
+
+  internal sealed partial class MarkupMinimizedTagHelperAttributeSyntax : MarkupSyntaxNode
+  {
+    private MarkupTextLiteralSyntax _namePrefix;
+    private MarkupTextLiteralSyntax _name;
+
+    internal MarkupMinimizedTagHelperAttributeSyntax(GreenNode green, SyntaxNode parent, int position)
+        : base(green, parent, position)
+    {
+    }
+
+    public MarkupTextLiteralSyntax NamePrefix 
+    {
+        get
+        {
+            return GetRedAtZero(ref _namePrefix);
+        }
+    }
+
+    public MarkupTextLiteralSyntax Name 
+    {
+        get
+        {
+            return GetRed(ref _name, 1);
+        }
+    }
+
+    internal override SyntaxNode GetNodeSlot(int index)
+    {
+        switch (index)
+        {
+            case 0: return GetRedAtZero(ref _namePrefix);
+            case 1: return GetRed(ref _name, 1);
+            default: return null;
+        }
+    }
+    internal override SyntaxNode GetCachedSlot(int index)
+    {
+        switch (index)
+        {
+            case 0: return _namePrefix;
+            case 1: return _name;
+            default: return null;
+        }
+    }
+
+    public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
+    {
+        return visitor.VisitMarkupMinimizedTagHelperAttribute(this);
+    }
+
+    public override void Accept(SyntaxVisitor visitor)
+    {
+        visitor.VisitMarkupMinimizedTagHelperAttribute(this);
+    }
+
+    public MarkupMinimizedTagHelperAttributeSyntax Update(MarkupTextLiteralSyntax namePrefix, MarkupTextLiteralSyntax name)
+    {
+        if (namePrefix != NamePrefix || name != Name)
+        {
+            var newNode = SyntaxFactory.MarkupMinimizedTagHelperAttribute(namePrefix, name);
+            var annotations = GetAnnotations();
+            if (annotations != null && annotations.Length > 0)
+               return newNode.WithAnnotations(annotations);
+            return newNode;
+        }
+
+        return this;
+    }
+
+    public MarkupMinimizedTagHelperAttributeSyntax WithNamePrefix(MarkupTextLiteralSyntax namePrefix)
+    {
+        return Update(namePrefix, Name);
+    }
+
+    public MarkupMinimizedTagHelperAttributeSyntax WithName(MarkupTextLiteralSyntax name)
+    {
+        return Update(NamePrefix, name);
+    }
+
+    public MarkupMinimizedTagHelperAttributeSyntax AddNamePrefixLiteralTokens(params SyntaxToken[] items)
+    {
+        var _namePrefix = this.NamePrefix ?? SyntaxFactory.MarkupTextLiteral();
+        return this.WithNamePrefix(_namePrefix.WithLiteralTokens(_namePrefix.LiteralTokens.AddRange(items)));
+    }
+
+    public MarkupMinimizedTagHelperAttributeSyntax AddNameLiteralTokens(params SyntaxToken[] items)
+    {
+        return this.WithName(this.Name.WithLiteralTokens(this.Name.LiteralTokens.AddRange(items)));
+    }
+  }
+
+  internal sealed partial class MarkupTagHelperAttributeValueSyntax : RazorBlockSyntax
+  {
+    private SyntaxNode _children;
+
+    internal MarkupTagHelperAttributeValueSyntax(GreenNode green, SyntaxNode parent, int position)
+        : base(green, parent, position)
+    {
+    }
+
+    public override SyntaxList<RazorSyntaxNode> Children 
+    {
+        get
+        {
+            return new SyntaxList<RazorSyntaxNode>(GetRed(ref _children, 0));
+        }
+    }
+
+    internal override SyntaxNode GetNodeSlot(int index)
+    {
+        switch (index)
+        {
+            case 0: return GetRedAtZero(ref _children);
+            default: return null;
+        }
+    }
+    internal override SyntaxNode GetCachedSlot(int index)
+    {
+        switch (index)
+        {
+            case 0: return _children;
+            default: return null;
+        }
+    }
+
+    public override TResult Accept<TResult>(SyntaxVisitor<TResult> visitor)
+    {
+        return visitor.VisitMarkupTagHelperAttributeValue(this);
+    }
+
+    public override void Accept(SyntaxVisitor visitor)
+    {
+        visitor.VisitMarkupTagHelperAttributeValue(this);
+    }
+
+    public MarkupTagHelperAttributeValueSyntax Update(SyntaxList<RazorSyntaxNode> children)
+    {
+        if (children != Children)
+        {
+            var newNode = SyntaxFactory.MarkupTagHelperAttributeValue(children);
+            var annotations = GetAnnotations();
+            if (annotations != null && annotations.Length > 0)
+               return newNode.WithAnnotations(annotations);
+            return newNode;
+        }
+
+        return this;
+    }
+
+    internal override RazorBlockSyntax WithChildrenCore(SyntaxList<RazorSyntaxNode> children) => WithChildren(children);
+    public new MarkupTagHelperAttributeValueSyntax WithChildren(SyntaxList<RazorSyntaxNode> children)
+    {
+        return Update(children);
+    }
+    internal override RazorBlockSyntax AddChildrenCore(params RazorSyntaxNode[] items) => AddChildren(items);
+
+    public new MarkupTagHelperAttributeValueSyntax AddChildren(params RazorSyntaxNode[] items)
+    {
+        return WithChildren(this.Children.AddRange(items));
     }
   }
 

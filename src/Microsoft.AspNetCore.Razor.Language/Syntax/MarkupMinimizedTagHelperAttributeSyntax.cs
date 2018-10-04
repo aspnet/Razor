@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Razor.Language.Legacy;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
-    internal sealed partial class MarkupTagHelperAttributeSyntax
+    internal sealed partial class MarkupMinimizedTagHelperAttributeSyntax
     {
         private static readonly string TagHelperAttributeInfoKey = typeof(TagHelperAttributeInfo).Name;
 
@@ -19,7 +19,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             }
         }
 
-        public MarkupTagHelperAttributeSyntax WithTagHelperAttributeInfo(TagHelperAttributeInfo info)
+        public MarkupMinimizedTagHelperAttributeSyntax WithTagHelperAttributeInfo(TagHelperAttributeInfo info)
         {
             var annotations = new List<SyntaxAnnotation>(GetAnnotations())
             {
@@ -28,7 +28,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
             var newGreen = Green.WithAnnotationsGreen(annotations.ToArray());
 
-            return (MarkupTagHelperAttributeSyntax)newGreen.CreateRed(Parent, Position);
+            return (MarkupMinimizedTagHelperAttributeSyntax)newGreen.CreateRed(Parent, Position);
         }
     }
 }

@@ -30,27 +30,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
         private class AddMarkupElementRewriter : SyntaxRewriter
         {
-            // From http://dev.w3.org/html5/spec/Overview.html#elements-0
-            private static readonly HashSet<string> VoidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-            {
-                "area",
-                "base",
-                "br",
-                "col",
-                "command",
-                "embed",
-                "hr",
-                "img",
-                "input",
-                "keygen",
-                "link",
-                "meta",
-                "param",
-                "source",
-                "track",
-                "wbr"
-            };
-
             private readonly Stack<TagBlockTracker> _startTagTracker = new Stack<TagBlockTracker>();
 
             private TagBlockTracker CurrentTracker => _startTagTracker.Count > 0 ? _startTagTracker.Peek() : null;
@@ -91,8 +70,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
                     var tagName = tagBlock.GetTagName();
                     if (string.IsNullOrWhiteSpace(tagName) ||
-                        IsVoidElement(tagBlock) ||
-                        IsSelfClosing(tagBlock))
+                        tagBlock.IsVoidElement() ||
+                        tagBlock.IsSelfClosing())
                     {
                         // Don't want to track incomplete, invalid (Eg. </>, <  >), void or self-closing tags.
                         // Simply wrap it in a block with no body or start/end tag.
@@ -253,24 +232,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
             private bool IsEndTag(MarkupTagBlockSyntax tagBlock)
             {
-                var childSpan = (MarkupTextLiteralSyntax)tagBlock.Children.First();
+                var childContent = tagBlock.Children.First().GetContent();
+                if (string.IsNullOrEmpty(childContent))
+                {
+                    return false;
+                }
 
                 // We grab the token that could be forward slash
-                var relevantToken = childSpan.LiteralTokens[childSpan.LiteralTokens.Count == 1 ? 0 : 1];
-
-                return relevantToken.Kind == SyntaxKind.ForwardSlash;
-            }
-
-            private bool IsVoidElement(MarkupTagBlockSyntax tagBlock)
-            {
-                return VoidElements.Contains(tagBlock.GetTagName());
-            }
-
-            private bool IsSelfClosing(MarkupTagBlockSyntax tagBlock)
-            {
-                var lastChild = tagBlock.ChildNodes().LastOrDefault();
-
-                return lastChild?.GetContent().EndsWith("/>", StringComparison.Ordinal) ?? false;
+                return childContent.StartsWith("</") || childContent.StartsWith("/");
             }
 
             private class TagBlockTracker

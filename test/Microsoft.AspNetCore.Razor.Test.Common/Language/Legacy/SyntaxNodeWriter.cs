@@ -50,6 +50,19 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             WriteSeparator();
             Write($"[{node.Position}..{node.EndPosition})::{node.FullWidth}");
 
+            if (node is MarkupTagHelperElementSyntax tagHelperElement)
+            {
+                WriteTagHelperElement(tagHelperElement);
+            }
+            else if (node is MarkupTagHelperAttributeSyntax tagHelperAttribute)
+            {
+                WriteTagHelperAttributeInfo(tagHelperAttribute.TagHelperAttributeInfo);
+            }
+            else if (node is MarkupTagHelperAttributeSyntax minimizedTagHelperAttribute)
+            {
+                WriteTagHelperAttributeInfo(minimizedTagHelperAttribute.TagHelperAttributeInfo);
+            }
+
             if (ShouldDisplayNodeContent(node))
             {
                 WriteSeparator();
@@ -68,6 +81,32 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 Write($"[{node.ToFullString()}]");
                 _visitedRoot = true;
             }
+        }
+
+        private void WriteTagHelperElement(MarkupTagHelperElementSyntax node)
+        {
+            // Write tag name
+            WriteSeparator();
+            Write($"{node.TagHelperInfo.TagName}[{node.TagHelperInfo.TagMode}]");
+
+            // Write descriptors
+            foreach (var descriptor in node.TagHelperInfo.BindingResult.Descriptors)
+            {
+                WriteSeparator();
+
+                // Get the type name without the namespace.
+                var typeName = descriptor.Name.Substring(descriptor.Name.LastIndexOf('.') + 1);
+                Write(typeName);
+            }
+        }
+
+        private void WriteTagHelperAttributeInfo(TagHelperAttributeInfo info)
+        {
+            // Write attributes
+            WriteSeparator();
+            Write(info.Name);
+            WriteSeparator();
+            Write(info.AttributeStructure);
         }
 
         private void WriteToken(SyntaxToken token)

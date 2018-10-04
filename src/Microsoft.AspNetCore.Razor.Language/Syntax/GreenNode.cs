@@ -340,7 +340,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 for (int i = 0, n = node.SlotCount; i < n; i++)
                 {
                     var child = node.GetSlot(i);
-                    if (child != null)
+                    if (child != null && child.FullWidth > 0)
                     {
                         firstChild = child;
                         break;
@@ -362,7 +362,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 for (var i = node.SlotCount - 1; i >= 0; i--)
                 {
                     var child = node.GetSlot(i);
-                    if (child != null)
+                    if (child != null && child.FullWidth > 0)
                     {
                         lastChild = child;
                         break;

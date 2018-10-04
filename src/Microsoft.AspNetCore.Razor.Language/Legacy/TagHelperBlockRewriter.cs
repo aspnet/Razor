@@ -66,11 +66,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var tagHelperBuilder = SyntaxListBuilder<RazorSyntaxNode>.Create();
             var processedBoundAttributeNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            if (tagBlock.Children.Count > 0)
+            if (tagBlock.Children.Count == 1)
             {
-                // Add the tag start
-                tagHelperBuilder.Add(tagBlock.Children.First());
+                // Tag with no attributes. We have nothing to rewrite here.
+                return tagBlock.Children;
             }
+
+            // Add the tag start
+            tagHelperBuilder.Add(tagBlock.Children.First());
 
             // We skip the first child "<tagname" and take everything up to the ending portion of the tag ">" or "/>".
             // If the tag does not have a valid structure then there's no close angle to ignore.
@@ -177,13 +180,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var result = CreateTryParseResult(attributeBlock.Name.GetContent(), descriptors, processedBoundAttributeNames);
 
             result.AttributeStructure = AttributeStructure.Minimized;
-            var rewritten = SyntaxFactory.MarkupTagHelperAttribute(
+            var rewritten = SyntaxFactory.MarkupMinimizedTagHelperAttribute(
                 attributeBlock.NamePrefix,
-                attributeBlock.Name,
-                nameSuffix: null,
-                valuePrefix: null,
-                value: null,
-                valueSuffix: null);
+                attributeBlock.Name);
 
             rewritten = rewritten.WithTagHelperAttributeInfo(
                 new TagHelperAttributeInfo(result.AttributeName, result.AttributeStructure));
@@ -239,13 +238,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
             }
 
+            var rewrittenValue = RewriteAttributeValue(result, attributeBlock.Value);
             var rewritten = SyntaxFactory.MarkupTagHelperAttribute(
                 attributeBlock.NamePrefix,
                 attributeBlock.Name,
                 attributeBlock.NameSuffix,
                 attributeBlock.EqualsToken,
                 attributeBlock.ValuePrefix,
-                attributeBlock.Value,
+                rewrittenValue,
                 attributeBlock.ValueSuffix);
 
             rewritten = rewritten.WithTagHelperAttributeInfo(
@@ -254,6 +254,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             result.RewrittenAttribute = rewritten;
 
             return result;
+        }
+
+        private static MarkupTagHelperAttributeValueSyntax RewriteAttributeValue(TryParseResult result, RazorBlockSyntax attributeValue)
+        {
+            var rewriter = new AttributeValueRewriter(result);
+            var rewrittenValue = attributeValue;
+            if (result.IsBoundNonStringAttribute)
+            {
+                // If the attribute was requested by a tag helper but the corresponding property was not a
+                // string, then treat its value as code. A non-string value can be any C# value so we need
+                // to ensure the tree reflects that.
+                rewrittenValue = (RazorBlockSyntax)rewriter.Visit(attributeValue);
+            }
+            return SyntaxFactory.MarkupTagHelperAttributeValue(rewrittenValue.Children);
         }
 
         // Determines the full name of the Type of the property corresponding to an attribute with the given name.
@@ -328,6 +342,113 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             return null;
+        }
+
+        private class AttributeValueRewriter : SyntaxRewriter
+        {
+            private readonly TryParseResult _tryParseResult;
+            private bool _visitedFirstSpan = false;
+
+            public AttributeValueRewriter(TryParseResult result)
+            {
+                _tryParseResult = result;
+            }
+
+            public override SyntaxNode VisitCSharpTransition(CSharpTransitionSyntax node)
+            {
+                // For bound non-string attributes, we'll only allow a transition span to appear at the very
+                // beginning of the attribute expression. All later transitions would appear as code so that
+                // they are part of the generated output. E.g.
+                // key="@value" -> MyTagHelper.key = value
+                // key=" @value" -> MyTagHelper.key =  @value
+                // key="1 + @case" -> MyTagHelper.key = 1 + @case
+                // key="@int + @case" -> MyTagHelper.key = int + @case
+                // key="@(a + b) -> MyTagHelper.key = a + b
+                // key="4 + @(a + b)" -> MyTagHelper.key = 4 + @(a + b)
+                if (_visitedFirstSpan)
+                {
+                    if (node.Parent is CSharpImplicitExpressionSyntax ||
+                    node.Parent is CSharpExplicitExpressionSyntax)
+                    {
+                        node = (CSharpTransitionSyntax)ConfigureNonStringAttribute(node);
+                    }
+                }
+
+                _visitedFirstSpan = true;
+                return base.VisitCSharpTransition(node);
+            }
+
+            public override SyntaxNode VisitRazorMetaCode(RazorMetaCodeSyntax node)
+            {
+                if (_visitedFirstSpan)
+                {
+                    if (node.Parent is CSharpExplicitExpressionBodySyntax)
+                    {
+                        node = (RazorMetaCodeSyntax)ConfigureNonStringAttribute(node);
+                    }
+                }
+
+                _visitedFirstSpan = true;
+                return base.VisitRazorMetaCode(node);
+            }
+
+            public override SyntaxNode VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
+            {
+                node = (CSharpExpressionLiteralSyntax)ConfigureNonStringAttribute(node);
+
+                _visitedFirstSpan = true;
+                return base.VisitCSharpExpressionLiteral(node);
+            }
+
+            public override SyntaxNode VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
+            {
+                _visitedFirstSpan = true;
+                return base.VisitMarkupTextLiteral(node);
+            }
+
+            public override SyntaxNode VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
+            {
+                _visitedFirstSpan = true;
+                return base.VisitCSharpStatementLiteral(node);
+            }
+
+            private SyntaxNode ConfigureNonStringAttribute(SyntaxNode node)
+            {
+                var spanContext = node.GetSpanContext();
+                var builder = spanContext != null ? new SpanContextBuilder(spanContext) : new SpanContextBuilder();
+                builder.EditHandler = new ImplicitExpressionEditHandler(
+                        builder.EditHandler.Tokenizer,
+                        CSharpCodeParser.DefaultKeywords,
+                        acceptTrailingDot: true)
+                {
+                    AcceptedCharacters = AcceptedCharactersInternal.AnyExceptNewline
+                };
+
+                if (!_tryParseResult.IsDuplicateAttribute && builder.ChunkGenerator != SpanChunkGenerator.Null)
+                {
+                    // We want to mark the value of non-string bound attributes to be CSharp.
+                    // Except in two cases,
+                    // 1. Cases when we don't want to render the span. Eg: Transition span '@'.
+                    // 2. Cases when it is a duplicate of a bound attribute. This should just be rendered as html.
+
+                    builder.ChunkGenerator = new ExpressionChunkGenerator();
+                }
+
+                spanContext = builder.Build();
+                var newAnnotation = new SyntaxAnnotation(SyntaxConstants.SpanContextKind, spanContext);
+
+                var newAnnotations = new List<SyntaxAnnotation>();
+                newAnnotations.Add(newAnnotation);
+                foreach (var annotation in node.GetAnnotations())
+                {
+                    if (annotation.Kind != newAnnotation.Kind)
+                    {
+                        newAnnotations.Add(annotation);
+                    }
+                }
+
+                return node.WithAnnotations(newAnnotations.ToArray());
+            }
         }
 
         private class TryParseResult

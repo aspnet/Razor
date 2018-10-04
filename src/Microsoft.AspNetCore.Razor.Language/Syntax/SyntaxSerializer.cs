@@ -134,6 +134,25 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 WriteSeparator();
                 Write($"FullWidth: {node.FullWidth}");
 
+                if (node is MarkupTagHelperElementSyntax tagHelperElement)
+                {
+                    WriteTagHelperElement(tagHelperElement);
+                }
+                else if (node is MarkupTagHelperAttributeSyntax tagHelperAttribute)
+                {
+                    WriteTagHelperAttributeInfo(tagHelperAttribute.TagHelperAttributeInfo);
+                }
+                else if (node is MarkupTagHelperAttributeSyntax minimizedTagHelperAttribute)
+                {
+                    WriteTagHelperAttributeInfo(minimizedTagHelperAttribute.TagHelperAttributeInfo);
+                }
+
+                if (ShouldDisplayNodeContent(node))
+                {
+                    WriteSeparator();
+                    Write($"[{node.GetContent()}]");
+                }
+
                 var annotation = node.GetAnnotations().FirstOrDefault(a => a.Kind == SyntaxConstants.SpanContextKind);
                 if (annotation != null && annotation.Data is SpanContext context)
                 {
@@ -146,6 +165,32 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                     Write($"[{node.ToFullString()}]");
                     _visitedRoot = true;
                 }
+            }
+
+            private void WriteTagHelperElement(MarkupTagHelperElementSyntax node)
+            {
+                // Write tag name
+                WriteSeparator();
+                Write($"{node.TagHelperInfo.TagName}[{node.TagHelperInfo.TagMode}]");
+
+                // Write descriptors
+                foreach (var descriptor in node.TagHelperInfo.BindingResult.Descriptors)
+                {
+                    WriteSeparator();
+
+                    // Get the type name without the namespace.
+                    var typeName = descriptor.Name.Substring(descriptor.Name.LastIndexOf('.') + 1);
+                    Write(typeName);
+                }
+            }
+
+            private void WriteTagHelperAttributeInfo(TagHelperAttributeInfo info)
+            {
+                // Write attributes
+                WriteSeparator();
+                Write(info.Name);
+                WriteSeparator();
+                Write(info.AttributeStructure);
             }
 
             private void WriteToken(SyntaxToken token)
@@ -201,6 +246,21 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 }
 
                 _writer.Write(value);
+            }
+
+            private static bool ShouldDisplayNodeContent(SyntaxNode node)
+            {
+                return node.Kind == SyntaxKind.MarkupTextLiteral ||
+                    node.Kind == SyntaxKind.MarkupEphemeralTextLiteral ||
+                    node.Kind == SyntaxKind.MarkupTagBlock ||
+                    node.Kind == SyntaxKind.MarkupAttributeBlock ||
+                    node.Kind == SyntaxKind.MarkupMinimizedAttributeBlock ||
+                    node.Kind == SyntaxKind.MarkupLiteralAttributeValue ||
+                    node.Kind == SyntaxKind.MarkupDynamicAttributeValue ||
+                    node.Kind == SyntaxKind.CSharpStatementLiteral ||
+                    node.Kind == SyntaxKind.CSharpExpressionLiteral ||
+                    node.Kind == SyntaxKind.CSharpEphemeralTextLiteral ||
+                    node.Kind == SyntaxKind.UnclassifiedTextLiteral;
             }
         }
     }

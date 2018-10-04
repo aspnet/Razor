@@ -1,31 +1,32 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal sealed partial class MarkupTagHelperElementSyntax
     {
+        private static readonly string TagHelperInfoKey = typeof(TagHelperInfo).Name;
+
         public TagHelperInfo TagHelperInfo
         {
             get
             {
-                return ((InternalSyntax.MarkupTagHelperElementSyntax)Green).TagHelperInfo;
+                var tagHelperInfo = this.GetAnnotationValue(TagHelperInfoKey) as TagHelperInfo;
+                return tagHelperInfo;
             }
         }
 
         public MarkupTagHelperElementSyntax WithTagHelperInfo(TagHelperInfo info)
         {
-            var green = (InternalSyntax.MarkupTagHelperElementSyntax)Green;
-            var newGreen = new InternalSyntax.MarkupTagHelperElementSyntax(
-                green.Kind,
-                green.StartTag,
-                green.Body,
-                green.EndTag,
-                GetDiagnostics(),
-                GetAnnotations(),
-                info);
+            var annotations = new List<SyntaxAnnotation>(GetAnnotations())
+            {
+                new SyntaxAnnotation(TagHelperInfoKey, info)
+            };
+
+            var newGreen = Green.WithAnnotationsGreen(annotations.ToArray());
 
             return (MarkupTagHelperElementSyntax)newGreen.CreateRed(Parent, Position);
         }

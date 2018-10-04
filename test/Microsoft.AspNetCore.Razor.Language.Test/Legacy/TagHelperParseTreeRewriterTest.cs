@@ -11,6 +11,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class TagHelperParseTreeRewriterTest : TagHelperRewritingTestBase
     {
+        public TagHelperParseTreeRewriterTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
+        [Fact]
+        public void TestTagHelpers()
+        {
+            UseNewSyntaxTree = false;
+            var document = "<p class=\"@btn\" />";
+            EvaluateData(PartialRequiredParentTags_Descriptors, document);
+            UseNewSyntaxTree = true;
+        }
+
         public static TheoryData GetAttributeNameValuePairsData
         {
             get
@@ -48,7 +62,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             string documentContent,
             IEnumerable<KeyValuePair<string, string>> expectedPairs)
         {
-            UseNewSyntaxTree = true;
             // Arrange
             var errorSink = new ErrorSink();
             var parseResult = ParseDocument(documentContent);
@@ -72,8 +85,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             // Assert
             Assert.Equal(expectedPairs, pairs);
-
-            UseNewSyntaxTree = false;
         }
 
         public static TagHelperDescriptor[] PartialRequiredParentTags_Descriptors = new TagHelperDescriptor[]

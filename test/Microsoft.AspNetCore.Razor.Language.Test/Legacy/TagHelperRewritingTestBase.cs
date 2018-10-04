@@ -69,7 +69,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             string tagHelperPrefix = null,
             RazorParserFeatureFlags featureFlags = null)
         {
-            var syntaxTree = ParseDocument(documentContent);
+            var syntaxTree = ParseDocument(documentContent, featureFlags: featureFlags);
             var errorSink = new ErrorSink();
 
             RazorSyntaxTree rewrittenTree = null;

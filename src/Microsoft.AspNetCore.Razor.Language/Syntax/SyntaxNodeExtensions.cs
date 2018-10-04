@@ -10,6 +10,27 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
     internal static class SyntaxNodeExtensions
     {
+        // From http://dev.w3.org/html5/spec/Overview.html#elements-0
+        private static readonly HashSet<string> VoidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "area",
+            "base",
+            "br",
+            "col",
+            "command",
+            "embed",
+            "hr",
+            "img",
+            "input",
+            "keygen",
+            "link",
+            "meta",
+            "param",
+            "source",
+            "track",
+            "wbr"
+        };
+
         public static TNode WithAnnotations<TNode>(this TNode node, params SyntaxAnnotation[] annotations) where TNode : SyntaxNode
         {
             if (node == null)
@@ -235,6 +256,64 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             }
 
             return textToken.Kind == SyntaxKind.Whitespace ? null : textToken.Content;
+        }
+
+        public static string GetTagName(this MarkupTagHelperStartTagSyntax tagBlock)
+        {
+            if (tagBlock == null)
+            {
+                throw new ArgumentNullException(nameof(tagBlock));
+            }
+
+            var child = tagBlock.Children[0];
+
+            if (tagBlock.Children.Count == 0 || !(child is MarkupTextLiteralSyntax))
+            {
+                return null;
+            }
+
+            var childLiteral = (MarkupTextLiteralSyntax)child;
+            SyntaxToken textToken = null;
+            for (var i = 0; i < childLiteral.LiteralTokens.Count; i++)
+            {
+                var token = childLiteral.LiteralTokens[i];
+
+                if (token != null &&
+                    (token.Kind == SyntaxKind.Whitespace || token.Kind == SyntaxKind.Text))
+                {
+                    textToken = token;
+                    break;
+                }
+            }
+
+            if (textToken == null)
+            {
+                return null;
+            }
+
+            return textToken.Kind == SyntaxKind.Whitespace ? null : textToken.Content;
+        }
+
+        public static bool IsSelfClosing(this MarkupTagBlockSyntax tagBlock)
+        {
+            if (tagBlock == null)
+            {
+                throw new ArgumentNullException(nameof(tagBlock));
+            }
+
+            var lastChild = tagBlock.ChildNodes().LastOrDefault();
+
+            return lastChild?.GetContent().EndsWith("/>", StringComparison.Ordinal) ?? false;
+        }
+
+        public static bool IsVoidElement(this MarkupTagBlockSyntax tagBlock)
+        {
+            if (tagBlock == null)
+            {
+                throw new ArgumentNullException(nameof(tagBlock));
+            }
+
+            return VoidElements.Contains(tagBlock.GetTagName());
         }
     }
 }

@@ -243,7 +243,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                         // If the script tag expects javascript content then we should do minimal parsing until we reach
                         // the end script tag. Don't want to incorrectly parse a "var tag = '<input />';" as an HTML tag.
-                        if (scriptTag && !CurrentScriptTagExpectsHtml(builder))
+                        if (scriptTag && !CurrentScriptTagExpectsHtml(tagBuilder))
                         {
                             tagBuilder.Add(OutputTokensAsMarkupLiteral());
                             var block = SyntaxFactory.MarkupTagBlock(tagBuilder.ToList());
@@ -795,16 +795,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     IsTypeAttribute(attributeBlock))
                 {
                     typeAttribute = attributeBlock;
+                    break;
                 }
             }
 
             if (typeAttribute != null)
             {
-                var contentValues = typeAttribute.Value.Children.Nodes
-                    .OfType<MarkupTextLiteralSyntax>()
-                    .Select(textLiteral => textLiteral.ToFullString());
+                var contentValues = typeAttribute.Value.CreateRed().DescendantNodes().Where(n => n.IsToken).Cast<Syntax.SyntaxToken>();
 
-                var scriptType = string.Concat(contentValues).Trim();
+                var scriptType = string.Concat(contentValues.Select(t => t.Content)).Trim();
 
                 // Does not allow charset parameter (or any other parameters).
                 return string.Equals(scriptType, "text/html", StringComparison.OrdinalIgnoreCase);

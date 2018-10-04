@@ -105,7 +105,7 @@
   <Node Name="MarkupTagHelperElementSyntax" Base="MarkupSyntaxNode">
     <Kind Name="MarkupTagHelperElement" />
     <Field Name="StartTag" Type="MarkupTagHelperStartTagSyntax" />
-    <Field Name="Body" Type="GenericBlockSyntax" />
+    <Field Name="Body" Type="SyntaxList&lt;RazorSyntaxNode&gt;" Optional="true" />
     <Field Name="EndTag" Type="MarkupTagHelperEndTagSyntax" Optional="true" />
   </Node>
   <Node Name="MarkupTagHelperStartTagSyntax" Base="RazorBlockSyntax">
@@ -121,12 +121,21 @@
     <Field Name="NamePrefix" Type="MarkupTextLiteralSyntax" Optional="true" />
     <Field Name="Name" Type="MarkupTextLiteralSyntax" />
     <Field Name="NameSuffix" Type="MarkupTextLiteralSyntax" Optional="true" />
-    <Field Name="EqualsToken" Type="SyntaxToken" Optional="true">
+    <Field Name="EqualsToken" Type="SyntaxToken">
       <Kind Name="Equals" />
     </Field>
     <Field Name="ValuePrefix" Type="MarkupTextLiteralSyntax" Optional="true" />
-    <Field Name="Value" Type="RazorBlockSyntax" />
+    <Field Name="Value" Type="MarkupTagHelperAttributeValueSyntax" />
     <Field Name="ValueSuffix" Type="MarkupTextLiteralSyntax" Optional="true" />
+  </Node>
+  <Node Name="MarkupMinimizedTagHelperAttributeSyntax" Base="MarkupSyntaxNode">
+    <Kind Name="MarkupMinimizedTagHelperAttribute" />
+    <Field Name="NamePrefix" Type="MarkupTextLiteralSyntax" Optional="true" />
+    <Field Name="Name" Type="MarkupTextLiteralSyntax" />
+  </Node>
+  <Node Name="MarkupTagHelperAttributeValueSyntax" Base="RazorBlockSyntax">
+    <Kind Name="MarkupTagHelperAttributeValue" />
+    <Field Name="Children" Type="SyntaxList&lt;RazorSyntaxNode&gt;" Override="true" />
   </Node>
   
   <!-- CSharp -->
