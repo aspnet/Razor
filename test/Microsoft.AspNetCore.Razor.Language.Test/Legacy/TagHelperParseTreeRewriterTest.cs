@@ -16,15 +16,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             UseNewSyntaxTree = true;
         }
 
-        [Fact]
-        public void TestTagHelpers()
-        {
-            UseNewSyntaxTree = false;
-            var document = "<p class=\"@btn\" />";
-            EvaluateData(PartialRequiredParentTags_Descriptors, document);
-            UseNewSyntaxTree = true;
-        }
-
         public static TheoryData GetAttributeNameValuePairsData
         {
             get

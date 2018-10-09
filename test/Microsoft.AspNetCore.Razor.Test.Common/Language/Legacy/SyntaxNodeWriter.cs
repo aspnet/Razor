@@ -171,6 +171,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 node.Kind == SyntaxKind.MarkupTagBlock ||
                 node.Kind == SyntaxKind.MarkupAttributeBlock ||
                 node.Kind == SyntaxKind.MarkupMinimizedAttributeBlock ||
+                node.Kind == SyntaxKind.MarkupTagHelperAttribute ||
+                node.Kind == SyntaxKind.MarkupMinimizedTagHelperAttribute ||
                 node.Kind == SyntaxKind.MarkupLiteralAttributeValue ||
                 node.Kind == SyntaxKind.MarkupDynamicAttributeValue ||
                 node.Kind == SyntaxKind.CSharpStatementLiteral ||
