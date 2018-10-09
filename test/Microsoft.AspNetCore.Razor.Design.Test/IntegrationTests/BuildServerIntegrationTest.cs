@@ -144,7 +144,8 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
         }
 
         // Skipping on linux/mac because of https://github.com/aspnet/Razor/issues/2507.
-        [ConditionalFact]
+        // Skipping all together because of https://github.com/aspnet/Razor/issues/2636
+        [ConditionalFact(Skip = "Skipping until work is done to get this test to use the published version of rzc.exe.")]
         [OSSkipCondition(OperatingSystems.Linux | OperatingSystems.MacOSX)]
         [InitializeTestProject("SimpleMvc")]
         public async Task ManualServerShutdown_NoPipeName_ShutsDownServer()
