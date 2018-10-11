@@ -218,15 +218,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                     var startTagTracker = _startTagTracker.Pop();
                     var startTag = startTagTracker.TagBlock;
 
-                    // Since this is a start tag with no end tag, treat it as a standalone tag.
-                    // This means its children now belongs to the outer tag.
-                    BuildMarkupElement(rewrittenChildren, startTag, new List<RazorSyntaxNode>(), endTag: null);
-
-                    var tagChildren = startTagTracker.Children;
-                    foreach (var child in tagChildren)
-                    {
-                        TrackChild(child, rewrittenChildren);
-                    }
+                    BuildMarkupElement(rewrittenChildren, startTag, startTagTracker.Children, endTag: null);
                 }
             }
 

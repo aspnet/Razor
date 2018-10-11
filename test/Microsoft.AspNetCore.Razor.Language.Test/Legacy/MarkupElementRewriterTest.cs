@@ -111,6 +111,18 @@ Foo</div>
         }
 
         [Fact]
+        public void Rewrites_MisplacedEndTags_RecoversSuccessfully()
+        {
+            // Arrange
+            var content = @"
+<div>content<span>footer</div></span>
+";
+
+            // Act & Assert
+            RewriterTest(content);
+        }
+
+        [Fact]
         public void Rewrites_MalformedVoidTags_RecoversSuccessfully()
         {
             // Arrange
