@@ -446,7 +446,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             ParseAttributeValue(attributeValueBuilder, quote);
                         }
 
-                        attributeValue = SyntaxFactory.GenericBlock(attributeValueBuilder.ToList());
+                        if (attributeValueBuilder.Count > 0)
+                        {
+                            attributeValue = SyntaxFactory.GenericBlock(attributeValueBuilder.ToList());
+                        }
                     }
                 }
 
@@ -468,6 +471,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     var attributeValueBuilder = pooledResult.Builder;
                     // Not a "conditional" attribute, so just read the value
                     SkipToAndParseCode(attributeValueBuilder, token => IsEndOfAttributeValue(quote, token));
+
+                    // Output already accepted tokens if any as markup literal
+                    var literalValue = OutputTokensAsMarkupLiteral();
+                    attributeValueBuilder.Add(literalValue);
 
                     // Capture the attribute value (will include everything in-between the attribute's quotes).
                     attributeValue = SyntaxFactory.GenericBlock(attributeValueBuilder.ToList());

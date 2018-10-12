@@ -891,8 +891,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         default:
           throw new ArgumentException("equalsToken");
       }
-      if (value == null)
-        throw new ArgumentNullException(nameof(value));
       return (MarkupAttributeBlockSyntax)InternalSyntax.SyntaxFactory.MarkupAttributeBlock(namePrefix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)namePrefix.Green, name == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)name.Green, nameSuffix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)nameSuffix.Green, (Syntax.InternalSyntax.SyntaxToken)equalsToken.Green, valuePrefix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)valuePrefix.Green, value == null ? null : (InternalSyntax.RazorBlockSyntax)value.Green, valueSuffix == null ? null : (InternalSyntax.MarkupTextLiteralSyntax)valueSuffix.Green).CreateRed();
     }
 
@@ -903,9 +901,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     }
 
     /// <summary>Creates a new MarkupAttributeBlockSyntax instance.</summary>
-    public static MarkupAttributeBlockSyntax MarkupAttributeBlock(RazorBlockSyntax value)
+    public static MarkupAttributeBlockSyntax MarkupAttributeBlock()
     {
-      return SyntaxFactory.MarkupAttributeBlock(default(MarkupTextLiteralSyntax), SyntaxFactory.MarkupTextLiteral(), default(MarkupTextLiteralSyntax), SyntaxFactory.Token(SyntaxKind.Equals), default(MarkupTextLiteralSyntax), value, default(MarkupTextLiteralSyntax));
+      return SyntaxFactory.MarkupAttributeBlock(default(MarkupTextLiteralSyntax), SyntaxFactory.MarkupTextLiteral(), default(MarkupTextLiteralSyntax), SyntaxFactory.Token(SyntaxKind.Equals), default(MarkupTextLiteralSyntax), default(RazorBlockSyntax), default(MarkupTextLiteralSyntax));
     }
 
     /// <summary>Creates a new MarkupLiteralAttributeValueSyntax instance.</summary>

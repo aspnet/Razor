@@ -117,6 +117,28 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             return context is SpanContext ? (SpanContext)context : null;
         }
 
+        public static TNode WithSpanContext<TNode>(this TNode node, SpanContext spanContext) where TNode : SyntaxNode
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            var newAnnotation = new SyntaxAnnotation(SyntaxConstants.SpanContextKind, spanContext);
+
+            var newAnnotations = new List<SyntaxAnnotation>();
+            newAnnotations.Add(newAnnotation);
+            foreach (var annotation in node.GetAnnotations())
+            {
+                if (annotation.Kind != newAnnotation.Kind)
+                {
+                    newAnnotations.Add(annotation);
+                }
+            }
+
+            return node.WithAnnotations(newAnnotations.ToArray());
+        }
+
         /// <summary>
         /// Creates a new tree of nodes with the specified nodes, tokens and trivia replaced.
         /// </summary>

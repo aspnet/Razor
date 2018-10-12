@@ -97,11 +97,22 @@ namespace Microsoft.AspNetCore.Razor.Language
             return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupBlock);
         }
 
+        public override SyntaxNode VisitGenericBlock(GenericBlockSyntax node)
+        {
+            if (!(node.Parent is MarkupDynamicAttributeValueSyntax) &&
+                node.FirstAncestorOrSelf<SyntaxNode>(n => n is MarkupDynamicAttributeValueSyntax) != null)
+            {
+                return WriteBlock(node, BlockKindInternal.Expression, base.VisitGenericBlock);
+            }
+
+            return base.VisitGenericBlock(node);
+        }
+
         public override SyntaxNode VisitMarkupTagHelperAttributeValue(MarkupTagHelperAttributeValueSyntax node)
         {
             // We don't generate a classified span when the attribute value is a simple literal value.
             if (node.Children.Count > 1 ||
-                !(node.Children.Count == 1 && node.Children[0] is MarkupLiteralAttributeValueSyntax))
+                (node.Children.Count == 1 && node.Children[0] is MarkupDynamicAttributeValueSyntax))
             {
                 return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupTagHelperAttributeValue);
             }

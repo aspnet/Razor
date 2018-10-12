@@ -107,7 +107,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         processedBoundAttributeNames);
                     tagHelperBuilder.Add(result.RewrittenAttribute);
                 }
-                else if (child.Kind == SyntaxKind.CSharpCodeBlock)
+                else if (child is CSharpCodeBlockSyntax)
                 {
                     // TODO: Accept more than just Markup attributes: https://github.com/aspnet/Razor/issues/96.
                     // Something like:
@@ -116,6 +116,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     var diagnostic = RazorDiagnosticFactory.CreateParsing_TagHelpersCannotHaveCSharpInTagDeclaration(location, tagName);
                     errorSink.OnError(diagnostic);
 
+                    result = null;
+                }
+                else if (child is MarkupTextLiteralSyntax)
+                {
+                    // If the original span content was whitespace it ultimately means the tag
+                    // that owns this "attribute" is malformed and is expecting a user to type a new attribute.
+                    // ex: <myTH class="btn"| |
+                    var literalContent = child.GetContent();
+                    if (!string.IsNullOrWhiteSpace(literalContent))
+                    {
+                        var location = child.GetSourceSpan(source);
+                        var diagnostic = RazorDiagnosticFactory.CreateParsing_TagHelperAttributeListMustBeWellFormed(location);
+                        errorSink.OnError(diagnostic);
+                    }
                     result = null;
                 }
                 else
@@ -131,7 +145,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     {
                         tagHelperBuilder.Add(tagBlock.Children[j]);
                     }
-                    break;
+
+                    return tagHelperBuilder.ToList();
                 }
 
                 // Check if it's a non-boolean bound attribute that is minimized or if it's a bound
@@ -238,7 +253,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
             }
 
-            var rewrittenValue = RewriteAttributeValue(result, attributeBlock.Value);
+            var attributeValue = attributeBlock.Value;
+            if (attributeValue == null)
+            {
+                var builder = SyntaxListBuilder<RazorSyntaxNode>.Create();
+                if (attributeBlock.ValuePrefix == null || attributeBlock.ValueSuffix == null)
+                {
+                    // Add a marker for attribute value when there are no quotes like, <p class= >
+                    builder.Add(SyntaxFactory.MarkupTextLiteral(new SyntaxList<SyntaxToken>()));
+                }
+
+                attributeValue = SyntaxFactory.GenericBlock(builder.ToList());
+            }
+            var rewrittenValue = RewriteAttributeValue(result, attributeValue);
+
             var rewritten = SyntaxFactory.MarkupTagHelperAttribute(
                 attributeBlock.NamePrefix,
                 attributeBlock.Name,
@@ -267,6 +295,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // to ensure the tree reflects that.
                 rewrittenValue = (RazorBlockSyntax)rewriter.Visit(attributeValue);
             }
+
             return SyntaxFactory.MarkupTagHelperAttributeValue(rewrittenValue.Children);
         }
 
@@ -367,25 +396,83 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // key="4 + @(a + b)" -> MyTagHelper.key = 4 + @(a + b)
                 if (_visitedFirstSpan)
                 {
-                    if (node.Parent is CSharpImplicitExpressionSyntax ||
-                    node.Parent is CSharpExplicitExpressionSyntax)
-                    {
-                        node = (CSharpTransitionSyntax)ConfigureNonStringAttribute(node);
-                    }
+                    // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
+                    var spanContext = node.GetSpanContext();
+                    var newSpanContext = new SpanContext(new MarkupChunkGenerator(), spanContext.EditHandler);
+
+                    var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition)).WithSpanContext(newSpanContext);
+
+                    return base.VisitCSharpExpressionLiteral(expression);
                 }
 
                 _visitedFirstSpan = true;
                 return base.VisitCSharpTransition(node);
             }
 
+            public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
+            {
+                if (_visitedFirstSpan)
+                {
+                    var builder = SyntaxListBuilder<RazorSyntaxNode>.Create();
+                    if (node.Transition != null)
+                    {
+                        // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
+                        var spanContext = node.GetSpanContext();
+                        var newSpanContext = new SpanContext(new MarkupChunkGenerator(), spanContext?.EditHandler ?? SpanEditHandler.CreateDefault((content) => Enumerable.Empty<Syntax.InternalSyntax.SyntaxToken>()));
+
+                        var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition.Transition)).WithSpanContext(newSpanContext);
+                        expression = (CSharpExpressionLiteralSyntax)VisitCSharpExpressionLiteral(expression);
+                        builder.Add(expression);
+                    }
+                    var rewrittenBody = (CSharpCodeBlockSyntax)VisitCSharpCodeBlock(((CSharpImplicitExpressionBodySyntax)node.Body).CSharpCode);
+                    builder.AddRange(rewrittenBody.Children);
+
+                    return SyntaxFactory.GenericBlock(builder.ToList());
+                }
+
+                return base.VisitCSharpImplicitExpression(node);
+            }
+
+            public override SyntaxNode VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
+            {
+                if (_visitedFirstSpan)
+                {
+                    var builder = SyntaxListBuilder<RazorSyntaxNode>.Create();
+                    if (node.Transition != null)
+                    {
+                        // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
+                        var spanContext = node.GetSpanContext();
+                        var newSpanContext = new SpanContext(new MarkupChunkGenerator(), spanContext?.EditHandler ?? SpanEditHandler.CreateDefault((content) => Enumerable.Empty<Syntax.InternalSyntax.SyntaxToken>()));
+
+                        var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition.Transition)).WithSpanContext(newSpanContext);
+                        expression = (CSharpExpressionLiteralSyntax)VisitCSharpExpressionLiteral(expression);
+                        builder.Add(expression);
+                    }
+                    var body = (CSharpExplicitExpressionBodySyntax)node.Body;
+                    var rewrittenOpenParen = (RazorSyntaxNode)VisitRazorMetaCode(body.OpenParen);
+                    var rewrittenBody = (CSharpCodeBlockSyntax)VisitCSharpCodeBlock(body.CSharpCode);
+                    var rewrittenCloseParen = (RazorSyntaxNode)VisitRazorMetaCode(body.CloseParen);
+                    builder.Add(rewrittenOpenParen);
+                    builder.AddRange(rewrittenBody.Children);
+                    builder.Add(rewrittenCloseParen);
+
+                    return SyntaxFactory.GenericBlock(builder.ToList());
+                }
+
+                return base.VisitCSharpExplicitExpression(node);
+            }
+
             public override SyntaxNode VisitRazorMetaCode(RazorMetaCodeSyntax node)
             {
                 if (_visitedFirstSpan)
                 {
-                    if (node.Parent is CSharpExplicitExpressionBodySyntax)
-                    {
-                        node = (RazorMetaCodeSyntax)ConfigureNonStringAttribute(node);
-                    }
+                    // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
+                    var spanContext = node.GetSpanContext();
+                    var newSpanContext = new SpanContext(new MarkupChunkGenerator(), spanContext.EditHandler);
+
+                    var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.MetaCode)).WithSpanContext(newSpanContext);
+
+                    return VisitCSharpExpressionLiteral(expression);
                 }
 
                 _visitedFirstSpan = true;
@@ -400,16 +487,66 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 return base.VisitCSharpExpressionLiteral(node);
             }
 
-            public override SyntaxNode VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
+            public override SyntaxNode VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
             {
                 _visitedFirstSpan = true;
-                return base.VisitMarkupTextLiteral(node);
+
+                // Since this is a bound non-string attribute, we want to convert LiteralAttributeValue to just be a CSharp Expression literal.
+                var builder = SyntaxListBuilder<SyntaxToken>.Create();
+                if (node.Prefix != null)
+                {
+                    builder.AddRange(node.Prefix.LiteralTokens);
+                }
+                if (node.Value != null)
+                {
+                    builder.AddRange(node.Value.LiteralTokens);
+                }
+
+                var expression = SyntaxFactory.CSharpExpressionLiteral(builder.ToList());
+
+                return VisitCSharpExpressionLiteral(expression);
+            }
+
+            public override SyntaxNode VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
+            {
+                // Move the prefix to be part of the actual value.
+                var builder = SyntaxListBuilder<RazorSyntaxNode>.Create();
+                if (node.Prefix != null)
+                {
+                    builder.Add(node.Prefix);
+                }
+                if (node.Value?.Children != null)
+                {
+                    builder.AddRange(node.Value.Children);
+                }
+                var rewrittenValue = SyntaxFactory.GenericBlock(builder.ToList());
+                var rewritten = SyntaxFactory.MarkupDynamicAttributeValue(prefix: null, value: rewrittenValue);
+
+                return base.VisitMarkupDynamicAttributeValue(rewritten);
             }
 
             public override SyntaxNode VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
             {
                 _visitedFirstSpan = true;
                 return base.VisitCSharpStatementLiteral(node);
+            }
+
+            public override SyntaxNode VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
+            {
+                _visitedFirstSpan = true;
+                var tokens = new SyntaxList<SyntaxToken>(node.LiteralTokens);
+                var value = SyntaxFactory.CSharpExpressionLiteral(tokens);
+                value = (CSharpExpressionLiteralSyntax)ConfigureNonStringAttribute(value);
+                return value;
+            }
+
+            public override SyntaxNode VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
+            {
+                _visitedFirstSpan = true;
+                var tokens = new SyntaxList<SyntaxToken>(node.LiteralTokens);
+                var value = SyntaxFactory.CSharpExpressionLiteral(tokens);
+                value = (CSharpExpressionLiteralSyntax)ConfigureNonStringAttribute(value);
+                return value;
             }
 
             private SyntaxNode ConfigureNonStringAttribute(SyntaxNode node)
@@ -435,19 +572,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
 
                 spanContext = builder.Build();
-                var newAnnotation = new SyntaxAnnotation(SyntaxConstants.SpanContextKind, spanContext);
 
-                var newAnnotations = new List<SyntaxAnnotation>();
-                newAnnotations.Add(newAnnotation);
-                foreach (var annotation in node.GetAnnotations())
-                {
-                    if (annotation.Kind != newAnnotation.Kind)
-                    {
-                        newAnnotations.Add(annotation);
-                    }
-                }
-
-                return node.WithAnnotations(newAnnotations.ToArray());
+                return node.WithSpanContext(spanContext);
             }
         }
 

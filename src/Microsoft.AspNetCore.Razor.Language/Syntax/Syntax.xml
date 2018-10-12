@@ -83,7 +83,7 @@
       <Kind Name="Equals" />
     </Field>
     <Field Name="ValuePrefix" Type="MarkupTextLiteralSyntax" Optional="true" />
-    <Field Name="Value" Type="RazorBlockSyntax" />
+    <Field Name="Value" Type="RazorBlockSyntax" Optional="true" />
     <Field Name="ValueSuffix" Type="MarkupTextLiteralSyntax" Optional="true" />
   </Node>
   <Node Name="MarkupLiteralAttributeValueSyntax" Base="MarkupSyntaxNode">

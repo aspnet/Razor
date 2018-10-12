@@ -1068,8 +1068,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
             AdjustFlagsAndWidth(valuePrefix);
             _valuePrefix = valuePrefix;
         }
-        AdjustFlagsAndWidth(value);
-        _value = value;
+        if (value != null)
+        {
+            AdjustFlagsAndWidth(value);
+            _value = value;
+        }
         if (valueSuffix != null)
         {
             AdjustFlagsAndWidth(valueSuffix);
@@ -1101,8 +1104,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
             AdjustFlagsAndWidth(valuePrefix);
             _valuePrefix = valuePrefix;
         }
-        AdjustFlagsAndWidth(value);
-        _value = value;
+        if (value != null)
+        {
+            AdjustFlagsAndWidth(value);
+            _value = value;
+        }
         if (valueSuffix != null)
         {
             AdjustFlagsAndWidth(valueSuffix);
@@ -3985,8 +3991,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         default:
           throw new ArgumentException("equalsToken");
       }
-      if (value == null)
-        throw new ArgumentNullException(nameof(value));
 
       return new MarkupAttributeBlockSyntax(SyntaxKind.MarkupAttributeBlock, namePrefix, name, nameSuffix, equalsToken, valuePrefix, value, valueSuffix);
     }
