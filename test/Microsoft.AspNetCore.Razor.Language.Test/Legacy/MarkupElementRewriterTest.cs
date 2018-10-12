@@ -87,11 +87,11 @@ Foo</div>
         }
 
         [Fact]
-        public void Rewrites_VoidTagsAndSelfClosingTags()
+        public void Rewrites_SelfClosingTags()
         {
             // Arrange
             var content = @"
-<br>Foo<custom />
+<br/>Foo<custom />
 ";
 
             // Act & Assert
@@ -123,7 +123,7 @@ Foo</div>
         }
 
         [Fact]
-        public void Rewrites_MalformedVoidTags_RecoversSuccessfully()
+        public void Rewrites_DoesNotSpecialCase_VoidTags()
         {
             // Arrange
             var content = @"

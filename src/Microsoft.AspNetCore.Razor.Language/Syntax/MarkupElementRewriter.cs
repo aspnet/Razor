@@ -69,9 +69,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                     }
 
                     var tagName = tagBlock.GetTagName();
-                    if (string.IsNullOrWhiteSpace(tagName) ||
-                        tagBlock.IsVoidElement() ||
-                        tagBlock.IsSelfClosing())
+                    if (string.IsNullOrWhiteSpace(tagName) || tagBlock.IsSelfClosing())
                     {
                         // Don't want to track incomplete, invalid (Eg. </>, <  >), void or self-closing tags.
                         // Simply wrap it in a block with no body or start/end tag.
