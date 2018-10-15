@@ -5,7 +5,7 @@ RazorDocument - [0..54)::54 - [<input class='@DateTime.Now + 1' bound-required-i
                 MarkupTextLiteral - [0..6)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[input];
-                MarkupTagHelperAttribute - [6..32)::26 - class - SingleQuotes - [ class='@DateTime.Now + 1']
+                MarkupTagHelperAttribute - [6..32)::26 - class - SingleQuotes - Unbound - [ class='@DateTime.Now + 1']
                     MarkupTextLiteral - [6..7)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [7..12)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -38,7 +38,7 @@ RazorDocument - [0..54)::54 - [<input class='@DateTime.Now + 1' bound-required-i
                                 Text;[1];
                     MarkupTextLiteral - [31..32)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
-                MarkupMinimizedTagHelperAttribute - [32..51)::19 - [ bound-required-int]
+                MarkupMinimizedTagHelperAttribute - [32..51)::19 - bound-required-int - Minimized - Bound - [ bound-required-int]
                     MarkupTextLiteral - [32..33)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [33..51)::18 - [bound-required-int] - Gen<Markup> - SpanEditHandler;Accepts:Any

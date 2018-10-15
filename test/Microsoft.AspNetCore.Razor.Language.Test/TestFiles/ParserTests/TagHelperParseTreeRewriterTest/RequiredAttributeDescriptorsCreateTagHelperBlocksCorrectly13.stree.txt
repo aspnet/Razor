@@ -5,7 +5,7 @@ RazorDocument - [0..58)::58 - [<strong catchAll="@DateTime.Now">words and spaces
                 MarkupTextLiteral - [0..7)::7 - [<strong] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[strong];
-                MarkupTagHelperAttribute - [7..32)::25 - catchAll - DoubleQuotes - [ catchAll="@DateTime.Now"]
+                MarkupTagHelperAttribute - [7..32)::25 - catchAll - DoubleQuotes - Unbound - [ catchAll="@DateTime.Now"]
                     MarkupTextLiteral - [7..8)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [8..16)::8 - [catchAll] - Gen<Markup> - SpanEditHandler;Accepts:Any

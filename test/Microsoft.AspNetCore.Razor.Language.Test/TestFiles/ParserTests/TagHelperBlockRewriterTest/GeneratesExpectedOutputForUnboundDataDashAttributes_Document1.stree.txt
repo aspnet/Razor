@@ -5,7 +5,7 @@ RazorDocument - [0..39)::39 - [<input data-required='@DateTime.Now' />]
                 MarkupTextLiteral - [0..6)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[input];
-                MarkupTagHelperAttribute - [6..36)::30 - data-required - SingleQuotes - [ data-required='@DateTime.Now']
+                MarkupTagHelperAttribute - [6..36)::30 - data-required - SingleQuotes - Unbound - [ data-required='@DateTime.Now']
                     MarkupTextLiteral - [6..7)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [7..20)::13 - [data-required] - Gen<Markup> - SpanEditHandler;Accepts:Any

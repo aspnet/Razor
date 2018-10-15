@@ -16,17 +16,17 @@ RazorDocument - [0..46)::46 - [@{<p bound-int bound-string bound-string></p>}]
                                     MarkupTextLiteral - [2..4)::2 - [<p] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[p];
-                                    MarkupMinimizedTagHelperAttribute - [4..14)::10 - [ bound-int]
+                                    MarkupMinimizedTagHelperAttribute - [4..14)::10 - bound-int - Minimized - Bound - [ bound-int]
                                         MarkupTextLiteral - [4..5)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [5..14)::9 - [bound-int] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Text;[bound-int];
-                                    MarkupMinimizedTagHelperAttribute - [14..27)::13 - [ bound-string]
+                                    MarkupMinimizedTagHelperAttribute - [14..27)::13 - bound-string - Minimized - Bound - [ bound-string]
                                         MarkupTextLiteral - [14..15)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [15..27)::12 - [bound-string] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Text;[bound-string];
-                                    MarkupMinimizedTagHelperAttribute - [27..40)::13 - [ bound-string]
+                                    MarkupMinimizedTagHelperAttribute - [27..40)::13 - bound-string - Minimized - Bound - [ bound-string]
                                         MarkupTextLiteral - [27..28)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [28..40)::12 - [bound-string] - Gen<Markup> - SpanEditHandler;Accepts:Any

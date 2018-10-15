@@ -7,14 +7,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
     {
         public TagHelperAttributeInfo(
             string name,
-            AttributeStructure attributeStructure)
+            AttributeStructure attributeStructure,
+            bool bound)
         {
             Name = name;
             AttributeStructure = attributeStructure;
+            Bound = bound;
         }
 
         public string Name { get; }
 
         public AttributeStructure AttributeStructure { get; }
+
+        public bool Bound { get; }
     }
 }

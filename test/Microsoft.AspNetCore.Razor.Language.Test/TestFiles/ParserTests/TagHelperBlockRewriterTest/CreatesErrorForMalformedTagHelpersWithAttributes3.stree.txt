@@ -5,7 +5,7 @@ RazorDocument - [0..23)::23 - [<p bar='false  <strong>]
                 MarkupTextLiteral - [0..2)::2 - [<p] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[p];
-                MarkupTagHelperAttribute - [2..23)::21 - bar - SingleQuotes - [ bar='false  <strong>]
+                MarkupTagHelperAttribute - [2..23)::21 - bar - SingleQuotes - Unbound - [ bar='false  <strong>]
                     MarkupTextLiteral - [2..3)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [3..6)::3 - [bar] - Gen<Markup> - SpanEditHandler;Accepts:Any

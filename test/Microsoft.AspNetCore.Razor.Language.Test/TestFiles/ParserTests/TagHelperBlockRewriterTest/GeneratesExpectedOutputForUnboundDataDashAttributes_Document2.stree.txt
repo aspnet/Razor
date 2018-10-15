@@ -5,7 +5,7 @@ RazorDocument - [0..31)::31 - [<input data-required='value' />]
                 MarkupTextLiteral - [0..6)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[input];
-                MarkupTagHelperAttribute - [6..28)::22 - data-required - SingleQuotes - [ data-required='value']
+                MarkupTagHelperAttribute - [6..28)::22 - data-required - SingleQuotes - Unbound - [ data-required='value']
                     MarkupTextLiteral - [6..7)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [7..20)::13 - [data-required] - Gen<Markup> - SpanEditHandler;Accepts:Any

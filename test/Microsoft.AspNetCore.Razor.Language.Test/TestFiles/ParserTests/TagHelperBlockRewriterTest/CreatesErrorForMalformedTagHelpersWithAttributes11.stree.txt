@@ -5,7 +5,7 @@ RazorDocument - [0..31)::31 - [<p class="btn bar="foo"<strong>]
                 MarkupTextLiteral - [0..2)::2 - [<p] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[p];
-                MarkupTagHelperAttribute - [2..19)::17 - class - DoubleQuotes - [ class="btn bar="]
+                MarkupTagHelperAttribute - [2..19)::17 - class - DoubleQuotes - Unbound - [ class="btn bar="]
                     MarkupTextLiteral - [2..3)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [3..8)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -25,7 +25,7 @@ RazorDocument - [0..31)::31 - [<p class="btn bar="foo"<strong>]
                                 Equals;[=];
                     MarkupTextLiteral - [18..19)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
-                MarkupMinimizedTagHelperAttribute - [19..23)::4 - [foo"]
+                MarkupMinimizedTagHelperAttribute - [19..23)::4 - foo" - Minimized - Unbound - [foo"]
                     MarkupTextLiteral - [19..23)::4 - [foo"] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Text;[foo];
                         DoubleQuote;["];

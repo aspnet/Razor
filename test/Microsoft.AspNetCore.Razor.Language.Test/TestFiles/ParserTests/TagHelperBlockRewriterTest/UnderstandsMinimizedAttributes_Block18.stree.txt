@@ -16,17 +16,17 @@ RazorDocument - [0..70)::70 - [@{<input bound-required-int unbound-required boun
                                     MarkupTextLiteral - [2..8)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[input];
-                                    MarkupMinimizedTagHelperAttribute - [8..27)::19 - [ bound-required-int]
+                                    MarkupMinimizedTagHelperAttribute - [8..27)::19 - bound-required-int - Minimized - Bound - [ bound-required-int]
                                         MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [9..27)::18 - [bound-required-int] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Text;[bound-required-int];
-                                    MarkupMinimizedTagHelperAttribute - [27..44)::17 - [ unbound-required]
+                                    MarkupMinimizedTagHelperAttribute - [27..44)::17 - unbound-required - Minimized - Unbound - [ unbound-required]
                                         MarkupTextLiteral - [27..28)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [28..44)::16 - [unbound-required] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Text;[unbound-required];
-                                    MarkupMinimizedTagHelperAttribute - [44..66)::22 - [ bound-required-string]
+                                    MarkupMinimizedTagHelperAttribute - [44..66)::22 - bound-required-string - Minimized - Bound - [ bound-required-string]
                                         MarkupTextLiteral - [44..45)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [45..66)::21 - [bound-required-string] - Gen<Markup> - SpanEditHandler;Accepts:Any

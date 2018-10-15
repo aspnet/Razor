@@ -5,7 +5,7 @@ RazorDocument - [0..46)::46 - [<myth bound='true' name='john' bound= name= />]
                 MarkupTextLiteral - [0..5)::5 - [<myth] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[myth];
-                MarkupTagHelperAttribute - [5..18)::13 - bound - SingleQuotes - [ bound='true']
+                MarkupTagHelperAttribute - [5..18)::13 - bound - SingleQuotes - Bound - [ bound='true']
                     MarkupTextLiteral - [5..6)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [6..11)::5 - [bound] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -18,7 +18,7 @@ RazorDocument - [0..46)::46 - [<myth bound='true' name='john' bound= name= />]
                             Text;[true];
                     MarkupTextLiteral - [17..18)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
-                MarkupTagHelperAttribute - [18..30)::12 - name - SingleQuotes - [ name='john']
+                MarkupTagHelperAttribute - [18..30)::12 - name - SingleQuotes - Bound - [ name='john']
                     MarkupTextLiteral - [18..19)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [19..23)::4 - [name] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -32,7 +32,7 @@ RazorDocument - [0..46)::46 - [<myth bound='true' name='john' bound= name= />]
                                 Text;[john];
                     MarkupTextLiteral - [29..30)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
-                MarkupTagHelperAttribute - [30..37)::7 - bound - DoubleQuotes - [ bound=]
+                MarkupTagHelperAttribute - [30..37)::7 - bound - DoubleQuotes - Bound - [ bound=]
                     MarkupTextLiteral - [30..31)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [31..36)::5 - [bound] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -40,7 +40,7 @@ RazorDocument - [0..46)::46 - [<myth bound='true' name='john' bound= name= />]
                     Equals;[=];
                     MarkupTagHelperAttributeValue - [37..37)::0
                         CSharpExpressionLiteral - [37..37)::0 - [] - Gen<None> - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14
-                MarkupTagHelperAttribute - [37..43)::6 - name - DoubleQuotes - [ name=]
+                MarkupTagHelperAttribute - [37..43)::6 - name - DoubleQuotes - Bound - [ name=]
                     MarkupTextLiteral - [37..38)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [38..42)::4 - [name] - Gen<Markup> - SpanEditHandler;Accepts:Any

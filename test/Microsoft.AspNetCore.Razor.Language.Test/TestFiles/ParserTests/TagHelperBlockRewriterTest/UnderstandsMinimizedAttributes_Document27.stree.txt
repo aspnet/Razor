@@ -5,12 +5,12 @@ RazorDocument - [0..29)::29 - [<p bound-int class='btn'></p>]
                 MarkupTextLiteral - [0..2)::2 - [<p] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[p];
-                MarkupMinimizedTagHelperAttribute - [2..12)::10 - [ bound-int]
+                MarkupMinimizedTagHelperAttribute - [2..12)::10 - bound-int - Minimized - Bound - [ bound-int]
                     MarkupTextLiteral - [2..3)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [3..12)::9 - [bound-int] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Text;[bound-int];
-                MarkupTagHelperAttribute - [12..24)::12 - class - SingleQuotes - [ class='btn']
+                MarkupTagHelperAttribute - [12..24)::12 - class - SingleQuotes - Unbound - [ class='btn']
                     MarkupTextLiteral - [12..13)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [13..18)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any

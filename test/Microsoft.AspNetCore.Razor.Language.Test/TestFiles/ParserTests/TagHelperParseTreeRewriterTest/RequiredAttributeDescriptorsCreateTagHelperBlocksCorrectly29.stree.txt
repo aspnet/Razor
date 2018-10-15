@@ -5,7 +5,7 @@ RazorDocument - [0..97)::97 - [<div style="@DateTime.Now" class="@DateTime.Now" 
                 MarkupTextLiteral - [0..4)::4 - [<div] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[div];
-                MarkupTagHelperAttribute - [4..26)::22 - style - DoubleQuotes - [ style="@DateTime.Now"]
+                MarkupTagHelperAttribute - [4..26)::22 - style - DoubleQuotes - Unbound - [ style="@DateTime.Now"]
                     MarkupTextLiteral - [4..5)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [5..10)::5 - [style] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -28,7 +28,7 @@ RazorDocument - [0..97)::97 - [<div style="@DateTime.Now" class="@DateTime.Now" 
                                                     Identifier;[Now];
                     MarkupTextLiteral - [25..26)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
-                MarkupTagHelperAttribute - [26..48)::22 - class - DoubleQuotes - [ class="@DateTime.Now"]
+                MarkupTagHelperAttribute - [26..48)::22 - class - DoubleQuotes - Unbound - [ class="@DateTime.Now"]
                     MarkupTextLiteral - [26..27)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [27..32)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -51,7 +51,7 @@ RazorDocument - [0..97)::97 - [<div style="@DateTime.Now" class="@DateTime.Now" 
                                                     Identifier;[Now];
                     MarkupTextLiteral - [47..48)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
-                MarkupTagHelperAttribute - [48..73)::25 - catchAll - DoubleQuotes - [ catchAll="@DateTime.Now"]
+                MarkupTagHelperAttribute - [48..73)::25 - catchAll - DoubleQuotes - Unbound - [ catchAll="@DateTime.Now"]
                     MarkupTextLiteral - [48..49)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [49..57)::8 - [catchAll] - Gen<Markup> - SpanEditHandler;Accepts:Any

@@ -5,7 +5,7 @@ RazorDocument - [0..77)::77 - [<person age="@@@(11+1)" birthday="DateTime.Now" n
                 MarkupTextLiteral - [0..7)::7 - [<person] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[person];
-                MarkupTagHelperAttribute - [7..23)::16 - age - DoubleQuotes - [ age="@@@(11+1)"]
+                MarkupTagHelperAttribute - [7..23)::16 - age - DoubleQuotes - Bound - [ age="@@@(11+1)"]
                     MarkupTextLiteral - [7..8)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [8..11)::3 - [age] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -37,7 +37,7 @@ RazorDocument - [0..77)::77 - [<person age="@@@(11+1)" birthday="DateTime.Now" n
                                             RightParenthesis;[)];
                     MarkupTextLiteral - [22..23)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
-                MarkupTagHelperAttribute - [23..47)::24 - birthday - DoubleQuotes - [ birthday="DateTime.Now"]
+                MarkupTagHelperAttribute - [23..47)::24 - birthday - DoubleQuotes - Bound - [ birthday="DateTime.Now"]
                     MarkupTextLiteral - [23..24)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [24..32)::8 - [birthday] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -50,7 +50,7 @@ RazorDocument - [0..77)::77 - [<person age="@@@(11+1)" birthday="DateTime.Now" n
                             Text;[DateTime.Now];
                     MarkupTextLiteral - [46..47)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
-                MarkupTagHelperAttribute - [47..74)::27 - name - DoubleQuotes - [ name="Time: @DateTime.Now"]
+                MarkupTagHelperAttribute - [47..74)::27 - name - DoubleQuotes - Bound - [ name="Time: @DateTime.Now"]
                     MarkupTextLiteral - [47..48)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [48..52)::4 - [name] - Gen<Markup> - SpanEditHandler;Accepts:Any

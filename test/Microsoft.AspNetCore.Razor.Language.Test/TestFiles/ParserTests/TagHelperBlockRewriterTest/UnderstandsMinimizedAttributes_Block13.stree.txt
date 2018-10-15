@@ -16,7 +16,7 @@ RazorDocument - [0..34)::34 - [@{<input string-prefix-value=''/>}]
                                     MarkupTextLiteral - [2..8)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[input];
-                                    MarkupTagHelperAttribute - [8..31)::23 - string-prefix-value - SingleQuotes - [ string-prefix-value='']
+                                    MarkupTagHelperAttribute - [8..31)::23 - string-prefix-value - SingleQuotes - Bound - [ string-prefix-value='']
                                         MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [9..28)::19 - [string-prefix-value] - Gen<Markup> - SpanEditHandler;Accepts:Any

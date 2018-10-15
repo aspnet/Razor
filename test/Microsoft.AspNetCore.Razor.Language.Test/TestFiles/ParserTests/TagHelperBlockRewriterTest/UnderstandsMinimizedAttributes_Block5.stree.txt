@@ -16,7 +16,7 @@ RazorDocument - [0..20)::20 - [@{<p bound-int></p>}]
                                     MarkupTextLiteral - [2..4)::2 - [<p] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[p];
-                                    MarkupMinimizedTagHelperAttribute - [4..14)::10 - [ bound-int]
+                                    MarkupMinimizedTagHelperAttribute - [4..14)::10 - bound-int - Minimized - Bound - [ bound-int]
                                         MarkupTextLiteral - [4..5)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [5..14)::9 - [bound-int] - Gen<Markup> - SpanEditHandler;Accepts:Any

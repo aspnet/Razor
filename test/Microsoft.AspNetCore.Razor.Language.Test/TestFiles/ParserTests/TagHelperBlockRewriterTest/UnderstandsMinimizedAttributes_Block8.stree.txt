@@ -16,7 +16,7 @@ RazorDocument - [0..24)::24 - [@{<input int-prefix- />}]
                                     MarkupTextLiteral - [2..8)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[input];
-                                    MarkupMinimizedTagHelperAttribute - [8..20)::12 - [ int-prefix-]
+                                    MarkupMinimizedTagHelperAttribute - [8..20)::12 - int-prefix- - Minimized - Bound - [ int-prefix-]
                                         MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [9..20)::11 - [int-prefix-] - Gen<Markup> - SpanEditHandler;Accepts:Any

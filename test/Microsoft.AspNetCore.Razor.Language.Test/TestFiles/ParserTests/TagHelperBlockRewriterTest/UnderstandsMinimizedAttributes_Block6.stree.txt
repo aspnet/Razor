@@ -16,7 +16,7 @@ RazorDocument - [0..26)::26 - [@{<input int-dictionary/>}]
                                     MarkupTextLiteral - [2..8)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[input];
-                                    MarkupMinimizedTagHelperAttribute - [8..23)::15 - [ int-dictionary]
+                                    MarkupMinimizedTagHelperAttribute - [8..23)::15 - int-dictionary - Minimized - Bound - [ int-dictionary]
                                         MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [9..23)::14 - [int-dictionary] - Gen<Markup> - SpanEditHandler;Accepts:Any

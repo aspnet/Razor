@@ -200,7 +200,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 attributeBlock.Name);
 
             rewritten = rewritten.WithTagHelperAttributeInfo(
-                new TagHelperAttributeInfo(result.AttributeName, result.AttributeStructure));
+                new TagHelperAttributeInfo(result.AttributeName, result.AttributeStructure, result.IsBoundAttribute));
 
             result.RewrittenAttribute = rewritten;
 
@@ -277,7 +277,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 attributeBlock.ValueSuffix);
 
             rewritten = rewritten.WithTagHelperAttributeInfo(
-                new TagHelperAttributeInfo(result.AttributeName, result.AttributeStructure));
+                new TagHelperAttributeInfo(result.AttributeName, result.AttributeStructure, result.IsBoundAttribute));
 
             result.RewrittenAttribute = rewritten;
 

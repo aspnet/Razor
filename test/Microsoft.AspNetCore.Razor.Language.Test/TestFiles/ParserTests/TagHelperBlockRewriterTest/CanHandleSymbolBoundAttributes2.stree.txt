@@ -5,12 +5,12 @@ RazorDocument - [0..32)::32 - [<ul bound [(item)]='items'></ul>]
                 MarkupTextLiteral - [0..3)::3 - [<ul] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[ul];
-                MarkupMinimizedTagHelperAttribute - [3..9)::6 - [ bound]
+                MarkupMinimizedTagHelperAttribute - [3..9)::6 - bound - Minimized - Unbound - [ bound]
                     MarkupTextLiteral - [3..4)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [4..9)::5 - [bound] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Text;[bound];
-                MarkupTagHelperAttribute - [9..26)::17 - [(item)] - SingleQuotes - [ [(item)]='items']
+                MarkupTagHelperAttribute - [9..26)::17 - [(item)] - SingleQuotes - Bound - [ [(item)]='items']
                     MarkupTextLiteral - [9..10)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [10..18)::8 - [[(item)]] - Gen<Markup> - SpanEditHandler;Accepts:Any

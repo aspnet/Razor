@@ -5,7 +5,7 @@ RazorDocument - [0..32)::32 - [<myth BOUND= nAMe='john'></myth>]
                 MarkupTextLiteral - [0..5)::5 - [<myth] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[myth];
-                MarkupTagHelperAttribute - [5..12)::7 - BOUND - DoubleQuotes - [ BOUND=]
+                MarkupTagHelperAttribute - [5..12)::7 - BOUND - DoubleQuotes - Bound - [ BOUND=]
                     MarkupTextLiteral - [5..6)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [6..11)::5 - [BOUND] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -13,7 +13,7 @@ RazorDocument - [0..32)::32 - [<myth BOUND= nAMe='john'></myth>]
                     Equals;[=];
                     MarkupTagHelperAttributeValue - [12..12)::0
                         CSharpExpressionLiteral - [12..12)::0 - [] - Gen<None> - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14
-                MarkupTagHelperAttribute - [12..24)::12 - nAMe - SingleQuotes - [ nAMe='john']
+                MarkupTagHelperAttribute - [12..24)::12 - nAMe - SingleQuotes - Bound - [ nAMe='john']
                     MarkupTextLiteral - [12..13)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [13..17)::4 - [nAMe] - Gen<Markup> - SpanEditHandler;Accepts:Any

@@ -16,7 +16,7 @@ RazorDocument - [0..32)::32 - [@{<input int-prefix-value='3'/>}]
                                     MarkupTextLiteral - [2..8)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[input];
-                                    MarkupTagHelperAttribute - [8..29)::21 - int-prefix-value - SingleQuotes - [ int-prefix-value='3']
+                                    MarkupTagHelperAttribute - [8..29)::21 - int-prefix-value - SingleQuotes - Bound - [ int-prefix-value='3']
                                         MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [9..25)::16 - [int-prefix-value] - Gen<Markup> - SpanEditHandler;Accepts:Any

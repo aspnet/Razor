@@ -5,7 +5,7 @@ RazorDocument - [0..19)::19 - [<input type='text'>]
                 MarkupTextLiteral - [0..6)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[input];
-                MarkupTagHelperAttribute - [6..18)::12 - type - SingleQuotes - [ type='text']
+                MarkupTagHelperAttribute - [6..18)::12 - type - SingleQuotes - Unbound - [ type='text']
                     MarkupTextLiteral - [6..7)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [7..11)::4 - [type] - Gen<Markup> - SpanEditHandler;Accepts:Any

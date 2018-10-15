@@ -5,7 +5,7 @@ RazorDocument - [0..47)::47 - [<th:myth class="btn">words and spaces</th:myth>]
                 MarkupTextLiteral - [0..8)::8 - [<th:myth] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[th:myth];
-                MarkupTagHelperAttribute - [8..20)::12 - class - DoubleQuotes - [ class="btn"]
+                MarkupTagHelperAttribute - [8..20)::12 - class - DoubleQuotes - Unbound - [ class="btn"]
                     MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [9..14)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any

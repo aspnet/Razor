@@ -5,7 +5,7 @@ RazorDocument - [0..78)::78 - [<div style="" class="btn" catchAll="hi" >words<st
                 MarkupTextLiteral - [0..4)::4 - [<div] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[div];
-                MarkupTagHelperAttribute - [4..13)::9 - style - DoubleQuotes - [ style=""]
+                MarkupTagHelperAttribute - [4..13)::9 - style - DoubleQuotes - Unbound - [ style=""]
                     MarkupTextLiteral - [4..5)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [5..10)::5 - [style] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -16,7 +16,7 @@ RazorDocument - [0..78)::78 - [<div style="" class="btn" catchAll="hi" >words<st
                     MarkupTagHelperAttributeValue - [12..12)::0
                     MarkupTextLiteral - [12..13)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
-                MarkupTagHelperAttribute - [13..25)::12 - class - DoubleQuotes - [ class="btn"]
+                MarkupTagHelperAttribute - [13..25)::12 - class - DoubleQuotes - Unbound - [ class="btn"]
                     MarkupTextLiteral - [13..14)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [14..19)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -30,7 +30,7 @@ RazorDocument - [0..78)::78 - [<div style="" class="btn" catchAll="hi" >words<st
                                 Text;[btn];
                     MarkupTextLiteral - [24..25)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
-                MarkupTagHelperAttribute - [25..39)::14 - catchAll - DoubleQuotes - [ catchAll="hi"]
+                MarkupTagHelperAttribute - [25..39)::14 - catchAll - DoubleQuotes - Unbound - [ catchAll="hi"]
                     MarkupTextLiteral - [25..26)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [26..34)::8 - [catchAll] - Gen<Markup> - SpanEditHandler;Accepts:Any

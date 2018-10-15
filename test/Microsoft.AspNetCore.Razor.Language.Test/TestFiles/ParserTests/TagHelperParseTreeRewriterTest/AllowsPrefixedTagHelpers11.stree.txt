@@ -5,7 +5,7 @@ RazorDocument - [0..34)::34 - [<th:myth2 bound="@DateTime.Now" />]
                 MarkupTextLiteral - [0..9)::9 - [<th:myth2] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[th:myth2];
-                MarkupTagHelperAttribute - [9..31)::22 - bound - DoubleQuotes - [ bound="@DateTime.Now"]
+                MarkupTagHelperAttribute - [9..31)::22 - bound - DoubleQuotes - Bound - [ bound="@DateTime.Now"]
                     MarkupTextLiteral - [9..10)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [10..15)::5 - [bound] - Gen<Markup> - SpanEditHandler;Accepts:Any

@@ -5,7 +5,7 @@ RazorDocument - [0..24)::24 - [<th:myth2 class="btn" />]
                 MarkupTextLiteral - [0..9)::9 - [<th:myth2] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[th:myth2];
-                MarkupTagHelperAttribute - [9..21)::12 - class - DoubleQuotes - [ class="btn"]
+                MarkupTagHelperAttribute - [9..21)::12 - class - DoubleQuotes - Unbound - [ class="btn"]
                     MarkupTextLiteral - [9..10)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [10..15)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any

@@ -5,7 +5,7 @@ RazorDocument - [0..15)::15 - [<p class="@do {]
                 MarkupTextLiteral - [0..2)::2 - [<p] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[p];
-                MarkupTagHelperAttribute - [2..15)::13 - class - DoubleQuotes - [ class="@do {]
+                MarkupTagHelperAttribute - [2..15)::13 - class - DoubleQuotes - Unbound - [ class="@do {]
                     MarkupTextLiteral - [2..3)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [3..8)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any

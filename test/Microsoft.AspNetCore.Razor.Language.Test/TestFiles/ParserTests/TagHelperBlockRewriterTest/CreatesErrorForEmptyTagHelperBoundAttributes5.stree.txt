@@ -5,7 +5,7 @@ RazorDocument - [0..30)::30 - [<myth bound=' '  bound="  " />]
                 MarkupTextLiteral - [0..5)::5 - [<myth] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[myth];
-                MarkupTagHelperAttribute - [5..15)::10 - bound - SingleQuotes - [ bound=' ']
+                MarkupTagHelperAttribute - [5..15)::10 - bound - SingleQuotes - Bound - [ bound=' ']
                     MarkupTextLiteral - [5..6)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [6..11)::5 - [bound] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -18,7 +18,7 @@ RazorDocument - [0..30)::30 - [<myth bound=' '  bound="  " />]
                             Whitespace;[ ];
                     MarkupTextLiteral - [14..15)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
-                MarkupTagHelperAttribute - [15..27)::12 - bound - DoubleQuotes - [  bound="  "]
+                MarkupTagHelperAttribute - [15..27)::12 - bound - DoubleQuotes - Bound - [  bound="  "]
                     MarkupTextLiteral - [15..17)::2 - [  ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[  ];
                     MarkupTextLiteral - [17..22)::5 - [bound] - Gen<Markup> - SpanEditHandler;Accepts:Any

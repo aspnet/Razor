@@ -16,7 +16,7 @@ RazorDocument - [0..41)::41 - [@{<input class='btn' unbound-required />}]
                                     MarkupTextLiteral - [2..8)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[input];
-                                    MarkupTagHelperAttribute - [8..20)::12 - class - SingleQuotes - [ class='btn']
+                                    MarkupTagHelperAttribute - [8..20)::12 - class - SingleQuotes - Unbound - [ class='btn']
                                         MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [9..14)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -30,7 +30,7 @@ RazorDocument - [0..41)::41 - [@{<input class='btn' unbound-required />}]
                                                     Text;[btn];
                                         MarkupTextLiteral - [19..20)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                                             SingleQuote;['];
-                                    MarkupMinimizedTagHelperAttribute - [20..37)::17 - [ unbound-required]
+                                    MarkupMinimizedTagHelperAttribute - [20..37)::17 - unbound-required - Minimized - Unbound - [ unbound-required]
                                         MarkupTextLiteral - [20..21)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [21..37)::16 - [unbound-required] - Gen<Markup> - SpanEditHandler;Accepts:Any

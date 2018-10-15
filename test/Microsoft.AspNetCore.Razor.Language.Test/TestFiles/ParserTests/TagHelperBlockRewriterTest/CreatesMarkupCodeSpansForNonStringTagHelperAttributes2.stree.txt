@@ -5,7 +5,7 @@ RazorDocument - [0..34)::34 - [<person birthday="DateTime.Now" />]
                 MarkupTextLiteral - [0..7)::7 - [<person] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[person];
-                MarkupTagHelperAttribute - [7..31)::24 - birthday - DoubleQuotes - [ birthday="DateTime.Now"]
+                MarkupTagHelperAttribute - [7..31)::24 - birthday - DoubleQuotes - Bound - [ birthday="DateTime.Now"]
                     MarkupTextLiteral - [7..8)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [8..16)::8 - [birthday] - Gen<Markup> - SpanEditHandler;Accepts:Any

@@ -5,7 +5,7 @@ RazorDocument - [0..26)::26 - [<input unbound-required />]
                 MarkupTextLiteral - [0..6)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[input];
-                MarkupMinimizedTagHelperAttribute - [6..23)::17 - [ unbound-required]
+                MarkupMinimizedTagHelperAttribute - [6..23)::17 - unbound-required - Minimized - Unbound - [ unbound-required]
                     MarkupTextLiteral - [6..7)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [7..23)::16 - [unbound-required] - Gen<Markup> - SpanEditHandler;Accepts:Any

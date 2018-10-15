@@ -5,7 +5,7 @@ RazorDocument - [0..19)::19 - [<person age="12" />]
                 MarkupTextLiteral - [0..7)::7 - [<person] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[person];
-                MarkupTagHelperAttribute - [7..16)::9 - age - DoubleQuotes - [ age="12"]
+                MarkupTagHelperAttribute - [7..16)::9 - age - DoubleQuotes - Bound - [ age="12"]
                     MarkupTextLiteral - [7..8)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [8..11)::3 - [age] - Gen<Markup> - SpanEditHandler;Accepts:Any

@@ -5,7 +5,7 @@ RazorDocument - [0..67)::67 - [<strong catchAll="hi"><p class="btn"><strong></st
                 MarkupTextLiteral - [0..7)::7 - [<strong] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[strong];
-                MarkupTagHelperAttribute - [7..21)::14 - catchAll - DoubleQuotes - [ catchAll="hi"]
+                MarkupTagHelperAttribute - [7..21)::14 - catchAll - DoubleQuotes - Unbound - [ catchAll="hi"]
                     MarkupTextLiteral - [7..8)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [8..16)::8 - [catchAll] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -26,7 +26,7 @@ RazorDocument - [0..67)::67 - [<strong catchAll="hi"><p class="btn"><strong></st
                     MarkupTextLiteral - [22..24)::2 - [<p] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         OpenAngle;[<];
                         Text;[p];
-                    MarkupTagHelperAttribute - [24..36)::12 - class - DoubleQuotes - [ class="btn"]
+                    MarkupTagHelperAttribute - [24..36)::12 - class - DoubleQuotes - Unbound - [ class="btn"]
                         MarkupTextLiteral - [24..25)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                             Whitespace;[ ];
                         MarkupTextLiteral - [25..30)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any

@@ -5,12 +5,12 @@ RazorDocument - [0..32)::32 - [<div bound #local='value'></div>]
                 MarkupTextLiteral - [0..4)::4 - [<div] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[div];
-                MarkupMinimizedTagHelperAttribute - [4..10)::6 - [ bound]
+                MarkupMinimizedTagHelperAttribute - [4..10)::6 - bound - Minimized - Unbound - [ bound]
                     MarkupTextLiteral - [4..5)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [5..10)::5 - [bound] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Text;[bound];
-                MarkupTagHelperAttribute - [10..25)::15 - #local - SingleQuotes - [ #local='value']
+                MarkupTagHelperAttribute - [10..25)::15 - #local - SingleQuotes - Bound - [ #local='value']
                     MarkupTextLiteral - [10..11)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [11..17)::6 - [#local] - Gen<Markup> - SpanEditHandler;Accepts:Any

@@ -16,12 +16,12 @@ RazorDocument - [0..46)::46 - [@{<input bound-required-string class='btn' />}]
                                     MarkupTextLiteral - [2..8)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[input];
-                                    MarkupMinimizedTagHelperAttribute - [8..30)::22 - [ bound-required-string]
+                                    MarkupMinimizedTagHelperAttribute - [8..30)::22 - bound-required-string - Minimized - Bound - [ bound-required-string]
                                         MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [9..30)::21 - [bound-required-string] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Text;[bound-required-string];
-                                    MarkupTagHelperAttribute - [30..42)::12 - class - SingleQuotes - [ class='btn']
+                                    MarkupTagHelperAttribute - [30..42)::12 - class - SingleQuotes - Unbound - [ class='btn']
                                         MarkupTextLiteral - [30..31)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [31..36)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any

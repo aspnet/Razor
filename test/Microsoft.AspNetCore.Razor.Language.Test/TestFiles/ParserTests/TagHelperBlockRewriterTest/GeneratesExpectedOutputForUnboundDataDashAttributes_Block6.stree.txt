@@ -16,12 +16,12 @@ RazorDocument - [0..85)::85 - [@{<input pre-attribute data-required='prefix @Dat
                                     MarkupTextLiteral - [2..8)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                         OpenAngle;[<];
                                         Text;[input];
-                                    MarkupMinimizedTagHelperAttribute - [8..22)::14 - [ pre-attribute]
+                                    MarkupMinimizedTagHelperAttribute - [8..22)::14 - pre-attribute - Minimized - Unbound - [ pre-attribute]
                                         MarkupTextLiteral - [8..9)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [9..22)::13 - [pre-attribute] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Text;[pre-attribute];
-                                    MarkupTagHelperAttribute - [22..66)::44 - data-required - SingleQuotes - [ data-required='prefix @DateTime.Now suffix']
+                                    MarkupTagHelperAttribute - [22..66)::44 - data-required - SingleQuotes - Unbound - [ data-required='prefix @DateTime.Now suffix']
                                         MarkupTextLiteral - [22..23)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [23..36)::13 - [data-required] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -48,7 +48,7 @@ RazorDocument - [0..85)::85 - [@{<input pre-attribute data-required='prefix @Dat
                                                 Text;[suffix];
                                         MarkupTextLiteral - [65..66)::1 - ['] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             SingleQuote;['];
-                                    MarkupMinimizedTagHelperAttribute - [66..81)::15 - [ post-attribute]
+                                    MarkupMinimizedTagHelperAttribute - [66..81)::15 - post-attribute - Minimized - Unbound - [ post-attribute]
                                         MarkupTextLiteral - [66..67)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                             Whitespace;[ ];
                                         MarkupTextLiteral - [67..81)::14 - [post-attribute] - Gen<Markup> - SpanEditHandler;Accepts:Any

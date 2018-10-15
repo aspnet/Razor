@@ -5,12 +5,12 @@ RazorDocument - [0..82)::82 - [<input pre-attribute data-required='prefix @DateT
                 MarkupTextLiteral - [0..6)::6 - [<input] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[input];
-                MarkupMinimizedTagHelperAttribute - [6..20)::14 - [ pre-attribute]
+                MarkupMinimizedTagHelperAttribute - [6..20)::14 - pre-attribute - Minimized - Unbound - [ pre-attribute]
                     MarkupTextLiteral - [6..7)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [7..20)::13 - [pre-attribute] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Text;[pre-attribute];
-                MarkupTagHelperAttribute - [20..64)::44 - data-required - SingleQuotes - [ data-required='prefix @DateTime.Now suffix']
+                MarkupTagHelperAttribute - [20..64)::44 - data-required - SingleQuotes - Unbound - [ data-required='prefix @DateTime.Now suffix']
                     MarkupTextLiteral - [20..21)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [21..34)::13 - [data-required] - Gen<Markup> - SpanEditHandler;Accepts:Any
@@ -37,7 +37,7 @@ RazorDocument - [0..82)::82 - [<input pre-attribute data-required='prefix @DateT
                             Text;[suffix];
                     MarkupTextLiteral - [63..64)::1 - ['] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
-                MarkupMinimizedTagHelperAttribute - [64..79)::15 - [ post-attribute]
+                MarkupMinimizedTagHelperAttribute - [64..79)::15 - post-attribute - Minimized - Unbound - [ post-attribute]
                     MarkupTextLiteral - [64..65)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [65..79)::14 - [post-attribute] - Gen<Markup> - SpanEditHandler;Accepts:Any

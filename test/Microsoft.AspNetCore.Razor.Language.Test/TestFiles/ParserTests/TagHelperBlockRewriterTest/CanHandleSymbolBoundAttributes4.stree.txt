@@ -5,12 +5,12 @@ RazorDocument - [0..56)::56 - [<button bound (^click)='doSomething()'>Click Me</
                 MarkupTextLiteral - [0..7)::7 - [<button] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[button];
-                MarkupMinimizedTagHelperAttribute - [7..13)::6 - [ bound]
+                MarkupMinimizedTagHelperAttribute - [7..13)::6 - bound - Minimized - Unbound - [ bound]
                     MarkupTextLiteral - [7..8)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [8..13)::5 - [bound] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Text;[bound];
-                MarkupTagHelperAttribute - [13..38)::25 - (^click) - SingleQuotes - [ (^click)='doSomething()']
+                MarkupTagHelperAttribute - [13..38)::25 - (^click) - SingleQuotes - Bound - [ (^click)='doSomething()']
                     MarkupTextLiteral - [13..14)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [14..22)::8 - [(^click)] - Gen<Markup> - SpanEditHandler;Accepts:Any

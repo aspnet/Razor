@@ -5,7 +5,7 @@ RazorDocument - [0..37)::37 - [<person name="Time: @DateTime.Now" />]
                 MarkupTextLiteral - [0..7)::7 - [<person] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[person];
-                MarkupTagHelperAttribute - [7..34)::27 - name - DoubleQuotes - [ name="Time: @DateTime.Now"]
+                MarkupTagHelperAttribute - [7..34)::27 - name - DoubleQuotes - Bound - [ name="Time: @DateTime.Now"]
                     MarkupTextLiteral - [7..8)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [8..12)::4 - [name] - Gen<Markup> - SpanEditHandler;Accepts:Any

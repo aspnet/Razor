@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             {
                 WriteTagHelperAttributeInfo(tagHelperAttribute.TagHelperAttributeInfo);
             }
-            else if (node is MarkupTagHelperAttributeSyntax minimizedTagHelperAttribute)
+            else if (node is MarkupMinimizedTagHelperAttributeSyntax minimizedTagHelperAttribute)
             {
                 WriteTagHelperAttributeInfo(minimizedTagHelperAttribute.TagHelperAttributeInfo);
             }
@@ -107,6 +107,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             Write(info.Name);
             WriteSeparator();
             Write(info.AttributeStructure);
+            WriteSeparator();
+            Write(info.Bound ? "Bound" : "Unbound");
         }
 
         private void WriteToken(SyntaxToken token)
