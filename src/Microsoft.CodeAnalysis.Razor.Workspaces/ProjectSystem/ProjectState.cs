@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Text;
@@ -12,10 +13,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     // Internal tracker for DefaultProjectSnapshot
     internal class ProjectState
     {
-        private static readonly IReadOnlyDictionary<string, DocumentState> EmptyDocuments = new Dictionary<string, DocumentState>();
+        private static readonly ImmutableDictionary<string, DocumentState> EmptyDocuments = ImmutableDictionary.Create<string, DocumentState>(FilePathComparer.Instance);
 
         private readonly object _lock;
-
+        
         private ProjectEngineTracker _projectEngine;
         private ProjectTagHelperTracker _tagHelpers;
 
@@ -53,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             ProjectDifference difference,
             HostProject hostProject,
             Project workspaceProject,
-            IReadOnlyDictionary<string, DocumentState> documents)
+            ImmutableDictionary<string, DocumentState> documents)
         {
             if (older == null)
             {
@@ -84,7 +85,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         }
 
         // Internal set for testing.
-        public IReadOnlyDictionary<string, DocumentState> Documents { get; internal set; }
+        public ImmutableDictionary<string, DocumentState> Documents { get; internal set; }
 
         public HostProject HostProject { get; }
 
@@ -152,17 +153,9 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 return this;
             }
-
-            var documents = new Dictionary<string, DocumentState>(FilePathComparer.Instance);
-            foreach (var kvp in Documents)
-            {
-                documents.Add(kvp.Key, kvp.Value);
-            }
             
-            documents.Add(hostDocument.FilePath, DocumentState.Create(Services, hostDocument, loader));
-
-            var difference = ProjectDifference.DocumentAdded;
-            var state = new ProjectState(this, difference, HostProject, WorkspaceProject, documents);
+            var documents = Documents.Add(hostDocument.FilePath, DocumentState.Create(Services, hostDocument, loader));
+            var state = new ProjectState(this, ProjectDifference.DocumentAdded, HostProject, WorkspaceProject, documents);
             return state;
         }
 
@@ -177,17 +170,9 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 return this;
             }
-
-            var documents = new Dictionary<string, DocumentState>(FilePathComparer.Instance);
-            foreach (var kvp in Documents)
-            {
-                documents.Add(kvp.Key, kvp.Value);
-            }
-
-            documents.Remove(hostDocument.FilePath);
-
-            var difference = ProjectDifference.DocumentRemoved;
-            var state = new ProjectState(this, difference, HostProject, WorkspaceProject, documents);
+            
+            var documents = Documents.Remove(hostDocument.FilePath);
+            var state = new ProjectState(this, ProjectDifference.DocumentRemoved, HostProject, WorkspaceProject, documents);
             return state;
         }
 
@@ -198,22 +183,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(hostDocument));
             }
 
-            if (!Documents.ContainsKey(hostDocument.FilePath))
+            if (!Documents.TryGetValue(hostDocument.FilePath, out var document))
             {
                 return this;
             }
 
-            var documents = new Dictionary<string, DocumentState>(FilePathComparer.Instance);
-            foreach (var kvp in Documents)
-            {
-                documents.Add(kvp.Key, kvp.Value);
-            }
-
-            if (documents.TryGetValue(hostDocument.FilePath, out var document))
-            {
-                documents[hostDocument.FilePath] = document.WithText(sourceText, version);
-            }
-
+            var documents = Documents.SetItem(hostDocument.FilePath, document.WithText(sourceText, version));
             var state = new ProjectState(this, ProjectDifference.DocumentChanged, HostProject, WorkspaceProject, documents);
             return state;
         }
@@ -225,22 +200,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(hostDocument));
             }
 
-            if (!Documents.ContainsKey(hostDocument.FilePath))
+            if (!Documents.TryGetValue(hostDocument.FilePath, out var document))
             {
                 return this;
             }
 
-            var documents = new Dictionary<string, DocumentState>(FilePathComparer.Instance);
-            foreach (var kvp in Documents)
-            {
-                documents.Add(kvp.Key, kvp.Value);
-            }
-
-            if (documents.TryGetValue(hostDocument.FilePath, out var document))
-            {
-                documents[hostDocument.FilePath] = document.WithTextLoader(loader);
-            }
-
+            var documents = Documents.SetItem(hostDocument.FilePath, document.WithTextLoader(loader));
             var state = new ProjectState(this, ProjectDifference.DocumentChanged, HostProject, WorkspaceProject, documents);
             return state;
         }
@@ -256,15 +221,9 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             {
                 return this;
             }
-
-            var difference = ProjectDifference.ConfigurationChanged;
-            var documents = new Dictionary<string, DocumentState>(FilePathComparer.Instance);
-            foreach (var kvp in Documents)
-            {
-                documents.Add(kvp.Key, kvp.Value.WithConfigurationChange());
-            }
-
-            var state = new ProjectState(this, difference, hostProject, WorkspaceProject, documents);
+            
+            var documents = Documents.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.WithConfigurationChange(), FilePathComparer.Instance);
+            var state = new ProjectState(this, ProjectDifference.ConfigurationChanged, hostProject, WorkspaceProject, documents);
             return state;
         }
 
@@ -291,12 +250,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 return this;
             }
 
-            var documents = new Dictionary<string, DocumentState>(FilePathComparer.Instance);
-            foreach (var kvp in Documents)
-            {
-                documents.Add(kvp.Key, kvp.Value.WithWorkspaceProjectChange());
-            }
-
+            var documents = Documents.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.WithWorkspaceProjectChange(), FilePathComparer.Instance);
             var state = new ProjectState(this, difference, HostProject, workspaceProject, documents);
             return state;
         }

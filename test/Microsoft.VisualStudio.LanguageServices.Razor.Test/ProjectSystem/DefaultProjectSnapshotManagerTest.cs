@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // Assert
             var snapshot = ProjectManager.GetSnapshot(HostProject);
-            Assert.Collection(snapshot.DocumentFilePaths, d => Assert.Equal(Documents[0].FilePath, d));
+            Assert.Collection(snapshot.DocumentFilePaths.OrderBy(f => f), d => Assert.Equal(Documents[0].FilePath, d));
 
             Assert.Equal(ProjectChangeKind.DocumentAdded, ProjectManager.ListenersNotifiedOf);
         }
@@ -148,7 +148,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // Assert
             var snapshot = ProjectManager.GetSnapshot(HostProject);
-            Assert.Collection(snapshot.DocumentFilePaths, d => Assert.Equal(Documents[0].FilePath, d));
+            Assert.Collection(snapshot.DocumentFilePaths.OrderBy(f => f), d => Assert.Equal(Documents[0].FilePath, d));
 
             Assert.Null(ProjectManager.ListenersNotifiedOf);
         }
@@ -262,7 +262,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Assert
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             Assert.Collection(
-                snapshot.DocumentFilePaths, 
+                snapshot.DocumentFilePaths.OrderBy(f => f), 
                 d => Assert.Equal(Documents[0].FilePath, d),
                 d => Assert.Equal(Documents[2].FilePath, d));
 

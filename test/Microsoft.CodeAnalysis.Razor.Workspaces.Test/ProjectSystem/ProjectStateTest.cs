@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Language;
@@ -398,13 +399,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var callCount = 0;
-
-            var documents = new Dictionary<string, DocumentState>();
+            
+            var documents = ImmutableDictionary.CreateBuilder<string, DocumentState>(FilePathComparer.Instance);
             documents[Documents[1].FilePath] = TestDocumentState.Create(Workspace.Services, Documents[1], onConfigurationChange: () => callCount++);
             documents[Documents[2].FilePath] = TestDocumentState.Create(Workspace.Services, Documents[2], onConfigurationChange: () => callCount++);
 
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject);
-            original.Documents = documents;
+            original.Documents = documents.ToImmutable();
 
             var changed = WorkspaceProject.WithAssemblyName("Test1");
 
@@ -503,12 +504,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Arrange
             var callCount = 0;
 
-            var documents = new Dictionary<string, DocumentState>();
+            var documents = ImmutableDictionary.CreateBuilder<string, DocumentState>(FilePathComparer.Instance);
             documents[Documents[1].FilePath] = TestDocumentState.Create(Workspace.Services, Documents[1], onWorkspaceProjectChange: () => callCount++);
             documents[Documents[2].FilePath] = TestDocumentState.Create(Workspace.Services, Documents[2], onWorkspaceProjectChange: () => callCount++);
 
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject);
-            original.Documents = documents;
+            original.Documents = documents.ToImmutable();
 
             var changed = WorkspaceProject.WithAssemblyName("Test1");
 
