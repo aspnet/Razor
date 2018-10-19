@@ -143,33 +143,6 @@ namespace Microsoft.CodeAnalysis.Razor
             }
         }
 
-        public void EnqueueRelatedDocuments(ProjectSnapshot project, DocumentSnapshot document)
-        {
-            if (project == null)
-            {
-                throw new ArgumentNullException(nameof(project));
-            }
-
-            if (document == null)
-            {
-                throw new ArgumentNullException(nameof(document));
-            }
-
-            _foregroundDispatcher.AssertForegroundThread();
-
-            lock (_work)
-            {
-                // We only want to store the last 'seen' version of any given document. That way when we pick one to process
-                // it's always the best version to use.
-                foreach (var relatedDocument in project.GetRelatedDocuments(document))
-                {
-                    _work[new DocumentKey(project.FilePath, relatedDocument.FilePath)] = relatedDocument;
-                }
-
-                StartWorker();
-            }
-        }
-
         protected virtual void StartWorker()
         {
             // Access to the timer is protected by the lock in Enqueue and in Timer_Tick

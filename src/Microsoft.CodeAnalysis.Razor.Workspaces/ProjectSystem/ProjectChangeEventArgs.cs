@@ -14,6 +14,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentException("Both projects cannot be null.");
             }
 
+            Older = older;
+            Newer = newer;
             Kind = kind;
 
             ProjectFilePath = older?.FilePath ?? newer.FilePath;
@@ -26,6 +28,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentException("Both projects cannot be null.");
             }
 
+            Older = older;
+            Newer = newer;
             DocumentFilePath = documentFilePath;
             Kind = kind;
 

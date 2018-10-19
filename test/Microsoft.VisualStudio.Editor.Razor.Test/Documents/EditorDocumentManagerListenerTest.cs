@@ -17,8 +17,8 @@ namespace Microsoft.VisualStudio.Editor.Razor.Documents
     {
         public EditorDocumentManagerListenerTest()
         {
-            ProjectFilePath = "C:\\project1\\project.csproj";
-            DocumentFilePath = "c:\\project1\\file1.cshtml";
+            ProjectFilePath = TestProjectData.SomeProject.FilePath;
+            DocumentFilePath = TestProjectData.SomeProjectFile1.FilePath;
             TextLoader = TextLoader.From(TextAndVersion.Create(SourceText.From("FILE"), VersionStamp.Default));
             FileChangeTracker = new DefaultFileChangeTracker(DocumentFilePath);
 

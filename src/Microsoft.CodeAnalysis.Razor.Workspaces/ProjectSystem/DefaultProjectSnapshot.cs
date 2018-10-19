@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(document));
             }
             
-            return State.ImportsToIncludingDocuments.ContainsKey(document.TargetPath);
+            return State.ImportsToRelatedDocuments.ContainsKey(document.TargetPath);
         }
 
         public override IEnumerable<DocumentSnapshot> GetRelatedDocuments(DocumentSnapshot document)
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(document));
             }
 
-            if (State.ImportsToIncludingDocuments.TryGetValue(document.TargetPath, out var relatedDocuments))
+            if (State.ImportsToRelatedDocuments.TryGetValue(document.TargetPath, out var relatedDocuments))
             {
                 lock (_lock)
                 {

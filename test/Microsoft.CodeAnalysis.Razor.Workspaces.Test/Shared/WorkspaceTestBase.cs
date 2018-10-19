@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.Razor
                 return _workspace;
             }
         }
-
+        
         protected virtual void ConfigureWorkspaceServices(List<IWorkspaceService> services)
         {
         }

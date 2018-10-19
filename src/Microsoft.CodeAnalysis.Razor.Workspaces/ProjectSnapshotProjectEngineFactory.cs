@@ -60,6 +60,21 @@ namespace Microsoft.CodeAnalysis.Razor
             return Create(project.Configuration, fileSystem, configure);
         }
 
+        public RazorProjectEngine Create(RazorConfiguration configuration, string directoryPath, Action<RazorProjectEngineBuilder> configure)
+        {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            if (directoryPath == null)
+            {
+                throw new ArgumentNullException(nameof(directoryPath));
+            }
+
+            return Create(configuration, RazorProjectFileSystem.Create(directoryPath), configure);
+        }
+
         public abstract RazorProjectEngine Create(RazorConfiguration configuration, RazorProjectFileSystem fileSystem, Action<RazorProjectEngineBuilder> configure);
     }
 }

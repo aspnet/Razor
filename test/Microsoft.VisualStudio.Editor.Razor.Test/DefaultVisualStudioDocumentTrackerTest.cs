@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.Editor.Razor
             RazorCoreContentType = Mock.Of<IContentType>(c => c.IsOfType(RazorLanguage.ContentType) == true);
             TextBuffer = Mock.Of<ITextBuffer>(b => b.ContentType == RazorCoreContentType);
 
-            FilePath = "C:/Some/Path/TestDocumentTracker.cshtml";
-            ProjectPath = "C:/Some/Path/TestProject.csproj";
+            FilePath = TestProjectData.SomeProjectFile1.FilePath;
+            ProjectPath = TestProjectData.SomeProject.FilePath;
 
             ImportDocumentManager = Mock.Of<ImportDocumentManager>();
             WorkspaceEditorSettings = new DefaultWorkspaceEditorSettings(Mock.Of<ForegroundDispatcher>(), Mock.Of<EditorSettingsManager>());
@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             HostProject = new HostProject(ProjectPath, FallbackRazorConfiguration.MVC_2_1);
             UpdatedHostProject = new HostProject(ProjectPath, FallbackRazorConfiguration.MVC_2_0);
-            OtherHostProject = new HostProject("C:/Some/Other/Path/TestProject.csproj", FallbackRazorConfiguration.MVC_2_0);
+            OtherHostProject = new HostProject(TestProjectData.AnotherProject.FilePath, FallbackRazorConfiguration.MVC_2_0);
 
             DocumentTracker = new DefaultVisualStudioDocumentTracker(
                 Dispatcher,

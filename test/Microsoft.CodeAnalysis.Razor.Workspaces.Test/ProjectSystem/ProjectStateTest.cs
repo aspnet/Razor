@@ -19,8 +19,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             TagHelperResolver = new TestTagHelperResolver();
 
-            HostProject = new HostProject("c:\\MyProject\\Test.csproj", FallbackRazorConfiguration.MVC_2_0);
-            HostProjectWithConfigurationChange = new HostProject("c:\\MyProject\\Test.csproj", FallbackRazorConfiguration.MVC_1_0);
+            HostProject = new HostProject(TestProjectData.SomeProject.FilePath, FallbackRazorConfiguration.MVC_2_0);
+            HostProjectWithConfigurationChange = new HostProject(TestProjectData.SomeProject.FilePath, FallbackRazorConfiguration.MVC_1_0);
 
             var projectId = ProjectId.CreateNewId("Test");
             var solution = Workspace.CurrentSolution.AddProject(ProjectInfo.Create(
@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 "Test",
                 "Test",
                 LanguageNames.CSharp,
-                "c:\\MyProject\\Test.csproj"));
+                TestProjectData.SomeProject.FilePath));
             WorkspaceProject = solution.GetProject(projectId);
 
             SomeTagHelpers = new List<TagHelperDescriptor>();
@@ -37,11 +37,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             Documents = new HostDocument[]
             {
-                new HostDocument("c:\\MyProject\\File.cshtml", "File.cshtml"),
-                new HostDocument("c:\\MyProject\\Index.cshtml", "Index.cshtml"),
+                TestProjectData.SomeProjectFile1,
+                TestProjectData.SomeProjectFile2,
 
                 // linked file
-                new HostDocument("c:\\SomeOtherProject\\Index.cshtml", "Pages\\Index.cshtml"),
+                TestProjectData.AnotherProjectNestedFile3,
             };
 
             Text = SourceText.From("Hello, world!");
@@ -135,47 +135,47 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             Assert.Collection(
                 state.Documents.OrderBy(kvp => kvp.Key),
+                d => Assert.Same(Documents[2], d.Value.HostDocument),
                 d => Assert.Same(Documents[0], d.Value.HostDocument),
-                d => Assert.Same(Documents[1], d.Value.HostDocument),
-                d => Assert.Same(Documents[2], d.Value.HostDocument));
+                d => Assert.Same(Documents[1], d.Value.HostDocument));
         }
 
         [Fact]
         public void ProjectState_AddHostDocument_TracksImports()
         {
             // Arrange
-
+            
             // Act
             var state = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\File.cshtml", "File.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\NestedFolder\\File3.cshtml", "NestedFolder\\File3.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\AnotherProject\\NestedFolder\\File4.cshtml", "NestedFolder\\File4.cshtml"), DocumentState.EmptyLoader);
+                .WithAddedHostDocument(TestProjectData.SomeProjectFile1, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.SomeProjectFile2, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.SomeProjectNestedFile3, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.AnotherProjectNestedFile4, DocumentState.EmptyLoader);
             
             // Assert
             Assert.Collection(
-                state.ImportsToIncludingDocuments.OrderBy(kvp => kvp.Key),
+                state.ImportsToRelatedDocuments.OrderBy(kvp => kvp.Key),
                 kvp =>
                 {
-                    Assert.Equal("_Imports.cshtml", kvp.Key);
+                    Assert.Equal(TestProjectData.SomeProjectImportFile.TargetPath, kvp.Key);
                     Assert.Equal(
                         new string[]
                         {
-                            "c:\\AnotherProject\\NestedFolder\\File4.cshtml",
-                            "c:\\MyProject\\File.cshtml",
-                            "c:\\MyProject\\File2.cshtml",
-                            "c:\\MyProject\\NestedFolder\\File3.cshtml",
+                            TestProjectData.AnotherProjectNestedFile4.FilePath,
+                            TestProjectData.SomeProjectFile1.FilePath,
+                            TestProjectData.SomeProjectFile2.FilePath,
+                            TestProjectData.SomeProjectNestedFile3.FilePath,
                         },
                         kvp.Value.OrderBy(f => f));
                 },
                 kvp =>
                 {
-                    Assert.Equal("NestedFolder\\_Imports.cshtml", kvp.Key);
+                    Assert.Equal(TestProjectData.SomeProjectNestedImportFile.TargetPath, kvp.Key);
                     Assert.Equal(
                         new string[]
                         {
-                            "c:\\AnotherProject\\NestedFolder\\File4.cshtml",
-                            "c:\\MyProject\\NestedFolder\\File3.cshtml",
+                            TestProjectData.AnotherProjectNestedFile4.FilePath,
+                            TestProjectData.SomeProjectNestedFile3.FilePath,
                         },
                         kvp.Value.OrderBy(f => f));
                 });
@@ -186,40 +186,39 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\File.cshtml", "File.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\NestedFolder\\File3.cshtml", "NestedFolder\\File3.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\AnotherProject\\NestedFolder\\File4.cshtml", "NestedFolder\\File4.cshtml"), DocumentState.EmptyLoader);
+                .WithAddedHostDocument(TestProjectData.SomeProjectFile1, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.SomeProjectFile2, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.SomeProjectNestedFile3, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.AnotherProjectNestedFile4, DocumentState.EmptyLoader);
 
             // Act
             var state = original
-                .WithAddedHostDocument(new HostDocument("c:\\AnotherProject\\SomeImports.cshtml", "NestedFolder\\_Imports.cshtml"), DocumentState.EmptyLoader);
+                .WithAddedHostDocument(TestProjectData.AnotherProjectImportFile, DocumentState.EmptyLoader);
 
             // Assert
             Assert.Collection(
-                state.ImportsToIncludingDocuments.OrderBy(kvp => kvp.Key),
+                state.ImportsToRelatedDocuments.OrderBy(kvp => kvp.Key),
                 kvp =>
                 {
-                    Assert.Equal("_Imports.cshtml", kvp.Key);
+                    Assert.Equal(TestProjectData.SomeProjectImportFile.TargetPath, kvp.Key);
                     Assert.Equal(
                         new string[]
                         {
-                            "c:\\AnotherProject\\NestedFolder\\File4.cshtml",
-                            "c:\\AnotherProject\\SomeImports.cshtml",
-                            "c:\\MyProject\\File.cshtml",
-                            "c:\\MyProject\\File2.cshtml",
-                            "c:\\MyProject\\NestedFolder\\File3.cshtml",
+                            TestProjectData.AnotherProjectNestedFile4.FilePath,
+                            TestProjectData.SomeProjectFile1.FilePath,
+                            TestProjectData.SomeProjectFile2.FilePath,
+                            TestProjectData.SomeProjectNestedFile3.FilePath,
                         },
                         kvp.Value.OrderBy(f => f));
                 },
                 kvp =>
                 {
-                    Assert.Equal("NestedFolder\\_Imports.cshtml", kvp.Key);
+                    Assert.Equal(TestProjectData.SomeProjectNestedImportFile.TargetPath, kvp.Key);
                     Assert.Equal(
                         new string[]
                         {
-                            "c:\\AnotherProject\\NestedFolder\\File4.cshtml",
-                            "c:\\MyProject\\NestedFolder\\File3.cshtml",
+                            TestProjectData.AnotherProjectNestedFile4.FilePath,
+                            TestProjectData.SomeProjectNestedFile3.FilePath,
                         },
                         kvp.Value.OrderBy(f => f));
                 });
@@ -397,36 +396,36 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\File.cshtml", "File.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\NestedFolder\\File3.cshtml", "NestedFolder\\File3.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\AnotherProject\\NestedFolder\\File4.cshtml", "NestedFolder\\File4.cshtml"), DocumentState.EmptyLoader);
+                .WithAddedHostDocument(TestProjectData.SomeProjectFile1, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.SomeProjectFile2, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.SomeProjectNestedFile3, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.AnotherProjectNestedFile4, DocumentState.EmptyLoader);
 
             // Act
-            var state = original.WithRemovedHostDocument(new HostDocument("c:\\MyProject\\NestedFolder\\File3.cshtml", "NestedFolder\\File3.cshtml"));
+            var state = original.WithRemovedHostDocument(TestProjectData.SomeProjectNestedFile3);
 
             // Assert
             Assert.Collection(
-                state.ImportsToIncludingDocuments.OrderBy(kvp => kvp.Key),
+                state.ImportsToRelatedDocuments.OrderBy(kvp => kvp.Key),
                 kvp =>
                 {
-                    Assert.Equal("_Imports.cshtml", kvp.Key);
+                    Assert.Equal(TestProjectData.SomeProjectImportFile.TargetPath, kvp.Key);
                     Assert.Equal(
                         new string[]
                         {
-                            "c:\\AnotherProject\\NestedFolder\\File4.cshtml",
-                            "c:\\MyProject\\File.cshtml",
-                            "c:\\MyProject\\File2.cshtml",
+                            TestProjectData.AnotherProjectNestedFile4.FilePath,
+                            TestProjectData.SomeProjectFile1.FilePath,
+                            TestProjectData.SomeProjectFile2.FilePath,
                         },
                         kvp.Value.OrderBy(f => f));
                 },
                 kvp =>
                 {
-                    Assert.Equal("NestedFolder\\_Imports.cshtml", kvp.Key);
+                    Assert.Equal(TestProjectData.SomeProjectNestedImportFile.TargetPath, kvp.Key);
                     Assert.Equal(
                         new string[]
                         {
-                            "c:\\AnotherProject\\NestedFolder\\File4.cshtml",
+                            TestProjectData.AnotherProjectNestedFile4.FilePath,
                         },
                         kvp.Value.OrderBy(f => f));
                 });
@@ -437,21 +436,21 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\File.cshtml", "File.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\MyProject\\NestedFolder\\File3.cshtml", "NestedFolder\\File3.cshtml"), DocumentState.EmptyLoader)
-                .WithAddedHostDocument(new HostDocument("c:\\AnotherProject\\NestedFolder\\File4.cshtml", "NestedFolder\\File4.cshtml"), DocumentState.EmptyLoader);
+                .WithAddedHostDocument(TestProjectData.SomeProjectFile1, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.SomeProjectFile2, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.SomeProjectNestedFile3, DocumentState.EmptyLoader)
+                .WithAddedHostDocument(TestProjectData.AnotherProjectNestedFile4, DocumentState.EmptyLoader);
 
             // Act
             var state = original
-                .WithRemovedHostDocument(new HostDocument("c:\\MyProject\\File.cshtml", "File.cshtml"))
-                .WithRemovedHostDocument(new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml"))
-                .WithRemovedHostDocument(new HostDocument("c:\\MyProject\\NestedFolder\\File3.cshtml", "NestedFolder\\File3.cshtml"))
-                .WithRemovedHostDocument(new HostDocument("c:\\AnotherProject\\NestedFolder\\File4.cshtml", "NestedFolder\\File4.cshtml"));
+                .WithRemovedHostDocument(TestProjectData.SomeProjectFile1)
+                .WithRemovedHostDocument(TestProjectData.SomeProjectFile2)
+                .WithRemovedHostDocument(TestProjectData.SomeProjectNestedFile3)
+                .WithRemovedHostDocument(TestProjectData.AnotherProjectNestedFile4);
 
             // Assert
             Assert.Empty(state.Documents);
-            Assert.Empty(state.ImportsToIncludingDocuments);
+            Assert.Empty(state.ImportsToRelatedDocuments);
         }
 
         [Fact]
@@ -668,11 +667,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             // Arrange
             var callCount = 0;
-
-            var document1 = new HostDocument("c:\\MyProject\\File1.cshtml", "File1.cshtml");
-            var document2 = new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml");
-            var document3 = new HostDocument("c:\\MyProject\\Nested\\File3.cshtml", "Nested\\File3.cshtml");
-            var document4 = new HostDocument("c:\\AnotherProject\\File4.cshtml", "Nested\\File4.cshtml");
+            
+            var document1 = TestProjectData.SomeProjectFile1;
+            var document2 = TestProjectData.SomeProjectFile2;
+            var document3 = TestProjectData.SomeProjectNestedFile3;
+            var document4 = TestProjectData.AnotherProjectNestedFile4;
 
             var documents = ImmutableDictionary.CreateBuilder<string, DocumentState>(FilePathComparer.Instance);
             documents[document1.FilePath] = TestDocumentState.Create(Workspace.Services, document1, onImportsChange: () => callCount++);
@@ -680,26 +679,26 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             documents[document3.FilePath] = TestDocumentState.Create(Workspace.Services, document3, onImportsChange: () => callCount++);
             documents[document4.FilePath] = TestDocumentState.Create(Workspace.Services, document4, onImportsChange: () => callCount++);
 
-            var importsToIncludingDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
-            importsToIncludingDocuments.Add(
-                "/_Imports.cshtml", 
+            var importsToRelatedDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectImportFile.TargetPath, 
                 ImmutableArray.Create(
-                    "c:\\MyProject\\File1.cshtml",
-                    "c:\\MyProject\\File2.cshtml",
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml"));
-            importsToIncludingDocuments.Add(
-                "/Nested/_Imports.cshtml",
+                    TestProjectData.SomeProjectFile1.FilePath,
+                    TestProjectData.SomeProjectFile2.FilePath,
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath));
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectNestedImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml"));
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath));
 
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject);
             original.Documents = documents.ToImmutable();
-            original.ImportsToIncludingDocuments = importsToIncludingDocuments.ToImmutable();
+            original.ImportsToRelatedDocuments = importsToRelatedDocuments.ToImmutable();
 
             // Act
-            var state = original.WithAddedHostDocument(new HostDocument("c:\\AnotherProject\\SomeImport.cshtml", "/_Imports.cshtml"), DocumentState.EmptyLoader);
+            var state = original.WithAddedHostDocument(TestProjectData.AnotherProjectImportFile, DocumentState.EmptyLoader);
 
             // Assert
             Assert.NotEqual(original.Version, state.Version);
@@ -712,10 +711,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Arrange
             var callCount = 0;
 
-            var document1 = new HostDocument("c:\\MyProject\\File1.cshtml", "File1.cshtml");
-            var document2 = new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml");
-            var document3 = new HostDocument("c:\\MyProject\\Nested\\File3.cshtml", "Nested\\File3.cshtml");
-            var document4 = new HostDocument("c:\\AnotherProject\\File4.cshtml", "Nested\\File4.cshtml");
+            var document1 = TestProjectData.SomeProjectFile1;
+            var document2 = TestProjectData.SomeProjectFile2;
+            var document3 = TestProjectData.SomeProjectNestedFile3;
+            var document4 = TestProjectData.AnotherProjectNestedFile4;
 
             var documents = ImmutableDictionary.CreateBuilder<string, DocumentState>(FilePathComparer.Instance);
             documents[document1.FilePath] = TestDocumentState.Create(Workspace.Services, document1, onImportsChange: () => callCount++);
@@ -723,26 +722,26 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             documents[document3.FilePath] = TestDocumentState.Create(Workspace.Services, document3, onImportsChange: () => callCount++);
             documents[document4.FilePath] = TestDocumentState.Create(Workspace.Services, document4, onImportsChange: () => callCount++);
 
-            var importsToIncludingDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
-            importsToIncludingDocuments.Add(
-                "/_Imports.cshtml",
+            var importsToRelatedDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\File1.cshtml",
-                    "c:\\MyProject\\File2.cshtml",
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml"));
-            importsToIncludingDocuments.Add(
-                "/Nested/_Imports.cshtml",
+                    TestProjectData.SomeProjectFile1.FilePath,
+                    TestProjectData.SomeProjectFile2.FilePath,
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath));
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectNestedImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml"));
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath));
 
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject);
             original.Documents = documents.ToImmutable();
-            original.ImportsToIncludingDocuments = importsToIncludingDocuments.ToImmutable();
+            original.ImportsToRelatedDocuments = importsToRelatedDocuments.ToImmutable();
 
             // Act
-            var state = original.WithAddedHostDocument(new HostDocument("c:\\AnotherProject\\SomeImport.cshtml", "/Nested/_Imports.cshtml"), DocumentState.EmptyLoader);
+            var state = original.WithAddedHostDocument(TestProjectData.AnotherProjectNestedImportFile, DocumentState.EmptyLoader);
 
             // Assert
             Assert.NotEqual(original.Version, state.Version);
@@ -755,11 +754,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Arrange
             var callCount = 0;
 
-            var document1 = new HostDocument("c:\\MyProject\\File1.cshtml", "File1.cshtml");
-            var document2 = new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml");
-            var document3 = new HostDocument("c:\\MyProject\\Nested\\File3.cshtml", "Nested\\File3.cshtml");
-            var document4 = new HostDocument("c:\\AnotherProject\\File4.cshtml", "Nested\\File4.cshtml");
-            var document5 = new HostDocument("c:\\AnotherProject\\SomeImport.cshtml", "Nested\\_Imports.cshtml");
+            var document1 = TestProjectData.SomeProjectFile1;
+            var document2 = TestProjectData.SomeProjectFile2;
+            var document3 = TestProjectData.SomeProjectNestedFile3;
+            var document4 = TestProjectData.AnotherProjectNestedFile4;
+            var document5 = TestProjectData.AnotherProjectNestedImportFile;
 
             var documents = ImmutableDictionary.CreateBuilder<string, DocumentState>(FilePathComparer.Instance);
             documents[document1.FilePath] = TestDocumentState.Create(Workspace.Services, document1, onImportsChange: () => callCount++);
@@ -768,24 +767,24 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             documents[document4.FilePath] = TestDocumentState.Create(Workspace.Services, document4, onImportsChange: () => callCount++);
             documents[document5.FilePath] = TestDocumentState.Create(Workspace.Services, document5, onImportsChange: () => callCount++);
 
-            var importsToIncludingDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
-            importsToIncludingDocuments.Add(
-                "_Imports.cshtml",
+            var importsToRelatedDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\File1.cshtml",
-                    "c:\\MyProject\\File2.cshtml",
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml",
-                    "c:\\AnotherProject\\SomeImport.cshtml"));
-            importsToIncludingDocuments.Add(
-                "Nested\\_Imports.cshtml",
+                    TestProjectData.SomeProjectFile1.FilePath,
+                    TestProjectData.SomeProjectFile2.FilePath,
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath,
+                    TestProjectData.AnotherProjectNestedImportFile.FilePath));
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectNestedImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml"));
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath));
 
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject);
             original.Documents = documents.ToImmutable();
-            original.ImportsToIncludingDocuments = importsToIncludingDocuments.ToImmutable();
+            original.ImportsToRelatedDocuments = importsToRelatedDocuments.ToImmutable();
 
             // Act
             var state = original.WithChangedHostDocument(document5, DocumentState.EmptyLoader);
@@ -801,11 +800,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Arrange
             var callCount = 0;
 
-            var document1 = new HostDocument("c:\\MyProject\\File1.cshtml", "File1.cshtml");
-            var document2 = new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml");
-            var document3 = new HostDocument("c:\\MyProject\\Nested\\File3.cshtml", "Nested\\File3.cshtml");
-            var document4 = new HostDocument("c:\\AnotherProject\\File4.cshtml", "Nested\\File4.cshtml");
-            var document5 = new HostDocument("c:\\AnotherProject\\SomeImport.cshtml", "Nested\\_Imports.cshtml");
+            var document1 = TestProjectData.SomeProjectFile1;
+            var document2 = TestProjectData.SomeProjectFile2;
+            var document3 = TestProjectData.SomeProjectNestedFile3;
+            var document4 = TestProjectData.AnotherProjectNestedFile4;
+            var document5 = TestProjectData.AnotherProjectNestedImportFile;
 
             var documents = ImmutableDictionary.CreateBuilder<string, DocumentState>(FilePathComparer.Instance);
             documents[document1.FilePath] = TestDocumentState.Create(Workspace.Services, document1, onImportsChange: () => callCount++);
@@ -814,24 +813,24 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             documents[document4.FilePath] = TestDocumentState.Create(Workspace.Services, document4, onImportsChange: () => callCount++);
             documents[document5.FilePath] = TestDocumentState.Create(Workspace.Services, document5, onImportsChange: () => callCount++);
 
-            var importsToIncludingDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
-            importsToIncludingDocuments.Add(
-                "_Imports.cshtml",
+            var importsToRelatedDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\File1.cshtml",
-                    "c:\\MyProject\\File2.cshtml",
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml",
-                    "c:\\AnotherProject\\SomeImport.cshtml"));
-            importsToIncludingDocuments.Add(
-                "Nested\\_Imports.cshtml",
+                    TestProjectData.SomeProjectFile1.FilePath,
+                    TestProjectData.SomeProjectFile2.FilePath,
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath,
+                    TestProjectData.AnotherProjectNestedImportFile.FilePath));
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectNestedImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml"));
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath));
 
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject);
             original.Documents = documents.ToImmutable();
-            original.ImportsToIncludingDocuments = importsToIncludingDocuments.ToImmutable();
+            original.ImportsToRelatedDocuments = importsToRelatedDocuments.ToImmutable();
 
             // Act
             var state = original.WithChangedHostDocument(document5, Text, VersionStamp.Create());
@@ -848,11 +847,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             // Arrange
             var callCount = 0;
 
-            var document1 = new HostDocument("c:\\MyProject\\File1.cshtml", "File1.cshtml");
-            var document2 = new HostDocument("c:\\MyProject\\File2.cshtml", "File2.cshtml");
-            var document3 = new HostDocument("c:\\MyProject\\Nested\\File3.cshtml", "Nested\\File3.cshtml");
-            var document4 = new HostDocument("c:\\AnotherProject\\File4.cshtml", "Nested\\File4.cshtml");
-            var document5 = new HostDocument("c:\\AnotherProject\\SomeImport.cshtml", "Nested\\_Imports.cshtml");
+            var document1 = TestProjectData.SomeProjectFile1;
+            var document2 = TestProjectData.SomeProjectFile2;
+            var document3 = TestProjectData.SomeProjectNestedFile3;
+            var document4 = TestProjectData.AnotherProjectNestedFile4;
+            var document5 = TestProjectData.AnotherProjectNestedImportFile;
 
             var documents = ImmutableDictionary.CreateBuilder<string, DocumentState>(FilePathComparer.Instance);
             documents[document1.FilePath] = TestDocumentState.Create(Workspace.Services, document1, onImportsChange: () => callCount++);
@@ -861,24 +860,24 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             documents[document4.FilePath] = TestDocumentState.Create(Workspace.Services, document4, onImportsChange: () => callCount++);
             documents[document5.FilePath] = TestDocumentState.Create(Workspace.Services, document5, onImportsChange: () => callCount++);
 
-            var importsToIncludingDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
-            importsToIncludingDocuments.Add(
-                "_Imports.cshtml",
+            var importsToRelatedDocuments = ImmutableDictionary.CreateBuilder<string, ImmutableArray<string>>(FilePathComparer.Instance);
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\File1.cshtml",
-                    "c:\\MyProject\\File2.cshtml",
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml",
-                    "c:\\AnotherProject\\SomeImport.cshtml"));
-            importsToIncludingDocuments.Add(
-                "Nested\\_Imports.cshtml",
+                    TestProjectData.SomeProjectFile1.FilePath,
+                    TestProjectData.SomeProjectFile2.FilePath,
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath,
+                    TestProjectData.AnotherProjectNestedImportFile.FilePath));
+            importsToRelatedDocuments.Add(
+                TestProjectData.SomeProjectNestedImportFile.TargetPath,
                 ImmutableArray.Create(
-                    "c:\\MyProject\\Nested\\File3.cshtml",
-                    "c:\\AnotherProject\\File4.cshtml"));
+                    TestProjectData.SomeProjectNestedFile3.FilePath,
+                    TestProjectData.AnotherProjectNestedFile4.FilePath));
 
             var original = ProjectState.Create(Workspace.Services, HostProject, WorkspaceProject);
             original.Documents = documents.ToImmutable();
-            original.ImportsToIncludingDocuments = importsToIncludingDocuments.ToImmutable();
+            original.ImportsToRelatedDocuments = importsToRelatedDocuments.ToImmutable();
 
             // Act
             var state = original.WithRemovedHostDocument(document5);

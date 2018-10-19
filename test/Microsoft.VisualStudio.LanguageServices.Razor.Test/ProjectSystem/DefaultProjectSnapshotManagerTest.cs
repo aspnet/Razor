@@ -21,15 +21,15 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             Documents = new HostDocument[]
             {
-                new HostDocument("c:\\MyProject\\File.cshtml", "File.cshtml"),
-                new HostDocument("c:\\MyProject\\Index.cshtml", "Index.cshtml"),
+                TestProjectData.SomeProjectFile1,
+                TestProjectData.SomeProjectFile2,
 
                 // linked file
-                new HostDocument("c:\\SomeOtherProject\\Index.cshtml", "Pages\\Index.cshtml"),
+                TestProjectData.AnotherProjectNestedFile3,
             };
 
-            HostProject = new HostProject("c:\\MyProject\\Test.csproj", FallbackRazorConfiguration.MVC_2_0);
-            HostProjectWithConfigurationChange = new HostProject("c:\\MyProject\\Test.csproj", FallbackRazorConfiguration.MVC_1_0);
+            HostProject = new HostProject(TestProjectData.SomeProject.FilePath, FallbackRazorConfiguration.MVC_2_0);
+            HostProjectWithConfigurationChange = new HostProject(TestProjectData.SomeProject.FilePath, FallbackRazorConfiguration.MVC_1_0);
             
             ProjectManager = new TestProjectSnapshotManager(Dispatcher, Enumerable.Empty<ProjectSnapshotChangeTrigger>(), Workspace);
 
@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 "Test",
                 "Test",
                 LanguageNames.CSharp,
-                "c:\\MyProject\\Test.csproj"));
+                TestProjectData.SomeProject.FilePath));
             WorkspaceProject = solution.GetProject(projectId);
 
             var vbProjectId = ProjectId.CreateNewId("VB");
@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 "Test (Different TFM)",
                 "Test",
                 LanguageNames.CSharp,
-                "c:\\MyProject\\Test.csproj"));
+                TestProjectData.SomeProject.FilePath));
             WorkspaceProjectWithDifferentTfm = solution.GetProject(projectIdWithDifferentTfm);
 
             SomeTagHelpers = TagHelperResolver.TagHelpers;
@@ -253,8 +253,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var snapshot = ProjectManager.GetSnapshot(HostProject);
             Assert.Collection(
                 snapshot.DocumentFilePaths.OrderBy(f => f), 
-                d => Assert.Equal(Documents[0].FilePath, d),
-                d => Assert.Equal(Documents[2].FilePath, d));
+                d => Assert.Equal(Documents[2].FilePath, d),
+                d => Assert.Equal(Documents[0].FilePath, d));
 
             Assert.Equal(ProjectChangeKind.DocumentRemoved, ProjectManager.ListenersNotifiedOf);
         }

@@ -59,10 +59,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     if (_projectEngine == null)
                     {
                         var factory = _services.GetRequiredService<ProjectSnapshotProjectEngineFactory>();
-                        _projectEngine = factory.Create(
-                            state.HostProject.Configuration, 
-                            RazorProjectFileSystem.Create(Path.GetDirectoryName(state.HostProject.FilePath)), 
-                            configure: null);
+                        _projectEngine = factory.Create(state.HostProject.Configuration, Path.GetDirectoryName(state.HostProject.FilePath), configure: null);
                     }
                 }
             }

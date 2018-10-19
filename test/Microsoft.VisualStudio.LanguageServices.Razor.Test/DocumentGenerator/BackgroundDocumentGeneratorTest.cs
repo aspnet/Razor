@@ -20,12 +20,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         {
             Documents = new HostDocument[]
             {
-                new HostDocument("c:\\Test1\\Index.cshtml", "Index.cshtml"),
-                new HostDocument("c:\\Test1\\Components\\Counter.cshtml", "Components\\Counter.cshtml"),
+                TestProjectData.SomeProjectFile1,
+                TestProjectData.AnotherProjectFile1,
             };
 
-            HostProject1 = new HostProject("c:\\Test1\\Test1.csproj", FallbackRazorConfiguration.MVC_1_0);
-            HostProject2 = new HostProject("c:\\Test2\\Test2.csproj", FallbackRazorConfiguration.MVC_1_0);
+            HostProject1 = new HostProject(TestProjectData.SomeProject.FilePath, FallbackRazorConfiguration.MVC_1_0);
+            HostProject2 = new HostProject(TestProjectData.AnotherProject.FilePath, FallbackRazorConfiguration.MVC_1_0);
 
             var projectId1 = ProjectId.CreateNewId("Test1");
             var projectId2 = ProjectId.CreateNewId("Test2");
@@ -37,14 +37,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     "Test1",
                     "Test1",
                     LanguageNames.CSharp,
-                    "c:\\Test1\\Test1.csproj"))
+                    TestProjectData.SomeProject.FilePath))
                 .AddProject(ProjectInfo.Create(
                     projectId2,
                     VersionStamp.Default,
                     "Test2",
                     "Test2",
                     LanguageNames.CSharp,
-                    "c:\\Test2\\Test2.csproj")); ;
+                    TestProjectData.AnotherProject.FilePath)); ;
 
             WorkspaceProject1 = solution.GetProject(projectId1);
             WorkspaceProject2 = solution.GetProject(projectId2);

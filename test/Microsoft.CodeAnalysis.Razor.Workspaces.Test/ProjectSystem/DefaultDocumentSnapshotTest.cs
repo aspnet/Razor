@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Text;
 using Xunit;
@@ -14,11 +13,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     {
         public DefaultDocumentSnapshotTest()
         {
-            var hostProject = new HostProject("C:/some/path/project.csproj", RazorConfiguration.Default);
-            var projectState = ProjectState.Create(Workspace.Services, hostProject);
+            var projectState = ProjectState.Create(Workspace.Services, TestProjectData.SomeProject);
             var project = new DefaultProjectSnapshot(projectState);
-            HostDocument = new HostDocument("C:/some/path/file.cshtml", "C:/some/path/file.cshtml");
-            SourceText = Text.SourceText.From("<p>Hello World</p>");
+            HostDocument = TestProjectData.SomeProjectFile1;
+            SourceText = SourceText.From("<p>Hello World</p>");
             Version = VersionStamp.Default.GetNewerVersion();
             var textAndVersion = TextAndVersion.Create(SourceText, Version);
             var documentState = DocumentState.Create(Workspace.Services, HostDocument, () => Task.FromResult(textAndVersion));

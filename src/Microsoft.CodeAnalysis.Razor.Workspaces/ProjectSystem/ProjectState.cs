@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Host;
@@ -13,7 +14,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
     internal class ProjectState
     {
         private static readonly ImmutableDictionary<string, DocumentState> EmptyDocuments = ImmutableDictionary.Create<string, DocumentState>(FilePathComparer.Instance);
-        private static readonly ImmutableDictionary<string, ImmutableArray<string>> EmptyImportsToIncludingDocuments = ImmutableDictionary.Create<string, ImmutableArray<string>>(FilePathComparer.Instance);
+        private static readonly ImmutableDictionary<string, ImmutableArray<string>> EmptyImportsToRelatedDocuments = ImmutableDictionary.Create<string, ImmutableArray<string>>(FilePathComparer.Instance);
         private readonly object _lock;
         
         private ProjectEngineTracker _projectEngine;
@@ -43,7 +44,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             HostProject = hostProject;
             WorkspaceProject = workspaceProject;
             Documents = EmptyDocuments;
-            ImportsToIncludingDocuments = EmptyImportsToIncludingDocuments;
+            ImportsToRelatedDocuments = EmptyImportsToRelatedDocuments;
             Version = VersionStamp.Create();
 
             _lock = new object();
@@ -55,7 +56,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             HostProject hostProject,
             Project workspaceProject,
             ImmutableDictionary<string, DocumentState> documents,
-            ImmutableDictionary<string, ImmutableArray<string>> importsToIncludingDocuments)
+            ImmutableDictionary<string, ImmutableArray<string>> importsToRelatedDocuments)
         {
             if (older == null)
             {
@@ -72,9 +73,9 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 throw new ArgumentNullException(nameof(documents));
             }
 
-            if (importsToIncludingDocuments == null)
+            if (importsToRelatedDocuments == null)
             {
-                throw new ArgumentNullException(nameof(importsToIncludingDocuments));
+                throw new ArgumentNullException(nameof(importsToRelatedDocuments));
             }
 
             Services = older.Services;
@@ -83,7 +84,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             HostProject = hostProject;
             WorkspaceProject = workspaceProject;
             Documents = documents;
-            ImportsToIncludingDocuments = importsToIncludingDocuments;
+            ImportsToRelatedDocuments = importsToRelatedDocuments;
 
             _lock = new object();
 
@@ -95,7 +96,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public ImmutableDictionary<string, DocumentState> Documents { get; internal set; }
 
         // Internal set for testing.
-        public ImmutableDictionary<string, ImmutableArray<string>> ImportsToIncludingDocuments { get; internal set; }
+        public ImmutableDictionary<string, ImmutableArray<string>> ImportsToRelatedDocuments { get; internal set; }
 
         public HostProject HostProject { get; }
 
@@ -167,22 +168,12 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             var documents = Documents.Add(hostDocument.FilePath, DocumentState.Create(Services, hostDocument, loader));
 
             // Compute the effect on the import map
-            var importsToIncludingDocuments = ImportsToIncludingDocuments;
             var importTargetPaths = ProjectEngine.GetImportDocumentTargetPaths(this, hostDocument.TargetPath);
-            foreach (var importTargetPath in importTargetPaths)
-            {
-                if (!importsToIncludingDocuments.TryGetValue(importTargetPath, out var includingDocuments))
-                {
-                    includingDocuments = ImmutableArray.Create<string>();
-                }
-
-                includingDocuments = includingDocuments.Add(hostDocument.FilePath);
-                importsToIncludingDocuments = importsToIncludingDocuments.SetItem(importTargetPath, includingDocuments);
-            }
+            var importsToRelatedDocuments = AddToImportsToRelatedDocuments(ImportsToRelatedDocuments, hostDocument, importTargetPaths);
             
             // Now check if the updated document is an import - it's important this this happens after
             // updating the imports map.
-            if (importsToIncludingDocuments.TryGetValue(hostDocument.TargetPath, out var relatedDocuments))
+            if (importsToRelatedDocuments.TryGetValue(hostDocument.TargetPath, out var relatedDocuments))
             {
                 foreach (var relatedDocument in relatedDocuments)
                 {
@@ -190,7 +181,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 }
             }
 
-            var state = new ProjectState(this, ProjectDifference.DocumentAdded, HostProject, WorkspaceProject, documents, importsToIncludingDocuments);
+            var state = new ProjectState(this, ProjectDifference.DocumentAdded, HostProject, WorkspaceProject, documents, importsToRelatedDocuments);
             return state;
         }
 
@@ -210,7 +201,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             // First check if the updated document is an import - it's important that this happens
             // before updating the imports map.
-            if (ImportsToIncludingDocuments.TryGetValue(hostDocument.TargetPath, out var relatedDocuments))
+            if (ImportsToRelatedDocuments.TryGetValue(hostDocument.TargetPath, out var relatedDocuments))
             {
                 foreach (var relatedDocument in relatedDocuments)
                 {
@@ -219,25 +210,10 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
 
             // Compute the effect on the import map
-            var importsToIncludingDocuments = ImportsToIncludingDocuments;
             var importTargetPaths = ProjectEngine.GetImportDocumentTargetPaths(this, hostDocument.TargetPath);
-            foreach (var importTargetPath in importTargetPaths)
-            {
-                if (importsToIncludingDocuments.TryGetValue(importTargetPath, out var includingDocuments))
-                {
-                    includingDocuments = includingDocuments.Remove(hostDocument.FilePath);
-                    if (includingDocuments.Length > 0)
-                    {
-                        importsToIncludingDocuments = importsToIncludingDocuments.SetItem(importTargetPath, includingDocuments);
-                    }
-                    else
-                    {
-                        importsToIncludingDocuments = importsToIncludingDocuments.Remove(importTargetPath);
-                    }
-                }
-            }
+            var importsToRelatedDocuments = RemoveFromImportsToRelatedDocuments(ImportsToRelatedDocuments, hostDocument, importTargetPaths);
 
-            var state = new ProjectState(this, ProjectDifference.DocumentRemoved, HostProject, WorkspaceProject, documents, importsToIncludingDocuments);
+            var state = new ProjectState(this, ProjectDifference.DocumentRemoved, HostProject, WorkspaceProject, documents, importsToRelatedDocuments);
             return state;
         }
 
@@ -255,7 +231,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             var documents = Documents.SetItem(hostDocument.FilePath, document.WithText(sourceText, version));
 
-            if (ImportsToIncludingDocuments.TryGetValue(hostDocument.TargetPath, out var relatedDocuments))
+            if (ImportsToRelatedDocuments.TryGetValue(hostDocument.TargetPath, out var relatedDocuments))
             {
                 foreach (var relatedDocument in relatedDocuments)
                 {
@@ -263,7 +239,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 }
             }
 
-            var state = new ProjectState(this, ProjectDifference.DocumentChanged, HostProject, WorkspaceProject, documents, ImportsToIncludingDocuments);
+            var state = new ProjectState(this, ProjectDifference.DocumentChanged, HostProject, WorkspaceProject, documents, ImportsToRelatedDocuments);
             return state;
         }
 
@@ -281,7 +257,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             var documents = Documents.SetItem(hostDocument.FilePath, document.WithTextLoader(loader));
 
-            if (ImportsToIncludingDocuments.TryGetValue(hostDocument.TargetPath, out var relatedDocuments))
+            if (ImportsToRelatedDocuments.TryGetValue(hostDocument.TargetPath, out var relatedDocuments))
             {
                 foreach (var relatedDocument in relatedDocuments)
                 {
@@ -289,7 +265,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 }
             }
 
-            var state = new ProjectState(this, ProjectDifference.DocumentChanged, HostProject, WorkspaceProject, documents, ImportsToIncludingDocuments);
+            var state = new ProjectState(this, ProjectDifference.DocumentChanged, HostProject, WorkspaceProject, documents, ImportsToRelatedDocuments);
             return state;
         }
 
@@ -306,7 +282,18 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
             
             var documents = Documents.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.WithConfigurationChange(), FilePathComparer.Instance);
-            var state = new ProjectState(this, ProjectDifference.ConfigurationChanged, hostProject, WorkspaceProject, documents, ImportsToIncludingDocuments);
+
+            // If the host project has changed then we need to recompute the imports map
+            var importsToRelatedDocuments = EmptyImportsToRelatedDocuments;
+
+            foreach (var document in documents)
+            {
+                var importTargetPaths = ProjectEngine.GetImportDocumentTargetPaths(this, document.Value.HostDocument.TargetPath);
+                importsToRelatedDocuments = AddToImportsToRelatedDocuments(ImportsToRelatedDocuments, document.Value.HostDocument, importTargetPaths);
+            }
+
+
+            var state = new ProjectState(this, ProjectDifference.ConfigurationChanged, hostProject, WorkspaceProject, documents, importsToRelatedDocuments);
             return state;
         }
 
@@ -334,8 +321,51 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
             }
 
             var documents = Documents.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.WithWorkspaceProjectChange(), FilePathComparer.Instance);
-            var state = new ProjectState(this, difference, HostProject, workspaceProject, documents, ImportsToIncludingDocuments);
+            var state = new ProjectState(this, difference, HostProject, workspaceProject, documents, ImportsToRelatedDocuments);
             return state;
+        }
+
+        private static ImmutableDictionary<string, ImmutableArray<string>> AddToImportsToRelatedDocuments(
+            ImmutableDictionary<string, ImmutableArray<string>> importsToRelatedDocuments,
+            HostDocument hostDocument,
+            List<string> importTargetPaths)
+        {
+            foreach (var importTargetPath in importTargetPaths)
+            {
+                if (!importsToRelatedDocuments.TryGetValue(importTargetPath, out var relatedDocuments))
+                {
+                    relatedDocuments = ImmutableArray.Create<string>();
+                }
+
+                relatedDocuments = relatedDocuments.Add(hostDocument.FilePath);
+                importsToRelatedDocuments = importsToRelatedDocuments.SetItem(importTargetPath, relatedDocuments);
+            }
+
+            return importsToRelatedDocuments;
+        }
+
+        private static ImmutableDictionary<string, ImmutableArray<string>> RemoveFromImportsToRelatedDocuments(
+            ImmutableDictionary<string, ImmutableArray<string>> importsToRelatedDocuments,
+            HostDocument hostDocument,
+            List<string> importTargetPaths)
+        {
+            foreach (var importTargetPath in importTargetPaths)
+            {
+                if (importsToRelatedDocuments.TryGetValue(importTargetPath, out var relatedDocuments))
+                {
+                    relatedDocuments = relatedDocuments.Remove(hostDocument.FilePath);
+                    if (relatedDocuments.Length > 0)
+                    {
+                        importsToRelatedDocuments = importsToRelatedDocuments.SetItem(importTargetPath, relatedDocuments);
+                    }
+                    else
+                    {
+                        importsToRelatedDocuments = importsToRelatedDocuments.Remove(importTargetPath);
+                    }
+                }
+            }
+
+            return importsToRelatedDocuments;
         }
     }
 }

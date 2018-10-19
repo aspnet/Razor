@@ -3,13 +3,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Text;
-using Moq;
 using Xunit;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
@@ -19,9 +16,9 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public DocumentStateTest()
         {
             TagHelperResolver = new TestTagHelperResolver();
-
-            HostProject = new HostProject("c:\\MyProject\\Test.csproj", FallbackRazorConfiguration.MVC_2_0);
-            HostProjectWithConfigurationChange = new HostProject("c:\\MyProject\\Test.csproj", FallbackRazorConfiguration.MVC_1_0);
+            
+            HostProject = new HostProject(TestProjectData.SomeProject.FilePath, FallbackRazorConfiguration.MVC_2_0);
+            HostProjectWithConfigurationChange = new HostProject(TestProjectData.SomeProject.FilePath, FallbackRazorConfiguration.MVC_1_0);
 
             var projectId = ProjectId.CreateNewId("Test");
             var solution = Workspace.CurrentSolution.AddProject(ProjectInfo.Create(
@@ -30,13 +27,13 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 "Test",
                 "Test",
                 LanguageNames.CSharp,
-                "c:\\MyProject\\Test.csproj"));
+                TestProjectData.SomeProject.FilePath));
             WorkspaceProject = solution.GetProject(projectId);
 
             SomeTagHelpers = new List<TagHelperDescriptor>();
             SomeTagHelpers.Add(TagHelperDescriptorBuilder.Create("Test1", "TestAssembly").Build());
 
-            Document = new HostDocument("c:\\MyProject\\File.cshtml", "File.cshtml");
+            Document = TestProjectData.SomeProjectFile1;
 
             Text = SourceText.From("Hello, world!");
             TextLoader = () => Task.FromResult(TextAndVersion.Create(Text, VersionStamp.Create()));
