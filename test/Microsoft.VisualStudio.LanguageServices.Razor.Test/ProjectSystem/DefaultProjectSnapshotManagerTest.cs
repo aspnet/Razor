@@ -13,21 +13,11 @@ using Xunit;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
-    public class DefaultProjectSnapshotManagerTest : ForegroundDispatcherTestBase
+    public class DefaultProjectSnapshotManagerTest : ForegroundDispatcherWorkspaceTestBase
     {
         public DefaultProjectSnapshotManagerTest()
         {
             TagHelperResolver = new TestTagHelperResolver();
-
-            HostServices = TestServices.Create(
-                new IWorkspaceService[]
-                {
-                    new TestProjectSnapshotProjectEngineFactory(),
-                },
-                new ILanguageService[]
-                {
-                    TagHelperResolver,
-                });
 
             Documents = new HostDocument[]
             {
@@ -40,8 +30,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             HostProject = new HostProject("c:\\MyProject\\Test.csproj", FallbackRazorConfiguration.MVC_2_0);
             HostProjectWithConfigurationChange = new HostProject("c:\\MyProject\\Test.csproj", FallbackRazorConfiguration.MVC_1_0);
-
-            Workspace = TestWorkspace.Create(HostServices);
+            
             ProjectManager = new TestProjectSnapshotManager(Dispatcher, Enumerable.Empty<ProjectSnapshotChangeTrigger>(), Workspace);
 
             var projectId = ProjectId.CreateNewId("Test");
@@ -108,13 +97,14 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         private TestProjectSnapshotManager ProjectManager { get; }
 
-        private HostServices HostServices { get; }
-
-        private Workspace Workspace { get; }
-
         private SourceText SourceText { get; }
 
         private IList<TagHelperDescriptor> SomeTagHelpers { get; }
+
+        protected override void ConfigureLanguageServices(List<ILanguageService> services)
+        {
+            services.Add(TagHelperResolver);
+        }
 
         [ForegroundFact]
         public void DocumentAdded_AddsDocument()

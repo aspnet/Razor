@@ -5,6 +5,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.CodeAnalysis.Host;
 using Moq;
 using Xunit;
 
@@ -12,7 +14,7 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
     // These tests are really integration tests. There isn't a good way to unit test this functionality since
     // the only thing in here is threading.
-    public class BackgroundDocumentGeneratorTest : ForegroundDispatcherTestBase
+    public class BackgroundDocumentGeneratorTest : ForegroundDispatcherWorkspaceTestBase
     {
         public BackgroundDocumentGeneratorTest()
         {
@@ -24,8 +26,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             HostProject1 = new HostProject("c:\\Test1\\Test1.csproj", FallbackRazorConfiguration.MVC_1_0);
             HostProject2 = new HostProject("c:\\Test2\\Test2.csproj", FallbackRazorConfiguration.MVC_1_0);
-
-            Workspace = TestWorkspace.Create();
 
             var projectId1 = ProjectId.CreateNewId("Test1");
             var projectId2 = ProjectId.CreateNewId("Test2");
@@ -60,7 +60,11 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
         private Project WorkspaceProject2 { get; }
 
-        private Workspace Workspace { get; }
+        protected override void ConfigureProjectEngine(RazorProjectEngineBuilder builder)
+        {
+            builder.Features.Remove(builder.Features.OfType<IImportProjectFeature>().Single());
+            builder.Features.Add(new TestImportProjectFeature());
+        }
 
         [ForegroundFact]
         public async Task Queue_ProcessesNotifications_AndGoesBackToSleep()

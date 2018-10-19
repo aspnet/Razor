@@ -143,6 +143,33 @@ namespace Microsoft.CodeAnalysis.Razor
             }
         }
 
+        public void EnqueueRelatedDocuments(ProjectSnapshot project, DocumentSnapshot document)
+        {
+            if (project == null)
+            {
+                throw new ArgumentNullException(nameof(project));
+            }
+
+            if (document == null)
+            {
+                throw new ArgumentNullException(nameof(document));
+            }
+
+            _foregroundDispatcher.AssertForegroundThread();
+
+            lock (_work)
+            {
+                // We only want to store the last 'seen' version of any given document. That way when we pick one to process
+                // it's always the best version to use.
+                foreach (var relatedDocument in project.GetRelatedDocuments(document))
+                {
+                    _work[new DocumentKey(project.FilePath, relatedDocument.FilePath)] = relatedDocument;
+                }
+
+                StartWorker();
+            }
+        }
+
         protected virtual void StartWorker()
         {
             // Access to the timer is protected by the lock in Enqueue and in Timer_Tick
@@ -237,7 +264,7 @@ namespace Microsoft.CodeAnalysis.Razor
             {
                 case ProjectChangeKind.ProjectAdded:
                     {
-                        var projectSnapshot = _projectManager.GetLoadedProject(e.ProjectFilePath);
+                        var projectSnapshot = e.Newer;
                         foreach (var documentFilePath in projectSnapshot.DocumentFilePaths)
                         {
                             Enqueue(projectSnapshot, projectSnapshot.GetDocument(documentFilePath));
@@ -247,7 +274,7 @@ namespace Microsoft.CodeAnalysis.Razor
                     }
                 case ProjectChangeKind.ProjectChanged:
                     {
-                        var projectSnapshot = _projectManager.GetLoadedProject(e.ProjectFilePath);
+                        var projectSnapshot = e.Newer;
                         foreach (var documentFilePath in projectSnapshot.DocumentFilePaths)
                         {
                             Enqueue(projectSnapshot, projectSnapshot.GetDocument(documentFilePath));
@@ -257,23 +284,35 @@ namespace Microsoft.CodeAnalysis.Razor
                     }
 
                 case ProjectChangeKind.DocumentAdded:
+                case ProjectChangeKind.DocumentChanged:
                     {
-                        var project = _projectManager.GetLoadedProject(e.ProjectFilePath);
-                        Enqueue(project, project.GetDocument(e.DocumentFilePath));
+                        var project = e.Newer;
+                        var document = project.GetDocument(e.DocumentFilePath);
+
+                        Enqueue(project, document);
+                        foreach (var relatedDocument in project.GetRelatedDocuments(document))
+                        {
+                            Enqueue(project, document);
+                        }
 
                         break;
                     }
 
-                case ProjectChangeKind.DocumentChanged:
+                case ProjectChangeKind.DocumentRemoved:
                     {
-                        var project = _projectManager.GetLoadedProject(e.ProjectFilePath);
-                        Enqueue(project, project.GetDocument(e.DocumentFilePath));
+                        // For removals use the old snapshot to find the removed document, so we can figure out 
+                        // what the imports were in the new snapshot.
+                        var document = e.Older.GetDocument(e.DocumentFilePath);
+
+                        foreach (var relatedDocument in e.Newer.GetRelatedDocuments(document))
+                        {
+                            Enqueue(e.Newer, document);
+                        }
 
                         break;
                     }
 
                 case ProjectChangeKind.ProjectRemoved:
-                case ProjectChangeKind.DocumentRemoved:
                     {
                         // ignore
                         break;

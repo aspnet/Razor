@@ -15,11 +15,10 @@ using ItemCollection = Microsoft.VisualStudio.ProjectSystem.ItemCollection;
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
-    public class DefaultRazorProjectHostTest : ForegroundDispatcherTestBase
+    public class DefaultRazorProjectHostTest : ForegroundDispatcherWorkspaceTestBase
     {
         public DefaultRazorProjectHostTest()
         {
-            Workspace = new AdhocWorkspace();
             ProjectManager = new TestProjectSnapshotManager(Dispatcher, Workspace);
 
             ConfigurationItems = new ItemCollection(Rules.RazorConfiguration.SchemaName);
@@ -37,8 +36,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         private PropertyCollection RazorGeneralProperties { get; }
 
         private TestProjectSnapshotManager ProjectManager { get; }
-
-        private Workspace Workspace { get; }
 
         [Fact]
         public void TryGetDefaultConfiguration_FailsIfNoRule()
