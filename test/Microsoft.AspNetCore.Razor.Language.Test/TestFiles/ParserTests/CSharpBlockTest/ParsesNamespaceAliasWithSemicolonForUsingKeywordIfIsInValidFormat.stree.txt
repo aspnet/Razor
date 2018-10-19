@@ -3,7 +3,7 @@ CSharpCodeBlock - [0..28)::28 - [using FooBarBaz = FooBarBaz;]
         CSharpTransition - [0..0)::0 - Gen<None> - SpanEditHandler;Accepts:None
             Transition;[<Missing>];
         RazorDirectiveBody - [0..28)::28
-            CSharpStatementLiteral - [0..28)::28 - [using FooBarBaz = FooBarBaz;] - Gen<Import:using FooBarBaz = FooBarBaz;> - SpanEditHandler;Accepts:AnyExceptNewline
+            CSharpStatementLiteral - [0..28)::28 - [using FooBarBaz = FooBarBaz;] - Gen<Import: FooBarBaz = FooBarBaz;> - SpanEditHandler;Accepts:AnyExceptNewline
                 Keyword;[using];
                 Whitespace;[ ];
                 Identifier;[FooBarBaz];

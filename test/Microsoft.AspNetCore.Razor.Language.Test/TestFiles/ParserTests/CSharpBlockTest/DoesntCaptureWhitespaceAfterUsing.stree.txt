@@ -3,7 +3,7 @@ CSharpCodeBlock - [0..9)::9 - [using Foo]
         CSharpTransition - [0..0)::0 - Gen<None> - SpanEditHandler;Accepts:None
             Transition;[<Missing>];
         RazorDirectiveBody - [0..9)::9
-            CSharpStatementLiteral - [0..9)::9 - [using Foo] - Gen<Import:using Foo;> - SpanEditHandler;Accepts:AnyExceptNewline
+            CSharpStatementLiteral - [0..9)::9 - [using Foo] - Gen<Import: Foo;> - SpanEditHandler;Accepts:AnyExceptNewline
                 Keyword;[using];
                 Whitespace;[ ];
                 Identifier;[Foo];

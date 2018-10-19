@@ -14,6 +14,7 @@ RazorDocument - [0..17)::17 - [<myth BouND='' />]
                     MarkupTextLiteral - [12..13)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                     MarkupTagHelperAttributeValue - [13..13)::0
+                        CSharpExpressionLiteral - [13..13)::0 - [] - Gen<None> - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14
                     MarkupTextLiteral - [13..14)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                 MarkupTextLiteral - [14..17)::3 - [ />] - Gen<Markup> - SpanEditHandler;Accepts:Any

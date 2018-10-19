@@ -16,13 +16,13 @@ namespace Microsoft.AspNetCore.Razor.Language
         protected override void ExecuteCore(RazorCodeDocument codeDocument)
         {
             var options = codeDocument.GetParserOptions() ??_optionsFeature.GetOptions();
-            var syntaxTree = RazorSyntaxTree.Parse(codeDocument.Source, options);
+            var syntaxTree = RazorSyntaxTree.Parse(codeDocument.Source, options, legacy: false);
             codeDocument.SetSyntaxTree(syntaxTree);
 
             var importSyntaxTrees = new RazorSyntaxTree[codeDocument.Imports.Count];
             for (var i = 0; i < codeDocument.Imports.Count; i++)
             {
-                importSyntaxTrees[i] = RazorSyntaxTree.Parse(codeDocument.Imports[i], options);
+                importSyntaxTrees[i] = RazorSyntaxTree.Parse(codeDocument.Imports[i], options, legacy: false);
             }
             codeDocument.SetImportSyntaxTrees(importSyntaxTrees);
         }

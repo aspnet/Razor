@@ -68,17 +68,17 @@ namespace Microsoft.AspNetCore.Razor.Language
             return new DefaultRazorSyntaxTree(root, source, new List<RazorDiagnostic>(diagnostics), options);
         }
 
-        public static RazorSyntaxTree Parse(RazorSourceDocument source)
+        public static RazorSyntaxTree Parse(RazorSourceDocument source, bool legacy = false)
         {
             if (source == null)
             {
                 throw new ArgumentNullException(nameof(source));
             }
 
-            return Parse(source, options: null);
+            return Parse(source, options: null, legacy: legacy);
         }
 
-        public static RazorSyntaxTree Parse(RazorSourceDocument source, RazorParserOptions options)
+        public static RazorSyntaxTree Parse(RazorSourceDocument source, RazorParserOptions options, bool legacy = false)
         {
             if (source == null)
             {
@@ -86,7 +86,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             }
             
             var parser = new RazorParser(options ?? RazorParserOptions.CreateDefault());
-            return parser.Parse(source);
+            return parser.Parse(source, legacy);
         }
 
         public abstract IReadOnlyList<RazorDiagnostic> Diagnostics { get; }

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
 
@@ -86,7 +87,36 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 throw new ArgumentNullException(nameof(source));
             }
 
-            return source.Lines.GetLocation(node.Position);
+            try
+            {
+                if (source.Length == 0)
+                {
+                    // Just a marker symbol
+                    return new SourceLocation(source.FilePath, 0, 0, 0);
+                }
+                if (node.Position >= source.Length)
+                {
+                    // E.g. Marker symbol at the end of the document
+                    var lastLocation = source.Lines.GetLocation(source.Length - 1);
+                    return new SourceLocation(
+                        source.FilePath, // GetLocation prefers RelativePath but we want FilePath.
+                        lastLocation.AbsoluteIndex + 1,
+                        lastLocation.LineIndex,
+                        lastLocation.CharacterIndex + 1);
+                }
+
+                var location = source.Lines.GetLocation(node.Position);
+                return new SourceLocation(
+                    source.FilePath, // GetLocation prefers RelativePath but we want FilePath.
+                    location.AbsoluteIndex,
+                    location.LineIndex,
+                    location.CharacterIndex);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                Debug.Assert(false, "Node position should stay within document length.");
+                return new SourceLocation(source.FilePath, node.Position, 0, 0);
+            }
         }
 
         public static SourceSpan GetSourceSpan(this SyntaxNode node, RazorSourceDocument source)

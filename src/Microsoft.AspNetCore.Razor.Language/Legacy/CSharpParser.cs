@@ -685,7 +685,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     RazorDiagnosticFactory.CreateParsing_InlineMarkupBlocksCannotBeNested(
                         new SourceSpan(CurrentStart, contentLength: 1 /* @ */)));
             }
-            builder.Add(OutputTokensAsStatementLiteral());
+            if (SpanContext.ChunkGenerator is ExpressionChunkGenerator)
+            {
+                builder.Add(OutputTokensAsExpressionLiteral());
+            }
+            else
+            {
+                builder.Add(OutputTokensAsStatementLiteral());
+            }
 
             using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
             {
@@ -777,14 +784,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             var directiveBody = ParseTagHelperDirective(
                 SyntaxConstants.CSharp.TagHelperPrefixKeyword,
-                (prefix, errors) =>
+                (prefix, errors, startLocation) =>
                 {
                     if (duplicateDiagnostic != null)
                     {
                         errors.Add(duplicateDiagnostic);
                     }
 
-                    var parsedDirective = ParseDirective(prefix, CurrentStart, TagHelperDirectiveType.TagHelperPrefix, errors);
+                    var parsedDirective = ParseDirective(prefix, startLocation, TagHelperDirectiveType.TagHelperPrefix, errors);
 
                     return new TagHelperPrefixDirectiveChunkGenerator(
                         prefix,
@@ -800,9 +807,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             var directiveBody = ParseTagHelperDirective(
                 SyntaxConstants.CSharp.AddTagHelperKeyword,
-                (lookupText, errors) =>
+                (lookupText, errors, startLocation) =>
                 {
-                    var parsedDirective = ParseDirective(lookupText, CurrentStart, TagHelperDirectiveType.AddTagHelper, errors);
+                    var parsedDirective = ParseDirective(lookupText, startLocation, TagHelperDirectiveType.AddTagHelper, errors);
 
                     return new AddTagHelperChunkGenerator(
                         lookupText,
@@ -820,9 +827,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             var directiveBody = ParseTagHelperDirective(
                 SyntaxConstants.CSharp.RemoveTagHelperKeyword,
-                (lookupText, errors) =>
+                (lookupText, errors, startLocation) =>
                 {
-                    var parsedDirective = ParseDirective(lookupText, CurrentStart, TagHelperDirectiveType.RemoveTagHelper, errors);
+                    var parsedDirective = ParseDirective(lookupText, startLocation, TagHelperDirectiveType.RemoveTagHelper, errors);
 
                     return new RemoveTagHelperChunkGenerator(
                         lookupText,
@@ -838,7 +845,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private RazorDirectiveBodySyntax ParseTagHelperDirective(
             string keyword,
-            Func<string, List<RazorDiagnostic>, ISpanChunkGenerator> chunkGeneratorFactory)
+            Func<string, List<RazorDiagnostic>, SourceLocation, ISpanChunkGenerator> chunkGeneratorFactory)
         {
             AssertDirective(keyword);
 
@@ -851,6 +858,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 Context.ErrorSink = directiveErrorSink;
 
                 string directiveValue = null;
+                SourceLocation? valueStartLocation = null;
                 try
                 {
                     EnsureDirectiveIsAtStartOfLine();
@@ -885,7 +893,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     else
                     {
                         // Need to grab the current location before we accept until the end of the line.
-                        var startLocation = CurrentStart;
+                        valueStartLocation = CurrentStart;
 
                         // Parse to the end of the line. Essentially accepts anything until end of line, comments, invalid code
                         // etc.
@@ -900,7 +908,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         {
                             Context.ErrorSink.OnError(
                                 RazorDiagnosticFactory.CreateParsing_IncompleteQuotesAroundDirective(
-                                    new SourceSpan(startLocation, rawValue.Length), keyword));
+                                    new SourceSpan(valueStartLocation.Value, rawValue.Length), keyword));
                         }
 
                         directiveValue = rawValue;
@@ -908,7 +916,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
                 finally
                 {
-                    SpanContext.ChunkGenerator = chunkGeneratorFactory(directiveValue, directiveErrorSink.Errors.ToList());
+                    SpanContext.ChunkGenerator = chunkGeneratorFactory(
+                        directiveValue,
+                        directiveErrorSink.Errors.ToList(),
+                        valueStartLocation ?? CurrentStart);
                     Context.ErrorSink = savedErrorSink;
                 }
 
@@ -1234,6 +1245,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     var directiveBody = SyntaxFactory.RazorDirectiveBody(keywordBlock, directiveCodeBlock);
                     var directive = SyntaxFactory.RazorDirective(transition, directiveBody);
                     directive = (RazorDirectiveSyntax)directive.SetDiagnostics(directiveErrorSink.Errors.ToArray());
+                    directive = directive.WithDirectiveDescriptor(descriptor);
                     return directive;
                 }
             }
@@ -1846,7 +1858,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                 SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.AnyExceptNewline;
                 SpanContext.ChunkGenerator = new AddImportChunkGenerator(new LocationTagged<string>(
-                    string.Concat(TokenBuilder.ToList().Nodes.Select(s => s.Content)),
+                    string.Concat(TokenBuilder.ToList().Nodes.Skip(1).Select(s => s.Content)),
                     start));
 
                 // Optional ";"
@@ -2058,7 +2070,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 // Output tokens before parsing the comment.
                 AcceptMarkerTokenIfNecessary();
-                builder.Add(OutputTokensAsStatementLiteral());
+                if (SpanContext.ChunkGenerator is ExpressionChunkGenerator)
+                {
+                    builder.Add(OutputTokensAsExpressionLiteral());
+                }
+                else
+                {
+                    builder.Add(OutputTokensAsStatementLiteral());
+                }
+
                 var comment = ParseRazorComment();
                 builder.Add(comment);
             }

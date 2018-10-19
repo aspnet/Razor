@@ -26,7 +26,7 @@ RazorDocument - [0..26)::26 - [<p><b>asdf</b>@*asdf*@</p>]
                 RazorCommentStar;[*];
                 RazorCommentTransition;[@];
             MarkupTagHelperEndTag - [22..26)::4
-                MarkupTextLiteral - [22..26)::4 - [</p>] - Gen<None> - SpanEditHandler;Accepts:Any
+                MarkupTextLiteral - [22..26)::4 - [</p>] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     ForwardSlash;[/];
                     Text;[p];

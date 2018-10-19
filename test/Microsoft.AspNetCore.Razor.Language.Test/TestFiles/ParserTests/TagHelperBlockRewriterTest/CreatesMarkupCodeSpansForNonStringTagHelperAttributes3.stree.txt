@@ -14,20 +14,19 @@ RazorDocument - [0..35)::35 - [<person age="@DateTime.Now.Year" />]
                     MarkupTextLiteral - [12..13)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                     MarkupTagHelperAttributeValue - [13..31)::18
-                        MarkupDynamicAttributeValue - [13..31)::18 - [@DateTime.Now.Year]
-                            GenericBlock - [13..31)::18
-                                CSharpCodeBlock - [13..31)::18
-                                    CSharpImplicitExpression - [13..31)::18
-                                        CSharpTransition - [13..14)::1 - Gen<None> - SpanEditHandler;Accepts:None
-                                            Transition;[@];
-                                        CSharpImplicitExpressionBody - [14..31)::17
-                                            CSharpCodeBlock - [14..31)::17
-                                                CSharpExpressionLiteral - [14..31)::17 - [DateTime.Now.Year] - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14
-                                                    Identifier;[DateTime];
-                                                    Dot;[.];
-                                                    Identifier;[Now];
-                                                    Dot;[.];
-                                                    Identifier;[Year];
+                        MarkupBlock - [13..31)::18
+                            CSharpCodeBlock - [13..31)::18
+                                CSharpImplicitExpression - [13..31)::18
+                                    CSharpTransition - [13..14)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        Transition;[@];
+                                    CSharpImplicitExpressionBody - [14..31)::17
+                                        CSharpCodeBlock - [14..31)::17
+                                            CSharpExpressionLiteral - [14..31)::17 - [DateTime.Now.Year] - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14
+                                                Identifier;[DateTime];
+                                                Dot;[.];
+                                                Identifier;[Now];
+                                                Dot;[.];
+                                                Identifier;[Year];
                     MarkupTextLiteral - [31..32)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                 MarkupTextLiteral - [32..35)::3 - [ />] - Gen<Markup> - SpanEditHandler;Accepts:Any

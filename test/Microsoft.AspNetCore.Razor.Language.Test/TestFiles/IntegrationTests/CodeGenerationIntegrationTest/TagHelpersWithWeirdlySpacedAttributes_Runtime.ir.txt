@@ -7,7 +7,7 @@ Document -
             PreallocatedTagHelperPropertyValue -  - __tagHelperAttribute_1 - type - text - HtmlAttributeValueStyle.SingleQuotes
             PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_2 - data-content - hello - HtmlAttributeValueStyle.DoubleQuotes
             PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_3 - data-content - hello2 - HtmlAttributeValueStyle.SingleQuotes
-            PreallocatedTagHelperPropertyValue -  - __tagHelperAttribute_4 - type - password - HtmlAttributeValueStyle.DoubleQuotes
+            PreallocatedTagHelperPropertyValue -  - __tagHelperAttribute_4 - type - password - HtmlAttributeValueStyle.NoQuotes
             PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_5 - data-content - blah - HtmlAttributeValueStyle.NoQuotes
             DefaultTagHelperRuntime - 
             FieldDeclaration -  - private - global::TestNamespace.PTagHelper - __TestNamespace_PTagHelper
@@ -22,7 +22,7 @@ Document -
                             IntermediateToken - (105:6,25 [11] TagHelpersWithWeirdlySpacedAttributes.cshtml) - Html - Body of Tag
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
                     PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_0
-                    DefaultTagHelperProperty - (74:5,21 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
+                    DefaultTagHelperProperty - (74:5,21 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.NoQuotes
                         IntermediateToken - (74:5,21 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml) - CSharp - 1337
                     DefaultTagHelperHtmlAttribute -  - data-content - HtmlAttributeValueStyle.DoubleQuotes
                         CSharpExpression - (99:6,19 [4] TagHelpersWithWeirdlySpacedAttributes.cshtml)

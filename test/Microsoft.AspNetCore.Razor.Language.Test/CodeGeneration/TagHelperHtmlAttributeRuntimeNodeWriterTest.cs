@@ -110,7 +110,8 @@ AddHtmlAttributeValue("" "", 27, false, 28, 6, false);
                 var phase = projectEngine.Phases[i];
                 phase.Execute(codeDocument);
 
-                if (phase is IRazorIntermediateNodeLoweringPhase)
+                var nextPhase = i + 1 == projectEngine.Phases.Count ? null : projectEngine.Phases[i + 1];
+                if (phase is IRazorIntermediateNodeLoweringPhase && !(nextPhase is IRazorIntermediateNodeLoweringPhase))
                 {
                     break;
                 }

@@ -40,23 +40,21 @@ RazorDocument - [0..70)::70 - [<person age="12" birthday="DateTime.Now" name="Ti
                     MarkupTextLiteral - [46..47)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                     MarkupTagHelperAttributeValue - [47..66)::19
-                        MarkupLiteralAttributeValue - [47..52)::5 - [Time:]
-                            MarkupTextLiteral - [47..52)::5 - [Time:] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                Text;[Time:];
-                        MarkupDynamicAttributeValue - [52..66)::14 - [ @DateTime.Now]
+                        MarkupTextLiteral - [47..52)::5 - [Time:] - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Text;[Time:];
+                        MarkupBlock - [52..66)::14
                             MarkupTextLiteral - [52..53)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                                 Whitespace;[ ];
-                            GenericBlock - [53..66)::13
-                                CSharpCodeBlock - [53..66)::13
-                                    CSharpImplicitExpression - [53..66)::13
-                                        CSharpTransition - [53..54)::1 - Gen<None> - SpanEditHandler;Accepts:None
-                                            Transition;[@];
-                                        CSharpImplicitExpressionBody - [54..66)::12
-                                            CSharpCodeBlock - [54..66)::12
-                                                CSharpExpressionLiteral - [54..66)::12 - [DateTime.Now] - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
-                                                    Identifier;[DateTime];
-                                                    Dot;[.];
-                                                    Identifier;[Now];
+                            CSharpCodeBlock - [53..66)::13
+                                CSharpImplicitExpression - [53..66)::13
+                                    CSharpTransition - [53..54)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                                        Transition;[@];
+                                    CSharpImplicitExpressionBody - [54..66)::12
+                                        CSharpCodeBlock - [54..66)::12
+                                            CSharpExpressionLiteral - [54..66)::12 - [DateTime.Now] - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                                                Identifier;[DateTime];
+                                                Dot;[.];
+                                                Identifier;[Now];
                     MarkupTextLiteral - [66..67)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                 MarkupTextLiteral - [67..70)::3 - [ />] - Gen<Markup> - SpanEditHandler;Accepts:Any

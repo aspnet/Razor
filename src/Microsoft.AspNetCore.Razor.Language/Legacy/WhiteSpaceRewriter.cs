@@ -10,6 +10,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
     {
         public override SyntaxNode Visit(SyntaxNode node)
         {
+            if (node == null)
+            {
+                return base.Visit(node);
+            }
+
             var children = node.ChildNodes();
             for (var i = 0; i < children.Count; i++)
             {

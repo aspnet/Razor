@@ -45,9 +45,8 @@ RazorDocument - [0..73)::73 - [<person age="12" birthday="DateTime.Now" name="@@
                                 Transition;[@];
                             MarkupEphemeralTextLiteral - [48..49)::1 - [@] - Gen<None> - SpanEditHandler;Accepts:None
                                 Transition;[@];
-                        MarkupLiteralAttributeValue - [49..69)::20 - [BoundStringAttribute]
-                            MarkupTextLiteral - [49..69)::20 - [BoundStringAttribute] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                Text;[BoundStringAttribute];
+                        MarkupTextLiteral - [49..69)::20 - [BoundStringAttribute] - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Text;[BoundStringAttribute];
                     MarkupTextLiteral - [69..70)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                 MarkupTextLiteral - [70..73)::3 - [ />] - Gen<Markup> - SpanEditHandler;Accepts:Any

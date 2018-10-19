@@ -19,7 +19,7 @@ CSharpCodeBlock - [0..53)::53 - [try { bar(); } @* Foo *@ @* Bar *@ finally { bi
         RazorCommentLiteral;[ Foo ];
         RazorCommentStar;[*];
         RazorCommentTransition;[@];
-    CSharpStatementLiteral - [24..25)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Any
+    CSharpStatementLiteral - [24..25)::1 - [ ] - Gen<Stmt> - SpanEditHandler;Accepts:Any
         Whitespace;[ ];
     RazorComment - [25..34)::9
         RazorCommentTransition;[@];
@@ -27,7 +27,7 @@ CSharpCodeBlock - [0..53)::53 - [try { bar(); } @* Foo *@ @* Bar *@ finally { bi
         RazorCommentLiteral;[ Bar ];
         RazorCommentStar;[*];
         RazorCommentTransition;[@];
-    CSharpStatementLiteral - [34..53)::19 - [ finally { biz(); }] - Gen<None> - SpanEditHandler;Accepts:None
+    CSharpStatementLiteral - [34..53)::19 - [ finally { biz(); }] - Gen<Stmt> - SpanEditHandler;Accepts:None
         Whitespace;[ ];
         Keyword;[finally];
         Whitespace;[ ];

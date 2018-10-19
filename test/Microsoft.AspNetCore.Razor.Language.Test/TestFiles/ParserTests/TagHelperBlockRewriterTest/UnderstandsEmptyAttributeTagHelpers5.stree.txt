@@ -14,6 +14,7 @@ RazorDocument - [0..31)::31 - [<p class1=''class2=""class3= />]
                     MarkupTextLiteral - [10..11)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                     MarkupTagHelperAttributeValue - [11..11)::0
+                        MarkupTextLiteral - [11..11)::0 - []
                     MarkupTextLiteral - [11..12)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                 MarkupTagHelperAttribute - [12..21)::9 - class2 - DoubleQuotes - Unbound - [class2=""]
@@ -23,6 +24,7 @@ RazorDocument - [0..31)::31 - [<p class1=''class2=""class3= />]
                     MarkupTextLiteral - [19..20)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                     MarkupTagHelperAttributeValue - [20..20)::0
+                        MarkupTextLiteral - [20..20)::0 - []
                     MarkupTextLiteral - [20..21)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                 MarkupTagHelperAttribute - [21..28)::7 - class3 - DoubleQuotes - Unbound - [class3=]

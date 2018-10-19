@@ -15,7 +15,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             // 3. Repeated null checks
 
             // PERF: Avoid testing node for null more than once
-            var node = token.Green;
+            var node = token?.Green;
             if (node == null)
             {
                 return token;

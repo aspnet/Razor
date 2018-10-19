@@ -262,18 +262,20 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
             do
             {
+                SyntaxNode lastChild = null;
                 for (var i = node.SlotCount - 1; i >= 0; i--)
                 {
                     var child = node.GetNodeSlot(i);
-                    if (child != null)
+                    if (child != null && child.FullWidth > 0)
                     {
-                        node = child;
+                        lastChild = child;
                         break;
                     }
                 }
-            } while (node.SlotCount != 0);
+                node = lastChild;
+            } while (node?.SlotCount > 0);
 
-            return node == this ? this : node;
+            return node;
         }
 
         /// <summary>

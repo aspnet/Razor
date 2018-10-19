@@ -141,6 +141,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             phases.Add(new DefaultRazorSyntaxTreePhase());
             phases.Add(new DefaultRazorTagHelperBinderPhase());
             phases.Add(new DefaultRazorIntermediateNodeLoweringPhase());
+            phases.Add(new LegacyRazorIntermediateNodeLoweringPhase());
             phases.Add(new DefaultRazorDocumentClassifierPhase());
             phases.Add(new DefaultRazorDirectiveClassifierPhase());
             phases.Add(new DefaultRazorOptimizationPhase());

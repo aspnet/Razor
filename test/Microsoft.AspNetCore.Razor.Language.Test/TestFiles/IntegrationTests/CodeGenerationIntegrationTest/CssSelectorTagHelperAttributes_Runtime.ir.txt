@@ -4,7 +4,7 @@ Document -
         RazorSourceChecksumAttribute - 
         ClassDeclaration -  - public - TestFiles_IntegrationTests_CodeGenerationIntegrationTest_CssSelectorTagHelperAttributes_Runtime -  - 
             PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_0 - href - ~/ - HtmlAttributeValueStyle.DoubleQuotes
-            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_1 - href - ~/hello - HtmlAttributeValueStyle.DoubleQuotes
+            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_1 - href - ~/hello - HtmlAttributeValueStyle.NoQuotes
             PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_2 - href - ~/?hello=world - HtmlAttributeValueStyle.DoubleQuotes
             PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_3 - href - ~/?hello=world@false - HtmlAttributeValueStyle.DoubleQuotes
             PreallocatedTagHelperPropertyValue -  - __tagHelperAttribute_4 - type - text - HtmlAttributeValueStyle.DoubleQuotes

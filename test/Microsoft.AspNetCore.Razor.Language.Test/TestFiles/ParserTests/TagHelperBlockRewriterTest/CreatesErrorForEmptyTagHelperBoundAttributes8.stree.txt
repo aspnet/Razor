@@ -22,9 +22,8 @@ RazorDocument - [0..25)::25 - [<myth bound= name='  ' />]
                     MarkupTextLiteral - [18..19)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                     MarkupTagHelperAttributeValue - [19..21)::2
-                        MarkupLiteralAttributeValue - [19..21)::2 - [  ]
-                            MarkupTextLiteral - [19..21)::2 - [  ] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                Whitespace;[  ];
+                        MarkupTextLiteral - [19..21)::2 - [  ]
+                            Whitespace;[  ];
                     MarkupTextLiteral - [21..22)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                 MarkupTextLiteral - [22..25)::3 - [ />] - Gen<Markup> - SpanEditHandler;Accepts:Any

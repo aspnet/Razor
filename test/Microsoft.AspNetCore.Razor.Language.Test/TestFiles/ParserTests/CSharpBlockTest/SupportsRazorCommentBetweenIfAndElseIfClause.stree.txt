@@ -22,7 +22,7 @@ CSharpCodeBlock - [0..62)::62 - [if(foo) { bar(); } @* Foo *@ @* Bar *@ else if(
         RazorCommentLiteral;[ Foo ];
         RazorCommentStar;[*];
         RazorCommentTransition;[@];
-    CSharpStatementLiteral - [28..29)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Any
+    CSharpStatementLiteral - [28..29)::1 - [ ] - Gen<Stmt> - SpanEditHandler;Accepts:Any
         Whitespace;[ ];
     RazorComment - [29..38)::9
         RazorCommentTransition;[@];
@@ -30,7 +30,7 @@ CSharpCodeBlock - [0..62)::62 - [if(foo) { bar(); } @* Foo *@ @* Bar *@ else if(
         RazorCommentLiteral;[ Bar ];
         RazorCommentStar;[*];
         RazorCommentTransition;[@];
-    CSharpStatementLiteral - [38..62)::24 - [ else if(bar) { baz(); }] - Gen<None> - SpanEditHandler;Accepts:Any
+    CSharpStatementLiteral - [38..62)::24 - [ else if(bar) { baz(); }] - Gen<Stmt> - SpanEditHandler;Accepts:Any
         Whitespace;[ ];
         Keyword;[else];
         Whitespace;[ ];

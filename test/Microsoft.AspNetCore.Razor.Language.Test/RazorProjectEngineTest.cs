@@ -34,6 +34,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Test
                 phase => Assert.IsType<DefaultRazorSyntaxTreePhase>(phase),
                 phase => Assert.IsType<DefaultRazorTagHelperBinderPhase>(phase),
                 phase => Assert.IsType<DefaultRazorIntermediateNodeLoweringPhase>(phase),
+                phase => Assert.IsType<LegacyRazorIntermediateNodeLoweringPhase>(phase),
                 phase => Assert.IsType<DefaultRazorDocumentClassifierPhase>(phase),
                 phase => Assert.IsType<DefaultRazorDirectiveClassifierPhase>(phase),
                 phase => Assert.IsType<DefaultRazorOptimizationPhase>(phase),

@@ -13,7 +13,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             var parser = new RazorParser();
             var sourceDocument = TestRazorSourceDocument.CreateResource("TestFiles/Source/BasicMarkup.cshtml", GetType());
-            var output = parser.Parse(sourceDocument);
+            var output = parser.Parse(sourceDocument, legacy: false);
 
             Assert.NotNull(output);
         }
@@ -24,45 +24,34 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             // Arrange
             var factory = new SpanFactory();
             var parser = new RazorParser();
+            var expected =
+@"RazorDocument - [0..12)::12 - [foo @bar baz]
+    MarkupBlock - [0..12)::12
+        MarkupTextLiteral - [0..4)::4 - [foo ] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Text;[foo];
+            Whitespace;[ ];
+        CSharpCodeBlock - [4..8)::4
+            CSharpImplicitExpression - [4..8)::4
+                CSharpTransition - [4..5)::1 - Gen<None> - SpanEditHandler;Accepts:None
+                    Transition;[@];
+                CSharpImplicitExpressionBody - [5..8)::3
+                    CSharpCodeBlock - [5..8)::3
+                        CSharpExpressionLiteral - [5..8)::3 - [bar] - Gen<Expr> - ImplicitExpressionEditHandler;Accepts:NonWhitespace;ImplicitExpression[RTD];K14
+                            Identifier;[bar];
+        MarkupTextLiteral - [8..12)::4 - [ baz] - Gen<Markup> - SpanEditHandler;Accepts:Any
+            Whitespace;[ ];
+            Text;[baz];
+";
 
             // Act
-            var syntaxTree = parser.Parse(TestRazorSourceDocument.Create("foo @bar baz"));
+            var syntaxTree = parser.Parse(TestRazorSourceDocument.Create("foo @bar baz"), legacy: false);
 
             // Assert
-            ParserTestBase.EvaluateResults(parser.Parse(TestRazorSourceDocument.Create("foo @bar baz")),
-                new MarkupBlock(
-                    factory.Markup("foo "),
-                    new ExpressionBlock(
-                        factory.CodeTransition(),
-                        factory.Code("bar")
-                               .AsImplicitExpression(CSharpCodeParser.DefaultKeywords)
-                               .Accepts(AcceptedCharactersInternal.NonWhitespace)),
-                    factory.Markup(" baz")));
+            var actual = SyntaxNodeSerializer.Serialize(syntaxTree.Root);
+            Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void ParseMethodUsesProvidedParserListenerIfSpecified()
-        {
-            // Arrange
-            var factory = new SpanFactory();
-            var parser = new RazorParser();
-
-            // Act
-            var results = parser.Parse(TestRazorSourceDocument.Create("foo @bar baz"));
-
-            // Assert
-            ParserTestBase.EvaluateResults(results,
-                new MarkupBlock(
-                    factory.Markup("foo "),
-                    new ExpressionBlock(
-                        factory.CodeTransition(),
-                        factory.Code("bar")
-                               .AsImplicitExpression(CSharpCodeParser.DefaultKeywords)
-                               .Accepts(AcceptedCharactersInternal.NonWhitespace)),
-                    factory.Markup(" baz")));
-        }
-
-        [Fact]
+        [Fact(Skip = "Uses old tree")]
         public void Parse_SyntaxTreeSpansAreLinked()
         {
             // Arrange

@@ -99,8 +99,8 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override SyntaxNode VisitGenericBlock(GenericBlockSyntax node)
         {
-            if (!(node.Parent is MarkupDynamicAttributeValueSyntax) &&
-                node.FirstAncestorOrSelf<SyntaxNode>(n => n is MarkupDynamicAttributeValueSyntax) != null)
+            if (!(node.Parent is MarkupTagHelperAttributeValueSyntax) &&
+                node.FirstAncestorOrSelf<SyntaxNode>(n => n is MarkupTagHelperAttributeValueSyntax) != null)
             {
                 return WriteBlock(node, BlockKindInternal.Expression, base.VisitGenericBlock);
             }
@@ -284,8 +284,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                 return;
             }
 
-            var spanSource = GetSourceSpanForNode(node);
-            var blockSource = GetSourceSpanForNode(_currentBlock);
+            var spanSource = node.GetSourceSpan(_source);
+            var blockSource = _currentBlock.GetSourceSpan(_source);
             if (!acceptedCharacters.HasValue)
             {
                 acceptedCharacters = AcceptedCharactersInternal.Any;
@@ -336,36 +336,6 @@ namespace Microsoft.AspNetCore.Razor.Language
                 builder.ToList<Syntax.InternalSyntax.SyntaxToken>());
 
             return (MarkupTextLiteralSyntax)mergedLiteralSyntax.CreateRed(parent, position);
-        }
-
-        private SourceSpan GetSourceSpanForNode(SyntaxNode node)
-        {
-            try
-            {
-                if (_source.Length == 0)
-                {
-                    // Just a marker symbol
-                    return new SourceSpan(_source.FilePath, 0, 0, 0, node.FullWidth);
-                }
-                if (node.Position >= _source.Length)
-                {
-                    // E.g. Marker symbol at the end of the document
-                    var lastLocation = _source.Lines.GetLocation(_source.Length - 1);
-                    return new SourceSpan(
-                        lastLocation.FilePath,
-                        lastLocation.AbsoluteIndex + 1,
-                        lastLocation.LineIndex,
-                        lastLocation.CharacterIndex + 1,
-                        node.FullWidth);
-                }
-
-                return node.GetSourceSpan(_source);
-            }
-            catch (IndexOutOfRangeException)
-            {
-                Debug.Assert(false, "Node position should stay within document length.");
-                return new SourceSpan(_source.FilePath, node.Position, 0, 0, node.FullWidth);
-            }
         }
     }
 }

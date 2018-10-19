@@ -1,7 +1,9 @@
 ﻿// Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax
 {
@@ -17,6 +19,17 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         internal static InternalSyntax.SyntaxList<T> ToGreenList<T>(this GreenNode node) where T : GreenNode
         {
             return new InternalSyntax.SyntaxList<T>(node);
+        }
+
+        public static object GetAnnotationValue<TNode>(this TNode node, string key) where TNode : GreenNode
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
+            var annotation = node.GetAnnotations().FirstOrDefault(n => n.Kind == key);
+            return annotation?.Data;
         }
 
         public static TNode WithAnnotationsGreen<TNode>(this TNode node, params SyntaxAnnotation[] annotations) where TNode : GreenNode

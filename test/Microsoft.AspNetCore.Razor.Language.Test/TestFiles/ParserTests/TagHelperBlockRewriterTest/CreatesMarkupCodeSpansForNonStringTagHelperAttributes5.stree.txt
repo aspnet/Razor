@@ -14,9 +14,8 @@ RazorDocument - [0..22)::22 - [<person name="John" />]
                     MarkupTextLiteral - [13..14)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                     MarkupTagHelperAttributeValue - [14..18)::4
-                        MarkupLiteralAttributeValue - [14..18)::4 - [John]
-                            MarkupTextLiteral - [14..18)::4 - [John] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                Text;[John];
+                        MarkupTextLiteral - [14..18)::4 - [John] - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Text;[John];
                     MarkupTextLiteral - [18..19)::1 - ["] - Gen<None> - SpanEditHandler;Accepts:Any
                         DoubleQuote;["];
                 MarkupTextLiteral - [19..22)::3 - [ />] - Gen<Markup> - SpanEditHandler;Accepts:Any

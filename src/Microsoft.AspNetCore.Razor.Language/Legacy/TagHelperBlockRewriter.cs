@@ -221,9 +221,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
                 if (attributeBlock.Value is GenericBlockSyntax wrapper &&
                     wrapper.Children.Count == 1 &&
-                    wrapper.Children[0] is MarkupLiteralAttributeValueSyntax)
+                    (wrapper.Children[0] is MarkupLiteralAttributeValueSyntax ||
+                    wrapper.Children[0] is MarkupTextLiteralSyntax))
                 {
                     // Attribute value is a string literal. Eg: <tag my-attribute=foo />.
+                    // It is usually represented as MarkupLiteralAttributeValue but it could also be
+                    // MarkupTextLiteral in cases like data- attributes which are parsed differently.
                     result.AttributeStructure = AttributeStructure.NoQuotes;
                 }
                 else
@@ -257,11 +260,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             if (attributeValue == null)
             {
                 var builder = SyntaxListBuilder<RazorSyntaxNode>.Create();
-                if (attributeBlock.ValuePrefix == null || attributeBlock.ValueSuffix == null)
-                {
-                    // Add a marker for attribute value when there are no quotes like, <p class= >
-                    builder.Add(SyntaxFactory.MarkupTextLiteral(new SyntaxList<SyntaxToken>()));
-                }
+
+                // Add a marker for attribute value when there are no quotes like, <p class= >
+                builder.Add(SyntaxFactory.MarkupTextLiteral(new SyntaxList<SyntaxToken>()));
 
                 attributeValue = SyntaxFactory.GenericBlock(builder.ToList());
             }
@@ -288,7 +289,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             var rewriter = new AttributeValueRewriter(result);
             var rewrittenValue = attributeValue;
-            if (result.IsBoundNonStringAttribute)
+            if (result.IsBoundAttribute)
             {
                 // If the attribute was requested by a tag helper but the corresponding property was not a
                 // string, then treat its value as code. A non-string value can be any C# value so we need
@@ -376,7 +377,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         private class AttributeValueRewriter : SyntaxRewriter
         {
             private readonly TryParseResult _tryParseResult;
-            private bool _visitedFirstSpan = false;
+            private bool _rewriteAsMarkup = false;
 
             public AttributeValueRewriter(TryParseResult result)
             {
@@ -385,6 +386,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             public override SyntaxNode VisitCSharpTransition(CSharpTransitionSyntax node)
             {
+                if (!_tryParseResult.IsBoundNonStringAttribute)
+                {
+                    return base.VisitCSharpTransition(node);
+                }
+
                 // For bound non-string attributes, we'll only allow a transition span to appear at the very
                 // beginning of the attribute expression. All later transitions would appear as code so that
                 // they are part of the generated output. E.g.
@@ -394,40 +400,44 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // key="@int + @case" -> MyTagHelper.key = int + @case
                 // key="@(a + b) -> MyTagHelper.key = a + b
                 // key="4 + @(a + b)" -> MyTagHelper.key = 4 + @(a + b)
-                if (_visitedFirstSpan)
+                if (_rewriteAsMarkup)
                 {
                     // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
-                    var spanContext = node.GetSpanContext();
-                    var newSpanContext = new SpanContext(new MarkupChunkGenerator(), spanContext.EditHandler);
+                    var context = node.GetSpanContext();
+                    var newContext = new SpanContext(new MarkupChunkGenerator(), context.EditHandler);
 
-                    var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition)).WithSpanContext(newSpanContext);
+                    var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition)).WithSpanContext(newContext);
 
                     return base.VisitCSharpExpressionLiteral(expression);
                 }
 
-                _visitedFirstSpan = true;
+                _rewriteAsMarkup = true;
                 return base.VisitCSharpTransition(node);
             }
 
             public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
             {
-                if (_visitedFirstSpan)
+                if (_rewriteAsMarkup)
                 {
                     var builder = SyntaxListBuilder<RazorSyntaxNode>.Create();
-                    if (node.Transition != null)
-                    {
-                        // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
-                        var spanContext = node.GetSpanContext();
-                        var newSpanContext = new SpanContext(new MarkupChunkGenerator(), spanContext?.EditHandler ?? SpanEditHandler.CreateDefault((content) => Enumerable.Empty<Syntax.InternalSyntax.SyntaxToken>()));
 
-                        var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition.Transition)).WithSpanContext(newSpanContext);
-                        expression = (CSharpExpressionLiteralSyntax)VisitCSharpExpressionLiteral(expression);
-                        builder.Add(expression);
-                    }
+                    // Convert transition.
+                    // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
+                    var context = node.GetSpanContext();
+                    var newContext = new SpanContext(new MarkupChunkGenerator(), context?.EditHandler ?? SpanEditHandler.CreateDefault((content) => Enumerable.Empty<Syntax.InternalSyntax.SyntaxToken>()));
+
+                    var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition.Transition)).WithSpanContext(newContext);
+                    expression = (CSharpExpressionLiteralSyntax)VisitCSharpExpressionLiteral(expression);
+                    builder.Add(expression);
+
                     var rewrittenBody = (CSharpCodeBlockSyntax)VisitCSharpCodeBlock(((CSharpImplicitExpressionBodySyntax)node.Body).CSharpCode);
                     builder.AddRange(rewrittenBody.Children);
 
-                    return SyntaxFactory.GenericBlock(builder.ToList());
+                    // Since the original transition is part of the body, we need something to take it's place.
+                    var transition = SyntaxFactory.CSharpTransition(SyntaxFactory.MissingToken(SyntaxKind.Transition));
+
+                    var rewrittenCodeBlock = SyntaxFactory.CSharpCodeBlock(builder.ToList());
+                    return SyntaxFactory.CSharpImplicitExpression(transition, SyntaxFactory.CSharpImplicitExpressionBody(rewrittenCodeBlock));
                 }
 
                 return base.VisitCSharpImplicitExpression(node);
@@ -435,19 +445,22 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             public override SyntaxNode VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
             {
-                if (_visitedFirstSpan)
+                CSharpTransitionSyntax transition = null;
+                var builder = SyntaxListBuilder<RazorSyntaxNode>.Create();
+                if (_rewriteAsMarkup)
                 {
-                    var builder = SyntaxListBuilder<RazorSyntaxNode>.Create();
-                    if (node.Transition != null)
-                    {
-                        // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
-                        var spanContext = node.GetSpanContext();
-                        var newSpanContext = new SpanContext(new MarkupChunkGenerator(), spanContext?.EditHandler ?? SpanEditHandler.CreateDefault((content) => Enumerable.Empty<Syntax.InternalSyntax.SyntaxToken>()));
+                    // Convert transition.
+                    // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
+                    var context = node.GetSpanContext();
+                    var newContext = new SpanContext(new MarkupChunkGenerator(), context?.EditHandler ?? SpanEditHandler.CreateDefault((content) => Enumerable.Empty<Syntax.InternalSyntax.SyntaxToken>()));
 
-                        var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition.Transition)).WithSpanContext(newSpanContext);
-                        expression = (CSharpExpressionLiteralSyntax)VisitCSharpExpressionLiteral(expression);
-                        builder.Add(expression);
-                    }
+                    var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.Transition.Transition)).WithSpanContext(newContext);
+                    expression = (CSharpExpressionLiteralSyntax)VisitCSharpExpressionLiteral(expression);
+                    builder.Add(expression);
+
+                    // Since the original transition is part of the body, we need something to take it's place.
+                    transition = SyntaxFactory.CSharpTransition(SyntaxFactory.MissingToken(SyntaxKind.Transition));
+
                     var body = (CSharpExplicitExpressionBodySyntax)node.Body;
                     var rewrittenOpenParen = (RazorSyntaxNode)VisitRazorMetaCode(body.OpenParen);
                     var rewrittenBody = (CSharpCodeBlockSyntax)VisitCSharpCodeBlock(body.CSharpCode);
@@ -455,43 +468,63 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     builder.Add(rewrittenOpenParen);
                     builder.AddRange(rewrittenBody.Children);
                     builder.Add(rewrittenCloseParen);
-
-                    return SyntaxFactory.GenericBlock(builder.ToList());
+                }
+                else
+                {
+                    // This is the first expression of a non-string attribute like attr=@(a + b)
+                    // Below code converts this to an implicit expression to make the parens
+                    // part of the expression so that it is rendered.
+                    transition = (CSharpTransitionSyntax)Visit(node.Transition);
+                    var body = (CSharpExplicitExpressionBodySyntax)node.Body;
+                    var rewrittenOpenParen = (RazorSyntaxNode)VisitRazorMetaCode(body.OpenParen);
+                    var rewrittenBody = (CSharpCodeBlockSyntax)VisitCSharpCodeBlock(body.CSharpCode);
+                    var rewrittenCloseParen = (RazorSyntaxNode)VisitRazorMetaCode(body.CloseParen);
+                    builder.Add(rewrittenOpenParen);
+                    builder.AddRange(rewrittenBody.Children);
+                    builder.Add(rewrittenCloseParen);
                 }
 
-                return base.VisitCSharpExplicitExpression(node);
+                var rewrittenCodeBlock = SyntaxFactory.CSharpCodeBlock(builder.ToList());
+                return SyntaxFactory.CSharpImplicitExpression(transition, SyntaxFactory.CSharpImplicitExpressionBody(rewrittenCodeBlock));
             }
 
             public override SyntaxNode VisitRazorMetaCode(RazorMetaCodeSyntax node)
             {
-                if (_visitedFirstSpan)
+                if (!_tryParseResult.IsBoundNonStringAttribute)
+                {
+                    return base.VisitRazorMetaCode(node);
+                }
+
+                if (_rewriteAsMarkup)
                 {
                     // Change to a MarkupChunkGenerator so that the '@' \ parenthesis is generated as part of the output.
-                    var spanContext = node.GetSpanContext();
-                    var newSpanContext = new SpanContext(new MarkupChunkGenerator(), spanContext.EditHandler);
+                    var context = node.GetSpanContext();
+                    var newContext = new SpanContext(new MarkupChunkGenerator(), context.EditHandler);
 
-                    var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.MetaCode)).WithSpanContext(newSpanContext);
+                    var expression = SyntaxFactory.CSharpExpressionLiteral(new SyntaxList<SyntaxToken>(node.MetaCode)).WithSpanContext(newContext);
 
                     return VisitCSharpExpressionLiteral(expression);
                 }
 
-                _visitedFirstSpan = true;
+                _rewriteAsMarkup = true;
                 return base.VisitRazorMetaCode(node);
             }
 
             public override SyntaxNode VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
             {
+                if (!_tryParseResult.IsBoundNonStringAttribute)
+                {
+                    return base.VisitCSharpExpressionLiteral(node);
+                }
+
                 node = (CSharpExpressionLiteralSyntax)ConfigureNonStringAttribute(node);
 
-                _visitedFirstSpan = true;
+                _rewriteAsMarkup = true;
                 return base.VisitCSharpExpressionLiteral(node);
             }
 
             public override SyntaxNode VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
             {
-                _visitedFirstSpan = true;
-
-                // Since this is a bound non-string attribute, we want to convert LiteralAttributeValue to just be a CSharp Expression literal.
                 var builder = SyntaxListBuilder<SyntaxToken>.Create();
                 if (node.Prefix != null)
                 {
@@ -502,9 +535,21 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     builder.AddRange(node.Value.LiteralTokens);
                 }
 
-                var expression = SyntaxFactory.CSharpExpressionLiteral(builder.ToList());
+                if (_tryParseResult.IsBoundNonStringAttribute)
+                {
+                    _rewriteAsMarkup = true;
+                    // Since this is a bound non-string attribute, we want to convert LiteralAttributeValue to just be a CSharp Expression literal.
+                    var expression = SyntaxFactory.CSharpExpressionLiteral(builder.ToList());
+                    return VisitCSharpExpressionLiteral(expression);
+                }
+                else
+                {
+                    var literal = SyntaxFactory.MarkupTextLiteral(builder.ToList());
+                    var context = node.Value?.GetSpanContext();
+                    literal = context != null ? literal.WithSpanContext(context) : literal;
 
-                return VisitCSharpExpressionLiteral(expression);
+                    return Visit(literal);
+                }
             }
 
             public override SyntaxNode VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
@@ -519,40 +564,56 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 {
                     builder.AddRange(node.Value.Children);
                 }
-                var rewrittenValue = SyntaxFactory.GenericBlock(builder.ToList());
-                var rewritten = SyntaxFactory.MarkupDynamicAttributeValue(prefix: null, value: rewrittenValue);
+                var rewrittenValue = SyntaxFactory.MarkupBlock(builder.ToList());
 
-                return base.VisitMarkupDynamicAttributeValue(rewritten);
+                return base.VisitMarkupBlock(rewrittenValue);
             }
 
             public override SyntaxNode VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
             {
-                _visitedFirstSpan = true;
+                if (!_tryParseResult.IsBoundNonStringAttribute)
+                {
+                    return base.VisitCSharpStatementLiteral(node);
+                }
+
+                _rewriteAsMarkup = true;
                 return base.VisitCSharpStatementLiteral(node);
             }
 
             public override SyntaxNode VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
             {
-                _visitedFirstSpan = true;
+                if (!_tryParseResult.IsBoundNonStringAttribute)
+                {
+                    return base.VisitMarkupTextLiteral(node);
+                }
+
+                _rewriteAsMarkup = true;
+                node = (MarkupTextLiteralSyntax)ConfigureNonStringAttribute(node);
                 var tokens = new SyntaxList<SyntaxToken>(node.LiteralTokens);
                 var value = SyntaxFactory.CSharpExpressionLiteral(tokens);
-                value = (CSharpExpressionLiteralSyntax)ConfigureNonStringAttribute(value);
-                return value;
+                return value.WithSpanContext(node.GetSpanContext());
             }
 
             public override SyntaxNode VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
             {
-                _visitedFirstSpan = true;
+                if (!_tryParseResult.IsBoundNonStringAttribute)
+                {
+                    return base.VisitMarkupEphemeralTextLiteral(node);
+                }
+
+                // Since this is a non-string attribute we need to rewrite this as code.
+                // Rewriting it to CSharpEphemeralTextLiteral so that it is not rendered to output.
+                _rewriteAsMarkup = true;
+                node = (MarkupEphemeralTextLiteralSyntax)ConfigureNonStringAttribute(node);
                 var tokens = new SyntaxList<SyntaxToken>(node.LiteralTokens);
-                var value = SyntaxFactory.CSharpExpressionLiteral(tokens);
-                value = (CSharpExpressionLiteralSyntax)ConfigureNonStringAttribute(value);
-                return value;
+                var value = SyntaxFactory.CSharpEphemeralTextLiteral(tokens);
+                return value.WithSpanContext(node.GetSpanContext());
             }
 
             private SyntaxNode ConfigureNonStringAttribute(SyntaxNode node)
             {
-                var spanContext = node.GetSpanContext();
-                var builder = spanContext != null ? new SpanContextBuilder(spanContext) : new SpanContextBuilder();
+                var context = node.GetSpanContext();
+                var builder = context != null ? new SpanContextBuilder(context) : new SpanContextBuilder();
                 builder.EditHandler = new ImplicitExpressionEditHandler(
                         builder.EditHandler.Tokenizer,
                         CSharpCodeParser.DefaultKeywords,
@@ -571,9 +632,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     builder.ChunkGenerator = new ExpressionChunkGenerator();
                 }
 
-                spanContext = builder.Build();
+                context = builder.Build();
 
-                return node.WithSpanContext(spanContext);
+                return node.WithSpanContext(context);
             }
         }
 

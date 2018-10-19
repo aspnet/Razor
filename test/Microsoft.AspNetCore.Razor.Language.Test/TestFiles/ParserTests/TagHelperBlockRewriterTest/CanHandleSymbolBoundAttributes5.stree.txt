@@ -19,9 +19,8 @@ RazorDocument - [0..46)::46 - [<template bound *something='value'></template>]
                     MarkupTextLiteral - [27..28)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                     MarkupTagHelperAttributeValue - [28..33)::5
-                        MarkupLiteralAttributeValue - [28..33)::5 - [value]
-                            MarkupTextLiteral - [28..33)::5 - [value] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                Text;[value];
+                        MarkupTextLiteral - [28..33)::5 - [value] - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Text;[value];
                     MarkupTextLiteral - [33..34)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                 MarkupTextLiteral - [34..35)::1 - [>] - Gen<Markup> - SpanEditHandler;Accepts:Any

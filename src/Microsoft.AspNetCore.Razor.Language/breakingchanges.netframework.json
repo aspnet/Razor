@@ -11,5 +11,15 @@
     "TypeId": "protected class Microsoft.AspNetCore.Razor.Language.Legacy.CSharpCodeParser+Block",
     "MemberId": "public .ctor(Microsoft.AspNetCore.Razor.Language.Legacy.CSharpSymbol symbol, Microsoft.AspNetCore.Razor.Language.SourceLocation start)",
     "Kind": "Removal"
+  },
+  {
+    "TypeId": "public abstract class Microsoft.AspNetCore.Razor.Language.RazorSyntaxTree",
+    "MemberId": "public static Microsoft.AspNetCore.Razor.Language.RazorSyntaxTree Parse(Microsoft.AspNetCore.Razor.Language.RazorSourceDocument source)",
+    "Kind": "Removal"
+  },
+  {
+    "TypeId": "public abstract class Microsoft.AspNetCore.Razor.Language.RazorSyntaxTree",
+    "MemberId": "public static Microsoft.AspNetCore.Razor.Language.RazorSyntaxTree Parse(Microsoft.AspNetCore.Razor.Language.RazorSourceDocument source, Microsoft.AspNetCore.Razor.Language.RazorParserOptions options)",
+    "Kind": "Removal"
   }
 ]

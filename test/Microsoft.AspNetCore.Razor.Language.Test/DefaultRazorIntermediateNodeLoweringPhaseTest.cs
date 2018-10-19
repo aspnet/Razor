@@ -32,8 +32,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             var options = RazorParserOptions.Create(builder => builder.Directives.Add(directive));
             var importSource = TestRazorSourceDocument.Create("@custom \"hello\"", filePath: "import.cshtml");
             var codeDocument = TestRazorCodeDocument.Create("<p>NonDirective</p>");
-            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options));
-            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options) });
+            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options, legacy: false));
+            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options, legacy: false) });
 
             // Act
             phase.Execute(codeDocument);
@@ -67,8 +67,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             var options = RazorParserOptions.Create(builder => builder.Directives.Add(directive));
             var importSource = TestRazorSourceDocument.Create("@custom \"hello\"", filePath: "import.cshtml");
             var codeDocument = TestRazorCodeDocument.Create("@custom \"world\"");
-            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options));
-            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options) });
+            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options, legacy: false));
+            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options, legacy: false) });
 
             // Act
             phase.Execute(codeDocument);
@@ -103,8 +103,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             var importSource1 = TestRazorSourceDocument.Create("@custom \"hello\"", filePath: "import1.cshtml");
             var importSource2 = TestRazorSourceDocument.Create("@custom \"world\"", filePath: "import2.cshtml");
             var codeDocument = TestRazorCodeDocument.Create("<p>NonDirective</p>");
-            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options));
-            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource1, options), RazorSyntaxTree.Parse(importSource2, options) });
+            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options, legacy: false));
+            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource1, options, legacy: false), RazorSyntaxTree.Parse(importSource2, options, legacy: false) });
 
             // Act
             phase.Execute(codeDocument);
@@ -141,8 +141,8 @@ namespace Microsoft.AspNetCore.Razor.Language
 @razor ""razor block"" { }",
                 filePath: "testImports.cshtml");
             var codeDocument = TestRazorCodeDocument.Create("<p>NonDirective</p>");
-            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options));
-            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options) });
+            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options, legacy: false));
+            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options, legacy: false) });
 
             // Act
             phase.Execute(codeDocument);
@@ -168,8 +168,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             var options = RazorParserOptions.Create(builder => builder.Directives.Add(directive));
             var importSource = TestRazorSourceDocument.Create("@custom { }", filePath: "import.cshtml");
             var codeDocument = TestRazorCodeDocument.Create("<p>NonDirective</p>");
-            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options));
-            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options) });
+            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options, legacy: false));
+            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options, legacy: false) });
             var expectedDiagnostic = RazorDiagnosticFactory.CreateDirective_BlockDirectiveCannotBeImported("custom");
 
             // Act
@@ -198,8 +198,8 @@ namespace Microsoft.AspNetCore.Razor.Language
             var options = RazorParserOptions.Create(builder => builder.Directives.Add(directive));
             var importSource = TestRazorSourceDocument.Create("@custom { }", filePath: "import.cshtml");
             var codeDocument = TestRazorCodeDocument.Create("<p>NonDirective</p>");
-            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options));
-            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options) });
+            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, options, legacy: false));
+            codeDocument.SetImportSyntaxTrees(new[] { RazorSyntaxTree.Parse(importSource, options, legacy: false) });
             var expectedDiagnostic = RazorDiagnosticFactory.CreateDirective_BlockDirectiveCannotBeImported("custom");
 
             // Act
@@ -245,7 +245,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                 b.Features.Add(new DefaultRazorCodeGenerationOptionsFeature(designTime: false));
             });
             var codeDocument = TestRazorCodeDocument.Create("<p class=@(");
-            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source));
+            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, legacy: false));
 
             // Act
             phase.Execute(codeDocument);
@@ -269,11 +269,11 @@ namespace Microsoft.AspNetCore.Razor.Language
             });
 
             var codeDocument = TestRazorCodeDocument.CreateEmpty();
-            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source));
+            codeDocument.SetSyntaxTree(RazorSyntaxTree.Parse(codeDocument.Source, legacy: false));
             codeDocument.SetImportSyntaxTrees(new[]
             {
-                RazorSyntaxTree.Parse(TestRazorSourceDocument.Create("@ ")),
-                RazorSyntaxTree.Parse(TestRazorSourceDocument.Create("<p @(")),
+                RazorSyntaxTree.Parse(TestRazorSourceDocument.Create("@ "), legacy: false),
+                RazorSyntaxTree.Parse(TestRazorSourceDocument.Create("<p @("), legacy: false),
             });
             var options = RazorCodeGenerationOptions.CreateDefault();
 

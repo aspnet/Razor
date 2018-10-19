@@ -25,14 +25,11 @@ RazorDocument - [0..46)::46 - [@{<input string-prefix-value='some string' />}]
                                         MarkupTextLiteral - [29..30)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                                             SingleQuote;['];
                                         MarkupTagHelperAttributeValue - [30..41)::11
-                                            MarkupLiteralAttributeValue - [30..34)::4 - [some]
-                                                MarkupTextLiteral - [30..34)::4 - [some] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                                    Text;[some];
-                                            MarkupLiteralAttributeValue - [34..41)::7 - [ string]
-                                                MarkupTextLiteral - [34..35)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                                    Whitespace;[ ];
-                                                MarkupTextLiteral - [35..41)::6 - [string] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                                    Text;[string];
+                                            MarkupTextLiteral - [30..34)::4 - [some] - Gen<Markup> - SpanEditHandler;Accepts:Any
+                                                Text;[some];
+                                            MarkupTextLiteral - [34..41)::7 - [ string] - Gen<Markup> - SpanEditHandler;Accepts:Any
+                                                Whitespace;[ ];
+                                                Text;[string];
                                         MarkupTextLiteral - [41..42)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                                             SingleQuote;['];
                                     MarkupTextLiteral - [42..45)::3 - [ />] - Gen<Markup> - SpanEditHandler;Accepts:None

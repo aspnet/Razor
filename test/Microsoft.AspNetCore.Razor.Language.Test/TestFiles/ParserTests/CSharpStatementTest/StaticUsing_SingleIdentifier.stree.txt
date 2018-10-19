@@ -3,7 +3,7 @@ CSharpCodeBlock - [0..20)::20 - [@using static System]
         CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
             Transition;[@];
         RazorDirectiveBody - [1..20)::19
-            CSharpStatementLiteral - [1..20)::19 - [using static System] - Gen<Import:using static System;> - SpanEditHandler;Accepts:AnyExceptNewline
+            CSharpStatementLiteral - [1..20)::19 - [using static System] - Gen<Import: static System;> - SpanEditHandler;Accepts:AnyExceptNewline
                 Keyword;[using];
                 Whitespace;[ ];
                 Keyword;[static];

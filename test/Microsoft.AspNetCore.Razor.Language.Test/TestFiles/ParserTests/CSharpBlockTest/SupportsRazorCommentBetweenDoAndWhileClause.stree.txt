@@ -23,7 +23,7 @@ CSharpCodeBlock - [0..54)::54 - [do { var foo = bar; } @* Foo *@ @* Bar *@ while
         RazorCommentLiteral;[ Foo ];
         RazorCommentStar;[*];
         RazorCommentTransition;[@];
-    CSharpStatementLiteral - [31..32)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Any
+    CSharpStatementLiteral - [31..32)::1 - [ ] - Gen<Stmt> - SpanEditHandler;Accepts:Any
         Whitespace;[ ];
     RazorComment - [32..41)::9
         RazorCommentTransition;[@];
@@ -31,7 +31,7 @@ CSharpCodeBlock - [0..54)::54 - [do { var foo = bar; } @* Foo *@ @* Bar *@ while
         RazorCommentLiteral;[ Bar ];
         RazorCommentStar;[*];
         RazorCommentTransition;[@];
-    CSharpStatementLiteral - [41..54)::13 - [ while(true);] - Gen<None> - SpanEditHandler;Accepts:None
+    CSharpStatementLiteral - [41..54)::13 - [ while(true);] - Gen<Stmt> - SpanEditHandler;Accepts:None
         Whitespace;[ ];
         Keyword;[while];
         LeftParenthesis;[(];

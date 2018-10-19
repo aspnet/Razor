@@ -25,6 +25,7 @@ RazorDocument - [0..32)::32 - [@{<input int-prefix-value='' />}]
                                         MarkupTextLiteral - [26..27)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                                             SingleQuote;['];
                                         MarkupTagHelperAttributeValue - [27..27)::0
+                                            CSharpExpressionLiteral - [27..27)::0 - [] - Gen<None> - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14
                                         MarkupTextLiteral - [27..28)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                                             SingleQuote;['];
                                     MarkupTextLiteral - [28..31)::3 - [ />] - Gen<Markup> - SpanEditHandler;Accepts:None

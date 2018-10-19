@@ -22,9 +22,8 @@ RazorDocument - [0..32)::32 - [<myth BOUND= nAMe='john'></myth>]
                     MarkupTextLiteral - [18..19)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                     MarkupTagHelperAttributeValue - [19..23)::4
-                        MarkupLiteralAttributeValue - [19..23)::4 - [john]
-                            MarkupTextLiteral - [19..23)::4 - [john] - Gen<Markup> - SpanEditHandler;Accepts:Any
-                                Text;[john];
+                        MarkupTextLiteral - [19..23)::4 - [john] - Gen<Markup> - SpanEditHandler;Accepts:Any
+                            Text;[john];
                     MarkupTextLiteral - [23..24)::1 - ['] - Gen<None> - SpanEditHandler;Accepts:Any
                         SingleQuote;['];
                 MarkupTextLiteral - [24..25)::1 - [>] - Gen<Markup> - SpanEditHandler;Accepts:Any

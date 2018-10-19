@@ -706,6 +706,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 throw new InvalidOperationException(Resources.Language_Does_Not_Support_RazorComment);
             }
 
+            RazorCommentBlockSyntax commentBlock;
             using (PushSpanContextConfig(CommentSpanContextConfig))
             {
                 EnsureCurrent();
@@ -736,8 +737,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     endTransition = SyntaxFactory.MissingToken(SyntaxKind.RazorCommentTransition);
                 }
 
-                return SyntaxFactory.RazorCommentBlock(startTransition, startStar, comment, endStar, endTransition);
+                commentBlock = SyntaxFactory.RazorCommentBlock(startTransition, startStar, comment, endStar, endTransition);
+
+                // Make sure we generate a marker symbol after a comment if necessary.
+                Context.LastAcceptedCharacters = AcceptedCharactersInternal.None;
             }
+
+            InitializeContext(SpanContext);
+
+            return commentBlock;
         }
 
         private void CommentSpanContextConfig(SpanContextBuilder spanContext)

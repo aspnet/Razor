@@ -38,7 +38,7 @@ CSharpCodeBlock - [0..78)::78 - [if(foo) { bar(); } else if(bar) { baz(); } @* F
         RazorCommentLiteral;[ Foo ];
         RazorCommentStar;[*];
         RazorCommentTransition;[@];
-    CSharpStatementLiteral - [52..53)::1 - [ ] - Gen<None> - SpanEditHandler;Accepts:Any
+    CSharpStatementLiteral - [52..53)::1 - [ ] - Gen<Stmt> - SpanEditHandler;Accepts:Any
         Whitespace;[ ];
     RazorComment - [53..62)::9
         RazorCommentTransition;[@];
@@ -46,7 +46,7 @@ CSharpCodeBlock - [0..78)::78 - [if(foo) { bar(); } else if(bar) { baz(); } @* F
         RazorCommentLiteral;[ Bar ];
         RazorCommentStar;[*];
         RazorCommentTransition;[@];
-    CSharpStatementLiteral - [62..78)::16 - [ else { baz(); }] - Gen<None> - SpanEditHandler;Accepts:None
+    CSharpStatementLiteral - [62..78)::16 - [ else { baz(); }] - Gen<Stmt> - SpanEditHandler;Accepts:None
         Whitespace;[ ];
         Keyword;[else];
         Whitespace;[ ];
