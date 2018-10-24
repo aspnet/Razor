@@ -70,13 +70,15 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             RazorParserFeatureFlags featureFlags = null)
         {
             var syntaxTree = ParseDocument(documentContent);
+            var conditionalAttributeCollapser = new ConditionalAttributeCollapser();
+            var optimizedTree = conditionalAttributeCollapser.Rewrite(syntaxTree.Root);
             var errorSink = new ErrorSink();
             var parseTreeRewriter = new TagHelperParseTreeRewriter(
                 tagHelperPrefix,
                 descriptors,
                 featureFlags ?? syntaxTree.Options.FeatureFlags);
 
-            var actualTree = parseTreeRewriter.Rewrite(syntaxTree.Root, errorSink);
+            var actualTree = parseTreeRewriter.Rewrite(optimizedTree, errorSink);
 
             var allErrors = syntaxTree.Diagnostics.Concat(errorSink.Errors);
             var actualErrors = allErrors

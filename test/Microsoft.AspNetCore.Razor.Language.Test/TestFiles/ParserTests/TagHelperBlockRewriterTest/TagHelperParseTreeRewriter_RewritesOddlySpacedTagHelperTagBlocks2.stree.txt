@@ -6,21 +6,16 @@ Markup block - Gen<None> - 77 - (0:0,0)
                 SyntaxKind.Whitespace;[     ];
                 SyntaxKind.Text;[foo];
         style - DoubleQuotes
-            Markup block - Gen<None> - 21 - (35:0,35)
-                Markup span - Gen<Markup> - [   color] - SpanEditHandler;Accepts:Any - (35:0,35) - Tokens:2
-                    SyntaxKind.Whitespace;[   ];
-                    SyntaxKind.Text;[color];
-                Markup span - Gen<Markup> - [ :] - SpanEditHandler;Accepts:Any - (43:0,43) - Tokens:2
-                    SyntaxKind.Whitespace;[ ];
-                    SyntaxKind.Text;[:];
-                Markup span - Gen<Markup> - [  red] - SpanEditHandler;Accepts:Any - (45:0,45) - Tokens:2
-                    SyntaxKind.Whitespace;[  ];
-                    SyntaxKind.Text;[red];
-                Markup span - Gen<Markup> - [  ;] - SpanEditHandler;Accepts:Any - (50:0,50) - Tokens:2
-                    SyntaxKind.Whitespace;[  ];
-                    SyntaxKind.Text;[;];
-                Markup span - Gen<Markup> - [   ] - SpanEditHandler;Accepts:Any - (53:0,53) - Tokens:1
-                    SyntaxKind.Whitespace;[   ];
+            Markup span - Gen<Markup> - [   color :  red  ;   ] - SpanEditHandler;Accepts:Any - (35:0,35) - Tokens:9
+                SyntaxKind.Whitespace;[   ];
+                SyntaxKind.Text;[color];
+                SyntaxKind.Whitespace;[ ];
+                SyntaxKind.Text;[:];
+                SyntaxKind.Whitespace;[  ];
+                SyntaxKind.Text;[red];
+                SyntaxKind.Whitespace;[  ];
+                SyntaxKind.Text;[;];
+                SyntaxKind.Whitespace;[   ];
         SyntaxKind.HtmlTextLiteral - [Hello World] - [62..73) - FullWidth: 11 - Slots: 1
             SyntaxKind.List - [Hello World] - [62..73) - FullWidth: 11 - Slots: 3
                 SyntaxKind.Text;[Hello];

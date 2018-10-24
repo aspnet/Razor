@@ -2,6 +2,6 @@ Markup block - Gen<None> - 29 - (0:0,0)
     Tag block - Gen<TagHelper> - 29 - (0:0,0) - myth - mythTagHelper
         SelfClosing - <myth BOUND=''    bOUnd="" />
         BOUND - SingleQuotes
-            Markup block - Gen<None> - 0 - (0:0,0)
+            Code span - Gen<Expr> - [] - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14 - (13:0,13) - Tokens:0
         bOUnd - DoubleQuotes
-            Markup block - Gen<None> - 0 - (0:0,0)
+            Code span - Gen<Markup> - [] - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14 - (25:0,25) - Tokens:0

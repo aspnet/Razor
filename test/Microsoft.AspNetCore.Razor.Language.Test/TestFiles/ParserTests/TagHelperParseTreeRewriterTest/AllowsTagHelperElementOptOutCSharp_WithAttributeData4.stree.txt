@@ -14,26 +14,20 @@ Markup block - Gen<None> - 41 - (0:0,0)
                     SyntaxKind.Bang;[!];
                 Markup span - Gen<Markup> - [p] - SpanEditHandler;Accepts:Any - (4:0,4) - Tokens:1
                     SyntaxKind.Text;[p];
-                Markup block - Gen<Attr:class, class='@(5:0,5),'@(22:0,22)> - 18 - (5:0,5)
-                    Markup span - Gen<None> - [ class='] - SpanEditHandler;Accepts:Any - (5:0,5) - Tokens:4
-                        SyntaxKind.Whitespace;[ ];
-                        SyntaxKind.Text;[class];
-                        SyntaxKind.Equals;[=];
-                        SyntaxKind.SingleQuote;['];
-                    Markup span - Gen<LitAttr:@(13:0,13)> - [btn1] - SpanEditHandler;Accepts:Any - (13:0,13) - Tokens:1
-                        SyntaxKind.Text;[btn1];
-                    Markup span - Gen<LitAttr: @(17:0,17)> - [ btn2] - SpanEditHandler;Accepts:Any - (17:0,17) - Tokens:2
-                        SyntaxKind.Whitespace;[ ];
-                        SyntaxKind.Text;[btn2];
-                    Markup span - Gen<None> - ['] - SpanEditHandler;Accepts:Any - (22:0,22) - Tokens:1
-                        SyntaxKind.SingleQuote;['];
-                Markup block - Gen<Attr:class2, class2=@(23:0,23),@(34:0,34)> - 11 - (23:0,23)
-                    Markup span - Gen<None> - [ class2=] - SpanEditHandler;Accepts:Any - (23:0,23) - Tokens:3
-                        SyntaxKind.Whitespace;[ ];
-                        SyntaxKind.Text;[class2];
-                        SyntaxKind.Equals;[=];
-                    Markup span - Gen<LitAttr:@(31:0,31)> - [btn] - SpanEditHandler;Accepts:Any - (31:0,31) - Tokens:1
-                        SyntaxKind.Text;[btn];
+                Markup span - Gen<Markup> - [ class='btn1 btn2'] - SpanEditHandler;Accepts:Any - (5:0,5) - Tokens:8
+                    SyntaxKind.Whitespace;[ ];
+                    SyntaxKind.Text;[class];
+                    SyntaxKind.Equals;[=];
+                    SyntaxKind.SingleQuote;['];
+                    SyntaxKind.Text;[btn1];
+                    SyntaxKind.Whitespace;[ ];
+                    SyntaxKind.Text;[btn2];
+                    SyntaxKind.SingleQuote;['];
+                Markup span - Gen<Markup> - [ class2=btn] - SpanEditHandler;Accepts:Any - (23:0,23) - Tokens:4
+                    SyntaxKind.Whitespace;[ ];
+                    SyntaxKind.Text;[class2];
+                    SyntaxKind.Equals;[=];
+                    SyntaxKind.Text;[btn];
                 Markup span - Gen<Markup> - [>] - SpanEditHandler;Accepts:None - (34:0,34) - Tokens:1
                     SyntaxKind.CloseAngle;[>];
             Tag block - Gen<None> - 5 - (35:0,35)

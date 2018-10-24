@@ -5,4 +5,4 @@ Markup block - Gen<None> - 29 - (0:0,0)
             Code span - Gen<Expr> - [true] - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14 - (13:0,13) - Tokens:1
                 SyntaxKind.Text;[true];
         bound - DoubleQuotes
-            Code span - Gen<None> - [] - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14 - (25:0,25) - Tokens:0
+            Code span - Gen<Markup> - [] - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14 - (25:0,25) - Tokens:0

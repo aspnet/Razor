@@ -10,7 +10,7 @@ Markup block - Gen<None> - 32 - (0:0,0)
             Tag block - Gen<TagHelper> - 29 - (2:0,2) - input - InputTagHelper3
                 SelfClosing - <input int-prefix-value='' />
                 int-prefix-value - SingleQuotes
-                    Markup block - Gen<None> - 0 - (0:0,0)
+                    Code span - Gen<Expr> - [] - ImplicitExpressionEditHandler;Accepts:AnyExceptNewline;ImplicitExpression[ATD];K14 - (27:0,27) - Tokens:0
         Code span - Gen<Stmt> - [] - SpanEditHandler;Accepts:Any - (31:0,31) - Tokens:1
             SyntaxKind.Unknown;[];
         MetaCode span - Gen<None> - [}] - SpanEditHandler;Accepts:None - (31:0,31) - Tokens:1
