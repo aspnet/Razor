@@ -21,6 +21,8 @@ using Item = System.Collections.Generic.KeyValuePair<string, System.Collections.
 
 #if WORKSPACE_PROJECT_CONTEXT_FACTORY
 using IWorkspaceProjectContextFactory = Microsoft.VisualStudio.LanguageServices.ProjectSystem.IWorkspaceProjectContextFactory2;
+#else
+using Microsoft.VisualStudio.LanguageServices.ProjectSystem;
 #endif
 
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
@@ -40,8 +42,9 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         public DefaultRazorProjectHost(
             IUnconfiguredProjectCommonServices commonServices,
             [Import(typeof(VisualStudioWorkspace))] Workspace workspace,
+            Lazy<RazorDynamicFileInfoProvider> provider,
             Lazy<IWorkspaceProjectContextFactory> projectContextFactory)
-            : base(commonServices, workspace, projectContextFactory)
+            : base(commonServices, workspace, provider, projectContextFactory)
         {
         }
 
@@ -125,8 +128,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                         await UpdateAsync(() =>
                         {
                             UpdateProjectUnsafe(hostProject);
-                            UpdateWorkspaceProjectOptionsUnsafe(commandLineOptions);
-                            UpdateWorkspaceProjectReferencesUnsafe(references);
 
                             for (var i = 0; i < changedDocuments.Length; i++)
                             {
