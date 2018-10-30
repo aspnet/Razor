@@ -19,10 +19,6 @@ using Microsoft.VisualStudio.ProjectSystem.Properties;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Item = System.Collections.Generic.KeyValuePair<string, System.Collections.Immutable.IImmutableDictionary<string, string>>;
 
-#if WORKSPACE_PROJECT_CONTEXT_FACTORY
-using IWorkspaceProjectContextFactory = Microsoft.VisualStudio.LanguageServices.ProjectSystem.IWorkspaceProjectContextFactory2;
-#endif
-
 namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 {
     // Somewhat similar to https://github.com/dotnet/project-system/blob/fa074d228dcff6dae9e48ce43dd4a3a5aa22e8f0/src/Microsoft.VisualStudio.ProjectSystem.Managed/ProjectSystem/LanguageServices/LanguageServiceHost.cs
@@ -39,9 +35,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
         [ImportingConstructor]
         public DefaultRazorProjectHost(
             IUnconfiguredProjectCommonServices commonServices,
-            [Import(typeof(VisualStudioWorkspace))] Workspace workspace,
-            Lazy<IWorkspaceProjectContextFactory> projectContextFactory)
-            : base(commonServices, workspace, projectContextFactory)
+            [Import(typeof(VisualStudioWorkspace))] Workspace workspace)
+            : base(commonServices, workspace)
         {
         }
 
