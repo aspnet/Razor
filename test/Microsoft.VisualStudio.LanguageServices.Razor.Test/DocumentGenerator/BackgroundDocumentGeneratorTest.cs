@@ -93,6 +93,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 NotifyBackgroundWorkCompleted = new ManualResetEventSlim(initialState: false),
             };
 
+            queue.Initialize(projectManager);
+
             // Act & Assert
             queue.Enqueue(project, project.GetDocument(Documents[0].FilePath));
 
@@ -132,6 +134,8 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                 BlockBackgroundWorkCompleting = new ManualResetEventSlim(initialState: false),
                 NotifyBackgroundWorkCompleted = new ManualResetEventSlim(initialState: false),
             };
+
+            queue.Initialize(projectManager);
 
             // Act & Assert
             queue.Enqueue(project, project.GetDocument(Documents[0].FilePath));
