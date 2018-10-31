@@ -72,9 +72,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     Rules.RazorConfiguration.SchemaName,
                     Rules.RazorExtension.SchemaName,
                     Rules.RazorGenerateWithTargetPath.SchemaName,
-                    ManagedProjectSystemSchema.CompilerCommandLineArgs.SchemaName,
-                    ManagedProjectSystemSchema.ConfigurationGeneral.SchemaName,
-                    ManagedProjectSystemSchema.ResolvedCompilationReference.SchemaName,
                 });
         }
 
@@ -120,8 +117,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                         await UpdateAsync(() =>
                         {
                             UpdateProjectUnsafe(hostProject);
-                            UpdateWorkspaceProjectOptionsUnsafe(commandLineOptions);
-                            UpdateWorkspaceProjectReferencesUnsafe(references);
 
                             for (var i = 0; i < changedDocuments.Length; i++)
                             {
