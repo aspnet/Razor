@@ -81,7 +81,7 @@ namespace Microsoft.AspNetCore.Razor.Design.IntegrationTests
                 {
                     // This will happen on success, the 'real' task has already completed so this value will
                     // never be visible.
-                    return (MSBuildResult)null;
+                    return (ProcessResult)null;
                 }
 
                 // This is a timeout.

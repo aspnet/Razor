@@ -47,7 +47,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             _lock = new AsyncSemaphore(initialCount: 1);
             _currentDocuments = new Dictionary<string, HostDocument>(FilePathComparer.Instance);
-            _references = new HashSet<string>(FilePathComparer.Instance);
         }
 
         // Internal for testing
@@ -78,7 +77,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
 
             _lock = new AsyncSemaphore(initialCount: 1);
             _currentDocuments = new Dictionary<string, HostDocument>(FilePathComparer.Instance);
-            _references = new HashSet<string>(FilePathComparer.Instance);
         }
 
         protected HostProject Current => _current;
@@ -135,8 +133,6 @@ namespace Microsoft.CodeAnalysis.Razor.ProjectSystem
                     {
                         var filePath = CommonServices.UnconfiguredProject.FullPath;
                         UpdateProjectUnsafe(new HostProject(filePath, old.Configuration));
-                        UpdateWorkspaceProjectOptionsUnsafe(_commandLineOptions);
-                        UpdateWorkspaceProjectReferencesUnsafe(_references.ToArray());
 
                         // This should no-op in the common case, just putting it here for insurance.
                         for (var i = 0; i < oldDocuments.Length; i++)
