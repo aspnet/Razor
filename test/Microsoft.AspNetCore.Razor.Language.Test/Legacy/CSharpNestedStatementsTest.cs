@@ -7,6 +7,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpNestedStatementsTest : CsHtmlCodeParserTestBase
     {
+        public CSharpNestedStatementsTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void NestedSimpleStatement()
         {
