@@ -4,7 +4,7 @@ RazorDocument - [0..48)::48 - [{  @custom System.Text.Encoding.ASCIIEncodingLF}]
             Text;[{];
             Whitespace;[  ];
         CSharpCodeBlock - [3..47)::44
-            RazorDirective - [3..47)::44
+            RazorDirective - [3..47)::44 - Directive:{custom;SingleLine;Unrestricted} [RZ2005(4:0,4 [6] )]
                 CSharpTransition - [3..4)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [4..47)::43

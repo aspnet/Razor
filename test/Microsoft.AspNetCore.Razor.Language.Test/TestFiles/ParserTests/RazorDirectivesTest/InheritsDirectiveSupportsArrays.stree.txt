@@ -3,7 +3,7 @@ RazorDocument - [0..22)::22 - [@inherits string[[]][]]
         MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Marker;[];
         CSharpCodeBlock - [0..22)::22
-            RazorDirective - [0..22)::22
+            RazorDirective - [0..22)::22 - Directive:{inherits;SingleLine;FileScopedSinglyOccurring}
                 CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [1..22)::21

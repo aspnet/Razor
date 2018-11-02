@@ -3,7 +3,7 @@ RazorDocument - [0..43)::43 - [@custom "{formaction}?/{id}?" System.String]
         MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Marker;[];
         CSharpCodeBlock - [0..43)::43
-            RazorDirective - [0..43)::43
+            RazorDirective - [0..43)::43 - Directive:{custom;SingleLine;Unrestricted}
                 CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [1..43)::42

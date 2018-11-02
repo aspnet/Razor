@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Microsoft.AspNetCore.Razor.Language.Legacy;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax
@@ -134,7 +135,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 WriteSeparator();
                 Write($"FullWidth: {node.FullWidth}");
 
-                if (node is MarkupTagHelperElementSyntax tagHelperElement)
+                if (node is RazorDirectiveSyntax razorDirective)
+                {
+                    WriteRazorDirective(razorDirective);
+                }
+                else if (node is MarkupTagHelperElementSyntax tagHelperElement)
                 {
                     WriteTagHelperElement(tagHelperElement);
                 }
@@ -165,6 +170,34 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                     Write($"[{node.ToFullString()}]");
                     _visitedRoot = true;
                 }
+            }
+
+            private void WriteRazorDirective(RazorDirectiveSyntax node)
+            {
+                if (node.DirectiveDescriptor == null)
+                {
+                    return;
+                }
+
+                var builder = new StringBuilder("Directive:{");
+                builder.Append(node.DirectiveDescriptor.Directive);
+                builder.Append(";");
+                builder.Append(node.DirectiveDescriptor.Kind);
+                builder.Append(";");
+                builder.Append(node.DirectiveDescriptor.Usage);
+                builder.Append("}");
+
+                var diagnostics = node.GetDiagnostics();
+                if (diagnostics.Length > 0)
+                {
+                    builder.Append(" [");
+                    var ids = string.Join(", ", diagnostics.Select(diagnostic => $"{diagnostic.Id}{diagnostic.Span}"));
+                    builder.Append(ids);
+                    builder.Append("]");
+                }
+
+                WriteSeparator();
+                Write(builder.ToString());
             }
 
             private void WriteTagHelperElement(MarkupTagHelperElementSyntax node)

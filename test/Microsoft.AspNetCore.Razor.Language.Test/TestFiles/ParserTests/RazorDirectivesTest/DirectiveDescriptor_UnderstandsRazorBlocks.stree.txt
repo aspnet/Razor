@@ -3,7 +3,7 @@ RazorDocument - [0..33)::33 - [@custom "Header" { <p>F{o}o</p> }]
         MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Marker;[];
         CSharpCodeBlock - [0..33)::33
-            RazorDirective - [0..33)::33
+            RazorDirective - [0..33)::33 - Directive:{custom;RazorBlock;Unrestricted}
                 CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [1..33)::32

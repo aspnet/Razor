@@ -11,7 +11,7 @@ RazorDocument - [0..130)::130 - [@* There are two directives beneath this *@LF@c
         MarkupTextLiteral - [43..45)::2 - [LF] - Gen<Markup> - SpanEditHandler;Accepts:Any
             NewLine;[LF];
         CSharpCodeBlock - [45..89)::44
-            RazorDirective - [45..89)::44
+            RazorDirective - [45..89)::44 - Directive:{custom;SingleLine;FileScopedSinglyOccurring}
                 CSharpTransition - [45..46)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [46..89)::43
@@ -33,7 +33,7 @@ RazorDocument - [0..130)::130 - [@* There are two directives beneath this *@LF@c
         MarkupTextLiteral - [89..91)::2 - [LF] - Gen<Markup> - SpanEditHandler;Accepts:Any
             NewLine;[LF];
         CSharpCodeBlock - [91..108)::17
-            RazorDirective - [91..108)::17
+            RazorDirective - [91..108)::17 - Directive:{something;SingleLine;FileScopedMultipleOccurring}
                 CSharpTransition - [91..92)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [92..108)::16

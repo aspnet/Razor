@@ -10,6 +10,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpAutoCompleteTest : CsHtmlCodeParserTestBase
     {
+        public CSharpAutoCompleteTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void FunctionsDirectiveAutoCompleteAtEOF()
         {

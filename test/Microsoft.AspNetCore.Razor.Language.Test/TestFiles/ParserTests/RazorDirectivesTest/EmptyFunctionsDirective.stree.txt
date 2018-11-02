@@ -3,7 +3,7 @@ RazorDocument - [0..14)::14 - [@functions { }]
         MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Marker;[];
         CSharpCodeBlock - [0..14)::14
-            RazorDirective - [0..14)::14
+            RazorDirective - [0..14)::14 - Directive:{functions;CodeBlock;Unrestricted}
                 CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [1..14)::13
