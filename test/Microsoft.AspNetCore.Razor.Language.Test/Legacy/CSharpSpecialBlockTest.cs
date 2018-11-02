@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpSpecialBlockTest : CsHtmlCodeParserTestBase
     {
+        public CSharpSpecialBlockTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void NamespaceImportInsideCodeBlockCausesError()
         {

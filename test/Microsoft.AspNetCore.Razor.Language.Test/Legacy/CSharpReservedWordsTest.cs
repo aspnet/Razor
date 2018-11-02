@@ -7,6 +7,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpReservedWordsTest : CsHtmlCodeParserTestBase
     {
+        public CSharpReservedWordsTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void ReservedWord()
         {
