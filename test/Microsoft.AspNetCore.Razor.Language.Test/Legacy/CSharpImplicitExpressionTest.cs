@@ -7,6 +7,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpImplicitExpressionTest : CsHtmlCodeParserTestBase
     {
+        public CSharpImplicitExpressionTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void ParsesNullConditionalOperatorImplicitExpression_Bracket1()
         {
