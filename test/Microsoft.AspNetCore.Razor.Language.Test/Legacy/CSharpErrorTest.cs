@@ -9,6 +9,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpErrorTest : CsHtmlCodeParserTestBase
     {
+        public CSharpErrorTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void HandlesQuotesAfterTransition()
         {
