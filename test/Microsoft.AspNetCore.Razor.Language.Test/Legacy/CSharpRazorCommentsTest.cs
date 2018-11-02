@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpRazorCommentsTest : CsHtmlMarkupParserTestBase
     {
+        public CSharpRazorCommentsTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void UnterminatedRazorComment()
         {
