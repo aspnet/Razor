@@ -729,7 +729,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
       switch (comment.Kind)
       {
         case SyntaxKind.RazorCommentLiteral:
-        case SyntaxKind.None:
           break;
         default:
           throw new ArgumentException("comment");
@@ -754,7 +753,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
     /// <summary>Creates a new RazorCommentBlockSyntax instance.</summary>
     public static RazorCommentBlockSyntax RazorCommentBlock()
     {
-      return SyntaxFactory.RazorCommentBlock(SyntaxFactory.Token(SyntaxKind.RazorCommentTransition), SyntaxFactory.Token(SyntaxKind.RazorCommentStar), default(SyntaxToken), SyntaxFactory.Token(SyntaxKind.RazorCommentStar), SyntaxFactory.Token(SyntaxKind.RazorCommentTransition));
+      return SyntaxFactory.RazorCommentBlock(SyntaxFactory.Token(SyntaxKind.RazorCommentTransition), SyntaxFactory.Token(SyntaxKind.RazorCommentStar), SyntaxFactory.Token(SyntaxKind.RazorCommentLiteral), SyntaxFactory.Token(SyntaxKind.RazorCommentStar), SyntaxFactory.Token(SyntaxKind.RazorCommentTransition));
     }
 
     /// <summary>Creates a new RazorMetaCodeSyntax instance.</summary>

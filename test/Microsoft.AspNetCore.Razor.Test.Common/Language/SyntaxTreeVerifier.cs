@@ -44,7 +44,7 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public override SyntaxNode VisitToken(SyntaxToken token)
             {
-                if (!token.IsMissing && token.Kind != SyntaxKind.Marker)
+                if (token != null && !token.IsMissing && token.Kind != SyntaxKind.Marker)
                 {
                     var start = token.GetSourceLocation(_source);
                     if (!start.Equals(_tracker.CurrentLocation))

@@ -113,11 +113,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         _startCommentTransition = startCommentTransition;
         AdjustFlagsAndWidth(startCommentStar);
         _startCommentStar = startCommentStar;
-        if (comment != null)
-        {
-            AdjustFlagsAndWidth(comment);
-            _comment = comment;
-        }
+        AdjustFlagsAndWidth(comment);
+        _comment = comment;
         AdjustFlagsAndWidth(endCommentStar);
         _endCommentStar = endCommentStar;
         AdjustFlagsAndWidth(endCommentTransition);
@@ -133,11 +130,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         _startCommentTransition = startCommentTransition;
         AdjustFlagsAndWidth(startCommentStar);
         _startCommentStar = startCommentStar;
-        if (comment != null)
-        {
-            AdjustFlagsAndWidth(comment);
-            _comment = comment;
-        }
+        AdjustFlagsAndWidth(comment);
+        _comment = comment;
         AdjustFlagsAndWidth(endCommentStar);
         _endCommentStar = endCommentStar;
         AdjustFlagsAndWidth(endCommentTransition);
@@ -3872,16 +3866,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         default:
           throw new ArgumentException("startCommentStar");
       }
-      if (comment != null)
-      {
+      if (comment == null)
+        throw new ArgumentNullException(nameof(comment));
       switch (comment.Kind)
       {
         case SyntaxKind.RazorCommentLiteral:
-        case SyntaxKind.None:
           break;
         default:
           throw new ArgumentException("comment");
-      }
       }
       if (endCommentStar == null)
         throw new ArgumentNullException(nameof(endCommentStar));

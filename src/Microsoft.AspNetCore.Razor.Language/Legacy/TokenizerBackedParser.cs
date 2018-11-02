@@ -715,6 +715,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 var startTransition = GetExpectedToken(SyntaxKind.RazorCommentTransition);
                 var startStar = GetExpectedToken(SyntaxKind.RazorCommentStar);
                 var comment = GetOptionalToken(SyntaxKind.RazorCommentLiteral);
+                if (comment == null)
+                {
+                    comment = SyntaxFactory.MissingToken(SyntaxKind.RazorCommentLiteral);
+                }
                 var endStar = GetOptionalToken(SyntaxKind.RazorCommentStar);
                 if (endStar == null)
                 {
@@ -726,7 +730,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 var endTransition = GetOptionalToken(SyntaxKind.RazorCommentTransition);
                 if (endTransition == null)
                 {
-                    if (endStar != null)
+                    if (!endStar.IsMissing)
                     {
                         var diagnostic = RazorDiagnosticFactory.CreateParsing_RazorCommentNotTerminated(
                             new SourceSpan(start, contentLength: 2 /* @* */));
@@ -740,7 +744,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 commentBlock = SyntaxFactory.RazorCommentBlock(startTransition, startStar, comment, endStar, endTransition);
 
                 // Make sure we generate a marker symbol after a comment if necessary.
-                Context.LastAcceptedCharacters = AcceptedCharactersInternal.None;
+                if (!comment.IsMissing || !endStar.IsMissing || !endTransition.IsMissing)
+                {
+                    Context.LastAcceptedCharacters = AcceptedCharactersInternal.None;
+                }
             }
 
             InitializeContext(SpanContext);

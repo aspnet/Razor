@@ -27,28 +27,24 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public override SyntaxNode VisitRazorCommentBlock(RazorCommentBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Comment, base.VisitRazorCommentBlock);
-        }
-
-        public override SyntaxNode VisitToken(SyntaxToken token)
-        {
-            if (token.Parent is RazorCommentBlockSyntax)
+            return WriteBlock(node, BlockKindInternal.Comment, razorCommentSyntax =>
             {
-                if (token.Kind == SyntaxKind.RazorCommentTransition)
-                {
-                    WriteSpan(token, SpanKindInternal.Transition, AcceptedCharactersInternal.None);
-                }
-                else if (token.Kind == SyntaxKind.RazorCommentStar)
-                {
-                    WriteSpan(token, SpanKindInternal.MetaCode, AcceptedCharactersInternal.None);
-                }
-                else if (token.Kind == SyntaxKind.RazorCommentLiteral)
-                {
-                    WriteSpan(token, SpanKindInternal.Comment, AcceptedCharactersInternal.Any);
-                }
-            }
+                WriteSpan(razorCommentSyntax.StartCommentTransition, SpanKindInternal.Transition, AcceptedCharactersInternal.None);
+                WriteSpan(razorCommentSyntax.StartCommentStar, SpanKindInternal.MetaCode, AcceptedCharactersInternal.None);
 
-            return base.VisitToken(token);
+                var comment = razorCommentSyntax.Comment;
+                if (comment.IsMissing)
+                {
+                    // We need to generate a classified span at this position. So insert a marker in its place.
+                    comment = (SyntaxToken)SyntaxFactory.Token(SyntaxKind.Marker, string.Empty).Green.CreateRed(razorCommentSyntax, razorCommentSyntax.StartCommentStar.EndPosition);
+                }
+                WriteSpan(comment, SpanKindInternal.Comment, AcceptedCharactersInternal.Any);
+
+                WriteSpan(razorCommentSyntax.EndCommentStar, SpanKindInternal.MetaCode, AcceptedCharactersInternal.None);
+                WriteSpan(razorCommentSyntax.EndCommentTransition, SpanKindInternal.Transition, AcceptedCharactersInternal.None);
+
+                return razorCommentSyntax;
+            });
         }
 
         public override SyntaxNode VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)

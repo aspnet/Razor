@@ -20,7 +20,7 @@
     <Field Name="StartCommentStar" Type="SyntaxToken">
       <Kind Name="RazorCommentStar" />
     </Field>
-    <Field Name="Comment" Type="SyntaxToken" Optional="true">
+    <Field Name="Comment" Type="SyntaxToken">
       <Kind Name="RazorCommentLiteral" />
     </Field>
     <Field Name="EndCommentStar" Type="SyntaxToken">
