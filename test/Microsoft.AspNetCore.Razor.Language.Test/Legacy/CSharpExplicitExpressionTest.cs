@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpExplicitExpressionTest : CsHtmlCodeParserTestBase
     {
+        public CSharpExplicitExpressionTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void ShouldOutputZeroLengthCodeSpanIfExplicitExpressionIsEmpty()
         {
