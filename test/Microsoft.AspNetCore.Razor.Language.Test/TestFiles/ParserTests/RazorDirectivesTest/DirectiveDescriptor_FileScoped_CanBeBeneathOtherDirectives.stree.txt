@@ -3,7 +3,7 @@ RazorDocument - [0..59)::59 - [@custom System.Text.Encoding.ASCIIEncodingLF@some
         MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Marker;[];
         CSharpCodeBlock - [0..44)::44
-            RazorDirective - [0..44)::44
+            RazorDirective - [0..44)::44 - Directive:{custom;SingleLine;FileScopedSinglyOccurring}
                 CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [1..44)::43
@@ -25,7 +25,7 @@ RazorDocument - [0..59)::59 - [@custom System.Text.Encoding.ASCIIEncodingLF@some
         MarkupTextLiteral - [44..44)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Marker;[];
         CSharpCodeBlock - [44..59)::15
-            RazorDirective - [44..59)::15
+            RazorDirective - [44..59)::15 - Directive:{something;SingleLine;FileScopedMultipleOccurring}
                 CSharpTransition - [44..45)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [45..59)::14

@@ -3,7 +3,7 @@ RazorDocument - [0..246)::246 - [@custom (bool, int) (int aa, string bb)? (  int
         MarkupTextLiteral - [0..0)::0 - [] - Gen<Markup> - SpanEditHandler;Accepts:Any
             Marker;[];
         CSharpCodeBlock - [0..246)::246
-            RazorDirective - [0..246)::246
+            RazorDirective - [0..246)::246 - Directive:{custom;SingleLine;Unrestricted}
                 CSharpTransition - [0..1)::1 - Gen<None> - SpanEditHandler;Accepts:None
                     Transition;[@];
                 RazorDirectiveBody - [1..246)::245
