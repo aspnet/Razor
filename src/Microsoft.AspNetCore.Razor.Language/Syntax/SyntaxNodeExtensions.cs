@@ -97,12 +97,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                 if (node.Position >= source.Length)
                 {
                     // E.g. Marker symbol at the end of the document
-                    var lastLocation = source.Lines.GetLocation(source.Length - 1);
+                    var lastPosition = source.Length - 1;
+                    var endsWithLineBreak = ParserHelpers.IsNewLine(source[lastPosition]);
+                    var lastLocation = source.Lines.GetLocation(lastPosition);
                     return new SourceLocation(
                         source.FilePath, // GetLocation prefers RelativePath but we want FilePath.
                         lastLocation.AbsoluteIndex + 1,
-                        lastLocation.LineIndex,
-                        lastLocation.CharacterIndex + 1);
+                        lastLocation.LineIndex + (endsWithLineBreak ? 1 : 0),
+                        endsWithLineBreak ? 0 : lastLocation.CharacterIndex + 1);
                 }
 
                 var location = source.Lines.GetLocation(node.Position);
