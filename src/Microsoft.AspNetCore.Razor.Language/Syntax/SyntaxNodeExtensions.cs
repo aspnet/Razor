@@ -94,7 +94,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
                     // Just a marker symbol
                     return new SourceLocation(source.FilePath, 0, 0, 0);
                 }
-                if (node.Position >= source.Length)
+                if (node.Position == source.Length)
                 {
                     // E.g. Marker symbol at the end of the document
                     var lastPosition = source.Length - 1;
