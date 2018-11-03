@@ -9,6 +9,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpSectionTest : CsHtmlMarkupParserTestBase
     {
+        public CSharpSectionTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void CapturesNewlineImmediatelyFollowing()
         {
