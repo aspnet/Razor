@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpTemplateTest : CsHtmlCodeParserTestBase
     {
+        public CSharpTemplateTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void HandlesSingleLineTemplate()
         {

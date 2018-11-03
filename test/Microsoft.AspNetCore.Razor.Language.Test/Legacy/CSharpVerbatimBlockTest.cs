@@ -10,6 +10,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
     {
         private const string TestExtraKeyword = "model";
 
+        public CSharpVerbatimBlockTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void VerbatimBlock()
         {
