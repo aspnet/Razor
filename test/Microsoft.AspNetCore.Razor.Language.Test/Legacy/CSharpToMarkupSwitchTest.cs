@@ -8,6 +8,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     public class CSharpToMarkupSwitchTest : CsHtmlCodeParserTestBase
     {
+        public CSharpToMarkupSwitchTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         [Fact]
         public void SingleAngleBracketDoesNotCauseSwitchIfOuterBlockIsTerminated()
         {
