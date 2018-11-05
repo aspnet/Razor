@@ -21,17 +21,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
             return new InternalSyntax.SyntaxList<T>(node);
         }
 
-        public static object GetAnnotationValue<TNode>(this TNode node, string key) where TNode : GreenNode
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException(nameof(node));
-            }
-
-            var annotation = node.GetAnnotations().FirstOrDefault(n => n.Kind == key);
-            return annotation?.Data;
-        }
-
         public static TNode WithAnnotationsGreen<TNode>(this TNode node, params SyntaxAnnotation[] annotations) where TNode : GreenNode
         {
             var newAnnotations = new List<SyntaxAnnotation>();

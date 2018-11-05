@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
 {
@@ -13,8 +14,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax
         {
             get
             {
-                var descriptor = this.GetAnnotationValue(DirectiveDescriptorKey) as DirectiveDescriptor;
-                return descriptor;
+                var annotation = GetAnnotations().FirstOrDefault(n => n.Kind == DirectiveDescriptorKey);
+                return annotation?.Data as DirectiveDescriptor;
             }
         }
 

@@ -12,8 +12,13 @@ using Xunit;
 
 namespace Microsoft.VisualStudio.Editor.Razor
 {
-    public class RazorSyntaxTreePartialParserTest
+    public class RazorSyntaxTreePartialParserTest : PartialParserTestBase
     {
+        public RazorSyntaxTreePartialParserTest()
+        {
+            UseNewSyntaxTree = true;
+        }
+
         public static TheoryData TagHelperPartialParseRejectData
         {
             get
@@ -558,7 +563,7 @@ namespace Microsoft.VisualStudio.Editor.Razor
             Assert.Equal(PartialParseResultInternal.Rejected | additionalFlags, result);
         }
 
-        private static void RunPartialParseTest(TestEdit edit, Block expectedTree, PartialParseResultInternal additionalFlags = 0)
+        private void RunPartialParseTest(TestEdit edit, Block expectedTree, PartialParseResultInternal additionalFlags = 0)
         {
             var templateEngine = CreateProjectEngine();
             var document = TestRazorCodeDocument.Create(edit.OldSnapshot.GetText());
@@ -568,7 +573,10 @@ namespace Microsoft.VisualStudio.Editor.Razor
 
             var result = parser.Parse(edit.Change);
             Assert.Equal(PartialParseResultInternal.Accepted | additionalFlags, result);
-            ParserTestBase.EvaluateParseTree(parser.SyntaxTreeRoot, expectedTree);
+
+            var newSource = TestRazorSourceDocument.Create(edit.NewSnapshot.GetText());
+            var newSyntaxTree = RazorSyntaxTree.Create(parser.ModifiedSyntaxTreeRoot, newSource, parser.OriginalSyntaxTree.Diagnostics, parser.OriginalSyntaxTree.Options);
+            BaselineTest(newSyntaxTree);
         }
 
         private static TestEdit CreateInsertionChange(string initialText, int insertionLocation, string insertionText)

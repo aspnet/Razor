@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 
 namespace Microsoft.AspNetCore.Razor.Language.Syntax
@@ -387,7 +388,11 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
 
         public override string ToString()
         {
-            return Green.ToString();
+            var builder = new StringBuilder();
+            builder.Append(Green.ToString());
+            builder.AppendFormat(" at {0}::{1}", Position, FullWidth);
+
+            return builder.ToString();
         }
 
         public virtual string ToFullString()

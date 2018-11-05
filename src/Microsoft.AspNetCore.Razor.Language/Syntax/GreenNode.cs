@@ -253,6 +253,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Syntax
         #endregion
 
         #region Text
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            builder.AppendFormat("{0}<{1}>", GetType().Name, Kind);
+
+            return builder.ToString();
+        }
+
         public virtual string ToFullString()
         {
             var builder = new StringBuilder();

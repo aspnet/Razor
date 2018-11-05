@@ -91,6 +91,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 #endif
         }
 
+        protected int BaselineTestCount { get; set; }
+
         internal virtual void AssertSyntaxTreeNodeMatchesBaseline(RazorSyntaxTree syntaxTree)
         {
             AssertSyntaxTreeNodeMatchesBaseline(syntaxTree.LegacyRoot, syntaxTree.Source.FilePath, syntaxTree.Diagnostics.ToArray());
