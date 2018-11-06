@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.Host
 
         public bool CanApplyChange => false;
 
-        public bool SupportDiagnostics => false;
+        public bool SupportsDiagnostics => false;
 
         public TService GetService<TService>() where TService : class, IDocumentService
         {
