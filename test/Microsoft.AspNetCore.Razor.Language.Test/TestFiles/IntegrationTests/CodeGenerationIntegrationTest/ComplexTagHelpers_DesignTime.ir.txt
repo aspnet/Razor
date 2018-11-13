@@ -91,7 +91,7 @@ Document -
                                     DefaultTagHelperProperty - (494:16,45 [9] ComplexTagHelpers.cshtml) - type - string TestNamespace.InputTagHelper2.Type - HtmlAttributeValueStyle.DoubleQuotes
                                         CSharpExpression - (495:16,46 [8] ComplexTagHelpers.cshtml)
                                             IntermediateToken - (495:16,46 [8] ComplexTagHelpers.cshtml) - CSharp - checkbox
-                                    DefaultTagHelperProperty - (512:16,63 [4] ComplexTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
+                                    DefaultTagHelperProperty - (512:16,63 [4] ComplexTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.NoQuotes
                                         IntermediateToken - (512:16,63 [4] ComplexTagHelpers.cshtml) - CSharp - true
                                     DefaultTagHelperExecute - 
                             DefaultTagHelperCreate -  - TestNamespace.PTagHelper

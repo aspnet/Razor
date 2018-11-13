@@ -208,11 +208,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
             }
 
-            public override void ParseBlock()
-            {
-                throw new NotImplementedException();
-            }
-
             protected override bool TokenKindEquals(SyntaxKind x, SyntaxKind y)
             {
                 throw new NotImplementedException();
