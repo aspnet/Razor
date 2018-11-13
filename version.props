@@ -19,7 +19,7 @@
       1. tooling/Microsoft.VisualStudio.Mac.RazorAddin/RazorAddin.cs Version property
       2. MonoDevelop.Core and MonoDevelop.Ide version properties in tooling\Microsoft.VisualStudio.Mac.RazorAddin\Properties\_Manifest.addin.xml
     -->
-    <VSForMacVersion>7.5.0</VSForMacVersion>
+    <VSForMacVersion>8.0.0</VSForMacVersion>
     <AddinVersion>$(VSForMacVersion).$(AddinBuildNumber)</AddinVersion>
   </PropertyGroup>
 </Project>
