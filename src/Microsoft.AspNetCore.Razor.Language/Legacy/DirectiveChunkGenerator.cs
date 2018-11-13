@@ -34,11 +34,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        public override void Accept(ParserVisitor visitor, Block block)
-        {
-            visitor.VisitDirectiveBlock(this, block);
-        }
-
         public override bool Equals(object obj)
         {
             var other = obj as DirectiveChunkGenerator;

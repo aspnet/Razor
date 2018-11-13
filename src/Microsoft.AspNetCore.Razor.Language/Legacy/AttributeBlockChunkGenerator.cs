@@ -22,25 +22,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public LocationTagged<string> Suffix { get; }
 
-        public override void GenerateStartParentChunk(Block target, ChunkGeneratorContext context)
-        {
-            //var chunk = context.ChunkTreeBuilder.StartParentChunk<CodeAttributeChunk>(target);
-
-            //chunk.Attribute = Name;
-            //chunk.Prefix = Prefix;
-            //chunk.Suffix = Suffix;
-        }
-
-        public override void GenerateEndParentChunk(Block target, ChunkGeneratorContext context)
-        {
-            //context.ChunkTreeBuilder.EndParentChunk();
-        }
-
-        public override void Accept(ParserVisitor visitor, Block block)
-        {
-            visitor.VisitAttributeBlock(this, block);
-        }
-
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "Attr:{0},{1:F},{2:F}", Name, Prefix, Suffix);

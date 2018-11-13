@@ -5,11 +5,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     internal class RazorCommentChunkGenerator : ParentChunkGenerator
     {
-        public override void Accept(ParserVisitor visitor, Block block)
-        {
-            visitor.VisitCommentBlock(this, block);
-        }
-
         public override string ToString()
         {
             return "RazorComment";

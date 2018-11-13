@@ -5,21 +5,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     internal class TemplateBlockChunkGenerator : ParentChunkGenerator
     {
-        public override void Accept(ParserVisitor visitor, Block block)
-        {
-            visitor.VisitTemplateBlock(this, block);
-        }
-
-        public override void GenerateStartParentChunk(Block target, ChunkGeneratorContext context)
-        {
-            //context.ChunkTreeBuilder.StartParentChunk<TemplateChunk>(target);
-        }
-
-        public override void GenerateEndParentChunk(Block target, ChunkGeneratorContext context)
-        {
-            //context.ChunkTreeBuilder.EndParentChunk();
-        }
-
         public override string ToString()
         {
             return "Template";

@@ -23,23 +23,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public SourceLocation ValueStart { get; }
 
-        public override void Accept(ParserVisitor visitor, Block block)
-        {
-            visitor.VisitDynamicAttributeBlock(this, block);
-        }
-
-        public override void GenerateStartParentChunk(Block target, ChunkGeneratorContext context)
-        {
-            //var chunk = context.ChunkTreeBuilder.StartParentChunk<DynamicCodeAttributeChunk>(target);
-            //chunk.Start = ValueStart;
-            //chunk.Prefix = Prefix;
-        }
-
-        public override void GenerateEndParentChunk(Block target, ChunkGeneratorContext context)
-        {
-            //context.ChunkTreeBuilder.EndParentChunk();
-        }
-
         public override string ToString()
         {
             return string.Format(CultureInfo.CurrentCulture, "DynAttr:{0:F}", Prefix);

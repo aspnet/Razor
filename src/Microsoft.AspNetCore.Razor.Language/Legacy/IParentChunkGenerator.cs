@@ -5,9 +5,5 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     internal interface IParentChunkGenerator
     {
-        void GenerateStartParentChunk(Block target, ChunkGeneratorContext context);
-        void GenerateEndParentChunk(Block target, ChunkGeneratorContext context);
-
-        void Accept(ParserVisitor visitor, Block block);
     }
 }

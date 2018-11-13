@@ -9,16 +9,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         public static readonly IParentChunkGenerator Null = new NullParentChunkGenerator();
 
-        public abstract void Accept(ParserVisitor visitor, Block block);
-
-        public virtual void GenerateStartParentChunk(Block target, ChunkGeneratorContext context)
-        {
-        }
-
-        public virtual void GenerateEndParentChunk(Block target, ChunkGeneratorContext context)
-        {
-        }
-
         public override bool Equals(object obj)
         {
             return obj != null &&
@@ -32,22 +22,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private class NullParentChunkGenerator : IParentChunkGenerator
         {
-            public void GenerateStartParentChunk(Block target, ChunkGeneratorContext context)
-            {
-            }
-
-            public void GenerateEndParentChunk(Block target, ChunkGeneratorContext context)
-            {
-            }
-
             public override string ToString()
             {
                 return "None";
-            }
-
-            public void Accept(ParserVisitor visitor, Block block)
-            {
-                visitor.VisitDefault(block);
             }
         }
     }
