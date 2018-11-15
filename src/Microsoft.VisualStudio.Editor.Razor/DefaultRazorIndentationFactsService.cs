@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel.Composition;
 using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.AspNetCore.Razor.Language.Legacy;
 using Microsoft.AspNetCore.Razor.Language.Syntax;
 using Microsoft.VisualStudio.Text;
 

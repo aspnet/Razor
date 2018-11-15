@@ -25,6 +25,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     // Replace the existing code block with the whitespace literal
                     // followed by the rewritten code block (with the code whitespace removed).
                     node = node.ReplaceNode(codeBlock, new SyntaxNode[] { whitespaceLiteral, rewritten });
+
+                    // Since we replaced node, its children are different. Update our collection.
+                    children = node.ChildNodes();
                 }
             }
 

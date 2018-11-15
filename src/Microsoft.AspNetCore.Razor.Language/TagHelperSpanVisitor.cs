@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Razor.Language.Syntax;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
-    internal class TagHelperSpanVisitor : SyntaxRewriter
+    internal class TagHelperSpanVisitor : SyntaxWalker
     {
         private RazorSourceDocument _source;
         private List<TagHelperSpanInternal> _spans;
@@ -20,11 +20,12 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public IReadOnlyList<TagHelperSpanInternal> TagHelperSpans => _spans;
 
-        public override SyntaxNode VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
+        public override void VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
         {
             var span = new TagHelperSpanInternal(node.GetSourceSpan(_source), node.TagHelperInfo.BindingResult);
             _spans.Add(span);
-            return base.VisitMarkupTagHelperElement(node);
+
+            base.VisitMarkupTagHelperElement(node);
         }
     }
 }

@@ -1176,7 +1176,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
             {
                 var directiveBuilder = pooledResult.Builder;
-                var directiveChunkGenerator = new DirectiveChunkGenerator(descriptor);
                 RazorMetaCodeSyntax keywordBlock = null;
 
                 try
@@ -1402,11 +1401,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
                 finally
                 {
-                    if (directiveErrorSink.Errors.Count > 0)
-                    {
-                        directiveChunkGenerator.Diagnostics.AddRange(directiveErrorSink.Errors);
-                    }
-
                     Context.ErrorSink = savedErrorSink;
                 }
 

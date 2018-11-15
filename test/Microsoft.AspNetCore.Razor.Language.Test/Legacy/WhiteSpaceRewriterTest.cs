@@ -15,6 +15,9 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             var content = @"
 <div>
     @result
+</div>
+<div>
+    @(result)
 </div>";
             var parsed = ParseDocument(
                 RazorLanguageVersion.Latest,

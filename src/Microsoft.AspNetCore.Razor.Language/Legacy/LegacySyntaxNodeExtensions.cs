@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Razor.Language.Legacy;
+using Microsoft.AspNetCore.Razor.Language.Syntax;
 
-namespace Microsoft.AspNetCore.Razor.Language.Syntax
+namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
     internal static class LegacySyntaxNodeExtensions
     {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Razor.Language.Syntax;
 
 namespace Microsoft.AspNetCore.Razor.Language
 {
-    internal class ClassifiedSpanVisitor : SyntaxRewriter
+    internal class ClassifiedSpanVisitor : SyntaxWalker
     {
         private RazorSourceDocument _source;
         private List<ClassifiedSpanInternal> _spans;
@@ -24,9 +24,9 @@ namespace Microsoft.AspNetCore.Razor.Language
 
         public IReadOnlyList<ClassifiedSpanInternal> ClassifiedSpans => _spans;
 
-        public override SyntaxNode VisitRazorCommentBlock(RazorCommentBlockSyntax node)
+        public override void VisitRazorCommentBlock(RazorCommentBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Comment, razorCommentSyntax =>
+            WriteBlock(node, BlockKindInternal.Comment, razorCommentSyntax =>
             {
                 WriteSpan(razorCommentSyntax.StartCommentTransition, SpanKindInternal.Transition, AcceptedCharactersInternal.None);
                 WriteSpan(razorCommentSyntax.StartCommentStar, SpanKindInternal.MetaCode, AcceptedCharactersInternal.None);
@@ -41,12 +41,10 @@ namespace Microsoft.AspNetCore.Razor.Language
 
                 WriteSpan(razorCommentSyntax.EndCommentStar, SpanKindInternal.MetaCode, AcceptedCharactersInternal.None);
                 WriteSpan(razorCommentSyntax.EndCommentTransition, SpanKindInternal.Transition, AcceptedCharactersInternal.None);
-
-                return razorCommentSyntax;
             });
         }
 
-        public override SyntaxNode VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
+        public override void VisitCSharpCodeBlock(CSharpCodeBlockSyntax node)
         {
             if (node.Parent is CSharpStatementBodySyntax ||
                 node.Parent is CSharpExplicitExpressionBodySyntax ||
@@ -56,207 +54,187 @@ namespace Microsoft.AspNetCore.Razor.Language
                 node.Children.Count == 1 &&
                 node.Children[0] is CSharpStatementLiteralSyntax))
             {
-                return base.VisitCSharpCodeBlock(node);
+                base.VisitCSharpCodeBlock(node);
+                return;
             }
 
-            return WriteBlock(node, BlockKindInternal.Statement, base.VisitCSharpCodeBlock);
+            WriteBlock(node, BlockKindInternal.Statement, base.VisitCSharpCodeBlock);
         }
 
-        public override SyntaxNode VisitCSharpStatement(CSharpStatementSyntax node)
+        public override void VisitCSharpStatement(CSharpStatementSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Statement, base.VisitCSharpStatement);
+            WriteBlock(node, BlockKindInternal.Statement, base.VisitCSharpStatement);
         }
 
-        public override SyntaxNode VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
+        public override void VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Expression, base.VisitCSharpExplicitExpression);
+            WriteBlock(node, BlockKindInternal.Expression, base.VisitCSharpExplicitExpression);
         }
 
-        public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
+        public override void VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Expression, base.VisitCSharpImplicitExpression);
+            WriteBlock(node, BlockKindInternal.Expression, base.VisitCSharpImplicitExpression);
         }
 
-        public override SyntaxNode VisitRazorDirective(RazorDirectiveSyntax node)
+        public override void VisitRazorDirective(RazorDirectiveSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Directive, base.VisitRazorDirective);
+            WriteBlock(node, BlockKindInternal.Directive, base.VisitRazorDirective);
         }
 
-        public override SyntaxNode VisitCSharpTemplateBlock(CSharpTemplateBlockSyntax node)
+        public override void VisitCSharpTemplateBlock(CSharpTemplateBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Template, base.VisitCSharpTemplateBlock);
+            WriteBlock(node, BlockKindInternal.Template, base.VisitCSharpTemplateBlock);
         }
 
-        public override SyntaxNode VisitMarkupBlock(MarkupBlockSyntax node)
+        public override void VisitMarkupBlock(MarkupBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupBlock);
+            WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupBlock);
         }
 
-        public override SyntaxNode VisitGenericBlock(GenericBlockSyntax node)
-        {
-            if (!(node.Parent is MarkupTagHelperAttributeValueSyntax) &&
-                node.FirstAncestorOrSelf<SyntaxNode>(n => n is MarkupTagHelperAttributeValueSyntax) != null)
-            {
-                return WriteBlock(node, BlockKindInternal.Expression, base.VisitGenericBlock);
-            }
-
-            return base.VisitGenericBlock(node);
-        }
-
-        public override SyntaxNode VisitMarkupTagHelperAttributeValue(MarkupTagHelperAttributeValueSyntax node)
+        public override void VisitMarkupTagHelperAttributeValue(MarkupTagHelperAttributeValueSyntax node)
         {
             // We don't generate a classified span when the attribute value is a simple literal value.
+            // This is done so we maintain the classified spans generated in 2.x which
+            // used ConditionalAttributeCollapser (combines markup literal attribute values into one span with no block parent).
             if (node.Children.Count > 1 ||
                 (node.Children.Count == 1 && node.Children[0] is MarkupDynamicAttributeValueSyntax))
             {
-                return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupTagHelperAttributeValue);
+                WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupTagHelperAttributeValue);
+                return;
             }
 
-            return base.VisitMarkupTagHelperAttributeValue(node);
+            base.VisitMarkupTagHelperAttributeValue(node);
         }
 
-        public override SyntaxNode VisitMarkupTagBlock(MarkupTagBlockSyntax node)
+        public override void VisitMarkupTagBlock(MarkupTagBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Tag, base.VisitMarkupTagBlock);
+            WriteBlock(node, BlockKindInternal.Tag, base.VisitMarkupTagBlock);
         }
 
-        public override SyntaxNode VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
+        public override void VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Tag, base.VisitMarkupTagHelperElement);
+            WriteBlock(node, BlockKindInternal.Tag, base.VisitMarkupTagHelperElement);
         }
 
-        public override SyntaxNode VisitMarkupTagHelperStartTag(MarkupTagHelperStartTagSyntax node)
+        public override void VisitMarkupTagHelperStartTag(MarkupTagHelperStartTagSyntax node)
         {
-            var rewritten = new List<RazorSyntaxNode>();
             foreach (var child in node.Children)
             {
                 if (child is MarkupTagHelperAttributeSyntax attribute)
                 {
-                    var rewrittenAttribute = (MarkupTagHelperAttributeSyntax)Visit(attribute);
-                    rewritten.Add(rewrittenAttribute);
-                }
-                else
-                {
-                    rewritten.Add(child);
+                    Visit(attribute);
                 }
             }
-
-            return node.Update(new SyntaxList<RazorSyntaxNode>(rewritten));
         }
 
-        public override SyntaxNode VisitMarkupTagHelperEndTag(MarkupTagHelperEndTagSyntax node)
+        public override void VisitMarkupTagHelperEndTag(MarkupTagHelperEndTagSyntax node)
         {
-            return node;
+            // We don't want to generate a classified span for a tag helper end tag. Do nothing.
         }
 
-        public override SyntaxNode VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
+        public override void VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Markup, n =>
+            WriteBlock(node, BlockKindInternal.Markup, n =>
             {
                 var equalsSyntax = SyntaxFactory.MarkupTextLiteral(new SyntaxList<SyntaxToken>(node.EqualsToken));
                 var mergedAttributePrefix = MergeTextLiteralSpans(node.NamePrefix, node.Name, node.NameSuffix, equalsSyntax, node.ValuePrefix);
                 Visit(mergedAttributePrefix);
                 Visit(node.Value);
                 Visit(node.ValueSuffix);
-
-                return n;
             });
         }
 
-        public override SyntaxNode VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
+        public override void VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
         {
-            var rewrittenValue = (MarkupTagHelperAttributeValueSyntax)Visit(node.Value);
-
-            return node.Update(node.NamePrefix, node.Name, node.NameSuffix, node.EqualsToken, node.ValuePrefix, rewrittenValue, node.ValueSuffix);
+            Visit(node.Value);
         }
 
-        public override SyntaxNode VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)
+        public override void VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Markup, n =>
+            WriteBlock(node, BlockKindInternal.Markup, n =>
             {
                 var mergedAttributePrefix = MergeTextLiteralSpans(node.NamePrefix, node.Name);
                 Visit(mergedAttributePrefix);
-
-                return n;
             });
         }
 
-        public override SyntaxNode VisitMarkupCommentBlock(MarkupCommentBlockSyntax node)
+        public override void VisitMarkupCommentBlock(MarkupCommentBlockSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.HtmlComment, base.VisitMarkupCommentBlock);
+            WriteBlock(node, BlockKindInternal.HtmlComment, base.VisitMarkupCommentBlock);
         }
 
-        public override SyntaxNode VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
+        public override void VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
         {
-            return WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupDynamicAttributeValue);
+            WriteBlock(node, BlockKindInternal.Markup, base.VisitMarkupDynamicAttributeValue);
         }
 
-        public override SyntaxNode VisitRazorMetaCode(RazorMetaCodeSyntax node)
+        public override void VisitRazorMetaCode(RazorMetaCodeSyntax node)
         {
             WriteSpan(node, SpanKindInternal.MetaCode);
-            return base.VisitRazorMetaCode(node);
+            base.VisitRazorMetaCode(node);
         }
 
-        public override SyntaxNode VisitCSharpTransition(CSharpTransitionSyntax node)
+        public override void VisitCSharpTransition(CSharpTransitionSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Transition);
-            return base.VisitCSharpTransition(node);
+            base.VisitCSharpTransition(node);
         }
 
-        public override SyntaxNode VisitMarkupTransition(MarkupTransitionSyntax node)
+        public override void VisitMarkupTransition(MarkupTransitionSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Transition);
-            return base.VisitMarkupTransition(node);
+            base.VisitMarkupTransition(node);
         }
 
-        public override SyntaxNode VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
+        public override void VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Code);
-            return base.VisitCSharpStatementLiteral(node);
+            base.VisitCSharpStatementLiteral(node);
         }
 
-        public override SyntaxNode VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
+        public override void VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Code);
-            return base.VisitCSharpExpressionLiteral(node);
+            base.VisitCSharpExpressionLiteral(node);
         }
 
-        public override SyntaxNode VisitCSharpEphemeralTextLiteral(CSharpEphemeralTextLiteralSyntax node)
+        public override void VisitCSharpEphemeralTextLiteral(CSharpEphemeralTextLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Code);
-            return base.VisitCSharpEphemeralTextLiteral(node);
+            base.VisitCSharpEphemeralTextLiteral(node);
         }
 
-        public override SyntaxNode VisitUnclassifiedTextLiteral(UnclassifiedTextLiteralSyntax node)
+        public override void VisitUnclassifiedTextLiteral(UnclassifiedTextLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.None);
-            return base.VisitUnclassifiedTextLiteral(node);
+            base.VisitUnclassifiedTextLiteral(node);
         }
 
-        public override SyntaxNode VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
+        public override void VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Markup);
-            return base.VisitMarkupLiteralAttributeValue(node);
+            base.VisitMarkupLiteralAttributeValue(node);
         }
 
-        public override SyntaxNode VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
+        public override void VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
         {
             if (node.Parent is MarkupLiteralAttributeValueSyntax)
             {
-                return base.VisitMarkupTextLiteral(node);
+                base.VisitMarkupTextLiteral(node);
+                return;
             }
 
             WriteSpan(node, SpanKindInternal.Markup);
-            return base.VisitMarkupTextLiteral(node);
+            base.VisitMarkupTextLiteral(node);
         }
 
-        public override SyntaxNode VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
+        public override void VisitMarkupEphemeralTextLiteral(MarkupEphemeralTextLiteralSyntax node)
         {
             WriteSpan(node, SpanKindInternal.Markup);
-            return base.VisitMarkupEphemeralTextLiteral(node);
+            base.VisitMarkupEphemeralTextLiteral(node);
         }
 
-        private SyntaxNode WriteBlock<TNode>(TNode node, BlockKindInternal kind, Func<TNode, SyntaxNode> handler) where TNode : SyntaxNode
+        private void WriteBlock<TNode>(TNode node, BlockKindInternal kind, Action<TNode> handler) where TNode : SyntaxNode
         {
             var previousBlock = _currentBlock;
             var previousKind = _currentBlockKind;
@@ -264,12 +242,10 @@ namespace Microsoft.AspNetCore.Razor.Language
             _currentBlock = node;
             _currentBlockKind = kind;
 
-            var result = handler(node);
+            handler(node);
 
             _currentBlock = previousBlock;
             _currentBlockKind = previousKind;
-
-            return result;
         }
 
         private void WriteSpan(SyntaxNode node, SpanKindInternal kind, AcceptedCharactersInternal? acceptedCharacters = null)

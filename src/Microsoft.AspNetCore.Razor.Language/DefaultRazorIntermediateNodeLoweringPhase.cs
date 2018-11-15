@@ -190,7 +190,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             public override int GetHashCode() => Namespace.GetHashCode();
         }
 
-        private class LoweringVisitor : SyntaxRewriter
+        private class LoweringVisitor : SyntaxWalker
         {
             protected readonly IntermediateNodeBuilder _builder;
             protected readonly DocumentIntermediateNode _document;
@@ -209,14 +209,15 @@ namespace Microsoft.AspNetCore.Razor.Language
 
             public RazorSourceDocument SourceDocument { get; set; }
 
-            public override SyntaxNode VisitRazorDirective(RazorDirectiveSyntax node)
+            public override void VisitRazorDirective(RazorDirectiveSyntax node)
             {
                 IntermediateNode directiveNode;
-                var diagnostics = node.GetDiagnostics();
                 var descriptor = node.DirectiveDescriptor;
 
                 if (descriptor != null)
                 {
+                    var diagnostics = node.GetDiagnostics();
+
                     // This is an extensible directive.
                     if (IsMalformed(diagnostics))
                     {
@@ -251,16 +252,15 @@ namespace Microsoft.AspNetCore.Razor.Language
                 {
                     _builder.Pop();
                 }
-
-                return node;
             }
 
-            public override SyntaxNode VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
+            public override void VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
             {
                 var context = node.GetSpanContext();
                 if (context == null)
                 {
-                    return base.VisitCSharpStatementLiteral(node);
+                    base.VisitCSharpStatementLiteral(node);
+                    return;
                 }
                 else if (context.ChunkGenerator is DirectiveTokenChunkGenerator tokenChunkGenerator)
                 {
@@ -392,7 +392,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                     _builder.Pop();
                 }
 
-                return base.VisitCSharpStatementLiteral(node);
+                base.VisitCSharpStatementLiteral(node);
             }
 
             protected SourceSpan? BuildSourceSpanFromNode(SyntaxNode node)
@@ -400,18 +400,6 @@ namespace Microsoft.AspNetCore.Razor.Language
                 if (node == null)
                 {
                     return null;
-                }
-
-                if (node.Position == SourceDocument.Length)
-                {
-                    // This can happen when we have a marker symbol at the end of the syntax tree.
-                    var location = SourceDocument.Lines.GetLocation(node.Position - 1);
-                    return new SourceSpan(
-                        SourceDocument.FilePath,
-                        location.AbsoluteIndex + 1,
-                        location.LineIndex,
-                        location.CharacterIndex + 1,
-                        length: 0);
                 }
 
                 return node.GetSourceSpan(SourceDocument);
@@ -434,7 +422,7 @@ namespace Microsoft.AspNetCore.Razor.Language
             //  Name=checked
             //  Prefix= checked="
             //  Suffix="
-            public override SyntaxNode VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
+            public override void VisitMarkupAttributeBlock(MarkupAttributeBlockSyntax node)
             {
                 var prefixTokens = MergeLiterals(
                     node.NamePrefix?.LiteralTokens,
@@ -485,17 +473,16 @@ namespace Microsoft.AspNetCore.Razor.Language
                         _builder.Pop();
                     }
                 }
-
-                return node;
             }
 
-            public override SyntaxNode VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)
+            public override void VisitMarkupMinimizedAttributeBlock(MarkupMinimizedAttributeBlockSyntax node)
             {
                 var name = node.Name.GetContent();
                 if (name.StartsWith("data-", StringComparison.OrdinalIgnoreCase) &&
                     !_featureFlags.EXPERIMENTAL_AllowConditionalDataDashAttributes)
                 {
-                    return base.VisitMarkupMinimizedAttributeBlock(node);
+                    base.VisitMarkupMinimizedAttributeBlock(node);
+                    return;
                 }
 
                 // Minimized attributes are just html content.
@@ -504,14 +491,14 @@ namespace Microsoft.AspNetCore.Razor.Language
                     node.Name?.LiteralTokens);
                 var literal = SyntaxFactory.MarkupTextLiteral(literals).Green.CreateRed(node.Parent, node.Position);
 
-                return Visit(literal);
+                Visit(literal);
             }
 
             // Example
             // <input checked="hello-world `@false`"/>
             //  Prefix= (space)
             //  Children will contain a token for @false.
-            public override SyntaxNode VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
+            public override void VisitMarkupDynamicAttributeValue(MarkupDynamicAttributeValueSyntax node)
             {
                 var containsExpression = false;
                 var descendantNodes = node.DescendantNodes(n =>
@@ -547,11 +534,9 @@ namespace Microsoft.AspNetCore.Razor.Language
                 Visit(node.Value);
 
                 _builder.Pop();
-
-                return node;
             }
 
-            public override SyntaxNode VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
+            public override void VisitMarkupLiteralAttributeValue(MarkupLiteralAttributeValueSyntax node)
             {
                 _builder.Push(new HtmlAttributeValueIntermediateNode()
                 {
@@ -567,16 +552,14 @@ namespace Microsoft.AspNetCore.Razor.Language
                 });
 
                 _builder.Pop();
-
-                return node;
             }
 
-            public override SyntaxNode VisitCSharpTemplateBlock(CSharpTemplateBlockSyntax node)
+            public override void VisitCSharpTemplateBlock(CSharpTemplateBlockSyntax node)
             {
                 var templateNode = new TemplateIntermediateNode();
                 _builder.Push(templateNode);
 
-                var result = base.VisitCSharpTemplateBlock(node);
+                base.VisitCSharpTemplateBlock(node);
 
                 _builder.Pop();
 
@@ -599,8 +582,6 @@ namespace Microsoft.AspNetCore.Razor.Language
                             contentLength);
                     }
                 }
-
-                return result;
             }
 
             // CSharp expressions are broken up into blocks and spans because Razor allows Razor comments
@@ -609,18 +590,19 @@ namespace Microsoft.AspNetCore.Razor.Language
             //      @DateTime.@*This is a comment*@Now
             //
             // We need to capture this in the IR so that we can give each piece the correct source mappings
-            public override SyntaxNode VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
+            public override void VisitCSharpExplicitExpression(CSharpExplicitExpressionSyntax node)
             {
                 if (_builder.Current is CSharpExpressionAttributeValueIntermediateNode)
                 {
-                    return base.VisitCSharpExplicitExpression(node);
+                    base.VisitCSharpExplicitExpression(node);
+                    return;
                 }
 
                 var expressionNode = new CSharpExpressionIntermediateNode();
 
                 _builder.Push(expressionNode);
 
-                var result = base.VisitCSharpExplicitExpression(node);
+                base.VisitCSharpExplicitExpression(node);
 
                 _builder.Pop();
 
@@ -643,22 +625,21 @@ namespace Microsoft.AspNetCore.Razor.Language
                             contentLength);
                     }
                 }
-
-                return result;
             }
 
-            public override SyntaxNode VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
+            public override void VisitCSharpImplicitExpression(CSharpImplicitExpressionSyntax node)
             {
                 if (_builder.Current is CSharpExpressionAttributeValueIntermediateNode)
                 {
-                    return base.VisitCSharpImplicitExpression(node);
+                    base.VisitCSharpImplicitExpression(node);
+                    return;
                 }
 
                 var expressionNode = new CSharpExpressionIntermediateNode();
 
                 _builder.Push(expressionNode);
 
-                var result = base.VisitCSharpImplicitExpression(node);
+                base.VisitCSharpImplicitExpression(node);
 
                 _builder.Pop();
 
@@ -681,17 +662,18 @@ namespace Microsoft.AspNetCore.Razor.Language
                             contentLength);
                     }
                 }
-
-                return result;
             }
 
-            public override SyntaxNode VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
+            public override void VisitCSharpExpressionLiteral(CSharpExpressionLiteralSyntax node)
             {
                 if (_builder.Current is TagHelperHtmlAttributeIntermediateNode)
                 {
                     // If we are top level in a tag helper HTML attribute, we want to be rendered as markup.
+                    // This case happens for duplicate non-string bound attributes. They would be initially be categorized as
+                    // CSharp but since they are duplicate, they should just be markup.
                     var markupLiteral = SyntaxFactory.MarkupTextLiteral(node.LiteralTokens).Green.CreateRed(node.Parent, node.Position);
-                    return Visit(markupLiteral);
+                    Visit(markupLiteral);
+                    return;
                 }
 
                 _builder.Add(new IntermediateToken()
@@ -701,10 +683,10 @@ namespace Microsoft.AspNetCore.Razor.Language
                     Source = BuildSourceSpanFromNode(node),
                 });
 
-                return base.VisitCSharpExpressionLiteral(node);
+                base.VisitCSharpExpressionLiteral(node);
             }
 
-            public override SyntaxNode VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
+            public override void VisitCSharpStatementLiteral(CSharpStatementLiteralSyntax node)
             {
                 var context = node.GetSpanContext();
                 if (context == null || context.ChunkGenerator is StatementChunkGenerator)
@@ -733,15 +715,16 @@ namespace Microsoft.AspNetCore.Razor.Language
                     }
                 }
 
-                return base.VisitCSharpStatementLiteral(node);
+                base.VisitCSharpStatementLiteral(node);
             }
 
-            public override SyntaxNode VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
+            public override void VisitMarkupTextLiteral(MarkupTextLiteralSyntax node)
             {
                 var context = node.GetSpanContext();
                 if (context != null && context.ChunkGenerator == SpanChunkGenerator.Null)
                 {
-                    return base.VisitMarkupTextLiteral(node);
+                    base.VisitMarkupTextLiteral(node);
+                    return;
                 }
 
                 if (node.LiteralTokens.Count == 1)
@@ -752,7 +735,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                         token.Content.Length == 0)
                     {
                         // We don't want to create IR nodes for marker tokens.
-                        return base.VisitMarkupTextLiteral(node);
+                        base.VisitMarkupTextLiteral(node);
+                        return;
                     }
                 }
 
@@ -765,7 +749,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                     if (existingHtmlContent.Source == null && source == null)
                     {
                         Combine(existingHtmlContent, node);
-                        return base.VisitMarkupTextLiteral(node);
+                        base.VisitMarkupTextLiteral(node);
+                        return;
                     }
 
                     if (source != null &&
@@ -774,7 +759,8 @@ namespace Microsoft.AspNetCore.Razor.Language
                         existingHtmlContent.Source.Value.AbsoluteIndex + existingHtmlContent.Source.Value.Length == source.Value.AbsoluteIndex)
                     {
                         Combine(existingHtmlContent, node);
-                        return base.VisitMarkupTextLiteral(node);
+                        base.VisitMarkupTextLiteral(node);
+                        return;
                     }
                 }
 
@@ -793,10 +779,10 @@ namespace Microsoft.AspNetCore.Razor.Language
 
                 _builder.Pop();
 
-                return base.VisitMarkupTextLiteral(node);
+                base.VisitMarkupTextLiteral(node);
             }
 
-            public override SyntaxNode VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
+            public override void VisitMarkupTagHelperElement(MarkupTagHelperElementSyntax node)
             {
                 var info = node.TagHelperInfo;
                 var tagName = info.TagName;
@@ -821,7 +807,10 @@ namespace Microsoft.AspNetCore.Razor.Language
 
                 _builder.Push(new TagHelperBodyIntermediateNode());
 
-                VisitList(node.Body);
+                foreach (var item in node.Body)
+                {
+                    Visit(item);
+                }
 
                 _builder.Pop(); // Pop InitializeTagHelperStructureIntermediateNode
 
@@ -833,11 +822,9 @@ namespace Microsoft.AspNetCore.Razor.Language
 
                 // We don't want to track attributes from a previous tag helper element.
                 _renderedBoundAttributeNames.Clear();
-
-                return node;
             }
 
-            public override SyntaxNode VisitMarkupTagHelperStartTag(MarkupTagHelperStartTagSyntax node)
+            public override void VisitMarkupTagHelperStartTag(MarkupTagHelperStartTagSyntax node)
             {
                 foreach (var child in node.Children)
                 {
@@ -846,17 +833,15 @@ namespace Microsoft.AspNetCore.Razor.Language
                         Visit(child);
                     }
                 }
-
-                return node;
             }
 
-            public override SyntaxNode VisitMarkupMinimizedTagHelperAttribute(MarkupMinimizedTagHelperAttributeSyntax node)
+            public override void VisitMarkupMinimizedTagHelperAttribute(MarkupMinimizedTagHelperAttributeSyntax node)
             {
                 if (!_featureFlags.AllowMinimizedBooleanTagHelperAttributes)
                 {
                     // Minimized attributes are not valid for non-boolean bound attributes. TagHelperBlockRewriter
                     // has already logged an error if it was a non-boolean bound attribute; so we can skip.
-                    return node;
+                    return;
                 }
 
                 var element = node.FirstAncestorOrSelf<MarkupTagHelperElementSyntax>();
@@ -879,7 +864,7 @@ namespace Microsoft.AspNetCore.Razor.Language
                         if (!expectsBooleanValue)
                         {
                             // We do not allow minimized non-boolean bound attributes.
-                            return node;
+                            return;
                         }
 
                         var setTagHelperProperty = new TagHelperPropertyIntermediateNode()
@@ -905,11 +890,9 @@ namespace Microsoft.AspNetCore.Razor.Language
 
                     _builder.Add(addHtmlAttribute);
                 }
-
-                return node;
             }
 
-            public override SyntaxNode VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
+            public override void VisitMarkupTagHelperAttribute(MarkupTagHelperAttributeSyntax node)
             {
                 var element = node.FirstAncestorOrSelf<MarkupTagHelperElementSyntax>();
                 var descriptors = element.TagHelperInfo.BindingResult.Descriptors;
@@ -954,8 +937,6 @@ namespace Microsoft.AspNetCore.Razor.Language
                     VisitAttributeValue(attributeValueNode);
                     _builder.Pop();
                 }
-
-                return node;
             }
 
             private void VisitAttributeValue(SyntaxNode node)
@@ -964,7 +945,6 @@ namespace Microsoft.AspNetCore.Razor.Language
                 {
                     return;
                 }
-
 
                 IReadOnlyList<SyntaxNode> children = node.ChildNodes();
                 var position = node.Position;
