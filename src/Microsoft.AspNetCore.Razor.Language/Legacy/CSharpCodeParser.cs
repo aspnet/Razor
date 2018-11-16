@@ -454,7 +454,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             Assert(SyntaxKind.LeftBrace);
             block = block ?? new Block(Resources.BlockName_Code, CurrentStart);
-            var leftBrace = OutputAsMetaCode(GetExpectedToken(SyntaxKind.LeftBrace));
+            var leftBrace = OutputAsMetaCode(EatExpectedToken(SyntaxKind.LeftBrace));
             CSharpCodeBlockSyntax codeBlock = null;
             using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
             {
@@ -723,7 +723,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     Accept(read);
                     if (Balance(builder, BalancingModes.AllowCommentsAndTemplates | BalancingModes.BacktrackOnFailure))
                     {
-                        Optional(SyntaxKind.RightBrace);
+                        TryAccept(SyntaxKind.RightBrace);
                     }
                     else
                     {
@@ -1328,7 +1328,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                             SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.Whitespace;
                             directiveBuilder.Add(OutputTokensAsUnclassifiedLiteral());
 
-                            Optional(SyntaxKind.Semicolon);
+                            TryAccept(SyntaxKind.Semicolon);
                             directiveBuilder.Add(OutputAsMetaCode(Output(), AcceptedCharactersInternal.Whitespace));
 
                             AcceptWhile(IsSpacingToken(includeNewLines: false, includeComments: true));
@@ -1526,7 +1526,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
 
                 SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                if (!Optional(SyntaxKind.RightBrace))
+                if (!TryAccept(SyntaxKind.RightBrace))
                 {
                     editHandler.AutoCompleteString = "}";
                     Context.ErrorSink.OnError(
@@ -1676,7 +1676,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
                 else
                 {
-                    Optional(SyntaxKind.RightParenthesis);
+                    TryAccept(SyntaxKind.RightParenthesis);
                 }
                 return complete;
             }
@@ -1725,7 +1725,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                          (result.Value == CSharpKeyword.Case ||
                           result.Value == CSharpKeyword.Default));
             AcceptUntil(SyntaxKind.Colon);
-            Optional(SyntaxKind.Colon);
+            TryAccept(SyntaxKind.Colon);
         }
 
         private void ParseIfStatement(SyntaxListBuilder<RazorSyntaxNode> builder, CSharpTransitionSyntax transition)
@@ -1893,7 +1893,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 Assert(CSharpKeyword.While);
                 AcceptAndMoveNext();
                 AcceptWhile(IsSpacingToken(includeNewLines: true, includeComments: true));
-                if (TryParseCondition(builder) && Optional(SyntaxKind.Semicolon))
+                if (TryParseCondition(builder) && TryAccept(SyntaxKind.Semicolon))
                 {
                     SpanContext.EditHandler.AcceptedCharacters = AcceptedCharactersInternal.None;
                 }
@@ -2033,7 +2033,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 // Optional ";"
                 if (EnsureCurrent())
                 {
-                    Optional(SyntaxKind.Semicolon);
+                    TryAccept(SyntaxKind.Semicolon);
                 }
 
                 CompleteBlock();
@@ -2046,21 +2046,21 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         private bool TryParseNamespaceOrTypeName(in SyntaxListBuilder<RazorSyntaxNode> builder)
         {
-            if (Optional(SyntaxKind.LeftParenthesis))
+            if (TryAccept(SyntaxKind.LeftParenthesis))
             {
-                while (!Optional(SyntaxKind.RightParenthesis) && !EndOfFile)
+                while (!TryAccept(SyntaxKind.RightParenthesis) && !EndOfFile)
                 {
-                    Optional(SyntaxKind.Whitespace);
+                    TryAccept(SyntaxKind.Whitespace);
 
                     if (!TryParseNamespaceOrTypeName(builder))
                     {
                         return false;
                     }
 
-                    Optional(SyntaxKind.Whitespace);
-                    Optional(SyntaxKind.Identifier);
-                    Optional(SyntaxKind.Whitespace);
-                    Optional(SyntaxKind.Comma);
+                    TryAccept(SyntaxKind.Whitespace);
+                    TryAccept(SyntaxKind.Identifier);
+                    TryAccept(SyntaxKind.Whitespace);
+                    TryAccept(SyntaxKind.Comma);
                 }
 
                 if (At(SyntaxKind.Whitespace) && NextIs(SyntaxKind.QuestionMark))
@@ -2069,24 +2069,24 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     AcceptAndMoveNext();
                 }
 
-                Optional(SyntaxKind.QuestionMark); // Nullable
+                TryAccept(SyntaxKind.QuestionMark); // Nullable
 
                 return true;
             }
-            else if (Optional(SyntaxKind.Identifier) || Optional(SyntaxKind.Keyword))
+            else if (TryAccept(SyntaxKind.Identifier) || TryAccept(SyntaxKind.Keyword))
             {
-                if (Optional(SyntaxKind.DoubleColon))
+                if (TryAccept(SyntaxKind.DoubleColon))
                 {
-                    if (!Optional(SyntaxKind.Identifier))
+                    if (!TryAccept(SyntaxKind.Identifier))
                     {
-                        Optional(SyntaxKind.Keyword);
+                        TryAccept(SyntaxKind.Keyword);
                     }
                 }
                 if (At(SyntaxKind.LessThan))
                 {
                     ParseTypeArgumentList(builder);
                 }
-                if (Optional(SyntaxKind.Dot))
+                if (TryAccept(SyntaxKind.Dot))
                 {
                     TryParseNamespaceOrTypeName(builder);
                 }
@@ -2097,7 +2097,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     AcceptAndMoveNext();
                 }
 
-                Optional(SyntaxKind.QuestionMark); // Nullable
+                TryAccept(SyntaxKind.QuestionMark); // Nullable
 
                 if (At(SyntaxKind.Whitespace) && NextIs(SyntaxKind.LeftBracket))
                 {
@@ -2108,7 +2108,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 while (At(SyntaxKind.LeftBracket))
                 {
                     Balance(builder, BalancingModes.None);
-                    if (!Optional(SyntaxKind.RightBracket))
+                    if (!TryAccept(SyntaxKind.RightBracket))
                     {
                         Accept(SyntaxFactory.MissingToken(SyntaxKind.RightBracket));
                     }
@@ -2125,7 +2125,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             Assert(SyntaxKind.LessThan);
             Balance(builder, BalancingModes.None);
-            if (!Optional(SyntaxKind.GreaterThan))
+            if (!TryAccept(SyntaxKind.GreaterThan))
             {
                 Accept(SyntaxFactory.MissingToken(SyntaxKind.GreaterThan));
             }
@@ -2173,7 +2173,18 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 !Context.DesignTimeMode &&
                 !IsNested)
             {
-                CaptureWhitespaceAtEndOfCodeOnlyLine();
+                var whitespace = ReadWhile(token => token.Kind == SyntaxKind.Whitespace);
+                if (At(SyntaxKind.NewLine))
+                {
+                    Accept(whitespace);
+                    AcceptAndMoveNext();
+                    PutCurrentBack();
+                }
+                else
+                {
+                    PutCurrentBack();
+                    PutBack(whitespace);
+                }
             }
             else
             {
@@ -2201,56 +2212,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
             }
             return Enumerable.Empty<SyntaxToken>();
-        }
-
-        private void CaptureWhitespaceAtEndOfCodeOnlyLine()
-        {
-            var whitespace = ReadWhile(token => token.Kind == SyntaxKind.Whitespace);
-            if (At(SyntaxKind.NewLine))
-            {
-                Accept(whitespace);
-                AcceptAndMoveNext();
-                PutCurrentBack();
-            }
-            else
-            {
-                PutCurrentBack();
-                PutBack(whitespace);
-            }
-        }
-
-        protected override bool IsAtEmbeddedTransition(bool allowTemplatesAndComments, bool allowTransitions)
-        {
-            // No embedded transitions in C#, so ignore that param
-            return allowTemplatesAndComments
-                   && ((Language.IsTransition(CurrentToken)
-                        && NextIs(SyntaxKind.LessThan, SyntaxKind.Colon, SyntaxKind.DoubleColon))
-                       || Language.IsCommentStart(CurrentToken));
-        }
-
-        protected override void ParseEmbeddedTransition(in SyntaxListBuilder<RazorSyntaxNode> builder)
-        {
-            if (Language.IsTransition(CurrentToken))
-            {
-                PutCurrentBack();
-                ParseTemplate(builder);
-            }
-            else if (Language.IsCommentStart(CurrentToken))
-            {
-                // Output tokens before parsing the comment.
-                AcceptMarkerTokenIfNecessary();
-                if (SpanContext.ChunkGenerator is ExpressionChunkGenerator)
-                {
-                    builder.Add(OutputTokensAsExpressionLiteral());
-                }
-                else
-                {
-                    builder.Add(OutputTokensAsStatementLiteral());
-                }
-
-                var comment = ParseRazorComment();
-                builder.Add(comment);
-            }
         }
 
         private void DefaultSpanContextConfig(SpanContextBuilder spanContext)
@@ -2329,6 +2290,122 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             IsNested = wasNested;
             NextToken();
+        }
+
+        private bool Balance(SyntaxListBuilder<RazorSyntaxNode> builder, BalancingModes mode)
+        {
+            var left = CurrentToken.Kind;
+            var right = Language.FlipBracket(left);
+            var start = CurrentStart;
+            AcceptAndMoveNext();
+            if (EndOfFile && ((mode & BalancingModes.NoErrorOnFailure) != BalancingModes.NoErrorOnFailure))
+            {
+                Context.ErrorSink.OnError(
+                    RazorDiagnosticFactory.CreateParsing_ExpectedCloseBracketBeforeEOF(
+                        new SourceSpan(start, contentLength: 1 /* { OR } */),
+                        Language.GetSample(left),
+                        Language.GetSample(right)));
+            }
+
+            return Balance(builder, mode, left, right, start);
+        }
+
+        private bool Balance(SyntaxListBuilder<RazorSyntaxNode> builder, BalancingModes mode, SyntaxKind left, SyntaxKind right, SourceLocation start)
+        {
+            var startPosition = CurrentStart.AbsoluteIndex;
+            var nesting = 1;
+            if (!EndOfFile)
+            {
+                var tokens = new List<SyntaxToken>();
+                do
+                {
+                    if (IsAtEmbeddedTransition(
+                        (mode & BalancingModes.AllowCommentsAndTemplates) == BalancingModes.AllowCommentsAndTemplates,
+                        (mode & BalancingModes.AllowEmbeddedTransitions) == BalancingModes.AllowEmbeddedTransitions))
+                    {
+                        Accept(tokens);
+                        tokens.Clear();
+                        ParseEmbeddedTransition(builder);
+
+                        // Reset backtracking since we've already outputted some spans.
+                        startPosition = CurrentStart.AbsoluteIndex;
+                    }
+                    if (At(left))
+                    {
+                        nesting++;
+                    }
+                    else if (At(right))
+                    {
+                        nesting--;
+                    }
+                    if (nesting > 0)
+                    {
+                        tokens.Add(CurrentToken);
+                    }
+                }
+                while (nesting > 0 && NextToken());
+
+                if (nesting > 0)
+                {
+                    if ((mode & BalancingModes.NoErrorOnFailure) != BalancingModes.NoErrorOnFailure)
+                    {
+                        Context.ErrorSink.OnError(
+                            RazorDiagnosticFactory.CreateParsing_ExpectedCloseBracketBeforeEOF(
+                                new SourceSpan(start, contentLength: 1 /* { OR } */),
+                                Language.GetSample(left),
+                                Language.GetSample(right)));
+                    }
+                    if ((mode & BalancingModes.BacktrackOnFailure) == BalancingModes.BacktrackOnFailure)
+                    {
+                        Context.Source.Position = startPosition;
+                        NextToken();
+                    }
+                    else
+                    {
+                        Accept(tokens);
+                    }
+                }
+                else
+                {
+                    // Accept all the tokens we saw
+                    Accept(tokens);
+                }
+            }
+            return nesting == 0;
+        }
+
+        private bool IsAtEmbeddedTransition(bool allowTemplatesAndComments, bool allowTransitions)
+        {
+            // No embedded transitions in C#, so ignore that param
+            return allowTemplatesAndComments
+                   && ((Language.IsTransition(CurrentToken)
+                        && NextIs(SyntaxKind.LessThan, SyntaxKind.Colon, SyntaxKind.DoubleColon))
+                       || Language.IsCommentStart(CurrentToken));
+        }
+
+        private void ParseEmbeddedTransition(in SyntaxListBuilder<RazorSyntaxNode> builder)
+        {
+            if (Language.IsTransition(CurrentToken))
+            {
+                PutCurrentBack();
+                ParseTemplate(builder);
+            }
+            else if (Language.IsCommentStart(CurrentToken))
+            {
+                // Output tokens before parsing the comment.
+                AcceptMarkerTokenIfNecessary();
+                if (SpanContext.ChunkGenerator is ExpressionChunkGenerator)
+                {
+                    builder.Add(OutputTokensAsExpressionLiteral());
+                }
+                else
+                {
+                    builder.Add(OutputTokensAsStatementLiteral());
+                }
+
+                var comment = ParseRazorComment();
+                builder.Add(comment);
+            }
         }
 
         [Conditional("DEBUG")]

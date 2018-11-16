@@ -208,11 +208,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             {
             }
 
-            protected override bool TokenKindEquals(SyntaxKind x, SyntaxKind y)
-            {
-                throw new NotImplementedException();
-            }
-
             internal new bool LookaheadUntil(Func<SyntaxToken, IEnumerable<SyntaxToken>, bool> condition)
             {
                 return base.LookaheadUntil(condition);

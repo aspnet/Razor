@@ -308,10 +308,10 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         // Parsing a start tag
                         var scriptTag = At(SyntaxKind.Text) &&
                                         string.Equals(CurrentToken.Content, "script", StringComparison.OrdinalIgnoreCase);
-                        Optional(SyntaxKind.Text);
+                        TryAccept(SyntaxKind.Text);
                         ParseTagContent(tagBuilder); // Parse the tag, don't care about the content
-                        Optional(SyntaxKind.ForwardSlash);
-                        Optional(SyntaxKind.CloseAngle);
+                        TryAccept(SyntaxKind.ForwardSlash);
+                        TryAccept(SyntaxKind.CloseAngle);
 
                         // If the script tag expects javascript content then we should do minimal parsing until we reach
                         // the end script tag. Don't want to incorrectly parse a "var tag = '<input />';" as an HTML tag.
@@ -329,13 +329,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     {
                         // Parsing an end tag
                         // This section can accept things like: '</p  >' or '</p>' etc.
-                        Optional(SyntaxKind.ForwardSlash);
+                        TryAccept(SyntaxKind.ForwardSlash);
 
                         // Whitespace here is invalid (according to the spec)
                         ParseOptionalBangEscape(tagBuilder);
-                        Optional(SyntaxKind.Text);
-                        Optional(SyntaxKind.Whitespace);
-                        Optional(SyntaxKind.CloseAngle);
+                        TryAccept(SyntaxKind.Text);
+                        TryAccept(SyntaxKind.Whitespace);
+                        TryAccept(SyntaxKind.CloseAngle);
                     }
 
                     tagBuilder.Add(OutputAsMarkupLiteral());
@@ -552,7 +552,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                 if (quote != SyntaxKind.Marker)
                 {
-                    Optional(quote);
+                    TryAccept(quote);
                     valueSuffix = OutputAsMarkupLiteral();
                 }
             }
@@ -705,11 +705,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             var type = CurrentToken.Kind;
             AcceptAndMoveNext();
-            ParseQuoted(builder, type);
-        }
-
-        private void ParseQuoted(in SyntaxListBuilder<RazorSyntaxNode> builder, SyntaxKind type)
-        {
             SkipToAndParseCode(builder, type);
             if (!EndOfFile)
             {
@@ -981,7 +976,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         AcceptAndMoveNext(); // '<'
                         AcceptAndMoveNext(); // '/'
                         SkipToAndParseCode(tagBuilder, SyntaxKind.CloseAngle);
-                        if (!Optional(SyntaxKind.CloseAngle))
+                        if (!TryAccept(SyntaxKind.CloseAngle))
                         {
                             Context.ErrorSink.OnError(
                                 RazorDiagnosticFactory.CreateParsing_UnfinishedTag(
@@ -1392,7 +1387,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     tokens = ReadWhile(IsSpacingToken(includeNewLines: true));
                 }
 
-                if (!Optional(SyntaxKind.CloseAngle))
+                if (!TryAccept(SyntaxKind.CloseAngle))
                 {
                     Context.Source.Position = bookmark;
                     NextToken();
@@ -1423,7 +1418,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             Accept(_bufferedOpenAngle);
             ParseOptionalBangEscape(builder);
-            Optional(SyntaxKind.Text);
+            TryAccept(SyntaxKind.Text);
             return ParseRestOfTag(builder, parentBuilder, tag, tags);
         }
 
@@ -1451,7 +1446,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             // Check for the '>' to determine if the tag is finished
-            var seenClose = Optional(SyntaxKind.CloseAngle);
+            var seenClose = TryAccept(SyntaxKind.CloseAngle);
             if (!seenClose)
             {
                 Context.ErrorSink.OnError(
@@ -1507,7 +1502,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                                     // Accept to '>', '<' or EOF
                                     AcceptUntil(SyntaxKind.CloseAngle, SyntaxKind.OpenAngle);
                                     // Accept the '>' if we saw it. And if we do see it, we're complete
-                                    var complete = Optional(SyntaxKind.CloseAngle);
+                                    var complete = TryAccept(SyntaxKind.CloseAngle);
 
                                     if (complete)
                                     {
@@ -1609,7 +1604,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 AcceptUntil(SyntaxKind.CloseAngle);
 
                 // Accept the ">"
-                return Tuple.Create(Optional(SyntaxKind.CloseAngle), false);
+                return Tuple.Create(TryAccept(SyntaxKind.CloseAngle), false);
             }
         }
 
@@ -1625,7 +1620,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Assert(SyntaxKind.Text);
             AcceptAndMoveNext();
 
-            var seenCloseAngle = Optional(SyntaxKind.CloseAngle);
+            var seenCloseAngle = TryAccept(SyntaxKind.CloseAngle);
 
             if (!seenCloseAngle)
             {
@@ -1687,7 +1682,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             AcceptUntil(SyntaxKind.CloseAngle, SyntaxKind.NewLine);
 
             // Include the close angle in the text tag block if it's there, otherwise just move on
-            Optional(SyntaxKind.CloseAngle);
+            TryAccept(SyntaxKind.CloseAngle);
         }
 
         private void EndTagBlock(
@@ -1743,13 +1738,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 {
                     // Accept whitespace and a single newline if present
                     AcceptWhile(SyntaxKind.Whitespace);
-                    Optional(SyntaxKind.NewLine);
+                    TryAccept(SyntaxKind.NewLine);
                 }
             }
             else if (SpanContext.EditHandler.AcceptedCharacters == AcceptedCharactersInternal.Any)
             {
                 AcceptWhile(SyntaxKind.Whitespace);
-                Optional(SyntaxKind.NewLine);
+                TryAccept(SyntaxKind.NewLine);
             }
             PutCurrentBack();
 
@@ -1775,14 +1770,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                 NextToken();
                 CaseSensitive = caseSensitive;
-                if (nestingSequences.Item1 == null)
-                {
-                    NonNestingSection(builder, nestingSequences.Item2.Split());
-                }
-                else
-                {
-                    NestingSection(builder, nestingSequences);
-                }
+                NestingBlock(builder, nestingSequences);
                 AcceptMarkerTokenIfNecessary();
                 builder.Add(OutputAsMarkupLiteral());
 
@@ -1790,23 +1778,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        private void NonNestingSection(in SyntaxListBuilder<RazorSyntaxNode> builder, string[] nestingSequenceComponents)
-        {
-            do
-            {
-                SkipToAndParseCode(builder, token => token.Kind == SyntaxKind.OpenAngle || AtEnd(nestingSequenceComponents));
-                ParseTagInDocumentContext(builder);
-                if (!EndOfFile && AtEnd(nestingSequenceComponents))
-                {
-                    break;
-                }
-            }
-            while (!EndOfFile);
-
-            PutCurrentBack();
-        }
-
-        private void NestingSection(in SyntaxListBuilder<RazorSyntaxNode> builder, Tuple<string, string> nestingSequences)
+        private void NestingBlock(in SyntaxListBuilder<RazorSyntaxNode> builder, Tuple<string, string> nestingSequences)
         {
             var nesting = 1;
             while (nesting > 0 && !EndOfFile)
@@ -1831,37 +1803,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     ParseTagInDocumentContext(builder);
                 }
             }
-        }
-
-        private bool AtEnd(string[] nestingSequenceComponents)
-        {
-            EnsureCurrent();
-            if (string.Equals(CurrentToken.Content, nestingSequenceComponents[0], Comparison))
-            {
-                var bookmark = Context.Source.Position - CurrentToken.Content.Length;
-                try
-                {
-                    foreach (var component in nestingSequenceComponents)
-                    {
-                        if (!EndOfFile && !string.Equals(CurrentToken.Content, component, Comparison))
-                        {
-                            return false;
-                        }
-                        NextToken();
-                        while (!EndOfFile && IsSpacingToken(includeNewLines: true)(CurrentToken))
-                        {
-                            NextToken();
-                        }
-                    }
-                    return true;
-                }
-                finally
-                {
-                    Context.Source.Position = bookmark;
-                    NextToken();
-                }
-            }
-            return false;
         }
 
         private int ProcessTextToken(in SyntaxListBuilder<RazorSyntaxNode> builder, Tuple<string, string> nestingSequences, int currentNesting)

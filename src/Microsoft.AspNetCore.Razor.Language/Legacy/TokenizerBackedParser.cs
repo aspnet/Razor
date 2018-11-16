@@ -53,8 +53,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         protected SyntaxToken PreviousToken { get; private set; }
 
-        protected SourceLocation CurrentLocation => _tokenizer.Tokenizer.CurrentLocation;
-
         protected SourceLocation CurrentStart => _tokenizer.Tokenizer.CurrentStart;
 
         protected bool EndOfFile
@@ -63,15 +61,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         }
 
         protected LanguageCharacteristics<TTokenizer> Language { get; }
-
-        protected virtual void HandleEmbeddedTransition()
-        {
-        }
-
-        protected virtual bool IsAtEmbeddedTransition(bool allowTemplatesAndComments, bool allowTransitions)
-        {
-            return false;
-        }
 
         protected SyntaxToken Lookahead(int count)
         {
@@ -166,10 +155,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         [Conditional("DEBUG")]
         internal void Assert(SyntaxKind expectedType)
         {
-            Debug.Assert(!EndOfFile && TokenKindEquals(CurrentToken.Kind, expectedType));
+            Debug.Assert(!EndOfFile && CurrentToken.Kind == expectedType);
         }
-
-        protected virtual bool TokenKindEquals(SyntaxKind x, SyntaxKind y) => x == y;
 
         protected internal void PutBack(SyntaxToken token)
         {
@@ -208,12 +195,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         protected internal bool NextIs(SyntaxKind type)
         {
-            return NextIs(token => token != null && TokenKindEquals(type, token.Kind));
+            return NextIs(token => token != null && type == token.Kind);
         }
 
         protected internal bool NextIs(params SyntaxKind[] types)
         {
-            return NextIs(token => token != null && types.Any(t => TokenKindEquals(t, token.Kind)));
+            return NextIs(token => token != null && types.Any(t => t == token.Kind));
         }
 
         protected internal bool NextIs(Func<SyntaxToken, bool> condition)
@@ -238,12 +225,12 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         protected internal bool Was(SyntaxKind type)
         {
-            return PreviousToken != null && TokenKindEquals(PreviousToken.Kind, type);
+            return PreviousToken != null && PreviousToken.Kind == type;
         }
 
         protected internal bool At(SyntaxKind type)
         {
-            return !EndOfFile && CurrentToken != null && TokenKindEquals(CurrentToken.Kind, type);
+            return !EndOfFile && CurrentToken != null && CurrentToken.Kind == type;
         }
 
         protected bool EnsureCurrent()
@@ -294,8 +281,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 EnsureCurrent();
                 var start = CurrentStart;
                 Debug.Assert(At(SyntaxKind.RazorCommentTransition));
-                var startTransition = GetExpectedToken(SyntaxKind.RazorCommentTransition);
-                var startStar = GetExpectedToken(SyntaxKind.RazorCommentStar);
+                var startTransition = EatExpectedToken(SyntaxKind.RazorCommentTransition);
+                var startStar = EatExpectedToken(SyntaxKind.RazorCommentStar);
                 var comment = GetOptionalToken(SyntaxKind.RazorCommentLiteral);
                 if (comment == null)
                 {
@@ -351,7 +338,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return token;
         }
 
-        protected SyntaxToken GetExpectedToken(params SyntaxKind[] kinds)
+        protected SyntaxToken EatExpectedToken(params SyntaxKind[] kinds)
         {
             Debug.Assert(!EndOfFile && CurrentToken != null && kinds.Contains(CurrentToken.Kind));
             var token = CurrentToken;
@@ -373,44 +360,44 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
         protected internal void AcceptWhile(SyntaxKind type)
         {
-            AcceptWhile(token => TokenKindEquals(type, token.Kind));
+            AcceptWhile(token => type == token.Kind);
         }
 
         // We want to avoid array allocations and enumeration where possible, so we use the same technique as string.Format
         protected internal void AcceptWhile(SyntaxKind type1, SyntaxKind type2)
         {
-            AcceptWhile(token => TokenKindEquals(type1, token.Kind) || TokenKindEquals(type2, token.Kind));
+            AcceptWhile(token => type1 == token.Kind || type2 == token.Kind);
         }
 
         protected internal void AcceptWhile(SyntaxKind type1, SyntaxKind type2, SyntaxKind type3)
         {
-            AcceptWhile(token => TokenKindEquals(type1, token.Kind) || TokenKindEquals(type2, token.Kind) || TokenKindEquals(type3, token.Kind));
+            AcceptWhile(token => type1 == token.Kind || type2 == token.Kind || type3 == token.Kind);
         }
 
         protected internal void AcceptWhile(params SyntaxKind[] types)
         {
-            AcceptWhile(token => types.Any(expected => TokenKindEquals(expected, token.Kind)));
+            AcceptWhile(token => types.Any(expected => expected == token.Kind));
         }
 
         protected internal void AcceptUntil(SyntaxKind type)
         {
-            AcceptWhile(token => !TokenKindEquals(type, token.Kind));
+            AcceptWhile(token => type != token.Kind);
         }
 
         // We want to avoid array allocations and enumeration where possible, so we use the same technique as string.Format
         protected internal void AcceptUntil(SyntaxKind type1, SyntaxKind type2)
         {
-            AcceptWhile(token => !TokenKindEquals(type1, token.Kind) && !TokenKindEquals(type2, token.Kind));
+            AcceptWhile(token => type1 != token.Kind && type2 != token.Kind);
         }
 
         protected internal void AcceptUntil(SyntaxKind type1, SyntaxKind type2, SyntaxKind type3)
         {
-            AcceptWhile(token => !TokenKindEquals(type1, token.Kind) && !TokenKindEquals(type2, token.Kind) && !TokenKindEquals(type3, token.Kind));
+            AcceptWhile(token => type1 != token.Kind && type2 != token.Kind && type3 != token.Kind);
         }
 
         protected internal void AcceptUntil(params SyntaxKind[] types)
         {
-            AcceptWhile(token => types.All(expected => !TokenKindEquals(expected, token.Kind)));
+            AcceptWhile(token => types.All(expected => expected != token.Kind));
         }
 
         protected internal void AcceptWhile(Func<SyntaxToken, bool> condition)
@@ -448,7 +435,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
         {
             foreach (var kind in kinds)
             {
-                if (CurrentToken == null || !TokenKindEquals(CurrentToken.Kind, kind))
+                if (CurrentToken == null || CurrentToken.Kind != kind)
                 {
                     return false;
                 }
@@ -498,7 +485,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return lastWs;
         }
 
-        protected internal bool Optional(SyntaxKind type)
+        protected internal bool TryAccept(SyntaxKind type)
         {
             if (At(type))
             {
@@ -506,92 +493,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 return true;
             }
             return false;
-        }
-
-        protected internal bool Balance(SyntaxListBuilder<RazorSyntaxNode> builder, BalancingModes mode)
-        {
-            var left = CurrentToken.Kind;
-            var right = Language.FlipBracket(left);
-            var start = CurrentStart;
-            AcceptAndMoveNext();
-            if (EndOfFile && ((mode & BalancingModes.NoErrorOnFailure) != BalancingModes.NoErrorOnFailure))
-            {
-                Context.ErrorSink.OnError(
-                    RazorDiagnosticFactory.CreateParsing_ExpectedCloseBracketBeforeEOF(
-                        new SourceSpan(start, contentLength: 1 /* { OR } */),
-                        Language.GetSample(left),
-                        Language.GetSample(right)));
-            }
-
-            return Balance(builder, mode, left, right, start);
-        }
-
-        protected internal bool Balance(SyntaxListBuilder<RazorSyntaxNode> builder, BalancingModes mode, SyntaxKind left, SyntaxKind right, SourceLocation start)
-        {
-            var startPosition = CurrentStart.AbsoluteIndex;
-            var nesting = 1;
-            if (!EndOfFile)
-            {
-                var tokens = new List<SyntaxToken>();
-                do
-                {
-                    if (IsAtEmbeddedTransition(
-                        (mode & BalancingModes.AllowCommentsAndTemplates) == BalancingModes.AllowCommentsAndTemplates,
-                        (mode & BalancingModes.AllowEmbeddedTransitions) == BalancingModes.AllowEmbeddedTransitions))
-                    {
-                        Accept(tokens);
-                        tokens.Clear();
-                        ParseEmbeddedTransition(builder);
-
-                        // Reset backtracking since we've already outputted some spans.
-                        startPosition = CurrentStart.AbsoluteIndex;
-                    }
-                    if (At(left))
-                    {
-                        nesting++;
-                    }
-                    else if (At(right))
-                    {
-                        nesting--;
-                    }
-                    if (nesting > 0)
-                    {
-                        tokens.Add(CurrentToken);
-                    }
-                }
-                while (nesting > 0 && NextToken());
-
-                if (nesting > 0)
-                {
-                    if ((mode & BalancingModes.NoErrorOnFailure) != BalancingModes.NoErrorOnFailure)
-                    {
-                        Context.ErrorSink.OnError(
-                            RazorDiagnosticFactory.CreateParsing_ExpectedCloseBracketBeforeEOF(
-                                new SourceSpan(start, contentLength: 1 /* { OR } */),
-                                Language.GetSample(left),
-                                Language.GetSample(right)));
-                    }
-                    if ((mode & BalancingModes.BacktrackOnFailure) == BalancingModes.BacktrackOnFailure)
-                    {
-                        Context.Source.Position = startPosition;
-                        NextToken();
-                    }
-                    else
-                    {
-                        Accept(tokens);
-                    }
-                }
-                else
-                {
-                    // Accept all the tokens we saw
-                    Accept(tokens);
-                }
-            }
-            return nesting == 0;
-        }
-
-        protected virtual void ParseEmbeddedTransition(in SyntaxListBuilder<RazorSyntaxNode> builder)
-        {
         }
 
         protected internal void AcceptMarkerTokenIfNecessary()
