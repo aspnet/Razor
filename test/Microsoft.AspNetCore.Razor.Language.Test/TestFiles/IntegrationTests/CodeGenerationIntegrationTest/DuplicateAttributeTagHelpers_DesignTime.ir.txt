@@ -69,7 +69,7 @@ Document -
                                     IntermediateToken - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml) - Html - button
                             DefaultTagHelperProperty - (222:5,34 [4] DuplicateAttributeTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (222:5,34 [4] DuplicateAttributeTagHelpers.cshtml) - CSharp - true
-                            DefaultTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.NoQuotes
+                            DefaultTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (233:5,45 [8] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (233:5,45 [8] DuplicateAttributeTagHelpers.cshtml) - Html - checkbox
                             DefaultTagHelperHtmlAttribute -  - checked - HtmlAttributeValueStyle.SingleQuotes
@@ -78,7 +78,7 @@ Document -
                             DefaultTagHelperHtmlAttribute -  - type - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (263:5,75 [8] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (263:5,75 [8] DuplicateAttributeTagHelpers.cshtml) - Html - checkbox
-                            DefaultTagHelperHtmlAttribute -  - checked - HtmlAttributeValueStyle.NoQuotes
+                            DefaultTagHelperHtmlAttribute -  - checked - HtmlAttributeValueStyle.DoubleQuotes
                                 HtmlContent - (281:5,93 [4] DuplicateAttributeTagHelpers.cshtml)
                                     IntermediateToken - (281:5,93 [4] DuplicateAttributeTagHelpers.cshtml) - Html - true
                             DefaultTagHelperExecute - 

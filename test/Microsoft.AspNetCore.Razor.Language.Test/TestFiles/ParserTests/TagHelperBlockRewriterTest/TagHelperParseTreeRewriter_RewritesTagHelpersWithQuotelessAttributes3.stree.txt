@@ -5,7 +5,7 @@ RazorDocument - [0..69)::69 - [<p class=foo dynamic=@DateTime.Now style=color@@:
                 MarkupTextLiteral - [0..2)::2 - [<p] - Gen<Markup> - SpanEditHandler;Accepts:Any
                     OpenAngle;[<];
                     Text;[p];
-                MarkupTagHelperAttribute - [2..12)::10 - class - NoQuotes - Unbound - [ class=foo]
+                MarkupTagHelperAttribute - [2..12)::10 - class - DoubleQuotes - Unbound - [ class=foo]
                     MarkupTextLiteral - [2..3)::1 - [ ] - Gen<Markup> - SpanEditHandler;Accepts:Any
                         Whitespace;[ ];
                     MarkupTextLiteral - [3..8)::5 - [class] - Gen<Markup> - SpanEditHandler;Accepts:Any

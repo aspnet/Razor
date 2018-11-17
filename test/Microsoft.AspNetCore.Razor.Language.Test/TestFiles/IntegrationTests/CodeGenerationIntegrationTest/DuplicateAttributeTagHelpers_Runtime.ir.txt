@@ -8,11 +8,10 @@ Document -
             PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_2 - type - checkbox - HtmlAttributeValueStyle.DoubleQuotes
             PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_3 - checked - false - HtmlAttributeValueStyle.DoubleQuotes
             PreallocatedTagHelperPropertyValue -  - __tagHelperAttribute_4 - type - button - HtmlAttributeValueStyle.SingleQuotes
-            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_5 - type - checkbox - HtmlAttributeValueStyle.NoQuotes
-            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_6 - checked - true - HtmlAttributeValueStyle.SingleQuotes
-            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_7 - checked - true - HtmlAttributeValueStyle.NoQuotes
-            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_8 - AGE - 40 - HtmlAttributeValueStyle.DoubleQuotes
-            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_9 - Age - 500 - HtmlAttributeValueStyle.DoubleQuotes
+            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_5 - checked - true - HtmlAttributeValueStyle.SingleQuotes
+            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_6 - checked - true - HtmlAttributeValueStyle.DoubleQuotes
+            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_7 - AGE - 40 - HtmlAttributeValueStyle.DoubleQuotes
+            PreallocatedTagHelperHtmlAttributeValue -  - __tagHelperAttribute_8 - Age - 500 - HtmlAttributeValueStyle.DoubleQuotes
             DefaultTagHelperRuntime - 
             FieldDeclaration -  - private - global::TestNamespace.PTagHelper - __TestNamespace_PTagHelper
             FieldDeclaration -  - private - global::TestNamespace.InputTagHelper - __TestNamespace_InputTagHelper
@@ -55,16 +54,16 @@ Document -
                             PreallocatedTagHelperProperty - (205:5,17 [6] DuplicateAttributeTagHelpers.cshtml) - __tagHelperAttribute_4 - type - Type
                             DefaultTagHelperProperty - (222:5,34 [4] DuplicateAttributeTagHelpers.cshtml) - checked - bool TestNamespace.InputTagHelper2.Checked - HtmlAttributeValueStyle.DoubleQuotes
                                 IntermediateToken - (222:5,34 [4] DuplicateAttributeTagHelpers.cshtml) - CSharp - true
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_6
                             PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
-                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_7
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_5
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_2
+                            PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_6
                             DefaultTagHelperExecute - 
                         HtmlContent - (288:5,100 [2] DuplicateAttributeTagHelpers.cshtml)
                             IntermediateToken - (288:5,100 [2] DuplicateAttributeTagHelpers.cshtml) - Html - \n
                     DefaultTagHelperCreate -  - TestNamespace.PTagHelper
                     DefaultTagHelperProperty - (43:2,8 [1] DuplicateAttributeTagHelpers.cshtml) - age - int TestNamespace.PTagHelper.Age - HtmlAttributeValueStyle.DoubleQuotes
                         IntermediateToken - (43:2,8 [1] DuplicateAttributeTagHelpers.cshtml) - CSharp - 3
+                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_7
                     PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_8
-                    PreallocatedTagHelperHtmlAttribute -  - __tagHelperAttribute_9
                     DefaultTagHelperExecute - 

@@ -542,10 +542,8 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     {
                         // TODO: Questionable logic. Need to revisit
                         isDisallowedContent = !IsComment(child) &&
-                            child.Kind != SyntaxKind.MarkupTransition &&
-                            child.Kind != SyntaxKind.CSharpTransition &&
-                            child.Kind != SyntaxKind.CSharpStatementLiteral &&
-                            child.Kind != SyntaxKind.CSharpExpressionLiteral;
+                            !child.IsTransitionSpanKind() &&
+                            !child.IsCodeSpanKind();
                     }
 
                     if (isDisallowedContent)

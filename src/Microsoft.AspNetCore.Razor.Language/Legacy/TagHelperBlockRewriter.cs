@@ -219,25 +219,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             if (attributeBlock.ValuePrefix == null)
             {
-                if (attributeBlock.Value is GenericBlockSyntax wrapper &&
-                    wrapper.Children.Count == 1 &&
-                    (wrapper.Children[0] is MarkupLiteralAttributeValueSyntax ||
-                    wrapper.Children[0] is MarkupTextLiteralSyntax))
-                {
-                    // Attribute value is a string literal. Eg: <tag my-attribute=foo />.
-                    // It is usually represented as MarkupLiteralAttributeValue but it could also be
-                    // MarkupTextLiteral in cases like data- attributes which are parsed differently.
-                    result.AttributeStructure = AttributeStructure.NoQuotes;
-                }
-                else
-                {
-                    // Could be an expression, treat NoQuotes and DoubleQuotes equivalently. We purposefully do not persist NoQuotes
-                    // ValueStyles at code generation time to protect users from rendering dynamic content with spaces
-                    // that can break attributes.
-                    // Ex: <tag my-attribute=@value /> where @value results in the test "hello world".
-                    // This way, the above code would render <tag my-attribute="hello world" />.
-                    result.AttributeStructure = AttributeStructure.DoubleQuotes;
-                }
+                // We are purposefully not persisting NoQuotes even for unbound attributes because it is still possible to
+                // rewrite the values that introduces a space like in UrlResolutionTagHelper.
+                // The other case is it could be an expression, treat NoQuotes and DoubleQuotes equivalently. We purposefully do not persist NoQuotes
+                // ValueStyles at code generation time to protect users from rendering dynamic content with spaces
+                // that can break attributes.
+                // Ex: <tag my-attribute=@value /> where @value results in the test "hello world".
+                // This way, the above code would render <tag my-attribute="hello world" />.
+                result.AttributeStructure = AttributeStructure.DoubleQuotes;
             }
             else
             {
