@@ -540,7 +540,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                     var isDisallowedContent = true;
                     if (_featureFlags.AllowHtmlCommentsInTagHelpers)
                     {
-                        // TODO: Questionable logic. Need to revisit
                         isDisallowedContent = !IsComment(child) &&
                             !child.IsTransitionSpanKind() &&
                             !child.IsCodeSpanKind();
