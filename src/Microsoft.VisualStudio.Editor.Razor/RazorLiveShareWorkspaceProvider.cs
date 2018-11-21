@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.Editor.Razor
 {
-    internal abstract class LiveShareWorkspaceProvider
+    public abstract class RazorLiveShareWorkspaceProvider
     {
         public abstract bool TryGetWorkspace(ITextBuffer textBuffer, out Workspace workspace);
     }

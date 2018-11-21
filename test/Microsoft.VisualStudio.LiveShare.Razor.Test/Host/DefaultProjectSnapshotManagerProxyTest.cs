@@ -71,12 +71,13 @@ namespace Microsoft.VisualStudio.LiveShare.Razor.Host
                 Dispatcher,
                 projectSnapshotManager,
                 JoinableTaskFactory);
-            var changedArgs = new ProjectChangeEventArgs("/host/path/to/project1.csproj", ProjectChangeKind.ProjectChanged);
+            var snapshot = new TestProjectSnapshot("/host/path/to/project1.csproj");
+            var changedArgs = new ProjectChangeEventArgs(snapshot, snapshot, ProjectChangeKind.ProjectChanged);
             var called = false;
             proxy.Changed += (sender, args) =>
             {
                 called = true;
-                Assert.Equal($"vsls:/path/to/project1.csproj", args.Change.FilePath.ToString());
+                Assert.Equal($"vsls:/path/to/project1.csproj", args.Change.ProjectFilePath.ToString());
                 Assert.Equal(ProjectProxyChangeKind.ProjectChanged, args.Change.Kind);
                 var handle = Assert.Single(args.State.ProjectHandles);
                 Assert.Equal("vsls:/path/to/project1.csproj", handle.FilePath.ToString());
@@ -101,7 +102,8 @@ namespace Microsoft.VisualStudio.LiveShare.Razor.Host
                 Dispatcher,
                 projectSnapshotManager,
                 JoinableTaskFactory);
-            var changedArgs = new ProjectChangeEventArgs("/host/path/to/project1.csproj", ProjectChangeKind.ProjectChanged);
+            var snapshot = new TestProjectSnapshot("/host/path/to/project1.csproj");
+            var changedArgs = new ProjectChangeEventArgs(snapshot, snapshot, ProjectChangeKind.ProjectChanged);
             proxy.Changed += (sender, args) => throw new InvalidOperationException("Should not have been called.");
             proxy.Dispose();
 

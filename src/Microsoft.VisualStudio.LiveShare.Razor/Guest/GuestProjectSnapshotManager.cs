@@ -154,12 +154,15 @@ namespace Microsoft.VisualStudio.LiveShare.Razor.Guest
 
             _foregroundDispatcher.AssertForegroundThread();
 
-            // Reset projects cache so next time they're asked for they'll be calculated.
+            var guestPath = ResolveGuestPath(args.ProjectFilePath);
+            var oldProject = GetLoadedProject(guestPath);
+
+            // Reset projects cache so they'll be re-calculated.
             _projects = null;
 
-            var guestPath = ResolveGuestPath(args.FilePath);
-            var changeArgs = new ProjectChangeEventArgs(guestPath, (ProjectChangeKind)args.Kind);
-            
+            var newProject = GetLoadedProject(guestPath);
+            var changeArgs = new ProjectChangeEventArgs(oldProject, newProject, (ProjectChangeKind)args.Kind);
+
             OnChanged(changeArgs);
         }
 

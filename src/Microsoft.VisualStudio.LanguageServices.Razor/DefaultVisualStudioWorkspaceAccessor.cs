@@ -19,14 +19,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Razor
         private readonly IBufferGraphFactoryService _bufferGraphService;
         private readonly TextBufferProjectService _projectService;
         private readonly Workspace _defaultWorkspace;
-        private readonly LiveShareWorkspaceProvider _liveShareWorkspaceProvider;
+        private readonly RazorLiveShareWorkspaceProvider _liveShareWorkspaceProvider;
 
         [ImportingConstructor]
         public DefaultVisualStudioWorkspaceAccessor(
             IBufferGraphFactoryService bufferGraphService,
             TextBufferProjectService projectService,
             [Import(typeof(VisualStudioWorkspace))] Workspace defaultWorkspace,
-            [Import(typeof(LiveShareWorkspaceProvider), AllowDefault = true)] LiveShareWorkspaceProvider liveShareWorkspaceProvider)
+            [Import(typeof(RazorLiveShareWorkspaceProvider), AllowDefault = true)] RazorLiveShareWorkspaceProvider liveShareWorkspaceProvider)
         {
             if (bufferGraphService == null)
             {

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.Language;
 using Microsoft.CodeAnalysis;
@@ -38,6 +39,16 @@ namespace Microsoft.VisualStudio.LiveShare.Razor.Test
         }
 
         public override RazorProjectEngine GetProjectEngine()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override IEnumerable<DocumentSnapshot> GetRelatedDocuments(DocumentSnapshot document)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool IsImportDocument(DocumentSnapshot document)
         {
             throw new NotImplementedException();
         }

@@ -103,6 +103,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AspNetCore.Mvc.Ra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.AspNetCore.Razor.Test.MvcShim.Version2_X", "test\Microsoft.AspNetCore.Razor.Test.MvcShim.Version2_X\Microsoft.AspNetCore.Razor.Test.MvcShim.Version2_X.csproj", "{D87E5501-B832-46B6-ACD3-EC989E3D14ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.LiveShare.Razor", "src\Microsoft.VisualStudio.LiveShare.Razor\Microsoft.VisualStudio.LiveShare.Razor.csproj", "{6F562085-8048-4884-A1D2-680C32D98746}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.VisualStudio.LiveShare.Razor.Test", "test\Microsoft.VisualStudio.LiveShare.Razor.Test\Microsoft.VisualStudio.LiveShare.Razor.Test.csproj", "{904945D8-DA0D-487E-AAE3-A58C3C837F25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -421,6 +425,22 @@ Global
 		{D87E5501-B832-46B6-ACD3-EC989E3D14ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D87E5501-B832-46B6-ACD3-EC989E3D14ED}.ReleaseNoVSIX|Any CPU.ActiveCfg = Release|Any CPU
 		{D87E5501-B832-46B6-ACD3-EC989E3D14ED}.ReleaseNoVSIX|Any CPU.Build.0 = Release|Any CPU
+		{6F562085-8048-4884-A1D2-680C32D98746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F562085-8048-4884-A1D2-680C32D98746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F562085-8048-4884-A1D2-680C32D98746}.DebugNoVSIX|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F562085-8048-4884-A1D2-680C32D98746}.DebugNoVSIX|Any CPU.Build.0 = Debug|Any CPU
+		{6F562085-8048-4884-A1D2-680C32D98746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F562085-8048-4884-A1D2-680C32D98746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F562085-8048-4884-A1D2-680C32D98746}.ReleaseNoVSIX|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F562085-8048-4884-A1D2-680C32D98746}.ReleaseNoVSIX|Any CPU.Build.0 = Debug|Any CPU
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25}.DebugNoVSIX|Any CPU.ActiveCfg = Debug|Any CPU
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25}.DebugNoVSIX|Any CPU.Build.0 = Debug|Any CPU
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25}.ReleaseNoVSIX|Any CPU.ActiveCfg = Debug|Any CPU
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25}.ReleaseNoVSIX|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -465,6 +485,8 @@ Global
 		{0693CA32-BB75-401E-BC08-72D6DEEB4C99} = {3C0D6505-79B3-49D0-B4C3-176F0F1836ED}
 		{495A006C-D2B9-4AD0-9D33-60820BA501D8} = {92463391-81BE-462B-AC3C-78C6C760741F}
 		{D87E5501-B832-46B6-ACD3-EC989E3D14ED} = {92463391-81BE-462B-AC3C-78C6C760741F}
+		{6F562085-8048-4884-A1D2-680C32D98746} = {3C0D6505-79B3-49D0-B4C3-176F0F1836ED}
+		{904945D8-DA0D-487E-AAE3-A58C3C837F25} = {92463391-81BE-462B-AC3C-78C6C760741F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0035341D-175A-4D05-95E6-F1C2785A1E26}

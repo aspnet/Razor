@@ -234,6 +234,15 @@
       <IncludeOutputGroupsInVSIXLocalOnly>
       </IncludeOutputGroupsInVSIXLocalOnly>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Microsoft.VisualStudio.LiveShare.Razor\Microsoft.VisualStudio.LiveShare.Razor.csproj">
+      <Project>{6f562085-8048-4884-a1d2-680c32d98746}</Project>
+      <Name>Microsoft.VisualStudio.LiveShare.Razor</Name>
+      <Private>False</Private>
+      <IncludeOutputGroupsInVSIX>
+      </IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>
+      </IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <!--
@@ -281,6 +290,7 @@
     <VSIXSourceItem Include="..\..\src\Microsoft.VisualStudio.LanguageServices.Razor\bin\$(Configuration)\net472\Microsoft.CodeAnalysis.Razor.Workspaces.dll" />
     <VSIXSourceItem Include="..\..\src\Microsoft.VisualStudio.LanguageServices.Razor\bin\$(Configuration)\net472\Microsoft.VisualStudio.Editor.Razor.dll" />
     <VSIXSourceItem Include="..\..\src\Microsoft.VisualStudio.LanguageServices.Razor\bin\$(Configuration)\net472\Microsoft.VisualStudio.LanguageServices.Razor.dll" />
+    <VSIXSourceItem Include="..\..\src\Microsoft.VisualStudio.LiveShare.Razor\bin\$(Configuration)\net472\Microsoft.VisualStudio.LiveShare.Razor.dll" />
     <Content Include="@(VSIXSourceItem)">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

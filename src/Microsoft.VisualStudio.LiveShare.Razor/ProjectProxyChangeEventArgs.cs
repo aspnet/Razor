@@ -8,14 +8,14 @@ namespace Microsoft.VisualStudio.LiveShare.Razor
     public sealed class ProjectProxyChangeEventArgs
     {
         public ProjectProxyChangeEventArgs(
-            Uri filePath, 
+            Uri projectFilePath, 
             ProjectProxyChangeKind kind)
         {
-            FilePath = filePath;
+            ProjectFilePath = projectFilePath;
             Kind = kind;
         }
 
-        public Uri FilePath { get; }
+        public Uri ProjectFilePath { get; }
 
         public ProjectProxyChangeKind Kind { get; }
     }

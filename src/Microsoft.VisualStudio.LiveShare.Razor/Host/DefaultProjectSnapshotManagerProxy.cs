@@ -124,6 +124,14 @@ namespace Microsoft.VisualStudio.LiveShare.Razor.Host
                 return;
             }
 
+            if (args.Kind == ProjectChangeKind.DocumentAdded ||
+                args.Kind == ProjectChangeKind.DocumentRemoved ||
+                args.Kind == ProjectChangeKind.DocumentChanged)
+            {
+                // Razor LiveShare doesn't currently support document based notifications over the wire.
+                return;
+            }
+
             _processingChangedEventTestTask = _joinableTaskFactory.RunAsync(async () =>
             {
                 var projects = await GetLatestProjectsAsync();

@@ -103,12 +103,12 @@ namespace Microsoft.VisualStudio.LiveShare.Razor.Guest
                 args =>
                 {
                     Assert.Equal(ProjectProxyChangeKind.ProjectAdded, args.Kind);
-                    Assert.Equal("vsls:/some/path/project.csproj", args.FilePath.ToString());
+                    Assert.Equal("vsls:/some/path/project.csproj", args.ProjectFilePath.ToString());
                 },
                 args =>
                 {
                     Assert.Equal(ProjectProxyChangeKind.ProjectAdded, args.Kind);
-                    Assert.Equal("vsls:/some/other/project.csproj", args.FilePath.ToString());
+                    Assert.Equal("vsls:/some/other/project.csproj", args.ProjectFilePath.ToString());
                 });
         }
 
