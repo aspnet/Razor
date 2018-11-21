@@ -9,48 +9,10 @@ using Microsoft.AspNetCore.Razor.Language.Syntax.InternalSyntax;
 
 namespace Microsoft.AspNetCore.Razor.Language.Legacy
 {
-    internal class HtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer>
+    internal partial class HtmlMarkupParser : TokenizerBackedParser<HtmlTokenizer>
     {
-        private const string ScriptTagName = "script";
-
-        private static readonly SyntaxToken[] nonAllowedHtmlCommentEnding = new[]
-        {
-            SyntaxFactory.Token(SyntaxKind.Text, "-"),
-            SyntaxFactory.Token(SyntaxKind.Bang, "!"),
-            SyntaxFactory.Token(SyntaxKind.OpenAngle, "<"),
-        };
-
-        private static readonly char[] ValidAfterTypeAttributeNameCharacters = { ' ', '\t', '\r', '\n', '\f', '=' };
         private SourceLocation _lastTagStart = SourceLocation.Zero;
         private SyntaxToken _bufferedOpenAngle;
-
-        //From http://dev.w3.org/html5/spec/Overview.html#elements-0
-        private readonly ISet<string> _voidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            "area",
-            "base",
-            "br",
-            "col",
-            "command",
-            "embed",
-            "hr",
-            "img",
-            "input",
-            "keygen",
-            "link",
-            "meta",
-            "param",
-            "source",
-            "track",
-            "wbr"
-        };
-
-        public HtmlMarkupParser(ParserContext context)
-            : base(context.ParseLeadingDirectives ? FirstDirectiveHtmlLanguageCharacteristics.Instance : HtmlLanguageCharacteristics.Instance, context)
-        {
-        }
-
-        public CSharpCodeParser CodeParser { get; set; }
 
         public ISet<string> VoidElements
         {
@@ -80,32 +42,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 }
 
                 return false;
-            }
-        }
-
-        public RazorDocumentSyntax ParseDocument()
-        {
-            if (Context == null)
-            {
-                throw new InvalidOperationException(Resources.Parser_Context_Not_Set);
-            }
-
-            using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
-            using (PushSpanContextConfig(DefaultMarkupSpanContext))
-            {
-                var builder = pooledResult.Builder;
-                NextToken();
-                while (!EndOfFile)
-                {
-                    SkipToAndParseCode(builder, SyntaxKind.OpenAngle);
-                    ParseTagInDocumentContext(builder);
-                }
-                AcceptMarkerTokenIfNecessary();
-                builder.Add(OutputAsMarkupLiteral());
-
-                var markup = SyntaxFactory.MarkupBlock(builder.ToList());
-
-                return SyntaxFactory.RazorDocument(markup);
             }
         }
 
@@ -303,13 +239,13 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
                     if (!At(SyntaxKind.ForwardSlash))
                     {
-                        ParseOptionalBangEscape(tagBuilder);
+                        TryParseBangEscape(tagBuilder);
 
                         // Parsing a start tag
                         var scriptTag = At(SyntaxKind.Text) &&
                                         string.Equals(CurrentToken.Content, "script", StringComparison.OrdinalIgnoreCase);
                         TryAccept(SyntaxKind.Text);
-                        ParseTagContent(tagBuilder); // Parse the tag, don't care about the content
+                        LegacyParseTagContent(tagBuilder); // Parse the tag, don't care about the content
                         TryAccept(SyntaxKind.ForwardSlash);
                         TryAccept(SyntaxKind.CloseAngle);
 
@@ -332,7 +268,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                         TryAccept(SyntaxKind.ForwardSlash);
 
                         // Whitespace here is invalid (according to the spec)
-                        ParseOptionalBangEscape(tagBuilder);
+                        TryParseBangEscape(tagBuilder);
                         TryAccept(SyntaxKind.Text);
                         TryAccept(SyntaxKind.Whitespace);
                         TryAccept(SyntaxKind.CloseAngle);
@@ -347,7 +283,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
         }
 
-        private void ParseTagContent(in SyntaxListBuilder<RazorSyntaxNode> builder)
+        private void LegacyParseTagContent(in SyntaxListBuilder<RazorSyntaxNode> builder)
         {
             if (!At(SyntaxKind.Whitespace) && !At(SyntaxKind.NewLine))
             {
@@ -720,7 +656,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
 
             if (AcceptAndMoveNext())
             {
-                if (IsHtmlCommentAhead())
+                if (LegacyIsHtmlCommentAhead())
                 {
                     using (var pooledResult = Pool.Allocate<RazorSyntaxNode>())
                     {
@@ -769,19 +705,14 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 else
                 {
                     AcceptAndMoveNext();
-                    return AcceptTokenUntilAll(builder, SyntaxKind.CloseAngle);
+                    return LegacyAcceptTokenUntilAll(builder, SyntaxKind.CloseAngle);
                 }
             }
 
             return false;
         }
 
-        internal static bool IsHyphen(SyntaxToken token)
-        {
-            return token.Kind == SyntaxKind.Text && token.Content == "-";
-        }
-
-        protected bool IsHtmlCommentAhead()
+        protected bool LegacyIsHtmlCommentAhead()
         {
             // From HTML5 Specification, available at http://www.w3.org/TR/html52/syntax.html#comments
 
@@ -851,29 +782,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return isValidComment;
         }
 
-        /// <summary>
-        /// Verifies, that the sequence doesn't end with the "&lt;!-" HtmlTokens. Note, the first token is an opening bracket token
-        /// </summary>
-        internal static bool IsCommentContentEndingInvalid(IEnumerable<SyntaxToken> sequence)
-        {
-            var reversedSequence = sequence.Reverse();
-            var index = 0;
-            foreach (var item in reversedSequence)
-            {
-                if (!item.IsEquivalentTo(nonAllowedHtmlCommentEnding[index++]))
-                {
-                    return false;
-                }
-
-                if (index == nonAllowedHtmlCommentEnding.Length)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private bool TryParseCData(in SyntaxListBuilder<RazorSyntaxNode> builder)
         {
             if (CurrentToken.Kind == SyntaxKind.Text && string.Equals(CurrentToken.Content, "cdata", StringComparison.OrdinalIgnoreCase))
@@ -882,7 +790,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 {
                     if (CurrentToken.Kind == SyntaxKind.LeftBracket)
                     {
-                        return AcceptTokenUntilAll(builder, SyntaxKind.RightBracket, SyntaxKind.RightBracket, SyntaxKind.CloseAngle);
+                        return LegacyAcceptTokenUntilAll(builder, SyntaxKind.RightBracket, SyntaxKind.RightBracket, SyntaxKind.CloseAngle);
                     }
                 }
             }
@@ -895,40 +803,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             // Accept "?"
             Assert(SyntaxKind.QuestionMark);
             AcceptAndMoveNext();
-            return AcceptTokenUntilAll(builder, SyntaxKind.QuestionMark, SyntaxKind.CloseAngle);
-        }
-
-        private void ParseOptionalBangEscape(in SyntaxListBuilder<RazorSyntaxNode> builder)
-        {
-            if (IsBangEscape(lookahead: 0))
-            {
-                builder.Add(OutputAsMarkupLiteral());
-
-                // Accept the parser escape character '!'.
-                Assert(SyntaxKind.Bang);
-                AcceptAndMoveNext();
-
-                // Setup the metacode span that we will be outputing.
-                SpanContext.ChunkGenerator = SpanChunkGenerator.Null;
-                builder.Add(OutputAsMetaCode(Output()));
-            }
-        }
-
-        private bool IsBangEscape(int lookahead)
-        {
-            var potentialBang = Lookahead(lookahead);
-
-            if (potentialBang != null &&
-                potentialBang.Kind == SyntaxKind.Bang)
-            {
-                var afterBang = Lookahead(lookahead + 1);
-
-                return afterBang != null &&
-                    afterBang.Kind == SyntaxKind.Text &&
-                    !string.Equals(afterBang.Content, "DOCTYPE", StringComparison.OrdinalIgnoreCase);
-            }
-
-            return false;
+            return LegacyAcceptTokenUntilAll(builder, SyntaxKind.QuestionMark, SyntaxKind.CloseAngle);
         }
 
         private void SkipToEndScriptAndParseCode(in SyntaxListBuilder<RazorSyntaxNode> builder, AcceptedCharactersInternal endTagAcceptedCharacters = AcceptedCharactersInternal.Any)
@@ -1031,56 +906,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             return false;
         }
 
-        private static bool IsTypeAttribute(MarkupAttributeBlockSyntax attributeBlock)
-        {
-            if (attributeBlock.Name.LiteralTokens.Count == 0)
-            {
-                return false;
-            }
-
-            var trimmedStartContent = attributeBlock.Name.ToFullString().TrimStart();
-            if (trimmedStartContent.StartsWith("type", StringComparison.OrdinalIgnoreCase) &&
-                (trimmedStartContent.Length == 4 ||
-                ValidAfterTypeAttributeNameCharacters.Contains(trimmedStartContent[4])))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        protected SyntaxToken AcceptAllButLastDoubleHyphens()
-        {
-            var lastDoubleHyphen = CurrentToken;
-            AcceptWhile(s =>
-            {
-                if (NextIs(SyntaxKind.DoubleHyphen))
-                {
-                    lastDoubleHyphen = s;
-                    return true;
-                }
-
-                return false;
-            });
-
-            NextToken();
-
-            if (At(SyntaxKind.Text) && IsHyphen(CurrentToken))
-            {
-                // Doing this here to maintain the order of tokens
-                if (!NextIs(SyntaxKind.CloseAngle))
-                {
-                    Accept(lastDoubleHyphen);
-                    lastDoubleHyphen = null;
-                }
-
-                AcceptAndMoveNext();
-            }
-
-            return lastDoubleHyphen;
-        }
-
-        private bool AcceptTokenUntilAll(in SyntaxListBuilder<RazorSyntaxNode> builder, params SyntaxKind[] endSequence)
+        private bool LegacyAcceptTokenUntilAll(in SyntaxListBuilder<RazorSyntaxNode> builder, params SyntaxKind[] endSequence)
         {
             while (!EndOfFile)
             {
@@ -1417,7 +1243,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             Accept(_bufferedOpenAngle);
-            ParseOptionalBangEscape(builder);
+            TryParseBangEscape(builder);
             TryAccept(SyntaxKind.Text);
             return ParseRestOfTag(builder, parentBuilder, tag, tags);
         }
@@ -1429,7 +1255,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             Stack<Tuple<SyntaxToken, SourceLocation>> tags)
         {
             var blockAlreadyBuilt = false;
-            ParseTagContent(builder);
+            LegacyParseTagContent(builder);
 
             // We are now at a possible end of the tag
             // Found '<', so we just abort this tag.
@@ -1599,7 +1425,7 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
                 Accept(_bufferedOpenAngle);
                 Accept(forwardSlash);
 
-                ParseOptionalBangEscape(builder);
+                TryParseBangEscape(builder);
 
                 AcceptUntil(SyntaxKind.CloseAngle);
 
@@ -1896,33 +1722,6 @@ namespace Microsoft.AspNetCore.Razor.Language.Legacy
             }
 
             return last.Green;
-        }
-
-        private void DefaultMarkupSpanContext(SpanContextBuilder spanContext)
-        {
-            spanContext.ChunkGenerator = new MarkupChunkGenerator();
-            spanContext.EditHandler = new SpanEditHandler(Language.TokenizeString, AcceptedCharactersInternal.Any);
-        }
-
-        private void OtherParserBlock(in SyntaxListBuilder<RazorSyntaxNode> builder)
-        {
-            AcceptMarkerTokenIfNecessary();
-            builder.Add(OutputAsMarkupLiteral());
-
-            RazorSyntaxNode codeBlock;
-            using (PushSpanContextConfig())
-            {
-                codeBlock = CodeParser.ParseBlock();
-            }
-
-            builder.Add(codeBlock);
-            InitializeContext(SpanContext);
-            NextToken();
-        }
-
-        protected static Func<SyntaxToken, bool> IsSpacingToken(bool includeNewLines)
-        {
-            return token => token.Kind == SyntaxKind.Whitespace || (includeNewLines && token.Kind == SyntaxKind.NewLine);
         }
 
         internal static bool IsValidAttributeNameToken(SyntaxToken token)
