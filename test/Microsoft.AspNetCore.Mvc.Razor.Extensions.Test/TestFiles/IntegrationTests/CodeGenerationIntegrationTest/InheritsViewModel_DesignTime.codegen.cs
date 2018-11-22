@@ -41,15 +41,15 @@ MyModel __typeHelper = default(MyModel);
         {
         }
         #pragma warning restore 1998
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider ModelExpressionProvider { get; private set; }
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.IUrlHelper Url { get; private set; }
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.IViewComponentHelper Component { get; private set; }
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper Json { get; private set; }
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<MyModel> Html { get; private set; }
     }
 }

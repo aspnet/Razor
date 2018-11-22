@@ -8,7 +8,7 @@ namespace Microsoft.AspNetCore.Mvc.Razor.Extensions
 {
     public class InjectTargetExtension : IInjectTargetExtension
     {
-        private const string RazorInjectAttribute = "[global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]";
+        private const string RazorInjectAttribute = "[global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]";
 
         public void WriteInjectProperty(CodeRenderingContext context, InjectIntermediateNode node)
         {

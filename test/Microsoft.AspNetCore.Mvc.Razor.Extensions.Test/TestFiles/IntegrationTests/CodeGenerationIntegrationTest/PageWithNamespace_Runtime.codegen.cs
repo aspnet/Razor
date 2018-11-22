@@ -22,15 +22,15 @@ namespace Test.Namespace
             WriteLiteral("<h1>Hi There!</h1>\r\n");
         }
         #pragma warning restore 1998
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider ModelExpressionProvider { get; private set; }
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.IUrlHelper Url { get; private set; }
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.IViewComponentHelper Component { get; private set; }
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper Json { get; private set; }
-        [global::Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute]
+        [global::Microsoft.AspNetCore.Mvc.Razor.Infrastructure.RazorInjectAttribute]
         public global::Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace> Html { get; private set; }
         public global::Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace> ViewData => (global::Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace>)PageContext?.ViewData;
         public TestFiles_IntegrationTests_CodeGenerationIntegrationTest_PageWithNamespace Model => ViewData.Model;
